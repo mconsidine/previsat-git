@@ -50,12 +50,11 @@
 #pragma GCC diagnostic warning "-Wconversion"
 
 
-class Options;
-class QGraphicsScene;
-
 namespace Ui {
 class Radar;
 }
+
+class QGraphicsScene;
 
 class Radar : public QFrame
 {
@@ -70,7 +69,7 @@ public:
      * @brief Radar Constructeur par defaut
      * @param parent parent
      */
-    explicit Radar(Options *options, QWidget *parent = nullptr);
+    explicit Radar(QWidget *parent = nullptr);
 
 
     /*
@@ -127,7 +126,6 @@ private:
      */
     Ui::Radar *_ui;
     QGraphicsScene *scene;
-    Options *_options;
 
 
     /*

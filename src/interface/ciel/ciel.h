@@ -61,7 +61,7 @@ class QGraphicsScene;
 class Constellation;
 class Etoile;
 class LigneConstellation;
-class Options;
+
 
 namespace Ui {
 class Ciel;
@@ -80,7 +80,7 @@ public:
      * @brief Ciel Constructeur par defaut
      * @param parent parent
      */
-    explicit Ciel(Options *options, QWidget *parent = nullptr);
+    explicit Ciel(QWidget *parent = nullptr);
 
 
     /*
@@ -171,7 +171,6 @@ private:
      */
     Ui::Ciel *_ui;
     QGraphicsScene *scene;
-    Options *_options;
 
     Observateur _observateur;
     QList<Satellite> _satellites;

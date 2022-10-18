@@ -86,13 +86,12 @@ static const char* _titresPrevisions[] = {
 /*
  * Constructeur par defaut
  */
-Onglets::Onglets(Options *options, QWidget *parent) :
+Onglets::Onglets(QWidget *parent) :
     QTabWidget(parent),
     _ui(new Ui::Onglets)
 {
     _ui->setupUi(this);
 
-    _options = options;
     ReinitFlags();
 
     try {

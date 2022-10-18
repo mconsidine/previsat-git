@@ -86,6 +86,8 @@ Osculateurs::Osculateurs(QWidget *parent) :
  */
 Osculateurs::~Osculateurs()
 {
+    settings.setValue("affichage/typeParametres", _ui->typeParametres->currentIndex());
+    settings.setValue("affichage/typeRepere", _ui->typeRepere->currentIndex());
     delete _ui;
 }
 
@@ -120,7 +122,7 @@ void Osculateurs::show(const Date &date)
 
     const Satellite &satellite = Configuration::instance()->listeSatellites().first();
     const ElementsOsculateurs &elements = satellite.elementsOsculateurs();
-    const QString unite = (Configuration::instance()->unitesKm()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
+    const QString unite = (settings.value("affichage/unite").toBool()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
 
     /* Corps de la methode */
     AffichageVecteurEtat(date);
@@ -136,14 +138,14 @@ void Osculateurs::show(const Date &date)
 
     // Apogee/perigee/periode orbitale
     const QString fmt3 = "%1 %2 (%3 %2)";
-    const double apogee = (Configuration::instance()->unitesKm()) ? elements.apogee() : elements.apogee() * MILE_PAR_KM;
+    const double apogee = (settings.value("affichage/unite").toBool()) ? elements.apogee() : elements.apogee() * MILE_PAR_KM;
     double apogeeAlt = elements.apogee() - RAYON_TERRESTRE;
-    apogeeAlt = (Configuration::instance()->unitesKm()) ? apogeeAlt : apogeeAlt * MILE_PAR_KM;
+    apogeeAlt = (settings.value("affichage/unite").toBool()) ? apogeeAlt : apogeeAlt * MILE_PAR_KM;
     _ui->apogee->setText(fmt3.arg(apogee, 0, 'f', 1).arg(unite).arg(apogeeAlt, 0, 'f', 1));
 
-    const double perigee = (Configuration::instance()->unitesKm()) ? elements.perigee() : elements.perigee() * MILE_PAR_KM;
+    const double perigee = (settings.value("affichage/unite").toBool()) ? elements.perigee() : elements.perigee() * MILE_PAR_KM;
     double perigeeAlt = elements.perigee() - RAYON_TERRESTRE;
-    perigeeAlt = (Configuration::instance()->unitesKm()) ? perigeeAlt : perigeeAlt * MILE_PAR_KM;
+    perigeeAlt = (settings.value("affichage/unite").toBool()) ? perigeeAlt : perigeeAlt * MILE_PAR_KM;
     _ui->perigee->setText(fmt3.arg(perigee, 0, 'f', 1).arg(unite).arg(perigeeAlt, 0, 'f', 1));
     _ui->periode->setText(Maths::ToSexagesimal(elements.periode() * HEUR2RAD, AngleFormatType::HEURE1, 1, 0, false, true));
 
@@ -344,11 +346,11 @@ void Osculateurs::AffichageElementsOsculateurs()
     const QString fmt1 = "%1";
     const QString fmt2 = "%1°";
 
-    const QString unite = (Configuration::instance()->unitesKm()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
+    const QString unite = (settings.value("affichage/unite").toBool()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
     const ElementsOsculateurs &elements = Configuration::instance()->listeSatellites().first().elementsOsculateurs();
     double demiGrandAxe = elements.demiGrandAxe();
 
-    if (!Configuration::instance()->unitesKm()) {
+    if (!settings.value("affichage/unite").toBool()) {
         demiGrandAxe *= MILE_PAR_KM;
     }
 
@@ -423,7 +425,7 @@ void Osculateurs::AffichageVecteurEtat(const Date &date)
 
     /* Corps de la methode */
     const Satellite &satellite = Configuration::instance()->listeSatellites().first();
-    const QString unite = (Configuration::instance()->unitesKm()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
+    const QString unite = (settings.value("affichage/unite").toBool()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
 
     if (_ui->typeRepere->currentIndex() == 0) {
         position = satellite.position();
@@ -431,7 +433,7 @@ void Osculateurs::AffichageVecteurEtat(const Date &date)
         satellite.CalculPosVitECEF(date, position, vitesse);
     }
 
-    if (!Configuration::instance()->unitesKm()) {
+    if (!settings.value("affichage/unite").toBool()) {
         position *= MILE_PAR_KM;
     }
 

@@ -113,13 +113,14 @@ public:
 
     // Locale
     const QString &locale() const;
+    const QStringList &listeFicLang() const;
 
     // Polices
     const QFont &police() const;
     const QFont &policeWcc() const;
 
     bool isCarteMaximisee();
-    bool issLive();
+    bool &issLive();
 
 
     // Versions des fichiers de configuration
@@ -184,17 +185,11 @@ public:
 
     const QStringList &listeFicMap() const;
 
+    const QStringList &listeFicPref() const;
+
     // Notifications sonores
     NotificationSonore &notifAOS();
     NotificationSonore &notifFlashs();
-
-    bool unitesKm() const;
-    bool syst12h() const;
-    bool affnotif() const;
-    bool effetEclipsesMagnitude() const;
-    bool refractionAtmospherique() const;
-    bool eclipsesLune() const;
-    int nombreTrajectoires() const;
 
 
     /*
@@ -362,6 +357,7 @@ private:
 
     QList<Satellite> _listeSatellites;
 
+
     // Autres
     // Liste des cartes du monde
     QStringList _listeFicMap;
@@ -372,14 +368,6 @@ private:
     // Notifications sonores
     NotificationSonore _notifAOS;
     NotificationSonore _notifFlashs;
-
-    bool _unitesKm;
-    bool _syst12h;
-    bool _affnotif;
-    bool _effetEclipsesMagnitude;
-    bool _refractionAtmospherique;
-    bool _eclipsesLune;
-    int _nombreTrajectoires;
 
 
     /*

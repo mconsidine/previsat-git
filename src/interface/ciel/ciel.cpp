@@ -38,6 +38,7 @@
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QGraphicsPixmapItem>
 #include <QMouseEvent>
+#include <QSettings>
 #include "ui_ciel.h"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "ui_options.h"
@@ -50,6 +51,10 @@
 #include "librairies/corps/etoiles/ligneconstellation.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
+
+
+// Registre
+static QSettings settings(ORG_NAME, APP_NAME);
 
 
 // Couleur des planetes
@@ -76,14 +81,13 @@ static const std::array<std::array<double, 2>, 49> tabEcliptique = {
 /*
  * Constructeur par defaut
  */
-Ciel::Ciel(Options *options, QWidget *parent) :
+Ciel::Ciel(QWidget *parent) :
     QFrame(parent),
     _ui(new Ui::Ciel)
 {
     _ui->setupUi(this);
 
     scene = nullptr;
-    _options = options;
 
     try {
 
@@ -349,7 +353,7 @@ void Ciel::mouseMoveEvent(QMouseEvent *evt)
             }
 
             // Survol des planetes avec le curseur
-            if (_options->ui()->affplanetes->checkState() != Qt::Unchecked) {
+            if (static_cast<Qt::CheckState> (settings.value("affichage/affplanetes").toUInt()) != Qt::Unchecked) {
 
                 bool atrouve2 = false;
                 static bool aplanete = false;
@@ -382,7 +386,7 @@ void Ciel::mouseMoveEvent(QMouseEvent *evt)
             }
 
             // Survol du Soleil avec le curseur
-            if (_options->ui()->affsoleil->isChecked()) {
+            if (settings.value("affichage/affsoleil").toBool()) {
 
                 static bool asoleil = false;
                 const int lsol = qRound(-0.5 * _ui->vueCiel->width() * (1. - _soleil.hauteur() * DEUX_SUR_PI) * sin(_soleil.azimut()));
@@ -408,7 +412,7 @@ void Ciel::mouseMoveEvent(QMouseEvent *evt)
             }
 
             // Survol de la Lune avec le curseur
-            if (_options->ui()->afflune->isChecked()) {
+            if (settings.value("affichage/afflune").toBool()) {
 
                 static bool alune = false;
                 const int llun = qRound(-0.5 * _ui->vueCiel->width() * (1. - _lune.hauteur() * DEUX_SUR_PI) * sin(_lune.azimut()));
@@ -540,7 +544,7 @@ void Ciel::AffichageConstellations(const QList<LigneConstellation> &lignesCst, c
     const QColor bleuClair(173, 216, 230);
 
     /* Corps de la methode */
-    if (_options->ui()->affconst->checkState() != Qt::Unchecked) {
+    if (static_cast<Qt::CheckState> (settings.value("affichage/affconst").toUInt()) != Qt::Unchecked) {
 
         QListIterator<LigneConstellation> it(lignesCst);
         while (it.hasNext()) {
@@ -571,7 +575,7 @@ void Ciel::AffichageConstellations(const QList<LigneConstellation> &lignesCst, c
         }
 
         // Affichage du nom des constellations
-        if (_options->ui()->affconst->checkState() == Qt::Checked) {
+        if (static_cast<Qt::CheckState> (settings.value("affichage/affconst").toUInt()) == Qt::Checked) {
 
             if (Configuration::instance()->isCarteMaximisee() || _fenetreMax) {
 
@@ -624,7 +628,7 @@ void Ciel::AffichageEtoiles(const QList<Etoile> &etoiles)
     while (it1.hasNext()) {
 
         const Etoile etoile = it1.next();
-        if (etoile.isVisible() && (etoile.magnitude() <= _options->ui()->magnitudeEtoiles->value())) {
+        if (etoile.isVisible() && (etoile.magnitude() <= settings.value("affichage/magnitudeEtoiles").toDouble())) {
 
             const int lstr = qRound(_lciel - _lciel * (1. - etoile.hauteur() * DEUX_SUR_PI) * sin(etoile.azimut()));
             const int bstr = qRound(_hciel - _hciel * (1. - etoile.hauteur() * DEUX_SUR_PI) * cos(etoile.azimut()));
@@ -638,12 +642,12 @@ void Ciel::AffichageEtoiles(const QList<Etoile> &etoiles)
             }
 
             // Nom des etoiles les plus brillantes
-            if (_options->ui()->affetoiles->isChecked()) {
+            if (settings.value("affichage/affetoiles").toBool()) {
 
                 if (Configuration::instance()->isCarteMaximisee() || _fenetreMax) {
 
                     if (!etoile.nom().isEmpty() && etoile.nom().at(0).isUpper()) {
-                        if (etoile.magnitude() < (_options->ui()->magnitudeEtoiles->value() - 1.9)) {
+                        if (etoile.magnitude() < (settings.value("affichage/magnitudeEtoiles").toDouble() - 1.9)) {
 
                             const int lst = lstr - _lciel;
                             const int bst = _hciel - bstr;
@@ -681,7 +685,7 @@ void Ciel::AffichageLune()
     /* Initialisations */
 
     /* Corps de la methode */
-    if (_options->ui()->afflune->isChecked() && _lune.isVisible()) {
+    if (settings.value("affichage/afflune").toBool() && _lune.isVisible()) {
 
         // Calcul des coordonnees radar de la Lune
         const int llun = qRound(_lciel - _lciel * (1. - _lune.hauteur() * DEUX_SUR_PI) * sin(_lune.azimut()));
@@ -699,14 +703,14 @@ void Ciel::AffichageLune()
         QTransform transform;
         transform.translate(llun, blun);
         transform.rotate(180. - QLineF(llun, blun, lpol, bpol).normalVector().angle());
-        if (_options->ui()->rotationLune->isChecked() && (_observateur.latitude() < 0.)) {
+        if (settings.value("affichage/rotationLune").toBool() && (_observateur.latitude() < 0.)) {
             transform.rotate(180.);
         }
         transform.translate(-7, -7);
         lun->setTransform(transform);
 
         // Dessin de la phase
-        if (_options->ui()->affphaselune->isChecked()) {
+        if (settings.value("affichage/affphaselune").toBool()) {
 
             const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 160));
             QPen stylo(Qt::NoBrush, 0);
@@ -732,7 +736,7 @@ void Ciel::AffichagePlanetes1()
     /* Initialisations */
 
     /* Corps de la methode */
-    if (_options->ui()->affplanetes->checkState() != Qt::Unchecked) {
+    if (static_cast<Qt::CheckState> (settings.value("affichage/affplanetes").toUInt()) != Qt::Unchecked) {
 
         // Calcul des coordonnees radar des planetes
         QGraphicsSimpleTextItem * txtPla;
@@ -751,7 +755,7 @@ void Ciel::AffichagePlanetes1()
                     _rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
                     scene->addEllipse(_rectangle, QPen(couleurPlanetes[i]), coulPlanete);
 
-                    if ((Configuration::instance()->isCarteMaximisee() || _fenetreMax) && (_options->ui()->affplanetes->checkState() == Qt::Checked)) {
+                    if ((Configuration::instance()->isCarteMaximisee() || _fenetreMax) && (static_cast<Qt::CheckState> (settings.value("affichage/affplanetes").toUInt()) == Qt::Checked)) {
 
                         const int lpl = lpla - _lciel;
                         const int bpl = _hciel - bpla;
@@ -787,7 +791,7 @@ void Ciel::AffichagePlanetes2()
     /* Initialisations */
 
     /* Corps de la methode */
-    if (_options->ui()->affplanetes->checkState() != Qt::Unchecked) {
+    if (static_cast<Qt::CheckState> (settings.value("affichage/affplanetes").toUInt()) != Qt::Unchecked) {
 
 
         // Calcul des coordonnees radar des planetes Mercure et Venus
@@ -805,7 +809,7 @@ void Ciel::AffichagePlanetes2()
                     _rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
                     scene->addEllipse(_rectangle, QPen(couleurPlanetes[i]), coulPlanete);
 
-                    if ((Configuration::instance()->isCarteMaximisee() || _fenetreMax) && (_options->ui()->affplanetes->checkState() == Qt::Checked)) {
+                    if ((Configuration::instance()->isCarteMaximisee() || _fenetreMax) && (static_cast<Qt::CheckState> (settings.value("affichage/affplanetes").toUInt()) == Qt::Checked)) {
 
                         const int lpl = lpla - _lciel;
                         const int bpl = _hciel - bpla;
@@ -864,7 +868,7 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
 
             // Affichage de la trace dans le ciel
             const QList<ElementsTraceCiel> trace = _satellites.at(isat).traceCiel();
-            if (_options->ui()->afftraceCiel->isChecked() && !trace.isEmpty()) {
+            if (settings.value("affichage/afftraceCiel").toBool() && !trace.isEmpty()) {
 
                 const double ht1 = trace.at(0).hauteur;
                 const double az1 = trace.at(0).azimut;
@@ -1029,7 +1033,7 @@ void Ciel::AffichageSoleil()
     /* Initialisations */
 
     /* Corps de la methode */
-    if (_options->ui()->affsoleil->isChecked()) {
+    if (settings.value("affichage/affsoleil").toBool()) {
 
         // Dessin de l'ecliptique
         if (Configuration::instance()->isCarteMaximisee() || _fenetreMax) {

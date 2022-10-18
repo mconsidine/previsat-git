@@ -43,10 +43,15 @@
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QGraphicsPixmapItem>
 #include <QMouseEvent>
+#include <QSettings>
 #include "ui_options.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include "ui_radar.h"
 #pragma GCC diagnostic warning "-Wconversion"
+
+
+// Registre
+static QSettings settings(ORG_NAME, APP_NAME);
 
 
 /**********
@@ -59,13 +64,12 @@
 /*
  * Constructeur par defaut
  */
-Radar::Radar(Options *options, QWidget *parent) :
+Radar::Radar(QWidget *parent) :
     QFrame(parent),
     _ui(new Ui::Radar)
 {
     _ui->setupUi(this);
     scene = nullptr;
-    _options = options;
 }
 
 /*
@@ -96,8 +100,8 @@ void Radar::mouseMoveEvent(QMouseEvent *evt)
     const int x1 = static_cast<int> (evt->position().x() - lciel);
     const int y1 = static_cast<int> (evt->position().y() - hciel);
 
-    const int xf = (_options->ui()->affinvew->isChecked()) ? 1 : -1;
-    const int yf = (_options->ui()->affinvns->isChecked()) ? -1 : 1;
+    const int xf = (settings.value("affichage/affinvew").toBool()) ? 1 : -1;
+    const int yf = (settings.value("affichage/affinvns").toBool()) ? -1 : 1;
 
     const int lciel2 = lciel * xf;
     const int hciel2 = hciel * yf;
@@ -150,7 +154,7 @@ void Radar::mouseMoveEvent(QMouseEvent *evt)
         }
 
         // Survol du Soleil avec le curseur
-        if (_options->ui()->affsoleil->isChecked()) {
+        if (settings.value("affichage/affsoleil").toBool()) {
 
             static bool asoleil = false;
             const Soleil &soleil = Configuration::instance()->soleil();
@@ -178,7 +182,7 @@ void Radar::mouseMoveEvent(QMouseEvent *evt)
         }
 
         // Survol de la Lune avec le curseur
-        if (_options->ui()->afflune->isChecked()) {
+        if (settings.value("affichage/afflune").toBool()) {
 
             static bool alune = false;
             const Lune &lune = Configuration::instance()->lune();
@@ -221,8 +225,8 @@ void Radar::mousePressEvent(QMouseEvent *evt)
     const int x1 = static_cast<int> (evt->position().x() - lciel);
     const int y1 = static_cast<int> (evt->position().y() - hciel);
 
-    const int xf = (_options->ui()->affinvew->isChecked()) ? 1 : -1;
-    const int yf = (_options->ui()->affinvns->isChecked()) ? -1 : 1;
+    const int xf = (settings.value("affichage/affinvew").toBool()) ? 1 : -1;
+    const int yf = (settings.value("affichage/affinvns").toBool()) ? -1 : 1;
 
     const int lciel2 = lciel * xf;
     const int hciel2 = hciel * yf;
@@ -312,7 +316,7 @@ void Radar::show()
 
     // Inversion des coordonnees du Soleil et du satellite
     int xf, yf;
-    if (_options->ui()->affinvns->isChecked()) {
+    if (settings.value("affichage/affinvns").toBool()) {
         _ui->coordGeo1->setText(tr("Sud"));
         _ui->coordGeo2->setText(tr("Nord"));
         yf = -1;
@@ -321,7 +325,7 @@ void Radar::show()
         _ui->coordGeo2->setText(tr("Sud"));
         yf = 1;
     }
-    if (_options->ui()->affinvew->isChecked()) {
+    if (settings.value("affichage/affinvew").toBool()) {
         _ui->coordGeo3->setText(tr("Est"));
         _ui->coordGeo4->setText(tr("Ouest"));
         xf = 1;
@@ -333,7 +337,7 @@ void Radar::show()
 
     // Affichage du Soleil
     const Soleil &soleil = Configuration::instance()->soleil();
-    if (_options->ui()->affsoleil->isChecked() && soleil.isVisible()) {
+    if (settings.value("affichage/affsoleil").toBool() && soleil.isVisible()) {
 
         // Calcul des coordonnees radar du Soleil
         const int lsol = qRound(100. - 100. * xf * (1. - soleil.hauteur() * DEUX_SUR_PI) * sin(soleil.azimut()));
@@ -352,7 +356,7 @@ void Radar::show()
 
     // Affichage de la Lune
     const Lune &lune = Configuration::instance()->lune();
-    if (_options->ui()->afflune->isChecked() && lune.isVisible()) {
+    if (settings.value("affichage/afflune").toBool() && lune.isVisible()) {
 
         // Calcul des coordonnees radar de la Lune
         const int llun = qRound(100. - 100. * xf * (1. - lune.hauteur() * DEUX_SUR_PI) * sin(lune.azimut()));
@@ -369,13 +373,13 @@ void Radar::show()
         QTransform transform;
         transform.translate(llun, blun);
         transform.rotate(180. - QLineF(llun, blun, lpol, bpol).normalVector().angle());
-        if (_options->ui()->rotationLune->isChecked() && (Configuration::instance()->observateurs().at(0).latitude() < 0.)) {
+        if (settings.value("affichage/rotationLune").toBool() && (Configuration::instance()->observateurs().at(0).latitude() < 0.)) {
             transform.rotate(180.);
         }
         transform.translate(-7, -7);
         lun->setTransform(transform);
 
-        if (_options->ui()->affphaselune->isChecked()) {
+        if (settings.value("affichage/affphaselune").toBool()) {
 
             const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 160));
             const QPen stylo(Qt::NoBrush, 0);
@@ -398,7 +402,7 @@ void Radar::show()
 
             // Affichage de la trace dans le radar
             const QList<ElementsTraceCiel> &trace = satellites.at(isat).traceCiel();
-            if (_options->ui()->afftraceCiel->isChecked() && (trace.size() > 0)) {
+            if (settings.value("affichage/afftraceCiel").toBool() && (trace.size() > 0)) {
 
                 const double ht1 = trace.at(0).hauteur;
                 const double az1 = trace.at(0).azimut;

@@ -217,7 +217,7 @@ void General::AffichageDate(const Date &date)
         _ui->utcDateHeure->setText(chaineUTC);
     }
 
-    const DateSysteme syst = (Configuration::instance()->syst12h()) ? DateSysteme::SYSTEME_12H : DateSysteme::SYSTEME_24H;
+    const DateSysteme syst = (settings.value("affichage/systemeHoraire").toBool()) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H;
     const QString chaine = QString("%1  %2").arg(date.ToLongDate(Configuration::instance()->locale(), syst)).arg(chaineUTC);
     _ui->dateHeure1->setText(chaine);
 
@@ -235,7 +235,7 @@ void General::AffichageDonneesSatellite(const Date &date)
 
     /* Initialisations */
     const QString fmt = "%1 %2";
-    const QString unite = (Configuration::instance()->unitesKm()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
+    const QString unite = (settings.value("affichage/unite").toBool()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile");
     const Satellite &satellite = Configuration::instance()->listeSatellites().first();
 
     /* Corps de la methode */
@@ -266,7 +266,7 @@ void General::AffichageDonneesSatellite(const Date &date)
     _ui->longitudeSat->setText(fmt.arg(Maths::ToSexagesimal(fabs(satellite.longitude()), AngleFormatType::DEGRE, 3, 0, false, true)).arg(ews));
     const QString nss = (satellite.latitude() >= 0.) ? tr("Nord") : tr("Sud");
     _ui->latitudeSat->setText(fmt.arg(Maths::ToSexagesimal(fabs(satellite.latitude()), AngleFormatType::DEGRE, 2, 0, false, true)).arg(nss));
-    if (Configuration::instance()->unitesKm()) {
+    if (settings.value("affichage/unite").toBool()) {
         _ui->altitudeSat->setText(text.asprintf("%.1f ", satellite.altitude()) + unite);
     } else {
         _ui->altitudeSat->setText(text.asprintf("%.1f ", satellite.altitude() * MILE_PAR_KM) + unite);
@@ -275,7 +275,7 @@ void General::AffichageDonneesSatellite(const Date &date)
     // Hauteur/Azimut/Distance
     _ui->hauteurSat->setText(Maths::ToSexagesimal(satellite.hauteur(), AngleFormatType::DEGRE, 2, 0, true, true));
     _ui->azimutSat->setText(Maths::ToSexagesimal(satellite.azimut(), AngleFormatType::DEGRE, 3, 0, false, true));
-    if (Configuration::instance()->unitesKm()) {
+    if (settings.value("affichage/unite").toBool()) {
         _ui->distanceSat->setText(text.asprintf("%.1f ", satellite.distance()) + unite);
     } else {
         _ui->distanceSat->setText(text.asprintf("%.1f ", satellite.distance() * MILE_PAR_KM) + unite);
@@ -320,11 +320,11 @@ void General::AffichageDonneesSatellite(const Date &date)
 
                 // Le satellite est un MetOp ou un SkyMed, on calcule la veritable magnitude (flash)
                 if (Configuration::instance()->mapFlashs().keys().contains(satellite.elementsOrbitaux().norad)
-                        && Configuration::instance()->affnotif()) {
+                        && settings.value("affichage/affnotif").toBool()) {
 
                     const double mag = Flashs::CalculMagnitudeFlash(date, satellite, Configuration::instance()->soleil(),
-                                                                    Configuration::instance()->effetEclipsesMagnitude(),
-                                                                    Configuration::instance()->refractionAtmospherique());
+                                                                    settings.value("affichage/effetEclipsesMagnitude").toBool(),
+                                                                    settings.value("affichage/refractionAtmospherique").toBool());
 
                     magn = qMin(mag, magn);
 
@@ -398,14 +398,14 @@ void General::AffichageDonneesSatellite(const Date &date)
     if (_acalcDN) {
 
         EFFACE_OBJET(_dateEclipse);
-        _dateEclipse = new Date(Evenements::CalculOmbrePenombre(date, satellite, Configuration::instance()->nombreTrajectoires(),
-                                                                Configuration::instance()->eclipsesLune(),
-                                                                Configuration::instance()->refractionAtmospherique()), date.offsetUTC());
+        _dateEclipse = new Date(Evenements::CalculOmbrePenombre(date, satellite, settings.value("affichage/nombreTrajectoires").toInt(),
+                                                                settings.value("affichage/eclipsesLune").toBool(),
+                                                                settings.value("affichage/refractionAtmospherique").toBool()), date.offsetUTC());
         _acalcDN = false;
         _isEclipse = satellite.conditionEclipse().eclipseTotale();
     }
 
-    const DateSysteme syst = (Configuration::instance()->syst12h()) ? DateSysteme::SYSTEME_12H : DateSysteme::SYSTEME_24H;
+    const DateSysteme syst = (settings.value("affichage/systemeHoraire").toBool()) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H;
     double delai = _dateEclipse->jourJulienUTC() - date.jourJulienUTC();
 
     if ((delai >= -EPS_DATES) && (_dateEclipse->jourJulienUTC() < satellite.traceAuSol().last().jourJulienUTC)) {
@@ -565,7 +565,7 @@ void General::AffichageDonneesSoleilLune()
     _ui->hauteurLune->setText(Maths::ToSexagesimal(lune.hauteur(), AngleFormatType::DEGRE, 2, 0, true, true));
     _ui->azimutLune->setText(Maths::ToSexagesimal(lune.azimut(), AngleFormatType::DEGRE, 3, 0, false, true));
     _ui->distanceLune->setText(QString("%1 %2").arg(lune.distance(), 0, 'f', 0)
-                               .arg((Configuration::instance()->unitesKm()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile")));
+                               .arg((settings.value("affichage/unite").toBool()) ? tr("km", "Kilometer") : tr("nmi", "nautical mile")));
 
     // Ascension droite/declinaison/constellation de la Lune
     _ui->ascensionDroiteLune->setText(Maths::ToSexagesimal(lune.ascensionDroite(), AngleFormatType::HEURE1, 2, 0, false, true).trimmed());
@@ -639,7 +639,7 @@ void General::AffichageVitesses(const Date &date)
 
     double rangeRate = satellite.rangeRate();
 
-    if (Configuration::instance()->unitesKm()) {
+    if (settings.value("affichage/unite").toBool()) {
         unite = (_uniteVitesse) ? tr("km/h", "Kilometer per hour") : tr("km/s", "Kilometer per second");
     } else {
         unite = (_uniteVitesse) ? tr("kn", "Knot") : tr("nmi/s", "Nautical mile per second");
@@ -709,8 +709,8 @@ void General::AffichageLieuObs()
             const QString fmt = "%1 %2";
             _ui->longitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(lo), AngleFormatType::DEGRE, 3, 0, false, true)).arg(ew));
             _ui->latitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(la), AngleFormatType::DEGRE, 2, 0,false, true)).arg(ns));
-            _ui->altitudeObs->setText(fmt.arg((Configuration::instance()->unitesKm()) ? atd : qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd))).
-                                      arg((Configuration::instance()->unitesKm()) ? tr("m", "meter") : tr("ft", "foot")));
+            _ui->altitudeObs->setText(fmt.arg((settings.value("affichage/unite").toBool()) ? atd : qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd))).
+                                      arg((settings.value("affichage/unite").toBool()) ? tr("m", "meter") : tr("ft", "foot")));
             premier = false;
         }
     }
