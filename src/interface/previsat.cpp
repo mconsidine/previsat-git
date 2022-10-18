@@ -30,13 +30,14 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 octobre 2022
+ * >    18 octobre 2022
  *
  */
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFileDialog>
+#include <QMouseEvent>
 #include <QSettings>
 #include <QStandardPaths>
 #include <QTimer>
@@ -48,8 +49,11 @@
 #include <QMessageBox>
 #include "listwidgetitem.h"
 #include "previsat.h"
+#include "ui_carte.h"
 #include "ui_onglets.h"
 #include "apropos/apropos.h"
+#include "carte/carte.h"
+#include "ciel/ciel.h"
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
 #include "informations/informations.h"
@@ -95,6 +99,8 @@ PreviSat::PreviSat(QWidget *parent)
     try {
 
         _informations = nullptr;
+        _carte = nullptr;
+        _ciel = nullptr;
         _onglets = nullptr;
         _options = nullptr;
         _outils = nullptr;
@@ -123,6 +129,8 @@ PreviSat::PreviSat(QWidget *parent)
  */
 PreviSat::~PreviSat()
 {
+    EFFACE_OBJET(_carte);
+    EFFACE_OBJET(_ciel);
     EFFACE_OBJET(_informations);
     EFFACE_OBJET(_onglets);
     EFFACE_OBJET(_options);
@@ -228,6 +236,27 @@ void PreviSat::DemarrageApplication()
 #if defined (Q_OS_WIN)
     //_onglets->CalculAosSatSuivi();
 #endif
+
+    _ui->issLive->setChecked(settings.value("affichage/issLive", false).toBool());
+
+    if (_isCarteMonde) {
+
+        // Affichage de la carte du monde
+        _carte->show();
+
+    } else {
+
+        // Affichage de la carte du ciel
+        _ciel->show(Configuration::instance()->observateur(),
+                    Configuration::instance()->soleil(),
+                    Configuration::instance()->lune(),
+                    Configuration::instance()->lignesCst(),
+                    Configuration::instance()->constellations(),
+                    Configuration::instance()->etoiles(),
+                    Configuration::instance()->planetes(),
+                    Configuration::instance()->listeSatellites(),
+                    Configuration::instance()->isCarteMaximisee());
+    }
 
     /* Retour */
     return;
@@ -403,6 +432,9 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(this, &PreviSat::SauveOngletGeneral, _onglets->general(), &General::SauveOngletGeneral);
     connect(this, &PreviSat::SauveOngletElementsOsculateurs, _onglets->osculateurs(), &Osculateurs::SauveOngletElementsOsculateurs);
     connect(this, &PreviSat::SauveOngletInformations, _onglets->informationsSatellite(), &InformationsSatellite::SauveOngletInformations);
+
+    // Connexions avec la carte du monde
+    connect(_carte, &Carte::ReinitFlags, _onglets, &Onglets::ReinitFlags);
 
     /* Retour */
     return;
@@ -692,10 +724,15 @@ void PreviSat::Initialisation()
 
         qInfo() << "Début Initialisation" << metaObject()->className();
 
+        QCoreApplication::instance()->installEventFilter(this);
+
         _informations = new Informations(this);
         _options = new Options();
         _onglets = new Onglets(_options, _ui->frameOnglets);
         _outils = new Outils();
+
+        _carte = new Carte(_options, _ui->frameCarte);
+        _ui->layoutCarte->addWidget(_carte);
 
         CreationMenus();
         CreationRaccourcis();
@@ -1103,9 +1140,6 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
 
     emit TriAffichageListeSatellites();
 
-
-
-
     /* Retour */
     return;
 }
@@ -1218,6 +1252,46 @@ void PreviSat::RaccourciStation()
     _onglets->ui()->stackedWidget_informations->setCurrentWidget(_onglets->ui()->informationsStationSpatiale);
     const unsigned int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->informationsStationSpatiale);
     _onglets->setIndexInformations(index);
+}
+
+bool PreviSat::eventFilter(QObject *watched, QEvent *event)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QMouseEvent* const evt = static_cast<QMouseEvent*> (event);
+
+    /* Corps de la methode */
+    if ((event->type() == QEvent::MouseMove) || (event->type() == QEvent::HoverEnter)) {
+
+        if (_carte->underMouse()) {
+            _carte->mouseMoveEvent(evt);
+
+        } else if ((_ciel != nullptr) && (_ciel->underMouse())) {
+            _ciel->mouseMoveEvent(evt);
+        }
+
+    } else if (event->type() == QEvent::MouseButtonPress) {
+
+        if (_carte->underMouse()) {
+            _carte->mousePressEvent(evt);
+
+        } else if ((_ciel != nullptr) && (_ciel->underMouse())) {
+            _ciel->mousePressEvent(evt);
+        }
+
+    } else if ((event->type() == QEvent::Leave) || (event->type() == QEvent::HoverLeave)) {
+
+        setCursor(Qt::ArrowCursor);
+        setToolTip("");
+
+        EffacerMessageStatut();
+//        AfficherMessageStatut2("");
+//        AfficherMessageStatut3("");
+    }
+
+    /* Retour */
+    return QMainWindow::eventFilter(watched, event);
 }
 
 /*

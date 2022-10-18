@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    16 octobre 2022
+ * >    18 octobre 2022
  *
  */
 
@@ -46,7 +46,6 @@
 #include "configuration/configuration.h"
 #include "general/general.h"
 #include "librairies/exceptions/previsatexception.h"
-//#include "librairies/corps/satellite/evenements.h"
 #include "osculateurs/osculateurs.h"
 #include "donnees/informationsiss.h"
 #include "donnees/informationssatellite.h"
@@ -94,7 +93,7 @@ Onglets::Onglets(Options *options, QWidget *parent) :
     _ui->setupUi(this);
 
     _options = options;
-    _info = true;
+    ReinitFlags();
 
     try {
 
@@ -181,16 +180,31 @@ SuiviTelescope *Onglets::suiviTelescope() const
 /*
  * Modificateurs
  */
-void Onglets::setIndexInformations(unsigned int newIndexInformations)
+void Onglets::setAcalcAOS(const bool acalc)
+{
+    _acalcAOS = acalc;
+}
+
+void Onglets::setAcalcDN(const bool acalc)
+{
+    _acalcDN = acalc;
+}
+
+void Onglets::setIndexInformations(const unsigned int newIndexInformations)
 {
     _indexInformations = newIndexInformations;
     setTabText(indexOf(_ui->informations), QCoreApplication::translate("Onglets", _titresInformations[_indexInformations]));
 }
 
-void Onglets::setIndexPrevisions(unsigned int newIndexPrevisions)
+void Onglets::setIndexPrevisions(const unsigned int newIndexPrevisions)
 {
     _indexPrevisions = newIndexPrevisions;
     setTabText(indexOf(_ui->previsions), QCoreApplication::translate("Onglets", _titresPrevisions[_indexPrevisions]));
+}
+
+void Onglets::setInfo(const bool info)
+{
+    _info = info;
 }
 
 
@@ -262,6 +276,13 @@ void Onglets::show(const Date &date)
 
     /* Retour */
     return;
+}
+
+void Onglets::ReinitFlags()
+{
+    setAcalcAOS(true);
+    setAcalcDN(true);
+    setInfo(true);
 }
 
 void Onglets::changeEvent(QEvent *evt)

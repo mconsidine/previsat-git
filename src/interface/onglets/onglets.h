@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    16 octobre 2022
+ * >    18 octobre 2022
  *
  */
 
@@ -116,9 +116,11 @@ public:
     /*
      * Modificateurs
      */
-    void setIndexInformations(unsigned int newIndexInformations);
-    void setIndexPrevisions(unsigned int newIndexPrevisions);
-
+    void setAcalcAOS(const bool acalc);
+    void setAcalcDN(const bool acalc);
+    void setIndexInformations(const unsigned int newIndexInformations);
+    void setIndexPrevisions(const unsigned int newIndexPrevisions);
+    void setInfo(const bool info);
 
     /*
      * Methodes publiques
@@ -127,6 +129,8 @@ public:
 
 
 public slots:
+
+    void ReinitFlags();
 
     void changeEvent(QEvent *evt);
 
@@ -176,6 +180,8 @@ private:
 
     Options *_options;
 
+    bool _acalcAOS;
+    bool _acalcDN;
     bool _info;
     int _indexInfo;
     int _nbInformations;

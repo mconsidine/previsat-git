@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 octobre 2022
+ * >    18 octobre 2022
  *
  */
 
@@ -57,6 +57,8 @@ QT_END_NAMESPACE
 
 
 class QLabel;
+class Carte;
+class Ciel;
 class Date;
 class Informations;
 class Onglets;
@@ -149,6 +151,8 @@ private:
 
     Ui::PreviSat *_ui;
 
+    Carte *_carte;
+    Ciel *_ciel;
     Onglets *_onglets;
 
     QAction *_previsions;
@@ -284,6 +288,8 @@ private slots:
     void RaccourciInformations();
     void RaccourciRecherche();
     void RaccourciStation();
+
+    bool eventFilter(QObject *watched, QEvent *event);
 
     // Boutons de l'interface graphique
     void on_configuration_clicked();
