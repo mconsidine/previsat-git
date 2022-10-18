@@ -64,6 +64,7 @@ class Informations;
 class Onglets;
 class Options;
 class Outils;
+class Radar;
 
 class PreviSat : public QMainWindow
 {
@@ -154,6 +155,10 @@ private:
     Carte *_carte;
     Ciel *_ciel;
     Onglets *_onglets;
+    Radar *_radar;
+    Informations *_informations;
+    Options *_options;
+    Outils *_outils;
 
     QAction *_previsions;
     QAction *_flashs;
@@ -163,10 +168,6 @@ private:
     QAction *_recherche;
     QAction *_station;
 
-    Informations *_informations;
-    Options *_options;
-    Outils *_outils;
-
     // Barre de statut
     QLabel *_messageStatut;
     QLabel *_messageStatut2;
@@ -175,6 +176,8 @@ private:
     QLabel *_stsDate;
     QLabel *_stsHeure;
 
+    QTimer *_chronometre;
+    QTimer *_chronometreMs;
     QTimer *_timerStatut;
 
     Date *_dateCourante;
@@ -280,6 +283,11 @@ private slots:
      */
     void EffacerMessageStatut();
 
+    /**
+     * @brief GestionTempsReel Gestion du temps reel
+     */
+    void GestionTempsReel();
+
     // Raccourcis vers les fonctionnalites
     void RaccourciPrevisions();
     void RaccourciFlashs();
@@ -288,6 +296,11 @@ private slots:
     void RaccourciInformations();
     void RaccourciRecherche();
     void RaccourciStation();
+
+    /**
+     * @brief TempsReel Affichage en temps reel
+     */
+    void TempsReel();
 
     bool eventFilter(QObject *watched, QEvent *event);
 

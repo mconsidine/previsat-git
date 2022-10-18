@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    20 juillet 2022
+ * >    18 octobre 2022
  *
  */
 
@@ -213,6 +213,11 @@ private:
      * @brief AffichageZoneVisibilite Affichage de la zone de visibilite des satellites
      */
     void AffichageZoneVisibilite();
+
+    /**
+     * @brief Initialisation Initialisation de la classe Carte
+     */
+    void Initialisation();
 
 };
 

@@ -36,7 +36,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    11 septembre 2022
+ * >    18 octobre 2022
  *
  */
 
@@ -150,6 +150,7 @@ signals:
     void AfficherMessageStatut3(const QString &message);
     void EffacerMessageStatut();
     void RecalculerPositions();
+    void ReinitFlags();
 
 
 protected:
@@ -229,6 +230,11 @@ private:
      * @brief AffichageSoleil Affichage du Soleil
      */
     void AffichageSoleil();
+
+    /**
+     * @brief Initialisation Initialisation de la classe Ciel
+     */
+    void Initialisation();
 
 };
 

@@ -30,40 +30,40 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    11 septembre 2022
+ * >    18 octobre 2022
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QGraphicsPixmapItem>
+#include <QMouseEvent>
+#include "ui_ciel.h"
+#pragma GCC diagnostic warning "-Wconversion"
+#include "ui_options.h"
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
 #include "ciel.h"
 #include "interface/options/options.h"
 #include "librairies/corps/etoiles/constellation.h"
 #include "librairies/corps/etoiles/ligneconstellation.h"
+#include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
-#include <QGraphicsPixmapItem>
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#include <QMouseEvent>
-#include "ui_ciel.h"
-#pragma GCC diagnostic warning "-Wconversion"
-#include "ui_options.h"
-#pragma GCC diagnostic warning "-Wswitch-default"
 
 
 // Couleur des planetes
-static const QList<QColor> couleurPlanetes(QList<QColor> () << Qt::gray << Qt::white << Qt::red << QColor("orange") << Qt::darkYellow << Qt::green
-                                           << Qt::blue);
+static const std::array<QColor, NB_PLANETES> couleurPlanetes = { Qt::gray, Qt::white, Qt::red, QColor("orange"), Qt::darkYellow, Qt::green, Qt::blue };
 
 // Ecliptique
-static const double tabEcliptique[49][2] = { { 0., 0. }, { 0.5, 3.233 }, { 1., 6.4 }, { 1.5, 9.417 },  { 2., 12.217 }, { 2.5, 14.783 }, { 3., 17. },
-                                             { 3.5, 18.983 }, { 4., 20.567 }, { 4.5, 21.817 }, { 5., 22.75 }, { 5.5, 23.25 }, { 6., 23.433 },
-                                             { 6.5, 23.25 }, { 7., 22.75 }, { 7.5, 21.817 }, { 8., 20.567 }, { 8.5, 18.983 }, { 9., 17. },
-                                             { 9.5, 14.783 }, { 10., 12.217 }, { 10.5, 9.417 }, { 11., 6.4 }, { 11.5, 3.233 }, { 12., 0. },
-                                             { 12.5, -3.233 }, { 13., -6.4 }, { 13.5, -9.417 }, { 14., -12.217 }, { 14.5, -14.783 }, { 15., -17. },
-                                             { 15.5, -18.983 }, { 16., -20.567 }, { 16.5, -21.817 }, { 17., -22.75 }, { 17.5, -23.25 }, { 18., -23.433 },
-                                             { 18.5, -23.25 }, { 19., -22.75 }, { 19.5, -21.817 }, { 20., -20.567 }, { 20.5, -18.983 }, { 21., -17. },
-                                             { 21.5, -14.783 }, { 22., -12.217 }, { 22.5, -9.417 }, { 23., -6.4 }, { 23.5, -3.233 }, { 24., 0. } };
+static const std::array<std::array<double, 2>, 49> tabEcliptique = {
+    { { 0., 0. }, { 0.5, 3.233 }, { 1., 6.4 }, { 1.5, 9.417 },  { 2., 12.217 }, { 2.5, 14.783 }, { 3., 17. }, { 3.5, 18.983 }, { 4., 20.567 },
+      { 4.5, 21.817 }, { 5., 22.75 }, { 5.5, 23.25 }, { 6., 23.433 }, { 6.5, 23.25 }, { 7., 22.75 }, { 7.5, 21.817 }, { 8., 20.567 }, { 8.5, 18.983 },
+      { 9., 17. }, { 9.5, 14.783 }, { 10., 12.217 }, { 10.5, 9.417 }, { 11., 6.4 }, { 11.5, 3.233 }, { 12., 0. }, { 12.5, -3.233 }, { 13., -6.4 },
+      { 13.5, -9.417 }, { 14., -12.217 }, { 14.5, -14.783 }, { 15., -17. }, { 15.5, -18.983 }, { 16., -20.567 }, { 16.5, -21.817 }, { 17., -22.75 },
+      { 17.5, -23.25 }, { 18., -23.433 }, { 18.5, -23.25 }, { 19., -22.75 }, { 19.5, -21.817 }, { 20., -20.567 }, { 20.5, -18.983 }, { 21., -17. },
+      { 21.5, -14.783 }, { 22., -12.217 }, { 22.5, -9.417 }, { 23., -6.4 }, { 23.5, -3.233 }, { 24., 0. } }
+};
 
 
 /**********
@@ -81,12 +81,18 @@ Ciel::Ciel(Options *options, QWidget *parent) :
     _ui(new Ui::Ciel)
 {
     _ui->setupUi(this);
+
     scene = nullptr;
     _options = options;
-    _fenetreMax = false;
 
-    _ui->vueCiel->installEventFilter(this);
-    _ui->vueCiel->viewport()->installEventFilter(this);
+    try {
+
+        Initialisation();
+
+    } catch (PreviSatException &e) {
+        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        throw PreviSatException();
+    }
 }
 
 /*
@@ -465,7 +471,8 @@ void Ciel::mousePressEvent(QMouseEvent *evt)
             Configuration::instance()->listeSatellites().swapItemsAt(--idx, 0);
 
             // On definit le satellite choisi comme satellite par defaut
-            Configuration::instance()->noradDefaut() = sat.elementsOrbitaux().nom;
+            Configuration::instance()->noradDefaut() = sat.elementsOrbitaux().norad;
+            emit ReinitFlags();
 
             emit RecalculerPositions();
             GestionnaireXml::EcritureConfiguration();
@@ -684,7 +691,7 @@ void Ciel::AffichageLune()
         const int bpol = qRound(_hciel - _hciel * (1. - _observateur.latitude() * DEUX_SUR_PI));
 
         QPixmap pixlun;
-        pixlun.load(":/resources/lune.png");
+        pixlun.load(":/resources/interface/lune.png");
         pixlun = pixlun.scaled(17, 17);
 
         // Dessin de la Lune et rotations
@@ -1079,7 +1086,7 @@ void Ciel::AffichageSoleil()
             const int bsol = qRound(_hciel - _hciel * (1. - _soleil.hauteur() * DEUX_SUR_PI) * cos(_soleil.azimut()));
 
             QPixmap pixsol;
-            pixsol.load(":/resources/soleil.png");
+            pixsol.load(":/resources/interface/soleil.png");
             pixsol = pixsol.scaled(17, 17);
 
             QGraphicsPixmapItem * const sol = scene->addPixmap(pixsol);
@@ -1092,4 +1099,16 @@ void Ciel::AffichageSoleil()
 
     /* Retour */
     return;
+}
+
+/*
+ * Initialisation de la classe Ciel
+ */
+void Ciel::Initialisation()
+{
+    qInfo() << "Début Initialisation" << metaObject()->className();
+
+    _fenetreMax = false;
+
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
 }

@@ -47,10 +47,13 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #include <QDesktopServices>
 #include <QMessageBox>
+#include <QSoundEffect>
 #include "listwidgetitem.h"
 #include "previsat.h"
 #include "ui_carte.h"
+#include "ui_general.h"
 #include "ui_onglets.h"
+#include "ui_osculateurs.h"
 #include "apropos/apropos.h"
 #include "carte/carte.h"
 #include "ciel/ciel.h"
@@ -67,6 +70,7 @@
 #include "onglets/telescope/suivitelescope.h"
 #include "options/options.h"
 #include "outils/outils.h"
+#include "radar/radar.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/planete.h"
@@ -104,6 +108,7 @@ PreviSat::PreviSat(QWidget *parent)
         _onglets = nullptr;
         _options = nullptr;
         _outils = nullptr;
+        _radar = nullptr;
 
         _messageStatut = nullptr;
         _messageStatut2 = nullptr;
@@ -114,6 +119,8 @@ PreviSat::PreviSat(QWidget *parent)
         _timerStatut = nullptr;
 
         _dateCourante = nullptr;
+        _chronometre = nullptr;
+        _chronometreMs = nullptr;
 
         Initialisation();
 
@@ -135,6 +142,27 @@ PreviSat::~PreviSat()
     EFFACE_OBJET(_onglets);
     EFFACE_OBJET(_options);
     EFFACE_OBJET(_outils);
+    EFFACE_OBJET(_radar);
+
+    EFFACE_OBJET(_messageStatut);
+    EFFACE_OBJET(_messageStatut2);
+    EFFACE_OBJET(_messageStatut3);
+    EFFACE_OBJET(_modeFonctionnement);
+    EFFACE_OBJET(_stsDate);
+    EFFACE_OBJET(_stsHeure);
+
+    EFFACE_OBJET(_previsions);
+    EFFACE_OBJET(_flashs);
+    EFFACE_OBJET(_transits);
+    EFFACE_OBJET(_evenements);
+    EFFACE_OBJET(_informationsSatellite);
+    EFFACE_OBJET(_recherche);
+    EFFACE_OBJET(_station);
+
+    EFFACE_OBJET(_dateCourante);
+    EFFACE_OBJET(_chronometre);
+    EFFACE_OBJET(_chronometreMs);
+    EFFACE_OBJET(_timerStatut);
 
     delete _ui;
 }
@@ -256,6 +284,44 @@ void PreviSat::DemarrageApplication()
                     Configuration::instance()->planetes(),
                     Configuration::instance()->listeSatellites(),
                     Configuration::instance()->isCarteMaximisee());
+    }
+
+    // Affichage du radar
+    const bool radarVisible = ((_options->ui()->affradar->checkState() == Qt::Checked)
+                               || ((_options->ui()->affradar->checkState() == Qt::PartiallyChecked)
+                                   && Configuration::instance()->listeSatellites().at(0).isVisible()));
+    if (radarVisible) {
+        _radar->show();
+    }
+
+    _radar->setVisible(!_ui->issLive->isChecked() && radarVisible);
+
+    // Affichage de la fenetre d'informations
+    const QUrl urlLastNews(QString("%1%2/Qt/informations/").arg(DOMAIN_NAME).arg(QString(APP_NAME).toLower())
+                           + "last_news_" + Configuration::instance()->locale() + ".html");
+
+    if (settings.value("affichage/informationsDemarrage", true).toBool() && Informations::UrlExiste(urlLastNews)) {
+        on_actionInformations_triggered();
+        const QRect tailleEcran = QApplication::primaryScreen()->availableGeometry();
+        _informations->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, _informations->size(), tailleEcran));
+    }
+
+    // Lancement du chronometre
+    if (_chronometre == nullptr) {
+        _chronometre = new QTimer(this);
+        _chronometre->setInterval(_ui->pasReel->currentText().toInt() * 1000);
+        _chronometre->setTimerType(Qt::PreciseTimer);
+        connect(_chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
+        _chronometre->start();
+    }
+
+    // Lancement du chronometreMs
+    if (_chronometreMs == nullptr) {
+        _chronometreMs = new QTimer(this);
+        _chronometreMs->setInterval(200);
+        _chronometreMs->setTimerType(Qt::PreciseTimer);
+        connect(_chronometreMs, SIGNAL(timeout()), this, SLOT(TempsReel()));
+        _chronometreMs->start();
     }
 
     /* Retour */
@@ -730,6 +796,7 @@ void PreviSat::Initialisation()
         _options = new Options();
         _onglets = new Onglets(_options, _ui->frameOnglets);
         _outils = new Outils();
+        _radar = new Radar(_options, _ui->frameRadar);
 
         _carte = new Carte(_options, _ui->frameCarte);
         _ui->layoutCarte->addWidget(_carte);
@@ -753,7 +820,7 @@ void PreviSat::Initialisation()
         _ui->valManuel->setCurrentIndex(settings.value("temps/valmanuel", 0).toInt());
         on_tempsReel_toggled(true);
         _ui->frameVideo->setVisible(_ui->issLive->isChecked());
-        //_radar->setVisible(!(_ui->issLive->isChecked());
+        _radar->setVisible(!_ui->issLive->isChecked());
 
         // Barre de statut
         InitBarreStatut();
@@ -1196,6 +1263,167 @@ void PreviSat::EffacerMessageStatut()
 }
 
 /*
+ * Gestion du temps reel
+ */
+void PreviSat::GestionTempsReel()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->tempsReel->isChecked()) {
+
+        // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
+        EnchainementCalculs();
+
+        // Affichage des donnees numeriques dans la barre d'onglets
+        _onglets->show(*_dateCourante);
+
+        // Notifications sonores
+        if (_options->ui()->affnotif->isChecked() && !Configuration::instance()->listeSatellites().isEmpty()) {
+
+            NotificationSonore &notif = Configuration::instance()->notifAOS();
+            const Satellite sat = Configuration::instance()->listeSatellites().at(0);
+
+            if (sat.isVisible() && (notif == NotificationSonore::ATTENTE_LOS)) {
+                notif = NotificationSonore::NOTIFICATION_AOS;
+            }
+
+            if (!sat.isVisible() && (notif == NotificationSonore::ATTENTE_AOS)) {
+                notif = NotificationSonore::NOTIFICATION_LOS;
+            }
+
+            if (notif == NotificationSonore::NOTIFICATION_AOS) {
+
+                // Notification sonore pour l'AOS
+                if (_options->ui()->listeSons->currentIndex() < _options->ui()->listeSons->count()) {
+
+                    const QString nomSonAOS = (_options->ui()->listeSons->currentIndex() == 0) ?
+                                Configuration::instance()->dirCommonData() + QDir::separator() + "sound" + QDir::separator() + "aos-default.wav" :
+                                Configuration::instance()->dirSon() + QDir::separator() + "aos-" + _options->ui()->listeSons->currentText() + ".wav";
+
+                    const QFileInfo ff(nomSonAOS);
+                    if (ff.exists()) {
+                        QSoundEffect son;
+                        son.setSource(QUrl(nomSonAOS));
+                        son.play();
+                    }
+                }
+
+                notif = NotificationSonore::ATTENTE_AOS;
+            }
+
+            if (notif == NotificationSonore::NOTIFICATION_LOS) {
+
+                // Notification sonore pour le LOS
+                if (_options->ui()->listeSons->currentIndex() < _options->ui()->listeSons->count()) {
+
+                    const QString nomSonLOS = (_options->ui()->listeSons->currentIndex() == 0) ?
+                                Configuration::instance()->dirCommonData() + QDir::separator() + "sound" + QDir::separator() + "los-default.wav" :
+                                Configuration::instance()->dirSon() + QDir::separator() + "los-" + _options->ui()->listeSons->currentText() + ".wav";
+
+                    const QFileInfo ff(nomSonLOS);
+                    if (ff.exists()) {
+                        QSoundEffect son;
+                        son.setSource(QUrl(nomSonLOS));
+                        son.play();
+                    }
+                }
+
+                notif = NotificationSonore::ATTENTE_LOS;
+            }
+        }
+
+        if (_isCarteMonde) {
+
+            // Affichage des courbes sur la carte du monde
+            _carte->show();
+
+            if (Configuration::instance()->issLive()) {
+//                AfficherCoordIssGmt();
+            }
+
+        } else {
+
+            // Affichage de la carte du ciel
+            _ciel->show(Configuration::instance()->observateur(),
+                        Configuration::instance()->soleil(),
+                        Configuration::instance()->lune(),
+                        Configuration::instance()->lignesCst(),
+                        Configuration::instance()->constellations(),
+                        Configuration::instance()->etoiles(),
+                        Configuration::instance()->planetes(),
+                        Configuration::instance()->listeSatellites(),
+                        Configuration::instance()->isCarteMaximisee() || _ciel->fenetreMax());
+        }
+
+        // Affichage du radar
+        const bool radarVisible = ((_options->ui()->affradar->checkState() == Qt::Checked) ||
+                                   ((_options->ui()->affradar->checkState() == Qt::PartiallyChecked)
+                                    && Configuration::instance()->listeSatellites().at(0).isVisible()));
+        if (radarVisible) {
+            _radar->show();
+        }
+        _radar->setVisible(!_ui->issLive->isChecked() && radarVisible);
+    }
+
+    if (_ui->modeManuel->isChecked()) {
+
+        _onglets->setAcalcDN(true);
+        _onglets->setAcalcAOS(true);
+
+       // if (_onglets->general()->ui()->pause->isEnabled()) {
+
+            if (!_ui->pasManuel->view()->isVisible()) {
+
+                double pas;
+                if (_ui->valManuel->currentIndex() < 3) {
+                    pas = _ui->pasManuel->currentText().toDouble() * qPow(NB_SEC_PAR_MIN, _ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC;
+                } else {
+                    pas = _ui->pasManuel->currentText().toDouble();
+                }
+
+                // TODO
+                double jd = _dateCourante->jourJulienUTC();
+//                if (!_onglets->ui()->rewind->isEnabled() || !_onglets->ui()->backward->isEnabled()) {
+//                    jd -= pas;
+//                }
+//                if (!_onglets->ui()->play->isEnabled() || !_onglets->ui()->forward->isEnabled()) {
+//                    jd += pas;
+//                }
+
+                const double offset = _dateCourante->offsetUTC();
+                if (_dateCourante != nullptr) {
+                    delete _dateCourante;
+                    _dateCourante = nullptr;
+                }
+                _dateCourante = new Date(jd, offset);
+
+                // Enchainement de l'ensemble des calculs
+                EnchainementCalculs();
+
+                const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
+
+                if (_onglets->osculateurs()->isVisible()) {
+                    _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
+                    _onglets->osculateurs()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
+                } else {
+                    _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
+                    _onglets->general()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
+                    _onglets->general()->ui()->dateHeure2->setFocus();
+                }
+
+                _onglets->show(*_dateCourante);
+            }
+       // }
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Raccourcis vers les fonctionnalites
  */
 void PreviSat::RaccourciPrevisions()
@@ -1254,6 +1482,50 @@ void PreviSat::RaccourciStation()
     _onglets->setIndexInformations(index);
 }
 
+void PreviSat::TempsReel()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->tempsReel->isChecked()) {
+
+        // Date actuelle
+        const double offset = _dateCourante->offsetUTC();
+        EFFACE_OBJET(_dateCourante);
+
+        _dateCourante = new Date(offset);
+        _modeFonctionnement->setText(tr("Temps réel"));
+
+    } else {
+        _modeFonctionnement->setText(tr("Mode manuel"));
+    }
+
+    if (_options->ui()->calJulien->isChecked()) {
+
+        // Affichage du jour julien dans la barre de statut
+        const Date date1(_dateCourante->annee(), 1, 1, 0.);
+        _stsDate->setText(QString::number(_dateCourante->jourJulien() + TJ2000, 'f', 5));
+        _stsHeure->setText(QString::number(_dateCourante->jourJulien() - date1.jourJulien() + 1., 'f', 5));
+        _stsDate->setToolTip(tr("Jour julien"));
+        _stsHeure->setToolTip(tr("Jour"));
+
+    } else {
+
+        // Affichage de la date et l'heure dans la barre de statut
+        const QDateTime d = _dateCourante->ToQDateTime(1);
+        _stsDate->setText(d.toString(tr("dd/MM/yyyy", "date format")));
+        _stsHeure->setText(QLocale(Configuration::instance()->locale()).toString(d, QString("hh:mm:ss") +
+                                                                                 ((_options->ui()->syst12h->isChecked()) ? "a" : "")));
+        _stsDate->setToolTip(tr("Date"));
+        _stsHeure->setToolTip(tr("Heure"));
+    }
+
+    /* Retour */
+    return;
+}
+
 bool PreviSat::eventFilter(QObject *watched, QEvent *event)
 {
     /* Declarations des variables locales */
@@ -1286,8 +1558,8 @@ bool PreviSat::eventFilter(QObject *watched, QEvent *event)
         setToolTip("");
 
         EffacerMessageStatut();
-//        AfficherMessageStatut2("");
-//        AfficherMessageStatut3("");
+        //        AfficherMessageStatut2("");
+        //        AfficherMessageStatut3("");
     }
 
     /* Retour */
