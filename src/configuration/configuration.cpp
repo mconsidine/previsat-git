@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    17 octobre 2022
+ * >    18 octobre 2022
  *
  */
 
@@ -317,6 +317,11 @@ bool Configuration::isCarteMaximisee()
     return _isCarteMaximisee;
 }
 
+bool Configuration::issLive()
+{
+    return _issLive;
+}
+
 
 const QString &Configuration::versionCfg() const
 {
@@ -398,6 +403,16 @@ const QList<CategorieElementsOrbitaux> &Configuration::listeCategoriesMajElement
     return _listeCategoriesMajElementsOrbitaux;
 }
 
+const QMap<int, SatelliteTDRS> &Configuration::mapTDRS() const
+{
+    return _mapTDRS;
+}
+
+const QMap<QString, Observateur> &Configuration::mapStations() const
+{
+    return _mapStations;
+}
+
 const QMap<QString, SatellitesFlashs> &Configuration::mapFlashs() const
 {
     return _mapFlashs;
@@ -418,7 +433,7 @@ QString &Configuration::nomfic()
     return _nomfic;
 }
 
-const QString &Configuration::noradDefaut() const
+QString &Configuration::noradDefaut()
 {
     return _noradDefaut;
 }
@@ -458,12 +473,17 @@ QList<LigneConstellation> &Configuration::lignesCst()
     return _lignesCst;
 }
 
-NotificationSonore Configuration::notifAOS() const
+const QStringList &Configuration::listeFicMap() const
+{
+    return _listeFicMap;
+}
+
+NotificationSonore &Configuration::notifAOS()
 {
     return _notifAOS;
 }
 
-NotificationSonore Configuration::notifFlashs() const
+NotificationSonore &Configuration::notifFlashs()
 {
     return _notifFlashs;
 }

@@ -94,11 +94,7 @@
            <number>1</number>
           </property>
           <item>
-           <layout class="QHBoxLayout" name="layoutCarte">
-            <item>
-             <widget class="QGraphicsView" name="graphicsView"/>
-            </item>
-           </layout>
+           <layout class="QHBoxLayout" name="layoutCarte"/>
           </item>
           <item>
            <widget class="QFrame" name="frameCarteBoutons">

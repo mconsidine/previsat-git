@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    17 octobre 2022
+ * >    18 octobre 2022
  *
  */
 
@@ -119,6 +119,7 @@ public:
     const QFont &policeWcc() const;
 
     bool isCarteMaximisee();
+    bool issLive();
 
 
     // Versions des fichiers de configuration
@@ -150,6 +151,10 @@ public:
     const QList<CategorieElementsOrbitaux> &listeCategoriesElementsOrbitaux() const;
     const QList<CategorieElementsOrbitaux> &listeCategoriesMajElementsOrbitaux() const;
 
+    const QMap<int, SatelliteTDRS> &mapTDRS() const;
+
+    const QMap<QString, Observateur> &mapStations() const;
+
     // Satellites produisant des flashs
     const QMap<QString, SatellitesFlashs> &mapFlashs() const;
 
@@ -161,7 +166,7 @@ public:
     QString &nomfic();
 
     // Numero NORAD par defaut
-    const QString &noradDefaut() const;
+    QString &noradDefaut();
 
     // Liste des fichiers d'elements orbitaux
     const QStringList &listeFichiersElem() const;
@@ -177,9 +182,11 @@ public:
     QList<Constellation> &constellations();
     QList<LigneConstellation> &lignesCst();
 
+    const QStringList &listeFicMap() const;
+
     // Notifications sonores
-    NotificationSonore notifAOS() const;
-    NotificationSonore notifFlashs() const;
+    NotificationSonore &notifAOS();
+    NotificationSonore &notifFlashs();
 
     bool unitesKm() const;
     bool syst12h() const;
@@ -258,6 +265,7 @@ private:
     QFont _policeWcc;
 
     bool _isCarteMaximisee;
+    bool _issLive;
 
 
     // Fichiers xml de configuration

@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    15 octobre 2022
+# >    18 octobre 2022
 
 #-------------------------------------------------
 VER_MAJ      = 6.0
@@ -88,6 +88,9 @@ SOURCES += \
     src/configuration/fichierobs.cpp                               \
     src/configuration/gestionnairexml.cpp                          \
     src/interface/apropos/apropos.cpp                              \
+    src/interface/carte/carte.cpp                                  \
+    src/interface/carte/coordiss.cpp                               \
+    src/interface/ciel/ciel.cpp                                    \
     src/interface/informations/informations.cpp                    \
     src/interface/onglets/antenne/antenne.cpp                      \
     src/interface/onglets/donnees/informationsiss.cpp              \
@@ -147,6 +150,9 @@ HEADERS += \
     src/configuration/gestionnairexml.h                          \
     src/configuration/satellitesflashs.h                         \
     src/configuration/satellitetdrs.h                            \
+    src/interface/carte/carte.h                                  \
+    src/interface/carte/coordiss.h                               \
+    src/interface/ciel/ciel.h                                    \
     src/interface/listwidgetitem.h                               \
     src/interface/apropos/apropos.h                              \
     src/interface/informations/informations.h                    \
@@ -213,6 +219,9 @@ HEADERS += \
 
 FORMS += \
     src/interface/apropos/apropos.ui                              \
+    src/interface/carte/carte.ui                                  \
+    src/interface/carte/coordiss.ui                               \
+    src/interface/ciel/ciel.ui                                    \
     src/interface/informations/informations.ui                    \
     src/interface/onglets/antenne/antenne.ui                      \
     src/interface/onglets/donnees/informationsiss.ui              \
