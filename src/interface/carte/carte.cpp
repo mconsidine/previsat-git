@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    8 aout 2022
+ * >    18 octobre 2022
  *
  */
 
@@ -43,29 +43,30 @@
 #include <QMouseEvent>
 #include "ui_options.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
-#include "configuration/configuration.h"
-#include "configuration/gestionnairexml.h"
-#include "interface/options/options.h"
 #include "carte.h"
 #include "coordiss.h"
+#include "configuration/configuration.h"
+#include "configuration/gestionnairexml.h"
 #include "interface/ciel/ciel.h"
+#include "interface/options/options.h"
+#include "librairies/exceptions/previsatexception.h"
 
 
 // SAA
-static const std::array<std::array<double, 2>, 59> tabSAA = { {
-    { -96.5, -29. }, { -95., -24.5 }, { -90., -16. }, { -85., -10. }, { -80., -6. }, { -75., -3.5 }, { -70., 0. }, { -65., 4. }, { -60., 6.5 },
-    { -55., 8. }, { -50., 9. }, { -45., 10. }, { -40., 11. }, { -35., 12. }, { -30., 13. }, { -25., 12. }, { -20., 9.5 }, { -15., 8. }, { -10., 7. },
-    { -5., 6. }, { 0., 4. }, { 5., 2. }, { 10., -3. }, { 15., -4. }, { 20., -5. }, { 25., -6. }, { 30., -8. }, { 35., -11.5 }, { 40., -14. },
-    { 42.5, -17.5 }, { 40., -22. }, { 35., -23.5 }, { 30., -25. }, { 25., -27. }, { 20., -29. }, { 15., -32. }, { 10., -33.5 }, { 5., -35. },
-    { 0., -36. }, { -5., -37. }, { -10., -38.5 }, { -15., -42.5 }, { -20., -44.5 }, { -25., -46. }, { -30., -47.5 }, { -35., -48.5 }, { -40., -49.5 },
-    { -45., -49. }, { -50., -48.5 }, { -55., -47.5 }, { -60., -47. }, { -65., -46.5 }, { -70., -45.5 }, { -75., -43.5 }, { -80., -42. }, { -85., -38.5 },
-    { -90., -36. }, { -95., -33. }, { -96.5, -29. } }
+static const std::array<std::array<double, 2>, 59> tabSAA = {
+    { { -96.5, -29. }, { -95., -24.5 }, { -90., -16. }, { -85., -10. }, { -80., -6. }, { -75., -3.5 }, { -70., 0. }, { -65., 4. }, { -60., 6.5 },
+      { -55., 8. }, { -50., 9. }, { -45., 10. }, { -40., 11. }, { -35., 12. }, { -30., 13. }, { -25., 12. }, { -20., 9.5 }, { -15., 8. }, { -10., 7. },
+      { -5., 6. }, { 0., 4. }, { 5., 2. }, { 10., -3. }, { 15., -4. }, { 20., -5. }, { 25., -6. }, { 30., -8. }, { 35., -11.5 }, { 40., -14. },
+      { 42.5, -17.5 }, { 40., -22. }, { 35., -23.5 }, { 30., -25. }, { 25., -27. }, { 20., -29. }, { 15., -32. }, { 10., -33.5 }, { 5., -35. },
+      { 0., -36. }, { -5., -37. }, { -10., -38.5 }, { -15., -42.5 }, { -20., -44.5 }, { -25., -46. }, { -30., -47.5 }, { -35., -48.5 }, { -40., -49.5 },
+      { -45., -49. }, { -50., -48.5 }, { -55., -47.5 }, { -60., -47. }, { -65., -46.5 }, { -70., -45.5 }, { -75., -43.5 }, { -80., -42. },
+      { -85., -38.5 }, { -90., -36. }, { -95., -33. }, { -96.5, -29. } }
 };
 
 // SAA pour la visualisation Wall Command Center
-static const std::array<std::array<double, 2>, 16> tabSAA_ISS = { {
-    { 55.5, -17.3 }, { 47., -17.3 }, { 34.3, -20. }, { 14.5, -28. }, { -16., -31.6 }, { -26.5, -35.5 }, { -28.3, -40.6 }, { -21.6, -45.6 },
-    { 2.5, -53. }, { 42., -53. }, { 54., -47.6 }, { 62.2, -36. }, { 63.3, -31. }, { 63.3, -24. }, { 60.5, -19.2 }, { 55.5, -17.3 } }
+static const std::array<std::array<double, 2>, 16> tabSAA_ISS = {
+    { { 55.5, -17.3 }, { 47., -17.3 }, { 34.3, -20. }, { 14.5, -28. }, { -16., -31.6 }, { -26.5, -35.5 }, { -28.3, -40.6 }, { -21.6, -45.6 },
+      { 2.5, -53. }, { 42., -53. }, { 54., -47.6 }, { 62.2, -36. }, { 63.3, -31. }, { 63.3, -24. }, { 60.5, -19.2 }, { 55.5, -17.3 } }
 };
 
 
@@ -87,10 +88,14 @@ Carte::Carte(Options *options, QWidget *parent) :
     scene = nullptr;
     _options = options;
 
-    QCoreApplication::instance()->installEventFilter(this);
+    try {
 
-    DEG2PXHZ = (1. / 0.45);
-    DEG2PXVT = (1. / 0.45);
+        Initialisation();
+
+    } catch (PreviSatException &e) {
+        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        throw PreviSatException();
+    }
 }
 
 
@@ -256,7 +261,6 @@ void Carte::mousePressEvent(QMouseEvent *evt)
 
                 // On definit le satellite choisi comme satellite par defaut
                 Configuration::instance()->noradDefaut() = sat.elementsOrbitaux().norad;
-
                 emit ReinitFlags();
 
                 Configuration::instance()->notifAOS() = NotificationSonore::ATTENTE_LOS;
@@ -536,7 +540,7 @@ void Carte::AffichageLune()
     if (_options->ui()->afflune->isChecked() && !_mcc) {
 
         QPixmap pixlun;
-        pixlun.load(":/resources/lune.png");
+        pixlun.load(":/resources/interface/lune.png");
         pixlun = pixlun.scaled(17, 17);
 
         const int llun = qRound((180. - Configuration::instance()->lune().longitude() * RAD2DEG) * DEG2PXHZ);
@@ -756,7 +760,7 @@ void Carte::AffichageSoleil()
 
     if (_options->ui()->affsoleil->isChecked()) {
 
-        const QString iconeSoleil = (_mcc) ? ":/resources/icones/soleil.png" : ":/resources/soleil.png";
+        const QString iconeSoleil = (_mcc) ? ":/resources/icones/soleil.png" : ":/resources/interface/soleil.png";
 
         QPixmap pixsol;
         pixsol.load(iconeSoleil);
@@ -1491,4 +1495,17 @@ void Carte::AffichageZoneVisibilite()
 
     /* Retour */
     return;
+}
+
+/*
+ * Initialisation de la classe Carte
+ */
+void Carte::Initialisation()
+{
+    qInfo() << "Début Initialisation" << metaObject()->className();
+
+    DEG2PXHZ = (1. / 0.45);
+    DEG2PXVT = (1. / 0.45);
+
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
 }

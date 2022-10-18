@@ -106,6 +106,7 @@ SOURCES += \
     src/interface/options/options.cpp                              \
     src/interface/outils/outils.cpp                                \
     src/interface/previsat.cpp                                     \
+    src/interface/radar/radar.cpp                                  \
     src/librairies/corps/corps.cpp                                 \
     src/librairies/corps/etoiles/constellation.cpp                 \
     src/librairies/corps/etoiles/etoile.cpp                        \
@@ -170,6 +171,7 @@ HEADERS += \
     src/interface/options/options.h                              \
     src/interface/outils/outils.h                                \
     src/interface/previsat.h                                     \
+    src/interface/radar/radar.h                                  \
     src/librairies/corps/corps.h                                 \
     src/librairies/corps/corpsconst.h                            \
     src/librairies/corps/ephemerides.h                           \
@@ -236,7 +238,8 @@ FORMS += \
     src/interface/onglets/previsions/calculstransits.ui           \
     src/interface/options/options.ui                              \
     src/interface/outils/outils.ui                                \
-    src/interface/previsat.ui
+    src/interface/previsat.ui                                     \
+    src/interface/radar/radar.ui
 
 win32|win64 {
     SOURCES += src/interface/onglets/telescope/suivitelescope.cpp
