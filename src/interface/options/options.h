@@ -100,6 +100,11 @@ public slots:
     void changeEvent(QEvent *evt);
 
 
+signals:
+
+    void RecalculerPositions();
+
+
 protected:
 
     /*
@@ -127,11 +132,23 @@ private:
      */
     void AffichageLieuObs();
 
+    void ChargementPref();
+
+    void InitFicPref(const bool majAff);
+
+    void SauvePreferences(const QString &fichierPref);
+
 
 private slots:
 
-    void on_listeOptions_currentRowChanged(int currentRow);
+    /**
+     * @brief AppliquerPreferences Appliquer les preferences d'affichage et enregistrer le fichier de preferences
+     */
+    void AppliquerPreferences();
 
+    void on_listeOptions_currentRowChanged(int currentRow);
+    void on_listeBoutonsOptions_accepted();
+    void on_listeBoutonsOptions_rejected();
 
 };
 

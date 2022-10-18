@@ -37,10 +37,15 @@
 #include "outils.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QSettings>
 #include "ui_outils.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/exceptions/previsatexception.h"
+
+
+// Registre
+static QSettings settings(ORG_NAME, APP_NAME);
 
 
 /**********
@@ -105,6 +110,8 @@ void Outils::Initialisation()
     _ui->listeOutils->setCurrentRow(0);
     _ui->listeOutils->setFocus();
     _ui->listeBoutonsOutils->button(QDialogButtonBox::Close)->setDefault(true);
+
+    _ui->affichageMsgMAJ->setCurrentIndex(settings.value("fichier/affichageMsgMAJ", 1).toInt());
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
 

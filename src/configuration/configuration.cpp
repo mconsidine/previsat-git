@@ -302,6 +302,12 @@ const QString &Configuration::locale() const
     return _locale;
 }
 
+const QStringList &Configuration::listeFicLang() const
+{
+    return _listeFicLang;
+}
+
+// Polices
 const QFont &Configuration::police() const
 {
     return _police;
@@ -317,7 +323,7 @@ bool Configuration::isCarteMaximisee()
     return _isCarteMaximisee;
 }
 
-bool Configuration::issLive()
+bool &Configuration::issLive()
 {
     return _issLive;
 }
@@ -478,6 +484,11 @@ const QStringList &Configuration::listeFicMap() const
     return _listeFicMap;
 }
 
+const QStringList &Configuration::listeFicPref() const
+{
+    return _listeFicPref;
+}
+
 NotificationSonore &Configuration::notifAOS()
 {
     return _notifAOS;
@@ -486,41 +497,6 @@ NotificationSonore &Configuration::notifAOS()
 NotificationSonore &Configuration::notifFlashs()
 {
     return _notifFlashs;
-}
-
-bool Configuration::unitesKm() const
-{
-    return _unitesKm;
-}
-
-bool Configuration::syst12h() const
-{
-    return _syst12h;
-}
-
-bool Configuration::affnotif() const
-{
-    return _affnotif;
-}
-
-bool Configuration::effetEclipsesMagnitude() const
-{
-    return _effetEclipsesMagnitude;
-}
-
-bool Configuration::refractionAtmospherique() const
-{
-    return _refractionAtmospherique;
-}
-
-bool Configuration::eclipsesLune() const
-{
-    return _eclipsesLune;
-}
-
-int Configuration::nombreTrajectoires() const
-{
-    return _nombreTrajectoires;
 }
 
 

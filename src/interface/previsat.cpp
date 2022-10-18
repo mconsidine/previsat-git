@@ -782,6 +782,8 @@ void PreviSat::Initialisation()
         qInfo() << QString("%1 %2 %3").arg(QSysInfo::productType()).arg(QSysInfo::productVersion()).arg(QSysInfo::currentCpuArchitecture());
 
         setWindowTitle(QString("%1 %2").arg(APP_NAME).arg(APP_VER_MAJ));
+        restoreGeometry(settings.value("affichage/geometrie").toByteArray());
+        restoreState(settings.value("affichage/etat").toByteArray());
 
         ChargementTraduction(Configuration::instance()->locale());
 
@@ -794,11 +796,13 @@ void PreviSat::Initialisation()
 
         _informations = new Informations(this);
         _options = new Options();
-        _onglets = new Onglets(_options, _ui->frameOnglets);
-        _outils = new Outils();
-        _radar = new Radar(_options, _ui->frameRadar);
+        _onglets = new Onglets();
+        _ui->layoutOnglets->addWidget(_onglets);
 
-        _carte = new Carte(_options, _ui->frameCarte);
+        _outils = new Outils();
+        _radar = new Radar(_ui->frameRadar);
+
+        _carte = new Carte(_ui->frameCarte);
         _ui->layoutCarte->addWidget(_carte);
 
         CreationMenus();
@@ -811,6 +815,7 @@ void PreviSat::Initialisation()
         GestionPolice();
 
         _isCarteMonde = true;
+        Configuration::instance()->issLive() = settings.value("affichage/issLive").toBool();
 
         //on_pasReel_currentIndexChanged(0);
         _ui->pasReel->setCurrentIndex(settings.value("temps/pasreel", 1).toInt());
@@ -1341,7 +1346,7 @@ void PreviSat::GestionTempsReel()
             _carte->show();
 
             if (Configuration::instance()->issLive()) {
-//                AfficherCoordIssGmt();
+                //                AfficherCoordIssGmt();
             }
 
         } else {
@@ -1373,50 +1378,50 @@ void PreviSat::GestionTempsReel()
         _onglets->setAcalcDN(true);
         _onglets->setAcalcAOS(true);
 
-       // if (_onglets->general()->ui()->pause->isEnabled()) {
+        // if (_onglets->general()->ui()->pause->isEnabled()) {
 
-            if (!_ui->pasManuel->view()->isVisible()) {
+        if (!_ui->pasManuel->view()->isVisible()) {
 
-                double pas;
-                if (_ui->valManuel->currentIndex() < 3) {
-                    pas = _ui->pasManuel->currentText().toDouble() * qPow(NB_SEC_PAR_MIN, _ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC;
-                } else {
-                    pas = _ui->pasManuel->currentText().toDouble();
-                }
+            // TODO
+            //                double pas;
+            //                if (_ui->valManuel->currentIndex() < 3) {
+            //                    pas = _ui->pasManuel->currentText().toDouble() * qPow(NB_SEC_PAR_MIN, _ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC;
+            //                } else {
+            //                    pas = _ui->pasManuel->currentText().toDouble();
+            //                }
 
-                // TODO
-                double jd = _dateCourante->jourJulienUTC();
-//                if (!_onglets->ui()->rewind->isEnabled() || !_onglets->ui()->backward->isEnabled()) {
-//                    jd -= pas;
-//                }
-//                if (!_onglets->ui()->play->isEnabled() || !_onglets->ui()->forward->isEnabled()) {
-//                    jd += pas;
-//                }
+            double jd = _dateCourante->jourJulienUTC();
+            //                if (!_onglets->ui()->rewind->isEnabled() || !_onglets->ui()->backward->isEnabled()) {
+            //                    jd -= pas;
+            //                }
+            //                if (!_onglets->ui()->play->isEnabled() || !_onglets->ui()->forward->isEnabled()) {
+            //                    jd += pas;
+            //                }
 
-                const double offset = _dateCourante->offsetUTC();
-                if (_dateCourante != nullptr) {
-                    delete _dateCourante;
-                    _dateCourante = nullptr;
-                }
-                _dateCourante = new Date(jd, offset);
-
-                // Enchainement de l'ensemble des calculs
-                EnchainementCalculs();
-
-                const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
-
-                if (_onglets->osculateurs()->isVisible()) {
-                    _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
-                    _onglets->osculateurs()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
-                } else {
-                    _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
-                    _onglets->general()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
-                    _onglets->general()->ui()->dateHeure2->setFocus();
-                }
-
-                _onglets->show(*_dateCourante);
+            const double offset = _dateCourante->offsetUTC();
+            if (_dateCourante != nullptr) {
+                delete _dateCourante;
+                _dateCourante = nullptr;
             }
-       // }
+            _dateCourante = new Date(jd, offset);
+
+            // Enchainement de l'ensemble des calculs
+            EnchainementCalculs();
+
+            const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
+
+            if (_onglets->osculateurs()->isVisible()) {
+                _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
+                _onglets->osculateurs()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
+            } else {
+                _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
+                _onglets->general()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
+                _onglets->general()->ui()->dateHeure2->setFocus();
+            }
+
+            _onglets->show(*_dateCourante);
+        }
+        // }
     }
 
     /* Retour */
@@ -1526,6 +1531,22 @@ void PreviSat::TempsReel()
     return;
 }
 
+void PreviSat::closeEvent(QCloseEvent *evt)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(evt)
+
+    /* Corps de la methode */
+    settings.setValue("affichage/geometrie", saveGeometry());
+    settings.setValue("affichage/etat", saveState());
+    settings.setValue("affichage/issLive", _ui->issLive->isChecked());
+
+    /* Retour */
+    return;
+}
+
 bool PreviSat::eventFilter(QObject *watched, QEvent *event)
 {
     /* Declarations des variables locales */
@@ -1572,6 +1593,7 @@ bool PreviSat::eventFilter(QObject *watched, QEvent *event)
 void PreviSat::on_configuration_clicked()
 {
     _options->Initialisation();
+    _options->setModal(true);
     _options->show();
 }
 

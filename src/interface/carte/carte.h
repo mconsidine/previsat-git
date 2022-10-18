@@ -52,7 +52,6 @@
 
 class Date;
 class Observateur;
-class Options;
 class Satellite;
 class QGraphicsScene;
 
@@ -73,7 +72,7 @@ public:
      * @brief Carte Constructeur par defaut
      * @param parent parent
      */
-    explicit Carte(Options *options, QWidget *parent = nullptr);
+    explicit Carte(QWidget *parent = nullptr);
 
 
     /*
@@ -142,7 +141,6 @@ private:
 
     Ui::Carte *_ui;
     QGraphicsScene *scene;
-    Options *_options;
 
     bool _mcc;
     int _lsol;

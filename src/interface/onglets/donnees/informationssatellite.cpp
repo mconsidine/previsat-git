@@ -34,14 +34,21 @@
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFile>
+#include <QSettings>
 #pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "informationssatellite.h"
 #include "ui_informationssatellite.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
+
+
+// Registre
+static QSettings settings(ORG_NAME, APP_NAME);
 
 
 /**********
@@ -106,8 +113,8 @@ void InformationsSatellite::show()
     _ui->cospar->setText(elem.cospar);
 
     // Epoque du TLE
-    _ui->epoque->setText(elem.epoque.ToShortDate(DateFormat::FORMAT_COURT,
-                                                 (Configuration::instance()->syst12h()) ? DateSysteme::SYSTEME_12H : DateSysteme::SYSTEME_24H));
+    _ui->epoque->setText(elem.epoque.ToShortDate(DateFormat::FORMAT_COURT, ( settings.value("affichage/systemeHoraire").toBool()) ?
+                                                     DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
     // Coefficient pseudo-ballistique
     _ui->bstar->setText(fmt1.arg(elem.bstar, 0, 'g', 6));
@@ -177,8 +184,8 @@ void InformationsSatellite::show()
     double t2 = donnee.t2();
     double t3 = donnee.t3();
     double section = donnee.section();
-    const QString unite = (Configuration::instance()->unitesKm()) ? tr("m", "meter") : tr("ft", "foot");
-    if (!Configuration::instance()->unitesKm()) {
+    const QString unite = (settings.value("affichage/unite").toBool()) ? tr("m", "meter") : tr("ft", "foot");
+    if (!settings.value("affichage/unite").toBool()) {
         t1 *= PIED_PAR_METRE;
         t2 *= PIED_PAR_METRE;
         t3 *= PIED_PAR_METRE;

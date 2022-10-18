@@ -37,6 +37,7 @@
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QGraphicsSimpleTextItem>
+#include <QSettings>
 #include "ui_carte.h"
 #pragma GCC diagnostic warning "-Wconversion"
 #include <QDir>
@@ -50,6 +51,10 @@
 #include "interface/ciel/ciel.h"
 #include "interface/options/options.h"
 #include "librairies/exceptions/previsatexception.h"
+
+
+// Registre
+static QSettings settings(ORG_NAME, APP_NAME);
 
 
 // SAA
@@ -80,13 +85,12 @@ static const std::array<std::array<double, 2>, 16> tabSAA_ISS = {
 /*
  * Constructeur par defaut
  */
-Carte::Carte(Options *options, QWidget *parent) :
+Carte::Carte(QWidget *parent) :
     QFrame(parent),
     _ui(new Ui::Carte)
 {
     _ui->setupUi(this);
     scene = nullptr;
-    _options = options;
 
     try {
 
@@ -126,7 +130,7 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
     const int yCur = static_cast<int> (evt->position().y() + 1);
 
     /* Corps de la methode */
-    if (_options->ui()->affcoord->isChecked()) {
+    if (settings.value("affichage/affcoord").toBool()) {
 
         // Longitude
         const double lo0 = 180. - xCur / DEG2PXHZ;
@@ -172,7 +176,7 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
     }
 
     // Survol du Soleil avec le curseur
-    if (_options->ui()->affsoleil->isChecked()) {
+    if (settings.value("affichage/affsoleil").toBool()) {
 
         static bool asoleil = false;
         const int lsol = qRound((180. - Configuration::instance()->soleil().longitude() * RAD2DEG) * DEG2PXHZ) + 2;
@@ -198,7 +202,7 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
     }
 
     // Survol de la Lune avec le curseur
-    if (_options->ui()->afflune->isChecked()) {
+    if (settings.value("affichage/afflune").toBool()) {
 
         static bool alune = false;
         const int llun = qRound((180. - Configuration::instance()->lune().longitude() * RAD2DEG) * DEG2PXHZ) + 2;
@@ -290,7 +294,7 @@ void Carte::show()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    _mcc = (Configuration::instance()->issLive() && _options->ui()->styleWCC->isChecked());
+    _mcc = (Configuration::instance()->issLive() && settings.value("affichage/styleWCC").toBool());
 
     if (scene != nullptr) {
         scene->deleteLater();
@@ -357,7 +361,7 @@ void Carte::resizeEvent(QResizeEvent *evt)
     Q_UNUSED(evt)
 
     /* Corps de la methode */
-    if (_options->ui()->proportionsCarte->isChecked()) {
+    if (settings.value("affichage/proportionsCarte").toBool()) {
 
         const int href = 2 * height() - 1;
         const int lref = width();
@@ -460,13 +464,13 @@ void Carte::AffichageGrille()
     }
 
     /* Corps de la methode */
-    if (_options->ui()->affgrille->isChecked()) {
+    if (settings.value("affichage/affgrille").toBool()) {
 
         const bool conditionIss = (!Configuration::instance()->listeSatellites().isEmpty() && _mcc
                                    && (Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad ==
                                        Configuration::instance()->noradStationSpatiale()));
 
-        QPen pen = QPen((conditionIss) ? ((_options->ui()->coulEquateur->currentIndex() == 0) ? Qt::red : Qt::white) : Qt::white);
+        QPen pen = QPen((conditionIss) ? ((settings.value("affichage/coulEquateur").toInt() == 0) ? Qt::red : Qt::white) : Qt::white);
         pen.setCosmetic(true);
 
         QPen pen2(QBrush(Qt::lightGray), 1.);
@@ -511,7 +515,7 @@ void Carte::AffichageGrille()
     }
 
     // Affichage de la SAA
-    if (_options->ui()->affSAA->isChecked() && !Configuration::instance()->issLive()) {
+    if (settings.value("affichage/affSAA").toBool() && !Configuration::instance()->issLive()) {
 
         const QBrush alpha = QBrush(QColor::fromRgb(255, 0, 0, 50));
         QVector<QPointF> zoneSAA;
@@ -537,7 +541,7 @@ void Carte::AffichageLune()
     /* Initialisations */
 
     /* Corps de la methode */
-    if (_options->ui()->afflune->isChecked() && !_mcc) {
+    if (settings.value("affichage/afflune").toBool() && !_mcc) {
 
         QPixmap pixlun;
         pixlun.load(":/resources/interface/lune.png");
@@ -550,7 +554,7 @@ void Carte::AffichageLune()
         QTransform transform;
         QTransform transform2;
         transform.translate(llun, blun);
-        if (_options->ui()->rotationLune->isChecked() && (Configuration::instance()->observateur().latitude() < 0.)) {
+        if (settings.value("affichage/rotationLune").toBool() && (Configuration::instance()->observateur().latitude() < 0.)) {
             transform.rotate(180.);
         }
 
@@ -569,14 +573,14 @@ void Carte::AffichageLune()
                 transform2.translate(llun + _ui->carte->width(), blun);
             }
 
-            if (_options->ui()->rotationLune->isChecked() && (Configuration::instance()->observateur().latitude() < 0.)) {
+            if (settings.value("affichage/rotationLune").toBool() && (Configuration::instance()->observateur().latitude() < 0.)) {
                 transform2.rotate(180.);
             }
             transform2.translate(-7, -7);
             lun2->setTransform(transform2);
         }
 
-        if (_options->ui()->affphaselune->isChecked()) {
+        if (settings.value("affichage/affphaselune").toBool()) {
 
             const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 160));
             QPen stylo(Qt::NoBrush, 0);
@@ -624,11 +628,12 @@ void Carte::AffichageSatelliteDefaut(const Satellite &satellite, const int lsat,
     scene->addEllipse(rectangle, noir, QBrush(couleur, Qt::SolidPattern));
 
     // Nom des satellites
-    if (_options->ui()->affnomsat->isChecked()) {
+    if (settings.value("affichage/affnomsat") != QVariant(Qt::Unchecked)) {
 
-        if (((_options->ui()->affnomsat->checkState() == Qt::PartiallyChecked) &&
-             (satellite.elementsOrbitaux().norad == Configuration::instance()->listeSatellites().at(0).elementsOrbitaux().norad)) ||
-                (_options->ui()->affnomsat->checkState() == Qt::Checked)) {
+        const QVariant etat = settings.value("affichage/affnomsat");
+        if (((etat == QVariant(Qt::PartiallyChecked)) &&
+             (satellite.elementsOrbitaux().norad == Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad)) ||
+                (etat == QVariant(Qt::Checked))) {
 
             QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(satellite.elementsOrbitaux().nom);
             const int lng = static_cast<int> (txtSat->boundingRect().width());
@@ -669,7 +674,7 @@ void Carte::AffichageSatellites()
             const int lsat = qRound((180. - satellites.at(isat).longitude() * RAD2DEG) * DEG2PXHZ)+1;
             const int bsat = qRound((90. - satellites.at(isat).latitude() * RAD2DEG) * DEG2PXVT)+1;
 
-            if (_mcc || _options->ui()->afficone->isChecked()) {
+            if (_mcc || settings.value("affichage/afficone").toBool()) {
 
                 // Affichage de l'icone du satellite a partir du numero NORAD ou du nom
                 const QString norad = satellites.at(isat).elementsOrbitaux().norad;
@@ -705,7 +710,7 @@ void Carte::AffichageSatellites()
 
                     // Rotation de l'icone de l'ISS
                     angle = 0.;
-                    if (_options->ui()->rotationIconeISS->isChecked() &&
+                    if (settings.value("affichage/rotationIconeISS").toBool() &&
                             (satellites.at(isat).elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale())) {
 
                         const double vxsat = satellites.at(isat).vitesse().x();
@@ -715,6 +720,7 @@ void Carte::AffichageSatellites()
                         angle = RAD2DEG * (-atan(vzsat / sqrt(vxsat * vxsat + vysat * vysat)));
                         transform.rotate(angle);
                     }
+
                     transform.translate(-img.width() / 2, -img.height() / 2);
                     pm->setTransform(transform);
 
@@ -758,7 +764,7 @@ void Carte::AffichageSoleil()
     _lsol = qRound((180. - soleil.longitude() * RAD2DEG) * DEG2PXHZ);
     _bsol = qRound((90. - soleil.latitude() * RAD2DEG) * DEG2PXVT);
 
-    if (_options->ui()->affsoleil->isChecked()) {
+    if (settings.value("affichage/affsoleil").toBool()) {
 
         const QString iconeSoleil = (_mcc) ? ":/resources/icones/soleil.png" : ":/resources/interface/soleil.png";
 
@@ -821,14 +827,17 @@ void Carte::AffichageStations()
         QPen crayon(Qt::yellow);
         crayon.setCosmetic(true);
 
-        QPen crayon2 = (_options->ui()->styleWCC->isChecked()) ? QPen(Qt::yellow, 2) : crayon;
+        QPen crayon2 = (settings.value("affichage/styleWCC").toBool()) ? QPen(Qt::yellow, 2) : crayon;
         crayon2.setCosmetic(true);
 
-        for(int j=0; j<Configuration::instance()->mapStations().count(); j++) {
+        QMapIterator it(Configuration::instance()->mapStations());
+        while (it.hasNext()) {
+            it.next();
 
-            if (_options->ui()->listeStations->item(j)->checkState() == Qt::Checked) {
+            const QString acronyme = it.key();
 
-                const QString acronyme = _options->ui()->listeStations->item(j)->data(Qt::UserRole).toString();
+            if (settings.value("affichage/station" + acronyme).toBool()) {
+
                 const Observateur station = Configuration::instance()->mapStations()[acronyme];
 
                 const int lsta = qRound((180. - station.longitude() * RAD2DEG) * DEG2PXHZ);
@@ -838,7 +847,7 @@ void Carte::AffichageStations()
                 scene->addLine(lsta, bsta-4, lsta, bsta+4, crayon);
 
                 QGraphicsSimpleTextItem * const txtSta = new QGraphicsSimpleTextItem(acronyme);
-                const QFont policeSta(_options->ui()->policeWCC->currentText(), 10);
+                const QFont policeSta(settings.value("affichage/policeWCC").toString(), 10);
                 txtSta->setFont(policeSta);
 
                 const int lng = (int) txtSta->boundingRect().width();
@@ -849,12 +858,12 @@ void Carte::AffichageStations()
                 txtSta->setPos(xnsta, ynsta);
                 scene->addItem(txtSta);
 
-                if (_options->ui()->affCerclesAcq->isChecked() && !Configuration::instance()->listeSatellites().isEmpty()
+                if (settings.value("affichage/affCerclesAcq").toBool() && !Configuration::instance()->listeSatellites().isEmpty()
                         && (Configuration::instance()->listeSatellites().first().altitude() > 0.)
                         && (Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad ==
                             Configuration::instance()->noradStationSpatiale())) {
 
-                    Satellite sat = Configuration::instance()->listeSatellites().at(0);
+                    Satellite sat = Configuration::instance()->listeSatellites().first();
                     sat.CalculCercleAcquisition(station);
 
                     lsat1 = sat.zone().at(0).x() * DEG2PXHZ;
@@ -905,7 +914,7 @@ void Carte::AffichageTraceAuSol()
     /* Initialisations */
 
     /* Corps de la methode */
-    if (_options->ui()->afftraj->isChecked() || _mcc) {
+    if (settings.value("affichage/afftraj").toBool() || _mcc) {
 
         if (Configuration::instance()->listeSatellites().size() > 0) {
 
@@ -966,7 +975,7 @@ void Carte::AffichageTraceAuSol()
 
                                 QGraphicsSimpleTextItem * const txtOrb = new QGraphicsSimpleTextItem(QString::number(numOrb));
 
-                                const QFont policeOrb(Configuration::instance()->police().family(), 10, (_options->ui()->styleWCC->isChecked()) ?
+                                const QFont policeOrb(Configuration::instance()->police().family(), 10, (settings.value("affichage/styleWCC").toBool()) ?
                                                           QFont::Bold : QFont::Normal);
                                 txtOrb->setFont(policeOrb);
                                 txtOrb->setBrush(Qt::white);
@@ -977,7 +986,7 @@ void Carte::AffichageTraceAuSol()
                                 scene->addItem(txtOrb);
                             }
 
-                            if (_options->ui()->styleWCC->isChecked()) {
+                            if (settings.value("affichage/styleWCC").toBool()) {
 
                                 crayon = QPen(Qt::white, 2);
                                 crayon.setCosmetic(true);
@@ -1057,15 +1066,16 @@ void Carte::AffichageZoneOmbre()
     Soleil &soleil = Configuration::instance()->soleil();
 
     /* Corps de la methode */
-    if (_options->ui()->affnuit->checkState() != Qt::Unchecked) {
+    if (settings.value("affichage/affnuit") != QVariant(Qt::Unchecked)) {
 
         double beta = PI_SUR_DEUX - REFRACTION_HZ;
-        const int imax = ((_options->ui()->affnuit->checkState() == Qt::PartiallyChecked) || _mcc) ? 1 : 4;
+        const int imax = ((settings.value("affichage/affnuit") == QVariant(Qt::PartiallyChecked)) || _mcc) ? 1 : 4;
 
-        const QBrush alpha1 = QBrush(QColor::fromRgb(0, 0, 0, static_cast<int> (2.55 * _options->ui()->intensiteOmbre->value())));
+        const QBrush alpha1 = QBrush(QColor::fromRgb(0, 0, 0, static_cast<int> (2.55 * settings.value("affichage/intensiteOmbre").toDouble())));
         const QBrush alpha = (_mcc) ? QBrush(QColor::fromRgb(0, 0, 0, qMin(255, 2 * alpha1.color().alpha()))) : alpha1;
 
-        const QPen stylo1 = (_options->ui()->coulTerminateur->currentIndex() == 0) ? QPen(QColor::fromRgb(102, 50, 16), 2) : QPen(Qt::darkYellow, 2);
+        const QPen stylo1 = (settings.value("affichage/coulTerminateur").toUInt() == 0) ?
+                    QPen(QColor::fromRgb(102, 50, 16), 2) : QPen(Qt::darkYellow, 2);
         QPen stylo((_mcc) ? stylo1 : QPen(Qt::NoBrush, 0));
         stylo.setCosmetic(true);
 
@@ -1250,7 +1260,7 @@ void Carte::AffichageZoneOmbre()
         }
     }
 
-    if (_options->ui()->affgrille->isChecked()) {
+    if (settings.value("affichage/affgrille").toBool()) {
 
         // Etiquettes de longitude
         QBrush couleur((soleil.latitude() > 0.) ? Qt::lightGray : Qt::gray);
@@ -1315,7 +1325,7 @@ void Carte::AffichageZoneOmbre()
     }
 
     // Affichage de la ZOE et de la SAA pour le Wall Command Center
-    if (_options->ui()->affSAA_ZOE->isChecked() && Configuration::instance()->issLive() && !Configuration::instance()->listeSatellites().isEmpty()
+    if (settings.value("affichage/affSAA_ZOE").toBool() && Configuration::instance()->issLive() && !Configuration::instance()->listeSatellites().isEmpty()
             && (Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale())) {
 
         // Zone Of Exclusion (ZOE)
@@ -1323,8 +1333,8 @@ void Carte::AffichageZoneOmbre()
         const double xnZOE = 252. * DEG2PXHZ;
         const double ynZOE = 66. * DEG2PXVT;
 
-        txtZOE->setBrush((_options->ui()->coulZOE->currentIndex() == 0) ? Qt::black : Qt::white);
-        const QFont policeZOE(_options->ui()->policeWCC->currentText(), 14);
+        txtZOE->setBrush((settings.value("affichage/coulZOE").toUInt() == 0) ? Qt::black : Qt::white);
+        const QFont policeZOE(settings.value("affichage/policeWCC").toString(), 14);
         txtZOE->setFont(policeZOE);
         const int htt = (int) txtZOE->boundingRect().height();
 
@@ -1337,7 +1347,7 @@ void Carte::AffichageZoneOmbre()
         const double ynSAA = 125. * DEG2PXVT;
 
         txtSAA->setBrush(Qt::white);
-        const QFont policeSAA(_options->ui()->policeWCC->currentText(), 11);
+        const QFont policeSAA(settings.value("affichage/policeWCC").toString(), 11);
         txtSAA->setFont(policeSAA);
         txtSAA->setPos(xnSAA, ynSAA);
         scene->addItem(txtSAA);
@@ -1352,12 +1362,12 @@ void Carte::AffichageZoneOmbre()
         }
 
         const QPolygonF poly1(zoneSAA_ISS);
-        scene->addPolygon(poly1, QPen(Qt::white, (_options->ui()->styleWCC->isChecked()) ? 2 : 1));
+        scene->addPolygon(poly1, QPen(Qt::white, (settings.value("affichage/styleWCC").toBool()) ? 2 : 1));
     }
 
     // Lieux d'observation
     QGraphicsSimpleTextItem * txtObs;
-    const int nbMax = static_cast<int> ((_options->ui()->affnomlieu->checkState() == Qt::Unchecked) ?
+    const int nbMax = static_cast<int> ((settings.value("affichage/affvisib") == QVariant(Qt::Unchecked)) ?
                                             0 : Configuration::instance()->observateurs().size() - 1);
     for(int j=nbMax; j>=0; j--) {
 
@@ -1367,7 +1377,7 @@ void Carte::AffichageZoneOmbre()
         scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
         scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
 
-        if ((j == 0) || (_options->ui()->affnomlieu->checkState() == Qt::Checked)) {
+        if ((j == 0) || (settings.value("affichage/affvisib") == QVariant(Qt::Checked))) {
 
             txtObs = new QGraphicsSimpleTextItem(Configuration::instance()->observateurs().at(j).nomlieu());
             const int lng = static_cast<int> (txtObs->boundingRect().width());
@@ -1401,9 +1411,9 @@ void Carte::AffichageZoneVisibilite()
     /* Corps de la methode */
     if (Configuration::instance()->listeSatellites().size() > 0) {
 
-        if (_options->ui()->affvisib->isChecked() || _mcc) {
+        if (settings.value("affichage/affvisib") != QVariant(Qt::Unchecked) || _mcc) {
 
-            const int nbMax2 = static_cast<int> ((_options->ui()->affvisib->checkState() == Qt::PartiallyChecked) ? 1 : satellites.size());
+            const int nbMax2 = static_cast<int> (settings.value("affichage/affvisib") == QVariant(Qt::PartiallyChecked) ? 1 : satellites.size());
 
             int ils = 99999;
             double lsat1;
@@ -1416,7 +1426,7 @@ void Carte::AffichageZoneVisibilite()
 
                 if (_mcc) {
 
-                    crayon = QPen((_options->ui()->coulCercleVisibilite->currentIndex() == 0) ? Qt::white : Qt::darkRed, 2);
+                    crayon = QPen((settings.value("affichage/coulCercleVisibilite").toUInt() == 0) ? Qt::white : Qt::darkRed, 2);
                     crayon.setCosmetic(true);
 
                     if (Configuration::instance()->listeSatellites().at(isat).elementsOrbitaux().nom.toLower().startsWith("tdrs")) {
@@ -1433,7 +1443,7 @@ void Carte::AffichageZoneVisibilite()
 
                                 // Affichage du nom du satellite TDRS
                                 QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(satTDRS.denomination);
-                                const QFont policeSat(_options->ui()->policeWCC->currentText(), 11);
+                                const QFont policeSat(settings.value("affichage/policeWCC").toString(), 11);
                                 txtSat->setFont(policeSat);
 
                                 const int lsat =

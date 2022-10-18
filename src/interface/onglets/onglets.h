@@ -68,9 +68,6 @@ class CalculsEvenementsOrbitaux;
 
 class SuiviTelescope;
 class Antenne;
-
-class Options;
-
 class Date;
 
 
@@ -87,7 +84,7 @@ public:
      * @brief Onglets Constructeur par defaut
      * @param parent parent
      */
-    explicit Onglets(Options *options, QWidget *parent = nullptr);
+    explicit Onglets(QWidget *parent = nullptr);
 
 
     /*
@@ -178,14 +175,11 @@ private:
 #endif
     Antenne *_antenne;
 
-    Options *_options;
-
     bool _acalcAOS;
     bool _acalcDN;
     bool _info;
     int _indexInfo;
     int _nbInformations;
-
 
 
     /*

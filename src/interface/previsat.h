@@ -302,6 +302,7 @@ private slots:
      */
     void TempsReel();
 
+    void closeEvent(QCloseEvent *evt);
     bool eventFilter(QObject *watched, QEvent *event);
 
     // Boutons de l'interface graphique
