@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 mai 2022
+ * >    18 octobre 2022
  *
  */
 
@@ -158,13 +158,6 @@ private:
      * @return vrai si le checksum est correct
      */
     static bool CheckSum(const QString &ligne);
-
-    /**
-     * @brief RecupereNomsat Recupere le nom du satellite
-     * @param lig0 ligne 0 du TLE
-     * @return nom du satellite
-     */
-    static QString RecupereNomsat(const QString &lig0);
 
     /**
      * @brief VerifieLignes Verification des lignes d'un TLE
