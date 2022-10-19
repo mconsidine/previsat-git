@@ -4090,8 +4090,8 @@ Le fichier %1 ne contient pas le TLE de l&apos;ISS</source>
     <message>
         <location filename="../src/interface/previsat.ui" line="342"/>
         <location filename="../src/interface/previsat.ui" line="594"/>
-        <location filename="../src/interface/previsat.cpp" line="2988"/>
-        <location filename="../src/interface/previsat.cpp" line="2997"/>
+        <location filename="../src/interface/previsat.cpp" line="2993"/>
+        <location filename="../src/interface/previsat.cpp" line="3002"/>
         <source>secondes</source>
         <translation>秒</translation>
     </message>
@@ -4140,19 +4140,19 @@ Le fichier %1 ne contient pas le TLE de l&apos;ISS</source>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="599"/>
-        <location filename="../src/interface/previsat.cpp" line="2998"/>
+        <location filename="../src/interface/previsat.cpp" line="3003"/>
         <source>minutes</source>
         <translation>分</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="604"/>
-        <location filename="../src/interface/previsat.cpp" line="2999"/>
+        <location filename="../src/interface/previsat.cpp" line="3004"/>
         <source>heures</source>
         <translation>時</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="609"/>
-        <location filename="../src/interface/previsat.cpp" line="3000"/>
+        <location filename="../src/interface/previsat.cpp" line="3005"/>
         <source>jours</source>
         <translation>日</translation>
     </message>
@@ -4169,205 +4169,205 @@ le flux vidéo</source>
 アクティブになります</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="969"/>
+        <location filename="../src/interface/previsat.ui" line="970"/>
         <source>Ajouter sélection dans</source>
         <translation type="unfinished">OOに選択を追加する(TBC)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1063"/>
+        <location filename="../src/interface/previsat.ui" line="1064"/>
         <location filename="../src/interface/previsat.cpp" line="2597"/>
-        <location filename="../src/interface/previsat.cpp" line="3294"/>
+        <location filename="../src/interface/previsat.cpp" line="3299"/>
         <source>Ouvrir fichier TLE</source>
         <translation>TLEファイルを開く</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1071"/>
+        <location filename="../src/interface/previsat.ui" line="1072"/>
         <source>Enregistrer</source>
         <translation>保存する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1083"/>
+        <location filename="../src/interface/previsat.ui" line="1084"/>
         <source>Fichier d&apos;aide</source>
         <translation>ヘルプファイル</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1086"/>
+        <location filename="../src/interface/previsat.ui" line="1087"/>
         <source>F1</source>
         <translation>F1キー</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1102"/>
+        <location filename="../src/interface/previsat.ui" line="1103"/>
         <source>Rapport de bug</source>
         <translation>バグレポート</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1107"/>
-        <location filename="../src/interface/previsat.ui" line="1110"/>
+        <location filename="../src/interface/previsat.ui" line="1108"/>
+        <location filename="../src/interface/previsat.ui" line="1111"/>
         <source>Télécharger la mise à jour</source>
         <translation>更新をダウンロードする</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1133"/>
+        <location filename="../src/interface/previsat.ui" line="1134"/>
         <source>À propos</source>
         <translation type="unfinished">PreviSatについて (TBC)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1138"/>
+        <location filename="../src/interface/previsat.ui" line="1139"/>
         <source>Définir par défaut</source>
         <translation type="unfinished">デフォルトとして設定する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1143"/>
+        <location filename="../src/interface/previsat.ui" line="1144"/>
         <source>Nouveau fichier TLE</source>
         <translation>新しいTLEファイル</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1148"/>
+        <location filename="../src/interface/previsat.ui" line="1149"/>
         <source>Fichier TLE existant</source>
         <translation>既存のTLEファイル</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1153"/>
+        <location filename="../src/interface/previsat.ui" line="1154"/>
         <source>Tous</source>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1158"/>
+        <location filename="../src/interface/previsat.ui" line="1159"/>
         <source>Aucun</source>
         <translation type="unfinished">無し</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1163"/>
+        <location filename="../src/interface/previsat.ui" line="1164"/>
         <source>Créer une catégorie</source>
         <translation>カテゴリを作成する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1168"/>
-        <location filename="../src/interface/previsat.ui" line="1188"/>
-        <location filename="../src/interface/previsat.ui" line="1239"/>
+        <location filename="../src/interface/previsat.ui" line="1169"/>
+        <location filename="../src/interface/previsat.ui" line="1189"/>
+        <location filename="../src/interface/previsat.ui" line="1240"/>
         <source>Supprimer</source>
         <translation>削除する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1173"/>
+        <location filename="../src/interface/previsat.ui" line="1174"/>
         <source>Télécharger...</source>
         <translation>ダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1178"/>
+        <location filename="../src/interface/previsat.ui" line="1179"/>
         <source>Créer un nouveau lieu</source>
         <translation>新しい場所を作成する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1183"/>
+        <location filename="../src/interface/previsat.ui" line="1184"/>
         <source>Ajouter à Mes Préférés</source>
         <translation>お気に入りに追加</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1193"/>
+        <location filename="../src/interface/previsat.ui" line="1194"/>
         <source>Copier dans le presse-papier</source>
         <translation>クリップボードにコピー</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1202"/>
+        <location filename="../src/interface/previsat.ui" line="1203"/>
         <source>Imprimer carte</source>
         <translation>地図を印刷する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1205"/>
+        <location filename="../src/interface/previsat.ui" line="1206"/>
         <source>Ctrl+P</source>
         <translation>Ctrl + P</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1210"/>
-        <location filename="../src/interface/previsat.ui" line="1215"/>
+        <location filename="../src/interface/previsat.ui" line="1211"/>
+        <location filename="../src/interface/previsat.ui" line="1216"/>
         <source>Renommer</source>
         <translation>名前を変更する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1220"/>
+        <location filename="../src/interface/previsat.ui" line="1221"/>
         <source>Modifier coordonnées</source>
         <translation>座標を編集する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1228"/>
+        <location filename="../src/interface/previsat.ui" line="1229"/>
         <source>Vision nocturne</source>
         <translation type="unfinished">夜間視力</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1231"/>
+        <location filename="../src/interface/previsat.ui" line="1232"/>
         <source>Ctrl+N</source>
         <translation>Ctrl + N</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1244"/>
+        <location filename="../src/interface/previsat.ui" line="1245"/>
         <source>Mettre à jour TLE courant</source>
         <translation>現在のTLEを更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1247"/>
+        <location filename="../src/interface/previsat.ui" line="1248"/>
         <source>F5</source>
         <translation>F5キー</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1252"/>
+        <location filename="../src/interface/previsat.ui" line="1253"/>
         <source>Mettre à jour groupe TLE courant</source>
         <translation>現在のTLEグループを更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1255"/>
+        <location filename="../src/interface/previsat.ui" line="1256"/>
         <source>Ctrl+F5</source>
         <translation>Ctrl + F5</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1260"/>
+        <location filename="../src/interface/previsat.ui" line="1261"/>
         <source>Mettre à jour tous les groupes de TLE</source>
         <translation>すべてのTLEグループを更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1263"/>
+        <location filename="../src/interface/previsat.ui" line="1264"/>
         <source>Shift+F5</source>
         <translation>Shift + F5</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1272"/>
-        <location filename="../src/interface/previsat.ui" line="1275"/>
+        <location filename="../src/interface/previsat.ui" line="1273"/>
+        <location filename="../src/interface/previsat.ui" line="1276"/>
         <source>Donation PayPal</source>
         <translation type="unfinished">ペイパルでのご寄付</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1280"/>
-        <location filename="../src/interface/previsat.ui" line="1283"/>
+        <location filename="../src/interface/previsat.ui" line="1281"/>
+        <location filename="../src/interface/previsat.ui" line="1284"/>
         <source>Mettre à jour TLE communs</source>
         <translation>共通TLEを更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1286"/>
+        <location filename="../src/interface/previsat.ui" line="1287"/>
         <source>Alt+F5</source>
         <translation>Alt + F5</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1291"/>
+        <location filename="../src/interface/previsat.ui" line="1292"/>
         <source>Informations</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1294"/>
+        <location filename="../src/interface/previsat.ui" line="1295"/>
         <source>F2</source>
         <translation>F2キー</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1299"/>
+        <location filename="../src/interface/previsat.ui" line="1300"/>
         <source>Mettre à jour les fichiers de données</source>
         <translation>データファイルを更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1349"/>
+        <location filename="../src/interface/previsat.ui" line="1350"/>
         <source>Donation Tipeee</source>
         <translation type="unfinished">Tipeeeでのご寄付</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1358"/>
+        <location filename="../src/interface/previsat.ui" line="1359"/>
         <source>Donation Utip</source>
         <translation type="unfinished">Utipでのご寄付</translation>
     </message>
@@ -4438,13 +4438,13 @@ le flux vidéo</source>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1043"/>
-        <location filename="../src/interface/previsat.cpp" line="3017"/>
+        <location filename="../src/interface/previsat.cpp" line="3022"/>
         <source>Ouverture du fichier TLE %1 ...</source>
         <translation type="unfinished">「%1」TLEファイルが開かれています(TBC)...</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1045"/>
-        <location filename="../src/interface/previsat.cpp" line="3019"/>
+        <location filename="../src/interface/previsat.cpp" line="3024"/>
         <source>Fichier TLE de %1 satellites</source>
         <translation type="unfinished">%1基の衛星が含まれているTLEファイル (TBC)</translation>
     </message>
@@ -4488,7 +4488,7 @@ le flux vidéo</source>
         <translation>縮小する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2951"/>
+        <location filename="../src/interface/previsat.cpp" line="2956"/>
         <source>dddd dd MMMM yyyy  hh:mm:ss</source>
         <comment>date format</comment>
         <translation type="unfinished">yyyy年MM月dd日 (dddd)  hh:mm:ss</translation>
@@ -4561,7 +4561,7 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2369"/>
         <location filename="../src/interface/previsat.cpp" line="2632"/>
-        <location filename="../src/interface/previsat.cpp" line="3252"/>
+        <location filename="../src/interface/previsat.cpp" line="3257"/>
         <source>Enregistrer sous...</source>
         <translation type="unfinished">新規保存...</translation>
     </message>
@@ -4606,49 +4606,49 @@ le flux vidéo</source>
         <translation>表示する情報がありません</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2988"/>
-        <location filename="../src/interface/previsat.cpp" line="2997"/>
+        <location filename="../src/interface/previsat.cpp" line="2993"/>
+        <location filename="../src/interface/previsat.cpp" line="3002"/>
         <source>seconde</source>
         <translation>秒</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2998"/>
+        <location filename="../src/interface/previsat.cpp" line="3003"/>
         <source>minute</source>
         <translation>分</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2999"/>
+        <location filename="../src/interface/previsat.cpp" line="3004"/>
         <source>heure</source>
         <translation type="unfinished">時間</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3000"/>
+        <location filename="../src/interface/previsat.cpp" line="3005"/>
         <source>jour</source>
         <translation type="unfinished">日</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3167"/>
+        <location filename="../src/interface/previsat.cpp" line="3172"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
         <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3253"/>
-        <location filename="../src/interface/previsat.cpp" line="3295"/>
+        <location filename="../src/interface/previsat.cpp" line="3258"/>
+        <location filename="../src/interface/previsat.cpp" line="3300"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle)</source>
         <translation type="unfinished">テキストファイル (*.txt);;TLEファイル (*.tle)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3276"/>
+        <location filename="../src/interface/previsat.cpp" line="3281"/>
         <source>Fichier %1 créé</source>
         <translation type="unfinished">「%1」ファイルが作成されました</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3337"/>
+        <location filename="../src/interface/previsat.cpp" line="3342"/>
         <source>Aucun satellite ajouté dans le fichier %1</source>
         <translation type="unfinished">「%1」ファイルに衛星が追加されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3339"/>
+        <location filename="../src/interface/previsat.cpp" line="3344"/>
         <source>Fichier %1 augmenté de %2 nouveaux satellites</source>
         <translation type="unfinished">「%1」ファイルに%2基の衛星が追加されました</translation>
     </message>

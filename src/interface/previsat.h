@@ -421,6 +421,7 @@ private slots:
     void on_actionPrevisat_sourceforge_net_triggered();
     void on_actionRapport_de_bug_triggered();
     void on_actionSkywatcher_com_triggered();
+    void on_actionPianetaRadio_triggered();
     void on_actionWww_celestrak_org_triggered();
     void on_actionWww_space_track_org_triggered();
     void on_actionA_propos_triggered();

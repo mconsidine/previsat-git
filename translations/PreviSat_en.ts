@@ -4128,8 +4128,8 @@ The file %1 does not contain the TLE of ISS</translation>
     <message>
         <location filename="../src/interface/previsat.ui" line="342"/>
         <location filename="../src/interface/previsat.ui" line="594"/>
-        <location filename="../src/interface/previsat.cpp" line="2988"/>
-        <location filename="../src/interface/previsat.cpp" line="2997"/>
+        <location filename="../src/interface/previsat.cpp" line="2993"/>
+        <location filename="../src/interface/previsat.cpp" line="3002"/>
         <source>secondes</source>
         <translation>seconds</translation>
     </message>
@@ -4178,19 +4178,19 @@ The file %1 does not contain the TLE of ISS</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="599"/>
-        <location filename="../src/interface/previsat.cpp" line="2998"/>
+        <location filename="../src/interface/previsat.cpp" line="3003"/>
         <source>minutes</source>
         <translation>minutes</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="604"/>
-        <location filename="../src/interface/previsat.cpp" line="2999"/>
+        <location filename="../src/interface/previsat.cpp" line="3004"/>
         <source>heures</source>
         <translation>hours</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="609"/>
-        <location filename="../src/interface/previsat.cpp" line="3000"/>
+        <location filename="../src/interface/previsat.cpp" line="3005"/>
         <source>jours</source>
         <translation>days</translation>
     </message>
@@ -4207,205 +4207,205 @@ le flux vidéo</source>
 the video stream</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="969"/>
+        <location filename="../src/interface/previsat.ui" line="970"/>
         <source>Ajouter sélection dans</source>
         <translation>Add selection in</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1063"/>
+        <location filename="../src/interface/previsat.ui" line="1064"/>
         <location filename="../src/interface/previsat.cpp" line="2597"/>
-        <location filename="../src/interface/previsat.cpp" line="3294"/>
+        <location filename="../src/interface/previsat.cpp" line="3299"/>
         <source>Ouvrir fichier TLE</source>
         <translation>Open TLE file</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1071"/>
+        <location filename="../src/interface/previsat.ui" line="1072"/>
         <source>Enregistrer</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1083"/>
+        <location filename="../src/interface/previsat.ui" line="1084"/>
         <source>Fichier d&apos;aide</source>
         <translation>Help contents</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1086"/>
+        <location filename="../src/interface/previsat.ui" line="1087"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1102"/>
+        <location filename="../src/interface/previsat.ui" line="1103"/>
         <source>Rapport de bug</source>
         <translation>Bug report</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1107"/>
-        <location filename="../src/interface/previsat.ui" line="1110"/>
+        <location filename="../src/interface/previsat.ui" line="1108"/>
+        <location filename="../src/interface/previsat.ui" line="1111"/>
         <source>Télécharger la mise à jour</source>
         <translation>Download software update</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1133"/>
+        <location filename="../src/interface/previsat.ui" line="1134"/>
         <source>À propos</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1138"/>
+        <location filename="../src/interface/previsat.ui" line="1139"/>
         <source>Définir par défaut</source>
         <translation>Define as default</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1143"/>
+        <location filename="../src/interface/previsat.ui" line="1144"/>
         <source>Nouveau fichier TLE</source>
         <translation>New TLE file</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1148"/>
+        <location filename="../src/interface/previsat.ui" line="1149"/>
         <source>Fichier TLE existant</source>
         <translation>Existing TLE file</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1153"/>
+        <location filename="../src/interface/previsat.ui" line="1154"/>
         <source>Tous</source>
         <translation>All</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1158"/>
+        <location filename="../src/interface/previsat.ui" line="1159"/>
         <source>Aucun</source>
         <translation>None</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1163"/>
+        <location filename="../src/interface/previsat.ui" line="1164"/>
         <source>Créer une catégorie</source>
         <translation>Create a category</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1168"/>
-        <location filename="../src/interface/previsat.ui" line="1188"/>
-        <location filename="../src/interface/previsat.ui" line="1239"/>
+        <location filename="../src/interface/previsat.ui" line="1169"/>
+        <location filename="../src/interface/previsat.ui" line="1189"/>
+        <location filename="../src/interface/previsat.ui" line="1240"/>
         <source>Supprimer</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1173"/>
+        <location filename="../src/interface/previsat.ui" line="1174"/>
         <source>Télécharger...</source>
         <translation>Download...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1178"/>
+        <location filename="../src/interface/previsat.ui" line="1179"/>
         <source>Créer un nouveau lieu</source>
         <translation>Create a new location</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1183"/>
+        <location filename="../src/interface/previsat.ui" line="1184"/>
         <source>Ajouter à Mes Préférés</source>
         <translation>Add in My Favorites</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1193"/>
+        <location filename="../src/interface/previsat.ui" line="1194"/>
         <source>Copier dans le presse-papier</source>
         <translation>Copy to the clipboard</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1202"/>
+        <location filename="../src/interface/previsat.ui" line="1203"/>
         <source>Imprimer carte</source>
         <translation>Print map</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1205"/>
+        <location filename="../src/interface/previsat.ui" line="1206"/>
         <source>Ctrl+P</source>
         <translation>Ctrl+P</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1210"/>
-        <location filename="../src/interface/previsat.ui" line="1215"/>
+        <location filename="../src/interface/previsat.ui" line="1211"/>
+        <location filename="../src/interface/previsat.ui" line="1216"/>
         <source>Renommer</source>
         <translation>Rename</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1220"/>
+        <location filename="../src/interface/previsat.ui" line="1221"/>
         <source>Modifier coordonnées</source>
         <translation>Modify coordinates</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1228"/>
+        <location filename="../src/interface/previsat.ui" line="1229"/>
         <source>Vision nocturne</source>
         <translation>Night vision</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1231"/>
+        <location filename="../src/interface/previsat.ui" line="1232"/>
         <source>Ctrl+N</source>
         <translation>Ctrl+N</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1244"/>
+        <location filename="../src/interface/previsat.ui" line="1245"/>
         <source>Mettre à jour TLE courant</source>
         <translation>Update current TLE</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1247"/>
+        <location filename="../src/interface/previsat.ui" line="1248"/>
         <source>F5</source>
         <translation>F5</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1252"/>
+        <location filename="../src/interface/previsat.ui" line="1253"/>
         <source>Mettre à jour groupe TLE courant</source>
         <translation>Update current TLE group</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1255"/>
+        <location filename="../src/interface/previsat.ui" line="1256"/>
         <source>Ctrl+F5</source>
         <translation>Ctrl+F5</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1260"/>
+        <location filename="../src/interface/previsat.ui" line="1261"/>
         <source>Mettre à jour tous les groupes de TLE</source>
         <translation>Update all TLE groups</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1263"/>
+        <location filename="../src/interface/previsat.ui" line="1264"/>
         <source>Shift+F5</source>
         <translation>Shift+F5</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1272"/>
-        <location filename="../src/interface/previsat.ui" line="1275"/>
+        <location filename="../src/interface/previsat.ui" line="1273"/>
+        <location filename="../src/interface/previsat.ui" line="1276"/>
         <source>Donation PayPal</source>
         <translation>PayPal donation</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1280"/>
-        <location filename="../src/interface/previsat.ui" line="1283"/>
+        <location filename="../src/interface/previsat.ui" line="1281"/>
+        <location filename="../src/interface/previsat.ui" line="1284"/>
         <source>Mettre à jour TLE communs</source>
         <translation>Update common TLE groups</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1286"/>
+        <location filename="../src/interface/previsat.ui" line="1287"/>
         <source>Alt+F5</source>
         <translation>Alt+F5</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1291"/>
+        <location filename="../src/interface/previsat.ui" line="1292"/>
         <source>Informations</source>
         <translation>Informations</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1294"/>
+        <location filename="../src/interface/previsat.ui" line="1295"/>
         <source>F2</source>
         <translation>F2</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1299"/>
+        <location filename="../src/interface/previsat.ui" line="1300"/>
         <source>Mettre à jour les fichiers de données</source>
         <translation>Update data files</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1349"/>
+        <location filename="../src/interface/previsat.ui" line="1350"/>
         <source>Donation Tipeee</source>
         <translation>Tipeee donation</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1358"/>
+        <location filename="../src/interface/previsat.ui" line="1359"/>
         <source>Donation Utip</source>
         <translation>Utip donation</translation>
     </message>
@@ -4464,7 +4464,7 @@ the video stream</translation>
         <translation>all</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2951"/>
+        <location filename="../src/interface/previsat.cpp" line="2956"/>
         <source>dddd dd MMMM yyyy  hh:mm:ss</source>
         <comment>date format</comment>
         <translation>dddd, MMMM dd yyyy  hh:mm:ss</translation>
@@ -4533,7 +4533,7 @@ the video stream</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1043"/>
-        <location filename="../src/interface/previsat.cpp" line="3017"/>
+        <location filename="../src/interface/previsat.cpp" line="3022"/>
         <source>Ouverture du fichier TLE %1 ...</source>
         <translation>Loading TLE file %1 ...</translation>
     </message>
@@ -4544,7 +4544,7 @@ the video stream</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1045"/>
-        <location filename="../src/interface/previsat.cpp" line="3019"/>
+        <location filename="../src/interface/previsat.cpp" line="3024"/>
         <source>Fichier TLE de %1 satellites</source>
         <translation>TLE file of %1 satellites</translation>
     </message>
@@ -4609,7 +4609,7 @@ the video stream</translation>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2369"/>
         <location filename="../src/interface/previsat.cpp" line="2632"/>
-        <location filename="../src/interface/previsat.cpp" line="3252"/>
+        <location filename="../src/interface/previsat.cpp" line="3257"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
@@ -4644,49 +4644,49 @@ the video stream</translation>
         <translation>No available informations</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2988"/>
-        <location filename="../src/interface/previsat.cpp" line="2997"/>
+        <location filename="../src/interface/previsat.cpp" line="2993"/>
+        <location filename="../src/interface/previsat.cpp" line="3002"/>
         <source>seconde</source>
         <translation>second</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2998"/>
+        <location filename="../src/interface/previsat.cpp" line="3003"/>
         <source>minute</source>
         <translation>minute</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2999"/>
+        <location filename="../src/interface/previsat.cpp" line="3004"/>
         <source>heure</source>
         <translation>hour</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3000"/>
+        <location filename="../src/interface/previsat.cpp" line="3005"/>
         <source>jour</source>
         <translation>day</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3167"/>
+        <location filename="../src/interface/previsat.cpp" line="3172"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD number : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3253"/>
-        <location filename="../src/interface/previsat.cpp" line="3295"/>
+        <location filename="../src/interface/previsat.cpp" line="3258"/>
+        <location filename="../src/interface/previsat.cpp" line="3300"/>
         <source>Fichiers texte (*.txt);;Fichiers TLE (*.tle)</source>
         <translation>Text files (*.txt);;TLE files (*.tle)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3276"/>
+        <location filename="../src/interface/previsat.cpp" line="3281"/>
         <source>Fichier %1 créé</source>
         <translation>File %1 created</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3337"/>
+        <location filename="../src/interface/previsat.cpp" line="3342"/>
         <source>Aucun satellite ajouté dans le fichier %1</source>
         <translation>No satellite added in the file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3339"/>
+        <location filename="../src/interface/previsat.cpp" line="3344"/>
         <source>Fichier %1 augmenté de %2 nouveaux satellites</source>
         <translation>%2 new satellites added in file %1</translation>
     </message>

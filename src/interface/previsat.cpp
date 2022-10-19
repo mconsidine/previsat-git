@@ -2848,6 +2848,11 @@ void PreviSat::on_actionSkywatcher_com_triggered()
     QDesktopServices::openUrl(QUrl("http://skywatcher.com/"));
 }
 
+void PreviSat::on_actionPianetaRadio_triggered()
+{
+    QDesktopServices::openUrl(QUrl("https://www.pianetaradio.it/"));
+}
+
 void PreviSat::on_actionWww_celestrak_org_triggered()
 {
     QDesktopServices::openUrl(QUrl(Configuration::instance()->adresseCelestrak()));
@@ -3400,3 +3405,4 @@ void PreviSat::on_lancementVideoNasa_clicked()
     /* Retour */
     return;
 }
+
