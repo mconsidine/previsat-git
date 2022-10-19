@@ -81,6 +81,11 @@ CalculsFlashs::CalculsFlashs(QWidget *parent) :
  */
 CalculsFlashs::~CalculsFlashs()
 {
+    settings.setValue("previsions/hauteurSatMetOp", _ui->hauteurSatMetOp->currentIndex());
+    settings.setValue("previsions/hauteurSoleilMetOp", _ui->hauteurSoleilMetOp->currentIndex());
+    settings.setValue("previsions/lieuxObservationMetOp", _ui->lieuxObservation->currentIndex());
+    settings.setValue("previsions/ordreChronologiqueMetOp", _ui->ordreChronologiqueMetOp->isChecked());
+    settings.setValue("previsions/magnitudeMaxMetOp", _ui->magnitudeMaxMetOp->value());
     delete _ui;
 }
 
@@ -165,7 +170,7 @@ void CalculsFlashs::Initialisation()
     _ui->hauteurSatMetOp->setCurrentIndex(settings.value("previsions/hauteurSatMetOp", 2).toInt());
     _ui->valHauteurSoleilMetOp->setVisible(false);
     _ui->hauteurSoleilMetOp->setCurrentIndex(settings.value("previsions/hauteurSoleilMetOp", 1).toInt());
-    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation3", 0).toInt());
+    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservationMetOp", 0).toInt());
     _ui->ordreChronologiqueMetOp->setChecked(settings.value("previsions/ordreChronologiqueMetOp", true).toBool());
     _ui->magnitudeMaxMetOp->setValue(settings.value("previsions/magnitudeMaxMetOp", 2.).toDouble());
 

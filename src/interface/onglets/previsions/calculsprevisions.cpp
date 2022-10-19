@@ -82,6 +82,14 @@ CalculsPrevisions::CalculsPrevisions(QWidget *parent) :
  */
 CalculsPrevisions::~CalculsPrevisions()
 {
+    settings.setValue("previsions/pasGeneration", _ui->pasGeneration->currentIndex());
+    settings.setValue("previsions/lieuxObservationPrev", _ui->lieuxObservation->currentIndex());
+    settings.setValue("previsions/hauteurSatPrev", _ui->hauteurSatPrev->currentIndex());
+    settings.setValue("previsions/valHauteurSatPrev", _ui->valHauteurSatPrev->text().toInt());
+    settings.setValue("previsions/hauteurSoleilPrev", _ui->hauteurSoleilPrev->currentIndex());
+    settings.setValue("previsions/valHauteurSoleilPrev", _ui->valHauteurSoleilPrev->text().toInt());
+    settings.setValue("previsions/illuminationPrev", _ui->illuminationPrev->isChecked());
+    settings.setValue("previsions/magnitudeMaxPrev", _ui->magnitudeMaxPrev->isChecked());
     delete _ui;
 }
 
@@ -205,7 +213,7 @@ void CalculsPrevisions::Initialisation()
     qInfo() << "Début Initialisation" << metaObject()->className();
 
     _ui->pasGeneration->setCurrentIndex(settings.value("previsions/pasGeneration", 5).toInt());
-    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation2", 0).toInt());
+    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservationPrev", 0).toInt());
     _ui->valHauteurSatPrev->setVisible(false);
     _ui->hauteurSatPrev->setCurrentIndex(settings.value("previsions/hauteurSatPrev", 0).toInt());
     _ui->valHauteurSoleilPrev->setVisible(false);

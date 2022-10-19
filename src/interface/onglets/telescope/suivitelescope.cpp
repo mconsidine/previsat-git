@@ -82,6 +82,12 @@ SuiviTelescope::SuiviTelescope(QWidget *parent) :
  */
 SuiviTelescope::~SuiviTelescope()
 {
+    settings.setValue("previsions/hauteurSatSuivi", _ui->hauteurSatSuivi->currentIndex());
+    settings.setValue("previsions/lieuxObservationTelescope", _ui->lieuxObservation->currentIndex());
+    settings.setValue("previsions/pasSuivi", _ui->pasSuivi->value());
+    settings.setValue("previsions/pecDelai", _ui->pecDelai->isChecked());
+    settings.setValue("previsions/delaiTelescope", _ui->delaiTelescope->value());
+    settings.setValue("previsions/demarrerSuiviTelescope", _ui->demarrerSuiviTelescope->isChecked());
     delete _ui;
 }
 
@@ -203,7 +209,7 @@ void SuiviTelescope::Initialisation()
 
     _ui->valHauteurSatSuivi->setVisible(false);
     _ui->hauteurSatSuivi->setCurrentIndex(settings.value("previsions/hauteurSatSuivi", 2).toInt());
-    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation5", 0).toInt());
+    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservationTelescope", 0).toInt());
     _ui->pasSuivi->setValue(settings.value("previsions/pasSuivi", 20).toInt());
     _ui->pecDelai->setChecked(settings.value("previsions/pecDelai", false).toBool());
     _ui->delaiTelescope->setValue(settings.value("previsions/delaiTelescope", 60).toInt());

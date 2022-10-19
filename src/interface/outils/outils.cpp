@@ -80,6 +80,9 @@ Outils::Outils(QWidget *parent) :
  */
 Outils::~Outils()
 {
+    settings.setValue("fichier/fichierAMettreAJour", _ui->fichierAMettreAJour->text());
+    settings.setValue("fichier/fichierALire", _ui->fichierALire->text());
+    settings.setValue("fichier/affichageMsgMAJ", _ui->affichageMsgMAJ->currentIndex());
     delete _ui;
 }
 

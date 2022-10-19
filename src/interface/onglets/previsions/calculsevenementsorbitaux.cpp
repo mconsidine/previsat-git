@@ -81,6 +81,11 @@ CalculsEvenementsOrbitaux::CalculsEvenementsOrbitaux(QWidget *parent) :
  */
 CalculsEvenementsOrbitaux::~CalculsEvenementsOrbitaux()
 {
+    settings.setValue("previsions/passageApogee", _ui->passageApogee->isChecked());
+    settings.setValue("previsions/passageNoeuds", _ui->passageNoeuds->isChecked());
+    settings.setValue("previsions/passageOmbre", _ui->passageOmbre->isChecked());
+    settings.setValue("previsions/passageQuadrangles", _ui->passageQuadrangles->isChecked());
+    settings.setValue("previsions/transitionJourNuit", _ui->transitionJourNuit->isChecked());
     delete _ui;
 }
 
@@ -102,7 +107,7 @@ CalculsEvenementsOrbitaux::~CalculsEvenementsOrbitaux()
  * Affichage des satellites dans la liste
  */
 void CalculsEvenementsOrbitaux::AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip,
-                                                const bool check)
+                                                        const bool check)
 {
     /* Declarations des variables locales */
 

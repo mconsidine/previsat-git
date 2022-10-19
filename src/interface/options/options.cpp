@@ -90,6 +90,13 @@ Options::Options(QWidget *parent) :
 Options::~Options()
 {
     AppliquerPreferences();
+    settings.setValue("fichier/listeMap", (_ui->listeMap->currentIndex() > 0) ?
+                          Configuration::instance()->dirMap() + QDir::separator() +
+                          Configuration::instance()->listeFicMap().at(qMax(0, _ui->listeMap->currentIndex() - 1)) : "");
+    if (!_ui->verifMAJ->isChecked()) {
+        settings.setValue("fichier/majPrevi", "0");
+    }
+
     delete _ui;
 }
 
