@@ -53,7 +53,7 @@ static const QHash<QtMsgType, QString> typeMessage = {
     { QtMsgType::QtDebugMsg,    "DEBUG  " },
     { QtMsgType::QtWarningMsg,  "WARNING" },
     { QtMsgType::QtCriticalMsg, "ERREUR " },
-    { QtMsgType::QtFatalMsg,    "ERREUR " }
+    { QtMsgType::QtFatalMsg,    "FATAL  " }
 };
 
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
@@ -86,7 +86,7 @@ LogMessage::LogMessage(const QString &fichier)
             QString dest = fichier;
             dest = dest.replace(".log", "-prev.log");
 
-            if (contenu.contains("ERREUR")) {
+            if (contenu.contains("ERREUR") || contenu.contains("FATAL")) {
                 fi.rename(dest);
             } else {
                 QFile fi2(dest);
@@ -168,7 +168,12 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
         const QString fic = QString("%1 (ligne %2)").arg(nomFichier).arg(context.line);
         out << QString("%1 : %2 : ").arg(fic, -45).arg(nomFonction, -45);
     }
-    out << message.replace("\"", "") << Qt::endl;
+
+    if (message.startsWith("\"") && message.endsWith("\"")) {
+        message.remove(0, 1).chop(1);
+    }
+
+    out << message << Qt::endl;
     out.flush();
 
     /* Retour */
