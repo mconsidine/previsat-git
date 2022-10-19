@@ -37,12 +37,17 @@
 #include "antenne.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QSettings>
 #include "ui_antenne.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/evenementsconst.h"
 #include "librairies/exceptions/previsatexception.h"
+
+
+// Registre
+static QSettings settings(ORG_NAME, APP_NAME);
 
 
 /**********
@@ -77,6 +82,8 @@ Antenne::Antenne(QWidget *parent) :
  */
 Antenne::~Antenne()
 {
+    settings.setValue("previsions/adresse", _ui->adresse->text());
+    settings.setValue("previsions/port", _ui->port->value());
     delete _ui;
 }
 
@@ -281,6 +288,9 @@ void Antenne::Initialisation()
 
     /* Corps de la methode */
     qInfo() << "Début Initialisation" << metaObject()->className();
+
+    _ui->adresse->setText(settings.value("previsions/adresse").toString());
+    _ui->port->setValue(settings.value("previsions/port").toInt());
 
     _ui->frameFrequences->setVisible(false);
     _ui->frameSatellite->setVisible(false);

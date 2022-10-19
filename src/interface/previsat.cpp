@@ -1539,9 +1539,27 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     Q_UNUSED(evt)
 
     /* Corps de la methode */
+    // Suppression des fichiers du cache
+    const QDir di = QDir(Configuration::instance()->dirTmp());
+    const QStringList listeFic = di.entryList(QDir::Files);
+    foreach(const QString fic, listeFic) {
+        if (!(_options->ui()->verifMAJ->isChecked() && (fic == "versionPreviSat" || fic == "majFicInt"))) {
+            QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + fic);
+            fi.remove();
+        }
+    }
+
+    // Sauvegarde des donnees du logiciel
+    settings.setValue("temps/valManuel", _ui->valManuel->currentIndex());
+    settings.setValue("temps/pasManuel", _ui->pasManuel->currentIndex());
+    settings.setValue("temps/pasReel", _ui->pasReel->currentIndex());
+    settings.setValue("temps/dtu", _options->ui()->updown->value() * NB_JOUR_PAR_SEC);
+
     settings.setValue("affichage/geometrie", saveGeometry());
     settings.setValue("affichage/etat", saveState());
     settings.setValue("affichage/issLive", _ui->issLive->isChecked());
+
+    GestionnaireXml::EcritureConfiguration();
 
     /* Retour */
     return;

@@ -82,6 +82,12 @@ CalculsTransits::CalculsTransits(QWidget *parent) :
  */
 CalculsTransits::~CalculsTransits()
 {
+    settings.setValue("previsions/hauteurSatTransit", _ui->hauteurSatTransit->currentIndex());
+    settings.setValue("previsions/valHauteurSatTransit", _ui->valHauteurSatTransit->text().toInt());
+    settings.setValue("previsions/lieuxObservationTransit", _ui->lieuxObservation->currentIndex());
+    settings.setValue("previsions/ageMaxTLETransit", _ui->ageMaxTLETransit->value());
+    settings.setValue("previsions/elongationMaxCorps", _ui->elongationMaxCorps->value());
+    settings.setValue("previsions/calcTransitLunaireJour", _ui->calcTransitLunaireJour->isChecked());
     delete _ui;
 }
 
@@ -203,7 +209,7 @@ void CalculsTransits::Initialisation()
 
     _ui->valHauteurSatTransit->setVisible(false);
     _ui->hauteurSatTransit->setCurrentIndex(settings.value("previsions/hauteurSatTransit", 1).toInt());
-    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservation4", 0).toInt());
+    _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservationTransit", 0).toInt());
     _ui->ageMaxTLETransit->setValue(settings.value("previsions/ageMaxTLETransit", 2.).toDouble());
     _ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
 
