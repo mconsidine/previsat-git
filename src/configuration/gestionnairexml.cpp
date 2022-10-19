@@ -122,7 +122,7 @@ void GestionnaireXml::EcritureConfiguration()
 
             QStringListIterator itNorad(listeNorad);
             while (itNorad.hasNext()) {
-                cfg.writeTextElement("Norad", itNorad.next());
+                cfg.writeTextElement("Norad", QString("%1").arg(itNorad.next(), 6, '0'));
             }
             cfg.writeEndElement();
         }
@@ -139,7 +139,7 @@ void GestionnaireXml::EcritureConfiguration()
 
                 QStringListIterator itNorad(itElem.value());
                 while (itNorad.hasNext()) {
-                    cfg.writeTextElement("Norad", itNorad.next());
+                    cfg.writeTextElement("Norad", QString("%1").arg(itNorad.next(), 6, '0'));
                 }
                 cfg.writeEndElement();
             }
@@ -372,7 +372,7 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
 
                     if (cfg.name().toString() == "NoradStationSpatiale") {
 
-                        noradStationSpatiale = cfg.readElementText();
+                        noradStationSpatiale = QString("%1").arg(cfg.readElementText(), 6, '0');
 
                     } else if (cfg.name().toString() == "AdresseCelestrak") {
 
@@ -400,7 +400,7 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
                             elements.clear();
                             while (cfg.readNextStartElement()) {
                                 if (cfg.name().toString() == "Norad") {
-                                    elements.append(cfg.readElementText());
+                                    elements.append(QString("%1").arg(cfg.readElementText(), 6, '0'));
                                 } else {
                                     cfg.skipCurrentElement();
                                 }
