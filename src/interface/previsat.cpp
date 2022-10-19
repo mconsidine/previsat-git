@@ -36,18 +36,18 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QDesktopServices>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QMouseEvent>
 #include <QSettings>
+#include <QSoundEffect>
 #include <QStandardPaths>
 #include <QTimer>
 #include "ui_options.h"
 #include "ui_previsat.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
-#include <QDesktopServices>
-#include <QMessageBox>
-#include <QSoundEffect>
 #include "listwidgetitem.h"
 #include "previsat.h"
 #include "ui_carte.h"

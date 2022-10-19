@@ -34,13 +34,13 @@
  *
  */
 
-#include "antenne.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QSettings>
 #include "ui_antenne.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "antenne.h"
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/evenementsconst.h"
 #include "librairies/exceptions/previsatexception.h"

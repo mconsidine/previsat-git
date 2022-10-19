@@ -34,13 +34,13 @@
  *
  */
 
-#include "calculsprevisions.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QSettings>
 #include "ui_calculsprevisions.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "calculsprevisions.h"
 #include "configuration/configuration.h"
 #include "interface/listwidgetitem.h"
 #include "librairies/exceptions/previsatexception.h"

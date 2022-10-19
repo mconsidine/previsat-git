@@ -34,13 +34,13 @@
  *
  */
 
-#include "recherchesatellite.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFile>
 #include "ui_recherchesatellite.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "recherchesatellite.h"
 #include "librairies/exceptions/previsatexception.h"
 
 

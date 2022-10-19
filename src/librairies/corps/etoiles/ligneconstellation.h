@@ -45,8 +45,8 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QList>
-#pragma GCC diagnostic warning "-Wconversion"
 #include <QPair>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "etoile.h"
 
 

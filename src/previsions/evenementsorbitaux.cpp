@@ -34,8 +34,8 @@
  *
  */
 
-#include <QElapsedTimer>
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QElapsedTimer>
 #include <QObject>
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include "configuration/configuration.h"

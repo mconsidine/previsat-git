@@ -43,8 +43,8 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QPointF>
 #include <QVector>
-#pragma GCC diagnostic warning "-Wconversion"
 #include <QString>
+#pragma GCC diagnostic warning "-Wconversion"
 #include "corpsconst.h"
 #include "ephemerides.h"
 #include "librairies/maths/vecteur3d.h"

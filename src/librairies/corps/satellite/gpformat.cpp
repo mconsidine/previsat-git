@@ -37,10 +37,10 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFile>
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wconversion"
 #include <QFileInfo>
 #include <QXmlStreamReader>
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#pragma GCC diagnostic ignored "-Wconversion"
 #include "librairies/exceptions/previsatexception.h"
 #include "gpformat.h"
 

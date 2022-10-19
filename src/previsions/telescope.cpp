@@ -34,11 +34,11 @@
  *
  */
 
-#include <cmath>
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFile>
-#pragma GCC diagnostic warning "-Wswitch-default"
 #include <QTextStream>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#include <cmath>
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/satellite.h"

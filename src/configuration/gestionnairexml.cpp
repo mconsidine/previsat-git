@@ -37,13 +37,13 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#include <QMessageBox>
-#pragma GCC diagnostic warning "-Wconversion"
 #include <QDomDocument>
 #include <QFile>
+#include <QMessageBox>
 #include <QRegularExpression>
 #include <QXmlStreamReader>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "categorieelementsorbitaux.h"
 #include "configuration.h"
 #include "gestionnairexml.h"

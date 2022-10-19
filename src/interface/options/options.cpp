@@ -34,7 +34,6 @@
  *
  */
 
-#include "options.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
@@ -43,6 +42,7 @@
 #include "ui_options.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "options.h"
 #include "configuration/configuration.h"
 #include "librairies/exceptions/previsatexception.h"
 

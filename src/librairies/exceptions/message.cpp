@@ -38,9 +38,9 @@
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
 #include <QMainWindow>
+#include <QMessageBox>
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
-#include <QMessageBox>
 #include "message.h"
 
 

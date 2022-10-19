@@ -40,8 +40,8 @@
 #include <QMouseEvent>
 #include <QSettings>
 #include "ui_ciel.h"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "ui_options.h"
+#pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
