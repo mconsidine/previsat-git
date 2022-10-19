@@ -34,14 +34,14 @@
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QCoreApplication>
-#pragma GCC diagnostic ignored "-Wconversion"
 #include <QDir>
 #include <QSettings>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
 #include <QStandardPaths>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration.h"
 #include "evenementsstationspatiale.h"
 #include "gestionnairexml.h"

@@ -37,11 +37,11 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDate>
-#pragma GCC diagnostic warning "-Wswitch-default"
 #include <QStyle>
-#include "ui_apropos.h"
-#pragma GCC diagnostic warning "-Wconversion"
 #include <QSettings>
+#include "ui_apropos.h"
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "apropos.h"
 #include "configuration/configuration.h"
 

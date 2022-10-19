@@ -34,20 +34,20 @@
  *
  */
 
-#include "configuration/configuration.h"
-#include "configuration/gestionnairexml.h"
-#include "interface/ciel/ciel.h"
-#include "interface/options/options.h"
-#include "radar.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QGraphicsPixmapItem>
 #include <QMouseEvent>
 #include <QSettings>
 #include "ui_options.h"
-#pragma GCC diagnostic warning "-Wswitch-default"
 #include "ui_radar.h"
+#pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "configuration/configuration.h"
+#include "configuration/gestionnairexml.h"
+#include "interface/ciel/ciel.h"
+#include "interface/options/options.h"
+#include "radar.h"
 
 
 // Registre

@@ -34,16 +34,16 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #pragma GCC diagnostic ignored "-Wconversion"
-#include <QGraphicsSimpleTextItem>
-#include <QSettings>
-#include "ui_carte.h"
-#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
+#include <QGraphicsSimpleTextItem>
 #include <QMouseEvent>
+#include <QSettings>
 #include "ui_options.h"
+#include "ui_carte.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "carte.h"
 #include "coordiss.h"
 #include "configuration/configuration.h"

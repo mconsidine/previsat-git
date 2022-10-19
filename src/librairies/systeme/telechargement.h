@@ -43,9 +43,9 @@
 #ifndef TELECHARGEMENT_H
 #define TELECHARGEMENT_H
 
-#include <QElapsedTimer>
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QElapsedTimer>
 #include <QObject>
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"

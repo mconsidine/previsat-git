@@ -34,12 +34,14 @@
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include "ui_coordiss.h"
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/evenements.h"
 #include "coordiss.h"
-#pragma GCC diagnostic ignored "-Wconversion"
-#include "ui_coordiss.h"
-#pragma GCC diagnostic warning "-Wconversion"
 
 
 /**********

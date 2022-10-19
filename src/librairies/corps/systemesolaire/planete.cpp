@@ -34,12 +34,12 @@
  *
  */
 
-#include <cmath>
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QCoreApplication>
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include <cmath>
 #include "librairies/dates/date.h"
 #include "planete.h"
 #include "soleil.h"

@@ -37,12 +37,12 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDateTime>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include <QFile>
 #include <QFileInfo>
 #include <QScopedPointer>
 #include <QTextStream>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "logmessage.h"
 
 

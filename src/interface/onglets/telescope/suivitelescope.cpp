@@ -34,13 +34,13 @@
  *
  */
 
-#include "suivitelescope.h"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QSettings>
 #include "ui_suivitelescope.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "suivitelescope.h"
 #include "configuration/configuration.h"
 #include "interface/listWidgetItem.h"
 #include "librairies/exceptions/previsatexception.h"

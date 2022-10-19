@@ -46,10 +46,10 @@
 #include <QFile>
 #include <QSettings>
 #include <QStyle>
+#include <QTcpSocket>
 #include "ui_informations.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
-#include <QTcpSocket>
 #include "informations.h"
 #include "configuration/configuration.h"
 #include "librairies/exceptions/previsatexception.h"

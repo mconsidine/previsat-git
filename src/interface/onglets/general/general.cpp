@@ -39,10 +39,10 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QSettings>
+#include <QSoundEffect>
 #include "ui_options.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
-#include <QSoundEffect>
 #include "general.h"
 #include "configuration/configuration.h"
 #include "interface/onglets/osculateurs/osculateurs.h"

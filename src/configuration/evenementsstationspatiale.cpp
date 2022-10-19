@@ -37,10 +37,10 @@
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #pragma GCC diagnostic ignored "-Wconversion"
 #include <QDir>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
 #include <QFile>
 #include <QXmlStreamReader>
+#pragma GCC diagnostic warning "-Wconversion"
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include "configuration.h"
 #include "evenementsstationspatiale.h"
 #include "librairies/exceptions/previsatexception.h"

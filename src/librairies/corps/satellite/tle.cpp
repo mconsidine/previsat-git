@@ -37,9 +37,9 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
-#pragma GCC diagnostic warning "-Wswitch-default"
 #include <QMessageBox>
 #include <QTextStream>
+#pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/exceptions/previsatexception.h"
 #include "gpformat.h"

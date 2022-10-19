@@ -46,9 +46,9 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QMainWindow>
+#include <QTranslator>
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
-#include <QTranslator>
 
 
 QT_BEGIN_NAMESPACE

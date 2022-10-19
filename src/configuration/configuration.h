@@ -45,9 +45,9 @@
 
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFont>
-#pragma GCC diagnostic warning "-Wswitch-default"
 #include <QMap>
 #include <QString>
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include "librairies/corps/etoiles/constellation.h"
 #include "librairies/corps/etoiles/etoile.h"
 #include "librairies/corps/etoiles/ligneconstellation.h"
