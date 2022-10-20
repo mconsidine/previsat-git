@@ -54,6 +54,10 @@ namespace Ui {
 class CalculsPrevisions;
 }
 
+class QListWidgetItem;
+class AfficherResultats;
+
+
 class CalculsPrevisions : public QFrame
 {
     Q_OBJECT
@@ -120,6 +124,11 @@ public slots:
     void changeEvent(QEvent *evt);
 
 
+signals:
+
+    void AfficherMessageStatut(const QString &, const int );
+
+
 protected:
 
     /*
@@ -130,12 +139,18 @@ protected:
      * Methodes protegees
      */
 
+
 private:
 
     /*
      * Variables privees
      */
     Ui::CalculsPrevisions *_ui;
+
+    AfficherResultats *_afficherResultats;
+
+    QAction *_aucun;
+    QAction *_tous;
 
 
     /*
@@ -149,9 +164,19 @@ private:
 
 private slots:
 
+    void Aucun();
+    void Tous();
+
+    void on_calculsPrev_clicked();
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();
     void on_parametrageDefautPrev_clicked();
+    void on_listePrevisions_itemClicked(QListWidgetItem *item);
+    void on_listePrevisions_customContextMenuRequested(const QPoint &pos);
+    void on_effacerHeuresPrev_clicked();
+    void on_hauteurSatPrev_currentIndexChanged(int index);
+    void on_hauteurSoleilPrev_currentIndexChanged(int index);
+    void on_magnitudeMaxPrev_toggled(bool checked);
 
 };
 

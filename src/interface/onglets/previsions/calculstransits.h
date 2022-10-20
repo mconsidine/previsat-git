@@ -54,6 +54,10 @@ namespace Ui {
 class CalculsTransits;
 }
 
+class QListWidgetItem;
+class AfficherResultats;
+
+
 class CalculsTransits : public QFrame
 {
     Q_OBJECT
@@ -118,6 +122,11 @@ public slots:
     void changeEvent(QEvent *evt);
 
 
+signals:
+
+    void AfficherMessageStatut(const QString &message, const int secondes = -1);
+
+
 protected:
 
     /*
@@ -136,10 +145,18 @@ private:
      */
     Ui::CalculsTransits *_ui;
 
+    AfficherResultats *_afficherResultats;
+
+    QAction *_aucun;
+    QAction *_tous;
+
 
     /*
      * Methodes privees
      */
+
+    void CalculAgeElementsOrbitauxTransit();
+
     /**
      * @brief Initialisation Initialisation de la classe CalculsTransits
      */
@@ -148,9 +165,18 @@ private:
 
 private slots:
 
+    void Aucun();
+    void Tous();
+
+    void on_calculsTransit_clicked();
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();
     void on_parametrageDefautTransit_clicked();
+    void on_effacerHeuresTransit_clicked();
+    void on_hauteurSatTransit_currentIndexChanged(int index);
+    void on_majElementsOrbitauxIss_clicked();
+    void on_listeTransits_customContextMenuRequested(const QPoint &pos);
+    void on_listeTransits_itemClicked(QListWidgetItem *item);
 
 };
 

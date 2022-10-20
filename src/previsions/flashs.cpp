@@ -73,7 +73,7 @@ static const int LISTE_PAN[NB_PAN] = { 0, 1, 2 };
 static int _pan;
 static char _mir;
 static Vecteur3D _direction;
-static ConditionsFlashs _conditions;
+static ConditionsPrevisions _conditions;
 static QList<QList<ResultatPrevisions> > _resultatSat;
 static QMap<QString, QList<QList<ResultatPrevisions> > > _resultats;
 static DonneesPrevisions _donnees;
@@ -104,7 +104,7 @@ DonneesPrevisions Flashs::donnees()
 /*
  * Modificateurs
  */
-void Flashs::setConditions(const ConditionsFlashs &conditions)
+void Flashs::setConditions(const ConditionsPrevisions &conditions)
 {
     _conditions = conditions;
 }

@@ -90,7 +90,7 @@
     <rect>
      <x>20</x>
      <y>153</y>
-     <width>161</width>
+     <width>257</width>
      <height>24</height>
     </rect>
    </property>
@@ -105,17 +105,17 @@
      <number>0</number>
     </property>
     <item row="0" column="0">
-     <widget class="QLabel" name="lbl_ageMaxTLETransit">
+     <widget class="QLabel" name="lbl_ageMaxElementsOrbitauxTransit">
       <property name="font">
        <font/>
       </property>
       <property name="text">
-       <string>Age maximal du TLE :</string>
+       <string>Age maximal des éléments orbitaux :</string>
       </property>
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QDoubleSpinBox" name="ageMaxTLETransit">
+     <widget class="QDoubleSpinBox" name="ageMaxElementsOrbitauxTransit">
       <property name="maximumSize">
        <size>
         <width>41</width>
@@ -371,25 +371,25 @@
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="majTleIss">
+  <widget class="QPushButton" name="majElementsOrbitauxIss">
    <property name="geometry">
     <rect>
      <x>190</x>
      <y>185</y>
-     <width>161</width>
+     <width>261</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text">
-    <string>Mettre à jour TLE de l'ISS...</string>
+    <string>Mettre à jour Éléments orbitaux de l'ISS...</string>
    </property>
   </widget>
   <widget class="QWidget" name="formLayoutWidget_54">
    <property name="geometry">
     <rect>
-     <x>190</x>
+     <x>290</x>
      <y>156</y>
-     <width>181</width>
+     <width>215</width>
      <height>18</height>
     </rect>
    </property>
@@ -404,17 +404,17 @@
      <number>0</number>
     </property>
     <item row="0" column="0">
-     <widget class="QLabel" name="lbl_ageTLETransit">
+     <widget class="QLabel" name="lbl_ageElementsOrbitauxTransit">
       <property name="font">
        <font/>
       </property>
       <property name="text">
-       <string>Age du dernier TLE : </string>
+       <string>Age des éléments orbitaux : </string>
       </property>
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QLabel" name="ageTLETransit">
+     <widget class="QLabel" name="ageElementsOrbitauxTransit">
       <property name="font">
        <font/>
       </property>

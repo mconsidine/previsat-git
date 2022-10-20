@@ -64,8 +64,9 @@ enum class CorpsTransit {
 };
 
 
-/* Declaration des structures */
-
+/*
+ *  Declaration des structures
+ */
 struct ConditionsPrevisions
 {
     bool calcEclipseLune;
@@ -73,87 +74,47 @@ struct ConditionsPrevisions
     bool effetEclipsePartielle;
     bool extinction;
     bool refraction;
+    bool systeme;
 
     double crepuscule;
     double hauteur;
     double jj1;
     double jj2;
     double magnitudeLimite;
+    double offset;
     double pas;
 
     QString fichier;
+    QString ficRes;
+    QString unite;
     QStringList listeSatellites;
 
     Observateur observateur;
-};
 
-struct ConditionsFlashs
-{
-    bool calcEclipseLune;
-    bool effetEclipsePartielle;
-    bool extinction;
-    bool refraction;
-
+    // Pour les flashs
     double angleLimite;
-    double crepuscule;
-    double hauteur;
-    double jj1;
-    double jj2;
-    double magnitudeLimite;
 
-    QString fichier;
-    QStringList listeSatellites;
-
-    Observateur observateur;
-};
-
-struct ConditionsTransits
-{
+    // Pour les transits
     bool calcEphemLune;
     bool calcEphemSoleil;
     bool calcTransitLunaireJour;
-    bool refraction;
 
-    double hauteur;
-    double jj1;
-    double jj2;
     double seuilConjonction;
 
-    Observateur observateur;
     QList<ElementsOrbitaux> tabElem;
-};
 
-struct ConditionsEvenements
-{
-    bool calcEclipseLune;
+    // Pour les evenements orbitaux
     bool passageApogee;
     bool passageNoeuds;
     bool passageOmbre;
     bool passagePso;
     bool transitionsJourNuit;
 
-    double jj1;
-    double jj2;
-
-    QString fichier;
-    QString unite;
-    QStringList listeSatellites;
-};
-
-struct ConditionsTelescope
-{
+    // Pour le suivi avec un telescope
     int nbIter;
 
-    double hauteur;
-    double jj1;
-    double pas;
-
-    QString fichier;
-    QString ficRes;
-    QStringList listeSatellites;
-
-    Observateur observateur;
 };
+
 
 struct ResultatPrevisions
 {

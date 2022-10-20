@@ -36,13 +36,25 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#pragma GCC diagnostic ignored "-Wshadow"
+#include <QDir>
+#include <QFutureWatcher>
+#include <QMenu>
+#include <QProgressBar>
+#include <QProgressDialog>
 #include <QSettings>
+#include <QtConcurrent>
 #include "ui_calculsevenementsorbitaux.h"
+#pragma GCC diagnostic warning "-Wshadow"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "calculsevenementsorbitaux.h"
+#include "configuration/configuration.h"
+#include "interface/afficherresultats.h"
 #include "interface/listwidgetitem.h"
+#include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
+#include "previsions/evenementsorbitaux.h"
 
 
 // Registre
@@ -67,6 +79,10 @@ CalculsEvenementsOrbitaux::CalculsEvenementsOrbitaux(QWidget *parent) :
 
     try {
 
+        _afficherResultats = nullptr;
+        _aucun = nullptr;
+        _tous = nullptr;
+
         Initialisation();
 
     } catch (PreviSatException &e) {
@@ -86,6 +102,10 @@ CalculsEvenementsOrbitaux::~CalculsEvenementsOrbitaux()
     settings.setValue("previsions/passageOmbre", _ui->passageOmbre->isChecked());
     settings.setValue("previsions/passageQuadrangles", _ui->passageQuadrangles->isChecked());
     settings.setValue("previsions/transitionJourNuit", _ui->transitionJourNuit->isChecked());
+
+    EFFACE_OBJET(_afficherResultats);
+    EFFACE_OBJET(_aucun);
+    EFFACE_OBJET(_tous);
     delete _ui;
 }
 
@@ -193,7 +213,151 @@ void CalculsEvenementsOrbitaux::Initialisation()
         connect(effacerFiltre, &QAction::triggered, this, &CalculsEvenementsOrbitaux::on_filtreSatellites_returnPressed);
     }
 
+    _aucun = new QAction(tr("Aucun"), this);
+    connect(_aucun, &QAction::triggered, this, &CalculsEvenementsOrbitaux::Aucun);
+
+    _tous = new QAction(tr("Tous"), this);
+    connect(_tous, &QAction::triggered, this, &CalculsEvenementsOrbitaux::Tous);
+
     qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+void CalculsEvenementsOrbitaux::Aucun()
+{
+    for(int i=0; i<_ui->listeEvenements->count(); i++) {
+        _ui->listeEvenements->item(i)->setCheckState(Qt::Unchecked);
+    }
+}
+
+void CalculsEvenementsOrbitaux::Tous()
+{
+    for(int i=0; i<_ui->listeEvenements->count(); i++) {
+        _ui->listeEvenements->item(i)->setCheckState(Qt::Checked);
+    }
+}
+
+void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
+{
+    /* Declarations des variables locales */
+    QVector<int> vecSat;
+    ConditionsPrevisions conditions;
+
+    /* Initialisations */
+    int j = 0;
+    conditions.listeSatellites.clear();
+
+    /* Corps de la methode */
+    try {
+
+        if (_ui->listeEvenements->count() == 0) {
+            throw PreviSatException();
+        }
+
+        vecSat.append(0);
+
+        for(int i = 0; i < _ui->listeEvenements->count(); i++) {
+            if (_ui->listeEvenements->item(i)->checkState() == Qt::Checked) {
+                conditions.listeSatellites.append(_ui->listeEvenements->item(i)->data(Qt::UserRole).toString());
+                //vecSat.append(j);
+                j++;
+            }
+        }
+
+        if (conditions.listeSatellites.isEmpty()) {
+            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), MessageType::WARNING);
+        }
+
+        // Ecart heure locale - UTC
+        const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialeEvt->dateTime());
+        const double offset2 = Date::CalculOffsetUTC(_ui->dateFinaleEvt->dateTime());
+
+        // Date et heure initiales
+        const Date date1(_ui->dateInitialeEvt->date().year(), _ui->dateInitialeEvt->date().month(), _ui->dateInitialeEvt->date().day(),
+                         _ui->dateInitialeEvt->time().hour(), _ui->dateInitialeEvt->time().minute(), _ui->dateInitialeEvt->time().second(), 0.);
+
+        // Jour julien initial
+        conditions.jj1 = date1.jourJulien() - offset1;
+
+        // Date et heure finales
+        const Date date2(_ui->dateFinaleEvt->date().year(), _ui->dateFinaleEvt->date().month(), _ui->dateFinaleEvt->date().day(),
+                         _ui->dateFinaleEvt->time().hour(), _ui->dateFinaleEvt->time().minute(), _ui->dateFinaleEvt->time().second(), 0.);
+
+        // Jour julien final
+        conditions.jj2 = date2.jourJulien() - offset2;
+
+        // Cas ou la date finale precede la date initiale : on intervertit les dates
+        if (conditions.jj1 > conditions.jj2) {
+            const double tmp = conditions.jj2;
+            conditions.jj2 = conditions.jj1;
+            conditions.jj1 = tmp;
+        }
+
+        conditions.offset = offset1;
+
+        // Systeme horaire
+        conditions.systeme = settings.value("affichage/syst24h").toBool();
+
+        // Unites de longueur
+        conditions.unite = (settings.value("affichage/unite").toBool()) ? tr("km", "kilometer") : tr("nmi", "nautical mile");
+
+        // Prise en compte des eclipses de Lune
+        conditions.calcEclipseLune = settings.value("affichage/eclipsesLune").toBool();
+
+        // Fichier d'elements orbitaux
+        conditions.fichier = Configuration::instance()->nomfic();
+
+        // Nom du fichier resultat
+        const QString chaine = tr("evenements", "file name (without accent)") + "_%1_%2.txt";
+        conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
+                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").at(0));
+
+        // Barre de progression
+        auto barreProgression = new QProgressBar();
+        barreProgression->setAlignment(Qt::AlignHCenter);
+
+        QProgressDialog fenetreProgression;
+        fenetreProgression.setWindowTitle(tr("Calculs en cours..."));
+        fenetreProgression.setCancelButtonText(tr("Annuler"));
+        fenetreProgression.setBar(barreProgression);
+        fenetreProgression.setWindowFlags(fenetreProgression.windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
+        // Lancement des calculs
+        EvenementsOrbitaux::setConditions(conditions);
+        QFutureWatcher<void> calculs;
+
+        connect(&fenetreProgression, SIGNAL(canceled()), &calculs, SLOT(cancel()));
+        connect(&calculs, SIGNAL(finished()), &fenetreProgression, SLOT(reset()));
+        connect(&calculs, SIGNAL(progressRangeChanged(int, int)), &fenetreProgression, SLOT(setRange(int,int)));
+        connect(&calculs, SIGNAL(progressValueChanged(int)), &fenetreProgression, SLOT(setValue(int)));
+
+        calculs.setFuture(QtConcurrent::map(vecSat, &EvenementsOrbitaux::CalculEvenements));
+
+        fenetreProgression.exec();
+        calculs.waitForFinished();
+
+        if (calculs.isCanceled()) {
+            EvenementsOrbitaux::resultats().clear();
+        } else {
+
+            // Affichage des resultats
+            emit AfficherMessageStatut(tr("Calculs terminés"), 10);
+
+            if (EvenementsOrbitaux::resultats().isEmpty()) {
+                Message::Afficher(tr("Aucun évènement n'a été trouvé sur la période donnée"), MessageType::INFO);
+            } else {
+                EFFACE_OBJET(_afficherResultats);
+                _afficherResultats = new AfficherResultats(TypeCalcul::EVENEMENTS, conditions, EvenementsOrbitaux::donnees(),
+                                                           EvenementsOrbitaux::resultats());
+                _afficherResultats->show();
+            }
+        }
+
+    } catch (PreviSatException &) {
+    }
 
     /* Retour */
     return;
@@ -227,6 +391,65 @@ void CalculsEvenementsOrbitaux::on_parametrageDefautEvt_clicked()
     _ui->transitionJourNuit->setChecked(true);
     if (!_ui->calculsEvt->isEnabled()) {
         _ui->calculsEvt->setEnabled(true);
+    }
+
+    /* Retour */
+    return;
+}
+
+void CalculsEvenementsOrbitaux::on_effacerHeuresEvt_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->dateInitialeEvt->setTime(QTime(0, 0, 0));
+    _ui->dateFinaleEvt->setTime(QTime(0, 0, 0));
+
+    /* Retour */
+    return;
+}
+
+void CalculsEvenementsOrbitaux::on_listeEvenements_itemClicked(QListWidgetItem *item)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(item)
+
+    /* Corps de la methode */
+    if (_ui->listeEvenements->hasFocus() && (_ui->listeEvenements->currentRow() >= 0)) {
+
+        if (_ui->listeEvenements->currentItem()->checkState() == Qt::Checked) {
+
+            // Suppression d'un satellite dans la liste
+            _ui->listeEvenements->currentItem()->setCheckState(Qt::Unchecked);
+
+        } else {
+
+            // Ajout d'un satellite dans la liste
+            _ui->listeEvenements->currentItem()->setCheckState(Qt::Checked);
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+void CalculsEvenementsOrbitaux::on_listeEvenements_customContextMenuRequested(const QPoint &pos)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(pos)
+
+    /* Corps de la methode */
+    if (_ui->listeEvenements->currentRow() >= 0) {
+        QMenu menu(this);
+        menu.addAction(_tous);
+        menu.addAction(_aucun);
+        menu.exec(QCursor::pos());
     }
 
     /* Retour */

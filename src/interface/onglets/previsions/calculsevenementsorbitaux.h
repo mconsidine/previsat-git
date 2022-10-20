@@ -54,6 +54,10 @@ namespace Ui {
 class CalculsEvenementsOrbitaux;
 }
 
+class QListWidgetItem;
+class AfficherResultats;
+
+
 class CalculsEvenementsOrbitaux : public QFrame
 {
     Q_OBJECT
@@ -113,6 +117,11 @@ public slots:
     void changeEvent(QEvent *evt);
 
 
+signals:
+
+    void AfficherMessageStatut(const QString &, const int );
+
+
 protected:
 
     /*
@@ -130,6 +139,11 @@ private:
      */
     Ui::CalculsEvenementsOrbitaux *_ui;
 
+    AfficherResultats *_afficherResultats;
+
+    QAction *_aucun;
+    QAction *_tous;
+
 
     /*
      * Methodes privees
@@ -142,9 +156,16 @@ private:
 
 private slots:
 
+    void Aucun();
+    void Tous();
+
+    void on_calculsEvt_clicked();
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();
     void on_parametrageDefautEvt_clicked();
+    void on_effacerHeuresEvt_clicked();
+    void on_listeEvenements_itemClicked(QListWidgetItem *item);
+    void on_listeEvenements_customContextMenuRequested(const QPoint &pos);
 
 };
 

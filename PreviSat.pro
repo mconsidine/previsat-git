@@ -87,6 +87,7 @@ SOURCES += \
     src/configuration/evenementsstationspatiale.cpp                \
     src/configuration/fichierobs.cpp                               \
     src/configuration/gestionnairexml.cpp                          \
+    src/interface/afficherresultats.cpp \
     src/interface/apropos/apropos.cpp                              \
     src/interface/carte/carte.cpp                                  \
     src/interface/carte/coordiss.cpp                               \
@@ -151,6 +152,7 @@ HEADERS += \
     src/configuration/gestionnairexml.h                          \
     src/configuration/satellitesflashs.h                         \
     src/configuration/satellitetdrs.h                            \
+    src/interface/afficherresultats.h \
     src/interface/carte/carte.h                                  \
     src/interface/carte/coordiss.h                               \
     src/interface/ciel/ciel.h                                    \
@@ -220,6 +222,7 @@ HEADERS += \
 
 
 FORMS += \
+    src/interface/afficherresultats.ui \
     src/interface/apropos/apropos.ui                              \
     src/interface/carte/carte.ui                                  \
     src/interface/carte/coordiss.ui                               \

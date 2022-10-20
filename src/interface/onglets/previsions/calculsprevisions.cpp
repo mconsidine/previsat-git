@@ -36,14 +36,25 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#pragma GCC diagnostic ignored "-Wshadow"
+#include <QDir>
+#include <QFutureWatcher>
+#include <QMenu>
+#include <QProgressBar>
+#include <QProgressDialog>
 #include <QSettings>
+#include <QtConcurrent>
 #include "ui_calculsprevisions.h"
+#pragma GCC diagnostic warning "-Wshadow"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "calculsprevisions.h"
 #include "configuration/configuration.h"
+#include "interface/afficherresultats.h"
 #include "interface/listwidgetitem.h"
+#include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
+#include "previsions/prevision.h"
 
 
 // Registre
@@ -68,6 +79,10 @@ CalculsPrevisions::CalculsPrevisions(QWidget *parent) :
 
     try {
 
+        _afficherResultats = nullptr;
+        _aucun = nullptr;
+        _tous = nullptr;
+
         Initialisation();
 
     } catch (PreviSatException &e) {
@@ -90,6 +105,10 @@ CalculsPrevisions::~CalculsPrevisions()
     settings.setValue("previsions/valHauteurSoleilPrev", _ui->valHauteurSoleilPrev->text().toInt());
     settings.setValue("previsions/illuminationPrev", _ui->illuminationPrev->isChecked());
     settings.setValue("previsions/magnitudeMaxPrev", _ui->magnitudeMaxPrev->isChecked());
+
+    EFFACE_OBJET(_afficherResultats);
+    EFFACE_OBJET(_aucun);
+    EFFACE_OBJET(_tous);
     delete _ui;
 }
 
@@ -227,7 +246,193 @@ void CalculsPrevisions::Initialisation()
         connect(effacerFiltre, &QAction::triggered, this, &CalculsPrevisions::on_filtreSatellites_returnPressed);
     }
 
+    _aucun = new QAction(tr("Aucun"), this);
+    connect(_aucun, &QAction::triggered, this, &CalculsPrevisions::Aucun);
+
+    _tous = new QAction(tr("Tous"), this);
+    connect(_tous, &QAction::triggered, this, &CalculsPrevisions::Tous);
+
     qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+void CalculsPrevisions::Aucun()
+{
+    for(int i=0; i<_ui->listePrevisions->count(); i++) {
+        _ui->listePrevisions->item(i)->setCheckState(Qt::Unchecked);
+    }
+}
+
+void CalculsPrevisions::Tous()
+{
+    for(int i=0; i<_ui->listePrevisions->count(); i++) {
+        _ui->listePrevisions->item(i)->setCheckState(Qt::Checked);
+    }
+}
+
+void CalculsPrevisions::on_calculsPrev_clicked()
+{
+    /* Declarations des variables locales */
+    QVector<int> vecSat;
+    ConditionsPrevisions conditions;
+
+    /* Initialisations */
+    int j = 0;
+    conditions.listeSatellites.clear();
+    vecSat.append(0);
+
+    /* Corps de la methode */
+    try {
+
+        qInfo() << "Lancement des calculs de prévisions";
+
+        if (_ui->listePrevisions->count() == 0) {
+            qCritical() << "Aucun satellite n'est affiché dans la liste";
+            throw PreviSatException();
+        }
+
+        for(int i = 0; i < _ui->listePrevisions->count(); i++) {
+            if (_ui->listePrevisions->item(i)->checkState() == Qt::Checked) {
+                conditions.listeSatellites.append(_ui->listePrevisions->item(i)->data(Qt::UserRole).toString());
+                j++;
+            }
+        }
+
+        if (conditions.listeSatellites.isEmpty()) {
+            qWarning() << "Aucun satellite n'est sélectionné dans la liste";
+            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), MessageType::WARNING);
+        }
+
+        // Ecart heure locale - UTC
+        const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialePrev->dateTime());
+        const double offset2 = Date::CalculOffsetUTC(_ui->dateFinalePrev->dateTime());
+
+        // Date et heure initiales
+        const Date date1(_ui->dateInitialePrev->date().year(), _ui->dateInitialePrev->date().month(), _ui->dateInitialePrev->date().day(),
+                         _ui->dateInitialePrev->time().hour(), _ui->dateInitialePrev->time().minute(), _ui->dateInitialePrev->time().second(), 0.);
+
+        // Jour julien initial
+        conditions.jj1 = date1.jourJulien() - offset1;
+
+        // Date et heure finales
+        const Date date2(_ui->dateFinalePrev->date().year(), _ui->dateFinalePrev->date().month(), _ui->dateFinalePrev->date().day(),
+                         _ui->dateFinalePrev->time().hour(), _ui->dateFinalePrev->time().minute(), _ui->dateFinalePrev->time().second(), 0.);
+
+        // Jour julien final
+        conditions.jj2 = date2.jourJulien() - offset2;
+
+        // Cas ou la date finale precede la date initiale : on intervertit les dates
+        if (conditions.jj1 > conditions.jj2) {
+            const double tmp = conditions.jj2;
+            conditions.jj2 = conditions.jj1;
+            conditions.jj1 = tmp;
+        }
+
+        conditions.offset = offset1;
+
+        // Systeme horaire
+        conditions.systeme = settings.value("affichage/syst24h").toBool();
+
+        // Pas de generation
+        conditions.pas = _ui->pasGeneration->currentText().split(QRegularExpression("[^0-9]+")).first().toDouble();
+        if (_ui->pasGeneration->currentIndex() < 5) {
+            conditions.pas *= NB_JOUR_PAR_SEC;
+        } else {
+            conditions.pas *= NB_JOUR_PAR_MIN;
+        }
+
+        // Lieu d'observation
+        conditions.observateur = Configuration::instance()->observateurs().at(_ui->lieuxObservation->currentIndex());
+
+        // Unites de longueur
+        conditions.unite = (settings.value("affichage/unite").toBool()) ? tr("km", "kilometer") : tr("nmi", "nautical mile");
+
+        // Conditions d'eclairement du satellite
+        conditions.eclipse = _ui->illuminationPrev->isChecked();
+
+        // Magnitude maximale
+        conditions.magnitudeLimite = (_ui->magnitudeMaxPrev->isChecked()) ? _ui->valMagnitudeMaxPrev->value() : 99.;
+
+        // Hauteur minimale du satellite
+        conditions.hauteur = DEG2RAD * ((_ui->hauteurSatPrev->currentIndex() == 5) ?
+                                            abs(_ui->valHauteurSatPrev->text().toInt()) : 5 * _ui->hauteurSatPrev->currentIndex());
+
+        // Hauteur maximale du Soleil
+        if (_ui->hauteurSoleilPrev->currentIndex() <= 3) {
+            conditions.crepuscule = -6. * DEG2RAD * _ui->hauteurSoleilPrev->currentIndex();
+        } else if (_ui->hauteurSoleilPrev->currentIndex() == 4) {
+            conditions.crepuscule = PI_SUR_DEUX;
+        } else if (_ui->hauteurSoleilPrev->currentIndex() == 5) {
+            conditions.crepuscule = DEG2RAD * _ui->valHauteurSoleilPrev->text().toInt();
+        } else {
+        }
+
+        // Prise en compte de l'extinction atmospherique
+        conditions.extinction = settings.value("affichage/extinctionAtmospherique").toBool();
+
+        // Prise en compte de la refraction atmospherique
+        conditions.refraction = settings.value("affichage/refractionAtmospherique").toBool();
+
+        // Prise en compte de l'effet des eclipses partielles sur la magnitude
+        conditions.effetEclipsePartielle = settings.value("affichage/effetEclipsesMagnitude").toBool();
+
+        // Prise en compte des eclipses de Lune
+        conditions.calcEclipseLune = settings.value("affichage/eclipsesLune").toBool();
+
+        // Fichier d'elements orbitaux
+        conditions.fichier = Configuration::instance()->nomfic();
+
+        // Nom du fichier resultat
+        const QString chaine = tr("previsions", "filename (without accent)") + "_%1_%2.txt";
+        conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
+                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").at(0));
+
+        // Barre de progression
+        auto barreProgression = new QProgressBar();
+        barreProgression->setAlignment(Qt::AlignHCenter);
+
+        QProgressDialog fenetreProgression;
+        fenetreProgression.setWindowTitle(tr("Calculs en cours..."));
+        fenetreProgression.setCancelButtonText(tr("Annuler"));
+        fenetreProgression.setBar(barreProgression);
+        fenetreProgression.setWindowFlags(fenetreProgression.windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
+        // Lancement des calculs
+        Prevision::setConditions(conditions);
+        QFutureWatcher<void> calculs;
+
+        connect(&fenetreProgression, SIGNAL(canceled()), &calculs, SLOT(cancel()));
+        connect(&calculs, SIGNAL(finished()), &fenetreProgression, SLOT(reset()));
+        connect(&calculs, SIGNAL(progressRangeChanged(int, int)), &fenetreProgression, SLOT(setRange(int,int)));
+        connect(&calculs, SIGNAL(progressValueChanged(int)), &fenetreProgression, SLOT(setValue(int)));
+
+        calculs.setFuture(QtConcurrent::map(vecSat, &Prevision::CalculPrevisions));
+
+        fenetreProgression.exec();
+        calculs.waitForFinished();
+
+        if (calculs.isCanceled()) {
+            Prevision::resultats().clear();
+        } else {
+
+            // Affichage des resultats
+            emit AfficherMessageStatut(tr("Calculs terminés"), 10);
+
+            if (Prevision::resultats().isEmpty()) {
+                qInfo() << "Aucun passage n'a été trouvé sur la période donnée";
+                Message::Afficher(tr("Aucun passage n'a été trouvé sur la période donnée"), MessageType::INFO);
+            } else {
+                EFFACE_OBJET(_afficherResultats);
+                _afficherResultats = new AfficherResultats(TypeCalcul::PREVISIONS, conditions, Prevision::donnees(), Prevision::resultats());
+                _afficherResultats->show();
+            }
+        }
+
+    } catch (PreviSatException &) {
+    }
 
     /* Retour */
     return;
@@ -265,6 +470,110 @@ void CalculsPrevisions::on_parametrageDefautPrev_clicked()
     _ui->magnitudeMaxPrev->setChecked(false);
     if (!_ui->calculsPrev->isEnabled()) {
         _ui->calculsPrev->setEnabled(true);
+    }
+
+    /* Retour */
+    return;
+}
+
+void CalculsPrevisions::on_listePrevisions_itemClicked(QListWidgetItem *item)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(item)
+
+    /* Corps de la methode */
+    if (_ui->listePrevisions->hasFocus() && (_ui->listePrevisions->currentRow() >= 0)) {
+
+        if (_ui->listePrevisions->currentItem()->checkState() == Qt::Checked) {
+
+            // Suppression d'un satellite dans la liste
+            _ui->listePrevisions->currentItem()->setCheckState(Qt::Unchecked);
+
+        } else {
+
+            // Ajout d'un satellite dans la liste
+            _ui->listePrevisions->currentItem()->setCheckState(Qt::Checked);
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+void CalculsPrevisions::on_effacerHeuresPrev_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->dateInitialePrev->setTime(QTime(0, 0, 0));
+    _ui->dateFinalePrev->setTime(QTime(0, 0, 0));
+
+    /* Retour */
+    return;
+}
+
+void CalculsPrevisions::on_hauteurSatPrev_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (index == _ui->hauteurSatPrev->count() - 1) {
+        _ui->valHauteurSatPrev->setText(settings.value("previsions/valHauteurSatPrev", 0).toString());
+        _ui->valHauteurSatPrev->setVisible(true);
+        _ui->valHauteurSatPrev->setCursorPosition(0);
+        _ui->valHauteurSatPrev->setFocus();
+    } else {
+        _ui->valHauteurSatPrev->setVisible(false);
+    }
+
+    /* Retour */
+    return;
+}
+
+void CalculsPrevisions::on_hauteurSoleilPrev_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (index == _ui->hauteurSoleilPrev->count() - 1) {
+        _ui->valHauteurSoleilPrev->setText(settings.value("previsions/valHauteurSoleilPrev", 0).toString());
+        _ui->valHauteurSoleilPrev->setVisible(true);
+        _ui->valHauteurSoleilPrev->setCursorPosition(0);
+        _ui->valHauteurSoleilPrev->setFocus();
+    } else {
+        _ui->valHauteurSoleilPrev->setVisible(false);
+    }
+
+    /* Retour */
+    return;
+}
+
+void CalculsPrevisions::on_magnitudeMaxPrev_toggled(bool checked)
+{
+    _ui->valMagnitudeMaxPrev->setVisible(checked);
+}
+
+void CalculsPrevisions::on_listePrevisions_customContextMenuRequested(const QPoint &pos)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(pos)
+
+    /* Corps de la methode */
+    if (_ui->listePrevisions->currentRow() >= 0) {
+        QMenu menu(this);
+        menu.addAction(_tous);
+        menu.addAction(_aucun);
+        menu.exec(QCursor::pos());
     }
 
     /* Retour */

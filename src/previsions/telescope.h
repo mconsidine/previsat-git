@@ -58,7 +58,7 @@ public:
     /*
      * Modificateurs
      */
-    static void setConditions(const ConditionsTelescope &conditions);
+    static void setConditions(const ConditionsPrevisions &conditions);
 
 
     /*

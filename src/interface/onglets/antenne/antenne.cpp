@@ -36,13 +36,19 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QHostAddress>
+#include <QProcess>
 #include <QSettings>
+#include <QTimer>
+#include <QUdpSocket>
 #include "ui_antenne.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "antenne.h"
 #include "configuration/configuration.h"
-#include "librairies/corps/satellite/evenementsconst.h"
+#include "librairies/corps/satellite/evenements.h"
 #include "librairies/exceptions/previsatexception.h"
 
 
@@ -68,6 +74,10 @@ Antenne::Antenne(QWidget *parent) :
 
     try {
 
+        _chronometreUdp = nullptr;
+        _udpSocket = nullptr;
+        _date = nullptr;
+
         Initialisation();
 
     } catch (PreviSatException &e) {
@@ -84,6 +94,10 @@ Antenne::~Antenne()
 {
     settings.setValue("previsions/adresse", _ui->adresse->text());
     settings.setValue("previsions/port", _ui->port->value());
+
+    EFFACE_OBJET(_chronometreUdp);
+    EFFACE_OBJET(_udpSocket);
+    EFFACE_OBJET(_date);
     delete _ui;
 }
 
@@ -92,11 +106,9 @@ Antenne::~Antenne()
  * Accesseurs
  */
 
-
 /*
  * Modificateurs
  */
-
 
 /*
  * Methodes publiques
@@ -154,13 +166,18 @@ void Antenne::InitAffichageFrequences()
     return;
 }
 
-void Antenne::show(const QString &nomsat, const QString &dateAOS,  const ElementsAOS &elementsAOS)
+void Antenne::show(const Date &date)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const Satellite &sat = Configuration::instance()->listeSatellites().first();
+    Satellite &sat = Configuration::instance()->listeSatellites().first();
+    const QString nomsat = sat.elementsOrbitaux().nom;
     const QString norad = sat.elementsOrbitaux().norad;
+    EFFACE_OBJET(_date);
+    _date = new Date(date);
+
+    const ElementsAOS elementsAOS = Evenements::CalculAOS(date, sat, Configuration::instance()->observateur());
 
     /* Corps de la methode */
     if (Configuration::instance()->mapFrequencesRadio().contains(norad)) {
@@ -239,7 +256,26 @@ void Antenne::show(const QString &nomsat, const QString &dateAOS,  const Element
     // Affichage du prochain AOS/LOS
     if (elementsAOS.aos) {
 
-        const QString delai = dateAOS.section(")", -2, -2).section("(", 1);
+        const Date dateAOS = Date(elementsAOS.date, date.offsetUTC());
+        const double delai = dateAOS.jourJulienUTC() - date.jourJulienUTC();
+
+        const Date delaiAOS(delai - 0.5 + EPS_DATES, 0.);
+        QString cDelaiAOS;
+
+        if (delai >= 1.) {
+
+            cDelaiAOS = "";
+
+        } else if (delai >= (NB_JOUR_PAR_HEUR - EPS_DATES)) {
+
+            cDelaiAOS = delaiAOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).mid(11, 5)
+                    .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
+
+        } else {
+            cDelaiAOS = delaiAOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).mid(14, 5)
+                    .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
+        }
+
         const QString chaine = tr("Prochain %1 %2").arg(elementsAOS.typeAOS).arg(delai);
         _ui->prochainAOS->setText(chaine);
         _ui->prochainAOS->setToolTip((chaine.contains(tr("AOS"))) ? tr("Acquisition du signal") : tr("Perte du signal"));
@@ -289,15 +325,171 @@ void Antenne::Initialisation()
     /* Corps de la methode */
     qInfo() << "Début Initialisation" << metaObject()->className();
 
-    _ui->adresse->setText(settings.value("previsions/adresse").toString());
-    _ui->port->setValue(settings.value("previsions/port").toInt());
+    _ui->adresse->setText(settings.value("previsions/adresse", "127.  0.  0.  1").toString());
+    _ui->port->setValue(settings.value("previsions/port", 12000).toInt());
 
     _ui->frameFrequences->setVisible(false);
     _ui->frameSatellite->setVisible(false);
     _ui->donneesTransmises->setVisible(false);
 
+    _structureMessageUdp = "<PREVISAT>" \
+                           "<SAT>%1</SAT>" \
+                           "<AOS>%2</AOS>" \
+                           "<AZIMUTH>%3</AZIMUTH>" \
+                           "<ELEVATION>%4</ELEVATION>" \
+                           "<SPEED>%5</SPEED>" \
+                           "</PREVISAT>";
+
     qInfo() << "Fin   Initialisation" << metaObject()->className();
 
     /* Retour */
     return;
+}
+
+void Antenne::EnvoiUdp()
+{
+    /* Declarations des variables locales */
+    QByteArray donnees;
+    QString text;
+
+    /* Initialisations */
+    const QHostAddress adresse(_ui->adresse->text());
+    const quint16 port = static_cast<quint16> (_ui->port->value());
+    const Satellite &sat = Configuration::instance()->listeSatellites().first();
+    const QString azimut = QString("%1").arg(sat.azimut() * RAD2DEG, 0, 'f', 1);
+    const QString hauteur = QString("%1").arg(sat.hauteur() * RAD2DEG, 0, 'f', 1);
+
+    /* Corps de la methode */
+    donnees = QByteArray(_structureMessageUdp.arg(sat.elementsOrbitaux().nom)
+                   .arg((sat.isVisible()) ? 1 : 0)
+                   .arg(azimut)
+                   .arg(hauteur)
+                   .arg(sat.rangeRate() * 1.e3, 0, 'f', 1).toStdString().c_str());
+
+    const qint64 taille = _udpSocket->writeDatagram(donnees, adresse, port);
+    _ui->donneesTransmises->setVisible(taille != -1);
+    _ui->connexion->setChecked(true);
+
+    _ui->hauteurSatRadio->setText(hauteur + "°");
+    _ui->azimutSatRadio->setText(azimut + "°");
+
+    _ui->rangeRateRadio->setText(text.asprintf("%+.3f m/s", sat.rangeRate() * 1.e3));
+
+    /* Retour */
+    return;
+}
+
+void Antenne::ReceptionUdp()
+{
+    _ui->connexion->setText(tr("Déconnecter"));
+    _ui->adresse->setReadOnly(true);
+    _ui->port->setReadOnly(true);
+}
+
+void Antenne::on_connexion_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        const QHostAddress adresse(_ui->adresse->text());
+        const quint16 port = static_cast<quint16> (_ui->port->value());
+
+        if (_udpSocket == nullptr) {
+
+            if (Configuration::instance()->listeSatellites().isEmpty()) {
+                _ui->connexion->setChecked(false);
+            } else {
+
+                _udpSocket = new QUdpSocket(this);
+                connect(_udpSocket, &QUdpSocket::readyRead, this, &Antenne::ReceptionUdp);
+
+                _udpSocket->connectToHost(adresse, port, QIODevice::WriteOnly);
+
+                if (_udpSocket->state() == QAbstractSocket::ConnectedState) {
+
+                    _ui->connexion->setText(tr("Connexion en cours..."));
+
+                    if (_chronometreUdp == nullptr) {
+
+                        _chronometreUdp = new QTimer(this);
+                        _chronometreUdp->setInterval(1000);
+                        _chronometreUdp->setTimerType(Qt::PreciseTimer);
+                        connect(_chronometreUdp, &QTimer::timeout, this, &Antenne::EnvoiUdp);
+                        _chronometreUdp->start();
+                    }
+                }
+            }
+        } else {
+
+            _ui->connexion->setText(tr("Connecter"));
+            _ui->connexion->setChecked(false);
+            _ui->adresse->setReadOnly(false);
+            _ui->port->setReadOnly(false);
+
+            disconnect(_udpSocket, &QUdpSocket::readyRead, this, &Antenne::ReceptionUdp);
+            disconnect(_chronometreUdp, &QTimer::timeout, this, &Antenne::EnvoiUdp);
+            _ui->donneesTransmises->setVisible(false);
+
+            delete _udpSocket;
+            _udpSocket = nullptr;
+
+            delete _chronometreUdp;
+            _chronometreUdp = nullptr;
+        }
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void Antenne::on_ouvrirCatRotator_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QString exeCatRotator = settings.value("fichier/catRotator", "").toString();
+    const QFileInfo fi(exeCatRotator);
+
+    /* Corps de la methode */
+    if (exeCatRotator.isEmpty() || !fi.exists()) {
+
+        settings.setValue("fichier/catRotator", "");
+        QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir CatRotator"), "CatRotator.exe", tr("Fichiers exécutables (*.exe)"));
+
+        if (!fichier.isEmpty()) {
+            fichier = QDir::toNativeSeparators(fichier);
+            settings.setValue("fichier/catRotator", fichier);
+            exeCatRotator = fichier;
+        }
+    }
+
+    if (!exeCatRotator.isEmpty()) {
+
+        QProcess proc;
+        QFileInfo fi2(exeCatRotator);
+        proc.setProgram(exeCatRotator);
+        proc.setWorkingDirectory(fi2.absoluteDir().absolutePath());
+        proc.startDetached();
+    }
+
+    /* Retour */
+    return;
+}
+
+void Antenne::on_frequenceMontante_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    show(*_date);
+}
+
+void Antenne::on_frequenceDescendante_currentIndexChanged(int index)
+{
+    Q_UNUSED(index)
+    show(*_date);
 }

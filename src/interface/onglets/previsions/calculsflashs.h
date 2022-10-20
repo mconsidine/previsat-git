@@ -54,6 +54,9 @@ namespace Ui {
 class CalculsFlashs;
 }
 
+class AfficherResultats;
+
+
 class CalculsFlashs : public QFrame
 {
     Q_OBJECT
@@ -101,6 +104,11 @@ public slots:
     void changeEvent(QEvent *evt);
 
 
+signals:
+
+    void AfficherMessageStatut(const QString &, const int );
+
+
 protected:
 
     /*
@@ -119,6 +127,8 @@ private:
      */
     Ui::CalculsFlashs *_ui;
 
+    AfficherResultats *_afficherResultats;
+
 
     /*
      * Methodes privees
@@ -131,7 +141,11 @@ private:
 
 private slots:
 
+    void on_calculsFlashs_clicked();
     void on_parametrageDefautMetOp_clicked();
+    void on_effacerHeuresMetOp_clicked();
+    void on_hauteurSatMetOp_currentIndexChanged(int index);
+    void on_hauteurSoleilMetOp_currentIndexChanged(int index);
 
 };
 

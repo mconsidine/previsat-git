@@ -63,7 +63,7 @@ public:
     /*
      * Modificateurs
      */
-    static void setConditions(const ConditionsEvenements &conditions);
+    static void setConditions(const ConditionsPrevisions &conditions);
 
 
     /*
