@@ -45,7 +45,7 @@
 #include "telescope.h"
 
 
-static ConditionsTelescope _conditions;
+static ConditionsPrevisions _conditions;
 
 
 /**********
@@ -63,7 +63,7 @@ static ConditionsTelescope _conditions;
 /*
  * Modificateurs
  */
-void Telescope::setConditions(const ConditionsTelescope &conditions)
+void Telescope::setConditions(const ConditionsPrevisions &conditions)
 {
     _conditions = conditions;
 }

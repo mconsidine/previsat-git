@@ -54,6 +54,10 @@ namespace Ui {
 class SuiviTelescope;
 }
 
+class QListWidget;
+class QListWidgetItem;
+class AfficherResultats;
+
 class SuiviTelescope : public QFrame
 {
     Q_OBJECT
@@ -118,6 +122,11 @@ public slots:
     void changeEvent(QEvent *evt);
 
 
+signals:
+
+    void AfficherMessageStatut(const QString &message, const int secondes = -1);
+
+
 protected:
 
     /*
@@ -135,6 +144,8 @@ private:
      * Variables privees
      */
     Ui::SuiviTelescope *_ui;
+    AfficherResultats *_afficherResultats;
+    QString _ficSuivi;
 
 
     /*
@@ -145,12 +156,23 @@ private:
      */
     void Initialisation();
 
+    int getListItemChecked(const QListWidget * const liste) const;
+
 
 private slots:
 
+    void on_genererPositions_clicked();
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();
     void on_parametrageDefautSuivi_clicked();
+    void on_afficherSuivi_clicked();
+    void on_listeTelescope_itemClicked(QListWidgetItem *item);
+    void on_listeTelescope_currentRowChanged(int currentRow);
+    void on_lieuxObservation_currentIndexChanged(int index);
+    void on_hauteurSatSuivi_currentIndexChanged(int index);
+    void on_skywatcher_clicked();
+    void on_ouvrirSatelliteTracker_clicked();
+    void on_pecDelai_toggled(bool checked);
 
 };
 

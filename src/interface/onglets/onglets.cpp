@@ -262,7 +262,7 @@ void Onglets::show(const Date &date)
             _info = false;
         }
 
-        _antenne->show(_general->ui()->nomsat->text(), _general->ui()->dateAOS1->text(), *_general->elementsAOS());
+        _antenne->show(date);
     }
 
 

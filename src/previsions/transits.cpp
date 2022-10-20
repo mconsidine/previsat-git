@@ -48,7 +48,7 @@ static const double PAS1 = 10. * NB_JOUR_PAR_SEC;
 static const double PAS_INT0 = 10. * NB_JOUR_PAR_SEC;
 static const double TEMPS1 = 16. * NB_JOUR_PAR_MIN;
 
-static ConditionsTransits _conditions;
+static ConditionsPrevisions _conditions;
 static QMap<QString, QList<QList<ResultatPrevisions> > > _resultats;
 static DonneesPrevisions _donnees;
 
@@ -88,7 +88,7 @@ DonneesPrevisions Transits::donnees()
 /*
  * Modificateurs
  */
-void Transits::setConditions(const ConditionsTransits &conditions)
+void Transits::setConditions(const ConditionsPrevisions &conditions)
 {
     _conditions = conditions;
 }

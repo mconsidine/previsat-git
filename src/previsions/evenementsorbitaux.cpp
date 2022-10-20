@@ -45,7 +45,7 @@
 #include "librairies/maths/maths.h"
 
 
-static ConditionsEvenements _conditions;
+static ConditionsPrevisions _conditions;
 static QMap<QString, QList<QList<ResultatPrevisions> > > _resultats;
 static DonneesPrevisions _donnees;
 
@@ -102,7 +102,7 @@ DonneesPrevisions EvenementsOrbitaux::donnees()
 /*
  * Modificateurs
  */
-void EvenementsOrbitaux::setConditions(const ConditionsEvenements &conditions)
+void EvenementsOrbitaux::setConditions(const ConditionsPrevisions &conditions)
 {
     _conditions = conditions;
 }

@@ -36,13 +36,24 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
+#pragma GCC diagnostic ignored "-Wshadow"
+#include <QDir>
+#include <QFutureWatcher>
+#include <QProgressBar>
+#include <QProgressDialog>
 #include <QSettings>
+#include <QtConcurrent>
 #include "ui_calculsflashs.h"
+#pragma GCC diagnostic warning "-Wshadow"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "calculsflashs.h"
 #include "configuration/configuration.h"
+#include "interface/afficherresultats.h"
+#include "librairies/corps/satellite/gpformat.h"
+#include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
+#include "previsions/flashs.h"
 
 
 // Registre
@@ -67,6 +78,8 @@ CalculsFlashs::CalculsFlashs(QWidget *parent) :
 
     try {
 
+        _afficherResultats = nullptr;
+
         Initialisation();
 
     } catch (PreviSatException &e) {
@@ -86,6 +99,8 @@ CalculsFlashs::~CalculsFlashs()
     settings.setValue("previsions/lieuxObservationMetOp", _ui->lieuxObservation->currentIndex());
     settings.setValue("previsions/ordreChronologiqueMetOp", _ui->ordreChronologiqueMetOp->isChecked());
     settings.setValue("previsions/magnitudeMaxMetOp", _ui->magnitudeMaxMetOp->value());
+
+    EFFACE_OBJET(_afficherResultats);
     delete _ui;
 }
 
@@ -180,6 +195,173 @@ void CalculsFlashs::Initialisation()
     return;
 }
 
+void CalculsFlashs::on_calculsFlashs_clicked()
+{
+    /* Declarations des variables locales */
+    QVector<int> vecSat;
+    ConditionsPrevisions conditions;
+
+    /* Initialisations */
+    conditions.listeSatellites.clear();
+
+    /* Corps de la methode */
+    try {
+
+        qInfo() << "Lancement des calculs de flashs";
+
+        vecSat.append(0);
+
+        // Fichier d'elements orbitaux
+        const QString fichier = Configuration::instance()->dirElem() + QDir::separator() + "flares-spctrk.xml";
+
+        // Ecart heure locale - UTC
+        const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialeMetOp->dateTime());
+        const double offset2 = Date::CalculOffsetUTC(_ui->dateFinaleMetOp->dateTime());
+
+        // Date et heure initiales
+        const Date date1(_ui->dateInitialeMetOp->date().year(), _ui->dateInitialeMetOp->date().month(), _ui->dateInitialeMetOp->date().day(),
+                         _ui->dateInitialeMetOp->time().hour(), _ui->dateInitialeMetOp->time().minute(), _ui->dateInitialeMetOp->time().second(), 0.);
+
+        // Jour julien initial
+        conditions.jj1 = date1.jourJulien() - offset1;
+
+        // Date et heure finales
+        const Date date2(_ui->dateFinaleMetOp->date().year(), _ui->dateFinaleMetOp->date().month(), _ui->dateFinaleMetOp->date().day(),
+                         _ui->dateFinaleMetOp->time().hour(), _ui->dateFinaleMetOp->time().minute(), _ui->dateFinaleMetOp->time().second(), 0.);
+
+        // Jour julien final
+        conditions.jj2 = date2.jourJulien() - offset2;
+
+        // Cas ou la date finale precede la date initiale : on intervertit les dates
+        if (conditions.jj1 > conditions.jj2) {
+            const double tmp = conditions.jj2;
+            conditions.jj2 = conditions.jj1;
+            conditions.jj1 = tmp;
+        }
+
+        conditions.offset = offset1;
+
+        // Systeme horaire
+        conditions.systeme = settings.value("affichage/syst24h").toBool();
+
+        // Lieu d'observation
+        conditions.observateur = Configuration::instance()->observateurs().at(_ui->lieuxObservation->currentIndex());
+
+        // Unites de longueur
+        conditions.unite = (settings.value("affichage/unite").toBool()) ? tr("km", "kilometer") : tr("nmi", "nautical mile");
+
+        // Magnitude maximale
+        conditions.magnitudeLimite = _ui->magnitudeMaxMetOp->value();
+
+        // Angle limite
+        conditions.angleLimite = PI;
+
+        // Hauteur minimale du satellite
+        conditions.hauteur = DEG2RAD * ((_ui->hauteurSatMetOp->currentIndex() == 5) ?
+                                            abs(_ui->valHauteurSatMetOp->text().toInt()) : 5 * _ui->hauteurSatMetOp->currentIndex());
+
+        // Hauteur maximale du Soleil
+        if (_ui->hauteurSoleilMetOp->currentIndex() <= 3) {
+            conditions.crepuscule = -6. * DEG2RAD * _ui->hauteurSoleilMetOp->currentIndex();
+        } else if (_ui->hauteurSoleilMetOp->currentIndex() == 4) {
+            conditions.crepuscule = PI_SUR_DEUX;
+        } else if (_ui->hauteurSoleilMetOp->currentIndex() == 5) {
+            conditions.crepuscule = DEG2RAD * _ui->valHauteurSoleilMetOp->text().toInt();
+        } else {
+        }
+
+        // Prise en compte de l'extinction atmospherique
+        conditions.extinction = settings.value("affichage/extinctionAtmospherique").toBool();
+
+        // Prise en compte de la refraction atmospherique
+        conditions.refraction = settings.value("affichage/refractionAtmospherique").toBool();
+
+        // Prise en compte de l'effet des eclipses partielles sur la magnitude
+        conditions.effetEclipsePartielle = settings.value("affichage/effetEclipsesMagnitude").toBool();
+
+        // Prise en compte des eclipses de Lune
+        conditions.calcEclipseLune = settings.value("affichage/eclipsesLune").toBool();
+
+        // Liste des satellites pouvant produire des flashs
+        QStringList listeSatellites = Configuration::instance()->mapFlashs().keys();
+
+        // Lecture du fichier TLE
+        QMap<QString, ElementsOrbitaux> tabElem = GPFormat::LectureFichier(fichier, Configuration::instance()->donneesSatellites(),
+                                                        Configuration::instance()->lgRec(), listeSatellites);
+
+        // Mise a jour de la liste de satellites et creation du tableau de satellites
+        QMutableStringListIterator it(listeSatellites);
+        while (it.hasNext()) {
+            const QString norad = it.next();
+            if (!tabElem.contains(norad)) {
+                it.remove();
+            }
+        }
+
+        // Il n'y a aucun satellite produisant des flashs dans le fichier TLE
+        if (listeSatellites.size() == 0) {
+            qWarning() << "Aucun satellite produisant des flashs n'a été trouvé dans le fichier d'éléments orbitaux";
+            throw PreviSatException(tr("Aucun satellite produisant des flashs n'a été trouvé dans le fichier d'éléments orbitaux"), MessageType::WARNING);
+        }
+
+        conditions.fichier = fichier;
+        conditions.listeSatellites = listeSatellites;
+
+        // Nom du fichier resultat
+        const QString chaine = tr("flashs", "file name (without accent)") + "_%1_%2.txt";
+        conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
+                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").at(0)).
+                arg(date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").at(0));
+
+        // Barre de progression
+        auto barreProgression = new QProgressBar();
+        barreProgression->setAlignment(Qt::AlignHCenter);
+
+        QProgressDialog fenetreProgression;
+        fenetreProgression.setWindowTitle(tr("Calculs en cours..."));
+        fenetreProgression.setCancelButtonText(tr("Annuler"));
+        fenetreProgression.setBar(barreProgression);
+        fenetreProgression.setWindowFlags(fenetreProgression.windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
+        // Lancement des calculs
+        Flashs::setConditions(conditions);
+        QFutureWatcher<void> calculs;
+
+        connect(&fenetreProgression, SIGNAL(canceled()), &calculs, SLOT(cancel()));
+        connect(&calculs, SIGNAL(finished()), &fenetreProgression, SLOT(reset()));
+        connect(&calculs, SIGNAL(progressRangeChanged(int, int)), &fenetreProgression, SLOT(setRange(int,int)));
+        connect(&calculs, SIGNAL(progressValueChanged(int)), &fenetreProgression, SLOT(setValue(int)));
+
+        calculs.setFuture(QtConcurrent::map(vecSat, &Flashs::CalculFlashs));
+
+        fenetreProgression.exec();
+        calculs.waitForFinished();
+
+        if (calculs.isCanceled()) {
+            Flashs::resultats().clear();
+        } else {
+
+            // Affichage des resultats
+            emit AfficherMessageStatut(tr("Calculs terminés"), 10);
+
+            if (Flashs::resultats().isEmpty()) {
+                qInfo() << "Aucun flash n'a été trouvé sur la période donnée";
+                Message::Afficher(tr("Aucun flash n'a été trouvé sur la période donnée"), MessageType::INFO);
+            } else {
+                EFFACE_OBJET(_afficherResultats);
+                _afficherResultats = new AfficherResultats(TypeCalcul::FLASHS, conditions, Flashs::donnees(), Flashs::resultats(),
+                                                           settings.value("affichage/valeurZoomMap").toInt());
+                _afficherResultats->show();
+            }
+        }
+
+    } catch (PreviSatException &) {
+    }
+
+    /* Retour */
+    return;
+}
+
 void CalculsFlashs::on_parametrageDefautMetOp_clicked()
 {
     /* Declarations des variables locales */
@@ -196,6 +378,62 @@ void CalculsFlashs::on_parametrageDefautMetOp_clicked()
     _ui->magnitudeMaxMetOp->setValue(4.);
     if (!_ui->calculsFlashs->isEnabled()) {
         _ui->calculsFlashs->setEnabled(true);
+    }
+
+    /* Retour */
+    return;
+}
+
+void CalculsFlashs::on_effacerHeuresMetOp_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->dateInitialeMetOp->setTime(QTime(0, 0, 0));
+    _ui->dateFinaleMetOp->setTime(QTime(0, 0, 0));
+
+    /* Retour */
+    return;
+}
+
+
+void CalculsFlashs::on_hauteurSatMetOp_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (index == _ui->hauteurSatMetOp->count() - 1) {
+        _ui->valHauteurSatMetOp->setText(settings.value("previsions/valHauteurSatMetOp", 0).toString());
+        _ui->valHauteurSatMetOp->setVisible(true);
+        _ui->valHauteurSatMetOp->setCursorPosition(0);
+        _ui->valHauteurSatMetOp->setFocus();
+    } else {
+        _ui->valHauteurSatMetOp->setVisible(false);
+    }
+
+    /* Retour */
+    return;
+}
+
+
+void CalculsFlashs::on_hauteurSoleilMetOp_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (index == _ui->hauteurSoleilMetOp->count() - 1) {
+        _ui->valHauteurSoleilMetOp->setText(settings.value("previsions/valHauteurSoleilMetOp", 0).toString());
+        _ui->valHauteurSoleilMetOp->setVisible(true);
+        _ui->valHauteurSoleilMetOp->setCursorPosition(0);
+        _ui->valHauteurSoleilMetOp->setFocus();
+    } else {
+        _ui->valHauteurSoleilMetOp->setVisible(false);
     }
 
     /* Retour */

@@ -53,6 +53,8 @@ namespace Ui {
 class Antenne;
 }
 
+class QUdpSocket;
+class Date;
 struct ElementsAOS;
 
 
@@ -94,7 +96,7 @@ public:
      */
     void InitAffichageFrequences();
 
-    void show(const QString &nomsat, const QString &dateAOS, const ElementsAOS &elementsAOS);
+    void show(const Date &date);
 
 
 public slots:
@@ -120,6 +122,12 @@ private:
      */
     Ui::Antenne *_ui;
 
+    QTimer *_chronometreUdp;
+    QUdpSocket *_udpSocket;
+    QString _structureMessageUdp;
+
+    Date *_date;
+
 
     /*
      * Methodes privees
@@ -129,7 +137,23 @@ private:
      */
     void Initialisation();
 
+private slots:
 
+    /**
+     * @brief EnvoiUdp Envoi du datagram UDP
+     */
+    void EnvoiUdp();
+
+    /**
+     * @brief ReceptionUdp Reception du datagram UDP
+     */
+    void ReceptionUdp();
+
+    void on_connexion_clicked();
+
+    void on_ouvrirCatRotator_clicked();
+    void on_frequenceMontante_currentIndexChanged(int index);
+    void on_frequenceDescendante_currentIndexChanged(int index);
 };
 
 #endif // ANTENNE_H
