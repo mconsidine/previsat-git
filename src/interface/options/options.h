@@ -54,6 +54,8 @@ namespace Ui {
 class Options;
 }
 
+class Observateur;
+
 class Options : public QDialog
 {
     Q_OBJECT
@@ -123,6 +125,21 @@ private:
      */
     Ui::Options *_ui;
 
+    QMap<QString, Observateur> _mapObs;
+
+    // Elements du menu contextuel des categories
+    QAction *_creerCategorie;
+    QAction *_renommerCategorie;
+    QAction *_supprimerCategorie;
+    QAction *_telechargerCategorie;
+
+    // Elements du menu contextuel des lieux d'observations
+    QAction *_creerLieu;
+    QAction *_ajouterLieuMesPreferes;
+    QAction *_renommerLieu;
+    QAction *_modifierLieu;
+    QAction *_supprimerLieu;
+
 
     /*
      * Methodes privees
@@ -132,10 +149,66 @@ private:
      */
     void AffichageLieuObs();
 
+    /**
+     * @brief AfficherLieu Afficher les coordonnees du lieu selectionne
+     * @param obs
+     */
+    void AfficherLieu(const Observateur &obs);
+
+    /**
+     * @brief ChargementPref Chargement du fichier de preferences
+     */
     void ChargementPref();
 
-    void InitFicPref(const bool majAff);
+    /**
+     * @brief CreerMenus Creation des menus contextuels
+     */
+    void CreerMenus();
 
+    /**
+     * @brief InitChargementStations Chargement de la liste des stations
+     */
+    void InitChargementStations();
+
+    /**
+     * @brief InitFicLang Chargement de la liste des langues disponibles
+     */
+    void InitFicLang();
+
+    /**
+     * @brief InitFicMap Chargement de la liste des cartes du monde
+     */
+    void InitFicMap();
+
+    /**
+     * @brief InitFicObs Chargement de la liste des fichiers de lieux d'observation
+     */
+    void InitFicObs();
+
+    /**
+     * @brief InitFicPref Chargement de la liste des fichiers de preference
+     */
+    void InitFicPref();
+
+    /**
+     * @brief InitFicSon Chargement de la liste des fichiers de notification sonore
+     */
+    void InitFicSon();
+
+    /**
+     * @brief InitPoliceWCC Initialisation de la police du Wall Command Center
+     */
+    void InitPoliceWCC();
+
+    /**
+     * @brief InitWallCommandCenter Initialisation des options du Wall Command Center
+     */
+    void InitWallCommandCenter();
+
+    /**
+     * @brief SauvePreferences Sauvegarde des preferences d'affichage
+     * @param fichierPref fichier de preferences
+     */
     void SauvePreferences(const QString &fichierPref);
 
 
@@ -146,9 +219,35 @@ private slots:
      */
     void AppliquerPreferences();
 
+    // Gestion des categories
+    void CreerCategorie();
+    void RenommerCategorie();
+    void SupprimerCategorie();
+    void TelechargerCategorie();
+
+    // Gestion des lieux d'observation
+    void CreerLieu();
+    void AjouterLieuMesPreferes();
+    void RenommerLieu();
+    void ModifierLieu();
+    void SupprimerLieu();
+
     void on_listeOptions_currentRowChanged(int currentRow);
     void on_listeBoutonsOptions_accepted();
     void on_listeBoutonsOptions_rejected();
+
+    void on_creationCategorie_clicked();
+    void on_categoriesObs_currentRowChanged(int currentRow);
+    void on_categoriesObs_customContextMenuRequested(const QPoint &pos);
+    void on_validerCategorie_clicked();
+    void on_annulerCategorie_clicked();
+
+    void on_lieuxObs_currentRowChanged(int currentRow);
+    void on_lieuxObs_customContextMenuRequested(const QPoint &pos);
+    void on_selecLieux_currentRowChanged(int currentRow);
+    void on_creationLieu_clicked();
+    void on_validerObs_clicked();
+    void on_annulerObs_clicked();
 
 };
 
