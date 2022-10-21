@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 octobre 2022
+ * >    21 octobre 2022
  *
  */
 
@@ -795,7 +795,7 @@ void PreviSat::Initialisation()
         QCoreApplication::instance()->installEventFilter(this);
 
         _informations = new Informations(this);
-        _options = new Options();
+        _options = new Options(this);
         _onglets = new Onglets();
         _ui->layoutOnglets->addWidget(_onglets);
 

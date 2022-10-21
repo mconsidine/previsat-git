@@ -103,12 +103,12 @@ void FichierObs::Ecriture(const QString &ficObsXml)
 /*
  * Lecture du fichier de lieu d'observation
  */
-void FichierObs::Lecture(const QString &ficObsXml, const bool alarme, QMap<QString, Observateur> &mapObs)
+QMap<QString, Observateur> FichierObs::Lecture(const QString &ficObsXml, const bool alarme)
 {
     /* Declarations des variables locales */
+    QMap<QString, Observateur> mapObs;
 
     /* Initialisations */
-    mapObs.clear();
 
     /* Corps de la methode */
     QFile fi1(Configuration::instance()->dirCoord() + QDir::separator() + ficObsXml);
@@ -178,7 +178,7 @@ void FichierObs::Lecture(const QString &ficObsXml, const bool alarme, QMap<QStri
 
 
     /* Retour */
-    return;
+    return mapObs;
 }
 
 

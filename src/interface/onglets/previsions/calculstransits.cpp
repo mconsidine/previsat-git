@@ -344,131 +344,131 @@ void CalculsTransits::on_calculsTransit_clicked()
         conditions.calcEclipseLune = settings.value("affichage/eclipsesLune").toBool();
 
         // Age maximal des elements orbitaux
-//        const double ageElements = _ui->ageMaxElementsOrbitauxTransit->value();
+/*        const double ageElements = _ui->ageMaxElementsOrbitauxTransit->value();
 
-//        // Selection du fichier d'elements orbitaux
-//        const QFileInfo fi1(Configuration::instance()->dirElem() + QDir::separator() + "visual.txt");
-//        const QFileInfo fi2(Configuration::instance()->dirElem() + QDir::separator() + "iss.3le");
-//        const QStringList listeSatellites(QStringList () << Configuration::instance()->noradStationSpatiale());
-//        QList<ElementsOrbitaux> tabElem;
+        // Selection du fichier d'elements orbitaux
+        const QFileInfo fi1(Configuration::instance()->dirElem() + QDir::separator() + "visual.txt");
+        const QFileInfo fi2(Configuration::instance()->dirElem() + QDir::separator() + "iss.3le");
+        const QStringList listeSatellites(QStringList () << Configuration::instance()->noradStationSpatiale());
+        QList<ElementsOrbitaux> tabElem;
 
-//        if (fi2.exists() && (fi2.size() != 0)) {
+        if (fi2.exists() && (fi2.size() != 0)) {
 
-//            // Verification du fichier
-//            if (TLE::VerifieFichier(fi2.absoluteFilePath()) == 0) {
+            // Verification du fichier
+            if (TLE::VerifieFichier(fi2.absoluteFilePath()) == 0) {
 
-//                const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
-//                                       "Le fichier %1 n'est pas un TLE");
-//                throw PreviSatException(msg.arg(fi2.absoluteFilePath()), WARNING);
-//            }
+                const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
+                                       "Le fichier %1 n'est pas un TLE");
+                throw PreviSatException(msg.arg(fi2.absoluteFilePath()), WARNING);
+            }
 
-//            // Lecture du fichier iss.3le
-//            tabElem = TLE::LectureFichier3le(fi2.absoluteFilePath());
+            // Lecture du fichier iss.3le
+            tabElem = TLE::LectureFichier3le(fi2.absoluteFilePath());
 
-//            // Verification des dates
-//            const double datePremierTLE = tabElem.first().epoque().jourJulienUTC();
-//            const double dateDernierTLE = tabElem.last().epoque().jourJulienUTC();
+            // Verification des dates
+            const double datePremierTLE = tabElem.first().epoque().jourJulienUTC();
+            const double dateDernierTLE = tabElem.last().epoque().jourJulienUTC();
 
-//            double age1 = 0.;
-//            if (conditions.jj1 < datePremierTLE) {
-//                age1 = datePremierTLE - conditions.jj1;
-//            }
+            double age1 = 0.;
+            if (conditions.jj1 < datePremierTLE) {
+                age1 = datePremierTLE - conditions.jj1;
+            }
 
-//            if (conditions.jj1 > dateDernierTLE) {
-//                age1 = conditions.jj1 - dateDernierTLE;
-//            }
+            if (conditions.jj1 > dateDernierTLE) {
+                age1 = conditions.jj1 - dateDernierTLE;
+            }
 
-//            double age2 = 0.;
-//            if (conditions.jj2 < datePremierTLE) {
-//                age2 = datePremierTLE - conditions.jj2;
-//            }
+            double age2 = 0.;
+            if (conditions.jj2 < datePremierTLE) {
+                age2 = datePremierTLE - conditions.jj2;
+            }
 
-//            if (conditions.jj2 > dateDernierTLE) {
-//                age2 = conditions.jj2 - dateDernierTLE;
-//            }
+            if (conditions.jj2 > dateDernierTLE) {
+                age2 = conditions.jj2 - dateDernierTLE;
+            }
 
-//            if ((fabs(age1) > EPSDBL100) && (fabs(age2) > EPSDBL100)) {
+            if ((fabs(age1) > EPSDBL100) && (fabs(age2) > EPSDBL100)) {
 
-//                if (fi1.exists() && (fi1.size() != 0)) {
+                if (fi1.exists() && (fi1.size() != 0)) {
 
-//                    // Verification du fichier
-//                    if (TLE::VerifieFichier(fi1.absoluteFilePath()) == 0) {
+                    // Verification du fichier
+                    if (TLE::VerifieFichier(fi1.absoluteFilePath()) == 0) {
 
-//                        const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
-//                                               "Le fichier %1 n'est pas un TLE");
-//                        throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
-//                    }
+                        const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
+                                               "Le fichier %1 n'est pas un TLE");
+                        throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
+                    }
 
-//                    // Utilisation des elements orbitaux du fichier visual.txt
-//                    const QList<TLE> tle(QList<TLE> () << TLE::LectureFichier(fi1.absoluteFilePath(), Configuration::instance()->donneesSatellites(),
-//                                                                              Configuration::instance()->lgRec(), listeSatellites).first());
+                    // Utilisation des elements orbitaux du fichier visual.txt
+                    const QList<TLE> tle(QList<TLE> () << TLE::LectureFichier(fi1.absoluteFilePath(), Configuration::instance()->donneesSatellites(),
+                                                                              Configuration::instance()->lgRec(), listeSatellites).first());
 
-//                    if (tle.isEmpty()) {
+                    if (tle.isEmpty()) {
 
-//                        const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
-//                                               "Le fichier %1 ne contient pas le TLE de l'ISS");
-//                        throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
+                        const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
+                                               "Le fichier %1 ne contient pas le TLE de l'ISS");
+                        throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
 
-//                    } else {
+                    } else {
 
-//                        // Age du TLE de l'ISS contenu dans visual.txt
-//                        const double ageIss1 = fabs(conditions.jj1 - tle.first().epoque().jourJulienUTC());
-//                        const double ageIss2 = fabs(conditions.jj2 - tle.first().epoque().jourJulienUTC());
+                        // Age du TLE de l'ISS contenu dans visual.txt
+                        const double ageIss1 = fabs(conditions.jj1 - tle.first().epoque().jourJulienUTC());
+                        const double ageIss2 = fabs(conditions.jj2 - tle.first().epoque().jourJulienUTC());
 
-//                        if (((age1 > 0.) || (age2 > 0.)) && (ageIss1 < age1) && (ageIss2 < age2)) {
+                        if (((age1 > 0.) || (age2 > 0.)) && (ageIss1 < age1) && (ageIss2 < age2)) {
 
-//                            // Utilisation du TLE du fichier visual.txt
-//                            age1 = qMin(ageIss1, ageIss2);
-//                            age2 = age1;
-//                            conditions.tabtle = tle;
+                            // Utilisation du TLE du fichier visual.txt
+                            age1 = qMin(ageIss1, ageIss2);
+                            age2 = age1;
+                            conditions.tabtle = tle;
 
-//                        } else {
+                        } else {
 
-//                            // Utilisation des TLE du fichier iss.3le
-//                            conditions.tabtle = tabElem;
-//                        }
-//                    }
-//                }
-//            } else {
+                            // Utilisation des TLE du fichier iss.3le
+                            conditions.tabtle = tabElem;
+                        }
+                    }
+                }
+            } else {
 
-//                // Utilisation des TLE du fichier iss.3le
-//                conditions.tabElem = tabElem;
-//            }
+                // Utilisation des TLE du fichier iss.3le
+                conditions.tabElem = tabElem;
+            }
 
-//            if ((age1 > (ageElements + 0.05)) || (age2 > (ageElements + 0.05))) {
-//                const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
-//                Message::Afficher(msg.arg(fabs(qMax(age1, age2)), 0, 'f', 1).arg(ageElements, 0, 'f', 1), INFO);
-//            }
+            if ((age1 > (ageElements + 0.05)) || (age2 > (ageElements + 0.05))) {
+                const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
+                Message::Afficher(msg.arg(fabs(qMax(age1, age2)), 0, 'f', 1).arg(ageElements, 0, 'f', 1), INFO);
+            }
 
-//        } else {
+        } else {
 
-//            if (fi1.exists() && (fi1.size() != 0)) {
+            if (fi1.exists() && (fi1.size() != 0)) {
 
-//                // Verification du fichier
-//                if (TLE::VerifieFichier(fi1.absoluteFilePath()) == 0) {
+                // Verification du fichier
+                if (TLE::VerifieFichier(fi1.absoluteFilePath()) == 0) {
 
-//                    const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
-//                                           "Le fichier %1 n'est pas un TLE");
-//                    throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
-//                }
+                    const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
+                                           "Le fichier %1 n'est pas un TLE");
+                    throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
+                }
 
-//                // Utilisation des elements orbitaux du fichier visual.txt
-//                tabElem.append(TLE::LectureFichier(fi1.absoluteFilePath(), Configuration::instance()->donneesSatellites(),
-//                                                  Configuration::instance()->lgRec(), listeSatellites).first());
+                // Utilisation des elements orbitaux du fichier visual.txt
+                tabElem.append(TLE::LectureFichier(fi1.absoluteFilePath(), Configuration::instance()->donneesSatellites(),
+                                                  Configuration::instance()->lgRec(), listeSatellites).first());
 
-//                if (tabElem.isEmpty()) {
+                if (tabElem.isEmpty()) {
 
-//                    const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
-//                                           "Le fichier %1 ne contient pas le TLE de l'ISS");
-//                    throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
+                    const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
+                                           "Le fichier %1 ne contient pas le TLE de l'ISS");
+                    throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
 
-//                } else {
-//                    conditions.tabElem = tabElem;
-//                }
-//            } else {
-//                throw PreviSatException(tr("Le fichier TLE n'existe pas"), WARNING);
-//            }
-//        }
+                } else {
+                    conditions.tabElem = tabElem;
+                }
+            } else {
+                throw PreviSatException(tr("Le fichier TLE n'existe pas"), WARNING);
+            }
+        }*/
 
         // Nom du fichier resultat
         const QString chaine = tr("transits", "file name (without accent)") + "_%1_%2.txt";

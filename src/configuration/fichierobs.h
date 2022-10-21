@@ -67,9 +67,9 @@ public:
      * @brief Lecture Lecture du fichier de lieu d'observation
      * @param ficObsXml nom du fichier
      * @param alarme affichage d'un message si le fichier ne contient pas de lieux d'observations
-     * @param mapObs map contenant les lieux d'observation
+     * @return map contenant les lieux d'observation
      */
-    static void Lecture(const QString &ficObsXml, const bool alarme, QMap<QString, Observateur> &mapObs);
+    static QMap<QString, Observateur> Lecture(const QString &ficObsXml, const bool alarme);
 
 
     /*

@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    18 octobre 2022
+ * >    21 octobre 2022
  *
  */
 
@@ -138,7 +138,7 @@ public:
     // Lieux d'observation
     Observateur &observateur();
     const QList<Observateur> &observateurs() const;
-    const QMap<QString, Observateur> &mapObs() const;
+    QMap<QString, Observateur> &mapObs();
 
     // Map des satellites de tous les fichiers d'elements orbitaux
     const QMap<QString, QStringList> &mapSatellitesFichierElem() const;
@@ -184,8 +184,10 @@ public:
     QList<LigneConstellation> &lignesCst();
 
     const QStringList &listeFicMap() const;
+    const QStringList &listeFicObs() const;
 
     const QStringList &listeFicPref() const;
+    const QStringList &listeFicSon() const;
 
     // Notifications sonores
     NotificationSonore &notifAOS();
@@ -362,8 +364,13 @@ private:
     // Liste des cartes du monde
     QStringList _listeFicMap;
 
+    QStringList _listeFicObs;
+
     // Fichiers de preferences
     QStringList _listeFicPref;
+
+    // Fichiers de notification sonore
+    QStringList _listeFicSon;
 
     // Notifications sonores
     NotificationSonore _notifAOS;
@@ -394,9 +401,19 @@ private:
     void InitListeFichiersMap();
 
     /**
+     * @brief InitListeFichiersObs Initialisation de la liste de fichiers de lieux d'observation
+     */
+    void InitListeFichiersObs();
+
+    /**
      * @brief InitListeFichiersPref Initialisation de la liste de fichiers de preferences
      */
     void InitListeFichiersPref();
+
+    /**
+     * @brief InitListeFichiersSon Initialisation de la liste de fichiers de sons
+     */
+    void InitListeFichiersSon();
 
     /**
      * @brief LectureChainesNasa Lecture du fichier des chaines NASA

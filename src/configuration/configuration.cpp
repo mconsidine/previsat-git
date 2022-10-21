@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    18 octobre 2022
+ * >    21 octobre 2022
  *
  */
 
@@ -152,8 +152,14 @@ void Configuration::Chargement()
         // Initialisation de la liste de fichiers de cartes du monde
         InitListeFichiersMap();
 
+        // Initialisation de la liste de fichiers de lieux d'observation
+        InitListeFichiersObs();
+
         // Initialisation de la liste de fichiers de preferences
         InitListeFichiersPref();
+
+        // Initialisation de la liste de fichiers de sons
+        InitListeFichiersSon();
 
         // Ecriture d'informations dans le fichier de log
         qInfo() << QString("Lieu d'observation : %1 %2 %3")
@@ -372,7 +378,7 @@ const QList<Observateur> &Configuration::observateurs() const
     return _observateurs;
 }
 
-const QMap<QString, Observateur> &Configuration::mapObs() const
+QMap<QString, Observateur> &Configuration::mapObs()
 {
     return _mapObs;
 }
@@ -484,9 +490,19 @@ const QStringList &Configuration::listeFicMap() const
     return _listeFicMap;
 }
 
+const QStringList &Configuration::listeFicObs() const
+{
+    return _listeFicObs;
+}
+
 const QStringList &Configuration::listeFicPref() const
 {
     return _listeFicPref;
+}
+
+const QStringList &Configuration::listeFicSon() const
+{
+    return _listeFicSon;
 }
 
 NotificationSonore &Configuration::notifAOS()
@@ -670,6 +686,24 @@ void Configuration::InitListeFichiersMap()
 }
 
 /*
+ * Initialisation de la liste de fichiers de lieux d'observation
+ */
+void Configuration::InitListeFichiersObs()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QDir di(_dirCoord);
+    const QStringList filtres(QStringList () << "*.xml");
+    _listeFicObs = di.entryList(filtres, QDir::Files);
+
+    /* Retour */
+    return;
+}
+
+/*
  * Initialisation de la liste de fichiers de preferences
  */
 void Configuration::InitListeFichiersPref()
@@ -683,6 +717,38 @@ void Configuration::InitListeFichiersPref()
     const QStringList filtres(QStringList () << "*.prf");
     _listeFicPref = di.entryList(filtres, QDir::Files);
     _listeFicPref.insert(0, "defaut");
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Initialisation de la liste de fichiers de sons
+ */
+void Configuration::InitListeFichiersSon()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QDir di(_dirSon);
+    const QStringList filtres(QStringList () << "aos-*.wav");
+
+    if (di.entryList(filtres, QDir::Files).isEmpty()) {
+
+        // Copie des fichiers sons par defaut
+        QFile fi;
+        const QString dirCommonSon = _dirCommonData + QDir::separator() + "sound";
+        const QDir di2(dirCommonSon);
+
+        foreach(const QString &fic, di2.entryList(QStringList () << "*.wav", QDir::Files)) {
+            fi.setFileName(dirCommonSon + QDir::separator() + fic);
+            fi.copy(_dirSon + QDir::separator() + fic);
+        }
+    }
+
+    _listeFicSon = di.entryList(filtres, QDir::Files).replaceInStrings("aos-", "").replaceInStrings(".wav", "");
 
     /* Retour */
     return;
