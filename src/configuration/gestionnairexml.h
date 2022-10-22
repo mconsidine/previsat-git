@@ -75,7 +75,7 @@ public:
     /**
      * @brief EcritureGestionnaireElementsOrbitaux Ecriture du fichier de gestionnaire d'elements orbitaux
      */
-    void EcritureGestionnaireElementsOrbitaux();
+    static void EcritureGestionnaireElementsOrbitaux();
 
 
     /*
@@ -146,7 +146,7 @@ private:
      * @param versionCategorieElem version du fichier de categories d'elements orbitaux
      * @return liste contenant les categories d'elements orbitaux
      */
-    static QList<CategorieElementsOrbitaux> LectureGestionnaireElementsOrbitaux(QString &versionCategorieElem);
+    static QMap<QString, QList<CategorieElementsOrbitaux> > LectureGestionnaireElementsOrbitaux(QString &versionCategorieElem);
 
     /**
      * @brief LectureLieuxObservation Lecture de la structure de lieux d'observations

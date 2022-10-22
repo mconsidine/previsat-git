@@ -95,6 +95,9 @@
    <property name="editTriggers">
     <set>QAbstractItemView::SelectedClicked</set>
    </property>
+   <property name="selectionMode">
+    <enum>QAbstractItemView::SingleSelection</enum>
+   </property>
    <property name="textElideMode">
     <enum>Qt::ElideNone</enum>
    </property>

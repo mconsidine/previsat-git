@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    21 octobre 2022
+ * >    22 octobre 2022
  *
  */
 
@@ -99,7 +99,7 @@ void Configuration::Chargement()
         _mapCategoriesOrbite = GestionnaireXml::LectureCategoriesOrbite();
 
         // Lecture du fichier de gestionnaire d'elements orbitaux
-        _listeCategoriesElementsOrbitaux = GestionnaireXml::LectureGestionnaireElementsOrbitaux(_versionCategorieElem);
+        _mapCategoriesElementsOrbitaux = GestionnaireXml::LectureGestionnaireElementsOrbitaux(_versionCategorieElem);
 
         // Lecture du fichier listant les pays et organisations
         _mapPays = GestionnaireXml::LecturePays();
@@ -405,14 +405,14 @@ std::array<Planete, NB_PLANETES> &Configuration::planetes()
 }
 
 
-const QList<CategorieElementsOrbitaux> &Configuration::listeCategoriesElementsOrbitaux() const
+const QMap<QString, QList<CategorieElementsOrbitaux> > &Configuration::mapCategoriesElementsOrbitaux() const
 {
-    return _listeCategoriesElementsOrbitaux;
+    return _mapCategoriesElementsOrbitaux;
 }
 
-const QList<CategorieElementsOrbitaux> &Configuration::listeCategoriesMajElementsOrbitaux() const
+const QMap<QString, QList<CategorieElementsOrbitaux> > &Configuration::mapCategoriesMajElementsOrbitaux() const
 {
-    return _listeCategoriesMajElementsOrbitaux;
+    return _mapCategoriesMajElementsOrbitaux;
 }
 
 const QMap<int, SatelliteTDRS> &Configuration::mapTDRS() const

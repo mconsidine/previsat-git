@@ -47,8 +47,8 @@
 
 
 struct CategorieElementsOrbitaux {
+    Qt::CheckState miseAjour;
     QMap<QString, QString> nom;
-    QString site;
     QStringList fichiers;
 };
 

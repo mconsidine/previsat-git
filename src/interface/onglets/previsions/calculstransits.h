@@ -176,7 +176,6 @@ private slots:
     void on_hauteurSatTransit_currentIndexChanged(int index);
     void on_majElementsOrbitauxIss_clicked();
     void on_listeTransits_customContextMenuRequested(const QPoint &pos);
-    void on_listeTransits_itemClicked(QListWidgetItem *item);
 
 };
 

@@ -162,9 +162,9 @@ void CalculsTransits::AfficherListeSatellites(const QString &nomsat, const QStri
     /* Corps de la methode */
     ListWidgetItem *elem = new ListWidgetItem(nomsat, _ui->listeTransits);
     elem->setData(Qt::UserRole, norad);
+    elem->setData(Qt::CheckStateRole, (check) ? Qt::Checked : Qt::Unchecked);
     elem->setToolTip(tooltip);
-    elem->setFlags(Qt::ItemIsEnabled);
-    elem->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+    elem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
 
     if (norad == noradDefaut) {
         _ui->listeTransits->setCurrentItem(elem);
@@ -646,30 +646,3 @@ void CalculsTransits::on_listeTransits_customContextMenuRequested(const QPoint &
     /* Retour */
     return;
 }
-
-void CalculsTransits::on_listeTransits_itemClicked(QListWidgetItem *item)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    Q_UNUSED(item)
-
-    /* Corps de la methode */
-    if (_ui->listeTransits->hasFocus() && (_ui->listeTransits->currentRow() >= 0)) {
-
-        if (_ui->listeTransits->currentItem()->checkState() == Qt::Checked) {
-
-            // Suppression d'un satellite dans la liste
-            _ui->listeTransits->currentItem()->setCheckState(Qt::Unchecked);
-
-        } else {
-
-            // Ajout d'un satellite dans la liste
-            _ui->listeTransits->currentItem()->setCheckState(Qt::Checked);
-        }
-    }
-
-    /* Retour */
-    return;
-}
-

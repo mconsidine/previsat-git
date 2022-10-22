@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    21 octobre 2022
+ * >    22 octobre 2022
  *
  */
 
@@ -149,8 +149,8 @@ public:
     std::array<Planete, NB_PLANETES> &planetes();
 
 
-    const QList<CategorieElementsOrbitaux> &listeCategoriesElementsOrbitaux() const;
-    const QList<CategorieElementsOrbitaux> &listeCategoriesMajElementsOrbitaux() const;
+    const QMap<QString, QList<CategorieElementsOrbitaux> > &mapCategoriesElementsOrbitaux() const;
+    const QMap<QString, QList<CategorieElementsOrbitaux> > &mapCategoriesMajElementsOrbitaux() const;
 
     const QMap<int, SatelliteTDRS> &mapTDRS() const;
 
@@ -278,8 +278,8 @@ private:
     QMap<QString, QString> _mapCategoriesOrbite;
 
     // Categories d'elements orbitaux
-    QList<CategorieElementsOrbitaux> _listeCategoriesElementsOrbitaux;
-    QList<CategorieElementsOrbitaux> _listeCategoriesMajElementsOrbitaux;
+    QMap<QString, QList<CategorieElementsOrbitaux> > _mapCategoriesElementsOrbitaux;
+    QMap<QString, QList<CategorieElementsOrbitaux> > _mapCategoriesMajElementsOrbitaux;
 
     // Pays ou organisations
     QMap<QString, QString> _mapPays;

@@ -165,9 +165,9 @@ void CalculsPrevisions::AfficherListeSatellites(const QString &nomsat, const QSt
     /* Corps de la methode */
     ListWidgetItem *elem = new ListWidgetItem(nomsat, _ui->listePrevisions);
     elem->setData(Qt::UserRole, norad);
+    elem->setData(Qt::CheckStateRole, (check) ? Qt::Checked : Qt::Unchecked);
     elem->setToolTip(tooltip);
-    elem->setFlags(Qt::ItemIsEnabled);
-    elem->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+    elem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
 
     if (norad == noradDefaut) {
         _ui->listePrevisions->setCurrentItem(elem);
@@ -470,32 +470,6 @@ void CalculsPrevisions::on_parametrageDefautPrev_clicked()
     _ui->magnitudeMaxPrev->setChecked(false);
     if (!_ui->calculsPrev->isEnabled()) {
         _ui->calculsPrev->setEnabled(true);
-    }
-
-    /* Retour */
-    return;
-}
-
-void CalculsPrevisions::on_listePrevisions_itemClicked(QListWidgetItem *item)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    Q_UNUSED(item)
-
-    /* Corps de la methode */
-    if (_ui->listePrevisions->hasFocus() && (_ui->listePrevisions->currentRow() >= 0)) {
-
-        if (_ui->listePrevisions->currentItem()->checkState() == Qt::Checked) {
-
-            // Suppression d'un satellite dans la liste
-            _ui->listePrevisions->currentItem()->setCheckState(Qt::Unchecked);
-
-        } else {
-
-            // Ajout d'un satellite dans la liste
-            _ui->listePrevisions->currentItem()->setCheckState(Qt::Checked);
-        }
     }
 
     /* Retour */

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 octobre 2022
+ * >    22 octobre 2022
  *
  */
 
@@ -191,7 +191,7 @@ void PreviSat::MajGP()
 
     /* Corps de la methode */
     // Mise a jour des elements orbitaux si necessaire
-    if (Configuration::instance()->listeCategoriesElementsOrbitaux().size() > 0) {
+    if (Configuration::instance()->mapCategoriesElementsOrbitaux().size() > 0) {
 
         if (settings.value("temps/ageMaxElementsOrbitaux", true).toBool()) {
 
@@ -799,7 +799,7 @@ void PreviSat::Initialisation()
         _onglets = new Onglets();
         _ui->layoutOnglets->addWidget(_onglets);
 
-        _outils = new Outils();
+        _outils = new Outils(this);
         _radar = new Radar(_ui->frameRadar);
 
         _carte = new Carte(_ui->frameCarte);
@@ -1076,31 +1076,39 @@ void PreviSat::MajWebGP()
 
         qInfo() << "Mise a jour des fichiers GP";
 
+        QString adresse;
         Telechargement tel(Configuration::instance()->dirElem());
 
-        QListIterator it(Configuration::instance()->listeCategoriesMajElementsOrbitaux());
-        while (it.hasNext()) {
+        QMapIterator it1(Configuration::instance()->mapCategoriesMajElementsOrbitaux());
+        while (it1.hasNext()) {
+            it1.next();
 
-            const CategorieElementsOrbitaux categorie = it.next();
-            QString adresse = categorie.site;
+            adresse = it1.key();
+            const QList<CategorieElementsOrbitaux> listeCategories = it1.value();
 
-            if (adresse.contains("celestrak")) {
-                adresse = Configuration::instance()->adresseCelestrakNorad();
-            }
+            QListIterator it2(listeCategories);
+            while (it2.hasNext()) {
 
-            if (adresse.contains("previsat")) {
-                adresse = QString(DOMAIN_NAME) + "elem/%1";
-            }
+                const CategorieElementsOrbitaux categorie = it2.next();
 
-            if (!adresse.endsWith("/")) {
-                adresse.append("/");
-            }
 
-            foreach (const QString fic, categorie.fichiers) {
+                if (adresse.contains("celestrak")) {
+                    adresse = Configuration::instance()->adresseCelestrakNorad();
+                }
 
-                const QString fichier = (adresse.contains("celestrak")) ? QFileInfo(fic).baseName() : fic;
-                const QString ficMaj = adresse.arg(fichier);
-                tel.TelechargementFichier(QUrl(ficMaj));
+                if (adresse.contains("previsat")) {
+                    adresse = QString(DOMAIN_NAME) + "elem/%1";
+                }
+
+                if (!adresse.endsWith("/")) {
+                    adresse.append("/");
+                }
+
+                foreach (const QString fic, categorie.fichiers) {
+
+                    const QString fichier = (adresse.contains("celestrak")) ? QFileInfo(fic).baseName() : fic;
+                    tel.TelechargementFichier(QUrl(adresse.arg(fichier)));
+                }
             }
         }
     } catch (PreviSatException &e) {
@@ -1194,9 +1202,9 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
         // Ajout dans la liste principale
         elem = new ListWidgetItem(nomsatComplet, _ui->listeSatellites);
         elem->setData(Qt::UserRole, norad);
+        elem->setData(Qt::CheckStateRole, (check) ? Qt::Checked : Qt::Unchecked);
         elem->setToolTip(tooltip);
-        elem->setFlags(Qt::ItemIsEnabled);
-        elem->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+        elem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
         if (norad == noradDefaut) {
             _ui->listeSatellites->setCurrentItem(elem);
         }
