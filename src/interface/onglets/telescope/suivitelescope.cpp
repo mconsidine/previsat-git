@@ -159,9 +159,9 @@ void SuiviTelescope::AfficherListeSatellites(const QString &nomsat, const QStrin
     /* Corps de la methode */
     ListWidgetItem *elem = new ListWidgetItem(nomsat, _ui->listeTelescope);
     elem->setData(Qt::UserRole, norad);
+    elem->setData(Qt::CheckStateRole, (check) ? Qt::Checked : Qt::Unchecked);
     elem->setToolTip(tooltip);
-    elem->setFlags(Qt::ItemIsEnabled);
-    elem->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+    elem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
 
     if (norad == noradDefaut) {
         _ui->listeTelescope->setCurrentItem(elem);

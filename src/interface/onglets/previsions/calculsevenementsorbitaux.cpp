@@ -136,9 +136,9 @@ void CalculsEvenementsOrbitaux::AfficherListeSatellites(const QString &nomsat, c
     /* Corps de la methode */
     ListWidgetItem *elem = new ListWidgetItem(nomsat, _ui->listeEvenements);
     elem->setData(Qt::UserRole, norad);
+    elem->setData(Qt::CheckStateRole, (check) ? Qt::Checked : Qt::Unchecked);
     elem->setToolTip(tooltip);
-    elem->setFlags(Qt::ItemIsEnabled);
-    elem->setCheckState((check) ? Qt::Checked : Qt::Unchecked);
+    elem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
 
     if (norad == noradDefaut) {
         _ui->listeEvenements->setCurrentItem(elem);
@@ -406,32 +406,6 @@ void CalculsEvenementsOrbitaux::on_effacerHeuresEvt_clicked()
     /* Corps de la methode */
     _ui->dateInitialeEvt->setTime(QTime(0, 0, 0));
     _ui->dateFinaleEvt->setTime(QTime(0, 0, 0));
-
-    /* Retour */
-    return;
-}
-
-void CalculsEvenementsOrbitaux::on_listeEvenements_itemClicked(QListWidgetItem *item)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    Q_UNUSED(item)
-
-    /* Corps de la methode */
-    if (_ui->listeEvenements->hasFocus() && (_ui->listeEvenements->currentRow() >= 0)) {
-
-        if (_ui->listeEvenements->currentItem()->checkState() == Qt::Checked) {
-
-            // Suppression d'un satellite dans la liste
-            _ui->listeEvenements->currentItem()->setCheckState(Qt::Unchecked);
-
-        } else {
-
-            // Ajout d'un satellite dans la liste
-            _ui->listeEvenements->currentItem()->setCheckState(Qt::Checked);
-        }
-    }
 
     /* Retour */
     return;

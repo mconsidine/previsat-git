@@ -171,7 +171,6 @@ private slots:
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();
     void on_parametrageDefautPrev_clicked();
-    void on_listePrevisions_itemClicked(QListWidgetItem *item);
     void on_listePrevisions_customContextMenuRequested(const QPoint &pos);
     void on_effacerHeuresPrev_clicked();
     void on_hauteurSatPrev_currentIndexChanged(int index);

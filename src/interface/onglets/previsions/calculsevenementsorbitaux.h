@@ -164,7 +164,6 @@ private slots:
     void on_filtreSatellites_returnPressed();
     void on_parametrageDefautEvt_clicked();
     void on_effacerHeuresEvt_clicked();
-    void on_listeEvenements_itemClicked(QListWidgetItem *item);
     void on_listeEvenements_customContextMenuRequested(const QPoint &pos);
 
 };

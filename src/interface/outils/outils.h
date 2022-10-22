@@ -54,6 +54,8 @@ namespace Ui {
 class Outils;
 }
 
+class QPlainTextEdit;
+
 class Outils : public QDialog
 {
     Q_OBJECT
@@ -116,15 +118,64 @@ private:
      */
     Ui::Outils *_ui;
 
+    QAction *_copier;
+
 
     /*
      * Methodes privees
      */
+    /**
+     * @brief EcritureCompteRenduMaj Ecriture du compte-rendu de mise a jour des TLE
+     * @param compteRendu compte-rendu
+     * @param compteRenduMaj zone de texte ou ecrire le compte-rendu
+     */
+    void EcritureCompteRenduMaj(const QStringList &compteRendu, QPlainTextEdit * compteRenduMaj);
+
+    /**
+     * @brief InitListeDomaines Initialisation de la liste deroulante des noms de domaine
+     */
+    void InitListeDomaines();
+
 
 private slots:
 
-    void on_listeOutils_currentRowChanged(int currentRow);
+    /**
+     * @brief Copier Copier les compte-rendus de mise a jour des TLE dans le presse-papier
+     */
+    void Copier();
 
+    /**
+     * @brief ProgressionElem Affichage de la progression de telechargement des elements orbitaux
+     * @param octetsRecus octets recus
+     * @param octetsTotal octets au total
+     * @param vitesse vitesse de telechargement
+     * @param unite unite de vitesse de telechargement
+     */
+    void ProgressionElem(const int octetsRecus, const int octetsTotal, const double vitesse, const QString &unite);
+
+    /**
+     * @brief ProgressionElem Affichage de la progression de telechargement des TLE
+     * @param octetsRecus octets recus
+     * @param octetsTotal octets au total
+     * @param vitesse vitesse de telechargement
+     * @param unite unite de vitesse de telechargement
+     */
+    void ProgressionTLE(const int octetsRecus, const int octetsTotal, const double vitesse, const QString &unite);
+
+    void on_listeOutils_currentRowChanged(int currentRow);
+    void on_serveur_currentTextChanged(const QString &arg1);
+    void on_listeGroupeElem_currentRowChanged(int currentRow);
+    void on_creationGroupe_clicked();
+    void on_ajoutFichiersElem_clicked();
+    void on_majGroupe_clicked();
+
+    void on_majMaintenant_clicked();
+    void on_listeBoutonsOutils_rejected();
+    void on_compteRenduMajAuto_customContextMenuRequested(const QPoint &pos);
+    void on_parcourirMaj1_clicked();
+    void on_parcourirMaj2_clicked();
+    void on_mettreAJourTLE_clicked();
+    void on_compteRenduMajManuel_customContextMenuRequested(const QPoint &pos);
 
 };
 

@@ -177,30 +177,42 @@ void GestionnaireXml::EcritureGestionnaireElementsOrbitaux()
         cfg.writeAttribute("version", Configuration::instance()->versionCategorieElem());
 
         // Categories
-        QListIterator it(Configuration::instance()->listeCategoriesElementsOrbitaux());
-        while (it.hasNext()) {
+        QMapIterator it1(Configuration::instance()->mapCategoriesElementsOrbitaux());
+        while (it1.hasNext()) {
+            it1.next();
 
-            const CategorieElementsOrbitaux categorie = it.next();
+            const QString site = it1.key();
+            const QList<CategorieElementsOrbitaux> listeCategorie = it1.value();
 
-            cfg.writeStartElement("Categorie");
+            cfg.writeStartElement("Categories");
+            cfg.writeAttribute("site", site);
 
-            QMapIterator it2(categorie.nom);
+            QListIterator it2(listeCategorie);
             while (it2.hasNext()) {
-                it2.next();
 
-                cfg.writeStartElement("Langue");
-                cfg.writeAttribute("lang", it2.key());
-                cfg.writeTextElement("Nom", it2.value().split("@").first().toLower());
+                const CategorieElementsOrbitaux categorie = it2.next();
+
+                cfg.writeStartElement("Categorie");
+                cfg.writeAttribute("maj", QString::number(categorie.miseAjour));
+
+                QMapIterator it3(categorie.nom);
+                while (it3.hasNext()) {
+                    it3.next();
+
+                    cfg.writeStartElement("Langue");
+                    cfg.writeAttribute("lang", it3.key());
+                    cfg.writeTextElement("Nom", it3.value());
+                    cfg.writeEndElement();
+                }
+
+                cfg.writeStartElement("Fichiers");
+                QStringListIterator it4(categorie.fichiers);
+                while (it4.hasNext()) {
+                    cfg.writeTextElement("Fichier", it4.next());
+                }
+                cfg.writeEndElement();
                 cfg.writeEndElement();
             }
-            cfg.writeTextElement("Site", categorie.site);
-
-            cfg.writeStartElement("Fichiers");
-            QStringListIterator it3(categorie.fichiers);
-            while (it3.hasNext()) {
-                cfg.writeTextElement("Fichier", it3.next());
-            }
-            cfg.writeEndElement();
 
             cfg.writeEndElement();
         }
@@ -575,13 +587,13 @@ QMap<QString, QList<FrequenceRadio> > GestionnaireXml::LectureFrequencesRadio()
 /*
  * Lecture du fichier de gestionnaire d'elements orbitaux
  */
-QList<CategorieElementsOrbitaux> GestionnaireXml::LectureGestionnaireElementsOrbitaux(QString &versionCategorieElem)
+QMap<QString, QList<CategorieElementsOrbitaux> > GestionnaireXml::LectureGestionnaireElementsOrbitaux(QString &versionCategorieElem)
 {
     /* Declarations des variables locales */
-    QList<CategorieElementsOrbitaux> listeCategoriesElementsOrbitaux;
+    QMap<QString, QList<CategorieElementsOrbitaux> > mapCategoriesElementsOrbitaux;
 
     /* Initialisations */
-    listeCategoriesElementsOrbitaux.clear();
+    mapCategoriesElementsOrbitaux.clear();
 
     try {
 
@@ -605,82 +617,101 @@ QList<CategorieElementsOrbitaux> GestionnaireXml::LectureGestionnaireElementsOrb
             cfg.readNextStartElement();
             if (cfg.name().toString() == "PreviSatGestionElem") {
 
+                Qt::CheckState miseAjour;
                 QString langue;
                 QString nom;
                 QString site;
                 QStringList fichiers;
                 QMap<QString, QString> nomCategorie;
+                QList<CategorieElementsOrbitaux> listeCategories;
 
                 while (cfg.readNextStartElement()) {
 
-                    fichiers.clear();
-                    nomCategorie.clear();
-
                     // Categorie d'elements orbitaux
-                    if (cfg.name().toString() == "Categorie") {
+                    if (cfg.name().toString() == "Categories") {
 
-                        while (cfg.readNextStartElement()) {
+                        listeCategories.clear();
 
-                            if (cfg.name().toString() == "Langue") {
+                        if (cfg.attributes().hasAttribute("site")) {
 
-                                // Nom de la categorie
-                                if (cfg.attributes().hasAttribute("lang")) {
-                                    langue = cfg.attributes().value("lang").toString();
+                            site = cfg.attributes().value("site").toString();
 
-                                    while (cfg.readNextStartElement()) {
+                            while (cfg.readNextStartElement()) {
 
-                                        if (cfg.name().toString() == "Nom") {
-                                            nom = cfg.readElementText();
-                                            nom[0] = nom[0].toUpper();
-                                        } else {
-                                            cfg.skipCurrentElement();
-                                        }
+                                if (cfg.name().toString() == "Categorie") {
+
+                                    miseAjour = Qt::Unchecked;
+                                    fichiers.clear();
+                                    nomCategorie.clear();
+
+                                    // Flag de mise a jour de la categorie
+                                    if (cfg.attributes().hasAttribute("maj")) {
+
+                                        miseAjour = static_cast<Qt::CheckState> (cfg.attributes().value("maj").toInt());
+
+                                        while (cfg.readNextStartElement()) {
+
+                                            if (cfg.name().toString() == "Langue") {
+
+                                                // Nom de la categorie
+                                                if (cfg.attributes().hasAttribute("lang")) {
+
+                                                    langue = cfg.attributes().value("lang").toString();
+
+                                                    while (cfg.readNextStartElement()) {
+
+                                                        if (cfg.name().toString() == "Nom") {
+                                                            nom = cfg.readElementText();
+                                                            nom[0] = nom[0].toUpper();
+                                                        } else {
+                                                            cfg.skipCurrentElement();
+                                                        }
+
+                                                        if (!nom.isEmpty()) {
+                                                            nomCategorie.insert(langue, nom);
+                                                        }
+                                                    }
+                                                }
+                                            } else if (cfg.name().toString() == "Fichiers") {
+
+                                                // Nom des fichiers de la categorie
+                                                while (cfg.readNextStartElement()) {
+
+                                                    if (cfg.name().toString() == "Fichier") {
+                                                        fichiers.append(cfg.readElementText());
+                                                    } else {
+                                                        cfg.skipCurrentElement();
+                                                    }
+                                                }
+                                            } else {
+                                                cfg.skipCurrentElement();
+                                            }
+}
+
+                                            if (!nomCategorie.isEmpty()) {
+                                                listeCategories.append({ miseAjour, nomCategorie, fichiers });
+                                            }
+
                                     }
-
-                                    if (!langue.isEmpty()) {
-                                        nomCategorie.insert(langue, nom);
-                                    }
-                                } else {
-                                    cfg.skipCurrentElement();
                                 }
+                            }
 
-                            } else if (cfg.name().toString() == "Site") {
-
-                                // Site web
-                                site = cfg.readElementText();
-
-                            } else if (cfg.name().toString() == "Fichiers") {
-
-                                // Nom des fichiers de la categorie
-                                while (cfg.readNextStartElement()) {
-
-                                    if (cfg.name().toString() == "Fichier") {
-                                        fichiers.append(cfg.readElementText());
-                                    } else {
-                                        cfg.skipCurrentElement();
-                                    }
-                                }
-                            } else {
-                                cfg.skipCurrentElement();
+                            if (!listeCategories.isEmpty()) {
+                                mapCategoriesElementsOrbitaux.insert(site, listeCategories);
                             }
                         }
-
-                        QMapIterator it(nomCategorie);
-                        while (it.hasNext()) {
-                            it.next();
-                            nomCategorie[it.key()] += "@" + site;
-                        }
-
-                        if (!nomCategorie.isEmpty()) {
-                            listeCategoriesElementsOrbitaux.append({ nomCategorie, site, fichiers });
-                        }
+                    } else {
+                        cfg.skipCurrentElement();
                     }
                 }
+            } else {
+                cfg.skipCurrentElement();
             }
         }
+
         fi.close();
 
-        if (listeCategoriesElementsOrbitaux.isEmpty()) {
+        if (mapCategoriesElementsOrbitaux.isEmpty()) {
             qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
             throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
                                     .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
@@ -694,7 +725,7 @@ QList<CategorieElementsOrbitaux> GestionnaireXml::LectureGestionnaireElementsOrb
     }
 
     /* Retour */
-    return listeCategoriesElementsOrbitaux;
+    return mapCategoriesElementsOrbitaux;
 }
 
 /*
