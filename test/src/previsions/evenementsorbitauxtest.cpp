@@ -41,7 +41,8 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
-#include "interface/afficher.h"
+#include "configuration/configuration.h"
+#include "interface/afficherresultats.h"
 #include "librairies/corps/corps.h"
 #include "previsions/evenementsorbitaux.h"
 #include "evenementsorbitauxtest.h"
@@ -63,14 +64,16 @@ void EvenementsOrbitauxTest::testAll()
     dir.cd(qApp->applicationName());
 
     const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Corps::InitTabConstellations(dirCommonData);
+    Corps::Initialisation(dirCommonData);
 
     const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Date::Initialisation(dirLocalData);
 
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->LectureDonneesSatellites();
+
     conditions.jj1 = 7531.416666666667;
     conditions.jj2 = 7538.416666666667;
-    conditions.ecart = true;
     conditions.offset = 0.08333333333333333;
     conditions.systeme = true;
     conditions.pas = 0.0006944444444444445;
@@ -102,7 +105,8 @@ void EvenementsOrbitauxTest::testCalculEvenements1()
     EvenementsOrbitaux::setConditions(conditions);
     EvenementsOrbitaux::CalculEvenements(n);
 
-    Afficher *afficher = new Afficher(EVENEMENTS, conditions, EvenementsOrbitaux::donnees(), EvenementsOrbitaux::resultats());
+    AfficherResultats *afficher = new AfficherResultats(TypeCalcul::EVENEMENTS, conditions, EvenementsOrbitaux::donnees(),
+                                                        EvenementsOrbitaux::resultats());
     afficher->on_actionEnregistrerTxt_triggered();
 
     // Comparaison avec les resultats de reference

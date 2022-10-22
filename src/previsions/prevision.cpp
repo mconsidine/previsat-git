@@ -30,14 +30,20 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 octobre 2022
+ * >    22 octobre 2022
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QElapsedTimer>
+#include <QFileInfo>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/satellite.h"
+#include "librairies/corps/satellite/tle.h"
 #include "prevision.h"
 
 
@@ -96,6 +102,7 @@ int Prevision::CalculPrevisions(int &nombre)
     /* Declarations des variables locales */
     QElapsedTimer tps;
     QList<Satellite> sats;
+    QMap<QString, ElementsOrbitaux> tabElem;
 
     /* Initialisations */
     double tlemin = -DATE_INFINIE;
@@ -106,9 +113,14 @@ int Prevision::CalculPrevisions(int &nombre)
     _resultats.clear();
 
     // Creation de la liste d'elements orbitaux
-    const QMap<QString, ElementsOrbitaux> tabElem = GPFormat::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(),
-                                                                             Configuration::instance()->lgRec(), _conditions.listeSatellites);
-    // TODO si TLE
+    const QFileInfo ff(_conditions.fichier);
+    if (ff.suffix() == "xml") {
+        tabElem = GPFormat::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
+                                           _conditions.listeSatellites);
+    } else {
+        tabElem = TLE::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
+                                      _conditions.listeSatellites);
+    }
 
     // Creation du tableau de satellites
     QMapIterator it1(tabElem);

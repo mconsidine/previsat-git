@@ -64,6 +64,13 @@
 
 class Configuration
 {
+#if (BUILD_TEST == true)
+    friend class EvenementsOrbitauxTest;
+    friend class FlashsTest;
+    friend class PrevisionTest;
+    friend class TelescopeTest;
+#endif
+
 public:
 
     /*

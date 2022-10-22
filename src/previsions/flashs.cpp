@@ -36,15 +36,21 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    16 octobre 2022
+ * >    22 octobre 2022
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QElapsedTimer>
+#include <QFileInfo>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "flashs.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/satellite.h"
+#include "librairies/corps/satellite/tle.h"
 #include "librairies/maths/maths.h"
 
 #define NB_PAN (3)
@@ -121,6 +127,7 @@ int Flashs::CalculFlashs(int &nombre)
     /* Declarations des variables locales */
     QElapsedTimer tps;
     QList<Satellite> sats;
+    QMap<QString, ElementsOrbitaux> tabElem;
 
     /* Initialisations */
     double tlemin = -DATE_INFINIE;
@@ -133,9 +140,14 @@ int Flashs::CalculFlashs(int &nombre)
     _resultats.clear();
 
     // Creation de la liste d'elements orbitaux
-    const QMap<QString, ElementsOrbitaux> tabElem = GPFormat::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(),
-                                                          Configuration::instance()->lgRec(), _conditions.listeSatellites);
-    // TODO si TLE
+    const QFileInfo ff(_conditions.fichier);
+    if (ff.suffix() == "xml") {
+        tabElem = GPFormat::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
+                                           _conditions.listeSatellites);
+    } else {
+        tabElem = TLE::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
+                                      _conditions.listeSatellites);
+    }
 
     // Creation du tableau de satellites
     QMapIterator it1(tabElem);
@@ -193,7 +205,7 @@ int Flashs::CalculFlashs(int &nombre)
         temp = -DATE_INFINIE;
         _resultatSat.clear();
 
-        // Bouble sur le tableau d'ephemerides
+        // Boucle sur le tableau d'ephemerides
         it2.toFront();
         while (it2.hasNext()) {
 
@@ -484,7 +496,7 @@ QList<EphemeridesFlashs> Flashs::CalculEphemSoleilObservateur()
 /*
  * Calcul des bornes inferieures et superieures du flash
  */
-void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Satellite &satellite, Soleil &soleil, std::array<Date, 3> lim)
+void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Satellite &satellite, Soleil &soleil, std::array<Date, 3> &lim)
 {
     /* Declarations des variables locales */
     double tmp;
@@ -803,7 +815,7 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
  * Calcul d'une limite du flash
  */
 void Flashs::LimiteFlash(const double mgn0, const std::array<double, DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil,
-                         std::array<double, 4> limite)
+                         std::array<double, 4> &limite)
 {
     /* Declarations des variables locales */
     Lune lune;
@@ -885,7 +897,7 @@ double Flashs::MagnitudeFlash(const double angle, const ConditionEclipse &condEc
     /* Declarations des variables locales */
 
     /* Initialisations */
-    double magnitude = 99.;
+    double magnitude = MAGNITUDE_INDEFINIE;
     const double angDeg = angle * RAD2DEG;
 
     /* Corps de la methode */

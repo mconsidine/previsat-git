@@ -57,6 +57,9 @@ class QXmlStreamReader;
 class GestionnaireXml
 {
     friend class Configuration;
+#if (BUILD_TEST == true)
+    friend class FlashsTest;
+#endif
 
 public:
 

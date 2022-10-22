@@ -56,7 +56,6 @@ private:
     static void testLectureFichier();
     static void testLectureFichier3le();
     static void testVerifieFichier();
-    static void testRecupereNomsat();
 
 };
 

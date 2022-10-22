@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    transitsisstest.h
+ * >    transitstest.h
  *
  * Localisation
  * >    test.previsions
@@ -27,7 +27,7 @@
  * >
  *
  * Description
- * >    Tests de la classe TransitsIss
+ * >    Tests de la classe Transits
  *
  * Auteur
  * >    Astropedia
@@ -40,11 +40,11 @@
  *
  */
 
-#ifndef TRANSITSISSTEST_H
-#define TRANSITSISSTEST_H
+#ifndef TRANSITSTEST_H
+#define TRANSITSTEST_H
 
 
-class TransitsIssTest
+class TransitsTest
 {
 public:
 
@@ -52,7 +52,7 @@ public:
 
 private:
 
-    static void testCalculTransitsISS();
+    static void testCalculTransits();
 };
 
-#endif // TRANSITSISSTEST_H
+#endif // TRANSITSTEST_H

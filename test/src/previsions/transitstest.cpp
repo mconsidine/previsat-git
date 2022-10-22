@@ -41,10 +41,11 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
-#include "interface/afficher.h"
+#include "interface/afficherresultats.h"
 #include "librairies/corps/corps.h"
-#include "previsions/transitsiss.h"
-#include "transitsisstest.h"
+#include "librairies/corps/satellite/tle.h"
+#include "previsions/transits.h"
+#include "transitstest.h"
 #include "test/src/testtools.h"
 
 
@@ -54,7 +55,7 @@ static ConditionsPrevisions conditions;
 static QDir dir;
 
 
-void TransitsIssTest::testAll()
+void TransitsTest::testAll()
 {
     dir = QDir::current();
     dir.cdUp();
@@ -63,14 +64,13 @@ void TransitsIssTest::testAll()
     dir.cd(qApp->applicationName());
 
     const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Corps::InitTabConstellations(dirCommonData);
+    Corps::Initialisation(dirCommonData);
 
     const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Date::Initialisation(dirLocalData);
 
     conditions.jj1 = 7790.416666666667;
     conditions.jj2 = 7821.416666666667;
-    conditions.ecart = false;
     conditions.offset = 0.08333333333333333;
     conditions.systeme = true;
     conditions.pas = 0.0006944444444444445;
@@ -89,10 +89,10 @@ void TransitsIssTest::testAll()
     conditions.calcEphemLune = true;
     conditions.listeSatellites << "25544";
 
-    testCalculTransitsISS();
+    testCalculTransits();
 }
 
-void TransitsIssTest::testCalculTransitsISS()
+void TransitsTest::testCalculTransits()
 {
     qInfo(Q_FUNC_INFO);
 
@@ -100,14 +100,14 @@ void TransitsIssTest::testCalculTransitsISS()
     const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "iss.3le";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "transits_20210501_20210601.txt";
 
-    conditions.tabtle = TLE::LectureFichier3le(fichier);
+    conditions.tabElem = TLE::LectureFichier3le(fichier);
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions
-    TransitsIss::setConditions(conditions);
-    TransitsIss::CalculTransits(n);
+    Transits::setConditions(conditions);
+    Transits::CalculTransits(n);
 
-    Afficher *afficher = new Afficher(TRANSITS, conditions, TransitsIss::donnees(), TransitsIss::resultats());
+    AfficherResultats *afficher = new AfficherResultats(TypeCalcul::TRANSITS, conditions, Transits::donnees(), Transits::resultats());
     afficher->on_actionEnregistrerTxt_triggered();
 
     // Comparaison avec les resultats de reference

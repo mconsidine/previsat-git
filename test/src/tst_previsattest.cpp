@@ -62,6 +62,11 @@
 #include "test/src/librairies/observateur/observateurtest.h"
 #include "test/src/librairies/systeme/logmessagetest.h"
 #include "test/src/librairies/systeme/telechargementtest.h"
+#include "test/src/previsions/evenementsorbitauxtest.h"
+#include "test/src/previsions/flashstest.h"
+#include "test/src/previsions/previsiontest.h"
+#include "test/src/previsions/telescopetest.h"
+#include "test/src/previsions/transitstest.h"
 
 
 class PreviSatTest : public QObject
@@ -110,6 +115,14 @@ void PreviSatTest::testAll()
     MagnitudeTest::testAll();
     SatelliteTest::testAll();
     EvenementsTest::testAll();
+
+    // Previsions
+    PrevisionTest::testAll();
+    FlashsTest::testAll();
+    TransitsTest::testAll();
+    EvenementsOrbitauxTest::testAll();
+    TelescopeTest::testAll();
+
 
     // Tester en dernier
     LogMessageTest::testAll();
