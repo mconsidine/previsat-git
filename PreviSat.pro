@@ -87,7 +87,7 @@ SOURCES += \
     src/configuration/evenementsstationspatiale.cpp                \
     src/configuration/fichierobs.cpp                               \
     src/configuration/gestionnairexml.cpp                          \
-    src/interface/afficherresultats.cpp \
+    src/interface/afficherresultats.cpp                            \
     src/interface/apropos/apropos.cpp                              \
     src/interface/carte/carte.cpp                                  \
     src/interface/carte/coordiss.cpp                               \
@@ -152,7 +152,7 @@ HEADERS += \
     src/configuration/gestionnairexml.h                          \
     src/configuration/satellitesflashs.h                         \
     src/configuration/satellitetdrs.h                            \
-    src/interface/afficherresultats.h \
+    src/interface/afficherresultats.h                            \
     src/interface/carte/carte.h                                  \
     src/interface/carte/coordiss.h                               \
     src/interface/ciel/ciel.h                                    \
@@ -222,7 +222,7 @@ HEADERS += \
 
 
 FORMS += \
-    src/interface/afficherresultats.ui \
+    src/interface/afficherresultats.ui                            \
     src/interface/apropos/apropos.ui                              \
     src/interface/carte/carte.ui                                  \
     src/interface/carte/coordiss.ui                               \
@@ -297,6 +297,11 @@ SOURCES += \
     test/src/librairies/observateur/observateurtest.cpp             \
     test/src/librairies/systeme/logmessagetest.cpp                  \
     test/src/librairies/systeme/telechargementtest.cpp              \
+    test/src/previsions/evenementsorbitauxtest.cpp                  \
+    test/src/previsions/flashstest.cpp                              \
+    test/src/previsions/previsiontest.cpp                           \
+    test/src/previsions/telescopetest.cpp                           \
+    test/src/previsions/transitstest.cpp                            \
     test/src/testtools.cpp                                          \
     test/src/tst_previsattest.cpp
 
@@ -320,6 +325,11 @@ HEADERS += \
     test/src/librairies/observateur/observateurtest.h             \
     test/src/librairies/systeme/logmessagetest.h                  \
     test/src/librairies/systeme/telechargementtest.h              \
+    test/src/previsions/evenementsorbitauxtest.h                  \
+    test/src/previsions/flashstest.h                              \
+    test/src/previsions/previsiontest.h                           \
+    test/src/previsions/telescopetest.h                           \
+    test/src/previsions/transitstest.h                            \
     test/src/testtools.h
 
 } else {

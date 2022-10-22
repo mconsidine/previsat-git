@@ -42,7 +42,8 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
 #include "configuration/configuration.h"
-#include "interface/afficher.h"
+#include "configuration/gestionnairexml.h"
+#include "interface/afficherresultats.h"
 #include "librairies/corps/corps.h"
 #include "previsions/flashs.h"
 #include "flashstest.h"
@@ -67,14 +68,17 @@ void FlashsTest::testAll()
     Configuration::instance()->Initialisation();
 
     const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Corps::InitTabConstellations(dirCommonData);
+    Corps::Initialisation(dirCommonData);
 
     const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Date::Initialisation(dirLocalData);
 
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->LectureDonneesSatellites();
+    Configuration::instance()->_mapFlashs = GestionnaireXml::LectureStatutSatellitesFlashs();
+
     conditions.jj1 = 7531.416666666667;
     conditions.jj2 = 7562.416666666667;
-    conditions.ecart = true;
     conditions.offset = 0.08333333333333333;
     conditions.systeme = true;
     conditions.pas = 0.0006944444444444445;
@@ -108,7 +112,7 @@ void FlashsTest::testCalculFlashs()
     Flashs::setConditions(conditions);
     Flashs::CalculFlashs(n);
 
-    Afficher *afficher = new Afficher(FLASHS, conditions, Flashs::donnees(), Flashs::resultats());
+    AfficherResultats *afficher = new AfficherResultats(TypeCalcul::FLASHS, conditions, Flashs::donnees(), Flashs::resultats());
     afficher->on_actionEnregistrerTxt_triggered();
 
     // Comparaison avec les resultats de reference

@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    11 septembre 2022
+ * >    22 octobre 2022
  *
  */
 
@@ -517,6 +517,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
         if (fichier.open(QIODevice::Append | QIODevice::Text)) {
 
             QTextStream flux(&fichier);
+            flux.setEncoding(QStringConverter::System);
 
             int i;
             int kmin;
@@ -542,7 +543,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
 
                 case TypeCalcul::PREVISIONS:
                     flux << nomsat << Qt::endl;
-                    flux << tr("   Date      AngleFormatType::HEURE    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  " \
+                    flux << tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  " \
                                "Haut Soleil",
                                "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
                                "Constellation, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation")
@@ -550,7 +551,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
                     break;
 
                 case TypeCalcul::FLASHS:
-                    flux << tr("Satellite     Date      AngleFormatType::HEURE      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn       " \
+                    flux << tr("Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn       " \
                                "Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance",
                                "Satellite, Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
                                "Constellation, Angle, Mirror, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation, " \
@@ -560,7 +561,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
 
                 case TypeCalcul::TRANSITS:
                     if (ecrireNomColonnes) {
-                        flux << tr("   Date      AngleFormatType::HEURE      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps " \
+                        flux << tr("   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps " \
                                    "Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance",
                                    "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
                                    "Constellation, Angle, Type, Body, Illumination, Duration, Altitude of satellite, Range, Solar azimuth, " \
@@ -572,7 +573,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
 
                 case TypeCalcul::EVENEMENTS:
                     flux << nomsat << Qt::endl;
-                    flux << tr("   Date      AngleFormatType::HEURE     PSO    Longitude  Latitude  Évènements",
+                    flux << tr("   Date      Heure     PSO    Longitude  Latitude  Évènements",
                                "Date, Hour, In orbit position, Longitude, Latitude, Events") << Qt::endl;
                     break;
 
@@ -1006,6 +1007,7 @@ void AfficherResultats::EcrireEntete() const
     if (fichier.open(QIODevice::WriteOnly | QIODevice::Text)) {
 
         QTextStream flux(&fichier);
+        flux.setEncoding(QStringConverter::System);
 
         // Ligne d'entete
 #if (BUILD_TEST == false)

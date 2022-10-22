@@ -51,6 +51,7 @@ using namespace TestTools;
 void GPFormatTest::testAll()
 {
     testLectureFichier();
+    testRecupereNomsat();
 }
 
 void GPFormatTest::testLectureFichier()
@@ -67,4 +68,15 @@ void GPFormatTest::testLectureFichier()
     const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(fic, QString(), 0);
 
     QCOMPARE(mapElem.keys().size(), 160);
+}
+
+void GPFormatTest::testRecupereNomsat()
+{
+    qInfo(Q_FUNC_INFO);
+
+    QCOMPARE(GPFormat::RecupereNomsat("1234567890123456789012345.6"), "123456789012345");
+    QCOMPARE(GPFormat::RecupereNomsat("0 ISS"), "ISS");
+    QCOMPARE(GPFormat::RecupereNomsat("1 25544"), "25544");
+    QCOMPARE(GPFormat::RecupereNomsat("ISS (ZARYA)"), "ISS");
+    QCOMPARE(GPFormat::RecupereNomsat("IRIDIUM 64 [+]"), "IRIDIUM 64");
 }

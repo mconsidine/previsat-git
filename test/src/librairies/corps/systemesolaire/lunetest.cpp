@@ -157,5 +157,5 @@ void LuneTest::testCalculDatesPhases()
     QCOMPARE(lune.datesPhases()[0], "30/04/2022 22h27");
     QCOMPARE(lune.datesPhases()[1], "09/05/2022 02h20");
     QCOMPARE(lune.datesPhases()[2], "16/05/2022 06h13");
-    QCOMPARE(lune.datesPhases()[3], "8177.279776173665");
+    QCOMPARE(lune.datesPhases()[3], "22/05/2022 20h42");
 }

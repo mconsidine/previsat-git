@@ -55,7 +55,6 @@ void TLETest::testAll()
     testLectureFichier();
     testLectureFichier3le();
     testVerifieFichier();
-    testRecupereNomsat();
 }
 
 void TLETest::testTLE()
@@ -142,15 +141,4 @@ void TLETest::testVerifieFichier()
 
         QCOMPARE(nb, 0);
     }
-}
-
-void TLETest::testRecupereNomsat()
-{
-    qInfo(Q_FUNC_INFO);
-
-    QCOMPARE(TLE::RecupereNomsat("1234567890123456789012345.6"), "123456789012345");
-    QCOMPARE(TLE::RecupereNomsat("0 ISS"), "ISS");
-    QCOMPARE(TLE::RecupereNomsat("1 25544"), "25544");
-    QCOMPARE(TLE::RecupereNomsat("ISS (ZARYA)"), "ISS");
-    QCOMPARE(TLE::RecupereNomsat("IRIDIUM 64 [+]"), "IRIDIUM 64");
 }

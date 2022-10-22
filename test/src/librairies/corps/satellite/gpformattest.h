@@ -53,6 +53,7 @@ public:
 private:
 
     static void testLectureFichier();
+    static void testRecupereNomsat();
 
 };
 

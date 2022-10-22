@@ -45,6 +45,7 @@
 #include "telescopetest.h"
 #include "librairies/corps/corps.h"
 #include "librairies/corps/satellite/evenements.h"
+#include "librairies/corps/satellite/tle.h"
 #include "previsions/telescope.h"
 #include "test/src/testtools.h"
 
@@ -64,7 +65,7 @@ void TelescopeTest::testAll()
     dir.cd(qApp->applicationName());
 
     const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Corps::InitTabConstellations(dirCommonData);
+    Corps::Initialisation(dirCommonData);
 
     const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Date::Initialisation(dirLocalData);
@@ -73,7 +74,6 @@ void TelescopeTest::testAll()
     Configuration::instance()->LectureDonneesSatellites();
 
     conditions.jj1 = 7531.416666666667;
-    conditions.ecart = true;
     conditions.offset = 0.08333333333333333;
     conditions.systeme = true;
     conditions.pas = 20.; // ms
@@ -94,7 +94,7 @@ void TelescopeTest::testCalculSuiviTelescope1()
 
     const int lgrec = Configuration::instance()->lgRec();
     const QStringList listeTLE(QStringList () << "25544");
-    QMap<QString, TLE> mapTLE = TLE::LectureFichier(conditions.fichier, Configuration::instance()->donneesSatellites(), lgrec, listeTLE);
+    QMap<QString, ElementsOrbitaux> mapTLE = TLE::LectureFichier(conditions.fichier, Configuration::instance()->donneesSatellites(), lgrec, listeTLE);
 
     Satellite sat(mapTLE.first());
 
@@ -140,7 +140,7 @@ void TelescopeTest::testCalculSuiviTelescope1()
     const QString nomfic = fmtFicOut.arg(dateAosSuivi.annee()).arg(dateAosSuivi.mois(), 2, 10, QChar('0')).arg(dateAosSuivi.jour(), 2, 10, QChar('0'))
             .arg(dateAosSuivi.heure(), 2, 10, QChar('0')).arg(dateAosSuivi.minutes(), 2, 10, QChar('0'))
             .arg(dateLosSuivi.annee()).arg(dateLosSuivi.mois(), 2, 10, QChar('0')).arg(dateLosSuivi.jour(), 2, 10, QChar('0'))
-            .arg(dateLosSuivi.heure(), 2, 10, QChar('0')).arg(dateLosSuivi.minutes() + 1, 2, 10, QChar('0')).arg(sat.tle().norad());
+            .arg(dateLosSuivi.heure(), 2, 10, QChar('0')).arg(dateLosSuivi.minutes() + 1, 2, 10, QChar('0')).arg(sat.elementsOrbitaux().norad);
     conditions.ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + nomfic;
 
     // Generation du fichier de suivi

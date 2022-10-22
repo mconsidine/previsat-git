@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 novembre 2021
+ * >    22 octobre 2022
  *
  */
 
@@ -65,11 +65,11 @@ class Soleil;
 class AfficherResultats : public QMainWindow
 {
     Q_OBJECT
-#if BUILD_TEST == true
+#if (BUILD_TEST == true)
     friend class EvenementsOrbitauxTest;
     friend class FlashsTest;
     friend class PrevisionTest;
-    friend class TransitsIssTest;
+    friend class TransitsTest;
 #endif
 public:
 

@@ -30,18 +30,22 @@
  * >    4 octobre 2020
  *
  * Date de revision
- * >    14 octobre 2022
+ * >    22 octobre 2022
  *
  */
 
+#pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFile>
+#include <QFileInfo>
 #include <QTextStream>
 #pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 #include <cmath>
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/satellite.h"
+#include "librairies/corps/satellite/tle.h"
 #include "telescope.h"
 
 
@@ -88,13 +92,20 @@ int Telescope::CalculSuiviTelescope(int &nombre)
 
         if (fi.isWritable()) {
 
+            QMap<QString, ElementsOrbitaux> tabElem;
             const QString fmt = "%1,%2,%3,%4";
             double jjmsec = floor(_conditions.jj1 * NB_MILLISEC_PAR_JOUR + _conditions.pas);
             Date date(jjmsec * NB_JOUR_PAR_MILLISEC, 0.);
 
             // Creation de la liste d'elements orbitaux
-            const QMap<QString, ElementsOrbitaux> tabElem = GPFormat::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(),
-                                                                  Configuration::instance()->lgRec(), _conditions.listeSatellites);
+            const QFileInfo ff(_conditions.fichier);
+            if (ff.suffix() == "xml") {
+                tabElem = GPFormat::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(),
+                                                   Configuration::instance()->lgRec(), _conditions.listeSatellites);
+            } else {
+                tabElem = TLE::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
+                                              _conditions.listeSatellites);
+            }
 
             // Satellite
             Satellite sat(tabElem.first());
