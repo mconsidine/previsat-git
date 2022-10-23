@@ -2047,6 +2047,7 @@ void Configuration::VerificationArborescences()
 
         const QStringList listeFics(QStringList () << _dirCommonData + QDir::separator() + "donnees.bin"
                                     << _dirCommonData + QDir::separator() + "ISS.OEM_J2K_EPH.xml"
+                                    << _dirCommonData + QDir::separator() + "radio.xml"
                                     << _dirCommonData + QDir::separator() + "taiutc.dat");
 
         foreach(QString fic, listeFics) {
