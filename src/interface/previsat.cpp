@@ -675,6 +675,8 @@ void PreviSat::InitVerificationsMAJ()
     /* Initialisations */
 
     /* Corps de la methode */
+    settings.setValue("fichier/version", QString(APPVERSION));
+
 #if defined (Q_OS_MAC)
     settings.setValue("affichage/verifMAJ", false);
     _onglets->ui()->verifMAJ->setVisible(false);
@@ -683,8 +685,6 @@ void PreviSat::InitVerificationsMAJ()
         VerifMAJPreviSat();
     }
 #endif
-
-    settings.setValue("fichier/version", QString(APPVERSION));
 
 #if !defined (Q_OS_WIN)
     if (settings.value("fichier/dirHttpPreviDon", "").toString().isEmpty()) {
