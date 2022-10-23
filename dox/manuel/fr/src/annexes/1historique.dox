@@ -1,6 +1,16 @@
 /**
 \page Historique Historique des versions
 
+<b><span style="color:red;">Version 5.1 (révision 0) :</span><br />
+Octobre 2022 :</b>
+<ul>
+<li>Ajout de l'onglet Antenne
+<li>Correction de la prise en compte du pas dans le mode Temps réel
+<li>Correction au démarrage
+</ul>
+
+<hr />
+
 <b><span style="color:red;">Version 5.0 (révision 4) :</span><br />
 Février 2019 - Septembre 2022 :</b>
 <ul>

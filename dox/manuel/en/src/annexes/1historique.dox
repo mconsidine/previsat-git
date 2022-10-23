@@ -1,6 +1,16 @@
 /**
 \page Historique Version history
 
+<b><span style="color:red;">Version 5.1 (revision 0) :</span><br />
+October 2022 :</b>
+<ul>
+<li>Add Antenna tab
+<li>Correction of taking into account real time step
+<li>Correction at launch
+</ul>
+
+<hr />
+
 <b><span style="color:red;">Version 5.0 (revision 4) :</span><br />
 February 2019 - September 2022 :</b>
 <ul>
