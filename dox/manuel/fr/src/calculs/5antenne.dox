@@ -5,7 +5,7 @@ Cette fonctionnalité permet de suivre un satellite artificiel au moyen d'une an
 
 \image html antenne.png
 
-Sur cet onglet sont affichés l'adresse et le port sur lequel le logiciel CatRotator est connecté pour recevoir les données de hauteur et d'azimut du satellite sélectionné dans la liste. En cliquant sur le bouton Connecter, PreviSat envoie les données grâce au protocole UDP à l'adresse et au port fournis par l'utilisateur.
+Sur cet onglet sont affichés l'adresse et le port sur lesquels le logiciel CatRotator est connecté pour recevoir les données de hauteur et d'azimut du satellite sélectionné dans la liste. En cliquant sur le bouton Connecter, PreviSat envoie les données grâce au protocole UDP à l'adresse et au port fournis par l'utilisateur.
 
 PreviSat affiche dans des listes déroulantes les fréquences utilisées par le satellite sélectionné (si elles sont connues). PreviSat calcule l'effet Doppler et ainsi la fréquence réelle (montante et descendante). Il détermine aussi l'atténuation pour ces fréquences et le délai de transmission (dans le vide).
 
