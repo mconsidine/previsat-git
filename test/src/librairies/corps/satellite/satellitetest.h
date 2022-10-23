@@ -52,8 +52,14 @@ public:
 
 private:
 
+    static void testCalculBeta();
+    static void testCalculCercleAcquisition();
+    static void testCalculCoordHoriz2();
     static void testCalculPosVit();
+    static void testCalculPosVitECEF();
     static void testCalculElementsOsculateurs();
+    static void testCalculTraceCiel();
+    static void testCalculPosVitListeSatellites();
     static void testHasAos1();
     static void testHasAos2();
     static void testIsGeo1();

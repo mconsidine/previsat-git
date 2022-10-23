@@ -41,6 +41,7 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
+#include "librairies/exceptions/previsatexception.h"
 #include "librairies/systeme/telechargement.h"
 #include "telechargementtest.h"
 #include "test/src/testtools.h"
@@ -76,4 +77,11 @@ void TelechargementTest::testTelechargementFichier()
     QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + "visual-ok.txt";
 
     CompareFichiers(ficRes, ficRef);
+
+    try {
+        const QString fic2 = QString("%1test/visual-ok2.txt").arg(DOMAIN_NAME);
+        const QUrl url2(fic2);
+        dwn.TelechargementFichier(url2);
+    } catch (PreviSatException &e) {
+    }
 }

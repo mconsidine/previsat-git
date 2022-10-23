@@ -45,6 +45,7 @@
 #include "configuration/gestionnairexml.h"
 #include "interface/afficherresultats.h"
 #include "librairies/corps/corps.h"
+#include "librairies/corps/satellite/tle.h"
 #include "previsions/flashs.h"
 #include "flashstest.h"
 #include "test/src/testtools.h"
@@ -64,9 +65,6 @@ void FlashsTest::testAll()
     dir.cdUp();
     dir.cd(qApp->applicationName());
 
-    qApp->setOrganizationName(ORG_NAME);
-    Configuration::instance()->Initialisation();
-
     const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Corps::Initialisation(dirCommonData);
 
@@ -74,6 +72,7 @@ void FlashsTest::testAll()
     Date::Initialisation(dirLocalData);
 
     Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->_dirCfg = dirLocalData + QDir::separator() + "config";
     Configuration::instance()->LectureDonneesSatellites();
     Configuration::instance()->_mapFlashs = GestionnaireXml::LectureStatutSatellitesFlashs();
 
@@ -95,6 +94,7 @@ void FlashsTest::testAll()
     conditions.calcEclipseLune = true;
 
     testCalculFlashs();
+    testCalculMagnitudeFlash();
 }
 
 void FlashsTest::testCalculFlashs()
@@ -102,7 +102,7 @@ void FlashsTest::testCalculFlashs()
     qInfo(Q_FUNC_INFO);
 
     int n = 0;
-    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "flares-spctrk.txt";
+    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "flares-spctrk.txt";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "flashs1_20200815_20200915.txt";
 
     conditions.fichier = fichier;
@@ -118,4 +118,32 @@ void FlashsTest::testCalculFlashs()
     // Comparaison avec les resultats de reference
     const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + "flashs1_20200815_20200915.txt";
     CompareFichiers(ficRes, ficRef);
+}
+
+void FlashsTest::testCalculMagnitudeFlash()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->LectureDonneesSatellites();
+
+    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "flares-spctrk.txt";
+    const QMap<QString, ElementsOrbitaux> mapTle = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(),
+                                                                       Configuration::instance()->lgRec());
+
+    Date date(2020, 9, 13, 4, 48, 3.5, 0.);
+
+    Observateur obs("Paris", -2.34864, 48.85339, 30.);
+    obs.CalculPosVit(date);
+
+    Satellite sat(mapTle["33412"]);
+    sat.CalculPosVit(date);
+    sat.CalculCoordHoriz(obs);
+
+    Soleil soleil;
+    soleil.CalculPosition(date);
+    soleil.CalculCoordHoriz(obs);
+
+    QCOMPARE(Flashs::CalculMagnitudeFlash(date, sat, soleil, true, true), -1.8325270898970918);
 }

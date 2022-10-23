@@ -96,7 +96,6 @@ public:
         _nbOrbites = 0;
         _ageElementsOrbitaux = 0.;
         _beta = 0.;
-        _deltaNbOrb = -1;
         _sgp4.setInit(false);
     }
 
@@ -234,7 +233,6 @@ private:
     /*
      * Variables privees
      */
-    int _deltaNbOrb;
     unsigned int _nbOrbites;
     double _ageElementsOrbitaux;
     double _beta;

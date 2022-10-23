@@ -61,7 +61,6 @@ Satellite::Satellite()
     _nbOrbites = 0;
     _ageElementsOrbitaux = 0.;
     _beta = 0.;
-    _deltaNbOrb = -1;
     _sgp4.setInit(false);
 
     /* Retour */
@@ -82,7 +81,6 @@ Satellite::Satellite(const QList<ElementsOrbitaux> &elem) :
     _nbOrbites = 0;
     _ageElementsOrbitaux = 0.;
     _beta = 0.;
-    _deltaNbOrb = NB_ORB_INDEFINI;
     _elementsOrbitaux = _listElements.first();
     _sgp4.setInit(false);
 
@@ -147,30 +145,8 @@ void Satellite::CalculElementsOsculateurs(const Date &date)
     _ageElementsOrbitaux = date.jourJulienUTC() - _elementsOrbitaux.epoque.jourJulienUTC();
 
     // Nombre d'orbites a la date courante
-    if (_deltaNbOrb == NB_ORB_INDEFINI) {
-
-        const QString dateLancement = _elementsOrbitaux.donnees.dateLancement();
-        if (dateLancement.isEmpty()) {
-            _deltaNbOrb = 0;
-        } else {
-
-            const int annee = dateLancement.mid(0, 4).toInt();
-            const int mois = dateLancement.mid(5, 2).toInt();
-            const double jour = dateLancement.mid(8, 2).toDouble();
-            const Date dateLct(annee, mois, jour, 0.);
-
-            // Nombre theorique d'orbites a l'epoque
-            const int nbOrbTheo = static_cast<int> (_elementsOrbitaux.no * (_elementsOrbitaux.epoque.jourJulienUTC() - dateLct.jourJulienUTC()));
-            int resteOrb = nbOrbTheo%100000;
-            resteOrb += (((_elementsOrbitaux.nbOrbitesEpoque > 50000) && (resteOrb < 50000)) ? 100000 : 0);
-            resteOrb -= (((_elementsOrbitaux.nbOrbitesEpoque < 50000) && (resteOrb > 50000)) ? 100000 : 0);
-            _deltaNbOrb = nbOrbTheo - resteOrb;
-        }
-    }
-
     _nbOrbites = _elementsOrbitaux.nbOrbitesEpoque +
-            static_cast<unsigned int> (_deltaNbOrb +
-                                       floor((_elementsOrbitaux.no + _ageElementsOrbitaux * _elementsOrbitaux.bstar) * _ageElementsOrbitaux +
+            static_cast<unsigned int> (floor((_elementsOrbitaux.no + _ageElementsOrbitaux * _elementsOrbitaux.bstar) * _ageElementsOrbitaux +
                                              modulo(_elementsOrbitaux.omegao + _elementsOrbitaux.mo, DEUX_PI) / T360 -
                                              modulo(_elementsOsculateurs.argumentPerigee() + _elementsOsculateurs.anomalieVraie(), DEUX_PI) /
                                              DEUX_PI + 0.5));
@@ -496,11 +472,6 @@ double Satellite::beta() const
 char Satellite::method() const
 {
     return _sgp4.method();
-}
-
-int Satellite::deltaNbOrb() const
-{
-    return _deltaNbOrb;
 }
 
 unsigned int Satellite::nbOrbites() const

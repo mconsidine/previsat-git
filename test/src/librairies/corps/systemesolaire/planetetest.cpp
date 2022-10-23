@@ -84,9 +84,12 @@ void PlaneteTest::testCalculPosition()
     Soleil soleil;
     soleil.CalculPosition(date);
 
-    for(int i=static_cast<int> (IndicePlanete::MERCURE); i<=static_cast<int> (IndicePlanete::NEPTUNE); i++) {
+    for(unsigned int i=0; i<NB_PLANETES; i++) {
         planete = Planete(static_cast<IndicePlanete> (i));
         planete.CalculPosition(date, soleil);
+        if (i == 0) {
+            QCOMPARE(planete.nom(), QObject::tr("Mercure"));
+        }
         CompareVecteurs3D(planete.position(), posRef[i]);
     }
 }

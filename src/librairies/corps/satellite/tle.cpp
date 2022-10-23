@@ -150,8 +150,7 @@ QMap<QString, ElementsOrbitaux> TLE::LectureFichier(const QString &nomFichier, c
     QFile fi(nomFichier);
     if (!fi.exists() || (fi.size() == 0)) {
         const QFileInfo ff(fi.fileName());
-        throw PreviSatException(QT_TRANSLATE_NOOP("TLE", QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName())),
-                                MessageType::WARNING);
+        throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
     }
 
     QString lig0;
@@ -223,7 +222,26 @@ QMap<QString, ElementsOrbitaux> TLE::LectureFichier(const QString &nomFichier, c
                             // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
                             const int idx = lgRec * tle._elements.norad.toInt();
                             if ((idx >= 0) && (idx < donneesSat.size())) {
+
                                 tle._elements.donnees = Donnees(donneesSat.mid(idx, lgRec));
+
+                                // Correction eventuelle du nombre d'orbites a l'epoque
+                                const QString dateLancement = tle._elements.donnees.dateLancement();
+                                if (!dateLancement.isEmpty()) {
+
+                                    const QDateTime dateTimeLct = QDateTime::fromString(dateLancement, Qt::ISODate);
+                                    const Date dateLct(dateTimeLct.date().year(), dateTimeLct.date().month(), dateTimeLct.date().day(), 0.);
+
+                                    // Nombre theorique d'orbites a l'epoque
+                                    const int nbOrbTheo = static_cast<int> (tle._elements.no *
+                                                                            (tle._elements.epoque.jourJulienUTC() - dateLct.jourJulienUTC()));
+                                    int resteOrb = nbOrbTheo%100000;
+                                    resteOrb += (((tle._elements.nbOrbitesEpoque > 50000) && (resteOrb < 50000)) ? 100000 : 0);
+                                    resteOrb -= (((tle._elements.nbOrbitesEpoque < 50000) && (resteOrb > 50000)) ? 100000 : 0);
+                                    const int deltaNbOrb = nbOrbTheo - resteOrb;
+
+                                    tle._elements.nbOrbitesEpoque += deltaNbOrb;
+                                }
                             }
                         }
 
@@ -299,8 +317,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
     // Verification du fichier contenant les anciens TLE
     const int nbOld = VerifieFichier(ficOld, false);
     if (nbOld == 0) {
-        throw PreviSatException(QT_TRANSLATE_NOOP("TLE", QString("Erreur rencontrée lors du chargement du fichier\n" \
-                                                                 "Le fichier %1 n'est pas un TLE").arg(nomFicOld)), MessageType::WARNING);
+        throw PreviSatException(QObject::tr("Le fichier %1 n'est pas un TLE").arg(nomFicOld), MessageType::WARNING);
     }
 
     // Lecture du TLE
@@ -310,8 +327,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
     // Verification du fichier contenant les TLE recents
     const int nbNew = VerifieFichier(ficNew, false);
     if (nbNew == 0) {
-        throw PreviSatException(QT_TRANSLATE_NOOP("TLE", QString("Erreur rencontrée lors du chargement du fichier\n" \
-                                                                 "Le fichier %1 n'est pas un TLE").arg(nomFicNew)), MessageType::WARNING);
+        throw PreviSatException(QObject::tr("Le fichier %1 n'est pas un TLE").arg(nomFicNew), MessageType::WARNING);
     }
 
     // Lecture du TLE
@@ -365,6 +381,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
             const QString numeroNorad = it2.next();
 
             // TLE absent du fichier de TLE recents
+#if (COVERAGE_TEST == false)
             // Demande de suppression
             if ((res2 != QMessageBox::YesToAll) && (res2 != QMessageBox::NoToAll)) {
                 const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier de TLE " \
@@ -382,6 +399,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
                 msgbox.exec();
                 res2 = msgbox.result();
             }
+#endif
 
             if ((res2 == QMessageBox::Yes) || (res2 == QMessageBox::YesToAll)) {
                 tleOld.remove(numeroNorad);
@@ -396,6 +414,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
             const QString numeroNorad = it3.next();
 
             // TLE absent du fichier de TLE anciens
+#if (COVERAGE_TEST == false)
             // Demande d'ajout
             if ((res1 != QMessageBox::YesToAll) && (res1 != QMessageBox::NoToAll)) {
                 const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier " \
@@ -413,6 +432,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
                 msgbox.exec();
                 res1 = msgbox.result();
             }
+#endif
 
             if ((res1 == QMessageBox::Yes) || (res1 == QMessageBox::YesToAll)) {
                 tleOld.insert(numeroNorad, tleNew[numeroNorad]);
@@ -514,9 +534,7 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
                             || ((lig1 != lig0) && (itle== 2))
                             || (!lig1.startsWith("1 ") && !lig2.startsWith("2 "))) {
 
-                        throw PreviSatException(
-                                    (alarme) ? QT_TRANSLATE_NOOP("TLE", QString("Le fichier %1 n'est pas valide").arg(nomFichier)) : "",
-                                    MessageType::WARNING);
+                        throw PreviSatException((alarme) ? QObject::tr("Le fichier %1 n'est pas valide").arg(nomFichier) : "", MessageType::WARNING);
                     }
 
                     VerifieLignes(lig1, lig2, nomsat, alarme);
@@ -530,21 +548,18 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
         } else {
 
             // Le fichier n'existe pas
-            throw PreviSatException((alarme) ? QT_TRANSLATE_NOOP("TLE", QString("Le fichier %1 n'existe pas").arg(nomFichier)) : "",
-                                    MessageType::WARNING);
+            throw PreviSatException((alarme) ? QObject::tr("Le fichier %1 n'existe pas").arg(nomFichier) : "", MessageType::WARNING);
         }
 
         // Le fichier est vide
         if (fi.size() == 0) {
-            throw PreviSatException((alarme) ? QT_TRANSLATE_NOOP("TLE", QString("Le fichier %1 est vide").arg(nomFichier)) : "",
-                                    MessageType::WARNING);
+            throw PreviSatException((alarme) ? QObject::tr("Le fichier %1 est vide").arg(nomFichier) : "", MessageType::WARNING);
         }
 
         // Aucun satellite dans le fichier
         if (nb == 0) {
             throw PreviSatException(
-                        (alarme) ? QT_TRANSLATE_NOOP("TLE", QString("Le fichier %1 ne contient aucun satellite").arg(nomFichier)) : "",
-                        MessageType::WARNING);
+                        (alarme) ? QObject::tr("Le fichier %1 ne contient aucun satellite").arg(nomFichier) : "", MessageType::WARNING);
         }
 
     } catch (PreviSatException &e) {
@@ -623,22 +638,21 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2, const QString &n
     /* Corps de la methode */
     // Verification si les lignes sont vides
     if (li1.isEmpty() || li2.isEmpty()) {
-        throw PreviSatException((alarme) ? QT_TRANSLATE_NOOP("TLE", "Une des lignes du TLE est vide") : "", MessageType::WARNING);
+        throw PreviSatException((alarme) ? QObject::tr("Une des lignes du TLE est vide") : "", MessageType::WARNING);
     }
 
     // Verification du numero des lignes
     if (!li1.startsWith("1 ") || !li2.startsWith("2 ")) {
         throw PreviSatException(
                     (alarme) ?
-                        QT_TRANSLATE_NOOP("TLE", QString("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects")
-                                                 .arg(nomsat).arg(li2.mid(2, 5))) : "", MessageType::WARNING);
+                        QObject::tr("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects")
+                        .arg(nomsat).arg(li2.mid(2, 5)) : "", MessageType::WARNING);
     }
 
     // Verification de la longueur des lignes
     if ((li1.size() != 69) || (li2.size() != 69)) {
-        throw PreviSatException((alarme) ?
-                                    QT_TRANSLATE_NOOP("TLE", QString("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte")
-                                    .arg(nomsat).arg(li2.mid(1, 6).trimmed())) : "", MessageType::WARNING);
+        throw PreviSatException((alarme) ? QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte")
+                                           .arg(nomsat).arg(li2.mid(1, 6).trimmed()) : "", MessageType::WARNING);
     }
 
     // Verification des espaces dans les lignes
@@ -647,36 +661,34 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2, const QString &n
             (li2.at(16) != ' ') || (li2.at(25) != ' ') || (li2.at(33) != ' ') || (li2.at(42) != ' ') || (li2.at(51) != ' ')) {
 
         throw PreviSatException((alarme) ?
-                                    QT_TRANSLATE_NOOP("TLE", QString("Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2")
-                                    .arg(nomsat).arg(li2.mid(2, 5))) : "", MessageType::WARNING);
+                                    QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2")
+                                    .arg(nomsat).arg(li2.mid(2, 5)) : "", MessageType::WARNING);
     }
 
     // Verification de la ponctuation des lignes
     if ((li1.at(23) != '.') || (li1.at(34) != '.') || (li2.at(11) != '.') || (li2.at(20) != '.') || (li2.at(37) != '.') || (li2.at(46) != '.') ||
             (li2.at(54) != '.')) {
 
-        throw PreviSatException((alarme) ? QT_TRANSLATE_NOOP("TLE", QString("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2")
-                                           .arg(nomsat).arg(li2.mid(2, 5))) : "", MessageType::WARNING);
+        throw PreviSatException((alarme) ? QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2")
+                                           .arg(nomsat).arg(li2.mid(2, 5)) : "", MessageType::WARNING);
     }
 
     // Verification du numero NORAD
     if (li1.mid(2, 5) != li2.mid(2, 5)) {
 
-        throw PreviSatException(
-                    (alarme) ?
-                        QT_TRANSLATE_NOOP("TLE", QString("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)")
-                                    .arg(nomsat).arg(li1.mid(2, 5)).arg(li2.mid(2, 5))) : "", MessageType::WARNING);
+        throw PreviSatException((alarme) ? QObject::tr("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)")
+                                           .arg(nomsat).arg(li1.mid(2, 5)).arg(li2.mid(2, 5)) : "", MessageType::WARNING);
     }
 
     // Verification des checksums
     if (!CheckSum(li1)) {
-        throw PreviSatException((alarme) ? QT_TRANSLATE_NOOP("TLE", QString("Erreur CheckSum ligne 1 :\nSatellite %1 - numéro NORAD : %2")
-                                           .arg(nomsat).arg(li1.mid(2, 5))) : "", MessageType::WARNING);
+        throw PreviSatException((alarme) ? QObject::tr("Erreur CheckSum ligne 1 :\nSatellite %1 - numéro NORAD : %2")
+                                           .arg(nomsat).arg(li1.mid(2, 5)) : "", MessageType::WARNING);
     }
 
     if (!CheckSum(li2)) {
-        throw PreviSatException((alarme) ? QT_TRANSLATE_NOOP("TLE", QString("Erreur CheckSum ligne 2 :\nSatellite %1 - numéro NORAD : %2")
-                                           .arg(nomsat).arg(li1.mid(2, 5))) : "", MessageType::WARNING);
+        throw PreviSatException((alarme) ? QObject::tr("Erreur CheckSum ligne 2 :\nSatellite %1 - numéro NORAD : %2")
+                                           .arg(nomsat).arg(li1.mid(2, 5)) : "", MessageType::WARNING);
     }
 
     /* Retour */

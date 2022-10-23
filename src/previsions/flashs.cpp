@@ -345,6 +345,7 @@ double Flashs::CalculMagnitudeFlash(const Date &date, const Satellite &satellite
     condEcl.CalculSatelliteEclipse(satellite.position(), soleil, lune, refraction);
 
     /* Corps de la methode */
+    _pan = 0;
     const double ang = AngleReflexion(satellite, soleil);
     const double magnitude = MagnitudeFlash(ang, condEcl, sat);
 

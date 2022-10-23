@@ -275,13 +275,18 @@ Date Date::ConversionDateIso(const QString &dateFormatIso)
     try {
 
         if (dateFormatIso.isEmpty()) {
-            throw PreviSatException(QT_TRANSLATE_NOOP("Date", "Date au format ISO vide"), MessageType::WARNING);
+#if (BUILD_TEST == false)
+            qWarning() << "Date au format ISO vide";
+#endif
+            throw PreviSatException(QObject::tr("Date au format ISO vide"), MessageType::WARNING);
         }
 
         const QDateTime dateTime = QDateTime::fromString(dateFormatIso, Qt::ISODate);
 
         if (!dateTime.isValid()) {
+#if (BUILD_TEST == false)
             qWarning() << QString("Date au format ISO invalide (%1)").arg(dateFormatIso);
+#endif
             throw PreviSatException(QObject::tr("Date au format ISO invalide"), MessageType::WARNING);
         }
 
@@ -317,20 +322,27 @@ Date Date::ConversionDateNasa(const QString &dateFormatNasa)
     try {
 
         if (dateFormatNasa.isEmpty()) {
-            throw PreviSatException(QT_TRANSLATE_NOOP("Date", "Date au format NASA vide"), MessageType::WARNING);
+#if (BUILD_TEST == false)
+            qWarning() << "Date au format NASA vide";
+#endif
+            throw PreviSatException(QObject::tr("Date au format NASA vide"), MessageType::WARNING);
         }
 
         const QStringList dateNasa = dateFormatNasa.split("T", Qt::SkipEmptyParts);
 
         if (dateNasa.size() != 2) {
-            qWarning() << "Date au format NASA invalide (dateNasa.size() != 2)";
+#if (BUILD_TEST == false)
+            qWarning() << QString("Date au format NASA invalide (%1)").arg(dateFormatNasa);
+#endif
             throw PreviSatException(QObject::tr("Date au format NASA invalide"), MessageType::WARNING);
         }
 
         const QStringList anneeNbJours = dateNasa.first().split("-", Qt::SkipEmptyParts);
 
         if (anneeNbJours.size() != 2) {
-            qWarning() << "Date au format NASA invalide (anneeNbJours.size() != 2)";
+#if (BUILD_TEST == false)
+            qWarning() << QString("Date au format NASA invalide (%1)").arg(dateFormatNasa);
+#endif
             throw PreviSatException(QObject::tr("Date au format NASA invalide"), MessageType::WARNING);
         }
 
@@ -339,7 +351,9 @@ Date Date::ConversionDateNasa(const QString &dateFormatNasa)
         const QStringList heures = dateNasa.at(1).mid(0, dateNasa.at(1).length() - 1).split(":", Qt::SkipEmptyParts);
 
         if (heures.size() != 3) {
-            qWarning() << "Date au format NASA invalide (heures.size() != 3)";
+#if (BUILD_TEST == false)
+            qWarning() << QString("Date au format NASA invalide (%1)").arg(dateFormatNasa);
+#endif
             throw PreviSatException(QObject::tr("Date au format NASA invalide"), MessageType::WARNING);
         }
 
@@ -393,18 +407,20 @@ void Date::Initialisation(const QString &dirLocalData)
             }
             fi.close();
 
+#if (COVERAGE_TEST == false)
             if (_ecartsTAI_UTC.isEmpty()) {
                 const QFileInfo ff(fi.fileName());
-                throw PreviSatException(QT_TRANSLATE_NOOP("Date", QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
-                                                          .arg(ff.fileName()).arg(APP_NAME)), MessageType::ERREUR);
+                throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                                          .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
             }
+#endif
 
 #if (BUILD_TEST == false)
             qInfo() << "Lecture fichier taiutc.dat OK";
 #endif
 
         } else {
-            throw PreviSatException(QT_TRANSLATE_NOOP("Date", "Le fichier taiutc.dat n'existe pas"), MessageType::WARNING);
+            throw PreviSatException(QObject::tr("Le fichier taiutc.dat n'existe pas"), MessageType::WARNING);
         }
 
     } catch (PreviSatException &e) {
@@ -666,11 +682,11 @@ void Date::getDeltaAT()
     try {
 
         if (_ecartsTAI_UTC.isEmpty()) {
-            throw PreviSatException(QT_TRANSLATE_NOOP("Date", "Ecarts TAI-UTC non initialisés"), MessageType::WARNING);
+            throw PreviSatException(QObject::tr("Ecarts TAI-UTC non initialisés"), MessageType::WARNING);
         }
 
         if (_jourJulienUTC < (_ecartsTAI_UTC.first().first - TJ2000)) {
-
+#if (COVERAGE_TEST == false)
             const double mjd = _jourJulienUTC + 51544.5;
 
             if ((mjd >= 37300.) && (mjd < 37512.)) {
@@ -728,6 +744,7 @@ void Date::getDeltaAT()
             } else {
                 _deltaAT = 0.;
             }
+#endif
         } else {
 
             // Dates ulterieures au 1er janvier 1972

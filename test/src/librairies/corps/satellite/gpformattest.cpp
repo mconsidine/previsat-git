@@ -41,6 +41,7 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
+#include "configuration/configuration.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "gpformattest.h"
 #include "test/src/testtools.h"
@@ -50,8 +51,31 @@ using namespace TestTools;
 
 void GPFormatTest::testAll()
 {
+    testGPFormat();
     testLectureFichier();
     testRecupereNomsat();
+}
+
+void GPFormatTest::testGPFormat()
+{
+    qInfo(Q_FUNC_INFO);
+
+    QDir dir = QDir::current();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cd(qApp->applicationName());
+
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->LectureDonneesSatellites();
+
+    const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.xml";
+    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
+                                                                             Configuration::instance()->lgRec());
+
+    GPFormat elem(mapElem["025544"]);
+    QCOMPARE(elem.elements().cospar, "1998-067A");
 }
 
 void GPFormatTest::testLectureFichier()
@@ -64,8 +88,13 @@ void GPFormatTest::testLectureFichier()
     dir.cdUp();
     dir.cd(qApp->applicationName());
 
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->LectureDonneesSatellites();
+
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.xml";
-    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(fic, QString(), 0);
+    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
+                                                                             Configuration::instance()->lgRec());
 
     QCOMPARE(mapElem.keys().size(), 160);
 }

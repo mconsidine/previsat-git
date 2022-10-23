@@ -81,6 +81,9 @@ void LuneTest::testCalculPhase()
     lune.CalculPosition(date);
     lune.CalculPhase(soleil);
     QCOMPARE(lune.fractionIlluminee(), 0.6785704098427325);
+    QCOMPARE(lune.luneCroissante(), true);
+    QCOMPARE(lune.anglePhase(), 1.20559128682);
+    QCOMPARE(lune.phase(), QObject::tr("Premier quartier"));
 }
 
 void LuneTest::testCalculMagnitude()
