@@ -162,7 +162,7 @@ void Corps::CalculCoordEquat(const Observateur &observateur, const bool determin
         try {
 
             if (_tabConst.isEmpty()) {
-                throw PreviSatException(QT_TRANSLATE_NOOP("Corps", "Tableau de constellations vide"), MessageType::WARNING);
+                throw PreviSatException(QObject::tr("Tableau de constellations vide"), MessageType::WARNING);
             }
 
             QListIterator it(_tabConst);
@@ -658,8 +658,8 @@ void Corps::Initialisation(const QString &dirCommonData)
 
             if (_tabConst.isEmpty()) {
                 const QFileInfo ff(fi.fileName());
-                throw PreviSatException(QT_TRANSLATE_NOOP("Corps", QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
-                                        .arg(ff.fileName()).arg(APP_NAME)), MessageType::ERREUR);
+                throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                        .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
             }
 
 #if (BUILD_TEST == false)
@@ -668,8 +668,8 @@ void Corps::Initialisation(const QString &dirCommonData)
 
         } else {
             const QFileInfo ff(fi.fileName());
-            throw PreviSatException(QT_TRANSLATE_NOOP("Corps", QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2")
-                                    .arg(ff.fileName()).arg(APP_NAME)), MessageType::ERREUR);
+            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2")
+                                    .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
 
     } catch (PreviSatException &e) {

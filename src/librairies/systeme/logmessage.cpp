@@ -74,6 +74,7 @@ LogMessage::LogMessage(const QString &fichier)
     /* Declarations des variables locales */
 
     /* Initialisations */
+#if (COVERAGE_TEST == false)
     // Gestion du fichier de log en cas d'erreur lors de la precedente execution
     QFile fi(fichier);
     if (fi.exists() && (fi.size() != 0)) {
@@ -96,6 +97,7 @@ LogMessage::LogMessage(const QString &fichier)
             }
         }
     }
+#endif
 
     /* Corps du constructeur */
     _fichierLog.reset(new QFile(fichier));

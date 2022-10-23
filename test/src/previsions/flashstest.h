@@ -53,6 +53,8 @@ public:
 private:
 
     static void testCalculFlashs();
+    static void testCalculMagnitudeFlash();
+
 };
 
 #endif // FLASHSTEST_H

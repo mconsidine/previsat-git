@@ -52,6 +52,7 @@ public:
 
 private:
 
+    static void testGPFormat();
     static void testLectureFichier();
     static void testRecupereNomsat();
 

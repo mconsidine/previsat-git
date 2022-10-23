@@ -67,8 +67,11 @@ class Configuration
 #if (BUILD_TEST == true)
     friend class EvenementsOrbitauxTest;
     friend class FlashsTest;
+    friend class GPFormatTest;
     friend class PrevisionTest;
+    friend class SatelliteTest;
     friend class TelescopeTest;
+    friend class TLETest;
 #endif
 
 public:

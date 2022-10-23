@@ -85,12 +85,11 @@ void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles, QList<Lig
     /* Corps de la methode */
     try {
         if (_tabLigCst.isEmpty()) {
-            throw PreviSatException(QT_TRANSLATE_NOOP("LigneConstellation", "Le tableau de lignes de constellation n'est pas initialisé"),
-                                    MessageType::WARNING);
+            throw PreviSatException(QObject::tr("Le tableau de lignes de constellation n'est pas initialisé"), MessageType::WARNING);
         }
 
         if (etoiles.isEmpty()) {
-            throw PreviSatException(QT_TRANSLATE_NOOP("LigneConstellation", "Le tableau d'étoiles n'est pas initialisé"), MessageType::WARNING);
+            throw PreviSatException(QObject::tr("Le tableau d'étoiles n'est pas initialisé"), MessageType::WARNING);
         }
 
         lignesCst.clear();

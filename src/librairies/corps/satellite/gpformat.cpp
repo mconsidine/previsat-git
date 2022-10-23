@@ -87,8 +87,7 @@ QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichi
     QFile fi(nomFichier);
     if (!fi.exists() || (fi.size() == 0)) {
         const QFileInfo ff(fi.fileName());
-        throw PreviSatException(QT_TRANSLATE_NOOP("GPFormat", QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName())),
-                                MessageType::WARNING);
+        throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
     }
 
     if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {

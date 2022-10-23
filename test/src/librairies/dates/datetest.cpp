@@ -42,6 +42,7 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
 #include "librairies/dates/date.h"
+#include "librairies/exceptions/previsatexception.h"
 #include "datetest.h"
 #include "test/src/testtools.h"
 
@@ -161,6 +162,17 @@ void DateTest::testConversionDateIso()
 
     const Date date(2022, 06, 04, 13, 15, 30.829824, 0.);
     CompareDates(Date::ConversionDateIso("2022-06-04T13:15:30.829824"), date);
+
+    // Cas degrades
+    try {
+        Date::ConversionDateIso("");
+    } catch (PreviSatException &e) {
+    }
+
+    try {
+        Date::ConversionDateIso("aaa");
+    } catch (PreviSatException &e) {
+    }
 }
 
 void DateTest::testConversionDateNasa()
@@ -169,4 +181,25 @@ void DateTest::testConversionDateNasa()
 
     const Date date(2006, 1, 15, 21, 24, 37.5, 0.);
     CompareDates(Date::ConversionDateNasa("2006-015T21:24:37.5Z"), date);
+
+    // Cas degrades
+    try {
+        Date::ConversionDateNasa("");
+    } catch (PreviSatException &e) {
+    }
+
+    try {
+        Date::ConversionDateNasa("aaa");
+    } catch (PreviSatException &e) {
+    }
+
+    try {
+        Date::ConversionDateNasa("aaaTbbb");
+    } catch (PreviSatException &e) {
+    }
+
+    try {
+        Date::ConversionDateNasa("2006-015T21");
+    } catch (PreviSatException &e) {
+    }
 }

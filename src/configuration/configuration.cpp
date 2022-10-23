@@ -824,7 +824,9 @@ void Configuration::LectureDonneesSatellites()
                                 .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
     }
 
+#if (BUILD_TEST == false)
     qInfo() << "Lecture fichier donnees.bin OK";
+#endif
 
     _lgRec = static_cast<int> ((_donneesSatellites.isEmpty()) ? -1 : _donneesSatellites.size() / _donneesSatellites.count('\n'));
 

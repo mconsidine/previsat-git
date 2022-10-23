@@ -1226,7 +1226,9 @@ QMap<QString, SatellitesFlashs> GestionnaireXml::LectureStatutSatellitesFlashs()
                                     .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
         }
 
+#if (BUILD_TEST == false)
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+#endif
 
     } catch (PreviSatException &e) {
         throw PreviSatException();

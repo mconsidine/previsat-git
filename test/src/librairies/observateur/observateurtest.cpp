@@ -79,6 +79,8 @@ void ObservateurTest::testCalculPosVit()
 
     const Date date(2453736.5 - TJ2000, 0., false);
     obs.CalculPosVit(date);
+    QCOMPARE(obs.tempsSideralGreenwich(), 1.7541749819128);
+
     const Vecteur3D pos(-935.523497565, 4099.350266913102, 4779.867771479537);
     const Vecteur3D vit(-0.2989293707781232, -0.068219457296, 0.);
     CompareVecteurs3D(obs.position(), pos);

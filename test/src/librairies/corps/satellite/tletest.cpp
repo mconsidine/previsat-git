@@ -41,6 +41,7 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
+#include <configuration/configuration.h>
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "tletest.h"
@@ -54,6 +55,7 @@ void TLETest::testAll()
     testTLE();
     testLectureFichier();
     testLectureFichier3le();
+    testMiseAJourFichier();
     testVerifieFichier();
 }
 
@@ -82,7 +84,7 @@ void TLETest::testTLE()
     QCOMPARE(tle.elements().argpo, 86.4732);
     QCOMPARE(tle.elements().mo, 19.8785);
     QCOMPARE(tle.elements().no, 15.49521149);
-    QCOMPARE(tle.elements().nbOrbitesEpoque, static_cast<unsigned int> (20577));
+    QCOMPARE(tle.elements().nbOrbitesEpoque, 20577u);
 }
 
 void TLETest::testLectureFichier()
@@ -99,6 +101,12 @@ void TLETest::testLectureFichier()
     const QMap<QString, ElementsOrbitaux> mapTLE = TLE::LectureFichier(fic, QString(), 0);
 
     QCOMPARE(mapTLE.keys().size(), 163);
+
+    // TLE a 2 lignes
+    const QString fic2 = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual2.txt";
+    const QMap<QString, ElementsOrbitaux> mapTLE2 = TLE::LectureFichier(fic2, QString(), 0);
+
+    QCOMPARE(mapTLE2.keys().size(), 163);
 }
 
 void TLETest::testLectureFichier3le()
@@ -115,6 +123,32 @@ void TLETest::testLectureFichier3le()
     const QList<ElementsOrbitaux> listTLE = TLE::LectureFichier3le(fic);
 
     QCOMPARE(listTLE.size(), 60);
+}
+
+void TLETest::testMiseAJourFichier()
+{
+    qInfo(Q_FUNC_INFO);
+
+    QDir dir = QDir::current();
+    QString dest = dir.path();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cd(qApp->applicationName());
+
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->LectureDonneesSatellites();
+
+    const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
+    const QString ficnew = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + "visual.txt";
+
+    QFile fi(fic);
+    const QString ficold = dest + QDir::separator() + "test" + QDir::separator() + QFileInfo(fic).fileName();
+    fi.copy(ficold);
+
+    QStringList compteRendu;
+    TLE::MiseAJourFichier(ficold, ficnew, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(), 1, compteRendu);
 }
 
 void TLETest::testVerifieFichier()
@@ -141,4 +175,8 @@ void TLETest::testVerifieFichier()
 
         QCOMPARE(nb, 0);
     }
+
+    // TLE a 2 lignes
+    const QString fic2 = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual2.txt";
+    QCOMPARE(TLE::VerifieFichier(fic2), 163);
 }

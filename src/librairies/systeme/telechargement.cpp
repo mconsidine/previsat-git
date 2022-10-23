@@ -94,8 +94,9 @@ void Telechargement::TelechargementFichier(const QUrl &url)
     const QString fic = (ff.fileName().contains("gp")) ? url.query().section("&", -2, -2).section("=", -1) + ".xml" : ff.fileName();
 
     if (reponse->error()) {
-
+#if (BUILD_TEST == false)
         qWarning() << "Erreur lors du téléchargement du fichier" << fic;
+#endif
         throw PreviSatException(tr("Erreur lors du téléchargement du fichier %1").arg(fic), MessageType::WARNING);
 
     } else {
@@ -157,6 +158,7 @@ void Telechargement::ProgressionTelechargement(qint64 octetsRecus, qint64 octets
     // Calcul de la vitesse de telechargement
     double vitesse = static_cast<double> (octetsRecus) * 1000. / static_cast<double> (_tempsEcoule.elapsed());
 
+#if (COVERAGE_TEST == false)
     if (vitesse < 1024.) {
         unite = tr("o/s");
     } else if (vitesse < 1048576.) {
@@ -166,6 +168,7 @@ void Telechargement::ProgressionTelechargement(qint64 octetsRecus, qint64 octets
         vitesse /= 1048576.;
         unite = tr("Mo/s");
     }
+#endif
 
     emit Progression(static_cast<int>(octetsRecus), static_cast<int>(octetsTotal), vitesse, unite);
 

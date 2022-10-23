@@ -46,13 +46,14 @@
 
 
 static const char* nomPlanetes[] = {
-                               QT_TRANSLATE_NOOP("planet", "Mercure"),
-                               QT_TRANSLATE_NOOP("planet", "Vénus"),
-                               QT_TRANSLATE_NOOP("planet", "Mars"),
-                               QT_TRANSLATE_NOOP("planet", "Jupiter"),
-                               QT_TRANSLATE_NOOP("planet", "Saturne"),
-                               QT_TRANSLATE_NOOP("planet", "Uranus"),
-                               QT_TRANSLATE_NOOP("planet", "Neptune") };
+    QT_TRANSLATE_NOOP("planet", "Mercure"),
+    QT_TRANSLATE_NOOP("planet", "Vénus"),
+    QT_TRANSLATE_NOOP("planet", "Mars"),
+    QT_TRANSLATE_NOOP("planet", "Jupiter"),
+    QT_TRANSLATE_NOOP("planet", "Saturne"),
+    QT_TRANSLATE_NOOP("planet", "Uranus"),
+    QT_TRANSLATE_NOOP("planet", "Neptune")
+};
 
 static const double _tabPlanetes[NB_PLANETES][6][4] = {
     // Mercure
