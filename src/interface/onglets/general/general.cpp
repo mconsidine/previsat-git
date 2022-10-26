@@ -418,11 +418,22 @@ void General::AffichageDonneesSatellite(const Date &date)
         // Delai de l'evenement
         transitionJN = tr("%1 (dans %2).", "Delay in hours, minutes or seconds");
         const Date delaiEcl = Date(delai - 0.5 + EPS_DATES, 0.);
-        const QString cDelaiEcl = (delai >= (NB_JOUR_PAR_HEUR - EPS_DATES)) ?
-                    delaiEcl.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).mid(11, 5)
-                    .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute")) :
-                    delaiEcl.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).mid(14, 5)
+        QString cDelaiEcl;
+
+        if (delai >= 1.) {
+
+            transitionJN = "%1%2";
+            cDelaiEcl = "";
+
+        } else if (delai >= (NB_JOUR_PAR_HEUR - EPS_DATES)) {
+
+            cDelaiEcl = delaiEcl.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).section(" ", 1).mid(0, 5)
+                    .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
+
+        } else {
+            cDelaiEcl = delaiEcl.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).section(" ", 1).mid(3, 5)
                     .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
+        }
 
         _ui->dateJN->setText(transitionJN.arg(_dateEclipse->ToShortDate(DateFormat::FORMAT_COURT, syst)).arg(cDelaiEcl));
         _ui->dateJN->adjustSize();
@@ -468,11 +479,11 @@ void General::AffichageDonneesSatellite(const Date &date)
 
         } else if (delai >= (NB_JOUR_PAR_HEUR - EPS_DATES)) {
 
-            cDelaiAOS = delaiAOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).mid(11, 5)
+            cDelaiAOS = delaiAOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).section(" ", 1).mid(0, 5)
                     .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
 
         } else {
-            cDelaiAOS = delaiAOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).mid(14, 5)
+            cDelaiAOS = delaiAOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).section(" ", 1).mid(3, 5)
                     .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
         }
 
