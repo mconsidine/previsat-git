@@ -79,6 +79,17 @@ Options::Options(QWidget *parent) :
 
     try {
 
+        _creerCategorie = nullptr;
+        _renommerCategorie = nullptr;
+        _supprimerCategorie = nullptr;
+        _telechargerCategorie = nullptr;
+
+        _creerLieu = nullptr;
+        _ajouterLieuMesPreferes = nullptr;
+        _renommerLieu = nullptr;
+        _modifierLieu = nullptr;
+        _supprimerLieu = nullptr;
+
         Initialisation();
 
         // Chargement des fichiers de preference
@@ -109,6 +120,17 @@ Options::~Options()
     if (!_ui->verifMAJ->isChecked()) {
         settings.setValue("fichier/majPrevi", "0");
     }
+
+    EFFACE_OBJET(_creerCategorie);
+    EFFACE_OBJET(_renommerCategorie);
+    EFFACE_OBJET(_supprimerCategorie);
+    EFFACE_OBJET(_telechargerCategorie);
+
+    EFFACE_OBJET(_creerLieu);
+    EFFACE_OBJET(_ajouterLieuMesPreferes);
+    EFFACE_OBJET(_renommerLieu);
+    EFFACE_OBJET(_modifierLieu);
+    EFFACE_OBJET(_supprimerLieu);
 
     delete _ui;
 }

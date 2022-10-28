@@ -463,6 +463,11 @@ int Configuration::lgRec() const
     return _lgRec;
 }
 
+const QStringList &Configuration::listeChainesNasa() const
+{
+    return _listeChainesNasa;
+}
+
 QString &Configuration::nomfic()
 {
     return _nomfic;
@@ -476,6 +481,20 @@ QString &Configuration::noradDefaut()
 const QStringList &Configuration::listeFichiersElem() const
 {
     return _listeFichiersElem;
+}
+
+void Configuration::AjoutSatelliteFichierElem(const QString &norad)
+{
+    if (!_mapSatellitesFichierElem[_nomfic].contains(norad)) {
+        _mapSatellitesFichierElem[_nomfic].append(norad);
+    }
+}
+
+void Configuration::SuppressionSatelliteFichierElem(const QString &norad)
+{
+    if (_mapSatellitesFichierElem[_nomfic].contains(norad)) {
+        _mapSatellitesFichierElem[_nomfic].removeOne(norad);
+    }
 }
 
 QList<Satellite> &Configuration::listeSatellites()

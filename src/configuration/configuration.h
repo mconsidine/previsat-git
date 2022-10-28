@@ -180,6 +180,8 @@ public:
     const QString &donneesSatellites() const;
     int lgRec() const;
 
+    const QStringList &listeChainesNasa() const;
+
     // Nom du fichier d'elements orbitaux par defaut
     QString &nomfic();
 
@@ -188,6 +190,8 @@ public:
 
     // Liste des fichiers d'elements orbitaux
     const QStringList &listeFichiersElem() const;
+    void AjoutSatelliteFichierElem(const QString &norad);
+    void SuppressionSatelliteFichierElem(const QString &norad);
 
     QList<Satellite> &listeSatellites();
 

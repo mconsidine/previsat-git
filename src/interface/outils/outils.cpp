@@ -30,7 +30,7 @@
  * >    14 aout 2022
  *
  * Date de revision
- * >    27 aout 2022
+ * >
  *
  */
 
@@ -98,6 +98,8 @@ Outils::~Outils()
     settings.setValue("fichier/fichierAMettreAJour", _ui->fichierAMettreAJour->text());
     settings.setValue("fichier/fichierALire", _ui->fichierALire->text());
     settings.setValue("fichier/affichageMsgMAJ", _ui->affichageMsgMAJ->currentIndex());
+
+    EFFACE_OBJET(_copier);
     delete _ui;
 }
 

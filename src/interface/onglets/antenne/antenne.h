@@ -101,6 +101,11 @@ public:
 
 public slots:
 
+    /**
+     * @brief DeconnecterUdp Deconnecter le protocole UDP
+     */
+    void DeconnecterUdp();
+
     void changeEvent(QEvent *evt);
 
 

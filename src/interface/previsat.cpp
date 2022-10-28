@@ -64,6 +64,7 @@
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
 #include "informations/informations.h"
+#include "onglets/antenne/antenne.h"
 #include "onglets/donnees/informationssatellite.h"
 #include "onglets/general/general.h"
 #include "onglets/onglets.h"
@@ -114,6 +115,14 @@ PreviSat::PreviSat(QWidget *parent)
         _outils = nullptr;
         _radar = nullptr;
 
+        _previsions = nullptr;
+        _flashs = nullptr;
+        _transits = nullptr;
+        _evenements = nullptr;
+        _informationsSatellite = nullptr;
+        _recherche = nullptr;
+        _station = nullptr;
+
         _messageStatut = nullptr;
         _messageStatut2 = nullptr;
         _messageStatut3 = nullptr;
@@ -147,6 +156,14 @@ PreviSat::~PreviSat()
     EFFACE_OBJET(_options);
     EFFACE_OBJET(_outils);
     EFFACE_OBJET(_radar);
+
+    EFFACE_OBJET(_previsions);
+    EFFACE_OBJET(_flashs);
+    EFFACE_OBJET(_transits);
+    EFFACE_OBJET(_evenements);
+    EFFACE_OBJET(_informationsSatellite);
+    EFFACE_OBJET(_recherche);
+    EFFACE_OBJET(_station);
 
     EFFACE_OBJET(_messageStatut);
     EFFACE_OBJET(_messageStatut2);
@@ -503,8 +520,28 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(this, &PreviSat::SauveOngletElementsOsculateurs, _onglets->osculateurs(), &Osculateurs::SauveOngletElementsOsculateurs);
     connect(this, &PreviSat::SauveOngletInformations, _onglets->informationsSatellite(), &InformationsSatellite::SauveOngletInformations);
 
+    // Connexions avec l'onglet Antenne
+    connect(this, &PreviSat::DeconnecterUdp, _onglets->antenne(), &Antenne::DeconnecterUdp);
+
     // Connexions avec la carte du monde
+    connect(_carte, &Carte::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+    connect(_carte, &Carte::AfficherMessageStatut2, this, &PreviSat::AfficherMessageStatut2);
+    connect(_carte, &Carte::AfficherMessageStatut3, this, &PreviSat::AfficherMessageStatut3);
     connect(_carte, &Carte::ReinitFlags, _onglets, &Onglets::ReinitFlags);
+    connect(_carte, &Carte::RecalculerPositions, this, &PreviSat::GestionTempsReel);
+
+    // Connexions avec le viel
+    connect(_ciel, &Ciel::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+    connect(_ciel, &Ciel::AfficherMessageStatut2, this, &PreviSat::AfficherMessageStatut2);
+    connect(_ciel, &Ciel::AfficherMessageStatut3, this, &PreviSat::AfficherMessageStatut3);
+    connect(_ciel, &Ciel::RecalculerPositions, this, &PreviSat::GestionTempsReel);
+
+    // Connexions avec le radar
+    connect(_radar, &Radar::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+    connect(_radar, &Radar::AfficherMessageStatut2, this, &PreviSat::AfficherMessageStatut2);
+    connect(_radar, &Radar::AfficherMessageStatut3, this, &PreviSat::AfficherMessageStatut3);
+    connect(_radar, &Radar::RecalculerPositions, this, &PreviSat::GestionTempsReel);
+
 
     // Connexions avec la fenetre Outils
     connect(_outils, &Outils::ChargementGP, this, &PreviSat::ChargementGP);
@@ -1181,6 +1218,50 @@ void PreviSat::AfficherMessageStatut(const QString &message, const int secondes)
 }
 
 /*
+ * Affichage d'un message dans la zone de statut 2
+ */
+void PreviSat::AfficherMessageStatut2(const QString &message)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (message.isEmpty()) {
+        _messageStatut2->setVisible(false);
+    } else {
+        _messageStatut2->setText(message);
+        _messageStatut2->repaint();
+        _messageStatut2->setVisible(true);
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Affichage d'un message dans la zone de statut 3
+ */
+void PreviSat::AfficherMessageStatut3(const QString &message)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (message.isEmpty()) {
+        _messageStatut3->setVisible(false);
+    } else {
+        _messageStatut3->setText(message);
+        _messageStatut3->repaint();
+        _messageStatut3->setVisible(true);
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Effacer la zone de message de statut
  */
 void PreviSat::EffacerMessageStatut()
@@ -1642,6 +1723,9 @@ bool PreviSat::eventFilter(QObject *watched, QEvent *event)
 
         } else if ((_ciel != nullptr) && (_ciel->underMouse())) {
             _ciel->mouseMoveEvent(evt);
+
+        } else if (_radar->underMouse()) {
+            _radar->mouseMoveEvent(evt);
         }
 
     } else if (event->type() == QEvent::MouseButtonPress) {
@@ -1651,6 +1735,9 @@ bool PreviSat::eventFilter(QObject *watched, QEvent *event)
 
         } else if ((_ciel != nullptr) && (_ciel->underMouse())) {
             _ciel->mousePressEvent(evt);
+
+        } else if (_radar->underMouse()) {
+            _radar->mousePressEvent(evt);
         }
 
     } else if ((event->type() == QEvent::Leave) || (event->type() == QEvent::HoverLeave)) {
@@ -1659,8 +1746,8 @@ bool PreviSat::eventFilter(QObject *watched, QEvent *event)
         setToolTip("");
 
         EffacerMessageStatut();
-        //        AfficherMessageStatut2("");
-        //        AfficherMessageStatut3("");
+        AfficherMessageStatut2("");
+        AfficherMessageStatut3("");
     }
 
     /* Retour */
@@ -2092,4 +2179,228 @@ void PreviSat::on_filtreSatellites_returnPressed()
     _ui->filtreSatellites->clear();
     _ui->listeSatellites->sortItems();
     _ui->listeSatellites->scrollToItem(_ui->listeSatellites->currentItem(), QAbstractItemView::PositionAtTop);
+}
+
+void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->listeSatellites->hasFocus() && (_ui->listeSatellites->currentRow() >= 0)) {
+
+        const QString norad = item->data(Qt::UserRole).toString();
+        const Qt::CheckState check = static_cast<Qt::CheckState> (item->data(Qt::CheckStateRole).toInt());
+        const ElementsOrbitaux elem = Configuration::instance()->mapElementsOrbitaux()[norad];
+
+        if (check == Qt::Checked) {
+
+            // Suppression d'un satellite dans la liste
+            item->setData(Qt::CheckStateRole, Qt::Unchecked);
+
+            QList<Satellite> &listeSatellites = Configuration::instance()->listeSatellites();
+            bool afin = false;
+            int i;
+            for(i = 0; i < listeSatellites.size() && !afin; i++) {
+                afin = (listeSatellites.at(i).elementsOrbitaux().norad == norad);
+            }
+
+            if (i > 0) {
+                listeSatellites.removeAt(--i);
+                Configuration::instance()->SuppressionSatelliteFichierElem(norad);
+            }
+
+            Configuration::instance()->notifAOS() = NotificationSonore::ATTENTE_LOS;
+            Configuration::instance()->notifFlashs() = NotificationSonore::ATTENTE_LOS;
+
+        } else {
+
+            // Ajout d'un satellite dans la liste
+            item->setData(Qt::CheckStateRole, Qt::Checked);
+            Configuration::instance()->listeSatellites().append(Satellite(elem));
+            Configuration::instance()->AjoutSatelliteFichierElem(norad);
+        }
+
+        _onglets->setAcalcAOS(true);
+        _onglets->setAcalcDN(true);
+        _onglets->setInfo(true);
+        emit DeconnecterUdp();
+
+        // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
+        EnchainementCalculs();
+
+        // Affichage des donnees numeriques dans la barre d'onglets
+        _onglets->show(*_dateCourante);
+#if defined (Q_OS_WIN)
+        //_onglets->CalculAosSatSuivi();
+#endif
+
+        _ui->issLive->setChecked(settings.value("affichage/issLive", false).toBool());
+
+        if (_isCarteMonde) {
+
+            // Affichage des courbes sur la carte du monde
+            _carte->show();
+
+        } else {
+
+            // Affichage de la carte du ciel
+            _ciel->show(Configuration::instance()->observateur(),
+                        Configuration::instance()->soleil(),
+                        Configuration::instance()->lune(),
+                        Configuration::instance()->lignesCst(),
+                        Configuration::instance()->constellations(),
+                        Configuration::instance()->etoiles(),
+                        Configuration::instance()->planetes(),
+                        Configuration::instance()->listeSatellites(),
+                        Configuration::instance()->isCarteMaximisee() || _ciel->fenetreMax());
+        }
+
+        // Affichage du radar
+        const bool radarVisible = ((_options->ui()->affradar->checkState() == Qt::Checked) ||
+                                   ((_options->ui()->affradar->checkState() == Qt::PartiallyChecked)
+                                    && Configuration::instance()->listeSatellites().at(0).isVisible()));
+        if (radarVisible) {
+            _radar->show();
+        }
+        _radar->setVisible(!_ui->issLive->isChecked() && radarVisible);
+
+        GestionnaireXml::EcritureConfiguration();
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_listeSatellites_itemEntered(QListWidgetItem *item)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString nomsat = item->text();
+    const QString norad = item->data(Qt::UserRole).toString();
+    const QString cospar = item->toolTip().split(":").last().trimmed();
+
+    /* Corps de la methode */
+    if (nomsat != norad) {
+        AfficherMessageStatut(tr("<b>%1</b> (numéro NORAD : <b>%2</b>  -  COSPAR : %3)").arg(nomsat).arg(norad).arg(cospar), 5);
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_listeSatellites_customContextMenuRequested(const QPoint &pos)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(pos)
+
+    /* Corps de la methode */
+    if (_ui->listeSatellites->currentRow() >= 0) {
+        _ui->menuListeSatellites->exec(QCursor::pos());
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionDefinir_par_defaut_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString norad = _ui->listeSatellites->currentItem()->data(Qt::UserRole).toString();
+    const QFileInfo fi(Configuration::instance()->nomfic());
+    const bool atrouve = Configuration::instance()->mapSatellitesFichierElem().value(fi.fileName()).contains(norad);
+    const ElementsOrbitaux elem = Configuration::instance()->mapElementsOrbitaux()[norad];
+
+    /* Corps de la methode */
+    if (atrouve) {
+
+        bool afin = false;
+        int i;
+        for(i = 1; i < Configuration::instance()->listeSatellites().size() && !afin; i++) {
+            afin = (Configuration::instance()->listeSatellites().at(i).elementsOrbitaux().norad == norad);
+        }
+
+        Configuration::instance()->listeSatellites().swapItemsAt(--i, 0);
+
+    } else {
+        // Le satellite choisi ne fait pas partie de la liste de satellites, on l'ajoute
+        Configuration::instance()->listeSatellites().insert(0, Satellite(elem));
+        Configuration::instance()->AjoutSatelliteFichierElem(norad);
+    }
+
+    // On definit le satellite choisi comme satellite par defaut
+    _ui->listeSatellites->currentItem()->setData(Qt::CheckStateRole, Qt::Checked);
+    _onglets->setAcalcAOS(true);
+    _onglets->setAcalcDN(true);
+    _onglets->setInfo(true);
+    emit DeconnecterUdp();
+    Configuration::instance()->notifAOS() = NotificationSonore::ATTENTE_LOS;
+
+    GestionTempsReel();
+
+    GestionnaireXml::EcritureConfiguration();
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_lancementVideoNasa_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        QString val;
+        QStringListIterator it(Configuration::instance()->listeChainesNasa());
+        while (it.hasNext()) {
+            if (!val.isEmpty()) {
+                val += ",";
+            }
+            val += "'" + it.next() + "'";
+        }
+
+        QString tab = QString("var tab = [ %1 ];").arg(val);
+
+        static QString html0;
+        if (html0.isEmpty()) {
+
+            const QString ficHtml = Configuration::instance()->dirLocalData() + QDir::separator() + "html" + QDir::separator() + "chainesNASA.ht";
+            QFile fi(ficHtml);
+
+            if (fi.exists() && (fi.size() != 0)) {
+                if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                    html0 = fi.readAll();
+                }
+                fi.close();
+            }
+        }
+
+        QString html = html0;
+        html = html.replace("CHANNEL_MAX", QString::number(Configuration::instance()->listeChainesNasa().count())).replace("CHANNEL_TAB", tab);
+
+        // Creation du fichier html
+        QFile fr(Configuration::instance()->dirTmp() + QDir::separator() + "chainesNASA.html");
+        if (fr.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream flux(&fr);
+            flux << html;
+        }
+        fr.close();
+
+        // Ouverture du fichier html
+        QDesktopServices::openUrl(QUrl("file:///" + fr.fileName()));
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
 }

@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    18 octobre 2022
+ * >    28 octobre 2022
  *
  */
 
@@ -108,6 +108,7 @@ public:
 #if defined (Q_OS_WIN)
     SuiviTelescope *suiviTelescope() const;
 #endif
+    Antenne *antenne() const;
 
 
     /*
