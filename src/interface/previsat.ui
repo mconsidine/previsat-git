@@ -884,7 +884,6 @@ le flux vidéo</string>
     <addaction name="actionOutils"/>
     <addaction name="separator"/>
     <addaction name="actionMettre_a_jour_GP_courant"/>
-    <addaction name="actionMettre_a_jour_groupe_GP_courant"/>
     <addaction name="actionMettre_a_jour_GP_communs"/>
     <addaction name="actionMettre_a_jour_tous_les_groupes_de_GP"/>
     <addaction name="separator"/>
@@ -992,20 +991,12 @@ le flux vidéo</string>
     <string>F5</string>
    </property>
   </action>
-  <action name="actionMettre_a_jour_groupe_GP_courant">
-   <property name="text">
-    <string>Mettre à jour groupe GP courant</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F5</string>
-   </property>
-  </action>
   <action name="actionMettre_a_jour_GP_communs">
    <property name="text">
     <string>Mettre à jour GP communs</string>
    </property>
    <property name="shortcut">
-    <string>Alt+F5</string>
+    <string>Ctrl+F5</string>
    </property>
   </action>
   <action name="actionMettre_a_jour_tous_les_groupes_de_GP">

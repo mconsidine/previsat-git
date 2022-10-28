@@ -77,7 +77,8 @@ public:
      * @return tableau d'elements orbitaux
      */
     static QMap<QString, ElementsOrbitaux> LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
-                                                  const QStringList &listeSatellites = QStringList(), const bool ajoutDonnees = true);
+                                                          const QStringList &listeSatellites = QStringList(), const bool ajoutDonnees = true,
+                                                          const bool alarme = false);
 
     /**
      * @brief RecupereNomsat Recupere le nom du satellite

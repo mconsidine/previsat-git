@@ -100,6 +100,12 @@ public slots:
     void changeEvent(QEvent *evt);
 
 
+signals:
+
+    void ChargementGP();
+    void InitFicGP();
+
+
 protected:
 
     /*

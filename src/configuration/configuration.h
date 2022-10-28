@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    22 octobre 2022
+ * >    28 octobre 2022
  *
  */
 
@@ -97,6 +97,11 @@ public:
      */
     void Initialisation();
 
+    /**
+     * @brief InitListeFichiersElem Initialisation de la liste de fichiers d'elements orbitaux
+     */
+    void InitListeFichiersElem();
+
 
     /*
      * Accesseurs
@@ -124,6 +129,8 @@ public:
     // Locale
     const QString &locale() const;
     const QStringList &listeFicLang() const;
+
+    const QStringList &listeFicLocalData() const;
 
     // Polices
     const QFont &police() const;
@@ -399,11 +406,6 @@ private:
      * @brief DeterminationLocale Determination de la locale et liste des langues disponibles
      */
     void DeterminationLocale();
-
-    /**
-     * @brief InitListeFichiersElem Initialisation de la liste de fichiers d'elements orbitaux
-     */
-    void InitListeFichiersElem();
 
     /**
      * @brief InitListeFichiersMap Initialisation de la liste de fichiers de cartes du monde

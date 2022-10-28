@@ -400,7 +400,7 @@ void Options::CreerMenus()
     _supprimerCategorie->setIcon(QIcon(":/resources/interface/suppr.png"));
     connect(_supprimerCategorie, &QAction::triggered, this, &Options::SupprimerCategorie);
 
-    _telechargerCategorie = new QAction(tr("Supprimer"), this);
+    _telechargerCategorie = new QAction(tr("Télécharger..."), this);
     connect(_telechargerCategorie, &QAction::triggered, this, &Options::TelechargerCategorie);
 
 
