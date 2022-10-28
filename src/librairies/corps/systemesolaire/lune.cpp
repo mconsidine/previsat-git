@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 octobre 2022
+ * >    28 octobre 2022
  *
  */
 
@@ -136,17 +136,17 @@ void Lune::CalculDatesPhases(const Date &date, const DateSysteme &syst)
     for(unsigned int i=0; i<NB_PHASES; i++) {
 
         k = arrondi((annee - AN2000) * 12.3685, 0) + 0.25 * i;
-//        if ((k - 1) > date.jourJulienUTC()) {
-//            k--;
-//        }
-
-        const double t = k / 1236.85;
-        const double t2 = t * t;
-        const double t3 = t2 * t;
-        const double t4 = t3 * t;
 
         // Dates approximatives des phases lunaires
-        jjPhases[i] = 5.09766 + 29.530588861 * k + 0.00015437 * t2 - 0.000000150 * t3 + 0.00000000073 * t4;
+        jjPhases[i] = CalculJurJulienPhase(k);
+        const double jj1 = CalculJurJulienPhase(k-1);
+        const double jj2 = CalculJurJulienPhase(k+1);
+
+        if (jj1 > date.jourJulienUTC()) {
+            jjPhases[i] = jj1;
+        } else if (jjPhases[i] < date.jourJulienUTC()) {
+            jjPhases[i] = jj2;
+        }
 
         // Obtention des dates precises par interpolation
         pas = 1.;
@@ -462,4 +462,15 @@ const std::array<QString, NB_PHASES> &Lune::datesPhases() const
 /*
  * Methodes privees
  */
+/*
+ * Calcul du jour julien approximatif d'une phase lunaire
+ */
+double Lune::CalculJurJulienPhase(const double k)
+{
+    const double t = k / 1236.85;
+    const double t2 = t * t;
+    const double t3 = t2 * t;
+    const double t4 = t3 * t;
 
+    return (5.09766 + 29.530588861 * k + 0.00015437 * t2 - 0.000000150 * t3 + 0.00000000073 * t4);
+}
