@@ -1162,7 +1162,7 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
         elem->setData(Qt::UserRole, norad);
         elem->setData(Qt::CheckStateRole, (check) ? Qt::Checked : Qt::Unchecked);
         elem->setToolTip(tooltip);
-        elem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
+        elem->setFlags(Qt::ItemIsEnabled);
         if (norad == noradDefaut) {
             _ui->listeSatellites->setCurrentItem(elem);
         }
