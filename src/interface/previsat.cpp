@@ -30,16 +30,19 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 octobre 2022
+ * >    28 octobre 2022
  *
  */
 
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wredundant-decls"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDesktopServices>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QMouseEvent>
+#include <QPrintDialog>
+#include <QPrinter>
 #include <QSettings>
 #include <QSoundEffect>
 #include <QStandardPaths>
@@ -47,6 +50,7 @@
 #include "ui_options.h"
 #include "ui_previsat.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wredundant-decls"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "listwidgetitem.h"
 #include "previsat.h"
@@ -502,6 +506,10 @@ void PreviSat::ConnexionsSignauxSlots()
     // Connexions avec la carte du monde
     connect(_carte, &Carte::ReinitFlags, _onglets, &Onglets::ReinitFlags);
 
+    // Connexions avec la fenetre Outils
+    connect(_outils, &Outils::ChargementGP, this, &PreviSat::ChargementGP);
+    connect(_outils, &Outils::InitFicGP, this, &PreviSat::InitFicGP);
+
     /* Retour */
     return;
 }
@@ -924,91 +932,6 @@ void PreviSat::InitDate()
 }
 
 /*
- * Liste des fichiers d'elements orbitaux
- */
-void PreviSat::InitFicGP()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    try {
-
-        QString nomfic;
-        bool ajout = false;
-        bool defaut = false;
-        int idx = 0;
-        QStringList listeElem = Configuration::instance()->listeFichiersElem();
-
-        const bool etat = _ui->listeFichiersElem->blockSignals(true);
-        _ui->listeFichiersElem->clear();
-
-        QStringListIterator it(Configuration::instance()->listeFichiersElem());
-        while (it.hasNext()) {
-
-            const QString nom = it.next();
-            const QString fic = QDir::toNativeSeparators(Configuration::instance()->dirElem() + QDir::separator() + nom);
-
-            const QFileInfo ff(fic);
-            if (ff.suffix() == "xml") {
-
-                // Cas des fichiers GP
-                const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
-                                                                                         Configuration::instance()->lgRec());
-
-                ajout = (mapElem.size() != 0);
-                nomfic = ff.baseName();
-
-            } else {
-
-                // Cas des fichiers TLE
-                ajout = (TLE::VerifieFichier(fic) > 0);
-                nomfic = nom;
-            }
-
-            if (ajout) {
-
-                // Ajout du fichier dans la liste
-                _ui->listeFichiersElem->addItem(nomfic);
-
-                if (nom == Configuration::instance()->nomfic()) {
-                    const int index = _ui->listeFichiersElem->count() - 1;
-                    _ui->listeFichiersElem->setCurrentIndex(index);
-                    _ui->listeFichiersElem->setItemData(index, QColor(Qt::gray), Qt::BackgroundRole);
-                }
-            } else {
-
-                // Suppression dans la liste des fichiers qui ne sont pas des elements orbitaux
-                if (nom == Configuration::instance()->nomfic()) {
-                    defaut = true;
-                }
-                listeElem.removeAt(idx);
-            }
-
-            idx++;
-        }
-
-        if (listeElem.count() == 0) {
-            _ui->listeFichiersElem->addItem("");
-        } else {
-            if (defaut) {
-                Configuration::instance()->nomfic() = Configuration::instance()->dirElem() + QDir::separator() + listeElem.first();
-            }
-        }
-        _ui->listeFichiersElem->blockSignals(etat);
-
-        // Mise a jour de la liste de fichiers d'elements orbitaux
-        Configuration::instance()->setListeFicElem(listeElem);
-
-    } catch (PreviSatException &e) {
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
  * Installation de la traduction
  */
 void PreviSat::InstallationTraduction(const QString &langue, QTranslator &traduction)
@@ -1055,6 +978,9 @@ void PreviSat::MajFichierGP()
         AfficherMessageStatut(tr("Téléchargement terminé"), 10);
         settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
 
+        ChargementGP();
+        DemarrageApplication();
+
     } catch (PreviSatException &e) {
     }
 
@@ -1091,17 +1017,12 @@ void PreviSat::MajWebGP()
 
                 const CategorieElementsOrbitaux categorie = it2.next();
 
-
                 if (adresse.contains("celestrak")) {
                     adresse = Configuration::instance()->adresseCelestrakNorad();
                 }
 
                 if (adresse.contains("previsat")) {
                     adresse = QString(DOMAIN_NAME) + "elem/%1";
-                }
-
-                if (!adresse.endsWith("/")) {
-                    adresse.append("/");
                 }
 
                 foreach (const QString fic, categorie.fichiers) {
@@ -1437,6 +1358,139 @@ void PreviSat::GestionTempsReel()
 }
 
 /*
+ * Liste des fichiers d'elements orbitaux
+ */
+void PreviSat::InitFicGP()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        QString nomfic;
+        bool ajout = false;
+        bool defaut = false;
+        int idx = 0;
+        QStringList listeElem = Configuration::instance()->listeFichiersElem();
+
+        const bool etat = _ui->listeFichiersElem->blockSignals(true);
+        _ui->listeFichiersElem->clear();
+
+        QStringListIterator it(Configuration::instance()->listeFichiersElem());
+        while (it.hasNext()) {
+
+            const QString nom = it.next();
+            const QString fic = QDir::toNativeSeparators(Configuration::instance()->dirElem() + QDir::separator() + nom);
+
+            const QFileInfo ff(fic);
+            if (ff.suffix() == "xml") {
+
+                // Cas des fichiers GP
+                const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
+                                                                                         Configuration::instance()->lgRec());
+
+                ajout = (mapElem.size() != 0);
+                nomfic = ff.baseName();
+
+            } else {
+
+                // Cas des fichiers TLE
+                ajout = (TLE::VerifieFichier(fic) > 0);
+                nomfic = ff.baseName() + " (TLE)";
+            }
+
+            if (ajout) {
+
+                // Ajout du fichier dans la liste
+                nomfic[0] = nomfic[0].toUpper();
+                _ui->listeFichiersElem->addItem(nomfic);
+
+                if (nom == Configuration::instance()->nomfic()) {
+                    const int index = _ui->listeFichiersElem->count() - 1;
+                    _ui->listeFichiersElem->setCurrentIndex(index);
+                    _ui->listeFichiersElem->setItemData(index, QColor(Qt::gray), Qt::BackgroundRole);
+                }
+            } else {
+
+                // Suppression dans la liste des fichiers qui ne sont pas des elements orbitaux
+                if (nom == Configuration::instance()->nomfic()) {
+                    defaut = true;
+                }
+
+                if (idx < listeElem.size()) {
+                    listeElem.removeAt(idx);
+                }
+            }
+
+            idx++;
+        }
+
+        if (listeElem.count() == 0) {
+            _ui->listeFichiersElem->addItem("");
+        } else {
+            if (defaut) {
+                Configuration::instance()->nomfic() = Configuration::instance()->dirElem() + QDir::separator() + listeElem.first();
+            }
+        }
+        _ui->listeFichiersElem->blockSignals(etat);
+
+        // Mise a jour de la liste de fichiers d'elements orbitaux
+        Configuration::instance()->setListeFicElem(listeElem);
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::MettreAjourGroupeElem(const QString &groupe)
+{
+    /* Declarations des variables locales */
+    QString adresse;
+
+    /* Initialisations */
+    AfficherMessageStatut(tr("Mise à jour du groupe d'éléments orbitaux \"%1\"...").arg(groupe));
+    Telechargement tel(Configuration::instance()->dirElem());
+
+    /* Corps de la methode */
+    QMapIterator it1(Configuration::instance()->mapCategoriesElementsOrbitaux());
+    while (it1.hasNext()) {
+        it1.next();
+
+        adresse = it1.key();
+
+        if (adresse.contains("celestrak")) {
+            adresse = Configuration::instance()->adresseCelestrakNorad();
+        }
+
+        if (adresse.contains("previsat")) {
+            adresse = QString(DOMAIN_NAME) + "elem/%1";
+        }
+
+        QListIterator it2(it1.value());
+        while (it2.hasNext()) {
+
+            const CategorieElementsOrbitaux categorie = it2.next();
+            if (groupe.contains(categorie.nom[Configuration::instance()->locale()], Qt::CaseInsensitive)) {
+
+                foreach (const QString fic, categorie.fichiers) {
+
+                    const QString fichier = (adresse.contains("celestrak")) ? QFileInfo(fic).baseName() : fic;
+                    tel.TelechargementFichier(QUrl(adresse.arg(fichier)));
+                }
+            }
+        }
+    }
+    AfficherMessageStatut(tr("Mise à jour du groupe d'éléments orbitaux \"%1\" terminée").arg(groupe), 5);
+
+    /* Retour */
+    return;
+}
+
+/*
  * Raccourcis vers les fonctionnalites
  */
 void PreviSat::RaccourciPrevisions()
@@ -1690,7 +1744,7 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
 
                 // Cas d'un fichier GP
                 const QMap<QString, ElementsOrbitaux> mapElements = GPFormat::LectureFichier(fichier, Configuration::instance()->donneesSatellites(),
-                                                                                             Configuration::instance()->lgRec());
+                                                                                             Configuration::instance()->lgRec(), QStringList(), true, true);
 
                 if (mapElements.isEmpty()) {
 
@@ -1800,10 +1854,38 @@ void PreviSat::on_actionEnregistrer_triggered()
 void PreviSat::on_actionImprimer_carte_triggered()
 {
     /* Declarations des variables locales */
+    QPrinter printer;
 
     /* Initialisations */
 
     /* Corps de la methode */
+    printer.setPageOrientation((_carte->isVisible()) ? QPageLayout::Landscape : QPageLayout::Portrait);
+    QPrintDialog dial(&printer, this);
+
+    if (dial.exec() == QDialog::Accepted) {
+
+        printer.newPage();
+        QPainter p(&printer);
+
+        QRect rect;
+
+        if (_carte->isVisible()) {
+            rect = _carte->rect();
+            rect.moveTo(6, 6);
+        } else {
+            rect = _ciel->rect();
+            rect.moveTo((_ui->frameCarte->width() - _ciel->width()) / 2 - 20, 6);
+        }
+
+        const QPixmap pixmap = QWidget::grab(rect);
+        const QPixmap pixscl = (pixmap.width() > printer.pageRect(QPrinter::DevicePixel).width()) ?
+                    pixmap.scaledToWidth(static_cast<int> (printer.pageRect(QPrinter::DevicePixel).width())) : pixmap;
+        const int xPrt = static_cast<int> ((pixscl.width() == pixmap.width()) ?
+                                               (printer.pageRect(QPrinter::DevicePixel).width() - pixscl.width()) / 2 : 50);
+
+        p.drawPixmap(xPrt, 50, pixscl);
+        p.end();
+    }
 
     /* Retour */
     return;
@@ -1858,27 +1940,49 @@ void PreviSat::on_actionOutils_triggered()
 
 void PreviSat::on_actionMettre_a_jour_GP_courant_triggered()
 {
-
-}
-
-void PreviSat::on_actionMettre_a_jour_groupe_GP_courant_triggered()
-{
-
+    MajFichierGP();
 }
 
 void PreviSat::on_actionMettre_a_jour_GP_communs_triggered()
 {
-
+    MettreAjourGroupeElem(tr("Commun"));
 }
 
 void PreviSat::on_actionMettre_a_jour_tous_les_groupes_de_GP_triggered()
 {
-
+    MettreAjourGroupeElem(tr("Tous"));
 }
 
 void PreviSat::on_actionMettre_a_jour_les_fichiers_de_donnees_triggered()
 {
+    /* Declarations des variables locales */
+    QFile fi;
+    QFile fi2;
 
+    /* Initialisations */
+    Telechargement tel(Configuration::instance()->dirLocalData());
+
+    /* Corps de la methode */
+    foreach (const QString &fic, Configuration::instance()->listeFicLocalData()) {
+
+        if (!fic.contains("preferences", Qt::CaseInsensitive)) {
+            const QString fichier = QString("%1data/%2").arg(DOMAIN_NAME).arg(fic).replace(QDir::separator(), "/");
+            const QUrl url(fichier);
+            tel.TelechargementFichier(url);
+
+            const QString file = QFileInfo(url.path()).fileName();
+            if (!fic.startsWith(file)) {
+
+                fi.setFileName(Configuration::instance()->dirLocalData() + QDir::separator() + file);
+                fi2.setFileName(Configuration::instance()->dirLocalData() + QDir::separator() + fic);
+                fi2.remove();
+                fi.rename(fi2.fileName());
+            }
+        }
+    }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_actionExporter_fichier_log_triggered()

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 octobre 2022
+ * >    28 octobre 2022
  *
  */
 
@@ -235,11 +235,6 @@ private:
     void InitDate();
 
     /**
-     * @brief InitFicGP Liste des fichiers d'elements orbitaux
-     */
-    void InitFicGP();
-
-    /**
      * @brief InstallationTraduction Installation de la traduction
      * @param langue langue
      * @param traduction traduction
@@ -288,6 +283,13 @@ private slots:
      */
     void GestionTempsReel();
 
+    /**
+     * @brief InitFicGP Liste des fichiers d'elements orbitaux
+     */
+    void InitFicGP();
+
+    void MettreAjourGroupeElem(const QString &groupe);
+
     // Raccourcis vers les fonctionnalites
     void RaccourciPrevisions();
     void RaccourciFlashs();
@@ -324,7 +326,6 @@ private slots:
     void on_actionOutils_triggered();
 
     void on_actionMettre_a_jour_GP_courant_triggered();
-    void on_actionMettre_a_jour_groupe_GP_courant_triggered();
     void on_actionMettre_a_jour_GP_communs_triggered();
     void on_actionMettre_a_jour_tous_les_groupes_de_GP_triggered();
 

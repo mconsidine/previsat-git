@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    22 octobre 2022
+ * >    28 octobre 2022
  *
  */
 
@@ -208,6 +208,24 @@ void Configuration::Initialisation()
     return;
 }
 
+/*
+ * Initialisation de la liste de fichiers d'elements orbitaux
+ */
+void Configuration::InitListeFichiersElem()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QDir di(_dirElem);
+    const QStringList filtres(QStringList () << "*.xml" << "*.txt" << "*.tle");
+    _listeFichiersElem = di.entryList(filtres, QDir::Files);
+
+    /* Retour */
+    return;
+}
+
 
 /*
  * Accesseurs
@@ -311,6 +329,11 @@ const QString &Configuration::locale() const
 const QStringList &Configuration::listeFicLang() const
 {
     return _listeFicLang;
+}
+
+const QStringList &Configuration::listeFicLocalData() const
+{
+    return _listeFicLocalData;
 }
 
 // Polices
@@ -652,24 +675,6 @@ void Configuration::DeterminationLocale()
     return;
 }
 
-/*
- * Initialisation de la liste de fichiers d'elements orbitaux
- */
-void Configuration::InitListeFichiersElem()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    const QDir di(_dirElem);
-    const QStringList filtres(QStringList () << "*.xml" << "*.txt" << "*.tle");
-    _listeFichiersElem = di.entryList(filtres, QDir::Files);
-
-    /* Retour */
-    return;
-}
-
 void Configuration::InitListeFichiersMap()
 {
     /* Declarations des variables locales */
@@ -912,7 +917,7 @@ void Configuration::VerificationArborescences()
         const QString repHtm = QString("html") + QDir::separator();
         _listeFicLocalData << "donnees.bin" << "ISS.OEM_J2K_EPH.xml" << repHtm + "chaines.chnl" << repHtm + "meteo.map"
                            << repHtm + "meteoNASA.html" << repHtm + "resultat.map" << QString("preferences") + QDir::separator() + "defaut"
-                           << "taiutc.dat";
+                           << "radio.xml" << "taiutc.dat";
 
         VerifieFichiersData(_dirLocalData, _listeFicLocalData);
 

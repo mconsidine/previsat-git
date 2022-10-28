@@ -391,8 +391,7 @@ void Outils::on_ajoutFichiersElem_clicked()
     _ui->nomGroupe->setEnabled(false);
 
     for(int i=0; i<_ui->listeFichiersElem->count(); i++) {
-        _ui->listeFichiers->setPlainText(_ui->listeFichiers->document()->toPlainText() +
-                                         _ui->listeFichiersElem->item(i)->text().trimmed() + "\n");
+        _ui->listeFichiers->setPlainText(_ui->listeFichiers->document()->toPlainText() + _ui->listeFichiersElem->item(i)->text().trimmed() + "\n");
     }
 
     _ui->listeFichiers->moveCursor(QTextCursor::End);
@@ -423,6 +422,10 @@ void Outils::on_majGroupe_clicked()
 
     disconnect(&tel, &Telechargement::Progression, this, &Outils::ProgressionElem);
     _ui->frameBarreProgressionElem->setVisible(false);
+
+    Configuration::instance()->InitListeFichiersElem();
+    emit InitFicGP();
+    emit ChargementGP();
 
     /* Retour */
     return;
