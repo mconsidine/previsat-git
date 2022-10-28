@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 octobre 2022
+ * >    28 octobre 2022
  *
  */
 
@@ -137,6 +137,12 @@ private:
     /*
      * Methodes privees
      */
+    /**
+     * @brief CalculJurJulienPhase Calcul du jour julien approximatif d'une phase lunaire
+     * @param k nombre de lunaison depuis le 1er janvier 2000 (sans partie fractionnaire pour la nouvelle lune, +0.25 pour le premier quartier, etc.)
+     * @return jour julien approximatif de la phase
+     */
+    double CalculJurJulienPhase(const double k);
 
 
 };

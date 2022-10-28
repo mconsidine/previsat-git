@@ -144,7 +144,7 @@ void LuneTest::testCalculDatesPhases()
 {
     qInfo(Q_FUNC_INFO);
 
-    Date date(2022, 4, 2, 0, 0, 0., 2. / 24.);
+    Date date(2022, 4, 1, 0, 0, 0., 2. / 24.);
     Lune lune;
     lune.CalculDatesPhases(date, DateSysteme::SYSTEME_24H);
 
