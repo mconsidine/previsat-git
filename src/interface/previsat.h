@@ -57,6 +57,7 @@ QT_END_NAMESPACE
 
 
 class QLabel;
+class QListWidgetItem;
 class Carte;
 class Ciel;
 class Date;
@@ -121,6 +122,7 @@ public slots:
 signals:
 
     void AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool);
+    void DeconnecterUdp();
     void InitAffichageListeSatellites();
     void SauveOngletGeneral(const QString &);
     void SauveOngletElementsOsculateurs(const QString &);
@@ -274,6 +276,18 @@ private slots:
     void AfficherMessageStatut(const QString &message, const int secondes = -1);
 
     /**
+     * @brief AfficherMessageStatut2 Affichage d'un message dans la zone de statut 2
+     * @param message message
+     */
+    void AfficherMessageStatut2(const QString &message);
+
+    /**
+     * @brief AfficherMessageStatut3 Affichage d'un message dans la zone de statut 3
+     * @param message message
+     */
+    void AfficherMessageStatut3(const QString &message);
+
+    /**
      * @brief EffacerMessageStatut Effacer la zone de message de statut
      */
     void EffacerMessageStatut();
@@ -348,6 +362,13 @@ private slots:
     // Filtre sur les satellites
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();
+
+    void on_listeSatellites_itemClicked(QListWidgetItem *item);
+    void on_listeSatellites_itemEntered(QListWidgetItem *item);
+    void on_listeSatellites_customContextMenuRequested(const QPoint &pos);
+    void on_actionDefinir_par_defaut_triggered();
+
+    void on_lancementVideoNasa_clicked();
 
 };
 

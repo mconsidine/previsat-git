@@ -121,6 +121,9 @@ void Antenne::InitAffichageFrequences()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const bool etat1 = _ui->frequenceMontante->blockSignals(true);
+    const bool etat2 = _ui->frequenceDescendante->blockSignals(true);
+
     _ui->frequenceMontante->clear();
     _ui->frequenceDescendante->clear();
     const QString norad = Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad;
@@ -128,9 +131,6 @@ void Antenne::InitAffichageFrequences()
 
     /* Corps de la methode */
     if (Configuration::instance()->mapFrequencesRadio().contains(norad)) {
-
-        const bool etat1 = _ui->frequenceMontante->blockSignals(true);
-        const bool etat2 = _ui->frequenceDescendante->blockSignals(true);
 
         _ui->frameFrequences->setVisible(true);
 
@@ -289,6 +289,28 @@ void Antenne::show(const Date &date)
     return;
 }
 
+/*
+ * Deconnecter le protocole UDP
+ */
+void Antenne::DeconnecterUdp()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->frameFrequences->setVisible(false);
+    _ui->donneesTransmises->setVisible(false);
+    _ui->frameSatellite->setVisible(false);
+
+    if (_udpSocket != nullptr) {
+        on_connexion_clicked();
+    }
+
+    /* Retour */
+    return;
+}
+
 void Antenne::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
@@ -361,10 +383,10 @@ void Antenne::EnvoiUdp()
 
     /* Corps de la methode */
     donnees = QByteArray(_structureMessageUdp.arg(sat.elementsOrbitaux().nom)
-                   .arg((sat.isVisible()) ? 1 : 0)
-                   .arg(azimut)
-                   .arg(hauteur)
-                   .arg(sat.rangeRate() * 1.e3, 0, 'f', 1).toStdString().c_str());
+                         .arg((sat.isVisible()) ? 1 : 0)
+                         .arg(azimut)
+                         .arg(hauteur)
+                         .arg(sat.rangeRate() * 1.e3, 0, 'f', 1).toStdString().c_str());
 
     const qint64 taille = _udpSocket->writeDatagram(donnees, adresse, port);
     _ui->donneesTransmises->setVisible(taille != -1);

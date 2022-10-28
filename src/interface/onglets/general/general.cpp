@@ -95,6 +95,9 @@ General::General(CalculsFlashs *flashs, Osculateurs *osculateurs, QWidget *paren
     _flashs = flashs;
     _osculateurs = osculateurs;
 
+    _dateEclipse = nullptr;
+    _elementsAOS = nullptr;
+
     try {
 
         Initialisation();
@@ -111,6 +114,8 @@ General::General(CalculsFlashs *flashs, Osculateurs *osculateurs, QWidget *paren
  */
 General::~General()
 {
+    EFFACE_OBJET(_dateEclipse);
+    EFFACE_OBJET(_elementsAOS);
     delete _ui;
 }
 

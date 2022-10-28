@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    18 octobre 2022
+ * >    28 octobre 2022
  *
  */
 
@@ -95,6 +95,23 @@ Onglets::Onglets(QWidget *parent) :
     ReinitFlags();
 
     try {
+
+        _general = nullptr;
+        _osculateurs = nullptr;
+
+        _informationsSatellite = nullptr;
+        _rechercheSatellite = nullptr;
+        _informationsISS = nullptr;
+
+        _previsions = nullptr;
+        _flashs = nullptr;
+        _transits = nullptr;
+        _evenements = nullptr;
+
+    #if defined (Q_OS_WIN)
+        _suiviTelescope = nullptr;
+    #endif
+        _antenne = nullptr;
 
         Initialisation();
 
@@ -174,6 +191,11 @@ SuiviTelescope *Onglets::suiviTelescope() const
     return _suiviTelescope;
 }
 #endif
+
+Antenne *Onglets::antenne() const
+{
+    return _antenne;
+}
 
 
 /*

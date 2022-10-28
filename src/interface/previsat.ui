@@ -683,7 +683,14 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QListWidget" name="listeSatellites"/>
+              <widget class="QListWidget" name="listeSatellites">
+               <property name="mouseTracking">
+                <bool>true</bool>
+               </property>
+               <property name="contextMenuPolicy">
+                <enum>Qt::CustomContextMenu</enum>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -923,10 +930,17 @@ le flux vidéo</string>
     <addaction name="actionCelestrak"/>
     <addaction name="actionSpaceTrack"/>
    </widget>
+   <widget class="QMenu" name="menuListeSatellites">
+    <property name="title">
+     <string>MenuListeSatellites</string>
+    </property>
+    <addaction name="actionDefinir_par_defaut"/>
+   </widget>
    <addaction name="menuPrincipal"/>
    <addaction name="menuDons"/>
    <addaction name="menuPartenaires"/>
    <addaction name="menuElementsOrbitaux"/>
+   <addaction name="menuListeSatellites"/>
   </widget>
   <action name="actionImporter_fichier_TLE_GP">
    <property name="text">
@@ -1108,6 +1122,11 @@ le flux vidéo</string>
   <action name="actionSpaceTrack">
    <property name="text">
     <string>space-track.org</string>
+   </property>
+  </action>
+  <action name="actionDefinir_par_defaut">
+   <property name="text">
+    <string>Définir par défaut</string>
    </property>
   </action>
  </widget>

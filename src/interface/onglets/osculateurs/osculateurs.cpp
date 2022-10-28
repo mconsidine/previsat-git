@@ -30,7 +30,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >    27 aout 2022
+ * >
  *
  */
 
@@ -88,6 +88,8 @@ Osculateurs::~Osculateurs()
 {
     settings.setValue("affichage/typeParametres", _ui->typeParametres->currentIndex());
     settings.setValue("affichage/typeRepere", _ui->typeRepere->currentIndex());
+
+    EFFACE_OBJET(_date);
     delete _ui;
 }
 
