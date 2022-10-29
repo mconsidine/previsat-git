@@ -36,7 +36,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >     27 aout 2022
+ * >
  *
  */
 
@@ -88,6 +88,7 @@ public:
      * Methodes publiques
      */
 
+
 public slots:
 
     /**
@@ -97,6 +98,8 @@ public slots:
     void SauveOngletRecherche(const QString &fichier);
 
     void changeEvent(QEvent *evt);
+    void on_noradDonneesSat_valueChanged(int arg1);
+    void show();
 
 
 protected:
@@ -117,12 +120,18 @@ private:
      */
     Ui::RechercheSatellite *_ui;
 
+    QStringList _resultatsSatellitesTrouves;
+
 
     /*
      * Methodes privees
      */
 
+private slots:
 
+    void on_nom_returnPressed();
+    void on_cosparDonneesSat_returnPressed();
+    void on_satellitesTrouves_currentRowChanged(int currentRow);
 };
 
 #endif // RECHERCHESATELLITE_H

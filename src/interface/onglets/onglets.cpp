@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    28 octobre 2022
+ * >    29 octobre 2022
  *
  */
 
@@ -108,9 +108,9 @@ Onglets::Onglets(QWidget *parent) :
         _transits = nullptr;
         _evenements = nullptr;
 
-    #if defined (Q_OS_WIN)
+#if defined (Q_OS_WIN)
         _suiviTelescope = nullptr;
-    #endif
+#endif
         _antenne = nullptr;
 
         Initialisation();
@@ -280,6 +280,7 @@ void Onglets::show(const Date &date)
         if (_info) {
 
             _informationsSatellite->show();
+            _rechercheSatellite->on_noradDonneesSat_valueChanged(Configuration::instance()->noradDefaut().toInt());
             _antenne->InitAffichageFrequences();
             _info = false;
         }
@@ -420,7 +421,6 @@ void Onglets::Initialisation()
 #endif
 
     _antenne = new Antenne(_ui->antenne);
-    //    _antenne->show();
 
     connect(this, &Onglets::AffichageLieuObs, _general, &General::AffichageLieuObs);
     connect(this, &Onglets::AffichageLieuObs, _previsions, &CalculsPrevisions::AffichageLieuObs);
