@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    28 octobre 2022
+ * >    29 octobre 2022
  *
  */
 
@@ -69,6 +69,7 @@ class Configuration
     friend class FlashsTest;
     friend class GeneralTest;
     friend class GPFormatTest;
+    friend class InformationsTest;
     friend class OsculateursTest;
     friend class PrevisionTest;
     friend class SatelliteTest;

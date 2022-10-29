@@ -27,7 +27,7 @@
  * >    Astropedia
  *
  * Date de creation
- * >    29 octobre 2019
+ * >    29 octobre 2022
  *
  * Date de revision
  * >
