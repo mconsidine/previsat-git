@@ -280,6 +280,7 @@ equals(BUILD_TEST, true) {
     }
 
 SOURCES += \
+    test/src/interface/generaltest.cpp                              \
     test/src/librairies/corps/satellite/conditioneclipsetest.cpp    \
     test/src/librairies/corps/satellite/donneestest.cpp             \
     test/src/librairies/corps/satellite/elementsosculateurstest.cpp \
@@ -308,6 +309,7 @@ SOURCES += \
     test/src/tst_previsattest.cpp
 
 HEADERS += \
+    test/src/interface/generaltest.h                              \
     test/src/librairies/corps/satellite/conditioneclipsetest.h    \
     test/src/librairies/corps/satellite/donneestest.h             \
     test/src/librairies/corps/satellite/elementsosculateurstest.h \
