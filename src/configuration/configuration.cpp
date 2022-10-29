@@ -407,7 +407,7 @@ QMap<QString, Observateur> &Configuration::mapObs()
 }
 
 
-const QMap<QString, QStringList> &Configuration::mapSatellitesFichierElem() const
+QMap<QString, QStringList> &Configuration::mapSatellitesFichierElem()
 {
     return _mapSatellitesFichierElem;
 }
