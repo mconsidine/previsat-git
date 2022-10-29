@@ -72,7 +72,9 @@ Osculateurs::Osculateurs(QWidget *parent) :
 
         _date = nullptr;
 
+#if (BUILD_TEST == false)
         Initialisation();
+#endif
 
     } catch (PreviSatException &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
@@ -198,16 +200,17 @@ void Osculateurs::SauveOngletElementsOsculateurs(const QString &fichier)
             }
 
             QTextStream flux(&sw);
+            flux.setEncoding(QStringConverter::System);
 
 #if (BUILD_TEST == false)
             const QString titre = "%1 %2 / %3 (c) %4";
             flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APP_VER_MAJ)).arg(APP_NAME).arg(QString(APP_ANNEES_DEV))
                  << Qt::endl << Qt::endl << Qt::endl;
 #endif
-            flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure2->text() << Qt::endl << Qt::endl;
+            flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure1->text() << Qt::endl << Qt::endl;
 
             // Donnees sur le satellite
-            flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl;
+            flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
             flux << tr("Vecteur d'état") << " (" << _ui->typeRepere->currentText() << ") :" << Qt::endl;
             QString chaine = tr("x : %1\tvx : %2", "Position, velocity");

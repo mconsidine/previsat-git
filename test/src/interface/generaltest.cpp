@@ -60,8 +60,8 @@ void GeneralTest::testSauveOngletGeneral()
 {
     qInfo(Q_FUNC_INFO);
 
-    General *general;
-    Osculateurs *osculateurs;
+    General *general = nullptr;
+    Osculateurs *osculateurs = nullptr;
 
     QDir dir = QDir::current();
     dir.cdUp();
@@ -69,7 +69,7 @@ void GeneralTest::testSauveOngletGeneral()
     dir.cdUp();
     dir.cd(qApp->applicationName());
 
-    Configuration::instance()->Initialisation();
+    Configuration::instance()->_locale = "fr";
 
     const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Corps::Initialisation(dirCommonData);

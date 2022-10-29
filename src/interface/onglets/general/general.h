@@ -63,7 +63,9 @@ struct ElementsAOS;
 class General : public QFrame
 {
     Q_OBJECT
-
+#if (BUILD_TEST == true)
+    friend class OsculateursTest;
+#endif
 public:
 
     /*

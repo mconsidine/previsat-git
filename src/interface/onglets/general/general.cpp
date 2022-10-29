@@ -228,6 +228,7 @@ void General::AffichageDate(const Date &date)
     const DateSysteme syst = (settings.value("affichage/systemeHoraire").toBool()) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H;
     const QString chaine = QString("%1  %2").arg(date.ToLongDate(Configuration::instance()->locale(), syst)).arg(chaineUTC);
     _ui->dateHeure1->setText(chaine);
+    _osculateurs->ui()->dateHeure1->setText(chaine);
 
     /* Retour */
     return;

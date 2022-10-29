@@ -69,6 +69,7 @@ class Configuration
     friend class FlashsTest;
     friend class GeneralTest;
     friend class GPFormatTest;
+    friend class OsculateursTest;
     friend class PrevisionTest;
     friend class SatelliteTest;
     friend class TelescopeTest;
