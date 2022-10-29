@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    ongletstest.cpp
+ * >    generaltest.cpp
  *
  * Localisation
  * >    test.interface
@@ -27,10 +27,10 @@
  * >    Astropedia
  *
  * Date de creation
- * >    18 juin 2019
+ * >    29 octobre 2019
  *
  * Date de revision
- * >    26 juillet 2022
+ * >
  *
  */
 
@@ -41,33 +41,38 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
+#include "generaltest.h"
 #include "configuration/configuration.h"
-#include "interface/onglets.h"
-#include "ui_onglets.h"
-#include "librairies/corps/satellite/satellite.h"
-#include "ongletstest.h"
+#include "interface/onglets/general/general.h"
+#include "interface/onglets/osculateurs/osculateurs.h"
+#include "librairies/corps/satellite/tle.h"
 #include "test/src/testtools.h"
 
 
 using namespace TestTools;
 
-Onglets *onglets;
-
-static QDir dir;
-
-void OngletsTest::testAll()
+void GeneralTest::testAll()
 {
-    // Initialisations
-    dir = QDir::current();
+    testSauveOngletGeneral();
+}
+
+void GeneralTest::testSauveOngletGeneral()
+{
+    qInfo(Q_FUNC_INFO);
+
+    General *general;
+    Osculateurs *osculateurs;
+
+    QDir dir = QDir::current();
     dir.cdUp();
     dir.cdUp();
     dir.cdUp();
     dir.cd(qApp->applicationName());
 
-    Configuration::instance()->DeterminationLocale();
+    Configuration::instance()->Initialisation();
 
     const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Corps::InitTabConstellations(dirCommonData);
+    Corps::Initialisation(dirCommonData);
 
     const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Configuration::instance()->_dirLocalData = dirLocalData;
@@ -81,13 +86,14 @@ void OngletsTest::testAll()
     observateur.CalculPosVit(date);
     QList<Observateur> obs;
     obs.append(observateur);
-    Configuration::instance()->setObservateurs(obs);
+    Configuration::instance()->_observateurs = obs;
 
     Soleil soleil;
     soleil.CalculPosition(date);
     soleil.CalculCoordHoriz(observateur);
     soleil.CalculCoordTerrestres(observateur);
     soleil.CalculCoordEquat(observateur);
+    soleil.CalculLeverMeridienCoucher(date, observateur, DateSysteme::SYSTEME_24H);
     Configuration::instance()->soleil() = soleil;
 
     Lune lune;
@@ -97,15 +103,17 @@ void OngletsTest::testAll()
     lune.CalculMagnitude(soleil);
     lune.CalculCoordTerrestres(observateur);
     lune.CalculCoordEquat(observateur);
+    lune.CalculLeverMeridienCoucher(date, observateur, DateSysteme::SYSTEME_24H);
+    lune.CalculDatesPhases(date, DateSysteme::SYSTEME_24H);
     Configuration::instance()->lune() = lune;
 
     const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
 
     const int lgrec = Configuration::instance()->lgRec();
-    const QStringList listeTLE(QStringList () << "25544");
-    QMap<QString, TLE> mapTLE = TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(), lgrec, listeTLE);
+    const QStringList listeElem(QStringList () << "25544");
+    QMap<QString, ElementsOrbitaux> mapElem = TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(), lgrec, listeElem);
 
-    Satellite sat(mapTLE.first());
+    Satellite sat(mapElem.first());
 
     sat.CalculPosVit(date);
     sat.CalculCoordHoriz(observateur);
@@ -114,107 +122,25 @@ void OngletsTest::testAll()
     sat.CalculCoordTerrestres(observateur);
     sat.CalculCoordEquat(observateur);
     sat._magnitude.Calcul(sat.conditionEclipse(), observateur, sat.distance(), sat.hauteur(),
-                          sat.tle().donnees().magnitudeStandard(), true, true);
+                          sat.elementsOrbitaux().donnees.magnitudeStandard(), true, true);
 
     sat.CalculElementsOsculateurs(date);
     const Date dateInit = Date(date.jourJulienUTC(), 0., false);
     sat.CalculTracesAuSol(dateInit, 1, true, true);
-    sat._phasage.Calcul(sat.elements(), sat.tle().no());
+    sat._phasage.Calcul(sat.elementsOsculateurs(), sat.elementsOrbitaux().no);
     sat.CalculBeta(soleil);
     sat._signal.Calcul(sat.rangeRate(), sat.distance());
     Configuration::instance()->listeSatellites().append(sat);
 
-    onglets = new Onglets();
-    onglets->InitChargementOnglets();
-    onglets->show(date);
-    onglets->AffichageLieuObs();
-
-    // Verifications des fichiers
-    testOngletGeneral();
-    testOngletElementsOsculateurs();
-    testOngletInformations();
-
-    if (onglets != nullptr) {
-        delete onglets;
-        onglets = nullptr;
-    }
-}
-
-void OngletsTest::testOngletGeneral()
-{
-    qInfo(Q_FUNC_INFO);
+    osculateurs = new Osculateurs();
+    general = new General(nullptr, osculateurs);
+    general->show(date);
+    general->AffichageLieuObs();
 
     const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + "onglet_general.txt";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "onglet_general.txt";
 
-    onglets->SauveOngletGeneral(ficRes);
+    general->SauveOngletGeneral(ficRes);
 
     CompareFichiers(ficRes, ficRef);
-}
-
-void OngletsTest::testOngletElementsOsculateurs()
-{
-    qInfo(Q_FUNC_INFO);
-
-    const Date date(2020, 8, 15, 10, 0, 0., 2. / 24.);
-
-    for(int i=1; i<=4; i++) {
-
-        if (onglets != nullptr) {
-            delete onglets;
-            onglets = nullptr;
-        }
-
-        onglets = new Onglets();
-        onglets->InitChargementOnglets();
-        onglets->ui()->typeParametres->setCurrentIndex(i - 1);
-
-        if (i == 2) {
-            onglets->_uniteVitesse = true;
-        }
-
-        if (i == 3) {
-            onglets->_uniteVitesse = false;
-            onglets->ui()->unitesMi->setChecked(true);
-        }
-
-        if (i == 4) {
-            onglets->show(date);
-            onglets->ui()->typeRepere->setCurrentIndex(1);
-        }
-
-        onglets->show(date);
-        onglets->AffichageLieuObs();
-
-        const QString nomfic = QString("onglet_elements%1.txt").arg(i);
-        const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + nomfic;
-        const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + nomfic;
-
-        onglets->SauveOngletElementsOsculateurs(ficRes);
-
-        CompareFichiers(ficRes, ficRef);
-    }
-}
-
-void OngletsTest::testOngletInformations()
-{
-    qInfo(Q_FUNC_INFO);
-
-    // TODO
-    for(int i=1; i<=2; i++) {
-
-        const QString nomfic = QString("onglet_informations%1.txt").arg(i);
-        const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + nomfic;
-        const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + nomfic;
-
-        onglets->ui()->informations->setCurrentIndex(i - 1);
-        if (i == 2) {
-            onglets->on_informations_currentChanged(1);
-            onglets->on_noradDonneesSat_valueChanged(25544);
-            onglets->on_satellitesTrouves_currentRowChanged(0);
-        }
-        onglets->SauveOngletInformations(ficRes);
-
-        CompareFichiers(ficRes, ficRef);
-    }
 }

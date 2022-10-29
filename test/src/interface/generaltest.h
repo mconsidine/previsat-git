@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    ongletstest.h
+ * >    generaltest.h
  *
  * Localisation
  * >    test.interface
@@ -27,24 +27,24 @@
  * >
  *
  * Description
- * >    Tests de la classe Onglets
+ * >    Tests de la classe General
  *
  * Auteur
  * >    Astropedia
  *
  * Date de creation
- * >    18 juin 2019
+ * >    29 octobre 2022
  *
  * Date de revision
  * >
  *
  */
 
-#ifndef ONGLETSTEST_H
-#define ONGLETSTEST_H
+#ifndef GENERALTEST_H
+#define GENERALTEST_H
 
 
-class OngletsTest
+class GeneralTest
 {
 public:
 
@@ -52,10 +52,8 @@ public:
 
 private:
 
-    static void testOngletGeneral();
-    static void testOngletElementsOsculateurs();
-    static void testOngletInformations();
+    static void testSauveOngletGeneral();
 
 };
 
-#endif // ONGLETSTEST_H
+#endif // GENERALTEST_H
