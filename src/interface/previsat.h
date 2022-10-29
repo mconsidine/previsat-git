@@ -80,7 +80,7 @@ public:
      * @brief PreviSat Constructeur par defaut
      * @param parent parent
      */
-    PreviSat(QWidget *parent = nullptr);
+    explicit PreviSat(QWidget *parent = nullptr);
 
 
     /*

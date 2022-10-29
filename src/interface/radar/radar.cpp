@@ -259,11 +259,13 @@ void Radar::mousePressEvent(QMouseEvent *evt)
                 // Distance au carre du curseur au satellite
                 const int dt = (x1 - lsat) * (x1 - lsat) + (y1 - bsat) * (y1 - bsat);
 
-                // Le curseur est au(dessus d'un satellite
+                // Le curseur est au-dessus d'un satellite
                 if ((dt <= 16) && (sat.altitude() > 0.)) {
 
                     atrouve = true;
-                    Configuration::instance()->listeSatellites().swapItemsAt(idx, 0);
+                    Configuration::instance()->listeSatellites().move(idx, 0);
+                    QStringList &listeNorad = Configuration::instance()->mapSatellitesFichierElem()[Configuration::instance()->nomfic()];
+                    listeNorad.move(idx, 0);
 
                     // On definit le satellite choisi comme satellite par defaut
                     Configuration::instance()->noradDefaut() = sat.elementsOrbitaux().norad;

@@ -523,20 +523,20 @@ void PreviSat::ConnexionsSignauxSlots()
     // Connexions avec l'onglet Antenne
     connect(this, &PreviSat::DeconnecterUdp, _onglets->antenne(), &Antenne::DeconnecterUdp);
 
-    // Connexions avec la carte du monde
+    // Connexions avec l'instance de Carte
     connect(_carte, &Carte::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_carte, &Carte::AfficherMessageStatut2, this, &PreviSat::AfficherMessageStatut2);
     connect(_carte, &Carte::AfficherMessageStatut3, this, &PreviSat::AfficherMessageStatut3);
     connect(_carte, &Carte::ReinitFlags, _onglets, &Onglets::ReinitFlags);
     connect(_carte, &Carte::RecalculerPositions, this, &PreviSat::GestionTempsReel);
 
-    // Connexions avec le viel
+    // Connexions avec l'instance de Ciel
     connect(_ciel, &Ciel::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_ciel, &Ciel::AfficherMessageStatut2, this, &PreviSat::AfficherMessageStatut2);
     connect(_ciel, &Ciel::AfficherMessageStatut3, this, &PreviSat::AfficherMessageStatut3);
     connect(_ciel, &Ciel::RecalculerPositions, this, &PreviSat::GestionTempsReel);
 
-    // Connexions avec le radar
+    // Connexions avec l'instance de Radar
     connect(_radar, &Radar::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_radar, &Radar::AfficherMessageStatut2, this, &PreviSat::AfficherMessageStatut2);
     connect(_radar, &Radar::AfficherMessageStatut3, this, &PreviSat::AfficherMessageStatut3);
@@ -849,6 +849,8 @@ void PreviSat::Initialisation()
 
         _carte = new Carte(_ui->frameCarte);
         _ui->layoutCarte->addWidget(_carte);
+
+        _ciel = new Ciel();
 
         CreationMenus();
         CreationRaccourcis();

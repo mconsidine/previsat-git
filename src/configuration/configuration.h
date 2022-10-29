@@ -67,6 +67,7 @@ class Configuration
 #if (BUILD_TEST == true)
     friend class EvenementsOrbitauxTest;
     friend class FlashsTest;
+    friend class GeneralTest;
     friend class GPFormatTest;
     friend class PrevisionTest;
     friend class SatelliteTest;
@@ -158,7 +159,7 @@ public:
     QMap<QString, Observateur> &mapObs();
 
     // Map des satellites de tous les fichiers d'elements orbitaux
-    const QMap<QString, QStringList> &mapSatellitesFichierElem() const;
+    QMap<QString, QStringList> &mapSatellitesFichierElem();
 
     // Soleil, Lune, planetes
     Soleil &soleil();

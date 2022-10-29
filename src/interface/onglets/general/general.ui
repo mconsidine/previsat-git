@@ -934,7 +934,7 @@
       <rect>
        <x>2</x>
        <y>126</y>
-       <width>202</width>
+       <width>258</width>
        <height>52</height>
       </rect>
      </property>
@@ -965,7 +965,7 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="lbl_illuminationLune">
+       <widget class="QLabel" name="lbl_magnitudeIllumLune">
         <property name="font">
          <font/>
         </property>
@@ -973,12 +973,12 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Illumination :</string>
+         <string extracomment="Magnitude, illumination">Magn. (Illum.) :</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="lbl_magnitudeLune">
+       <widget class="QLabel" name="lbl_diametreApparentLune">
         <property name="font">
          <font/>
         </property>
@@ -986,7 +986,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Magnitude :</string>
+         <string extracomment="Angular diameter">Diam. apparent :</string>
         </property>
        </widget>
       </item>
@@ -1004,7 +1004,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLabel" name="illuminationLune">
+       <widget class="QLabel" name="magnitudeIllumLune">
         <property name="font">
          <font/>
         </property>
@@ -1012,12 +1012,12 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string notr="true">100%</string>
+         <string notr="true">-12.73 (100%)</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLabel" name="magnitudeLune">
+       <widget class="QLabel" name="diametreApparentLune">
         <property name="font">
          <font/>
         </property>
@@ -1025,7 +1025,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string notr="true">-12.73</string>
+         <string notr="true">32' 45&quot;</string>
         </property>
        </widget>
       </item>
