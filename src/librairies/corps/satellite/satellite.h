@@ -73,6 +73,7 @@ class Satellite : public Corps
 {
 #if (BUILD_TEST == true)
     friend class GeneralTest;
+    friend class OsculateursTest;
     friend class SatelliteTest;
     friend class EvenementsTest;
 #endif

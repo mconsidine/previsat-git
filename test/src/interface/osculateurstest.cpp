@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    generaltest.cpp
+ * >    osculateurstest.cpp
  *
  * Localisation
  * >    test.interface
@@ -41,7 +41,8 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
-#include "generaltest.h"
+#include "osculateurstest.h"
+#include "ui_osculateurs.h"
 #include "configuration/configuration.h"
 #include "interface/onglets/general/general.h"
 #include "interface/onglets/osculateurs/osculateurs.h"
@@ -51,12 +52,12 @@
 
 using namespace TestTools;
 
-void GeneralTest::testAll()
+void OsculateursTest::testAll()
 {
-    testSauveOngletGeneral();
+    testSauveOngletOsculateurs();
 }
 
-void GeneralTest::testSauveOngletGeneral()
+void OsculateursTest::testSauveOngletOsculateurs()
 {
     qInfo(Q_FUNC_INFO);
 
@@ -88,25 +89,6 @@ void GeneralTest::testSauveOngletGeneral()
     obs.append(observateur);
     Configuration::instance()->_observateurs = obs;
 
-    Soleil soleil;
-    soleil.CalculPosition(date);
-    soleil.CalculCoordHoriz(observateur);
-    soleil.CalculCoordTerrestres(observateur);
-    soleil.CalculCoordEquat(observateur);
-    soleil.CalculLeverMeridienCoucher(date, observateur, DateSysteme::SYSTEME_24H);
-    Configuration::instance()->soleil() = soleil;
-
-    Lune lune;
-    lune.CalculPosition(date);
-    lune.CalculPhase(soleil);
-    lune.CalculCoordHoriz(observateur);
-    lune.CalculMagnitude(soleil);
-    lune.CalculCoordTerrestres(observateur);
-    lune.CalculCoordEquat(observateur);
-    lune.CalculLeverMeridienCoucher(date, observateur, DateSysteme::SYSTEME_24H);
-    lune.CalculDatesPhases(date, DateSysteme::SYSTEME_24H);
-    Configuration::instance()->lune() = lune;
-
     const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
 
     const int lgrec = Configuration::instance()->lgRec();
@@ -118,29 +100,42 @@ void GeneralTest::testSauveOngletGeneral()
     sat.CalculPosVit(date);
     sat.CalculCoordHoriz(observateur);
 
-    sat._conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, lune, true);
-    sat.CalculCoordTerrestres(observateur);
-    sat.CalculCoordEquat(observateur);
-    sat._magnitude.Calcul(sat.conditionEclipse(), observateur, sat.distance(), sat.hauteur(),
-                          sat.elementsOrbitaux().donnees.magnitudeStandard(), true, true);
-
     sat.CalculElementsOsculateurs(date);
     const Date dateInit = Date(date.jourJulienUTC(), 0., false);
     sat.CalculTracesAuSol(dateInit, 1, true, true);
     sat._phasage.Calcul(sat.elementsOsculateurs(), sat.elementsOrbitaux().no);
-    sat.CalculBeta(soleil);
     sat._signal.Calcul(sat.rangeRate(), sat.distance());
     Configuration::instance()->listeSatellites().append(sat);
 
-    osculateurs = new Osculateurs();
-    general = new General(nullptr, osculateurs);
-    general->show(date);
-    general->AffichageLieuObs();
 
-    const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + "onglet_general.txt";
-    const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "onglet_general.txt";
+    for(int i=1; i<=4; i++) {
 
-    general->SauveOngletGeneral(ficRes);
+        EFFACE_OBJET(osculateurs);
+        EFFACE_OBJET(general);
 
-    CompareFichiers(ficRes, ficRef);
+        osculateurs = new Osculateurs();
+        general = new General(nullptr, osculateurs);
+
+        osculateurs->ui()->typeParametres->setCurrentIndex(i - 1);
+
+        if (i == 2) {
+            general->_uniteVitesse = true;
+        }
+
+        if (i == 3) {
+            general->_uniteVitesse = false;
+        }
+
+        osculateurs->show(date);
+        general->AffichageDate(date);
+        general->AffichageVitesses(date);
+
+        const QString fic = QString("onglet_elements%1.txt").arg(i);
+        const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + fic;
+        const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + fic;
+
+        osculateurs->SauveOngletElementsOsculateurs(ficRes);
+
+        CompareFichiers(ficRes, ficRef);
+    }
 }

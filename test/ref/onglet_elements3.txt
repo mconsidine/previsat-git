@@ -1,21 +1,19 @@
 Date : Samedi 15 août 2020 12:00:00  UTC + 02:00
 
 Nom du satellite : ISS
-1 25544U 98067A   20228.37224125  .00000494  00000-0  17022-4 0  9993
-2 25544  51.6460  55.5526 0001465  45.7523  18.7733 15.49164079241196
 
 Vecteur d'état (ECI) :
-x : +2793.039 nmi	vx : +0.315024 nmi/s
-y : +1077.017 nmi	vy : +3.493177 nmi/s
-z : -2127.387 nmi	vz : +2.185171 nmi/s
+x :  +5172.709 km	vx :  +0.583425 km/s
+y :  +1994.635 km	vy :  +6.469364 km/s
+z :  -3939.920 km	vz :  +4.046936 km/s
 
 Éléments osculateurs :
-Demi-grand axe       : 3670.2 nmi	Ix                 : 0.2754198
+Demi-grand axe       : 6797.3 km	Ix                 : 0.2754198
 Excentricité         : 0.0007438	Iy                 : 0.3978666
 Longitude du périgée : 151.8219°	Anomalie moyenne   : 215.9129°
 
-Anomalie vraie       : 215.8630°	Apogée  (Altitude) : 3673.0 nmi (229.0 nmi)
-Anomalie excentrique : 215.8880°	Périgée (Altitude) : 3667.5 nmi (223.6 nmi)
+Anomalie vraie       : 215.8630°	Apogée  (Altitude) : 6802.3 km (424.2 km)
+Anomalie excentrique : 215.8880°	Périgée (Altitude) : 6792.2 km (414.1 km)
 Champ de vue         : ±20.48°  	Période orbitale   : 1h32m45s
 
 Divers :
