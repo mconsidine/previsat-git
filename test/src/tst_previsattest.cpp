@@ -44,6 +44,7 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
 #include "test/src/interface/generaltest.h"
+#include "test/src/interface/informationstest.h"
 #include "test/src/interface/osculateurstest.h"
 #include "test/src/librairies/corps/satellite/conditioneclipsetest.h"
 #include "test/src/librairies/corps/satellite/donneestest.h"
@@ -119,14 +120,16 @@ void PreviSatTest::testAll()
     EvenementsTest::testAll();
 
     // Previsions
-//    PrevisionTest::testAll();
-//    FlashsTest::testAll();
-//    TransitsTest::testAll();
-//    EvenementsOrbitauxTest::testAll();
-//    TelescopeTest::testAll();
+    PrevisionTest::testAll();
+    FlashsTest::testAll();
+    TransitsTest::testAll();
+    EvenementsOrbitauxTest::testAll();
+    TelescopeTest::testAll();
 
+    // Informations sur le satellite
     GeneralTest::testAll();
     OsculateursTest::testAll();
+    InformationsTest::testAll();
 
     // Tester en dernier
     LogMessageTest::testAll();

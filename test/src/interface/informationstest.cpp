@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    osculateurstest.cpp
+ * >    informationstest.cpp
  *
  * Localisation
  * >    test.interface
@@ -41,28 +41,28 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
-#include "osculateurstest.h"
-#include "ui_osculateurs.h"
+#include "informationstest.h"
 #include "configuration/configuration.h"
-#include "interface/onglets/general/general.h"
-#include "interface/onglets/osculateurs/osculateurs.h"
+#include "interface/onglets/donnees/informationssatellite.h"
+#include "interface/onglets/donnees/recherchesatellite.h"
 #include "librairies/corps/satellite/tle.h"
 #include "test/src/testtools.h"
 
 
 using namespace TestTools;
 
-void OsculateursTest::testAll()
+
+void InformationsTest::testAll()
 {
-    testSauveOngletOsculateurs();
+    testSauveOngletInformations();
 }
 
-void OsculateursTest::testSauveOngletOsculateurs()
+void InformationsTest::testSauveOngletInformations()
 {
     qInfo(Q_FUNC_INFO);
 
-    General *general = nullptr;
-    Osculateurs *osculateurs = nullptr;
+    InformationsSatellite *informations = new InformationsSatellite();
+    RechercheSatellite *recherche = new RechercheSatellite();
 
     QDir dir = QDir::current();
     dir.cdUp();
@@ -81,14 +81,6 @@ void OsculateursTest::testSauveOngletOsculateurs()
 
     Configuration::instance()->LectureDonneesSatellites();
 
-    const Date date(2020, 8, 15, 10, 0, 0., 2. / 24.);
-
-    Observateur observateur("Paris", -2.34864, 48.85339, 30.);
-    observateur.CalculPosVit(date);
-    QList<Observateur> obs;
-    obs.append(observateur);
-    Configuration::instance()->_observateurs = obs;
-
     const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
 
     const int lgrec = Configuration::instance()->lgRec();
@@ -96,45 +88,21 @@ void OsculateursTest::testSauveOngletOsculateurs()
     QMap<QString, ElementsOrbitaux> mapElem = TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(), lgrec, listeElem);
 
     Satellite sat(mapElem.first());
-
-    sat.CalculPosVit(date);
-    sat.CalculCoordHoriz(observateur);
-
-    sat.CalculElementsOsculateurs(date);
-    const Date dateInit = Date(date.jourJulienUTC(), 0., false);
-    sat.CalculTracesAuSol(dateInit, 1, true, true);
-    sat._phasage.Calcul(sat.elementsOsculateurs(), sat.elementsOrbitaux().no);
-    sat._signal.Calcul(sat.rangeRate(), sat.distance());
     Configuration::instance()->listeSatellites().append(sat);
 
+    for(int i=1; i<=2; i++) {
 
-    for(int i=1; i<=4; i++) {
-
-        EFFACE_OBJET(osculateurs);
-        EFFACE_OBJET(general);
-
-        osculateurs = new Osculateurs();
-        general = new General(nullptr, osculateurs);
-
-        osculateurs->ui()->typeParametres->setCurrentIndex(i - 1);
-
-        if (i == 2) {
-            general->_uniteVitesse = true;
-        }
-
-        if (i == 3) {
-            general->_uniteVitesse = false;
-        }
-
-        osculateurs->show(date);
-        general->AffichageDate(date);
-        general->AffichageVitesses(date);
-
-        const QString fic = QString("onglet_elements%1.txt").arg(i);
+        const QString fic = QString("onglet_informations%1.txt").arg(i);
         const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + fic;
         const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + fic;
 
-        osculateurs->SauveOngletElementsOsculateurs(ficRes);
+        if (i == 1) {
+            informations->show();
+            informations->SauveOngletInformations(ficRes);
+        } else {
+            recherche->on_noradDonneesSat_valueChanged(25544);
+            recherche->SauveOngletRecherche(ficRes);
+        }
 
         CompareFichiers(ficRes, ficRef);
     }

@@ -114,6 +114,7 @@ void RechercheSatellite::SauveOngletRecherche(const QString &fichier)
             }
 
             QTextStream flux(&sw);
+            flux.setEncoding(QStringConverter::System);
 
 #if (BUILD_TEST == false)
             const QString titre = "%1 %2 / %3 (c) %4";
@@ -122,7 +123,7 @@ void RechercheSatellite::SauveOngletRecherche(const QString &fichier)
 #endif
 
             // Donnees sur le satellite
-            flux << tr("Nom                :") + " " + _ui->nomsat->text() << Qt::endl;
+            flux << tr("Nom                :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
             QString chaine = tr("Numéro NORAD       : %1\t\tMagnitude std/max  : %2", "Standard/Maximal magnitude");
             flux << chaine.arg(_ui->numNorad->text()).arg(_ui->magnitudeStdMaxDonneesSat->text()) << Qt::endl;

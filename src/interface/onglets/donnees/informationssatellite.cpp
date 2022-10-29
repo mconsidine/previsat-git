@@ -244,6 +244,7 @@ void InformationsSatellite::SauveOngletInformations(const QString &fichier)
             }
 
             QTextStream flux(&sw);
+            flux.setEncoding(QStringConverter::System);
 
 #if (BUILD_TEST == false)
             const QString titre = "%1 %2 / %3 (c) %4";
@@ -252,7 +253,7 @@ void InformationsSatellite::SauveOngletInformations(const QString &fichier)
 #endif
 
             // Donnees sur le satellite
-            flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl;
+            flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
             QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3",
                                 "revolution per day");
