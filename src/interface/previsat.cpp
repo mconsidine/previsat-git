@@ -71,6 +71,7 @@
 #include "onglets/onglets.h"
 #include "onglets/osculateurs/osculateurs.h"
 #include "onglets/previsions/calculsevenementsorbitaux.h"
+#include "onglets/previsions/calculsflashs.h"
 #include "onglets/previsions/calculsprevisions.h"
 #include "onglets/previsions/calculstransits.h"
 #include "onglets/telescope/suivitelescope.h"
@@ -516,6 +517,12 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(this, &PreviSat::InitAffichageListeSatellites, _onglets->suiviTelescope(), &SuiviTelescope::InitAffichageListeSatellites);
     connect(this, &PreviSat::TriAffichageListeSatellites, _onglets->suiviTelescope(), &SuiviTelescope::TriAffichageListeSatellites);
 #endif
+
+    connect(_onglets->previsions(), &CalculsPrevisions::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+    connect(_onglets->flashs(), &CalculsFlashs::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+    connect(_onglets->transits(), &CalculsTransits::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+    connect(_onglets->evenements(), &CalculsEvenementsOrbitaux::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+    connect(_onglets->suiviTelescope(), &SuiviTelescope::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
 
     connect(this, &PreviSat::SauveOngletGeneral, _onglets->general(), &General::SauveOngletGeneral);
     connect(this, &PreviSat::SauveOngletElementsOsculateurs, _onglets->osculateurs(), &Osculateurs::SauveOngletElementsOsculateurs);
@@ -2169,6 +2176,7 @@ void PreviSat::on_actionApropos_triggered()
     apropos->changeEvent(&evt);
     apropos->setWindowModality(Qt::ApplicationModal);
     apropos->show();
+    apropos->setVisible(true);
 
     /* Retour */
     return;

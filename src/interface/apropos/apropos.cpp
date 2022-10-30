@@ -30,7 +30,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    14 juillet 2022
+ * >    30 octobre 2022
  *
  */
 
@@ -64,17 +64,48 @@ Apropos::Apropos(QWidget *fenetreParent) :
     QMainWindow(fenetreParent),
     _ui(new Ui::Apropos)
 {
+    _ui->setupUi(this);
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), fenetreParent->geometry()));
+}
+
+
+/*
+ * Destructeur
+ */
+Apropos::~Apropos()
+{
+    delete _ui;
+}
+
+
+/*
+ * Accesseurs
+ */
+
+/*
+ * Modificateurs
+ */
+
+/*
+ * Methodes publiques
+ */
+void Apropos::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
+}
+
+void Apropos::show()
+{
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _ui->setupUi(this);
-    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), fenetreParent->geometry()));
-
     _ui->ok->setFocus();
 
-    //setFont(Configuration::instance()->police());
+    setFont(Configuration::instance()->police());
     const QString titre = tr("À propos de %1 %2");
     setWindowTitle(titre.arg(QCoreApplication::applicationName()).arg(QString(APP_VER_MAJ)));
 
@@ -108,39 +139,12 @@ Apropos::Apropos(QWidget *fenetreParent) :
     _ui->nomLogiciel->setText(logiciel.arg(QCoreApplication::applicationName()).arg(QString(APP_VER_MAJ)));
 
     const QString msg = tr("Version %1  (%2)");
-    _ui->numeroVersion->setText(msg.arg(APP_VERSION).arg(QLocale(QLocale::C).toDate(QString(__DATE__).simplified(), QLatin1String("MMM d yyyy")).
-                                   toString(tr("d MMMM yyyy", "Date format"))));
+    _ui->numeroVersion->setText(msg.arg(APP_VERSION).arg(QLocale(Configuration::instance()->locale())
+                                                         .toString(QDate::fromString(QString(__DATE__), "MMM d yyyy"),
+                                                                   tr("d MMMM yyyy", "Date format"))));
 
     /* Retour */
     return;
-}
-
-
-/*
- * Destructeur
- */
-Apropos::~Apropos()
-{
-    delete _ui;
-}
-
-
-/*
- * Accesseurs
- */
-
-/*
- * Modificateurs
- */
-
-/*
- * Methodes publiques
- */
-void Apropos::changeEvent(QEvent *evt)
-{
-    if (evt->type() == QEvent::LanguageChange) {
-        _ui->retranslateUi(this);
-    }
 }
 
 

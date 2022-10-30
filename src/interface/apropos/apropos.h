@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    3 octobre 2015
+ * >    30 octobre 2022
  *
  */
 
@@ -87,6 +87,8 @@ public:
 public slots:
 
     void changeEvent(QEvent *evt);
+
+    void show();
 
 
 protected:
