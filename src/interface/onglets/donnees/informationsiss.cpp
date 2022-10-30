@@ -127,114 +127,133 @@ void InformationsISS::show()
     /* Initialisations */
     int j = 0;
     const EvenementsStation &evenements = Configuration::instance()->evenementsStation();
+    _ui->evenementsISS->setVisible(false);
+    _ui->formLayoutWidget->setVisible(false);
+    _ui->formLayoutWidget_2->setVisible(false);
     _ui->evenementsISS->disconnect();
     _ui->evenementsISS->model()->removeRows(0, _ui->evenementsISS->rowCount());
 
     /* Corps de la methode */
-    if (settings.value("affichage/unite").toBool()) {
+    if (evenements.masseStationSpatiale > 0.) {
 
-        uniteDist = tr("km", "Kilometer");
-        uniteDv = tr("m/s", "meter per second");
-        uniteMasse = tr("kg", "Kilogram");
-        uniteSurface = tr("m^2", "meter square");
+        if (settings.value("affichage/unite").toBool()) {
 
-        masse = QString::number(evenements.masseStationSpatiale, 'f', 2);
-        surface = QString::number(evenements.surfaceTraineeAtmospherique, 'f', 2);
+            uniteDist = tr("km", "Kilometer");
+            uniteDv = tr("m/s", "meter per second");
+            uniteMasse = tr("kg", "Kilogram");
+            uniteSurface = tr("m^2", "meter square");
 
+            masse = QString::number(evenements.masseStationSpatiale, 'f', 2);
+            surface = QString::number(evenements.surfaceTraineeAtmospherique, 'f', 2);
+
+        } else {
+
+            uniteDist = tr("nmi", "nautical mile");
+            uniteDv = tr("ft/s", "foot per second");
+            uniteMasse = tr("lb", "pound");
+            uniteSurface = tr("ft^2", "foot square");
+
+            masse = QString::number(evenements.masseStationSpatiale / KG_PAR_LIVRE, 'f', 2);
+            surface = QString::number(evenements.surfaceTraineeAtmospherique * PIED_PAR_METRE * PIED_PAR_METRE, 'f', 2);
+        }
+
+        // Masse de la station spatiale
+        _ui->masseISS->setText(QString("%1 %2").arg(masse).arg(uniteMasse));
+
+        // Coefficient de trainnee atmospherique
+        _ui->coefficientTrainee->setText(QString::number(evenements.coefficientTraineeAtmospherique, 'f', 2));
+
+        // Surface de trainee atmospherique
+        _ui->surfaceTrainee->setText(QString("%1 %2").arg(surface).arg(uniteSurface));
+
+        _ui->formLayoutWidget->setVisible(true);
+        _ui->formLayoutWidget_2->setVisible(true);
+
+        // Dates de debut et de fin des evenements
+        const Date dateDebut = Date::ConversionDateNasa(evenements.dateDebutEvenementsStationSpatiale);
+        const QString annee = QString::number(dateDebut.annee());
+
+        if (evenements.evenementsStationSpatiale.isEmpty()) {
+            _ui->lbl_evenementsISS->setText(tr("Aucun évènement contenu dans le fichier ISS"));
+        } else {
+
+            // Liste des evenements
+            QStringListIterator it(evenements.evenementsStationSpatiale);
+            while (it.hasNext()) {
+
+                const QString evt = it.next();
+
+                // Nom de l'evenement
+                const QString nomEvt = evt.mid(1, 20).trimmed();
+
+                const QStringList detailsEvt = evt.mid(21).split(" ", Qt::SkipEmptyParts);
+
+                // Date de l'evenement
+                const QString dateEvt = Date::ConversionDateNasa(annee + "-" + detailsEvt.first())
+                        .ToShortDateAMJ(DateFormat::FORMAT_MILLISEC, (settings.value("affichage/systemeHoraire").toBool()) ?
+                                            DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H);
+
+                // Delta-V
+                const QString deltaV = (settings.value("affichage/unite").toBool()) ?
+                            detailsEvt.at(1) : QString::number(detailsEvt.at(1).toDouble() * PIED_PAR_METRE, 'f', 1);
+
+                // Apogee et perigee
+                const QString apogee = (settings.value("affichage/unite").toBool()) ?
+                            detailsEvt.at(2) : QString::number(detailsEvt.at(2).toDouble() * MILE_PAR_KM, 'f', 1);
+
+                const QString perigee = (settings.value("affichage/unite").toBool()) ?
+                            detailsEvt.at(3) : QString::number(detailsEvt.at(3).toDouble() * MILE_PAR_KM, 'f', 1);
+
+                // Ajout d'une ligne dans le tableau
+                _ui->evenementsISS->insertRow(j);
+                _ui->evenementsISS->setRowHeight(j, 16);
+
+                // Intitule de l'evenement
+                itemEvt = new QTableWidgetItem(nomEvt);
+                itemEvt->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+                itemEvt->setFlags(itemEvt->flags() & ~Qt::ItemIsEditable);
+                _ui->evenementsISS->setItem(j, 0, itemEvt);
+
+                // Date
+                itemDate = new QTableWidgetItem(dateEvt);
+                itemDate->setTextAlignment(Qt::AlignCenter);
+                itemDate->setFlags(itemDate->flags() & ~Qt::ItemIsEditable);
+                _ui->evenementsISS->setItem(j, 1, itemDate);
+
+                // Delta-V
+                itemDeltaV = new QTableWidgetItem(deltaV);
+                itemDeltaV->setTextAlignment(Qt::AlignCenter);
+                itemDeltaV->setFlags(itemDeltaV->flags() & ~Qt::ItemIsEditable);
+                itemDeltaV->setToolTip(uniteDv);
+                _ui->evenementsISS->setItem(j, 2, itemDeltaV);
+
+                // Apogee
+                itemApogee = new QTableWidgetItem(apogee);
+                itemApogee->setTextAlignment(Qt::AlignCenter);
+                itemApogee->setFlags(itemApogee->flags() & ~Qt::ItemIsEditable);
+                itemApogee->setToolTip(uniteDist);
+                _ui->evenementsISS->setItem(j, 3, itemApogee);
+
+                // Perigee
+                itemPerigee = new QTableWidgetItem(perigee);
+                itemPerigee->setTextAlignment(Qt::AlignCenter);
+                itemPerigee->setFlags(itemPerigee->flags() & ~Qt::ItemIsEditable);
+                itemPerigee->setToolTip(uniteDist);
+                _ui->evenementsISS->setItem(j, 4, itemPerigee);
+
+                j++;
+            }
+
+            _ui->evenementsISS->horizontalHeader()->setStretchLastSection(true);
+            _ui->evenementsISS->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+            _ui->evenementsISS->sortItems(1);
+            _ui->lbl_evenementsISS->setVisible(false);
+            _ui->evenementsISS->setVisible(true);
+        }
     } else {
-
-        uniteDist = tr("nmi", "nautical mile");
-        uniteDv = tr("ft/s", "foot per second");
-        uniteMasse = tr("lb", "pound");
-        uniteSurface = tr("ft^2", "foot square");
-
-        masse = QString::number(evenements.masseStationSpatiale / KG_PAR_LIVRE, 'f', 2);
-        surface = QString::number(evenements.surfaceTraineeAtmospherique * PIED_PAR_METRE * PIED_PAR_METRE, 'f', 2);
+        _ui->lbl_evenementsISS->setText("Fichier d'évènements ISS absent :\nCliquer sur 'Mettre à jour les informations de l'ISS'");
+        _ui->lbl_evenementsISS->setVisible(true);
     }
-
-    // Masse de la station spatiale
-    _ui->masseISS->setText(QString("%1 %2").arg(masse).arg(uniteMasse));
-
-    // Coefficient de trainnee atmospherique
-    _ui->coefficientTrainee->setText(QString::number(evenements.coefficientTraineeAtmospherique, 'f', 2));
-
-    // Surface de trainee atmospherique
-    _ui->surfaceTrainee->setText(QString("%1 %2").arg(surface).arg(uniteSurface));
-
-    // Dates de debut et de fin des evenements
-    const Date dateDebut = Date::ConversionDateNasa(evenements.dateDebutEvenementsStationSpatiale);
-    const QString annee = QString::number(dateDebut.annee());
-
-    // Liste des evenements
-    QStringListIterator it(evenements.evenementsStationSpatiale);
-    while (it.hasNext()) {
-
-        const QString evt = it.next();
-
-        // Nom de l'evenement
-        const QString nomEvt = evt.mid(1, 20).trimmed();
-
-        const QStringList detailsEvt = evt.mid(21).split(" ", Qt::SkipEmptyParts);
-
-        // Date de l'evenement
-        const QString dateEvt = Date::ConversionDateNasa(annee + "-" + detailsEvt.first())
-                .ToShortDateAMJ(DateFormat::FORMAT_MILLISEC, (settings.value("affichage/systemeHoraire").toBool()) ?
-                                    DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H);
-
-        // Delta-V
-        const QString deltaV = (settings.value("affichage/unite").toBool()) ?
-                    detailsEvt.at(1) : QString::number(detailsEvt.at(1).toDouble() * PIED_PAR_METRE, 'f', 1);
-
-        // Apogee et perigee
-        const QString apogee = (settings.value("affichage/unite").toBool()) ?
-                    detailsEvt.at(2) : QString::number(detailsEvt.at(2).toDouble() * MILE_PAR_KM, 'f', 1);
-
-        const QString perigee = (settings.value("affichage/unite").toBool()) ?
-                    detailsEvt.at(3) : QString::number(detailsEvt.at(3).toDouble() * MILE_PAR_KM, 'f', 1);
-
-        // Ajout d'une ligne dans le tableau
-        _ui->evenementsISS->insertRow(j);
-        _ui->evenementsISS->setRowHeight(j, 16);
-
-        // Intitule de l'evenement
-        itemEvt = new QTableWidgetItem(nomEvt);
-        itemEvt->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-        itemEvt->setFlags(itemEvt->flags() & ~Qt::ItemIsEditable);
-        _ui->evenementsISS->setItem(j, 0, itemEvt);
-
-        // Date
-        itemDate = new QTableWidgetItem(dateEvt);
-        itemDate->setTextAlignment(Qt::AlignCenter);
-        itemDate->setFlags(itemDate->flags() & ~Qt::ItemIsEditable);
-        _ui->evenementsISS->setItem(j, 1, itemDate);
-
-        // Delta-V
-        itemDeltaV = new QTableWidgetItem(deltaV);
-        itemDeltaV->setTextAlignment(Qt::AlignCenter);
-        itemDeltaV->setFlags(itemDeltaV->flags() & ~Qt::ItemIsEditable);
-        itemDeltaV->setToolTip(uniteDv);
-        _ui->evenementsISS->setItem(j, 2, itemDeltaV);
-
-        // Apogee
-        itemApogee = new QTableWidgetItem(apogee);
-        itemApogee->setTextAlignment(Qt::AlignCenter);
-        itemApogee->setFlags(itemApogee->flags() & ~Qt::ItemIsEditable);
-        itemApogee->setToolTip(uniteDist);
-        _ui->evenementsISS->setItem(j, 3, itemApogee);
-
-        // Perigee
-        itemPerigee = new QTableWidgetItem(perigee);
-        itemPerigee->setTextAlignment(Qt::AlignCenter);
-        itemPerigee->setFlags(itemPerigee->flags() & ~Qt::ItemIsEditable);
-        itemPerigee->setToolTip(uniteDist);
-        _ui->evenementsISS->setItem(j, 4, itemPerigee);
-
-        j++;
-    }
-
-    _ui->evenementsISS->horizontalHeader()->setStretchLastSection(true);
-    _ui->evenementsISS->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    _ui->evenementsISS->sortItems(1);
 
     /* Retour */
     return;

@@ -99,13 +99,6 @@ CalculsTransits::CalculsTransits(QWidget *parent) :
  */
 CalculsTransits::~CalculsTransits()
 {
-    settings.setValue("previsions/hauteurSatTransit", _ui->hauteurSatTransit->currentIndex());
-    settings.setValue("previsions/valHauteurSatTransit", _ui->valHauteurSatTransit->text().toInt());
-    settings.setValue("previsions/lieuxObservationTransit", _ui->lieuxObservation->currentIndex());
-    settings.setValue("previsions/ageMaxElementsOrbitauxTransit", _ui->ageMaxElementsOrbitauxTransit->value());
-    settings.setValue("previsions/elongationMaxCorps", _ui->elongationMaxCorps->value());
-    settings.setValue("previsions/calcTransitLunaireJour", _ui->calcTransitLunaireJour->isChecked());
-
     EFFACE_OBJET(_afficherResultats);
     EFFACE_OBJET(_aucun);
     EFFACE_OBJET(_tous);
@@ -268,6 +261,18 @@ void CalculsTransits::Tous()
     for(int i=0; i<_ui->listeTransits->count(); i++) {
         _ui->listeTransits->item(i)->setCheckState(Qt::Checked);
     }
+}
+
+void CalculsTransits::closeEvent(QCloseEvent *evt)
+{
+    Q_UNUSED(evt)
+
+    settings.setValue("previsions/hauteurSatTransit", _ui->hauteurSatTransit->currentIndex());
+    settings.setValue("previsions/valHauteurSatTransit", _ui->valHauteurSatTransit->text().toInt());
+    settings.setValue("previsions/lieuxObservationTransit", _ui->lieuxObservation->currentIndex());
+    settings.setValue("previsions/ageMaxElementsOrbitauxTransit", _ui->ageMaxElementsOrbitauxTransit->value());
+    settings.setValue("previsions/elongationMaxCorps", _ui->elongationMaxCorps->value());
+    settings.setValue("previsions/calcTransitLunaireJour", _ui->calcTransitLunaireJour->isChecked());
 }
 
 void CalculsTransits::on_calculsTransit_clicked()

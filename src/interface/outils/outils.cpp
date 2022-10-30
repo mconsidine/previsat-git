@@ -95,10 +95,6 @@ Outils::Outils(QWidget *parent) :
  */
 Outils::~Outils()
 {
-    settings.setValue("fichier/fichierAMettreAJour", _ui->fichierAMettreAJour->text());
-    settings.setValue("fichier/fichierALire", _ui->fichierALire->text());
-    settings.setValue("fichier/affichageMsgMAJ", _ui->affichageMsgMAJ->currentIndex());
-
     EFFACE_OBJET(_copier);
     delete _ui;
 }
@@ -314,6 +310,15 @@ void Outils::ProgressionTLE(const int octetsRecus, const int octetsTotal, const 
         _ui->barreProgressionTLE->setValue(static_cast<int> (octetsRecus));
         _ui->vitesseTelechargementTLE->setText(QString("%1 %2").arg(vitesse, 0, 'f', 1).arg(unite));
     }
+}
+
+void Outils::closeEvent(QCloseEvent *evt)
+{
+    Q_UNUSED(evt)
+
+    settings.setValue("fichier/fichierAMettreAJour", _ui->fichierAMettreAJour->text());
+    settings.setValue("fichier/fichierALire", _ui->fichierALire->text());
+    settings.setValue("fichier/affichageMsgMAJ", _ui->affichageMsgMAJ->currentIndex());
 }
 
 void Outils::on_listeOutils_currentRowChanged(int currentRow)

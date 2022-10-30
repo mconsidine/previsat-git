@@ -77,15 +77,6 @@ EvenementsStation EvenementsStationSpatiale::LectureEvenementsStationSpatiale()
         QFile fi(Configuration::instance()->dirLocalData() + QDir::separator() +
                  Configuration::instance()->nomFichierEvenementsStationSpatiale());
 
-        if (!fi.exists() || (fi.size() == 0)) {
-            qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2")
-                           .arg(Configuration::instance()->nomFichierEvenementsStationSpatiale()).arg(APP_NAME);
-
-            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2")
-                                    .arg(Configuration::instance()->nomFichierEvenementsStationSpatiale()).arg(APP_NAME),
-                                    MessageType::ERREUR);
-        }
-
         if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
             QXmlStreamReader cfg(&fi);
@@ -114,23 +105,23 @@ EvenementsStation EvenementsStationSpatiale::LectureEvenementsStationSpatiale()
                     }
                 }
             }
+
+            fi.close();
+
+            if (evenements.dateDebutEvenementsStationSpatiale.isEmpty()
+                    || evenements.dateFinEvenementsStationSpatiale.isEmpty()
+                    || (evenements.masseStationSpatiale < 0.)
+                    || (evenements.surfaceTraineeAtmospherique < 0.)
+                    || (evenements.coefficientTraineeAtmospherique < 0.)) {
+
+                const QFileInfo ff(fi.fileName());
+                qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
+                throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                        .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            }
+
+            qInfo() << QString("Lecture fichier %1 OK").arg(Configuration::instance()->nomFichierEvenementsStationSpatiale());
         }
-        fi.close();
-
-        if (evenements.dateDebutEvenementsStationSpatiale.isEmpty()
-                || evenements.dateFinEvenementsStationSpatiale.isEmpty()
-                || (evenements.masseStationSpatiale < 0.)
-                || (evenements.surfaceTraineeAtmospherique < 0.)
-                || (evenements.coefficientTraineeAtmospherique < 0.)
-                || evenements.evenementsStationSpatiale.isEmpty()) {
-
-            const QFileInfo ff(fi.fileName());
-            qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
-            throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
-                                    .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
-        }
-
-        qInfo() << QString("Lecture fichier %1 OK").arg(Configuration::instance()->nomFichierEvenementsStationSpatiale());
 
     } catch (PreviSatException &e) {
         throw PreviSatException();

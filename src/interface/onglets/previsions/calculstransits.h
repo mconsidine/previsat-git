@@ -168,6 +168,7 @@ private slots:
     void Aucun();
     void Tous();
 
+    void closeEvent(QCloseEvent *evt);
     void on_calculsTransit_clicked();
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();

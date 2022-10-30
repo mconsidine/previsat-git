@@ -232,6 +232,7 @@ private slots:
     void ModifierLieu();
     void SupprimerLieu();
 
+    void closeEvent(QCloseEvent *evt);
     void on_listeOptions_currentRowChanged(int currentRow);
     void on_listeBoutonsOptions_accepted();
     void on_listeBoutonsOptions_rejected();

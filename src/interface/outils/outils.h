@@ -168,6 +168,8 @@ private slots:
      */
     void ProgressionTLE(const int octetsRecus, const int octetsTotal, const double vitesse, const QString &unite);
 
+    void closeEvent(QCloseEvent *evt);
+
     void on_listeOutils_currentRowChanged(int currentRow);
     void on_serveur_currentTextChanged(const QString &arg1);
     void on_listeGroupeElem_currentRowChanged(int currentRow);
