@@ -180,6 +180,11 @@ CalculsPrevisions *Onglets::previsions() const
     return _previsions;
 }
 
+CalculsFlashs *Onglets::flashs() const
+{
+    return _flashs;
+}
+
 CalculsTransits *Onglets::transits() const
 {
     return _transits;

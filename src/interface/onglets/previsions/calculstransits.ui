@@ -90,7 +90,7 @@
     <rect>
      <x>20</x>
      <y>153</y>
-     <width>257</width>
+     <width>281</width>
      <height>24</height>
     </rect>
    </property>
@@ -105,12 +105,15 @@
      <number>0</number>
     </property>
     <item row="0" column="0">
-     <widget class="QLabel" name="lbl_ageMaxElementsOrbitauxTransit">
+     <widget class="QCheckBox" name="lbl_ageMaxElementsOrbitauxTransit">
       <property name="font">
        <font/>
       </property>
       <property name="text">
        <string>Age maximal des éléments orbitaux :</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -387,7 +390,7 @@
   <widget class="QWidget" name="formLayoutWidget_54">
    <property name="geometry">
     <rect>
-     <x>290</x>
+     <x>310</x>
      <y>156</y>
      <width>215</width>
      <height>18</height>

@@ -879,7 +879,7 @@ le flux vidéo</string>
    </property>
    <widget class="QMenu" name="menuPrincipal">
     <property name="title">
-     <string>MenuPrincipal</string>
+     <string notr="true">MenuPrincipal</string>
     </property>
     <addaction name="actionImporter_fichier_TLE_GP"/>
     <addaction name="actionEnregistrer"/>
@@ -910,7 +910,7 @@ le flux vidéo</string>
    </widget>
    <widget class="QMenu" name="menuDons">
     <property name="title">
-     <string>Dons</string>
+     <string notr="true">Dons</string>
     </property>
     <addaction name="actionPayPal"/>
     <addaction name="actionTipeee"/>
@@ -918,21 +918,21 @@ le flux vidéo</string>
    </widget>
    <widget class="QMenu" name="menuPartenaires">
     <property name="title">
-     <string>Partenaires</string>
+     <string notr="true">Partenaires</string>
     </property>
     <addaction name="actionSkywatcher"/>
     <addaction name="actionPianetaRadio"/>
    </widget>
    <widget class="QMenu" name="menuElementsOrbitaux">
     <property name="title">
-     <string>Éléments Orbitaux</string>
+     <string notr="true">Éléments Orbitaux</string>
     </property>
     <addaction name="actionCelestrak"/>
     <addaction name="actionSpaceTrack"/>
    </widget>
    <widget class="QMenu" name="menuListeSatellites">
     <property name="title">
-     <string>MenuListeSatellites</string>
+     <string notr="true">MenuListeSatellites</string>
     </property>
     <addaction name="actionDefinir_par_defaut"/>
    </widget>

@@ -104,6 +104,7 @@ public:
     InformationsISS *informationsISS() const;
 
     CalculsPrevisions *previsions() const;
+    CalculsFlashs *flashs() const;
     CalculsTransits *transits() const;
     CalculsEvenementsOrbitaux *evenements() const;
 #if defined (Q_OS_WIN)
