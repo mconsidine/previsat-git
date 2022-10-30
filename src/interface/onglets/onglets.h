@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    28 octobre 2022
+ * >    30 octobre 2022
  *
  */
 
@@ -101,6 +101,7 @@ public:
     General *general() const;
     Osculateurs *osculateurs() const;
     InformationsSatellite *informationsSatellite() const;
+    InformationsISS *informationsISS() const;
 
     CalculsPrevisions *previsions() const;
     CalculsTransits *transits() const;

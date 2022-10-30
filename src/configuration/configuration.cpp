@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    28 octobre 2022
+ * >    30 octobre 2022
  *
  */
 
@@ -120,12 +120,7 @@ void Configuration::Chargement()
         _mapFrequencesRadio = GestionnaireXml::LectureFrequencesRadio();
 
         // Lecture du fichier NASA contenant les evenements de la Station Spatiale
-        EvenementsStationSpatiale::LectureEvenementsStationSpatiale(_dateDebutStationSpatiale,
-                                                                    _dateFinStationSpatiale,
-                                                                    _masseStationSpatiale,
-                                                                    _surfaceTraineeAtmospherique,
-                                                                    _coefficientTraineeAtmospherique,
-                                                                    _evenementsStationSpatiale);
+        _evenementsStation = EvenementsStationSpatiale::LectureEvenementsStationSpatiale();
 
         // Lecture du fichier de donnees satellites
         LectureDonneesSatellites();
@@ -505,6 +500,11 @@ QList<Satellite> &Configuration::listeSatellites()
 const QMap<QString, ElementsOrbitaux> &Configuration::mapElementsOrbitaux() const
 {
     return _mapElementsOrbitaux;
+}
+
+EvenementsStation &Configuration::evenementsStation()
+{
+    return _evenementsStation;
 }
 
 const QMap<QString, QList<FrequenceRadio> > &Configuration::mapFrequencesRadio() const

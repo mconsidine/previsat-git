@@ -42,16 +42,9 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #include "configuration.h"
+#include "evenementsstation.h"
 #include "evenementsstationspatiale.h"
 #include "librairies/exceptions/previsatexception.h"
-
-
-QString EvenementsStationSpatiale::_dateDebutStationSpatiale;
-QString EvenementsStationSpatiale::_dateFinStationSpatiale;
-double EvenementsStationSpatiale::_masseStationSpatiale;
-double EvenementsStationSpatiale::_surfaceTraineeAtmospherique;
-double EvenementsStationSpatiale::_coefficientTraineeAtmospherique;
-QStringList EvenementsStationSpatiale::_evenementsStationSpatiale;
 
 
 /**********
@@ -68,30 +61,26 @@ QStringList EvenementsStationSpatiale::_evenementsStationSpatiale;
 /*
  * Lecture du fichier NASA contenant les evenements de la Station Spatiale
  */
-void EvenementsStationSpatiale::LectureEvenementsStationSpatiale(QString &dateDebutEvenementsStationSpatiale,
-                                                                 QString &dateFinEvenementsStationSpatiale,
-                                                                 double &masseStationSpatiale,
-                                                                 double &surfaceTraineeAtmospherique,
-                                                                 double &coefficientTraineeAtmospherique,
-                                                                 QStringList &evenementsStationSpatiale)
+EvenementsStation EvenementsStationSpatiale::LectureEvenementsStationSpatiale()
 {
+
+    /* Declarations des variables locales */
+    EvenementsStation evenements;
+
+    /* Initialisations */
+    evenements.masseStationSpatiale = -1.;
+    evenements.coefficientTraineeAtmospherique = -1.;
+    evenements.surfaceTraineeAtmospherique = -1.;
+
+    /* Corps de la methode */
     try {
-
-        /* Declarations des variables locales */
-
-        /* Initialisations */
-        _masseStationSpatiale = -1.;
-        _surfaceTraineeAtmospherique = -1.;
-        _coefficientTraineeAtmospherique = -1.;
-        _evenementsStationSpatiale.clear();
-
-        /* Corps de la methode */
         QFile fi(Configuration::instance()->dirLocalData() + QDir::separator() +
                  Configuration::instance()->nomFichierEvenementsStationSpatiale());
 
         if (!fi.exists() || (fi.size() == 0)) {
             qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2")
                            .arg(Configuration::instance()->nomFichierEvenementsStationSpatiale()).arg(APP_NAME);
+
             throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2")
                                     .arg(Configuration::instance()->nomFichierEvenementsStationSpatiale()).arg(APP_NAME),
                                     MessageType::ERREUR);
@@ -116,7 +105,7 @@ void EvenementsStationSpatiale::LectureEvenementsStationSpatiale(QString &dateDe
 
                             if (cfg.name().toString().toLower() == "body") {
 
-                                LectureBody(cfg);
+                                LectureBody(cfg, evenements);
 
                             } else {
                                 cfg.skipCurrentElement();
@@ -128,25 +117,18 @@ void EvenementsStationSpatiale::LectureEvenementsStationSpatiale(QString &dateDe
         }
         fi.close();
 
-        if (_dateDebutStationSpatiale.isEmpty()
-                || _dateFinStationSpatiale.isEmpty()
-                || (_masseStationSpatiale < 0.)
-                || (_surfaceTraineeAtmospherique < 0.)
-                || (_coefficientTraineeAtmospherique < 0.)
-                || _evenementsStationSpatiale.isEmpty()) {
+        if (evenements.dateDebutEvenementsStationSpatiale.isEmpty()
+                || evenements.dateFinEvenementsStationSpatiale.isEmpty()
+                || (evenements.masseStationSpatiale < 0.)
+                || (evenements.surfaceTraineeAtmospherique < 0.)
+                || (evenements.coefficientTraineeAtmospherique < 0.)
+                || evenements.evenementsStationSpatiale.isEmpty()) {
 
             const QFileInfo ff(fi.fileName());
             qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
             throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
                                     .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
-
-        dateDebutEvenementsStationSpatiale = _dateDebutStationSpatiale;
-        dateFinEvenementsStationSpatiale = _dateFinStationSpatiale;
-        masseStationSpatiale = _masseStationSpatiale;
-        surfaceTraineeAtmospherique = _surfaceTraineeAtmospherique;
-        coefficientTraineeAtmospherique = _coefficientTraineeAtmospherique;
-        evenementsStationSpatiale = _evenementsStationSpatiale;
 
         qInfo() << QString("Lecture fichier %1 OK").arg(Configuration::instance()->nomFichierEvenementsStationSpatiale());
 
@@ -155,7 +137,7 @@ void EvenementsStationSpatiale::LectureEvenementsStationSpatiale(QString &dateDe
     }
 
     /* Retour */
-    return;
+    return evenements;
 }
 
 
@@ -187,7 +169,7 @@ void EvenementsStationSpatiale::LectureEvenementsStationSpatiale(QString &dateDe
 /*
  * Lecture de la section body du fichier Station Spatiale
  */
-void EvenementsStationSpatiale::LectureBody(QXmlStreamReader &cfg)
+void EvenementsStationSpatiale::LectureBody(QXmlStreamReader &cfg, EvenementsStation &evenements)
 {
     /* Declarations des variables locales */
 
@@ -202,11 +184,11 @@ void EvenementsStationSpatiale::LectureBody(QXmlStreamReader &cfg)
 
                 if (cfg.name().toString().toLower() == "metadata") {
 
-                    LectureMetadata(cfg);
+                    LectureMetadata(cfg, evenements);
 
                 } else if (cfg.name().toString().toLower() == "data") {
 
-                    LectureData(cfg);
+                    LectureData(cfg, evenements);
                 }
             }
         }
@@ -219,7 +201,7 @@ void EvenementsStationSpatiale::LectureBody(QXmlStreamReader &cfg)
 /*
  * Lecture de la section data du fichier Station Spatiale
  */
-void EvenementsStationSpatiale::LectureData(QXmlStreamReader &cfg)
+void EvenementsStationSpatiale::LectureData(QXmlStreamReader &cfg, EvenementsStation &evenements)
 {
     /* Declarations des variables locales */
 
@@ -234,17 +216,17 @@ void EvenementsStationSpatiale::LectureData(QXmlStreamReader &cfg)
         if (value.toLower().contains("mass")) {
 
             // Masse (en kg)
-            _masseStationSpatiale = value.split("=").last().toDouble();
+            evenements.masseStationSpatiale = value.split("=").last().toDouble();
 
         } else if (value.toLower().contains("drag_area")) {
 
             // Surface de trainee atmospherique
-            _surfaceTraineeAtmospherique = value.split("=").last().toDouble();
+            evenements.surfaceTraineeAtmospherique = value.split("=").last().toDouble();
 
         } else if (value.toLower().contains("drag_coeff")) {
 
             // Coefficient de trainee atmospherique
-            _coefficientTraineeAtmospherique = value.split("=").last().toDouble();
+            evenements.coefficientTraineeAtmospherique = value.split("=").last().toDouble();
 
         } else if (value.contains("===")) {
 
@@ -255,7 +237,7 @@ void EvenementsStationSpatiale::LectureData(QXmlStreamReader &cfg)
                 value = cfg.readElementText();
                 if (!value.contains("===") && !value.isEmpty() && !value.contains("(")) {
                     value.replace(26, 1, "T");
-                    _evenementsStationSpatiale.append(value);
+                    evenements.evenementsStationSpatiale.append(value);
                 }
             }
         }
@@ -268,7 +250,7 @@ void EvenementsStationSpatiale::LectureData(QXmlStreamReader &cfg)
 /*
  * Lecture de la section metadata du fichier Station Spatiale
  */
-void EvenementsStationSpatiale::LectureMetadata(QXmlStreamReader &cfg)
+void EvenementsStationSpatiale::LectureMetadata(QXmlStreamReader &cfg, EvenementsStation &evenements)
 {
     /* Declarations des variables locales */
 
@@ -280,12 +262,12 @@ void EvenementsStationSpatiale::LectureMetadata(QXmlStreamReader &cfg)
         if (cfg.name().toString().toLower() == "start_time") {
 
             // Date de debut
-            _dateDebutStationSpatiale = cfg.readElementText();
+            evenements.dateDebutEvenementsStationSpatiale = cfg.readElementText();
 
         } else if (cfg.name().toString().toLower() == "stop_time") {
 
             // Date de fin
-            _dateFinStationSpatiale = cfg.readElementText();
+            evenements.dateFinEvenementsStationSpatiale = cfg.readElementText();
 
         } else {
             cfg.skipCurrentElement();

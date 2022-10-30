@@ -92,6 +92,13 @@ public slots:
 
     void changeEvent(QEvent *evt);
 
+    void show();
+
+
+signals:
+
+    void AfficherMessageStatut(const QString &, const int duree = -1);
+
 
 protected:
 
@@ -102,7 +109,6 @@ protected:
     /*
      * Methodes protegees
      */
-
 
 private:
 
@@ -116,6 +122,9 @@ private:
      * Methodes privees
      */
 
+private slots:
+
+    void on_majEvenementsIss_clicked();
 
 };
 
