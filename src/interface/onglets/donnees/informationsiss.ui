@@ -30,6 +30,12 @@
    <property name="horizontalScrollBarPolicy">
     <enum>Qt::ScrollBarAlwaysOff</enum>
    </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::NoEditTriggers</set>
+   </property>
+   <property name="dragDropOverwriteMode">
+    <bool>false</bool>
+   </property>
    <property name="alternatingRowColors">
     <bool>true</bool>
    </property>
@@ -46,17 +52,8 @@
     <bool>false</bool>
    </property>
    <property name="columnCount">
-    <number>6</number>
+    <number>5</number>
    </property>
-   <attribute name="horizontalHeaderMinimumSectionSize">
-    <number>8</number>
-   </attribute>
-   <attribute name="horizontalHeaderDefaultSectionSize">
-    <number>60</number>
-   </attribute>
-   <attribute name="horizontalHeaderStretchLastSection">
-    <bool>true</bool>
-   </attribute>
    <attribute name="verticalHeaderVisible">
     <bool>false</bool>
    </attribute>
@@ -73,16 +70,6 @@
    <column>
     <property name="text">
      <string extracomment="Date and hour">Date</string>
-    </property>
-    <property name="font">
-     <font>
-      <bold>true</bold>
-     </font>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Masse</string>
     </property>
     <property name="font">
      <font>

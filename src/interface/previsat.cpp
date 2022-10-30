@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 octobre 2022
+ * >    30 octobre 2022
  *
  */
 
@@ -65,6 +65,7 @@
 #include "configuration/gestionnairexml.h"
 #include "informations/informations.h"
 #include "onglets/antenne/antenne.h"
+#include "onglets/donnees/informationsiss.h"
 #include "onglets/donnees/informationssatellite.h"
 #include "onglets/general/general.h"
 #include "onglets/onglets.h"
@@ -519,6 +520,9 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(this, &PreviSat::SauveOngletGeneral, _onglets->general(), &General::SauveOngletGeneral);
     connect(this, &PreviSat::SauveOngletElementsOsculateurs, _onglets->osculateurs(), &Osculateurs::SauveOngletElementsOsculateurs);
     connect(this, &PreviSat::SauveOngletInformations, _onglets->informationsSatellite(), &InformationsSatellite::SauveOngletInformations);
+
+    // Connexions avec l'onglet Informations ISS
+    connect(_onglets->informationsISS(), &InformationsISS::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
 
     // Connexions avec l'onglet Antenne
     connect(this, &PreviSat::DeconnecterUdp, _onglets->antenne(), &Antenne::DeconnecterUdp);

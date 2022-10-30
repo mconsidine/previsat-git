@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    18 octobre 2022
+# >    30 octobre 2022
 
 #-------------------------------------------------
 VER_MAJ      = 6.0
@@ -148,6 +148,7 @@ HEADERS += \
     src/configuration/categorieelementsorbitaux.h                \
     src/configuration/configuration.h                            \
     src/configuration/configurationconst.h                       \
+    src/configuration/evenementsstation.h                        \
     src/configuration/evenementsstationspatiale.h                \
     src/configuration/fichierobs.h                               \
     src/configuration/frequencesradio.h                          \

@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    29 octobre 2022
+ * >    30 octobre 2022
  *
  */
 
@@ -170,6 +170,11 @@ InformationsSatellite *Onglets::informationsSatellite() const
     return _informationsSatellite;
 }
 
+InformationsISS *Onglets::informationsISS() const
+{
+    return _informationsISS;
+}
+
 CalculsPrevisions *Onglets::previsions() const
 {
     return _previsions;
@@ -281,6 +286,7 @@ void Onglets::show(const Date &date)
 
             _informationsSatellite->show();
             _rechercheSatellite->on_noradDonneesSat_valueChanged(Configuration::instance()->noradDefaut().toInt());
+            _informationsISS->show();
             _antenne->InitAffichageFrequences();
             _info = false;
         }

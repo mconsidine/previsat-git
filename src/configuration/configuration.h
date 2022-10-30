@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    29 octobre 2022
+ * >    30 octobre 2022
  *
  */
 
@@ -57,6 +57,7 @@
 #include "librairies/observateur/observateur.h"
 #include "categorieelementsorbitaux.h"
 #include "configurationconst.h"
+#include "evenementsstation.h"
 #include "frequencesradio.h"
 #include "satellitesflashs.h"
 #include "satellitetdrs.h"
@@ -200,6 +201,8 @@ public:
 
     const QMap<QString, ElementsOrbitaux> &mapElementsOrbitaux() const;
 
+    EvenementsStation &evenementsStation();
+
     // Frequences radio des satellites
     const QMap<QString, QList<FrequenceRadio> > &mapFrequencesRadio() const;
 
@@ -332,12 +335,7 @@ private:
     // Evenements Station Spatiale
     QString _nomFichierEvenementsStationSpatiale;
     QString _noradStationSpatiale;
-    QString _dateDebutStationSpatiale;
-    QString _dateFinStationSpatiale;
-    double _masseStationSpatiale;
-    double _surfaceTraineeAtmospherique;
-    double _coefficientTraineeAtmospherique;
-    QStringList _evenementsStationSpatiale;
+    EvenementsStation _evenementsStation;
 
     // Frequences radio des satellites
     QMap<QString, QList<FrequenceRadio> > _mapFrequencesRadio;

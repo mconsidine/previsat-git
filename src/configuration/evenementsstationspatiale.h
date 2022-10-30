@@ -48,6 +48,7 @@
 
 
 class QXmlStreamReader;
+struct EvenementsStation;
 
 class EvenementsStationSpatiale
 {
@@ -62,17 +63,9 @@ public:
      */
     /**
      * @brief LectureEvenementsStationSpatiale Lecture du fichier NASA contenant les evenements de la Station Spatiale
-     * @param dateDebutEvenementsStationSpatiale date de debut des evenements contenus dans le fichier
-     * @param dateFinEvenementsStationSpatiale date de fin des evenements contenus dans le fichier
-     * @param masseStationSpatiale masse de la Station Spatiale
-     * @param evenementsStationSpatiale evenements lies a la Station Spatiale
+     * @return evenements lies a la station spatiale
      */
-    static void LectureEvenementsStationSpatiale(QString &dateDebutEvenementsStationSpatiale,
-                                                 QString &dateFinEvenementsStationSpatiale,
-                                                 double &masseStationSpatiale,
-                                                 double &surfaceTraineeAtmospherique,
-                                                 double &coefficientTraineeAtmospherique,
-                                                 QStringList &evenementsStationSpatiale);
+    static EvenementsStation LectureEvenementsStationSpatiale();
 
 
     /*
@@ -100,12 +93,6 @@ private:
     /*
      * Variables privees
      */
-    static QString _dateDebutStationSpatiale;
-    static QString _dateFinStationSpatiale;
-    static double _masseStationSpatiale;
-    static double _surfaceTraineeAtmospherique;
-    static double _coefficientTraineeAtmospherique;
-    static QStringList _evenementsStationSpatiale;
 
     /*
      * Methodes privees
@@ -113,20 +100,23 @@ private:
     /**
      * @brief LectureBody Lecture de la section body du fichier Station Spatiale
      * @param cfg lecteur xml
+     * @param evenements evenements
      */
-    static void LectureBody(QXmlStreamReader &cfg);
+    static void LectureBody(QXmlStreamReader &cfg, EvenementsStation &evenements);
 
     /**
      * @brief LectureData Lecture de la section data du fichier Station Spatiale
      * @param cfg lecteur xml
+     * @param evenements evenements
      */
-    static void LectureData(QXmlStreamReader &cfg);
+    static void LectureData(QXmlStreamReader &cfg, EvenementsStation &evenements);
 
     /**
      * @brief LectureMetadata Lecture de la section metadata du fichier Station Spatiale
      * @param cfg lecteur xml
+     * @param evenements evenements
      */
-    static void LectureMetadata(QXmlStreamReader &cfg);
+    static void LectureMetadata(QXmlStreamReader &cfg, EvenementsStation &evenements);
 
 };
 
