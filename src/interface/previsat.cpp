@@ -546,6 +546,8 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_radar, &Radar::AfficherMessageStatut3, this, &PreviSat::AfficherMessageStatut3);
     connect(_radar, &Radar::RecalculerPositions, this, &PreviSat::GestionTempsReel);
 
+    // Connexions avec la fenetre Options
+    connect(_options, &Options::RecalculerPositions, this, &PreviSat::GestionTempsReel);
 
     // Connexions avec la fenetre Outils
     connect(_outils, &Outils::ChargementGP, this, &PreviSat::ChargementGP);

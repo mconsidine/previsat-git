@@ -193,6 +193,23 @@
     </item>
    </layout>
   </widget>
+  <widget class="QLabel" name="lbl_evenementsISS">
+   <property name="geometry">
+    <rect>
+     <x>9</x>
+     <y>100</y>
+     <width>771</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Fichier d'évènements ISS absent :
+cliquer sur 'Mettre à jour les informations de l'ISS'</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

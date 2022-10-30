@@ -157,6 +157,7 @@ private:
 
 private slots:
 
+    void closeEvent(QCloseEvent *evt);
     void on_typeRepere_currentIndexChanged(int index);
     void on_typeParametres_currentIndexChanged(int index);
 

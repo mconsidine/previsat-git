@@ -88,9 +88,6 @@ Osculateurs::Osculateurs(QWidget *parent) :
  */
 Osculateurs::~Osculateurs()
 {
-    settings.setValue("affichage/typeParametres", _ui->typeParametres->currentIndex());
-    settings.setValue("affichage/typeRepere", _ui->typeRepere->currentIndex());
-
     EFFACE_OBJET(_date);
     delete _ui;
 }
@@ -475,6 +472,14 @@ void Osculateurs::Initialisation()
 
     /* Retour */
     return;
+}
+
+void Osculateurs::closeEvent(QCloseEvent *evt)
+{
+    Q_UNUSED(evt)
+
+    settings.setValue("affichage/typeParametres", _ui->typeParametres->currentIndex());
+    settings.setValue("affichage/typeRepere", _ui->typeRepere->currentIndex());
 }
 
 void Osculateurs::on_typeRepere_currentIndexChanged(int index)

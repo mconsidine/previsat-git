@@ -141,6 +141,7 @@ private:
 
 private slots:
 
+    void closeEvent(QCloseEvent *evt);
     void on_calculsFlashs_clicked();
     void on_parametrageDefautMetOp_clicked();
     void on_effacerHeuresMetOp_clicked();

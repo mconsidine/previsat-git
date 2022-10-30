@@ -934,11 +934,13 @@ void Configuration::VerificationArborescences()
 
         // Fichiers du repertoire data local
         const QString repHtm = QString("html") + QDir::separator();
-        _listeFicLocalData << "donnees.bin" << "ISS.OEM_J2K_EPH.xml" << repHtm + "chaines.chnl" << repHtm + "meteo.map"
-                           << repHtm + "meteoNASA.html" << repHtm + "resultat.map" << QString("preferences") + QDir::separator() + "defaut"
-                           << "radio.xml" << "taiutc.dat";
+        _listeFicLocalData << "donnees.bin" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html" << repHtm + "resultat.map"
+                           << QString("preferences") + QDir::separator() + "defaut" << "taiutc.dat";
 
         VerifieFichiersData(_dirLocalData, _listeFicLocalData);
+
+        // Fichiers non obligatoires pour le fonctionnement de PreviSat
+        _listeFicLocalData << "ISS.OEM_J2K_EPH.xml" << "radio.xml";
 
     } catch (PreviSatException &e) {
         throw PreviSatException();
