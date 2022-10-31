@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 octobre 2022
+ * >    31 octobre 2022
  *
  */
 
@@ -850,8 +850,6 @@ void PreviSat::Initialisation()
 
         qInfo() << "Début Initialisation" << metaObject()->className();
 
-        QCoreApplication::instance()->installEventFilter(this);
-
         _informations = new Informations(this);
         _options = new Options(this);
         _onglets = new Onglets();
@@ -892,6 +890,8 @@ void PreviSat::Initialisation()
 
         // Liste des fichiers d'elements orbitaux
         InitFicGP();
+
+        QCoreApplication::instance()->installEventFilter(this);
 
         qInfo() << "Fin   Initialisation" << metaObject()->className();
 

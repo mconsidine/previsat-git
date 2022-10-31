@@ -182,39 +182,43 @@ void GestionnaireXml::EcritureGestionnaireElementsOrbitaux()
             it1.next();
 
             const QString site = it1.key();
-            const QList<CategorieElementsOrbitaux> listeCategorie = it1.value();
 
-            cfg.writeStartElement("Categories");
-            cfg.writeAttribute("site", site);
+            if (!site.isEmpty()) {
 
-            QListIterator it2(listeCategorie);
-            while (it2.hasNext()) {
+                const QList<CategorieElementsOrbitaux> listeCategorie = it1.value();
 
-                const CategorieElementsOrbitaux categorie = it2.next();
+                cfg.writeStartElement("Categories");
+                cfg.writeAttribute("site", site);
 
-                cfg.writeStartElement("Categorie");
-                cfg.writeAttribute("maj", QString::number(categorie.miseAjour));
+                QListIterator it2(listeCategorie);
+                while (it2.hasNext()) {
 
-                QMapIterator it3(categorie.nom);
-                while (it3.hasNext()) {
-                    it3.next();
+                    const CategorieElementsOrbitaux categorie = it2.next();
 
-                    cfg.writeStartElement("Langue");
-                    cfg.writeAttribute("lang", it3.key());
-                    cfg.writeTextElement("Nom", it3.value());
+                    cfg.writeStartElement("Categorie");
+                    cfg.writeAttribute("maj", QString::number(categorie.miseAjour));
+
+                    QMapIterator it3(categorie.nom);
+                    while (it3.hasNext()) {
+                        it3.next();
+
+                        cfg.writeStartElement("Langue");
+                        cfg.writeAttribute("lang", it3.key());
+                        cfg.writeTextElement("Nom", it3.value());
+                        cfg.writeEndElement();
+                    }
+
+                    cfg.writeStartElement("Fichiers");
+                    QStringListIterator it4(categorie.fichiers);
+                    while (it4.hasNext()) {
+                        cfg.writeTextElement("Fichier", it4.next());
+                    }
+                    cfg.writeEndElement();
                     cfg.writeEndElement();
                 }
 
-                cfg.writeStartElement("Fichiers");
-                QStringListIterator it4(categorie.fichiers);
-                while (it4.hasNext()) {
-                    cfg.writeTextElement("Fichier", it4.next());
-                }
-                cfg.writeEndElement();
                 cfg.writeEndElement();
             }
-
-            cfg.writeEndElement();
         }
 
         cfg.writeEndElement();
@@ -587,13 +591,14 @@ QMap<QString, QList<FrequenceRadio> > GestionnaireXml::LectureFrequencesRadio()
 /*
  * Lecture du fichier de gestionnaire d'elements orbitaux
  */
-QMap<QString, QList<CategorieElementsOrbitaux> > GestionnaireXml::LectureGestionnaireElementsOrbitaux(QString &versionCategorieElem)
+QMap<QString, QList<CategorieElementsOrbitaux> > GestionnaireXml::LectureGestionnaireElementsOrbitaux(
+        QString &versionCategorieElem, QMap<QString, QList<CategorieElementsOrbitaux> > &mapCategoriesMajElementsOrbitaux)
 {
     /* Declarations des variables locales */
     QMap<QString, QList<CategorieElementsOrbitaux> > mapCategoriesElementsOrbitaux;
 
     /* Initialisations */
-    mapCategoriesElementsOrbitaux.clear();
+    mapCategoriesMajElementsOrbitaux.clear();
 
     try {
 
@@ -624,6 +629,7 @@ QMap<QString, QList<CategorieElementsOrbitaux> > GestionnaireXml::LectureGestion
                 QStringList fichiers;
                 QMap<QString, QString> nomCategorie;
                 QList<CategorieElementsOrbitaux> listeCategories;
+                QList<CategorieElementsOrbitaux> listeCategoriesMaj;
 
                 while (cfg.readNextStartElement()) {
 
@@ -631,6 +637,7 @@ QMap<QString, QList<CategorieElementsOrbitaux> > GestionnaireXml::LectureGestion
                     if (cfg.name().toString() == "Categories") {
 
                         listeCategories.clear();
+                        listeCategoriesMaj.clear();
 
                         if (cfg.attributes().hasAttribute("site")) {
 
@@ -686,18 +693,25 @@ QMap<QString, QList<CategorieElementsOrbitaux> > GestionnaireXml::LectureGestion
                                             } else {
                                                 cfg.skipCurrentElement();
                                             }
-}
+                                        }
 
-                                            if (!nomCategorie.isEmpty()) {
-                                                listeCategories.append({ miseAjour, nomCategorie, fichiers });
+                                        if (!nomCategorie.isEmpty()) {
+                                            listeCategories.append({ miseAjour, nomCategorie, fichiers });
+
+                                            if (miseAjour) {
+                                                listeCategoriesMaj.append({ miseAjour, nomCategorie, fichiers });
                                             }
-
+                                        }
                                     }
                                 }
                             }
 
                             if (!listeCategories.isEmpty()) {
                                 mapCategoriesElementsOrbitaux.insert(site, listeCategories);
+                            }
+
+                            if (!listeCategoriesMaj.isEmpty()) {
+                                mapCategoriesMajElementsOrbitaux.insert(site, listeCategoriesMaj);
                             }
                         }
                     } else {
