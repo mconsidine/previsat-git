@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    30 octobre 2022
+ * >    31 octobre 2022
  *
  */
 
@@ -99,7 +99,7 @@ void Configuration::Chargement()
         _mapCategoriesOrbite = GestionnaireXml::LectureCategoriesOrbite();
 
         // Lecture du fichier de gestionnaire d'elements orbitaux
-        _mapCategoriesElementsOrbitaux = GestionnaireXml::LectureGestionnaireElementsOrbitaux(_versionCategorieElem);
+        _mapCategoriesElementsOrbitaux = GestionnaireXml::LectureGestionnaireElementsOrbitaux(_versionCategorieElem, _mapCategoriesMajElementsOrbitaux);
 
         // Lecture du fichier listant les pays et organisations
         _mapPays = GestionnaireXml::LecturePays();
@@ -423,7 +423,7 @@ std::array<Planete, NB_PLANETES> &Configuration::planetes()
 }
 
 
-const QMap<QString, QList<CategorieElementsOrbitaux> > &Configuration::mapCategoriesElementsOrbitaux() const
+QMap<QString, QList<CategorieElementsOrbitaux> > &Configuration::mapCategoriesElementsOrbitaux()
 {
     return _mapCategoriesElementsOrbitaux;
 }

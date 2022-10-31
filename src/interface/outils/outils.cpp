@@ -49,6 +49,7 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #include "outils.h"
 #include "configuration/configuration.h"
+#include "configuration/gestionnairexml.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/systeme/telechargement.h"
@@ -250,15 +251,21 @@ void Outils::InitListeDomaines()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const bool etat = _ui->serveur->blockSignals(true);
     _ui->serveur->clear();
 
     /* Corps de la methode */
     QListIterator it(Configuration::instance()->mapCategoriesElementsOrbitaux().keys());
     while (it.hasNext()) {
-        _ui->serveur->addItem(it.next());
+        const QString serveur = it.next();
+        if (!serveur.trimmed().isEmpty()) {
+            _ui->serveur->addItem(serveur);
+        }
     }
 
-    _ui->serveur->setCurrentIndex(0);
+    _ui->serveur->blockSignals(etat);
+    _ui->serveur->setCurrentIndex(-1);
+    _ui->serveur->setCurrentIndex(settings.value("fichier/serveur").toInt());
 
     /* Retour */
     return;
@@ -315,10 +322,7 @@ void Outils::ProgressionTLE(const int octetsRecus, const int octetsTotal, const 
 void Outils::closeEvent(QCloseEvent *evt)
 {
     Q_UNUSED(evt)
-
-    settings.setValue("fichier/fichierAMettreAJour", _ui->fichierAMettreAJour->text());
-    settings.setValue("fichier/fichierALire", _ui->fichierALire->text());
-    settings.setValue("fichier/affichageMsgMAJ", _ui->affichageMsgMAJ->currentIndex());
+    on_listeBoutonsOutils_rejected();
 }
 
 void Outils::on_listeOutils_currentRowChanged(int currentRow)
@@ -329,28 +333,32 @@ void Outils::on_listeOutils_currentRowChanged(int currentRow)
 void Outils::on_serveur_currentTextChanged(const QString &arg1)
 {
     /* Declarations des variables locales */
-    QListWidgetItem *elem;
 
     /* Initialisations */
-    _ui->listeGroupeElem->clear();
-    const QString locale = Configuration::instance()->locale();
 
     /* Corps de la methode */
-    const QList<CategorieElementsOrbitaux> &listeElem = Configuration::instance()->mapCategoriesElementsOrbitaux()[arg1];
-    QListIterator it(listeElem);
-    while (it.hasNext()) {
+    if (!arg1.isEmpty()) {
 
-        const CategorieElementsOrbitaux categorie = it.next();
-        const QString nom = categorie.nom[locale];
+        QListWidgetItem *elem;
 
-        elem = new QListWidgetItem(nom);
-        elem->setData(Qt::UserRole, categorie.fichiers);
-        elem->setData(Qt::CheckStateRole, categorie.miseAjour);
+        _ui->listeGroupeElem->clear();
+        const QString locale = Configuration::instance()->locale();
 
-        _ui->listeGroupeElem->addItem(elem);
+        QListIterator it(Configuration::instance()->mapCategoriesElementsOrbitaux()[arg1]);
+        while (it.hasNext()) {
+
+            const CategorieElementsOrbitaux categorie = it.next();
+            const QString nom = categorie.nom[locale];
+
+            elem = new QListWidgetItem(nom);
+            elem->setData(Qt::UserRole, categorie.fichiers);
+            elem->setData(Qt::CheckStateRole, categorie.miseAjour);
+
+            _ui->listeGroupeElem->addItem(elem);
+        }
+
+        _ui->listeGroupeElem->setCurrentRow(0);
     }
-
-    _ui->listeGroupeElem->setCurrentRow(0);
 
     /* Retour */
     return;
@@ -375,6 +383,17 @@ void Outils::on_listeGroupeElem_currentRowChanged(int currentRow)
 
     /* Retour */
     return;
+}
+
+void Outils::on_listeGroupeElem_itemClicked(QListWidgetItem *item)
+{
+    if ((item != nullptr) && !_ui->serveur->currentText().isEmpty()) {
+
+        const int idx = _ui->listeGroupeElem->indexFromItem(item).row();
+        const Qt::CheckState check = static_cast<Qt::CheckState> (item->data(Qt::CheckStateRole).toInt());
+
+        Configuration::instance()->mapCategoriesElementsOrbitaux()[_ui->serveur->currentText()][idx].miseAjour = check;
+    }
 }
 
 void Outils::on_creationGroupe_clicked()
@@ -486,8 +505,15 @@ void Outils::on_majMaintenant_clicked()
 
 void Outils::on_listeBoutonsOutils_rejected()
 {
+    GestionnaireXml::EcritureGestionnaireElementsOrbitaux();
+
     _ui->compteRenduMajAuto->setVisible(false);
     _ui->compteRenduMajManuel->setVisible(false);
+
+    settings.setValue("fichier/serveur", _ui->serveur->currentIndex());
+    settings.setValue("fichier/fichierAMettreAJour", _ui->fichierAMettreAJour->text());
+    settings.setValue("fichier/fichierALire", _ui->fichierALire->text());
+    settings.setValue("fichier/affichageMsgMAJ", _ui->affichageMsgMAJ->currentIndex());
 }
 
 void Outils::on_compteRenduMajAuto_customContextMenuRequested(const QPoint &pos)

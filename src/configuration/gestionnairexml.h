@@ -149,7 +149,8 @@ private:
      * @param versionCategorieElem version du fichier de categories d'elements orbitaux
      * @return liste contenant les categories d'elements orbitaux
      */
-    static QMap<QString, QList<CategorieElementsOrbitaux> > LectureGestionnaireElementsOrbitaux(QString &versionCategorieElem);
+    static QMap<QString, QList<CategorieElementsOrbitaux> > LectureGestionnaireElementsOrbitaux(
+            QString &versionCategorieElem, QMap<QString, QList<CategorieElementsOrbitaux> > &mapCategoriesMajElementsOrbitaux);
 
     /**
      * @brief LectureLieuxObservation Lecture de la structure de lieux d'observations

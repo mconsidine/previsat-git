@@ -54,6 +54,7 @@ namespace Ui {
 class Outils;
 }
 
+class QListWidgetItem;
 class QPlainTextEdit;
 
 class Outils : public QDialog
@@ -173,6 +174,7 @@ private slots:
     void on_listeOutils_currentRowChanged(int currentRow);
     void on_serveur_currentTextChanged(const QString &arg1);
     void on_listeGroupeElem_currentRowChanged(int currentRow);
+    void on_listeGroupeElem_itemClicked(QListWidgetItem *item);
     void on_creationGroupe_clicked();
     void on_ajoutFichiersElem_clicked();
     void on_majGroupe_clicked();
