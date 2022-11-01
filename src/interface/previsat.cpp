@@ -718,7 +718,9 @@ void PreviSat::InitVerificationsMAJ()
     }
 #endif
 
-    if (settings.value("fichier/dirHttpPreviDon", "").toString().isEmpty()) {
+    const QString liens = settings.value("fichier/dirHttpPreviDon", "").toString();
+
+    if (liens.isEmpty() || (liens.count('\n') <= 1)) {
 
         _onglets->setDirDwn(Configuration::instance()->dirTmp());
 
