@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    23 octobre 2022
+# >    1er novembre 2022
 
 #-------------------------------------------------
 VER_MAJ      = 5.1
@@ -49,7 +49,7 @@ TARGET = PreviSat
 TEMPLATE = app
 
 equals(QT_MAJOR_VERSION, 5) {
-    lessThan(QT_MINOR_VERSION, 4) {
+    lessThan(QT_MINOR_VERSION, 6) {
         error("Qt $${QT_VERSION} is not suited to compile $${TARGET}. Use Qt 5.15.2 in preference")
     }
 } else {

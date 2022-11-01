@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 octobre 2022
+ * >    1er novembre 2022
  *
  */
 
@@ -38,6 +38,7 @@
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDesktopServices>
 #include <QDesktopWidget>
+#include <QInputDialog>
 #include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -675,6 +676,37 @@ void PreviSat::InitVerificationsMAJ()
     /* Initialisations */
 
     /* Corps de la methode */
+    const QVersionNumber versionPrec = QVersionNumber::fromString(settings.value("fichier/version").toString());
+    if (!versionPrec.isNull()) {
+
+        const QVersionNumber versionAct = QVersionNumber::fromString(QString(APPVERSION));
+
+        if (QVersionNumber::compare(versionPrec, versionAct) < 0) {
+
+            QMessageBox msgbox(QMessageBox::Question, tr("Information"),
+                               tr("Vous venez de mettre à jour %1. Souhaitez-vous faire un don pour soutenir son auteur ?").arg(APP_NAME),
+                               QMessageBox::Yes | QMessageBox::NoToAll | QMessageBox::YesToAll | QMessageBox::No, this);
+
+            msgbox.setButtonText(QMessageBox::Yes, "PayPal");
+            msgbox.setButtonText(QMessageBox::No, "Tipeee");
+            msgbox.setButtonText(QMessageBox::YesToAll, "Utip");
+            msgbox.setButtonText(QMessageBox::NoToAll, tr("Non"));
+            msgbox.exec();
+
+            const int res = msgbox.result();
+
+            if (res == QMessageBox::Yes) {
+                on_actionFaire_triggered();
+
+            } else if (res == QMessageBox::No) {
+                on_actionDonation_Tipeee_triggered();
+
+            } else if (res == QMessageBox::YesToAll) {
+                on_actionDonation_Utip_triggered();
+            }
+        }
+    }
+
     settings.setValue("fichier/version", QString(APPVERSION));
 
 #if defined (Q_OS_MAC)
@@ -686,7 +718,6 @@ void PreviSat::InitVerificationsMAJ()
     }
 #endif
 
-#if !defined (Q_OS_WIN)
     if (settings.value("fichier/dirHttpPreviDon", "").toString().isEmpty()) {
 
         _onglets->setDirDwn(Configuration::instance()->dirTmp());
@@ -698,12 +729,11 @@ void PreviSat::InitVerificationsMAJ()
         if (fi.exists() && (fi.size() != 0)) {
 
             if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                settings.setValue("fichier/dirHttpPreviDon", QString(fi.readLine()));
+                settings.setValue("fichier/dirHttpPreviDon", QString(fi.readAll()));
             }
             fi.close();
         }
     }
-#endif
 
     /* Retour */
     return;
@@ -1119,16 +1149,10 @@ void PreviSat::VerifMAJPreviSat()
 
             if (fic == "versionPreviSat") {
 
-                const QStringList newVersion = ligne.split(".");
-                const QStringList oldVersion = settings.value("fichier/version", "").toString().split(".");
+                const QVersionNumber newVersion = QVersionNumber::fromString(ligne);
+                const QVersionNumber oldVersion = QVersionNumber::fromString(settings.value("fichier/version").toString());
 
-                int inew[4], iold[4];
-                for(int i=0; i<4; i++) {
-                    inew[i] = newVersion.at(i).toInt();
-                    iold[i] = oldVersion.at(i).toInt();
-                }
-
-                anewVersion = std::lexicographical_compare(iold, iold + 4, inew, inew + 4);
+                anewVersion = (!oldVersion.isNull() && (QVersionNumber::compare(oldVersion, newVersion) < 0));
 
                 if (anewVersion) {
                     MiseAJourFichiers(ui->actionTelecharger_la_mise_a_jour, tr("de %1", "for downloading PreviSat revision")
@@ -2820,7 +2844,30 @@ void PreviSat::on_actionTelecharger_la_mise_a_jour_triggered()
 
 void PreviSat::on_actionFaire_triggered()
 {
-    QDesktopServices::openUrl(QUrl(settings.value("fichier/dirHttpPreviDon", "").toString()));
+    /* Declarations des variables locales */
+    bool ok;
+
+    /* Initialisations */
+    const int idx = Configuration::instance()->listeFicLang().indexOf(settings.value("affichage/langue").toString());
+
+    QVector<QString> devises(QVector<QString>() << "Euro (€)" << "USD ($)" << "JPY (¥)");
+    devises.resize(Configuration::instance()->listeFicLang().size());
+    const QStringList listeDon = settings.value("fichier/dirHttpPreviDon", "").toString().split("\n", Qt::SkipEmptyParts);
+
+    /* Corps de la methode */
+    QInputDialog input(this);
+    input.setWindowTitle(tr("Devise"));
+    input.setLabelText(tr("Choisissez la devise :"));
+
+    const QString item = input.getItem(this, tr("Devise"), tr("Choisissez la devise :"), devises.toList(), idx, false, &ok,
+                                       Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+
+    if (ok && !item.isEmpty()) {
+        QDesktopServices::openUrl(QUrl(listeDon.at(devises.indexOf(item))));
+    }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_actionDonation_Tipeee_triggered()
