@@ -880,10 +880,10 @@ le flux vidéo</string>
    <widget class="QMenu" name="menuPrincipal">
     <property name="geometry">
      <rect>
-      <x>334</x>
+      <x>339</x>
       <y>102</y>
       <width>259</width>
-      <height>505</height>
+      <height>527</height>
      </rect>
     </property>
     <property name="title">
@@ -902,6 +902,7 @@ le flux vidéo</string>
     <addaction name="actionMettre_a_jour_GP_communs"/>
     <addaction name="actionMettre_a_jour_tous_les_groupes_de_GP"/>
     <addaction name="separator"/>
+    <addaction name="actionTelecharger_la_mise_a_jour"/>
     <addaction name="actionMettre_a_jour_les_fichiers_de_donnees"/>
     <addaction name="separator"/>
     <addaction name="actionExporter_fichier_log"/>
@@ -1135,6 +1136,11 @@ le flux vidéo</string>
   <action name="actionDefinir_par_defaut">
    <property name="text">
     <string>Définir par défaut</string>
+   </property>
+  </action>
+  <action name="actionTelecharger_la_mise_a_jour">
+   <property name="text">
+    <string>Télécharger la mise à jour</string>
    </property>
   </action>
  </widget>

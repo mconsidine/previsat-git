@@ -76,8 +76,9 @@ public:
     /**
      * @brief TelechargementFichier Telechargement de fichier
      * @param url adresse
+     * @param alarme affichage des messages d'erreur
      */
-    void TelechargementFichier(const QUrl &url);
+    void TelechargementFichier(const QUrl &url, const bool alarme = true);
 
 
     /*

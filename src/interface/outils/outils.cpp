@@ -139,6 +139,7 @@ void Outils::Initialisation()
     const QStringList filtres(QStringList () << "*.txt" << "*.tle");
     _ui->majMaintenant->setEnabled(!di.entryList(filtres, QDir::Files).isEmpty());
     _ui->majMaintenant->setDefault(_ui->majMaintenant->isEnabled());
+    _ui->majMaintenant->setToolTip((_ui->majMaintenant->isEnabled()) ? "" : tr("Aucun fichier TLE dans le répertoire d'éléments orbitaux"));
     _ui->frameBarreProgressionTLE->setVisible(false);
     _ui->compteRenduMajAuto->setVisible(false);
     _ui->compteRenduMajManuel->setVisible(false);
