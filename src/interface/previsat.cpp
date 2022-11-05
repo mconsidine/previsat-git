@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    31 octobre 2022
+ * >    5 novembre 2022
  *
  */
 
@@ -39,6 +39,7 @@
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDesktopServices>
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QPrintDialog>
@@ -47,6 +48,7 @@
 #include <QSoundEffect>
 #include <QStandardPaths>
 #include <QTimer>
+#include <QVersionNumber>
 #include "ui_options.h"
 #include "ui_previsat.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
@@ -850,8 +852,12 @@ void PreviSat::Initialisation()
 
         qInfo() << "Début Initialisation" << metaObject()->className();
 
-        _informations = new Informations(this);
         _options = new Options(this);
+
+        // Verification des mises a jour au demarrage
+        InitVerificationsMAJ();
+
+        _informations = new Informations(this);
         _onglets = new Onglets();
         _ui->layoutOnglets->addWidget(_onglets);
 
@@ -978,6 +984,80 @@ void PreviSat::InitDate()
 
     // Date et heure locales
     _dateCourante = new Date(offsetUTC);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Verification des mises a jour au demarrage
+ */
+void PreviSat::InitVerificationsMAJ()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QVersionNumber versionPrec = QVersionNumber::fromString(settings.value("fichier/version").toString());
+    if (!versionPrec.isNull()) {
+
+        const QVersionNumber versionAct = QVersionNumber::fromString(QString(APP_VERSION));
+
+        if (QVersionNumber::compare(versionPrec, versionAct) < 0) {
+
+            QMessageBox msgbox(QMessageBox::Question, tr("Information"),
+                               tr("Vous venez de mettre à jour %1. Souhaitez-vous faire un don pour soutenir son auteur ?").arg(APP_NAME));
+
+            QPushButton * const paypal = msgbox.addButton("PayPal", QMessageBox::YesRole);
+            const QPushButton * const tipeee = msgbox.addButton("Tipeee", QMessageBox::AcceptRole);
+            const QPushButton * const utip = msgbox.addButton("Utip", QMessageBox::ActionRole);
+            msgbox.addButton(tr("Non"), QMessageBox::RejectRole);
+
+            msgbox.setDefaultButton(paypal);
+            msgbox.exec();
+
+            if (msgbox.clickedButton() == paypal) {
+                on_actionPayPal_triggered();
+
+            } else if (msgbox.clickedButton() == tipeee) {
+                on_actionTipeee_triggered();
+
+            } else if (msgbox.clickedButton() == utip) {
+                on_actionUtip_triggered();
+            }
+        }
+    }
+
+    settings.setValue("fichier/version", QString(APP_VERSION));
+
+#if defined (Q_OS_MAC)
+    settings.setValue("affichage/verifMAJ", false);
+    _options->ui()->verifMAJ->setVisible(false);
+#else
+    if (_options->ui()->verifMAJ->isChecked()) {
+        VerifMajPreviSat();
+    }
+#endif
+
+    const QString liens = settings.value("fichier/dirHttpPreviDon", "").toString();
+
+    if (liens.isEmpty() || (liens.count('\n') <= 1)) {
+
+        const QUrl url(QString("%1/maj/don").arg(DOMAIN_NAME));
+        Telechargement tel(Configuration::instance()->dirTmp());
+        tel.TelechargementFichier(url, false);
+
+        QFile fi(tel.dirDwn() + QDir::separator() + QFileInfo(url.path()).fileName());
+
+        if (fi.exists() && (fi.size() != 0)) {
+
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                settings.setValue("fichier/dirHttpPreviDon", QString(fi.readAll()));
+            }
+            fi.close();
+        }
+    }
 
     /* Retour */
     return;
@@ -1111,14 +1191,13 @@ void PreviSat::VerifAgeGP()
 
             const QString msg = tr("Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?");
 
-            QMessageBox msgbox(tr("Information"), msg.arg(ageMax), QMessageBox::Question, QMessageBox::Yes | QMessageBox::Default,
-                               QMessageBox::No, QMessageBox::NoButton, this);
-            msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
-            msgbox.setButtonText(QMessageBox::No, tr("Non"));
+            QMessageBox msgbox(QMessageBox::Question, tr("Information"), msg.arg(ageMax));
+            QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
+            msgbox.addButton(tr("Non"), QMessageBox::NoRole);
+            msgbox.setDefaultButton(oui);
             msgbox.exec();
 
-            const int res = msgbox.result();
-            if (res == QMessageBox::Yes) {
+            if (msgbox.clickedButton() == oui) {
                 MajFichierGP();
             }
         }
@@ -1126,6 +1205,179 @@ void PreviSat::VerifAgeGP()
 
     /* Retour */
     return;
+}
+
+/*
+ * Verification d'une mise a jour a partir d'une date
+ */
+bool PreviSat::VerifMajDate(const QString &fichier, const QStringList &listeFichierMaj, const QDate &dateMaj)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    bool anew = false;
+    Telechargement tel(Configuration::instance()->dirTmp());
+
+    /* Corps de la methode */
+    tel.TelechargementFichier(QString("%1/maj/%2").arg(DOMAIN_NAME).arg(fichier), false);
+
+    QFile fi(tel.dirDwn() + QDir::separator() + fichier);
+    if (fi.exists() && (fi.size() != 0)) {
+
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+            const QString ligne = fi.readLine().trimmed();
+            const QDate nouvelleDate = QDate::fromString(ligne, "yyyy-MM-dd");
+            fi.close();
+
+            if (!listeFichierMaj.isEmpty()) {
+
+                QDate dateMax;
+                QStringListIterator it(listeFichierMaj);
+                while (it.hasNext()) {
+
+                    const QString fic = it.next();
+
+                    if (!fic.contains("preferences")) {
+
+                        const QString fich = Configuration::instance()->dirLocalData() + QDir::separator() + fic;
+                        const QFileInfo ff(fich);
+
+                        if (ff.lastModified().date() > dateMax) {
+                            dateMax = QDate(ff.lastModified().date());
+                        }
+                    }
+                }
+
+                anew = (nouvelleDate > dateMax);
+            }
+
+            if (dateMaj.isValid()) {
+                anew = (nouvelleDate > dateMaj);
+                _majInfosDate = ligne;
+            }
+        }
+    }
+
+    /* Retour */
+    return anew;
+}
+
+/*
+ * Verification des mises a jour (logiciel, fichiers internes)
+ */
+void PreviSat::VerifMajPreviSat()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Version du logiciel
+    const bool anew = VerifMajVersion(QString("version%1").arg(APP_NAME));
+
+    if (!anew) {
+
+        // Fichiers internes
+        if (VerifMajDate("majFichiersInternes", Configuration::instance()->listeFicLocalData())) {
+
+            if (_ui->actionMettre_a_jour_les_fichiers_de_donnees->isVisible()) {
+                _ui->actionMettre_a_jour_les_fichiers_de_donnees->setVisible(false);
+
+            } else {
+
+                _ui->actionMettre_a_jour_les_fichiers_de_donnees->setVisible(true);
+
+                const QString msg = tr("Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?");
+
+                QMessageBox msgbox(QMessageBox::Question, tr("Information"), msg.arg(tr("des fichiers internes")));
+                QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
+                msgbox.addButton(tr("Non"), QMessageBox::NoRole);
+                msgbox.setDefaultButton(oui);
+                msgbox.exec();
+
+                if (msgbox.clickedButton() == oui) {
+
+                    on_actionMettre_a_jour_les_fichiers_de_donnees_triggered();
+                    _ui->actionMettre_a_jour_les_fichiers_de_donnees->setVisible(false);
+                }
+            }
+        }
+
+        // Fichiers d'informations
+        QFont fnt;
+        if (settings.value("affichage/informationsDemarrage", true).toBool()) {
+            fnt.setBold(false);
+            _ui->actionInformations->setFont(fnt);
+
+        } else {
+
+            const QDate dateMaj = QDate::fromString(settings.value("temps/lastInfos").toString(), "yyyy-MM-dd");
+            if (VerifMajDate("majInfos", QStringList(), dateMaj)) {
+
+                fnt.setBold(true);
+                _ui->actionInformations->setFont(fnt);
+            }
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Verification d'une mise a jour a partir d'un fichier de version
+ */
+bool PreviSat::VerifMajVersion(const QString &fichier)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    bool anew = false;
+    Telechargement tel(Configuration::instance()->dirTmp());
+
+    /* Corps de la methode */
+    tel.TelechargementFichier(QString("%1/maj/%2").arg(DOMAIN_NAME).arg(fichier), false);
+
+    QFile fi(tel.dirDwn() + QDir::separator() + fichier);
+    if (fi.exists() && (fi.size() != 0)) {
+
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+            // Verification du numero de version
+            const QVersionNumber versionActuelle = QVersionNumber::fromString(settings.value("fichier/version", "").toString());
+            const QVersionNumber versionNouvelle = QVersionNumber::fromString(fi.readLine());
+            fi.close();
+
+            anew = (!versionActuelle.isNull() && (QVersionNumber::compare(versionActuelle, versionNouvelle) < 0));
+
+            if (anew) {
+
+                _ui->actionTelecharger_la_mise_a_jour->setVisible(true);
+
+                const QString msg = tr("Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?");
+
+                QMessageBox msgbox(QMessageBox::Question, tr("Information"), msg.arg(APP_NAME));
+                QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
+                msgbox.addButton(tr("Non"), QMessageBox::NoRole);
+                msgbox.setDefaultButton(oui);
+                msgbox.exec();
+
+                if (msgbox.clickedButton() == oui) {
+
+                    on_actionTelecharger_la_mise_a_jour_triggered();
+                    _ui->actionTelecharger_la_mise_a_jour->setVisible(false);
+                }
+
+                settings.setValue("fichier/majPrevi", "1");
+            } else {
+                _ui->actionTelecharger_la_mise_a_jour->setVisible(false);
+            }
+        }
+    }
+
+    /* Retour */
+    return anew;
 }
 
 /*
@@ -1542,6 +1794,9 @@ void PreviSat::InitFicGP()
     return;
 }
 
+/*
+ * Mise a jour d'un groupe d'elements orbitaux
+ */
 void PreviSat::MettreAjourGroupeElem(const QString &groupe)
 {
     /* Declarations des variables locales */
@@ -2047,12 +2302,17 @@ void PreviSat::on_actionMettre_a_jour_GP_courant_triggered()
 
 void PreviSat::on_actionMettre_a_jour_GP_communs_triggered()
 {
-    MettreAjourGroupeElem(tr("Commun"));
+    MettreAjourGroupeElem(tr("Commun", "common orbital elements groups"));
 }
 
 void PreviSat::on_actionMettre_a_jour_tous_les_groupes_de_GP_triggered()
 {
-    MettreAjourGroupeElem(tr("Tous"));
+    MettreAjourGroupeElem(tr("Tous", "all orbital elements groups"));
+}
+
+void PreviSat::on_actionTelecharger_la_mise_a_jour_triggered()
+{
+    QDesktopServices::openUrl(QUrl("https://sourceforge.net/projects/previsat/files/latest/download"));
 }
 
 void PreviSat::on_actionMettre_a_jour_les_fichiers_de_donnees_triggered()
@@ -2121,7 +2381,30 @@ void PreviSat::on_actionExporter_fichier_log_triggered()
 
 void PreviSat::on_actionPayPal_triggered()
 {
-    QDesktopServices::openUrl(QUrl(settings.value("fichier/dirHttpPreviDon", "").toString()));
+    /* Declarations des variables locales */
+    bool ok;
+
+    /* Initialisations */
+    const int idx = static_cast<int> (Configuration::instance()->listeFicLang().indexOf(settings.value("affichage/langue").toString()));
+
+    QVector<QString> devises(QVector<QString>() << "Euro (€)" << "USD ($)" << "JPY (¥)");
+    devises.resize(Configuration::instance()->listeFicLang().size());
+    const QStringList listeDon = settings.value("fichier/dirHttpPreviDon", "").toString().split("\n", Qt::SkipEmptyParts);
+
+    /* Corps de la methode */
+    QInputDialog input(this);
+    input.setWindowTitle(tr("Devise"));
+    input.setLabelText(tr("Choisissez la devise :"));
+
+    const QString item = input.getItem(this, tr("Devise"), tr("Choisissez la devise :"), devises.toList(), idx, false, &ok,
+                                       Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+
+    if (ok && !item.isEmpty()) {
+        QDesktopServices::openUrl(QUrl(listeDon.at(devises.indexOf(item))));
+    }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_actionTipeee_triggered()

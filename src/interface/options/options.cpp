@@ -925,14 +925,13 @@ void Options::RenommerCategorie()
 
             if (fi.exists()) {
 
-                QMessageBox msgbox(tr("Information"), tr("La catégorie existe déjà. Voulez-vous l'écraser ?"), QMessageBox::Question, QMessageBox::Yes,
-                                   QMessageBox::No | QMessageBox::Default, QMessageBox::NoButton, this);
-
-                msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
-                msgbox.setButtonText(QMessageBox::No, tr("Non"));
+                QMessageBox msgbox(QMessageBox::Question, tr("Information"), tr("La catégorie existe déjà. Voulez-vous l'écraser ?"));
+                const QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
+                QPushButton * const non = msgbox.addButton(tr("Non"), QMessageBox::NoRole);
+                msgbox.setDefaultButton(non);
                 msgbox.exec();
 
-                ok = (msgbox.result() == QMessageBox::Yes);
+                ok = (msgbox.clickedButton() == oui);
 
             } else {
                 ok = true;
@@ -958,17 +957,13 @@ void Options::SupprimerCategorie()
     const QString fic = categorie.toLower();
 
     /* Corps de la methode */
-    QMessageBox msgbox(tr("Information"), tr("Voulez-vous vraiment supprimer la catégorie <b>%1</b> ?")
-                       .arg(categorie), QMessageBox::Question, QMessageBox::Yes,
-                       QMessageBox::No | QMessageBox::Default, QMessageBox::NoButton, this);
-
-    msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
-    msgbox.setButtonText(QMessageBox::No, tr("Non"));
+    QMessageBox msgbox(QMessageBox::Question, tr("Information"), tr("Voulez-vous vraiment supprimer la catégorie <b>%1</b> ?").arg(categorie));
+    const QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
+    QPushButton * const non = msgbox.addButton(tr("Non"), QMessageBox::NoRole);
+    msgbox.setDefaultButton(non);
     msgbox.exec();
 
-    const int res = msgbox.result();
-
-    if (res == QMessageBox::Yes) {
+    if (msgbox.clickedButton() == oui) {
 
         QFile fi(Configuration::instance()->dirCoord() + QDir::separator() + fic);
         fi.remove();
@@ -1168,14 +1163,13 @@ void Options::SupprimerLieu()
         const QString nomlieu = _ui->lieuxObs->currentItem()->text();
         const QString msg = tr("Voulez-vous vraiment supprimer <b>%1</b> de la catégorie <b>%2</b> ?");
 
-        QMessageBox msgbox(tr("Avertissement"), msg.arg(nomlieu).arg(_ui->categoriesObs->currentItem()->text()), QMessageBox::Question,
-                           QMessageBox::Yes, QMessageBox::No | QMessageBox::Default, QMessageBox::NoButton, this);
-        msgbox.setButtonText(QMessageBox::Yes, tr("Oui"));
-        msgbox.setButtonText(QMessageBox::No, tr("Non"));
+        QMessageBox msgbox(QMessageBox::Question, tr("Avertissement"), msg.arg(nomlieu).arg(_ui->categoriesObs->currentItem()->text()));
+        const QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
+        QPushButton * const non = msgbox.addButton(tr("Non"), QMessageBox::NoRole);
+        msgbox.setDefaultButton(non);
         msgbox.exec();
-        const int res = msgbox.result();
 
-        if (res == QMessageBox::Yes) {
+        if (msgbox.clickedButton() == oui) {
 
             const QString fic = _ui->categoriesObs->currentItem()->data(Qt::UserRole).toString();
             Configuration::instance()->mapObs() = FichierObs::Lecture(fic, false);

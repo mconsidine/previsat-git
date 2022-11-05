@@ -40,6 +40,7 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QRegularExpression>
 #include <QXmlStreamReader>
 #pragma GCC diagnostic warning "-Wswitch-default"
@@ -1325,14 +1326,13 @@ void GestionnaireXml::VerifieVersionXml(QFile &fi1, QFile &fi2, QString &version
 
                     if (!msg.isEmpty()) {
 
-                        QMessageBox msgbox(QMessageBox::Question, QObject::tr("Avertissement"), msg, QMessageBox::Yes | QMessageBox::No, 0);
-
-                        msgbox.setDefaultButton(QMessageBox::Yes);
-                        msgbox.setButtonText(QMessageBox::Yes, QObject::tr("Oui"));
-                        msgbox.setButtonText(QMessageBox::No, QObject::tr("Non"));
+                        QMessageBox msgbox(QMessageBox::Question, QObject::tr("Avertissement"), msg);
+                        QPushButton * const oui = msgbox.addButton(QObject::tr("Oui"), QMessageBox::YesRole);
+                        msgbox.addButton(QObject::tr("Non"), QMessageBox::NoRole);
+                        msgbox.setDefaultButton(oui);
                         msgbox.exec();
 
-                        if (msgbox.result() == QMessageBox::Yes) {
+                        if (msgbox.clickedButton() == oui) {
 
                             // Tentative de recuperation des lieux d'observation
                             qInfo() << "Tentative de recuperation des lieux d'observation";

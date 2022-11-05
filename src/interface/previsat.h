@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 octobre 2022
+ * >    5 novembre 2022
  *
  */
 
@@ -49,6 +49,7 @@
 #include <QTranslator>
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include <QDate>
 
 
 QT_BEGIN_NAMESPACE
@@ -237,6 +238,11 @@ private:
     void InitDate();
 
     /**
+     * @brief InitVerificationsMAJ Verification des mises a jour au demarrage
+     */
+    void InitVerificationsMAJ();
+
+    /**
      * @brief InstallationTraduction Installation de la traduction
      * @param langue langue
      * @param traduction traduction
@@ -257,6 +263,27 @@ private:
      * @brief VerifAgeGP Verification de l'age des elements orbitaux d'un satellite
      */
     void VerifAgeGP();
+
+    /**
+     * @brief VerifMajDate Verification d'une mise a jour a partir d'une date
+     * @param fichier nom du fichier contenant la date
+     * @param listeFichierMaj liste des fichiers a mettre a jour
+     * @param dateMaj date de reference
+     * @return vrai si la date contenue dans le fichier est plus recente
+     */
+    bool VerifMajDate(const QString &fichier, const QStringList &listeFichierMaj = QStringList(), const QDate &dateMaj = QDate());
+
+    /**
+     * @brief VerifMajPreviSat Verification des mises a jour (logiciel, fichiers internes)
+     */
+    void VerifMajPreviSat();
+
+    /**
+     * @brief VerifMajVersion Verification d'une mise a jour a partir d'un fichier de version
+     * @param fichier nom du fichier de version
+     * @return vrai si le numero de version du fichier est plus recent
+     */
+    bool VerifMajVersion(const QString &fichier);
 
 
 private slots:
@@ -302,6 +329,10 @@ private slots:
      */
     void InitFicGP();
 
+    /**
+     * @brief MettreAjourGroupeElem Mise a jour d'un groupe d'elements orbitaux
+     * @param groupe nom du groupe
+     */
     void MettreAjourGroupeElem(const QString &groupe);
 
     // Raccourcis vers les fonctionnalites
@@ -343,6 +374,7 @@ private slots:
     void on_actionMettre_a_jour_GP_communs_triggered();
     void on_actionMettre_a_jour_tous_les_groupes_de_GP_triggered();
 
+    void on_actionTelecharger_la_mise_a_jour_triggered();
     void on_actionMettre_a_jour_les_fichiers_de_donnees_triggered();
     void on_actionExporter_fichier_log_triggered();
 

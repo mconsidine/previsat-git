@@ -75,7 +75,7 @@ Telechargement::Telechargement(const QString &dir)
 /*
  * Telechargement de fichier
  */
-void Telechargement::TelechargementFichier(const QUrl &url)
+void Telechargement::TelechargementFichier(const QUrl &url, const bool alarme)
 {
     /* Declarations des variables locales */
     QNetworkAccessManager manager;
@@ -97,7 +97,9 @@ void Telechargement::TelechargementFichier(const QUrl &url)
 #if (BUILD_TEST == false)
         qWarning() << "Erreur lors du téléchargement du fichier" << fic;
 #endif
-        throw PreviSatException(tr("Erreur lors du téléchargement du fichier %1").arg(fic), MessageType::WARNING);
+        if (alarme) {
+            throw PreviSatException(tr("Erreur lors du téléchargement du fichier %1").arg(fic), MessageType::WARNING);
+        }
 
     } else {
 
@@ -110,7 +112,10 @@ void Telechargement::TelechargementFichier(const QUrl &url)
 
         } else {
             qWarning() << QString("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn);
-            throw PreviSatException(tr("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn), MessageType::WARNING);
+
+            if (alarme) {
+                throw PreviSatException(tr("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn), MessageType::WARNING);
+            }
         }
     }
 
