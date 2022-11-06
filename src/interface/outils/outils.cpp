@@ -41,6 +41,7 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QMenu>
+#include <QMessageBox>
 #include <QPlainTextEdit>
 #include <QScrollBar>
 #include <QSettings>
@@ -79,10 +80,13 @@ Outils::Outils(QWidget *parent) :
 
     try {
 
-        Initialisation();
+        _creerGroupe = nullptr;
+        _supprimerGroupe = nullptr;
+        _ajouterFichiers = nullptr;
+        _supprimerFichier = nullptr;
+        _copier = nullptr;
 
-        _copier = new QAction(tr("Copier dans le presse-papier"));
-        connect(_copier, &QAction::triggered, this, &Outils::Copier);
+        Initialisation();
 
     } catch (PreviSatException &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
@@ -96,6 +100,10 @@ Outils::Outils(QWidget *parent) :
  */
 Outils::~Outils()
 {
+    EFFACE_OBJET(_creerGroupe);
+    EFFACE_OBJET(_supprimerGroupe);
+    EFFACE_OBJET(_ajouterFichiers);
+    EFFACE_OBJET(_supprimerFichier);
     EFFACE_OBJET(_copier);
     delete _ui;
 }
@@ -146,6 +154,8 @@ void Outils::Initialisation()
     _ui->affichageMsgMAJ->setCurrentIndex(settings.value("fichier/affichageMsgMAJ", 1).toInt());
     _ui->majTLE->setCurrentWidget(_ui->majTLEauto);
 
+    CreationMenus();
+
     InitListeDomaines();
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
@@ -178,6 +188,39 @@ void Outils::changeEvent(QEvent *evt)
 /*
  * Methodes privees
  */
+/*
+ * Creation des menus contextuels
+ */
+void Outils::CreationMenus()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _copier = new QAction(tr("Copier dans le presse-papier"), this);
+    connect(_copier, &QAction::triggered, this, &Outils::Copier);
+
+    _creerGroupe = new QAction(tr("Créer un groupe"), this);
+    _creerGroupe->setIcon(QIcon(":/resources/interface/ajout.png"));
+    connect(_creerGroupe, &QAction::triggered, this, &Outils::on_creationGroupe_clicked);
+
+    _supprimerGroupe = new QAction(tr("Supprimer"), this);
+    _supprimerGroupe->setIcon(QIcon(":/resources/interface/suppr.png"));
+    connect(_supprimerGroupe, &QAction::triggered, this, &Outils::SupprimerGroupe);
+
+    _ajouterFichiers = new QAction(tr("Ajouter des fichiers"), this);
+    _ajouterFichiers->setIcon(QIcon(":/resources/interface/ajout.png"));
+    connect(_ajouterFichiers, &QAction::triggered, this, &Outils::on_ajoutFichiersElem_clicked);
+
+    _supprimerFichier = new QAction(tr("Supprimer"), this);
+    _supprimerFichier->setIcon(QIcon(":/resources/interface/suppr.png"));
+    connect(_supprimerFichier, &QAction::triggered, this, &Outils::SupprimerFichier);
+
+    /* Retour */
+    return;
+}
+
 /*
  * Ecriture du compte-rendu de mise a jour des TLE
  */
@@ -295,6 +338,64 @@ void Outils::Copier()
 }
 
 /*
+ * Supprimer un fichier de la liste d'un groupe d'elements orbitaux
+ */
+void Outils::SupprimerFichier()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString groupe = _ui->listeGroupeElem->currentItem()->text();
+
+    /* Corps de la methode */
+    QMessageBox msgbox(QMessageBox::Question, tr("Information"), tr("Voulez-vous vraiment supprimer ce fichier du groupe <b>%1</b> ?").arg(groupe));
+    const QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
+    QPushButton * const non = msgbox.addButton(tr("Non"), QMessageBox::NoRole);
+    msgbox.setDefaultButton(non);
+    msgbox.exec();
+
+    if (msgbox.clickedButton() == oui) {
+
+        Configuration::instance()->mapCategoriesElementsOrbitaux()[_ui->serveur->currentText()]
+                [_ui->listeGroupeElem->currentRow()].fichiers.removeOne(_ui->listeFichiersElem->currentItem()->text());
+
+        GestionnaireXml::EcritureGestionnaireElementsOrbitaux();
+        InitListeDomaines();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Supprimer un groupe d'elements orbitaux
+ */
+void Outils::SupprimerGroupe()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString groupe = _ui->listeGroupeElem->currentItem()->text();
+
+    /* Corps de la methode */
+    QMessageBox msgbox(QMessageBox::Question, tr("Information"), tr("Voulez-vous vraiment supprimer le groupe <b>%1</b> ?").arg(groupe));
+    const QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
+    QPushButton * const non = msgbox.addButton(tr("Non"), QMessageBox::NoRole);
+    msgbox.setDefaultButton(non);
+    msgbox.exec();
+
+    if (msgbox.clickedButton() == oui) {
+
+        Configuration::instance()->mapCategoriesElementsOrbitaux()[_ui->serveur->currentText()].removeAt(_ui->listeGroupeElem->currentRow());
+        GestionnaireXml::EcritureGestionnaireElementsOrbitaux();
+        InitListeDomaines();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Affichage de la progression de telechargement des elements orbitaux
  */
 void Outils::ProgressionElem(const int octetsRecus, const int octetsTotal, const double vitesse, const QString &unite)
@@ -397,20 +498,76 @@ void Outils::on_listeGroupeElem_itemClicked(QListWidgetItem *item)
     }
 }
 
+void Outils::on_listeGroupeElem_customContextMenuRequested(const QPoint &pos)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QListWidgetItem *item = _ui->listeGroupeElem->itemAt(pos);
+
+    /* Corps de la methode */
+    QMenu menu(this);
+    menu.addAction(_creerGroupe);
+
+    if (item != nullptr) {
+        menu.addAction(_supprimerGroupe);
+    }
+
+    menu.exec(QCursor::pos());
+
+    /* Retour */
+    return;
+}
+
+void Outils::on_listeFichiersElem_customContextMenuRequested(const QPoint &pos)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QListWidgetItem *item = _ui->listeFichiersElem->itemAt(pos);
+
+    /* Corps de la methode */
+    QMenu menu(this);
+    menu.addAction(_ajouterFichiers);
+
+    if (item != nullptr) {
+        menu.addAction(_supprimerFichier);
+    }
+
+    menu.exec(QCursor::pos());
+
+    /* Retour */
+    return;
+}
+
 void Outils::on_creationGroupe_clicked()
 {
-    _ui->groupe->setVisible(true);
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->listeFichiers->clear();
     _ui->domaine->clear();
     _ui->domaine->setEnabled(true);
+    _ui->domaine->setFocus();
+
     _ui->nomGroupe->clear();
     _ui->nomGroupe->setEnabled(true);
-    _ui->listeFichiers->clear();
-    _ui->domaine->setFocus();
+    _ui->groupe->setVisible(true);
     _ui->valider->setDefault(true);
+
+    /* Retour */
+    return;
 }
 
 void Outils::on_ajoutFichiersElem_clicked()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     _ui->groupe->setVisible(true);
     _ui->domaine->setText(_ui->serveur->currentText());
     _ui->domaine->setEnabled(false);
@@ -424,6 +581,9 @@ void Outils::on_ajoutFichiersElem_clicked()
     _ui->listeFichiers->moveCursor(QTextCursor::End);
     _ui->listeFichiers->setFocus();
     _ui->valider->setDefault(true);
+
+    /* Retour */
+    return;
 }
 
 void Outils::on_majGroupe_clicked()
@@ -453,6 +613,86 @@ void Outils::on_majGroupe_clicked()
     Configuration::instance()->InitListeFichiersElem();
     emit InitFicGP();
     emit ChargementGP();
+
+    /* Retour */
+    return;
+}
+
+void Outils::on_valider_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        // Nom du domaine
+        const QString domaine = _ui->domaine->text().trimmed();
+        if (domaine.isEmpty()) {
+            throw PreviSatException(tr("Le nom du domaine n'est pas spécifié"), MessageType::WARNING);
+        }
+
+        // Nom du groupe (dans la langue de l'utilisateur)
+        const QString nomGroupe = _ui->nomGroupe->text().trimmed();
+        if (nomGroupe.isEmpty()) {
+            throw PreviSatException(tr("Le nom du groupe n'est pas spécifié"), MessageType::WARNING);
+        }
+
+        // Liste des fichiers d'elements orbitaux
+        const QStringList listeFics = _ui->listeFichiers->document()->toPlainText().split("\n");
+        if (listeFics.isEmpty()) {
+            throw PreviSatException(tr("La liste de fichiers est vide"), MessageType::WARNING);
+        }
+
+        QMap<QString, QList<CategorieElementsOrbitaux> > &mapElem = Configuration::instance()->mapCategoriesElementsOrbitaux();
+
+        bool atrouve = false;
+        int idx = 0;
+        QListIterator it(mapElem[domaine]);
+        while (it.hasNext()) {
+
+            const CategorieElementsOrbitaux categ = it.next();
+
+            if (categ.nom[Configuration::instance()->locale()] == nomGroupe) {
+
+                atrouve = true;
+                mapElem[domaine][idx].fichiers = listeFics;
+                it.toBack();
+            }
+            idx++;
+        }
+
+        if (!atrouve) {
+
+            QMap<QString, QString> nom;
+            nom.insert(Configuration::instance()->locale(), nomGroupe);
+
+            const CategorieElementsOrbitaux categorie = { Qt::Unchecked, nom, listeFics };
+            const QList<CategorieElementsOrbitaux> liste(QList<CategorieElementsOrbitaux>() << categorie);
+            mapElem[domaine].append(liste);
+        }
+        
+        GestionnaireXml::EcritureGestionnaireElementsOrbitaux();
+        InitListeDomaines();
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void Outils::on_annuler_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->groupe->setVisible(false);
+    _ui->domaine->setVisible(true);
+    _ui->nomGroupe->setVisible(true);
 
     /* Retour */
     return;

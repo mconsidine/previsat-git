@@ -36,7 +36,7 @@
  * >    14 aout 2022
  *
  * Date de revision
- * >    27 aout 2022
+ * >
  *
  */
 
@@ -125,12 +125,21 @@ private:
      */
     Ui::Outils *_ui;
 
+    QAction *_creerGroupe;
+    QAction *_supprimerGroupe;
+    QAction *_ajouterFichiers;
+    QAction *_supprimerFichier;
     QAction *_copier;
 
 
     /*
      * Methodes privees
      */
+    /**
+     * @brief CreationMenus Creation des menus contextuels
+     */
+    void CreationMenus();
+
     /**
      * @brief EcritureCompteRenduMaj Ecriture du compte-rendu de mise a jour des TLE
      * @param compteRendu compte-rendu
@@ -150,6 +159,16 @@ private slots:
      * @brief Copier Copier les compte-rendus de mise a jour des TLE dans le presse-papier
      */
     void Copier();
+
+    /**
+     * @brief SupprimerFichier Supprimer un fichier de la liste d'un groupe d'elements orbitaux
+     */
+    void SupprimerFichier();
+
+    /**
+     * @brief SupprimerGroupe Supprimer un groupe d'elements orbitaux
+     */
+    void SupprimerGroupe();
 
     /**
      * @brief ProgressionElem Affichage de la progression de telechargement des elements orbitaux
@@ -175,9 +194,13 @@ private slots:
     void on_serveur_currentTextChanged(const QString &arg1);
     void on_listeGroupeElem_currentRowChanged(int currentRow);
     void on_listeGroupeElem_itemClicked(QListWidgetItem *item);
+    void on_listeGroupeElem_customContextMenuRequested(const QPoint &pos);
+    void on_listeFichiersElem_customContextMenuRequested(const QPoint &pos);
     void on_creationGroupe_clicked();
     void on_ajoutFichiersElem_clicked();
     void on_majGroupe_clicked();
+    void on_valider_clicked();
+    void on_annuler_clicked();
 
     void on_majMaintenant_clicked();
     void on_listeBoutonsOutils_rejected();
