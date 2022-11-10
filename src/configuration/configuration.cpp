@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    31 octobre 2022
+ * >    10 novembre 2022
  *
  */
 
@@ -136,7 +136,7 @@ void Configuration::Chargement()
 
         _adresseCelestrakNorad = _adresseCelestrak + "NORAD/elements/gp.php?GROUP=%1&FORMAT=xml";
 
-        const QString httpDir = QString("%1%2/Qt/commun/data/").arg(DOMAIN_NAME).arg(QString(APP_NAME).toLower());
+        const QString httpDir = QString("%1data/").arg(DOMAIN_NAME);
         _mapAdressesTelechargement.insert(AdressesTelechargement::COORDONNEES, httpDir + "coordinates/");
         _mapAdressesTelechargement.insert(AdressesTelechargement::CARTES, httpDir + "map/");
         _mapAdressesTelechargement.insert(AdressesTelechargement::NOTIFICATIONS, httpDir + "sound/");

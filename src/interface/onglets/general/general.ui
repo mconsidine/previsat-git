@@ -1656,9 +1656,9 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>90</y>
+     <y>71</y>
      <width>571</width>
-     <height>131</height>
+     <height>141</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -1671,7 +1671,7 @@
     <property name="geometry">
      <rect>
       <x>180</x>
-      <y>13</y>
+      <y>30</y>
       <width>135</width>
       <height>52</height>
      </rect>
@@ -1782,7 +1782,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>13</y>
+      <y>30</y>
       <width>161</width>
       <height>52</height>
      </rect>
@@ -1890,7 +1890,7 @@
     <property name="geometry">
      <rect>
       <x>330</x>
-      <y>13</y>
+      <y>30</y>
       <width>170</width>
       <height>52</height>
      </rect>
@@ -2007,7 +2007,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>70</y>
+      <y>87</y>
       <width>176</width>
       <height>52</height>
      </rect>
@@ -2133,7 +2133,7 @@
     <property name="geometry">
      <rect>
       <x>180</x>
-      <y>70</y>
+      <y>87</y>
       <width>381</width>
       <height>61</height>
      </rect>
@@ -2391,106 +2391,106 @@
      </widget>
     </widget>
    </widget>
-  </widget>
-  <widget class="QWidget" name="formLayoutWidget_16">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>83</y>
-     <width>311</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <layout class="QFormLayout" name="formLayout_nomsat">
-    <property name="horizontalSpacing">
-     <number>3</number>
+   <widget class="QWidget" name="formLayoutWidget_17">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>7</y>
+      <width>234</width>
+      <height>21</height>
+     </rect>
     </property>
-    <property name="verticalSpacing">
-     <number>0</number>
+    <layout class="QFormLayout" name="formLayout_tempsDepuisEpoque">
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_tempsDepuisEpoque">
+       <property name="text">
+        <string>Temps écoulé depuis l'époque :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="tempsDepuisEpoque">
+       <property name="text">
+        <string>-360.0 jours</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget_16">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>7</y>
+      <width>311</width>
+      <height>21</height>
+     </rect>
     </property>
-    <item row="0" column="0">
-     <widget class="QLabel" name="lbl_nomsat">
-      <property name="text">
-       <string>Nom :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLabel" name="nomsat">
-      <property name="palette">
-       <palette>
-        <active>
-         <colorrole role="WindowText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>0</red>
-            <green>0</green>
-            <blue>255</blue>
-           </color>
-          </brush>
-         </colorrole>
-        </active>
-        <inactive>
-         <colorrole role="WindowText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </brush>
-         </colorrole>
-        </inactive>
-        <disabled>
-         <colorrole role="WindowText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>120</red>
-            <green>120</green>
-            <blue>120</blue>
-           </color>
-          </brush>
-         </colorrole>
-        </disabled>
-       </palette>
-      </property>
-      <property name="font">
-       <font>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>ISS</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="formLayoutWidget_17">
-   <property name="geometry">
-    <rect>
-     <x>330</x>
-     <y>83</y>
-     <width>234</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <layout class="QFormLayout" name="formLayout_tempsDepuisEpoque">
-    <item row="0" column="0">
-     <widget class="QLabel" name="lbl_tempsDepuisEpoque">
-      <property name="text">
-       <string>Temps écoulé depuis l'époque :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLabel" name="tempsDepuisEpoque">
-      <property name="text">
-       <string>-360.0 jours</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
+    <layout class="QFormLayout" name="formLayout_nomsat">
+     <property name="horizontalSpacing">
+      <number>3</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_nomsat">
+       <property name="text">
+        <string>Nom :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="nomsat">
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="WindowText">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>0</red>
+             <green>0</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="WindowText">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="WindowText">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>120</red>
+             <green>120</green>
+             <blue>120</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="font">
+        <font>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>ISS</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
  </widget>
  <resources/>
