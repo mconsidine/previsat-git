@@ -285,7 +285,7 @@ void InformationsISS::on_majEvenementsIss_clicked()
 
     /* Corps de la methode */
     emit AfficherMessageStatut(tr("Téléchargement du fichier d'évènements ISS..."));
-    tel.TelechargementFichier(QUrl(QString("%1data/ISS.OEM_J2K_EPH.xml").arg(DOMAIN_NAME)));
+    tel.TelechargementFichier(QUrl(QString("%1data/%2").arg(DOMAIN_NAME).arg(Configuration::instance()->nomFichierEvenementsStationSpatiale())));
     emit AfficherMessageStatut(tr("Téléchargement terminé"), 5);
 
     Configuration::instance()->evenementsStation() = EvenementsStationSpatiale::LectureEvenementsStationSpatiale();

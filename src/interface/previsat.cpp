@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 novembre 2022
+ * >    10 novembre 2022
  *
  */
 
@@ -267,6 +267,7 @@ void PreviSat::DemarrageApplication()
 
     if (!Configuration::instance()->mapElementsOrbitaux().isEmpty()) {
 
+        satellites.clear();
         QStringListIterator it(Configuration::instance()->mapSatellitesFichierElem()[ff.fileName()]);
         while (it.hasNext()) {
 

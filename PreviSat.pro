@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    30 octobre 2022
+# >    10 novembre 2022
 
 #-------------------------------------------------
 VER_MAJ      = 6.0
@@ -346,7 +346,6 @@ HEADERS += \
     message("Building software configuration")
 
     QT += core gui network
-    TARGET = PreviSat
 
     CONFIG(debug, debug|release) {
         DESTDIR = debug
