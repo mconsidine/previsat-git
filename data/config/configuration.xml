@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreviSatConfiguration version="1.2">
     <NoradStationSpatiale>025544</NoradStationSpatiale>
-    <AdresseCelestrak>http://celestrak.org/</AdresseCelestrak>
+    <AdresseCelestrak>https://celestrak.org/</AdresseCelestrak>
     <NomFichierEvenementsStationSpatiale>ISS.OEM_J2K_EPH.xml</NomFichierEvenementsStationSpatiale>
     <Observateurs>
         <Observateur>
