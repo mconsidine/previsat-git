@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 octobre 2022
+ * >    10 novembre 2022
  *
  */
 
@@ -91,8 +91,8 @@ void Soleil::CalculLeverMeridienCoucher(const Date &date, const Observateur &obs
 
     /* Initialisations */
     Observateur obs = observateur;
-    Date dateCalcul(date.annee(), date.mois(), date.jour(), 0, 0, 0., 0.);
-    const Date dateFin(dateCalcul.jourJulienUTC() + 1., 0., false);
+    Date dateCalcul(date.annee(), date.mois(), date.jour() - date.offsetUTC(), date.offsetUTC());
+    const Date dateFin(dateCalcul.jourJulienUTC() + 1., date.offsetUTC(), false);
     _ephem.clear();
 
     /* Corps de la methode */

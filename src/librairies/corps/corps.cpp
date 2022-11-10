@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 octobre 2022
+ * >    10 novembre 2022
  *
  */
 
@@ -442,6 +442,7 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
     }
 
     unsigned int iter;
+    int j;
     double dateEvt;
     double t_val;
     double yval;
@@ -450,7 +451,14 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
 
     for(unsigned int i=0; i<taille; i++) {
 
-        const int j = listIdx[i];
+        j = listIdx[i];
+        if (j == 0) {
+            j = 1;
+        }
+
+        if (j >= (_ephem.size() - 1)) {
+            j = static_cast<int> (_ephem.size() - 2);
+        }
 
         if (j != -1) {
 
@@ -506,22 +514,25 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
             if (iter < ITERATIONS_MAX) {
 
                 // Date arrondie a la minute
-                datesEvt[i] = Date(floor(dateEvt * NB_MIN_PAR_JOUR + 0.5) * NB_JOUR_PAR_MIN, date.offsetUTC());
+                const Date dateCalc = Date(floor(dateEvt * NB_MIN_PAR_JOUR + 0.5) * NB_JOUR_PAR_MIN, date.offsetUTC());
+                if (date.jour() == dateCalc.jour()) {
+                    datesEvt[i] = dateCalc;
+                }
             }
         }
     }
 
-    _dateLever = (listIdx[0] == -1) ?
+    _dateLever = (fabs(datesEvt[0].jourJulienUTC() - DATE_INFINIE) < EPS_DATES) ?
                 "-" : datesEvt[0].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
-    _dateMeridien = (listIdx[1] == -1) ?
+    _dateMeridien = (fabs(datesEvt[1].jourJulienUTC() - DATE_INFINIE) < EPS_DATES) ?
                 "-" : datesEvt[1].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
-    _dateCoucher = (listIdx[2] == -1) ?
+    _dateCoucher = (fabs(datesEvt[2].jourJulienUTC() - DATE_INFINIE) < EPS_DATES) ?
                 "-" : datesEvt[2].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
 
     if (calculCrepuscules) {
         for(int i=3; i<9; i++) {
             _datesCrepuscules[i-3] =
-                    (listIdx[i] == -1) ?
+                    (fabs(datesEvt[i].jourJulienUTC() - DATE_INFINIE) < EPS_DATES) ?
                         "-" : datesEvt[i].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
         }
     }
