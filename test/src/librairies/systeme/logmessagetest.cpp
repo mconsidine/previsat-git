@@ -65,12 +65,12 @@ void LogMessageTest::testLogMessage()
     dir.cdUp();
     dir.cd(qApp->applicationName());
 
-    const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + qApp->applicationName() + ".log";
-    LogMessage logMessage(ficRes);
+    const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + qApp->applicationName();
+    LogMessage logMessage(ficRes, 1);
     Q_UNUSED(logMessage)
 
     // Ecriture de messages informatifs
-    qInfo() << QCoreApplication::applicationName();
+    qInfo() << APP_NAME;
     qInfo() << QString("%1 %2 %3").arg(QSysInfo::productType()).arg(QSysInfo::productVersion()).arg(QSysInfo::currentCpuArchitecture());
 
     // Ecriture de messages de debug
@@ -86,5 +86,5 @@ void LogMessageTest::testLogMessage()
     qCritical() << "Message d'erreurs 2";
 
     const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + qApp->applicationName() + ".log";
-    CompareFichiers(ficRes, ficRef);
+    CompareFichiers(ficRes + ".log", ficRef);
 }

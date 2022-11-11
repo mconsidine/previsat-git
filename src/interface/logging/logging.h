@@ -18,54 +18,61 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    logmessage.h
+ * >    logging.h
  *
  * Localisation
- * >    librairies.systeme
+ * >    interface.logging
  *
  * Heritage
  * >
  *
  * Description
- * >    Message de log
+ * >    Gestion des fichiers de log
  *
  * Auteur
  * >    Astropedia
  *
  * Date de creation
- * >    21 mai 2022
+ * >    11 novembre 2022
  *
  * Date de revision
  * >
  *
  */
 
-#ifndef LOGMESSAGE_H
-#define LOGMESSAGE_H
+#ifndef LOGGING_H
+#define LOGGING_H
+
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QMainWindow>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
 
 
-class QString;
+namespace Ui {
+class Logging;
+}
 
-class LogMessage
+class QAbstractButton;
+class QTableWidgetItem;
+
+class Logging : public QMainWindow
 {
-#if (BUILD_TEST == true)
-    friend class LogMessageTest;
-#endif
+    Q_OBJECT
+
 public:
 
     /*
      *  Constructeurs
      */
-    /**
-     * @brief LogMessage Constructeur par defaut
-     * @param baseNomFichier base du nom du fichier de log
-     */
-    explicit LogMessage(const QString &baseNomFichier, const unsigned int nbMaxFic);
+    explicit Logging(QWidget *parent = nullptr);
+
 
     /*
      * Destructeur
      */
-    ~LogMessage();
+    ~Logging();
 
 
     /*
@@ -75,7 +82,6 @@ public:
     /*
      * Accesseurs
      */
-    static const QString &nomFicLog();
 
 
 protected:
@@ -94,14 +100,22 @@ private:
     /*
      * Variables privees
      */
-    static QString _nomFicLog;
+    Ui::Logging *_ui;
 
 
     /*
      * Methodes privees
      */
+    /**
+     * @brief Initialisation Initialisation de la classe Logging
+     */
+    void Initialisation();
 
+
+private slots:
+
+    void on_listeBoutonsExporterLog_clicked(QAbstractButton *button);
 
 };
 
-#endif // LOGMESSAGE_H
+#endif // LOGGING_H

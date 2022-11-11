@@ -30,13 +30,14 @@
  * >    21 mai 2022
  *
  * Date de revision
- * >    14 octobre 2022
+ * >
  *
  */
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDateTime>
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QScopedPointer>
@@ -46,6 +47,7 @@
 #include "logmessage.h"
 
 
+QString LogMessage::_nomFicLog;
 QScopedPointer<QFile> _fichierLog;
 
 static const QHash<QtMsgType, QString> typeMessage = {
@@ -69,38 +71,32 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 /*
  * Constructeur par defaut
  */
-LogMessage::LogMessage(const QString &fichier)
+LogMessage::LogMessage(const QString &baseNomFichier, const unsigned int nbMaxFic)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-#if (COVERAGE_TEST == false)
-    // Gestion du fichier de log en cas d'erreur lors de la precedente execution
-    QFile fi(fichier);
-    if (fi.exists() && (fi.size() != 0)) {
+    const QFileInfo ff(baseNomFichier);
+    const QDir di(ff.absoluteDir());
+    const QStringList filtre(QStringList () << ff.fileName() + "*.log");
+    QStringList listeFicLog = di.entryList(filtre, QDir::Files);
 
-        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-
-            const QString contenu = fi.readAll();
-            fi.close();
-
-            QString dest = fichier;
-            dest = dest.replace(".log", "-prev.log");
-
-            if (contenu.contains("ERREUR") || contenu.contains("FATAL")) {
-                fi.rename(dest);
-            } else {
-                QFile fi2(dest);
-                if (fi2.exists()) {
-                    fi2.remove();
-                }
-            }
-        }
+    QFile fi1;
+    while (listeFicLog.size() > nbMaxFic) {
+        fi1.setFileName(di.absolutePath() + QDir::separator() + listeFicLog.first());
+        fi1.remove();
+        listeFicLog.removeFirst();
     }
+
+#if (BUILD_TEST == true)
+    const QString dateFichierLog = "";
+#else
+    const QString dateFichierLog = QDateTime::currentDateTimeUtc().toString("_yyyy-MM-dd_hh-mm-ss-zzz");
 #endif
 
     /* Corps du constructeur */
-    _fichierLog.reset(new QFile(fichier));
+    _nomFicLog = QDir::toNativeSeparators(baseNomFichier + dateFichierLog + ".log");
+    _fichierLog.reset(new QFile(_nomFicLog));
     _fichierLog.data()->open(QFile::WriteOnly | QFile::Text);
     qInstallMessageHandler(messageHandler);
 
@@ -115,6 +111,9 @@ LogMessage::LogMessage(const QString &fichier)
     return;
 }
 
+/*
+ * Destructeur
+ */
 LogMessage::~LogMessage()
 {
     _fichierLog.data()->close();
@@ -125,6 +124,11 @@ LogMessage::~LogMessage()
 /*
  * Accesseurs
  */
+const QString &LogMessage::nomFicLog()
+{
+    return _nomFicLog;
+}
+
 
 /*
  * Methodes publiques

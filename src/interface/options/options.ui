@@ -1933,6 +1933,53 @@
         </property>
        </widget>
       </widget>
+      <widget class="QWidget" name="formLayoutWidget_81">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>190</y>
+         <width>181</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <layout class="QFormLayout" name="formLayout_nbFichiersLog">
+        <property name="labelAlignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="horizontalSpacing">
+         <number>3</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_nbFichiersLog">
+          <property name="font">
+           <font/>
+          </property>
+          <property name="text">
+           <string>Nombre de fichiers log :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="nbFichiersLog">
+          <property name="font">
+           <font/>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>20</number>
+          </property>
+          <property name="value">
+           <number>10</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="formLayoutWidget_64">

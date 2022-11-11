@@ -66,6 +66,7 @@
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
 #include "informations/informations.h"
+#include "logging/logging.h"
 #include "onglets/antenne/antenne.h"
 #include "onglets/donnees/informationsiss.h"
 #include "onglets/donnees/informationssatellite.h"
@@ -118,6 +119,7 @@ PreviSat::PreviSat(QWidget *parent)
         _options = nullptr;
         _outils = nullptr;
         _radar = nullptr;
+        _logging = nullptr;
 
         _previsions = nullptr;
         _flashs = nullptr;
@@ -160,6 +162,7 @@ PreviSat::~PreviSat()
     EFFACE_OBJET(_options);
     EFFACE_OBJET(_outils);
     EFFACE_OBJET(_radar);
+    EFFACE_OBJET(_logging);
 
     EFFACE_OBJET(_previsions);
     EFFACE_OBJET(_flashs);
@@ -869,6 +872,8 @@ void PreviSat::Initialisation()
         _ui->layoutCarte->addWidget(_carte);
 
         _ciel = new Ciel();
+
+        _logging = new Logging();
 
         CreationMenus();
         CreationRaccourcis();
@@ -2350,34 +2355,7 @@ void PreviSat::on_actionMettre_a_jour_les_fichiers_de_donnees_triggered()
 
 void PreviSat::on_actionExporter_fichier_log_triggered()
 {
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const QString ficlog = Configuration::instance()->dirOut() + QDir::separator() + APP_NAME + ".log";
-
-    /* Corps de la methode */
-    QFile fi(Configuration::instance()->dirLog() + QDir::separator() + APP_NAME + "-prev.log");
-    if (!fi.exists()) {
-        fi.setFileName(Configuration::instance()->dirLog() + QDir::separator() + APP_NAME + ".log");
-    }
-
-    if (fi.exists()) {
-
-        const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), ficlog, tr("Fichiers log (*.log)"));
-
-        if (!fichier.isEmpty()) {
-
-            // Sauvegarde du fichier log
-            if (fi.copy(ficlog)) {
-                qInfo() << "Export du fichier" << fi.fileName() << "OK";
-            } else {
-                qWarning() << "Export du fichier" << fi.fileName() << "KO";
-            }
-        }
-    }
-
-    /* Retour */
-    return;
+    _logging->show();
 }
 
 void PreviSat::on_actionPayPal_triggered()

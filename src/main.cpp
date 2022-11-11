@@ -40,6 +40,7 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
+#include <QSettings>
 #include <QSplashScreen>
 #include <QSharedMemory>
 #pragma GCC diagnostic warning "-Wswitch-default"
@@ -50,6 +51,10 @@
 #include "librairies/systeme/logmessage.h"
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #include <QApplication>
+
+
+// Registre
+static QSettings settings(ORG_NAME, APP_NAME);
 
 
 int main(int argc, char *argv[])
@@ -70,7 +75,7 @@ int main(int argc, char *argv[])
         Configuration::instance()->Initialisation();
 
         // Installation de la gestion du fichier de log
-        const LogMessage msg(Configuration::instance()->dirLog() + QDir::separator() + APP_NAME + ".log");
+        const LogMessage msg(Configuration::instance()->dirLog() + QDir::separator() + APP_NAME, settings.value("fichier/nbFichiersLog", 10).toUInt());
         Q_UNUSED(msg)
 
         // Verification si une instance de PreviSat existe

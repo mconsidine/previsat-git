@@ -63,6 +63,7 @@ class Carte;
 class Ciel;
 class Date;
 class Informations;
+class Logging;
 class Onglets;
 class Options;
 class Outils;
@@ -162,6 +163,7 @@ private:
     Informations *_informations;
     Options *_options;
     Outils *_outils;
+    Logging *_logging;
 
     QAction *_previsions;
     QAction *_flashs;

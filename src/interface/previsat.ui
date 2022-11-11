@@ -1105,7 +1105,7 @@ le flux vidéo</string>
   </action>
   <action name="actionExporter_fichier_log">
    <property name="text">
-    <string>Exporter fichier log</string>
+    <string>Exporter fichier log ...</string>
    </property>
   </action>
   <action name="actionSkywatcher">
