@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    30 octobre 2022
+ * >    11 novembre 2022
  *
  */
 
@@ -181,8 +181,6 @@ private:
     bool _acalcAOS;
     bool _acalcDN;
     bool _info;
-    int _indexInfo;
-    int _nbInformations;
 
 
     /*
@@ -194,6 +192,11 @@ private:
     void AffichageLieuObservation();
 
     /**
+     * @brief AffichageOngletInformations Gestion de l'affichage de l'onglet Informations
+     */
+    void AffichageOngletInformations();
+
+    /**
      * @brief Initialisation Initialisation de la classe Onglets
      */
     void Initialisation();
@@ -201,12 +204,13 @@ private:
 
 private slots:
 
+    void on_Onglets_currentChanged(int index);
+
     void on_infoPrec_clicked();
     void on_infoSuiv_clicked();
 
     void on_previsionPrec_clicked();
     void on_previsionSuiv_clicked();
-    void on_stackedWidget_informations_currentChanged(int arg1);
     void on_stackedWidget_previsions_currentChanged(int arg1);
 
 };
