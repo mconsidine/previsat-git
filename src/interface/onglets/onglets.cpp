@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    30 octobre 2022
+ * >    11 novembre 2022
  *
  */
 
@@ -61,12 +61,6 @@
 
 // Registre
 static QSettings settings(ORG_NAME, APP_NAME);
-
-static const char* _titresInformations[] = {
-    QT_TRANSLATE_NOOP("Onglets", "Informations satellite"),
-    QT_TRANSLATE_NOOP("Onglets", "Recherche données"),
-    QT_TRANSLATE_NOOP("Onglets", "Informations ISS")
-};
 
 static const char* _titresPrevisions[] = {
     QT_TRANSLATE_NOOP("Onglets", "Prévisions"),
@@ -224,7 +218,7 @@ void Onglets::setAcalcDN(const bool acalc)
 void Onglets::setIndexInformations(const unsigned int newIndexInformations)
 {
     _indexInformations = newIndexInformations;
-    setTabText(indexOf(_ui->informations), QCoreApplication::translate("Onglets", _titresInformations[_indexInformations]));
+    AffichageOngletInformations();
 }
 
 void Onglets::setIndexPrevisions(const unsigned int newIndexPrevisions)
@@ -249,41 +243,26 @@ void Onglets::show(const Date &date)
     /* Initialisations */
 
     /* Corps de la methode */
-    //    if (Configuration::instance()->listeSatellites().isEmpty()) {
-
-    //        removeTab(indexOf(_ui->elementsOsculateurs));
-
-
-
-    //        if (_nbInformations == 2) {
-
-    //            _indexInfo = 0;
-    //            _nbInformations = 1;
-    //            _ui->informations->setCurrentIndex(_indexInfo);
-    //            setTabText(indexOf(_ui->informationsSat), QCoreApplication::translate("Onglets", _titreInformations[1]));
-    //            //on_informations_currentChanged(_indexInfo);
-    //            _ui->infoPrec->setVisible(false);
-    //            _ui->infoSuiv->setVisible(false);
-    //        }
-    //    } else {
-    //        if (count() < _nbOnglets) {
-
-    //            _nbInformations = 2;
-    //            insertTab(1, _ui->elementsOsculateurs, tr("Éléments osculateurs"));
-    //            setTabText(indexOf(_ui->informationsSat), QCoreApplication::translate("Onglets", _titreInformations[0]));
-
-    //            _ui->informations->insertWidget(0, _ui->informationsSat);
-    //            on_infoSuiv_clicked();
-    //            //on_informations_currentChanged(0);
-    //        }
-    //    }
-
     // Affichage des donnees de l'onglet General
     _general->show(date);
 
-    if (!Configuration::instance()->listeSatellites().isEmpty()) {
+    if (Configuration::instance()->listeSatellites().isEmpty()) {
+
+        removeTab(indexOf(_ui->elementsOsculateurs));
+        _ui->stackedWidget_informations->removeWidget(_ui->informationsSat);
+
+    } else {
 
         // Affichage des donnees de l'onglet Elements osculateurs
+        if (indexOf(_ui->elementsOsculateurs) == -1) {
+            insertTab(1, _ui->elementsOsculateurs, tr("Éléments osculateurs"));
+        }
+
+        if (_ui->stackedWidget_informations->indexOf(_ui->informationsSat) == -1) {
+            _ui->stackedWidget_informations->insertWidget(0, _ui->informationsSat);
+            _ui->stackedWidget_informations->setCurrentIndex(0);
+        }
+
         _osculateurs->show(date);
 
         // Affichage des informations sur le satellite
@@ -298,6 +277,8 @@ void Onglets::show(const Date &date)
 
         _antenne->show(date);
     }
+
+    AffichageOngletInformations();
 
 
     //#if defined (Q_OS_WIN)
@@ -342,12 +323,6 @@ void Onglets::changeEvent(QEvent *evt)
 
         _antenne->changeEvent(evt);
 
-        _ui->infoPrec->setToolTip(
-                    QCoreApplication::translate("Onglets", _titresInformations[(_indexInformations + _ui->stackedWidget_informations->count() - 1)
-                    % _ui->stackedWidget_informations->count()]));
-        _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresInformations[(_indexInformations + 1) %
-                                  _ui->stackedWidget_informations->count()]));
-
         _ui->previsionPrec->setToolTip(
                     QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)
                     % _ui->stackedWidget_previsions->count()]));
@@ -382,6 +357,66 @@ void Onglets::AffichageLieuObservation()
 }
 
 /*
+ * Gestion de l'affichage de l'onglet Informations
+ */
+void Onglets::AffichageOngletInformations()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const bool isInfo = (_ui->stackedWidget_informations->indexOf(_ui->informationsSat) != -1);
+
+    /* Corps de la methode */
+    if (isInfo) {
+
+        setTabText(indexOf(_ui->informations), tr("Informations satellite"));
+
+        _ui->infoPrec->setToolTip(tr("Informations ISS"));
+        _ui->infoPrec->setVisible(true);
+        _ui->infoSuiv->setToolTip(tr("Recherche données"));
+        _ui->infoSuiv->setVisible(true);
+
+    } else {
+        setTabText(indexOf(_ui->informations), tr("Recherche données"));
+    }
+
+    if (_ui->rechercheSat->isVisible()) {
+
+        setTabText(indexOf(_ui->informations), tr("Recherche données"));
+        _ui->infoSuiv->setToolTip(tr("Informations ISS"));
+        _ui->infoSuiv->setVisible(true);
+
+        if (isInfo) {
+
+            _ui->infoPrec->setVisible(true);
+            _ui->infoPrec->setToolTip(tr("Informations satellite"));
+
+        } else {
+            _ui->infoPrec->setVisible(false);
+        }
+    }
+
+    if (_ui->informationsStationSpatiale->isVisible()) {
+
+        setTabText(indexOf(_ui->informations), tr("Informations ISS"));
+        _ui->infoPrec->setToolTip(tr("Recherche données"));
+        _ui->infoPrec->setVisible(true);
+
+        if (isInfo) {
+
+            _ui->infoSuiv->setVisible(true);
+            _ui->infoSuiv->setToolTip(tr("Informations satellite"));
+
+        } else {
+            _ui->infoSuiv->setVisible(false);
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Initialisation de la classe Onglets
  */
 void Onglets::Initialisation()
@@ -396,6 +431,7 @@ void Onglets::Initialisation()
     _indexInformations = settings.value("affichage/indexInformations", 0).toUInt();
     _indexPrevisions = settings.value("affichage/indexPrevisions", 0).toUInt();
 
+    setCurrentIndex(0);
     setStyleSheet("QTabWidget::pane { border: 5px solid #eeeeee; }");
 
     // Initialisation des onglets
@@ -403,6 +439,7 @@ void Onglets::Initialisation()
     _flashs = new CalculsFlashs(_ui->flashs);
     _general = new General(_flashs, _osculateurs, _ui->general);
 
+    // Donnees satellite
     _informationsSatellite = new InformationsSatellite(_ui->informationsSat);
 
     _rechercheSatellite = new RechercheSatellite(_ui->rechercheSat);
@@ -411,7 +448,7 @@ void Onglets::Initialisation()
     _informationsISS = new InformationsISS(_ui->informationsStationSpatiale);
     _informationsISS->show();
 
-
+    // Calculs de previsions
     _previsions = new CalculsPrevisions(_ui->prevision);
     _previsions->show();
 
@@ -425,14 +462,17 @@ void Onglets::Initialisation()
 
 
 #if defined (Q_OS_WIN)
+    // Suivi avec un telescope
     _suiviTelescope = new SuiviTelescope(_ui->telescope);
     _suiviTelescope->show();
 #else
     removeTab(indexOf(_ui->telescope));
 #endif
 
+    // Antenne
     _antenne = new Antenne(_ui->antenne);
 
+    // Connexions signaux-slots
     connect(this, &Onglets::AffichageLieuObs, _general, &General::AffichageLieuObs);
     connect(this, &Onglets::AffichageLieuObs, _previsions, &CalculsPrevisions::AffichageLieuObs);
     connect(this, &Onglets::AffichageLieuObs, _flashs, &CalculsFlashs::AffichageLieuObs);
@@ -442,13 +482,6 @@ void Onglets::Initialisation()
     AffichageLieuObservation();
 
     _ui->stackedWidget_informations->setCurrentIndex(_indexInformations);
-
-    _ui->infoPrec->setToolTip(
-                QCoreApplication::translate("Onglets", _titresInformations[(_indexInformations + _ui->stackedWidget_informations->count() - 1)
-                % _ui->stackedWidget_informations->count()]));
-    _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresInformations[(_indexInformations + 1) %
-                              _ui->stackedWidget_informations->count()]));
-
 
     _ui->stackedWidget_previsions->setCurrentIndex(_indexPrevisions);
 
@@ -464,20 +497,27 @@ void Onglets::Initialisation()
     return;
 }
 
+void Onglets::on_Onglets_currentChanged(int index)
+{
+    Q_UNUSED(index)
+    AffichageOngletInformations();
+}
+
 void Onglets::on_infoPrec_clicked()
 {
     _indexInformations = (_ui->stackedWidget_informations->currentIndex() + _ui->stackedWidget_informations->count() - 1)
             % _ui->stackedWidget_informations->count();
     _ui->stackedWidget_informations->setCurrentIndex(_indexInformations);
 
-    setTabText(indexOf(_ui->informations), QCoreApplication::translate("Onglets", _titresInformations[_indexInformations]));
+    AffichageOngletInformations();
 }
 
 void Onglets::on_infoSuiv_clicked()
 {
     _indexInformations = (_ui->stackedWidget_informations->currentIndex() + 1) % _ui->stackedWidget_informations->count();
     _ui->stackedWidget_informations->setCurrentIndex(_indexInformations);
-    setTabText(indexOf(_ui->informations), QCoreApplication::translate("Onglets", _titresInformations[_indexInformations]));
+
+    AffichageOngletInformations();
 }
 
 void Onglets::on_previsionPrec_clicked()
@@ -493,17 +533,6 @@ void Onglets::on_previsionSuiv_clicked()
     _indexPrevisions = (_ui->stackedWidget_previsions->currentIndex() + 1) % _ui->stackedWidget_previsions->count();
     _ui->stackedWidget_previsions->setCurrentIndex(_indexPrevisions);
     setTabText(indexOf(_ui->previsions), QCoreApplication::translate("Onglets", _titresPrevisions[_indexPrevisions]));
-}
-
-void Onglets::on_stackedWidget_informations_currentChanged(int arg1)
-{
-    Q_UNUSED(arg1)
-
-    _ui->infoPrec->setToolTip(
-                QCoreApplication::translate("Onglets", _titresInformations[(_indexInformations + _ui->stackedWidget_informations->count() - 1)
-                % _ui->stackedWidget_informations->count()]));
-    _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresInformations[(_indexInformations + 1) %
-                              _ui->stackedWidget_informations->count()]));
 }
 
 void Onglets::on_stackedWidget_previsions_currentChanged(int arg1)
