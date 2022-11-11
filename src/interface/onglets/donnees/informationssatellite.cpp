@@ -30,7 +30,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >     27 aout 2022
+ * >     11 novembre 2022
  *
  */
 
@@ -248,8 +248,7 @@ void InformationsSatellite::SauveOngletInformations(const QString &fichier)
 
 #if (BUILD_TEST == false)
             const QString titre = "%1 %2 / %3 (c) %4";
-            flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APP_VER_MAJ)).arg(APP_NAME).arg(QString(APP_ANNEES_DEV))
-                 << Qt::endl << Qt::endl << Qt::endl;
+            flux << titre.arg(APP_NAME).arg(QString(APP_VER_MAJ)).arg(APP_NAME).arg(QString(APP_ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
 #endif
 
             // Donnees sur le satellite

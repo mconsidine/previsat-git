@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    22 octobre 2022
+ * >    11 novembre 2022
  *
  */
 
@@ -1011,8 +1011,7 @@ void AfficherResultats::EcrireEntete() const
 
         // Ligne d'entete
 #if (BUILD_TEST == false)
-        flux << QString("%1 %2 / %3 (c) %4").arg(QCoreApplication::applicationName()).arg(QString(APP_VERSION)).arg(QCoreApplication::organizationName()).
-                arg(QString(APP_ANNEES_DEV)) << Qt::endl << Qt::endl;
+        flux << QString("%1 %2 / %3 (c) %4").arg(APP_NAME).arg(QString(APP_VERSION)).arg(ORG_NAME).arg(QString(APP_ANNEES_DEV)) << Qt::endl << Qt::endl;
 #endif
 
         // Lieu d'observation

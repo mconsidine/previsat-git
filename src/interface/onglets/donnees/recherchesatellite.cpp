@@ -118,8 +118,7 @@ void RechercheSatellite::SauveOngletRecherche(const QString &fichier)
 
 #if (BUILD_TEST == false)
             const QString titre = "%1 %2 / %3 (c) %4";
-            flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APP_VER_MAJ)).arg(APP_NAME).arg(QString(APP_ANNEES_DEV))
-                 << Qt::endl << Qt::endl << Qt::endl;
+            flux << titre.arg(APP_NAME).arg(QString(APP_VER_MAJ)).arg(APP_NAME).arg(QString(APP_ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
 #endif
 
             // Donnees sur le satellite

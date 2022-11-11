@@ -30,7 +30,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    30 octobre 2022
+ * >    11 novembre 2022
  *
  */
 
@@ -107,7 +107,7 @@ void Apropos::show()
 
     setFont(Configuration::instance()->police());
     const QString titre = tr("À propos de %1 %2");
-    setWindowTitle(titre.arg(QCoreApplication::applicationName()).arg(QString(APP_VER_MAJ)));
+    setWindowTitle(titre.arg(APP_NAME).arg(QString(APP_VER_MAJ)));
 
     QGraphicsScene * const scene = new QGraphicsScene;
     scene->setSceneRect(_ui->imagePreviSat->rect());
@@ -133,10 +133,10 @@ void Apropos::show()
     }
 
     const QString informations = "Copyright © %1 %2";
-    _ui->informationsCopyright->setText(informations.arg(QCoreApplication::organizationName()).arg(QString(APP_ANNEES_DEV)));
+    _ui->informationsCopyright->setText(informations.arg(ORG_NAME).arg(QString(APP_ANNEES_DEV)));
 
     const QString logiciel = "%1 %2";
-    _ui->nomLogiciel->setText(logiciel.arg(QCoreApplication::applicationName()).arg(QString(APP_VER_MAJ)));
+    _ui->nomLogiciel->setText(logiciel.arg(APP_NAME).arg(QString(APP_VER_MAJ)));
 
     const QString msg = tr("Version %1  (%2)");
     _ui->numeroVersion->setText(msg.arg(APP_VERSION).arg(QLocale(Configuration::instance()->locale())
