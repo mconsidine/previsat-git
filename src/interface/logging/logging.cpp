@@ -1,0 +1,285 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2022  Astropedia web: http://astropedia.free.fr  -  mailto: astropedia@free.fr
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Nom du fichier
+ * >    logging.cpp
+ *
+ * Localisation
+ * >    interface.logging
+ *
+ * Auteur
+ * >    Astropedia
+ *
+ * Date de creation
+ * >    11 novembre 2022
+ *
+ * Date de revision
+ * >
+ *
+ */
+
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QDesktopServices>
+#include <QDir>
+#include <QFileDialog>
+#include <QPushButton>
+#pragma GCC diagnostic warning "-Wswitch-default"
+#pragma GCC diagnostic warning "-Wconversion"
+#include "configuration/configuration.h"
+#include "librairies/exceptions/previsatexception.h"
+#include "librairies/systeme/logmessage.h"
+#include "logging.h"
+#include "ui_logging.h"
+
+
+/**********
+ * PUBLIC *
+ **********/
+
+/*
+ * Constructeurs
+ */
+Logging::Logging(QWidget *parent) :
+    QMainWindow(parent),
+    _ui(new Ui::Logging)
+{
+    _ui->setupUi(this);
+
+    try {
+
+        Initialisation();
+
+    } catch (PreviSatException &e) {
+        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        throw PreviSatException();
+    }
+}
+
+
+/*
+ * Destructeur
+ */
+Logging::~Logging()
+{
+    delete _ui;
+}
+
+
+/*
+ * Accesseurs
+ */
+
+/*
+ * Methodes publiques
+ */
+
+
+/*************
+ * PROTECTED *
+ *************/
+
+/*
+ * Methodes protegees
+ */
+
+
+/***********
+ * PRIVATE *
+ ***********/
+
+/*
+ * Methodes privees
+ */
+/*
+ * Initialisation de la classe Logging
+ */
+void Logging::Initialisation()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    qInfo() << "Début Initialisation" << metaObject()->className();
+
+    _ui->fichiersLog->setStyleSheet("QHeaderView::section {" \
+                                    "background-color:rgb(235, 235, 235);" \
+                                    "border-top: 0px solid grey;" \
+                                    "border-bottom: 1px solid grey;" \
+                                    "border-right: 1px solid grey;" \
+                                    "font-size: 12px;" \
+                                    "font-weight: 600 }");
+
+    _ui->fichiersLog->resizeColumnsToContents();
+
+    QBrush couleur;
+    QFile fi;
+    QFileInfo ff;
+    QFont fnt;
+    QString niveauMsg;
+    QTableWidgetItem *itemNom;
+    QTableWidgetItem *itemNiveau;
+    QTableWidgetItem *itemNbMsg;
+
+    int j = 0;
+    unsigned int nbMsg = 0;
+    fnt.setBold(true);
+
+    _ui->fichiersLog->disconnect();
+    _ui->fichiersLog->model()->removeRows(0, _ui->fichiersLog->rowCount());
+
+    const QStringList filtre(QStringList () << QString(APP_NAME) + "_*.log");
+    const QDir di(Configuration::instance()->dirLog());
+    const QStringList listeFichiersLog = di.entryList(filtre, QDir::Files);
+
+    QStringListIterator it(listeFichiersLog);
+    while (it.hasNext()) {
+
+        const QString fic = it.next();
+
+        ff = QFileInfo(Configuration::instance()->dirLog() + QDir::separator() + fic);
+        if (QDir::toNativeSeparators(ff.absoluteFilePath()) != LogMessage::nomFicLog()) {
+
+            _ui->fichiersLog->insertRow(j);
+            _ui->fichiersLog->setRowHeight(j, 16);
+
+            // Chargement du fichier
+            fi.setFileName(ff.absoluteFilePath());
+            fi.open(QIODevice::ReadOnly | QIODevice::Text);
+            const QString contenu = fi.readAll();
+            fi.close();
+
+            // Compte du nombre de message par type d'erreur
+            const unsigned int nbMsgFatal = static_cast<unsigned int> (contenu.count("FATAL"));
+            const unsigned int nbMsgErreur = static_cast<unsigned int> (contenu.count("ERREUR"));
+            const unsigned int nbMsgWarning = static_cast<unsigned int> (contenu.count("WARNING"));
+            const unsigned int nbMsgDebug = static_cast<unsigned int> (contenu.count("DEBUG"));
+            const unsigned int nbMsgInfo = static_cast<unsigned int> (contenu.count("INFO"));
+
+            couleur = QBrush(Qt::NoBrush);
+
+            if (nbMsgFatal > 0) {
+
+                nbMsg = nbMsgFatal;
+                niveauMsg = tr("FATAL");
+                couleur = QBrush(QColor(220, 20, 60));
+
+            } else if (nbMsgErreur > 0) {
+
+                nbMsg = nbMsgErreur;
+                niveauMsg = tr("ERREUR");
+                couleur = QBrush(Qt::red);
+
+            } else if (nbMsgWarning > 0) {
+
+                nbMsg = nbMsgWarning;
+                niveauMsg = tr("WARNING");
+                couleur = QBrush(QColor("orange"));
+
+            } else if (nbMsgDebug > 0) {
+
+                nbMsg = nbMsgDebug;
+                niveauMsg = tr("DEBUG");
+                couleur = QBrush(Qt::blue);
+
+            } else {
+                nbMsg = nbMsgInfo;
+                niveauMsg = tr("INFO");
+            }
+
+            // Nom du fichier
+            itemNom = new QTableWidgetItem(ff.baseName());
+            itemNom->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+            itemNom->setFlags(itemNom->flags() & ~Qt::ItemIsEditable);
+            _ui->fichiersLog->setItem(j, 0, itemNom);
+
+            // Niveau d'erreur
+            itemNiveau = new QTableWidgetItem(niveauMsg);
+            itemNiveau->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+            itemNiveau->setFlags(itemNiveau->flags() & ~Qt::ItemIsEditable);
+            itemNiveau->setForeground(couleur);
+            itemNiveau->setFont(fnt);
+            _ui->fichiersLog->setItem(j, 1, itemNiveau);
+
+            // Nombre de messages correspondant
+            itemNbMsg = new QTableWidgetItem(QString::number(nbMsg));
+            itemNbMsg->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+            itemNbMsg->setFlags(itemNbMsg->flags() & ~Qt::ItemIsEditable);
+            _ui->fichiersLog->setItem(j, 2, itemNbMsg);
+
+            j++;
+        }
+    }
+
+    _ui->fichiersLog->horizontalHeader()->setStretchLastSection(true);
+    _ui->fichiersLog->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    _ui->fichiersLog->selectRow(0);
+    _ui->fichiersLog->setFocus();
+
+    _ui->listeBoutonsExporterLog->button(QDialogButtonBox::Save)->setVisible(_ui->fichiersLog->rowCount() > 0);
+    _ui->listeBoutonsExporterLog->button(QDialogButtonBox::Save)->setText(tr("Exporter ..."));
+
+    setWindowFlags(Qt::WindowCloseButtonHint);
+
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+void Logging::on_listeBoutonsExporterLog_clicked(QAbstractButton *button)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (button == _ui->listeBoutonsExporterLog->button(QDialogButtonBox::Save)) {
+
+        // Export du fichier selectionne
+        const QString fic = _ui->fichiersLog->item(_ui->fichiersLog->currentRow(), 0)->text() + ".log";
+        const QString ficlog = Configuration::instance()->dirOut() + QDir::separator() + fic;
+
+        QFile fi(Configuration::instance()->dirLog() + QDir::separator() + fic);
+
+        if (fi.exists()) {
+
+            const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), ficlog, tr("Fichiers log (*.log)"));
+
+            if (!fichier.isEmpty()) {
+
+                // Sauvegarde du fichier log
+                if (fi.copy(ficlog)) {
+                    qInfo() << "Export du fichier" << fi.fileName() << "OK";
+                } else {
+                    qWarning() << "Export du fichier" << fi.fileName() << "KO";
+                }
+            }
+        }
+
+    } else if (button == _ui->listeBoutonsExporterLog->button(QDialogButtonBox::Close)) {
+
+        // Fermeture de la fenetre
+        close();
+    }
+
+    /* Retour */
+    return;
+}

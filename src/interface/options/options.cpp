@@ -348,7 +348,6 @@ void Options::ChargementPref()
             }
         }
 
-        //const bool etat = blockSignals(true);
         _ui->affconst->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affconst", Qt::Checked).toUInt()));
         _ui->affcoord->setChecked(settings.value("affichage/affcoord", true).toBool());
         _ui->affetoiles->setChecked(settings.value("affichage/affetoiles", true).toBool());
@@ -386,7 +385,6 @@ void Options::ChargementPref()
         _ui->rotationLune->setChecked(settings.value("affichage/rotationLune", false).toBool());
         _ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
         _ui->verifMAJ->setChecked(settings.value("affichage/verifMAJ", false).toBool());
-        //blockSignals(etat);
     }
 
     /* Retour */
@@ -864,6 +862,8 @@ void Options::AppliquerPreferences()
         settings.setValue("affichage/station" + _ui->listeStations->item(i)->data(Qt::UserRole).toString(),
                           _ui->listeStations->item(i)->checkState());
     }
+
+    settings.setValue("fichier/nbFichiersLog", _ui->nbFichiersLog->value());
 
     // Ecriture du fichier de preferences
     if (_ui->preferences->currentIndex() < _ui->preferences->count() - 2) {

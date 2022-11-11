@@ -58,9 +58,9 @@ public:
      */
     /**
      * @brief LogMessage Constructeur par defaut
-     * @param fichier nom du fichier de log
+     * @param baseNomFichier base du nom du fichier de log
      */
-    explicit LogMessage(const QString &fichier);
+    explicit LogMessage(const QString &baseNomFichier, const unsigned int nbMaxFic);
 
     /*
      * Destructeur
@@ -75,6 +75,7 @@ public:
     /*
      * Accesseurs
      */
+    static const QString &nomFicLog();
 
 
 protected:
@@ -93,6 +94,8 @@ private:
     /*
      * Variables privees
      */
+    static QString _nomFicLog;
+
 
     /*
      * Methodes privees

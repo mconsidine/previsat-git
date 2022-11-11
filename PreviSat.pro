@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    10 novembre 2022
+# >    11 novembre 2022
 
 #-------------------------------------------------
 VER_MAJ      = 6.0
@@ -95,6 +95,7 @@ SOURCES += \
     src/interface/carte/coordiss.cpp                               \
     src/interface/ciel/ciel.cpp                                    \
     src/interface/informations/informations.cpp                    \
+    src/interface/logging/logging.cpp                              \
     src/interface/onglets/antenne/antenne.cpp                      \
     src/interface/onglets/donnees/informationsiss.cpp              \
     src/interface/onglets/donnees/informationssatellite.cpp        \
@@ -162,6 +163,7 @@ HEADERS += \
     src/interface/listwidgetitem.h                               \
     src/interface/apropos/apropos.h                              \
     src/interface/informations/informations.h                    \
+    src/interface/logging/logging.h                              \
     src/interface/onglets/antenne/antenne.h                      \
     src/interface/onglets/donnees/informationsiss.h              \
     src/interface/onglets/donnees/informationssatellite.h        \
@@ -231,6 +233,7 @@ FORMS += \
     src/interface/carte/coordiss.ui                               \
     src/interface/ciel/ciel.ui                                    \
     src/interface/informations/informations.ui                    \
+    src/interface/logging/logging.ui                              \
     src/interface/onglets/antenne/antenne.ui                      \
     src/interface/onglets/donnees/informationsiss.ui              \
     src/interface/onglets/donnees/informationssatellite.ui        \
