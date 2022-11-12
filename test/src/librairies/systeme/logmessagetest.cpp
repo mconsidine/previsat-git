@@ -87,4 +87,6 @@ void LogMessageTest::testLogMessage()
 
     const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + qApp->applicationName() + ".log";
     CompareFichiers(ficRes + ".log", ficRef);
+
+    QCOMPARE(LogMessage::nomFicLog(), QDir::toNativeSeparators(ficRes + ".log"));
 }

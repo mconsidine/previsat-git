@@ -52,7 +52,9 @@ using namespace TestTools;
 void GPFormatTest::testAll()
 {
     testGPFormat();
-    testLectureFichier();
+    testLectureFichier1();
+    testLectureFichier2();
+    testLectureFichier3();
     testRecupereNomsat();
 }
 
@@ -78,7 +80,7 @@ void GPFormatTest::testGPFormat()
     QCOMPARE(elem.elements().cospar, "1998-067A");
 }
 
-void GPFormatTest::testLectureFichier()
+void GPFormatTest::testLectureFichier1()
 {
     qInfo(Q_FUNC_INFO);
 
@@ -97,6 +99,48 @@ void GPFormatTest::testLectureFichier()
                                                                              Configuration::instance()->lgRec());
 
     QCOMPARE(mapElem.keys().size(), 160);
+}
+
+void GPFormatTest::testLectureFichier2()
+{
+    qInfo(Q_FUNC_INFO);
+
+    QDir dir = QDir::current();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cd(qApp->applicationName());
+
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->LectureDonneesSatellites();
+
+    const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual2.xml";
+    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
+                                                                             Configuration::instance()->lgRec());
+
+    QCOMPARE(mapElem.size(), 0);
+}
+
+void GPFormatTest::testLectureFichier3()
+{
+    qInfo(Q_FUNC_INFO);
+
+    QDir dir = QDir::current();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cd(qApp->applicationName());
+
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->LectureDonneesSatellites();
+
+    const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual-nok.xml";
+    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
+                                                                             Configuration::instance()->lgRec());
+
+    QCOMPARE(mapElem.size(), 0);
 }
 
 void GPFormatTest::testRecupereNomsat()

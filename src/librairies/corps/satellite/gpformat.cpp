@@ -86,8 +86,11 @@ QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichi
     /* Corps de la methode */
     QFile fi(nomFichier);
     if (!fi.exists() || (fi.size() == 0)) {
+
         const QFileInfo ff(fi.fileName());
+#if (BUILD_TEST == false)
         qWarning() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
+#endif
         if (alarme) {
             throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
         }
@@ -159,7 +162,10 @@ QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichi
             }
 
         } else {
+
+#if (BUILD_TEST == false)
             qWarning() << QString("Le fichier %1 ne contient aucun satellite").arg(nomFichier);
+#endif
             if (alarme) {
                 fi.close();
                 throw PreviSatException(QObject::tr("Le fichier %1 ne contient aucun satellite").arg(nomFichier), MessageType::WARNING);
