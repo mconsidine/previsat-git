@@ -233,12 +233,32 @@ void Logging::Initialisation()
     _ui->fichiersLog->selectRow(0);
     _ui->fichiersLog->setFocus();
 
+    connect(_ui->fichiersLog, &QTableWidget::doubleClicked, this, &Logging::OuvrirFichier);
+
     _ui->listeBoutonsExporterLog->button(QDialogButtonBox::Save)->setVisible(_ui->fichiersLog->rowCount() > 0);
     _ui->listeBoutonsExporterLog->button(QDialogButtonBox::Save)->setText(tr("Exporter ..."));
 
     setWindowFlags(Qt::WindowCloseButtonHint);
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Ouverture du fichier log selectionne
+ */
+void Logging::OuvrirFichier()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const int idx = _ui->fichiersLog->currentRow();
+    const QString fichier = Configuration::instance()->dirLog() + QDir::separator() + _ui->fichiersLog->item(idx, 0)->text() + ".log";
+
+    /* Corps de la methode */
+    QDesktopServices::openUrl(QUrl("file:///" + fichier));
 
     /* Retour */
     return;

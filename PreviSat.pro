@@ -49,7 +49,7 @@ TARGET = PreviSat
 TEMPLATE = app
 
 !equals(QT_MAJOR_VERSION, 6) {
-    error("Qt $${QT_VERSION} is not suited to compile $${TARGET}. Use Qt 6.4.0 in preference")
+    error("Qt $${QT_VERSION} is not suited to compile $${TARGET}. Use Qt 6.4.1 in preference")
 }
 
 QT += concurrent multimedia printsupport widgets xml

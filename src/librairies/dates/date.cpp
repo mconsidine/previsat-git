@@ -548,7 +548,7 @@ Date &Date::operator = (const Date &date)
     _jour = date._jour;
     _heure = date._heure;
     _minutes = date._minutes;
-    _secondes = date.secondes();
+    _secondes = date._secondes;
 
     _jourJulien = date._jourJulien;
     _jourJulienTT = date._jourJulienTT;

@@ -114,6 +114,11 @@ private:
 
 private slots:
 
+    /**
+     * @brief OuvrirFichier Ouverture du fichier log selectionne
+     */
+    void OuvrirFichier();
+
     void on_listeBoutonsExporterLog_clicked(QAbstractButton *button);
 
 };
