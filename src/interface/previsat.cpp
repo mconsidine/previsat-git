@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 novembre 2022
+ * >    30 novembre 2022
  *
  */
 
@@ -1436,7 +1436,9 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
         elem->setData(Qt::CheckStateRole, (check) ? Qt::Checked : Qt::Unchecked);
         elem->setToolTip(tooltip);
         elem->setFlags(Qt::ItemIsEnabled);
+
         if (norad == noradDefaut) {
+            elem->setData(Qt::BackgroundRole, QColor(160, 220, 240));
             _ui->listeSatellites->setCurrentItem(elem);
         }
 
@@ -2476,6 +2478,7 @@ void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
 
             // Suppression d'un satellite dans la liste
             item->setData(Qt::CheckStateRole, Qt::Unchecked);
+            item->setData(Qt::BackgroundRole, QColor(Qt::transparent));
 
             QList<Satellite> &listeSatellites = Configuration::instance()->listeSatellites();
             bool afin = false;
@@ -2487,6 +2490,15 @@ void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
             if (i > 0) {
                 listeSatellites.removeAt(--i);
                 Configuration::instance()->SuppressionSatelliteFichierElem(norad);
+            }
+
+            bool atrouve = false;
+            const QString noradDefaut = listeSatellites.at(0).elementsOrbitaux().norad;
+            for(int j=0; j<_ui->listeSatellites->count() && !atrouve; j++) {
+                if (_ui->listeSatellites->item(j)->data(Qt::UserRole).toString() == noradDefaut) {
+                    _ui->listeSatellites->item(j)->setData(Qt::BackgroundRole, QColor(160, 220, 240));
+                    atrouve = true;
+                }
             }
 
             Configuration::instance()->notifAOS() = NotificationSonore::ATTENTE_LOS;
@@ -2614,6 +2626,11 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
 
     // On definit le satellite choisi comme satellite par defaut
     _ui->listeSatellites->currentItem()->setData(Qt::CheckStateRole, Qt::Checked);
+    for(int i=0; i<_ui->listeSatellites->count(); i++) {
+        _ui->listeSatellites->item(i)->setData(Qt::BackgroundRole, QColor(Qt::transparent));
+    }
+
+    _ui->listeSatellites->currentItem()->setData(Qt::BackgroundRole, QColor(160, 220, 240));
     _onglets->setAcalcAOS(true);
     _onglets->setAcalcDN(true);
     _onglets->setInfo(true);
