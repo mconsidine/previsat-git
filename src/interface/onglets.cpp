@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    1er novembre 2022
+ * >    24 decembre 2022
  *
  */
 
@@ -996,13 +996,13 @@ void Onglets::AffichageInformationsSatellite() const
     _ui->dateLancement->setText((donnee.dateLancement().isEmpty()) ? tr("Inconnue") : donnee.dateLancement());
 
     // Categorie d'orbite
-    _ui->categorieOrbite->setText(donnee.categorieOrbite());
+    _ui->categorieOrbite->setText((donnee.categorieOrbite().isEmpty()) ? tr("Inconnue") : donnee.categorieOrbite());
 
     // Pays ou organisation
-    _ui->pays->setText(donnee.pays());
+    _ui->pays->setText((donnee.pays().isEmpty()) ? tr("Inconnu") : donnee.pays());
 
     // Site de lancement
-    _ui->siteLancement->setText(donnee.siteLancement());
+    _ui->siteLancement->setText((donnee.siteLancement().isEmpty()) ? tr("Inconnu") : donnee.siteLancement());
     _ui->siteLancement->adjustSize();
     _ui->siteLancement->setFixedHeight(16);
 
@@ -3630,7 +3630,7 @@ void Onglets::FinTelechargementDonnees()
 
     /* Corps de la methode */
     emit AfficherMessageStatut(tr("Téléchargement terminé"), 10);
-    Message::Afficher(tr("Veuillez redémarrer %1 pour prendre en compte la mise à jour des fichiers"), INFO);
+    Message::Afficher(tr("Veuillez redémarrer %1 pour prendre en compte la mise à jour des fichiers").arg(APP_NAME), INFO);
 
     disconnect(this, SIGNAL(TelechargementFini()), this, SLOT(FinTelechargementDonnees()));
 
