@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er novembre 2022
+ * >    24 decembre 2022
  *
  */
 
@@ -2887,9 +2887,9 @@ void PreviSat::on_actionPrevisat_sourceforge_net_triggered()
     QDesktopServices::openUrl(QUrl("http://previsat.sourceforge.net/"));
 }
 
-void PreviSat::on_actionRapport_de_bug_triggered()
+void PreviSat::on_actionContact_triggered()
 {
-    QDesktopServices::openUrl(QUrl(Configuration::instance()->adresseAstropedia() + "rapport_" + Configuration::instance()->locale() + ".html"));
+    QDesktopServices::openUrl(QUrl("mailto:previsat.app@gmail.com"));
 }
 
 void PreviSat::on_actionSkywatcher_com_triggered()
@@ -3454,4 +3454,3 @@ void PreviSat::on_lancementVideoNasa_clicked()
     /* Retour */
     return;
 }
-

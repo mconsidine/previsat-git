@@ -3325,6 +3325,8 @@ The directory containing the observation sites does not exist</translation>
         <translation>Please restart %1 in order to take into account file updates</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets.cpp" line="1002"/>
+        <location filename="../src/interface/onglets.cpp" line="1005"/>
         <location filename="../src/interface/onglets.cpp" line="4146"/>
         <location filename="../src/interface/onglets.cpp" line="4240"/>
         <location filename="../src/interface/onglets.cpp" line="4246"/>
@@ -3335,6 +3337,7 @@ The directory containing the observation sites does not exist</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets.cpp" line="996"/>
+        <location filename="../src/interface/onglets.cpp" line="999"/>
         <location filename="../src/interface/onglets.cpp" line="4154"/>
         <location filename="../src/interface/onglets.cpp" line="4252"/>
         <location filename="../src/interface/onglets.cpp" line="4257"/>
@@ -4235,8 +4238,8 @@ the video stream</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1103"/>
-        <source>Rapport de bug</source>
-        <translation>Bug report</translation>
+        <source>Contact</source>
+        <translation>Contact</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1108"/>

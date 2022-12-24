@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2022
+ * >    24 decembre 2022
  *
  */
 
@@ -419,7 +419,7 @@ private slots:
     void on_actionDonation_Tipeee_triggered();
     void on_actionDonation_Utip_triggered();
     void on_actionPrevisat_sourceforge_net_triggered();
-    void on_actionRapport_de_bug_triggered();
+    void on_actionContact_triggered();
     void on_actionSkywatcher_com_triggered();
     void on_actionPianetaRadio_triggered();
     void on_actionWww_celestrak_org_triggered();

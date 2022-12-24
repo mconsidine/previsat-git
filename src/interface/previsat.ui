@@ -947,7 +947,7 @@ le flux vidéo</string>
     <addaction name="actionDonation_Tipeee"/>
     <addaction name="actionDonation_Utip"/>
     <addaction name="separator"/>
-    <addaction name="actionRapport_de_bug"/>
+    <addaction name="actionContact"/>
     <addaction name="actionPrevisat_sourceforge_net"/>
     <addaction name="separator"/>
     <addaction name="actionSkywatcher_com"/>
@@ -1098,9 +1098,9 @@ le flux vidéo</string>
     <string notr="true">previsat.sourceforge.net</string>
    </property>
   </action>
-  <action name="actionRapport_de_bug">
+  <action name="actionContact">
    <property name="text">
-    <string>Rapport de bug</string>
+    <string>Contact</string>
    </property>
   </action>
   <action name="actionTelecharger_la_mise_a_jour">
