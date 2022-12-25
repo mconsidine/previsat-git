@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    2 octobre 2022
+ * >    25 decembre 2022
  *
  */
 
@@ -115,6 +115,7 @@ class QXmlStreamReader;
 class Configuration
 {
 #if (BUILD_TEST == true)
+    friend class FlashsTest;
     friend class OngletsTest;
     friend class SatelliteTest;
     friend class TelescopeTest;

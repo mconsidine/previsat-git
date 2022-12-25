@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    22 mai 2022
+ * >    25 decembre 2022
  *
  */
 
@@ -64,13 +64,15 @@ void FlashsTest::testAll()
     dir.cd(qApp->applicationName());
 
     qApp->setOrganizationName(ORG_NAME);
-    Configuration::instance()->Initialisation();
 
     const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Corps::InitTabConstellations(dirCommonData);
 
     const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Date::Initialisation(dirLocalData);
+
+    Configuration::instance()->_dirCfg = dirLocalData + QDir::separator() + "config";
+    Configuration::instance()->LectureStatutSatellitesFlashs();
 
     conditions.jj1 = 7531.416666666667;
     conditions.jj2 = 7562.416666666667;
