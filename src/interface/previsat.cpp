@@ -2424,7 +2424,7 @@ void PreviSat::on_actionSpaceTrack_triggered()
 
 void PreviSat::on_actionContact_triggered()
 {
-    QDesktopServices::openUrl(QUrl("mailto:previsat.app@gmail.com"));
+    QDesktopServices::openUrl(QUrl("mailto:" + QString(MAILTO)));
 }
 
 void PreviSat::on_actionApropos_triggered()
