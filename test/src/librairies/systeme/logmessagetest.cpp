@@ -71,7 +71,7 @@ void LogMessageTest::testLogMessage()
 
     // Ecriture de messages informatifs
     qInfo() << APP_NAME;
-    qInfo() << QString("%1 %2 %3").arg(QSysInfo::productType()).arg(QSysInfo::productVersion()).arg(QSysInfo::currentCpuArchitecture());
+    qInfo() << ORG_NAME;
 
     // Ecriture de messages de debug
     qDebug() << "Message de debug 1";

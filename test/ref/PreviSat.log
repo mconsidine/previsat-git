@@ -1,5 +1,5 @@
 INFO    : logmessagetest.cpp (ligne 73)                 : testLogMessage                                : PreviSat
-INFO    : logmessagetest.cpp (ligne 74)                 : testLogMessage                                : windows 10 x86_64
+INFO    : logmessagetest.cpp (ligne 74)                 : testLogMessage                                : Astropedia
 DEBUG   : logmessagetest.cpp (ligne 77)                 : testLogMessage                                : Message de debug 1
 DEBUG   : logmessagetest.cpp (ligne 78)                 : testLogMessage                                : Message de debug 2
 WARNING : logmessagetest.cpp (ligne 81)                 : testLogMessage                                : Message d'avertissement 1
