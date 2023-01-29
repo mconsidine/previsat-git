@@ -48,6 +48,7 @@
 #include <QFrame>
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "librairies/maths/maths.h"
 
 
 namespace Ui {
@@ -57,6 +58,10 @@ class SuiviTelescope;
 class QListWidget;
 class QListWidgetItem;
 class AfficherResultats;
+class Date;
+class Observateur;
+class Satellite;
+
 
 class SuiviTelescope : public QFrame
 {
@@ -83,6 +88,7 @@ public:
     /*
      * Accesseurs
      */
+    Ui::SuiviTelescope *ui();
 
     /*
      * Modificateurs
@@ -91,6 +97,14 @@ public:
     /*
      * Methodes publiques
      */
+    /**
+     * @brief CalculAosSatSuivi Calcul des informations AOS/LOS pour le suivi d'un satellite
+     * @param date date
+     */
+    void CalculAosSatSuivi(const Date &date);
+
+    int getListItemChecked(const QListWidget * const liste) const;
+
 
 public slots:
 
@@ -145,6 +159,7 @@ private:
      */
     Ui::SuiviTelescope *_ui;
     AfficherResultats *_afficherResultats;
+    Date *_date;
     QString _ficSuivi;
 
 
@@ -152,11 +167,23 @@ private:
      * Methodes privees
      */
     /**
+     * @brief CalculAos Calcul des informations AOS/LOS
+     */
+    void CalculAos() const;
+
+    /**
+     * @brief CalculHauteurMax Calcul de la hauteur maximale d'un satellite dans le ciel
+     * @param jjm dates
+     * @param obs observateur
+     * @param satSuivi satellite suivi
+     * @return jour et hauteur maximale
+     */
+    QPair<double, double> CalculHauteurMax(const std::array<double, DEGRE_INTERPOLATION> &jjm, Observateur &obs, Satellite &satSuivi) const;
+
+    /**
      * @brief Initialisation Initialisation de la classe SuiviTelescope
      */
     void Initialisation();
-
-    int getListItemChecked(const QListWidget * const liste) const;
 
 
 private slots:

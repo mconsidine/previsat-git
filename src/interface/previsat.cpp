@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 novembre 2022
+ * >    29 janvier 2023
  *
  */
 
@@ -291,7 +291,7 @@ void PreviSat::DemarrageApplication()
     // Affichage des donnees numeriques dans la barre d'onglets
     _onglets->show(*_dateCourante);
 #if defined (Q_OS_WIN)
-    //_onglets->CalculAosSatSuivi();
+    _onglets->suiviTelescope()->CalculAosSatSuivi(*_dateCourante);
 #endif
 
     _ui->issLive->setChecked(settings.value("affichage/issLive", false).toBool());
@@ -2523,7 +2523,7 @@ void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
         // Affichage des donnees numeriques dans la barre d'onglets
         _onglets->show(*_dateCourante);
 #if defined (Q_OS_WIN)
-        //_onglets->CalculAosSatSuivi();
+        _onglets->suiviTelescope()->CalculAosSatSuivi(*_dateCourante);
 #endif
 
         _ui->issLive->setChecked(settings.value("affichage/issLive", false).toBool());
