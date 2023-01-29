@@ -30,13 +30,14 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    11 novembre 2022
+ * >    29 janvier 2023
  *
  */
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QSettings>
+#include "ui_suivitelescope.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "onglets.h"
@@ -281,11 +282,11 @@ void Onglets::show(const Date &date)
     AffichageOngletInformations();
 
 
-    //#if defined (Q_OS_WIN)
-    //    if (_ui->telescope->isVisible() && (getListItemChecked(_ui->liste4) > 0)) {
-    //        CalculAosSatSuivi();
-    //    }
-    //#endif
+#if defined (Q_OS_WIN)
+    if (_ui->telescope->isVisible() && (_suiviTelescope->getListItemChecked(_suiviTelescope->ui()->listeTelescope) > 0)) {
+        _suiviTelescope->CalculAosSatSuivi(date);
+    }
+#endif
 
 
     /* Retour */
