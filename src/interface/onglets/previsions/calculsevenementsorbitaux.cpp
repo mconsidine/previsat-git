@@ -117,6 +117,20 @@ CalculsEvenementsOrbitaux::~CalculsEvenementsOrbitaux()
 /*
  * Methodes publiques
  */
+void CalculsEvenementsOrbitaux::show(const Date &date)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->dateInitialeEvt->setDateTime(date.ToQDateTime(0));
+    _ui->dateFinaleEvt->setDateTime(_ui->dateInitialeEvt->dateTime().addDays(7));
+
+    /* Retour */
+    return;
+}
+
 /*
  * Affichage des satellites dans la liste
  */
@@ -311,8 +325,8 @@ void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
         // Prise en compte des eclipses de Lune
         conditions.calcEclipseLune = settings.value("affichage/eclipsesLune").toBool();
 
-        // Fichier d'elements orbitaux
-        conditions.fichier = Configuration::instance()->nomfic();
+        // Elements orbitaux
+        conditions.tabElem = Configuration::instance()->mapElementsOrbitaux();
 
         // Nom du fichier resultat
         const QString chaine = tr("evenements", "file name (without accent)") + "_%1_%2.txt";

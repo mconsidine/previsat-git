@@ -54,7 +54,6 @@ void TLETest::testAll()
 {
     testTLE();
     testLectureFichier();
-    testLectureFichier3le();
     testMiseAJourFichier();
     testVerifieFichier();
 }
@@ -107,22 +106,6 @@ void TLETest::testLectureFichier()
     const QMap<QString, ElementsOrbitaux> mapTLE2 = TLE::LectureFichier(fic2, QString(), 0);
 
     QCOMPARE(mapTLE2.keys().size(), 163);
-}
-
-void TLETest::testLectureFichier3le()
-{
-    qInfo(Q_FUNC_INFO);
-
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "iss.3le";
-    const QList<ElementsOrbitaux> listTLE = TLE::LectureFichier3le(fic);
-
-    QCOMPARE(listTLE.size(), 60);
 }
 
 void TLETest::testMiseAJourFichier()

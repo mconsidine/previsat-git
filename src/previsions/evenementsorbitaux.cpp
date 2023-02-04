@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 octobre 2022
+ * >    4 fevrier 2023
  *
  */
 
@@ -123,25 +123,15 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
     /* Declarations des variables locales */
     QElapsedTimer tps;
     QList<Satellite> sats;
-    QMap<QString, ElementsOrbitaux> tabElem;
 
     /* Initialisations */
     double tlemin = -DATE_INFINIE;
     double tlemax = DATE_INFINIE;
+    QMap<QString, ElementsOrbitaux> tabElem = _conditions.tabElem;
 
     tps.start();
     _donnees.ageElementsOrbitaux.clear();
     _resultats.clear();
-
-    // Creation de la liste d'elements orbitaux
-    const QFileInfo ff(_conditions.fichier);
-    if (ff.suffix() == "xml") {
-        tabElem = GPFormat::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
-                                           _conditions.listeSatellites);
-    } else {
-        tabElem = TLE::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
-                                      _conditions.listeSatellites);
-    }
 
     // Creation du tableau de satellites
     QMapIterator it1(tabElem);

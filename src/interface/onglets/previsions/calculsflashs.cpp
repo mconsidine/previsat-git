@@ -116,6 +116,20 @@ Ui::CalculsFlashs *CalculsFlashs::ui() const
 /*
  * Methodes publiques
  */
+void CalculsFlashs::show(const Date &date)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->dateInitialeMetOp->setDateTime(date.ToQDateTime(0));
+    _ui->dateFinaleMetOp->setDateTime(_ui->dateInitialeMetOp->dateTime().addDays(7));
+
+    /* Retour */
+    return;
+}
+
 /*
  * Affichage des lieux d'observation dans la liste deroulante
  */

@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    22 mai 2022
+ * >    4 fevrier 2023
  *
  */
 
@@ -41,9 +41,10 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
+#include "configuration/configuration.h"
 #include "interface/afficherresultats.h"
 #include "librairies/corps/corps.h"
-#include "librairies/corps/satellite/tle.h"
+#include "librairies/corps/satellite/gpformat.h"
 #include "previsions/transits.h"
 #include "transitstest.h"
 #include "test/src/testtools.h"
@@ -69,9 +70,13 @@ void TransitsTest::testAll()
     const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Date::Initialisation(dirLocalData);
 
-    conditions.jj1 = 7790.416666666667;
-    conditions.jj2 = 7821.416666666667;
-    conditions.offset = 0.08333333333333333;
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->_noradStationSpatiale = "025544";
+    Configuration::instance()->LectureDonneesSatellites();
+
+    conditions.jj1 = 8435.416666666667;
+    conditions.jj2 = 8465.416666666667;
+    conditions.offset = 0.04166666666666667;
     conditions.systeme = true;
     conditions.pas = 0.0006944444444444445;
     conditions.observateur = Observateur("Paris", -2.34864, 48.85339, 30.);
@@ -87,7 +92,7 @@ void TransitsTest::testAll()
     conditions.calcTransitLunaireJour = true;
     conditions.calcEphemSoleil = true;
     conditions.calcEphemLune = true;
-    conditions.listeSatellites << "25544";
+    conditions.listeSatellites << "025544" << "027386" << "027424" << "048274";
 
     testCalculTransits();
 }
@@ -97,10 +102,14 @@ void TransitsTest::testCalculTransits()
     qInfo(Q_FUNC_INFO);
 
     int n = 0;
-    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "iss.3le";
-    const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "transits_20210501_20210601.txt";
+    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual_transits.xml";
+    const QString fichierIss = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "iss.gp";
+    const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "transits_20230205_20230307.txt";
 
-    conditions.tabElem = TLE::LectureFichier3le(fichier);
+    conditions.tabElem = GPFormat::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
+                                             conditions.listeSatellites);
+    conditions.listeElemIss = GPFormat::LectureFichierListeGP(fichierIss, Configuration::instance()->donneesSatellites(),
+                                                              Configuration::instance()->lgRec());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions
@@ -112,6 +121,6 @@ void TransitsTest::testCalculTransits()
 
     // Comparaison avec les resultats de reference
     const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator()
-            + "transits_20210501_20210601.txt";
+            + "transits_20230205_20230307.txt";
     CompareFichiers(ficRes, ficRef);
 }

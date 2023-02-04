@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 novembre 2022
+ * >    4 fevrier 2023
  *
  */
 
@@ -224,24 +224,7 @@ QMap<QString, ElementsOrbitaux> TLE::LectureFichier(const QString &nomFichier, c
                             if ((idx >= 0) && (idx < donneesSat.size())) {
 
                                 tle._elements.donnees = Donnees(donneesSat.mid(idx, lgRec));
-
-                                // Correction eventuelle du nombre d'orbites a l'epoque
-                                const QString dateLancement = tle._elements.donnees.dateLancement();
-                                if (!dateLancement.isEmpty()) {
-
-                                    const QDateTime dateTimeLct = QDateTime::fromString(dateLancement, Qt::ISODate);
-                                    const Date dateLct(dateTimeLct.date().year(), dateTimeLct.date().month(), dateTimeLct.date().day(), 0.);
-
-                                    // Nombre theorique d'orbites a l'epoque
-                                    const int nbOrbTheo = static_cast<int> (tle._elements.no *
-                                                                            (tle._elements.epoque.jourJulienUTC() - dateLct.jourJulienUTC()));
-                                    int resteOrb = nbOrbTheo%100000;
-                                    resteOrb += (((tle._elements.nbOrbitesEpoque > 50000) && (resteOrb < 50000)) ? 100000 : 0);
-                                    resteOrb -= (((tle._elements.nbOrbitesEpoque < 50000) && (resteOrb > 50000)) ? 100000 : 0);
-                                    const int deltaNbOrb = nbOrbTheo - resteOrb;
-
-                                    tle._elements.nbOrbitesEpoque += deltaNbOrb;
-                                }
+                                tle._elements.nbOrbitesEpoque = GPFormat::CalculNombreOrbitesEpoque(tle._elements);
                             }
                         }
 
@@ -256,47 +239,6 @@ QMap<QString, ElementsOrbitaux> TLE::LectureFichier(const QString &nomFichier, c
 
     /* Retour */
     return mapElem;
-}
-
-/*
- * Lecture du fichier 3le
- */
-QList<ElementsOrbitaux> TLE::LectureFichier3le(const QString &nomFichier3le)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    QList<ElementsOrbitaux> tabtle;
-
-    /* Corps de la methode */
-    try {
-
-        QFile fichier(nomFichier3le);
-        if (fichier.exists() && (fichier.size() != 0)) {
-
-            if (fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
-
-                const QString contenuFichier = fichier.readAll();
-
-                QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
-                while (it.hasNext()) {
-
-                    const QString lig0 = it.next();
-                    const QString lig1 = it.next();
-                    const QString lig2 = it.next();
-
-                    const TLE tle(lig0, lig1, lig2);
-                    tabtle.append(tle._elements);
-                }
-            }
-            fichier.close();
-        }
-
-    } catch (PreviSatException &e) {
-    }
-
-    /* Retour */
-    return tabtle;
 }
 
 /*

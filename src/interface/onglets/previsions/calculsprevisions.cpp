@@ -120,6 +120,20 @@ Ui::CalculsPrevisions *CalculsPrevisions::ui() const
 /*
  * Methodes publiques
  */
+void CalculsPrevisions::show(const Date &date)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->dateInitialePrev->setDateTime(date.ToQDateTime(0));
+    _ui->dateFinalePrev->setDateTime(_ui->dateInitialePrev->dateTime().addDays(7));
+
+    /* Retour */
+    return;
+}
+
 /*
  * Affichage des lieux d'observation dans la liste deroulante
  */
@@ -386,8 +400,8 @@ void CalculsPrevisions::on_calculsPrev_clicked()
         // Prise en compte des eclipses de Lune
         conditions.calcEclipseLune = settings.value("affichage/eclipsesLune").toBool();
 
-        // Fichier d'elements orbitaux
-        conditions.fichier = Configuration::instance()->nomfic();
+        // Elements orbitaux
+        conditions.tabElem = Configuration::instance()->mapElementsOrbitaux();
 
         // Nom du fichier resultat
         const QString chaine = tr("previsions", "filename (without accent)") + "_%1_%2.txt";

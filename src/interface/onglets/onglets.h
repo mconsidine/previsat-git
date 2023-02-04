@@ -36,7 +36,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    11 novembre 2022
+ * >    4 fevrier 2023
  *
  */
 
@@ -181,6 +181,7 @@ private:
     bool _acalcAOS;
     bool _acalcDN;
     bool _info;
+    bool _prev;
 
 
     /*

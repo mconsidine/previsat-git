@@ -54,7 +54,6 @@ private:
 
     static void testTLE();
     static void testLectureFichier();
-    static void testLectureFichier3le();
     static void testMiseAJourFichier();
     static void testVerifieFichier();
 

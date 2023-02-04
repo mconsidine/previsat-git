@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    31 octobre 2022
+ * >    4 fevrier 2023
  *
  */
 
@@ -75,6 +75,7 @@ class Configuration
     friend class PrevisionTest;
     friend class SatelliteTest;
     friend class TelescopeTest;
+    friend class TransitsTest;
     friend class TLETest;
 #endif
 

@@ -30,11 +30,12 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 octobre 2022
+ * >    4 fevrier 2023
  *
  */
 
 #include <QElapsedTimer>
+#include "configuration/configuration.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/systemesolaire/lune.h"
 #include "librairies/corps/systemesolaire/soleil.h"
@@ -106,18 +107,54 @@ int Transits::CalculTransits(int &nombre)
     QElapsedTimer tps;
     Soleil soleil;
     Lune lune;
+    QList<Satellite> sats;
 
     /* Initialisations */
     tps.start();
     _donnees.ageElementsOrbitaux.clear();
     _resultats.clear();
+    double elemMin = -DATE_INFINIE;
+    double elemMax = DATE_INFINIE;
+    QMap<QString, ElementsOrbitaux> tabElem = _conditions.tabElem;
 
-    // TODO pour tous les satellites
-    const double periode = 1. / _conditions.tabElem.first().no - TEMPS1;
-    Satellite sat(_conditions.tabElem);
+    // Creation du tableau de satellites
+    QMapIterator it0(tabElem);
+    while (it0.hasNext()) {
+        it0.next();
 
-    _donnees.ageElementsOrbitaux.append(fabs(_conditions.jj1 - _conditions.tabElem.first().epoque.jourJulienUTC()));
-    _donnees.ageElementsOrbitaux.append(fabs(_conditions.jj1 - _conditions.tabElem.last().epoque.jourJulienUTC()));
+        if ((it0.key().toInt() == Configuration::instance()->noradStationSpatiale().toInt()) && !_conditions.listeElemIss.isEmpty()) {
+
+            sats.append(Satellite(_conditions.listeElemIss));
+
+            elemMin = _conditions.listeElemIss.first().epoque.jourJulienUTC();
+            elemMax = _conditions.listeElemIss.last().epoque.jourJulienUTC();
+
+        } else {
+
+            const ElementsOrbitaux elem = it0.value();
+            sats.append(Satellite(elem));
+
+            const double epok = elem.epoque.jourJulienUTC();
+            if (epok > elemMin) {
+                elemMin = epok;
+            }
+
+            if (epok < elemMax) {
+                elemMax = epok;
+            }
+        }
+    }
+
+    if ((tabElem.keys().count() > 1) || !_conditions.listeElemIss.isEmpty()) {
+
+        const double age1 = fabs(_conditions.jj1 - elemMin);
+        const double age2 = fabs(_conditions.jj1 - elemMax);
+        _donnees.ageElementsOrbitaux.append(qMin(age1, age2));
+        _donnees.ageElementsOrbitaux.append(qMax(age1, age2));
+
+    } else {
+        _donnees.ageElementsOrbitaux.append(fabs(_conditions.jj1 - elemMin));
+    }
 
     // Generation des ephemerides du Soleil et de la Lune
     const QMap<CorpsTransit, QList<EphemeridesTransits> > tabEphem = CalculEphemSoleilLune();
@@ -137,6 +174,7 @@ int Transits::CalculTransits(int &nombre)
     Corps corps;
     Observateur obsmax;
     ConditionEclipse condEcl;
+    Satellite sat;
     std::array<double, DEGRE_INTERPOLATION> jjm;
     QList<Date> dates;
     QPair<double, double> minmax;
@@ -144,268 +182,284 @@ int Transits::CalculTransits(int &nombre)
     QList<ResultatPrevisions> result;
     QList<QList<ResultatPrevisions> > resultatSat;
 
-    // Boucle sur le tableau d'ephemerides
-    QMapIterator it1(tabEphem);
+    // Boucle sur les satellites
+    QListIterator it1(sats);
     while (it1.hasNext()) {
-        it1.next();
 
-        const CorpsTransit typeCorps = it1.key();
+        resultatSat.clear();
+        sat = it1.next();
 
-        QListIterator it2(it1.value());
+        const double perigee = RAYON_TERRESTRE * pow(KE * NB_MIN_PAR_JOUR / (DEUX_PI * sat.elementsOrbitaux().no), DEUX_TIERS) *
+                (1. - sat.elementsOrbitaux().ecco);
+        const double periode = NB_JOUR_PAR_MIN * (floor(KE * pow(DEUX_PI * perigee, DEUX_TIERS)) - 16.);
+
+        // Boucle sur le tableau d'ephemerides
+        QMapIterator it2(tabEphem);
         while (it2.hasNext()) {
+            it2.next();
 
-            const EphemeridesTransits ephem = it2.next();
+            const CorpsTransit typeCorps = it2.key();
 
-            // Date
-            date = Date(ephem.jourJulienUTC, 0., false);
+            QListIterator it3(it2.value());
+            while (it3.hasNext()) {
 
-            // Lieu d'observation
-            const Observateur obs(ephem.positionObservateur, Vecteur3D(), ephem.rotHz, _conditions.observateur.aaer(), _conditions.observateur.aray());
+                const EphemeridesTransits ephem = it3.next();
 
-            corps.setPosition((typeCorps == CorpsTransit::CORPS_SOLEIL) ? ephem.positionSoleil : ephem.positionLune);
+                // Date
+                date = Date(ephem.jourJulienUTC, 0., false);
 
-            // Position de l'ISS
-            sat.CalculPosVit(date);
-            sat.CalculCoordHoriz(obs, false);
+                // Lieu d'observation
+                const Observateur obs(ephem.positionObservateur, Vecteur3D(), ephem.rotHz, _conditions.observateur.aaer(),
+                                      _conditions.observateur.aray());
 
-            if (sat.hauteur() >= _conditions.hauteur) {
+                corps.setPosition((typeCorps == CorpsTransit::CORPS_SOLEIL) ? ephem.positionSoleil : ephem.positionLune);
 
-                jj0 = date.jourJulienUTC() - PAS0;
-                jj2 = jj0 + TEMPS1;
+                // Position du satellite
+                sat.CalculPosVit(date);
+                sat.CalculCoordHoriz(obs, false);
 
-                ang = 0.;
-                ang0 = PI;
+                if (sat.hauteur() >= _conditions.hauteur) {
 
-                resultatSat.clear();
+                    jj0 = date.jourJulienUTC() - PAS0;
+                    jj2 = jj0 + TEMPS1;
 
-                do {
-                    const Date date0(jj0, 0., false);
+                    ang = 0.;
+                    ang0 = PI;
 
-                    _conditions.observateur.CalculPosVit(date0);
+                    resultatSat.clear();
 
-                    // Position de l'ISS
-                    sat.CalculPosVit(date0);
-                    sat.CalculCoordHoriz(_conditions.observateur, false);
+                    do {
+                        const Date date0(jj0, 0., false);
 
-                    // Position du corps (Soleil ou Lune)
-                    if (typeCorps == CorpsTransit::CORPS_SOLEIL) {
-                        soleil.CalculPosition(date0);
-                        corps.setPosition(soleil.position());
-                    }
+                        _conditions.observateur.CalculPosVit(date0);
 
-                    if (typeCorps == CorpsTransit::CORPS_LUNE) {
-                        lune.CalculPosition(date0);
-                        corps.setPosition(lune.position());
-                    }
-
-                    corps.CalculCoordHoriz(_conditions.observateur, false);
-
-                    // Calcul de l'angle ISS - observateur -  Corps
-                    ang = corps.dist().Angle(sat.dist());
-                    if (ang < ang0) {
-                        ang0 = ang;
-                    }
-
-                    jj0 += PAS1;
-                } while ((jj0 <= jj2) && (ang < (ang0 + EPSDBL100)));
-
-                // Il y a une conjonction ou un transit : on determine l'angle de separation minimum
-                if ((jj0 <= jj2 - PAS1) && (ang0 < _conditions.seuilConjonction + DEG2RAD) && (sat.hauteur() >= 0.)) {
-
-                    // Recherche de l'instant precis de l'angle minimum par interpolation
-                    jj0 -= 2. * PAS1;
-
-                    jjm[0] = jj0 - PAS1;
-                    jjm[1] = jj0;
-                    jjm[2] = jj0 + PAS1;
-
-                    minmax = CalculAngleMin(jjm, typeCorps, sat);
-
-                    it = 0;
-                    pasInt = PAS_INT0;
-                    while ((fabs(ang - minmax.second) > 1.e-5) && (it < 10)) {
-
-                        ang = minmax.second;
-                        jjm[0] = minmax.first - pasInt;
-                        jjm[1] = minmax.first;
-                        jjm[2] = minmax.first + pasInt;
-
-                        minmax = CalculAngleMin(jjm, typeCorps, sat);
-                        pasInt *= 0.5;
-                        it++;
-                    }
-
-                    date2 = Date(minmax.first, 0., false);
-
-                    _conditions.observateur.CalculPosVit(date2);
-
-                    // Position de l'ISS
-                    sat.CalculPosVit(date2);
-                    sat.CalculCoordHoriz(_conditions.observateur, false);
-
-                    if ((sat.hauteur() >= _conditions.hauteur) && (minmax.second <= _conditions.seuilConjonction)) {
-
-                        dates.clear();
-                        for(int i=0; i<5; i++) {
-                            dates.append(Date());
-                        }
+                        // Position du satellite
+                        sat.CalculPosVit(date0);
+                        sat.CalculCoordHoriz(_conditions.observateur, false);
 
                         // Position du corps (Soleil ou Lune)
-                        soleil.CalculPosition(date2);
-                        soleil.CalculCoordHoriz(_conditions.observateur, false);
-
                         if (typeCorps == CorpsTransit::CORPS_SOLEIL) {
+                            soleil.CalculPosition(date0);
                             corps.setPosition(soleil.position());
-                            rayon = RAYON_SOLAIRE;
                         }
 
                         if (typeCorps == CorpsTransit::CORPS_LUNE) {
-                            lune.CalculPosition(date2);
+                            lune.CalculPosition(date0);
                             corps.setPosition(lune.position());
-                            rayon = RAYON_LUNAIRE;
                         }
 
                         corps.CalculCoordHoriz(_conditions.observateur, false);
 
-                        // Angle de separation
+                        // Calcul de l'angle satellite - observateur - Corps
                         ang = corps.dist().Angle(sat.dist());
+                        if (ang < ang0) {
+                            ang0 = ang;
+                        }
 
-                        // Rayon apparent du corps
-                        const double rayonApparent = asin(rayon / corps.distance());
+                        jj0 += PAS1;
+                    } while ((jj0 <= jj2) && (ang < (ang0 + EPSDBL100)));
 
-                        const bool itr = (ang < rayonApparent);
-                        const bool iconj = (ang <= _conditions.seuilConjonction);
-                        const bool ilu = (typeCorps == CorpsTransit::CORPS_LUNE) && (itr || iconj) &&
-                                (_conditions.calcTransitLunaireJour || (soleil.hauteur() < 0.));
+                    // Il y a une conjonction ou un transit : on determine l'angle de separation minimum
+                    if ((jj0 <= jj2 - PAS1) && (ang0 < _conditions.seuilConjonction + DEG2RAD) && (sat.hauteur() >= 0.)) {
 
-                        condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
+                        // Recherche de l'instant precis de l'angle minimum par interpolation
+                        jj0 -= 2. * PAS1;
 
-                        if ((itr && (typeCorps == CorpsTransit::CORPS_SOLEIL)) || ilu) {
+                        jjm[0] = jj0 - PAS1;
+                        jjm[1] = jj0;
+                        jjm[2] = jj0 + PAS1;
 
-                            // Calcul des dates extremes de la conjonction ou du transit
-                            dates[2] = date2;
-                            dates = CalculElements(minmax.first, typeCorps, itr, sat);
+                        minmax = CalculAngleMin(jjm, typeCorps, sat);
 
-                            // Recalcul de la position pour chacune des dates
-                            result.clear();
-                            for(int j=0; j<5; j++) {
+                        it = 0;
+                        pasInt = PAS_INT0;
+                        while ((fabs(ang - minmax.second) > 1.e-5) && (it < 10)) {
 
-                                res.obsmax = Observateur();
+                            ang = minmax.second;
+                            jjm[0] = minmax.first - pasInt;
+                            jjm[1] = minmax.first;
+                            jjm[2] = minmax.first + pasInt;
 
-                                _conditions.observateur.CalculPosVit(dates[j]);
+                            minmax = CalculAngleMin(jjm, typeCorps, sat);
+                            pasInt *= 0.5;
+                            it++;
+                        }
 
-                                // Elements orbitaux
-                                res.elements = sat.elementsOrbitaux();
+                        date2 = Date(minmax.first, 0., false);
 
-                                // Position de l'ISS
-                                sat.CalculPosVit(dates[j]);
-                                sat.CalculCoordHoriz(_conditions.observateur);
-                                sat.CalculCoordEquat(_conditions.observateur);
+                        _conditions.observateur.CalculPosVit(date2);
 
-                                // Altitude et distance du satellite
-                                sat.CalculLatitude(sat.position());
-                                res.altitude = sat.CalculAltitude(sat.position());
-                                res.distance = sat.distance();
+                        // Position du satellite
+                        sat.CalculPosVit(date2);
+                        sat.CalculCoordHoriz(_conditions.observateur, false);
 
-                                // Posiition du Soleil
-                                soleil.CalculPosition(dates[j]);
-                                soleil.CalculCoordHoriz(_conditions.observateur);
+                        if ((sat.hauteur() >= _conditions.hauteur) && (minmax.second <= _conditions.seuilConjonction)) {
 
-                                // Position de la Lune
-                                lune.CalculPosition(dates[j]);
-                                condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
-
-                                // Date calendaire
-                                res.date = Date(dates[j].jourJulien() + EPS_DATES, 0.);
-                                if (j == 2) {
-                                    date3 = res.date;
-                                }
-
-                                // Coordonnees topocentriques du satellite
-                                res.azimut = sat.azimut();
-                                res.hauteur = sat.hauteur();
-
-                                // Coordonnees equatoriales du satellite
-                                res.ascensionDroite = sat.ascensionDroite();
-                                res.declinaison = sat.declinaison();
-                                res.constellation = sat.constellation();
-
-                                // Distance angulaire
-                                corps.setPosition((typeCorps == CorpsTransit::CORPS_SOLEIL) ? soleil.position() : lune.position());
-                                corps.CalculCoordHoriz(_conditions.observateur);
-                                res.angle = corps.dist().Angle(sat.dist());
-
-                                // Coordonnees topocentriques du Soleil
-                                res.azimutSoleil = soleil.azimut();
-                                res.hauteurSoleil = soleil.hauteur();
-
-                                // Informations sur le transit ou la conjonction
-                                res.transit = itr;
-                                res.typeCorps = typeCorps;
-                                res.eclipse = condEcl.eclipseTotale();
-                                res.penombre = (condEcl.eclipseAnnulaire() || condEcl.eclipsePartielle());
-                                if (j == 2) {
-                                    res.duree = fabs(dates[3].jourJulienUTC() - dates[1].jourJulienUTC()) * NB_SEC_PAR_JOUR;
-                                } else {
-                                    res.duree = 0.;
-                                }
-
-                                // Recherche du maximum
-                                const Vecteur3D direction = corps.dist() - sat.dist();
-                                obsmax = Observateur::CalculIntersectionEllipsoide(dates[j], sat.position(), direction);
-
-                                if (!obsmax.nomlieu().isEmpty()) {
-
-                                    obsmax.CalculPosVit(dates[j]);
-                                    sat.CalculCoordHoriz(obsmax, false);
-
-                                    if (typeCorps == CorpsTransit::CORPS_SOLEIL) {
-                                        soleil.CalculPosition(dates[j]);
-                                        corps.setPosition(soleil.position());
-                                        rayon = RAYON_SOLAIRE;
-                                    }
-
-                                    if (typeCorps == CorpsTransit::CORPS_LUNE) {
-                                        lune.CalculPosition(dates[j]);
-                                        corps.setPosition(lune.position());
-                                        rayon = RAYON_LUNAIRE;
-                                    }
-
-                                    corps.CalculCoordHoriz(obsmax, false);
-
-                                    res.obsmax = obsmax;
-                                    res.distanceObs = _conditions.observateur.CalculDistance(obsmax);
-                                    res.cap = _conditions.observateur.CalculCap(obsmax).first;
-                                }
-                                result.append(res);
+                            dates.clear();
+                            for(int i=0; i<5; i++) {
+                                dates.append(Date());
                             }
 
-                            if (!result.isEmpty()) {
-                                resultatSat.append(result);
+                            // Position du corps (Soleil ou Lune)
+                            soleil.CalculPosition(date2);
+                            soleil.CalculCoordHoriz(_conditions.observateur, false);
+
+                            if (typeCorps == CorpsTransit::CORPS_SOLEIL) {
+                                corps.setPosition(soleil.position());
+                                rayon = RAYON_SOLAIRE;
                             }
+
+                            if (typeCorps == CorpsTransit::CORPS_LUNE) {
+                                lune.CalculPosition(date2);
+                                corps.setPosition(lune.position());
+                                rayon = RAYON_LUNAIRE;
+                            }
+
+                            corps.CalculCoordHoriz(_conditions.observateur, false);
+
+                            // Angle de separation
+                            ang = corps.dist().Angle(sat.dist());
+
+                            // Rayon apparent du corps
+                            const double rayonApparent = asin(rayon / corps.distance());
+
+                            const bool itr = (ang < rayonApparent);
+                            const bool iconj = (ang <= _conditions.seuilConjonction);
+                            const bool ilu = (typeCorps == CorpsTransit::CORPS_LUNE) && (itr || iconj) &&
+                                    (_conditions.calcTransitLunaireJour || (soleil.hauteur() < 0.));
+
+                            condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
+
+                            if ((itr && (typeCorps == CorpsTransit::CORPS_SOLEIL)) || ilu) {
+
+                                // Calcul des dates extremes de la conjonction ou du transit
+                                dates[2] = date2;
+                                dates = CalculElements(minmax.first, typeCorps, itr, sat);
+
+                                // Recalcul de la position pour chacune des dates
+                                result.clear();
+                                for(int j=0; j<5; j++) {
+
+                                    res.obsmax = Observateur();
+
+                                    _conditions.observateur.CalculPosVit(dates[j]);
+
+                                    // Elements orbitaux
+                                    res.elements = sat.elementsOrbitaux();
+
+                                    // Nom du satellite
+                                    res.nom = sat.elementsOrbitaux().nom;
+
+                                    // Position du satellite
+                                    sat.CalculPosVit(dates[j]);
+                                    sat.CalculCoordHoriz(_conditions.observateur);
+                                    sat.CalculCoordEquat(_conditions.observateur);
+
+                                    // Altitude et distance du satellite
+                                    sat.CalculLatitude(sat.position());
+                                    res.altitude = sat.CalculAltitude(sat.position());
+                                    res.distance = sat.distance();
+
+                                    // Posiition du Soleil
+                                    soleil.CalculPosition(dates[j]);
+                                    soleil.CalculCoordHoriz(_conditions.observateur);
+
+                                    // Position de la Lune
+                                    lune.CalculPosition(dates[j]);
+                                    condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
+
+                                    // Date calendaire
+                                    res.date = Date(dates[j].jourJulien() + EPS_DATES, 0.);
+                                    if (j == 2) {
+                                        date3 = res.date;
+                                    }
+
+                                    // Coordonnees topocentriques du satellite
+                                    res.azimut = sat.azimut();
+                                    res.hauteur = sat.hauteur();
+
+                                    // Coordonnees equatoriales du satellite
+                                    res.ascensionDroite = sat.ascensionDroite();
+                                    res.declinaison = sat.declinaison();
+                                    res.constellation = sat.constellation();
+
+                                    // Distance angulaire
+                                    corps.setPosition((typeCorps == CorpsTransit::CORPS_SOLEIL) ? soleil.position() : lune.position());
+                                    corps.CalculCoordHoriz(_conditions.observateur);
+                                    res.angle = corps.dist().Angle(sat.dist());
+
+                                    // Coordonnees topocentriques du Soleil
+                                    res.azimutSoleil = soleil.azimut();
+                                    res.hauteurSoleil = soleil.hauteur();
+
+                                    // Informations sur le transit ou la conjonction
+                                    res.transit = itr;
+                                    res.typeCorps = typeCorps;
+                                    res.eclipse = condEcl.eclipseTotale();
+                                    res.penombre = (condEcl.eclipseAnnulaire() || condEcl.eclipsePartielle());
+                                    if (j == 2) {
+                                        res.duree = fabs(dates[3].jourJulienUTC() - dates[1].jourJulienUTC()) * NB_SEC_PAR_JOUR;
+                                    } else {
+                                        res.duree = 0.;
+                                    }
+
+                                    // Recherche du maximum
+                                    const Vecteur3D direction = corps.dist() - sat.dist();
+                                    obsmax = Observateur::CalculIntersectionEllipsoide(dates[j], sat.position(), direction);
+
+                                    if (!obsmax.nomlieu().isEmpty()) {
+
+                                        obsmax.CalculPosVit(dates[j]);
+                                        sat.CalculCoordHoriz(obsmax, false);
+
+                                        if (typeCorps == CorpsTransit::CORPS_SOLEIL) {
+                                            soleil.CalculPosition(dates[j]);
+                                            corps.setPosition(soleil.position());
+                                            rayon = RAYON_SOLAIRE;
+                                        }
+
+                                        if (typeCorps == CorpsTransit::CORPS_LUNE) {
+                                            lune.CalculPosition(dates[j]);
+                                            corps.setPosition(lune.position());
+                                            rayon = RAYON_LUNAIRE;
+                                        }
+
+                                        corps.CalculCoordHoriz(obsmax, false);
+
+                                        res.obsmax = obsmax;
+                                        res.distanceObs = _conditions.observateur.CalculDistance(obsmax);
+                                        res.cap = _conditions.observateur.CalculCap(obsmax).first;
+                                    }
+                                    result.append(res);
+                                }
+
+                                if (!result.isEmpty()) {
+                                    resultatSat.append(result);
+                                }
+                            }
+                        }
+
+                        date = Date(jj2, 0., false);
+                    } else {
+                        if (sat.hauteur() < _conditions.hauteur) {
+                            date = Date(date.jourJulienUTC() + periode, 0., false);
+                        }
+                    }
+                    date = Date(date.jourJulienUTC() + PAS0, 0., false);
+
+                    // Recherche de la nouvelle date dans le tableau d'ephemerides
+                    atrouve = false;
+                    while (it3.hasNext() && !atrouve) {
+                        const double jj = it3.next().jourJulienUTC;
+                        if (jj >= date.jourJulienUTC()) {
+                            atrouve = true;
+                            it3.previous();
                         }
                     }
 
-                    date = Date(jj2, 0., false);
-                } else {
-                    if (sat.hauteur() < _conditions.hauteur) {
-                        date = Date(date.jourJulienUTC() + periode, 0., false);
+                    if (!resultatSat.isEmpty()) {
+                        _resultats.insert(date3.ToShortDateAMJ(DateFormat::FORMAT_LONG, DateSysteme::SYSTEME_24H), resultatSat);
                     }
-                }
-                date = Date(date.jourJulienUTC() + PAS0, 0., false);
-
-                // Recherche de la nouvelle date dans le tableau d'ephemerides
-                atrouve = false;
-                while (it2.hasNext() && !atrouve) {
-                    const double jj = it2.next().jourJulienUTC;
-                    if (jj >= date.jourJulienUTC()) {
-                        atrouve = true;
-                        it2.previous();
-                    }
-                }
-
-                if (!resultatSat.isEmpty()) {
-                    _resultats.insert(date3.ToShortDateAMJ(DateFormat::FORMAT_LONG, DateSysteme::SYSTEME_24H), resultatSat);
                 }
             }
         }

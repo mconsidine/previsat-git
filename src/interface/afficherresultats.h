@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 octobre 2022
+ * >    4 fevrier 2023
  *
  */
 
@@ -145,7 +145,7 @@ private:
      * Methodes privees
      */
     /**
-     * @brief AffichageDetailTransit Affichage du détail d'un transit ISS
+     * @brief AffichageDetailTransit Affichage du détail d'un transit
      * @param observateur observateur
      * @param lune lune
      * @param list informations sur le transit
@@ -213,14 +213,14 @@ private:
     QStringList ElementsDetailsPrevisions(const ResultatPrevisions &res) const;
 
     /**
-     * @brief ElementsTransits Elements des transits ISS a afficher dans la fenetre de resultats
+     * @brief ElementsTransits Elements des transits a afficher dans la fenetre de resultats
      * @param liste liste des transits
      * @return elements des transits
      */
     QStringList ElementsTransits(const QList<ResultatPrevisions> &liste) const;
 
     /**
-     * @brief ElementsDetailsTransits Elements des transits ISS pour la sauvegarde dans un fichier texte ou pour afficher des details
+     * @brief ElementsDetailsTransits Elements des transits pour la sauvegarde dans un fichier texte ou pour afficher des details
      * @param res transits
      * @return detail des transits
      */
