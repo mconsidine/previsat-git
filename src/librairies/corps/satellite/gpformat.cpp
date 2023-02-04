@@ -138,21 +138,7 @@ QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichi
                                 elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
 
                                 // Correction eventuelle du nombre d'orbites a l'epoque
-                                const QString dateLancement = elem.donnees.dateLancement();
-                                if (!dateLancement.isEmpty()) {
-
-                                    const QDateTime dateTimeLct = QDateTime::fromString(dateLancement, Qt::ISODate);
-                                    const Date dateLct(dateTimeLct.date().year(), dateTimeLct.date().month(), dateTimeLct.date().day(), 0.);
-
-                                    // Nombre theorique d'orbites a l'epoque
-                                    const int nbOrbTheo = static_cast<int> (elem.no * (elem.epoque.jourJulienUTC() - dateLct.jourJulienUTC()));
-                                    int resteOrb = nbOrbTheo%100000;
-                                    resteOrb += (((elem.nbOrbitesEpoque > 50000) && (resteOrb < 50000)) ? 100000 : 0);
-                                    resteOrb -= (((elem.nbOrbitesEpoque < 50000) && (resteOrb > 50000)) ? 100000 : 0);
-                                    const int deltaNbOrb = nbOrbTheo - resteOrb;
-
-                                    elem.nbOrbitesEpoque += deltaNbOrb;
-                                }
+                                elem.nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
                             }
                         }
 
@@ -177,6 +163,89 @@ QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichi
 
     /* Retour */
     return mapElem;
+}
+
+/*
+ * Lecture d'un fichier GP contenant une liste d'elements orbitaux pour un meme satellite
+ */
+QList<ElementsOrbitaux> GPFormat::LectureFichierListeGP(const QString &nomFichier, const QString &donneesSat, const int lgRec)
+{
+    /* Declarations des variables locales */
+    QString norad;
+    Donnees donnees;
+
+    /* Initialisations */
+    int nbOrbitesEpoque = 0;
+    QList<ElementsOrbitaux> listeElem;
+
+    /* Corps de la methode */
+    QFile fi(nomFichier);
+    if (!fi.exists() || (fi.size() == 0)) {
+
+        const QFileInfo ff(fi.fileName());
+#if (BUILD_TEST == false)
+        qWarning() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
+#endif
+        throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
+    }
+
+    if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+        QXmlStreamReader gp(&fi);
+        gp.readNextStartElement();
+
+        if (gp.name().toString() == "ndm") {
+
+            ElementsOrbitaux elem;
+
+            while (gp.readNextStartElement()) {
+
+                if (gp.name().toString() == "omm") {
+
+                    elem.norad.clear();
+
+                    while (gp.readNextStartElement()) {
+
+                        if (gp.name().toString() == "body") {
+
+                            LectureSectionBody(gp, elem);
+
+                        } else {
+                            gp.skipCurrentElement();
+                        }
+                    }
+                } else {
+                    gp.skipCurrentElement();
+                }
+
+                if (norad.isEmpty()) {
+
+                    norad = elem.norad;
+
+                    // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
+                    const int idx = lgRec * elem.norad.toInt();
+                    if ((idx >= 0) && (idx < donneesSat.size())) {
+
+                        donnees = Donnees(donneesSat.mid(idx, lgRec));
+                        elem.donnees = donnees;
+
+                        // Correction eventuelle du nombre d'orbites a l'epoque
+                        nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
+                    }
+                }
+
+                elem.donnees = donnees;
+                elem.nbOrbitesEpoque = nbOrbitesEpoque;
+
+                listeElem.append(elem);
+            }
+        }
+
+        fi.close();
+    }
+
+    /* Retour */
+    return listeElem;
 }
 
 /*
@@ -206,7 +275,7 @@ QString GPFormat::RecupereNomsat(const QString &lig0)
         nomsat = "ISS";
     }
 
-    if ((nomsat.contains("iridium", Qt::CaseInsensitive)) && (nomsat.contains("["))) {
+    if ((nomsat.contains("iridium", Qt::CaseInsensitive) || nomsat.contains("iss", Qt::CaseInsensitive)) && (nomsat.contains("["))) {
         nomsat = nomsat.mid(0, nomsat.indexOf('[')).trimmed();
     }
 
@@ -240,6 +309,37 @@ const ElementsOrbitaux &GPFormat::elements() const
 /*
  * Methodes privees
  */
+/*
+ * Calcul du nombre d'orbites a l'epoque (cas depassant 100000 orbites)
+ */
+int GPFormat::CalculNombreOrbitesEpoque(const ElementsOrbitaux &elements)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    int nbOrbitesEpoque = elements.nbOrbitesEpoque;
+    const QString dateLancement = elements.donnees.dateLancement();
+
+    /* Corps de la methode */
+    if (!dateLancement.isEmpty()) {
+
+        const QDateTime dateTimeLct = QDateTime::fromString(dateLancement, Qt::ISODate);
+        const Date dateLct(dateTimeLct.date().year(), dateTimeLct.date().month(), dateTimeLct.date().day(), 0.);
+
+        // Nombre theorique d'orbites a l'epoque
+        const int nbOrbTheo = static_cast<int> (elements.no * (elements.epoque.jourJulienUTC() - dateLct.jourJulienUTC()));
+        int resteOrb = nbOrbTheo%100000;
+        resteOrb += (((elements.nbOrbitesEpoque > 50000) && (resteOrb < 50000)) ? 100000 : 0);
+        resteOrb -= (((elements.nbOrbitesEpoque < 50000) && (resteOrb > 50000)) ? 100000 : 0);
+        const int deltaNbOrb = nbOrbTheo - resteOrb;
+
+        nbOrbitesEpoque = elements.nbOrbitesEpoque + deltaNbOrb;
+    }
+
+    /* Retour */
+    return nbOrbitesEpoque;
+}
+
 /*
  * Lecture de la section Body du fichier d'elements orbitaux
  */

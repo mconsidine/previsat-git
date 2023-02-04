@@ -52,7 +52,7 @@
 #include "configuration/configuration.h"
 #include "interface/afficherresultats.h"
 #include "interface/listwidgetitem.h"
-#include "librairies/corps/satellite/tle.h"
+#include "librairies/corps/satellite/gpformat.h"
 #include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/systeme/telechargement.h"
@@ -192,6 +192,22 @@ void CalculsTransits::changeEvent(QEvent *evt)
     }
 }
 
+void CalculsTransits::show(const Date &date)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->dateInitialeTransit->setDateTime(date.ToQDateTime(0));
+    _ui->dateFinaleTransit->setDateTime(_ui->dateInitialeTransit->dateTime().addDays(7));
+
+    CalculAgeElementsOrbitaux();
+
+    /* Retour */
+    return;
+}
+
 
 /*************
  * PROTECTED *
@@ -209,9 +225,113 @@ void CalculsTransits::changeEvent(QEvent *evt)
 /*
  * Methodes privees
  */
-void CalculsTransits::CalculAgeElementsOrbitauxTransit()
+/*
+ * Calcul de l'age des elements orbitaux
+ */
+void CalculsTransits::CalculAgeElementsOrbitaux()
 {
+    /* Declarations des variables locales */
 
+    /* Initialisations */
+    QPalette pal = _paletteBouton;
+    _ui->majElementsOrbitauxIss->setToolTip("");
+    double elemMax = DATE_INFINIE;
+
+    const double ageElements = _ui->ageMaxElementsOrbitauxTransit->value();
+
+    // Ecart heure locale - UTC
+    const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialeTransit->dateTime());
+    const double offset2 = Date::CalculOffsetUTC(_ui->dateFinaleTransit->dateTime());
+
+    // Date et heure initiales
+    const Date date1(_ui->dateInitialeTransit->date().year(), _ui->dateInitialeTransit->date().month(), _ui->dateInitialeTransit->date().day(),
+                     _ui->dateInitialeTransit->time().hour(), _ui->dateInitialeTransit->time().minute(),
+                     _ui->dateInitialeTransit->time().second(), 0.);
+
+    // Jour julien initial
+    const double jj1 = date1.jourJulien() - offset1;
+
+    // Date et heure finales
+    const Date date2(_ui->dateFinaleTransit->date().year(), _ui->dateFinaleTransit->date().month(), _ui->dateFinaleTransit->date().day(),
+                     _ui->dateFinaleTransit->time().hour(), _ui->dateFinaleTransit->time().minute(), _ui->dateFinaleTransit->time().second(), 0.);
+
+    // Jour julien final
+    const double jj2 = date2.jourJulien() - offset2;
+
+    /* Corps de la methode */
+    // Determination de l'age maximal des elements orbitaux
+    QMapIterator it(Configuration::instance()->mapElementsOrbitaux());
+    while (it.hasNext()) {
+        it.next();
+
+        const ElementsOrbitaux elem = it.value();
+
+        const double epok = elem.epoque.jourJulienUTC();
+        if (epok < elemMax) {
+            elemMax = epok;
+        }
+    }
+
+    const double age = fabs(jj1 - elemMax);
+
+    QPalette palette;
+    QBrush couleur;
+    if (age <= 5.) {
+        couleur.setColor(QColor("forestgreen"));
+    } else if (age <= 10.) {
+        couleur.setColor(Qt::darkYellow);
+    } else if (age <= 15.) {
+        couleur.setColor(QColor("orange"));
+    } else {
+        couleur.setColor(Qt::red);
+    }
+
+    couleur.setStyle(Qt::SolidPattern);
+    palette.setBrush(QPalette::WindowText, couleur);
+    _ui->ageElementsOrbitauxTransit->setPalette(palette);
+    _ui->ageElementsOrbitauxTransit->setText(QString("%1 %2").arg(age, 0, 'f', 2).arg(tr("jours")));
+
+    // Lecture du fichier d'elements orbitaux de l'ISS
+    const QString fichier = Configuration::instance()->dirElem() + QDir::separator() + "iss.gp";
+    _listeElemIss = GPFormat::LectureFichierListeGP(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+
+    if (!_listeElemIss.isEmpty()) {
+
+        // Dates des premier et dernier elements orbitaux
+        const double datePremierElem = _listeElemIss.first().epoque.jourJulienUTC();
+        const double dateDernierElem = _listeElemIss.last().epoque.jourJulienUTC();
+
+        double age1 = 0.;
+        if (jj1 < datePremierElem) {
+            age1 = datePremierElem - jj1;
+        }
+
+        if (jj1 > dateDernierElem) {
+            age1 = jj1 - dateDernierElem;
+        }
+
+        double age2 = 0.;
+        if (jj2 < datePremierElem) {
+            age2 = datePremierElem - jj2;
+        }
+
+        if (jj2 > dateDernierElem) {
+            age2 = jj2 - dateDernierElem;
+        }
+
+        if ((age1 > (ageElements + 0.05)) || (age2 > (ageElements + 0.05))) {
+
+            // Affichage du contour du bouton en rouge
+            pal.setColor(QPalette::Button, QColor(Qt::red));
+            _ui->majElementsOrbitauxIss->setToolTip(tr("Les éléments orbitaux de l'ISS sont vieux, il est conseillé de les mettre à jour"));
+        }
+
+        _ui->majElementsOrbitauxIss->setPalette(pal);
+        _ui->majElementsOrbitauxIss->update();
+    }
+
+    /* Retour */
+    return;
 }
 
 /*
@@ -236,6 +356,9 @@ void CalculsTransits::Initialisation()
     if (effacerFiltre) {
         connect(effacerFiltre, &QAction::triggered, this, &CalculsTransits::on_filtreSatellites_returnPressed);
     }
+
+    _paletteBouton = _ui->majElementsOrbitauxIss->palette();
+    _ui->majElementsOrbitauxIss->setAutoFillBackground(true);
 
     _aucun = new QAction(tr("Aucun"), this);
     connect(_aucun, &QAction::triggered, this, &CalculsTransits::Aucun);
@@ -284,6 +407,7 @@ void CalculsTransits::on_calculsTransit_clicked()
     /* Initialisations */
     vecSat.append(0);
     conditions.listeSatellites.clear();
+    conditions.listeElemIss.clear();
 
     /* Corps de la methode */
     try {
@@ -348,132 +472,11 @@ void CalculsTransits::on_calculsTransit_clicked()
         // Prise en compte des eclipses de Lune
         conditions.calcEclipseLune = settings.value("affichage/eclipsesLune").toBool();
 
-        // Age maximal des elements orbitaux
-/*        const double ageElements = _ui->ageMaxElementsOrbitauxTransit->value();
-
-        // Selection du fichier d'elements orbitaux
-        const QFileInfo fi1(Configuration::instance()->dirElem() + QDir::separator() + "visual.txt");
-        const QFileInfo fi2(Configuration::instance()->dirElem() + QDir::separator() + "iss.3le");
-        const QStringList listeSatellites(QStringList () << Configuration::instance()->noradStationSpatiale());
-        QList<ElementsOrbitaux> tabElem;
-
-        if (fi2.exists() && (fi2.size() != 0)) {
-
-            // Verification du fichier
-            if (TLE::VerifieFichier(fi2.absoluteFilePath()) == 0) {
-
-                const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
-                                       "Le fichier %1 n'est pas un TLE");
-                throw PreviSatException(msg.arg(fi2.absoluteFilePath()), WARNING);
-            }
-
-            // Lecture du fichier iss.3le
-            tabElem = TLE::LectureFichier3le(fi2.absoluteFilePath());
-
-            // Verification des dates
-            const double datePremierTLE = tabElem.first().epoque().jourJulienUTC();
-            const double dateDernierTLE = tabElem.last().epoque().jourJulienUTC();
-
-            double age1 = 0.;
-            if (conditions.jj1 < datePremierTLE) {
-                age1 = datePremierTLE - conditions.jj1;
-            }
-
-            if (conditions.jj1 > dateDernierTLE) {
-                age1 = conditions.jj1 - dateDernierTLE;
-            }
-
-            double age2 = 0.;
-            if (conditions.jj2 < datePremierTLE) {
-                age2 = datePremierTLE - conditions.jj2;
-            }
-
-            if (conditions.jj2 > dateDernierTLE) {
-                age2 = conditions.jj2 - dateDernierTLE;
-            }
-
-            if ((fabs(age1) > EPSDBL100) && (fabs(age2) > EPSDBL100)) {
-
-                if (fi1.exists() && (fi1.size() != 0)) {
-
-                    // Verification du fichier
-                    if (TLE::VerifieFichier(fi1.absoluteFilePath()) == 0) {
-
-                        const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
-                                               "Le fichier %1 n'est pas un TLE");
-                        throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
-                    }
-
-                    // Utilisation des elements orbitaux du fichier visual.txt
-                    const QList<TLE> tle(QList<TLE> () << TLE::LectureFichier(fi1.absoluteFilePath(), Configuration::instance()->donneesSatellites(),
-                                                                              Configuration::instance()->lgRec(), listeSatellites).first());
-
-                    if (tle.isEmpty()) {
-
-                        const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
-                                               "Le fichier %1 ne contient pas le TLE de l'ISS");
-                        throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
-
-                    } else {
-
-                        // Age du TLE de l'ISS contenu dans visual.txt
-                        const double ageIss1 = fabs(conditions.jj1 - tle.first().epoque().jourJulienUTC());
-                        const double ageIss2 = fabs(conditions.jj2 - tle.first().epoque().jourJulienUTC());
-
-                        if (((age1 > 0.) || (age2 > 0.)) && (ageIss1 < age1) && (ageIss2 < age2)) {
-
-                            // Utilisation du TLE du fichier visual.txt
-                            age1 = qMin(ageIss1, ageIss2);
-                            age2 = age1;
-                            conditions.tabtle = tle;
-
-                        } else {
-
-                            // Utilisation des TLE du fichier iss.3le
-                            conditions.tabtle = tabElem;
-                        }
-                    }
-                }
-            } else {
-
-                // Utilisation des TLE du fichier iss.3le
-                conditions.tabElem = tabElem;
-            }
-
-            if ((age1 > (ageElements + 0.05)) || (age2 > (ageElements + 0.05))) {
-                const QString msg = tr("L'âge du TLE de l'ISS (%1 jours) est supérieur à %2 jours");
-                Message::Afficher(msg.arg(fabs(qMax(age1, age2)), 0, 'f', 1).arg(ageElements, 0, 'f', 1), INFO);
-            }
-
-        } else {
-
-            if (fi1.exists() && (fi1.size() != 0)) {
-
-                // Verification du fichier
-                if (TLE::VerifieFichier(fi1.absoluteFilePath()) == 0) {
-
-                    const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
-                                           "Le fichier %1 n'est pas un TLE");
-                    throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
-                }
-
-                // Utilisation des elements orbitaux du fichier visual.txt
-                tabElem.append(TLE::LectureFichier(fi1.absoluteFilePath(), Configuration::instance()->donneesSatellites(),
-                                                  Configuration::instance()->lgRec(), listeSatellites).first());
-
-                if (tabElem.isEmpty()) {
-
-                    const QString msg = tr("Erreur rencontrée lors du chargement du fichier\n" \
-                                           "Le fichier %1 ne contient pas le TLE de l'ISS");
-                    throw PreviSatException(msg.arg(fi1.absoluteFilePath()), WARNING);
-
-                } else {
-                    conditions.tabElem = tabElem;
-                }
-            } else {
-                throw PreviSatException(tr("Le fichier TLE n'existe pas"), WARNING);
-            }
-        }*/
+        // Elements orbitaux
+        conditions.tabElem = Configuration::instance()->mapElementsOrbitaux();
+        if (!_listeElemIss.isEmpty()) {
+            conditions.listeElemIss = _listeElemIss;
+        }
 
         // Nom du fichier resultat
         const QString chaine = tr("transits", "file name (without accent)") + "_%1_%2.txt";
@@ -517,7 +520,7 @@ void CalculsTransits::on_calculsTransit_clicked()
             } else {
                 EFFACE_OBJET(_afficherResultats);
                 _afficherResultats = new AfficherResultats(TypeCalcul::TRANSITS, conditions, Transits::donnees(), Transits::resultats(),
-                                                 settings.value("affichage/valeurZoomMap").toInt());
+                                                           settings.value("affichage/valeurZoomMap").toInt());
                 _afficherResultats->show();
             }
         }
@@ -624,7 +627,7 @@ void CalculsTransits::on_majElementsOrbitauxIss_clicked()
         fi.rename(ficGp);
 
         // Mise a jour de l'age des elements orbitaux
-        CalculAgeElementsOrbitauxTransit();
+        CalculAgeElementsOrbitaux();
 
     } catch (PreviSatException &e) {
     }

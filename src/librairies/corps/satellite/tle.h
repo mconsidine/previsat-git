@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 octobre 2022
+ * >    4 fevrier 2023
  *
  */
 
@@ -89,13 +89,6 @@ public:
      */
     static QMap<QString, ElementsOrbitaux> LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
                                              const QStringList &listeSatellites = QStringList(), const bool ajoutDonnees = true);
-
-    /**
-     * @brief LectureFichier3le Lecture du fichier 3le
-     * @param nomFichier3le nom du fichier 3le
-     * @return tableau d'elements orbitaux
-     */
-    static QList<ElementsOrbitaux> LectureFichier3le(const QString &nomFichier3le);
 
     /**
      * @brief MiseAJourFichier Mise a jour du fichier TLE

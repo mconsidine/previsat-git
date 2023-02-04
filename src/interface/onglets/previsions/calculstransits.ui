@@ -327,7 +327,7 @@
        <enum>QAbstractSpinBox::UpDownArrows</enum>
       </property>
       <property name="displayFormat">
-       <string extracomment="Date format">dd/MM/yyyy HH:mm</string>
+       <string extracomment="Date format">dd/MM/yyyy HH:mm:ss</string>
       </property>
       <property name="calendarPopup">
        <bool>true</bool>
@@ -349,7 +349,7 @@
        <enum>QAbstractSpinBox::UpDownArrows</enum>
       </property>
       <property name="displayFormat">
-       <string extracomment="Date format">dd/MM/yyyy HH:mm</string>
+       <string extracomment="Date format">dd/MM/yyyy HH:mm:ss</string>
       </property>
       <property name="calendarPopup">
        <bool>true</bool>

@@ -3,8 +3,8 @@ Fuseau horaire            : UTC + 02:00
 Conditions d'observations : Hauteur maximale du Soleil = -6° / Hauteur minimale du satellite = 10°
 Unité de distance         : km
 
-Age du TLE le plus récent : 0.43 jours (au 15/08/2020 00:00:00)
-Age du TLE le plus ancien : 0.60 jours
+Age de l'élément le plus récent : 0.43 jours (au 15/08/2020 00:00:00)
+Age de l'élément le plus ancien : 0.60 jours
 
 
 Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance

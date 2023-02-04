@@ -56,6 +56,7 @@ class CalculsPrevisions;
 
 class QListWidgetItem;
 class AfficherResultats;
+class Date;
 
 
 class CalculsPrevisions : public QFrame
@@ -93,6 +94,8 @@ public:
     /*
      * Methodes publiques
      */
+    void show(const Date &date);
+
 
 public slots:
 

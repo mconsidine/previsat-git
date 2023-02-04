@@ -55,6 +55,7 @@ class CalculsFlashs;
 }
 
 class AfficherResultats;
+class Date;
 
 
 class CalculsFlashs : public QFrame
@@ -92,6 +93,7 @@ public:
     /*
      * Methodes publiques
      */
+    void show(const Date &date);
 
 
 public slots:

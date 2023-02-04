@@ -68,6 +68,13 @@ public:
      * Methodes publiques
      */
     /**
+     * @brief CalculNombreOrbitesEpoque Calcul du nombre d'orbites a l'epoque (cas depassant 100000 orbites)
+     * @param elements elements orbitaux
+     * @return nombre d'orbites a l'epoque
+     */
+    static int CalculNombreOrbitesEpoque(const ElementsOrbitaux &elements);
+
+    /**
      * @brief LectureFichier Lecture d'un fichier au format GP
      * @param fichier nom du fichier d'elements orbitaux
      * @param donneesSat donnees satellites
@@ -79,6 +86,15 @@ public:
     static QMap<QString, ElementsOrbitaux> LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
                                                           const QStringList &listeSatellites = QStringList(), const bool ajoutDonnees = true,
                                                           const bool alarme = false);
+
+    /**
+     * @brief LectureFichierListeGP Lecture d'un fichier GP contenant une liste d'elements orbitaux pour un meme satellite
+     * @param fichier nom du fichier d'elements orbitaux
+     * @param donneesSat donnees satellites
+     * @param lgRec longueur d'une ligne dans les donnees satellite
+     * @return liste d'elements orbitaux
+     */
+    static QList<ElementsOrbitaux> LectureFichierListeGP(const QString &nomFichier, const QString &donneesSat, const int lgRec);
 
     /**
      * @brief RecupereNomsat Recupere le nom du satellite

@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    11 novembre 2022
+ * >    4 fevrier 2023
  *
  */
 
@@ -72,7 +72,7 @@ QList<Constellation> constellations;
  * Constructeurs
  */
 AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const ConditionsPrevisions &conditions, const DonneesPrevisions &donnees,
-                   const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats, const int zoom, QWidget *parent) :
+                                     const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats, const int zoom, QWidget *parent) :
     QMainWindow(parent),
     _ui(new Ui::AfficherResultats)
 {
@@ -139,10 +139,10 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const Conditi
         break;
 
     case TypeCalcul::TRANSITS:
-        setWindowTitle(tr("Transits ISS"));
+        setWindowTitle(tr("Transits"));
         _ui->afficherCarte->setVisible(true);
-        titres << tr("Date de début", "Date and hour") << tr("Date de fin", "Date and hour") << tr("Cst", "Constellation") << tr("Angle")
-               << tr("Type", "Transit or conjunction") << tr("Corps") << tr("Ill", "Illumination") << tr("Durée") << tr("Hauteur Soleil");
+        titres << tr("Satellite") << tr("Date de début", "Date and hour") << tr("Date de fin", "Date and hour") << tr("Cst", "Constellation")
+               << tr("Angle") << tr("Type", "Transit or conjunction") << tr("Corps") << tr("Ill", "Illumination") << tr("Durée") << tr("Hauteur Soleil");
 
         if (_resultats.size() > 0) {
             _ui->detailsTransit->setVisible(true);
@@ -184,9 +184,9 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const Conditi
             break;
 
         case TypeCalcul::TRANSITS:
-            _ui->resultatsPrevisions->horizontalHeaderItem(2)->setToolTip(tr("Constellation"));
-            _ui->resultatsPrevisions->horizontalHeaderItem(6)->setToolTip(tr("Illumination"));
-            _ui->resultatsPrevisions->horizontalHeaderItem(7)->setToolTip(tr("secondes"));
+            _ui->resultatsPrevisions->horizontalHeaderItem(3)->setToolTip(tr("Constellation"));
+            _ui->resultatsPrevisions->horizontalHeaderItem(7)->setToolTip(tr("Illumination"));
+            _ui->resultatsPrevisions->horizontalHeaderItem(8)->setToolTip(tr("secondes"));
             break;
 
         case TypeCalcul::PREVISIONS:
@@ -273,34 +273,35 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
         case TypeCalcul::PREVISIONS:
             _tableDetail->setColumnCount(12);
             _tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date", "Date and hour")
-                                                   << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
-                                                   << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
-                                                   << tr("Const", "Constellation") << tr("Magn", "Magnitude")
-                                                   << tr("Altitude", "Altitude of satellite") << tr("Distance") << tr("Az Soleil", "Solar azimuth")
-                                                   << tr("Haut Soleil", "Solar elevation"));
+                                                    << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
+                                                    << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
+                                                    << tr("Const", "Constellation") << tr("Magn", "Magnitude")
+                                                    << tr("Altitude", "Altitude of satellite") << tr("Distance") << tr("Az Soleil", "Solar azimuth")
+                                                    << tr("Haut Soleil", "Solar elevation"));
             break;
 
         case TypeCalcul::FLASHS:
             _tableDetail->setColumnCount(18);
             _tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date", "Date and hour")
-                                                   << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
-                                                   << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
-                                                   << tr("Const", "Constellation") << tr("Ang", "Angle") << tr("Mir", "Mirror")
-                                                   << tr("Magn", "Magnitude") << tr("Altitude", "Altitude of satellite") << tr("Dist", "Range")
-                                                   << tr("Az Soleil", "Solar azimuth") << tr("Haut Soleil", "Solar elevation")
-                                                   << tr("Long Max", "Longitude of the maximum") << tr("Lat Max", "Latitude of the maximum")
-                                                   << tr("Magn Max", "Magnitude at the maximum") << tr("Distance"));
+                                                    << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
+                                                    << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
+                                                    << tr("Const", "Constellation") << tr("Ang", "Angle") << tr("Mir", "Mirror")
+                                                    << tr("Magn", "Magnitude") << tr("Altitude", "Altitude of satellite") << tr("Dist", "Range")
+                                                    << tr("Az Soleil", "Solar azimuth") << tr("Haut Soleil", "Solar elevation")
+                                                    << tr("Long Max", "Longitude of the maximum") << tr("Lat Max", "Latitude of the maximum")
+                                                    << tr("Magn Max", "Magnitude at the maximum") << tr("Distance"));
             break;
 
         case TypeCalcul::TRANSITS:
-            _tableDetail->setColumnCount(18);
-            _tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Date", "Date and hour") << tr("Azimut Sat", "Satellite azimuth")
-                                                   << tr("Hauteur Sat", "Satellite elevation") << tr("AD Sat", "Satellite right ascension")
-                                                   << tr("Decl Sat", "Satellite declination") << tr("Cst", "Constellation") << tr("Ang", "Angle")
-                                                   << tr("Type", "Transit or conjunction") << tr("Corps") << tr("Ill", "Illumination") << tr("Durée")
-                                                   << tr("Alt", "Altitude of satellite") << tr("Dist", "Range") << tr("Az Soleil", "Solar azimuth")
-                                                   << tr("Haut Soleil", "Solar elevation") << tr("Long Max", "Longitude of the maximum")
-                                                   << tr("Lat Max", "Latitude of the maximum") << tr("Distance"));
+            _tableDetail->setColumnCount(19);
+            _tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date", "Date and hour")
+                                                    << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
+                                                    << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
+                                                    << tr("Cst", "Constellation") << tr("Ang", "Angle") << tr("Type", "Transit or conjunction")
+                                                    << tr("Corps") << tr("Ill", "Illumination") << tr("Durée") << tr("Alt", "Altitude of satellite")
+                                                    << tr("Dist", "Range") << tr("Az Soleil", "Solar azimuth") << tr("Haut Soleil", "Solar elevation")
+                                                    << tr("Long Max", "Longitude of the maximum") << tr("Lat Max", "Latitude of the maximum")
+                                                    << tr("Distance"));
             break;
 
         case TypeCalcul::TELESCOPE:
@@ -313,15 +314,15 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
         _tableDetail->setCornerButtonEnabled(false);
         _tableDetail->verticalHeader()->setVisible(false);
 
-        const int idx = (_typeCalcul == TypeCalcul::TRANSITS) ? 1 : 2;
         _tableDetail->horizontalHeader()->setToolTip("");
-        _tableDetail->horizontalHeaderItem(idx)->setToolTip(tr("Azimut satellite"));
-        _tableDetail->horizontalHeaderItem(idx + 1)->setToolTip(tr("Hauteur satellite"));
-        _tableDetail->horizontalHeaderItem(idx + 2)->setToolTip(tr("Ascension droite satellite"));
-        _tableDetail->horizontalHeaderItem(idx + 3)->setToolTip(tr("Déclinaison satellite"));
-        _tableDetail->horizontalHeaderItem(idx + 4)->setToolTip(tr("Constellation"));
+        _tableDetail->horizontalHeaderItem(2)->setToolTip(tr("Azimut satellite"));
+        _tableDetail->horizontalHeaderItem(3)->setToolTip(tr("Hauteur satellite"));
+        _tableDetail->horizontalHeaderItem(4)->setToolTip(tr("Ascension droite satellite"));
+        _tableDetail->horizontalHeaderItem(5)->setToolTip(tr("Déclinaison satellite"));
+        _tableDetail->horizontalHeaderItem(6)->setToolTip(tr("Constellation"));
 
         switch (_typeCalcul) {
+
         case TypeCalcul::PREVISIONS:
             _tableDetail->horizontalHeaderItem(7)->setToolTip(tr("Magnitude"));
             _tableDetail->horizontalHeaderItem(10)->setToolTip(tr("Azimut Soleil"));
@@ -342,16 +343,16 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
             break;
 
         case TypeCalcul::TRANSITS:
-            _tableDetail->horizontalHeaderItem(6)->setToolTip(tr("Angle"));
-            _tableDetail->horizontalHeaderItem(9)->setToolTip(tr("Illumination"));
-            _tableDetail->horizontalHeaderItem(10)->setToolTip(tr("secondes"));
-            _tableDetail->horizontalHeaderItem(11)->setToolTip(tr("Altitude", "Altitude of satellite"));
-            _tableDetail->horizontalHeaderItem(12)->setToolTip(tr("Distance"));
-            _tableDetail->horizontalHeaderItem(13)->setToolTip(tr("Azimut Soleil"));
-            _tableDetail->horizontalHeaderItem(14)->setToolTip(tr("Hauteur Soleil"));
-            _tableDetail->horizontalHeaderItem(15)->setToolTip(tr("Longitude du maximum"));
-            _tableDetail->horizontalHeaderItem(16)->setToolTip(tr("Latitude du maximum"));
-            _tableDetail->horizontalHeaderItem(17)->setToolTip(tr("Distance au maximum"));
+            _tableDetail->horizontalHeaderItem(7)->setToolTip(tr("Angle"));
+            _tableDetail->horizontalHeaderItem(10)->setToolTip(tr("Illumination"));
+            _tableDetail->horizontalHeaderItem(11)->setToolTip(tr("secondes"));
+            _tableDetail->horizontalHeaderItem(12)->setToolTip(tr("Altitude", "Altitude of satellite"));
+            _tableDetail->horizontalHeaderItem(13)->setToolTip(tr("Distance"));
+            _tableDetail->horizontalHeaderItem(14)->setToolTip(tr("Azimut Soleil"));
+            _tableDetail->horizontalHeaderItem(15)->setToolTip(tr("Hauteur Soleil"));
+            _tableDetail->horizontalHeaderItem(16)->setToolTip(tr("Longitude du maximum"));
+            _tableDetail->horizontalHeaderItem(17)->setToolTip(tr("Latitude du maximum"));
+            _tableDetail->horizontalHeaderItem(18)->setToolTip(tr("Distance au maximum"));
             break;
 
         case TypeCalcul::EVENEMENTS:
@@ -432,12 +433,12 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
 
         _afficherDetail = new QMainWindow;
         _afficherDetail->setStyleSheet("QHeaderView::section {" \
-                                      "background-color:rgb(235, 235, 235);" \
-                                      "border-top: 0px solid grey;" \
-                                      "border-bottom: 1px solid grey;" \
-                                      "border-right: 1px solid grey;" \
-                                      "font-size: 12px;" \
-                                      "font-weight: 600 }");
+                                       "background-color:rgb(235, 235, 235);" \
+                                       "border-top: 0px solid grey;" \
+                                       "border-bottom: 1px solid grey;" \
+                                       "border-right: 1px solid grey;" \
+                                       "font-size: 12px;" \
+                                       "font-weight: 600 }");
 
         switch (_typeCalcul) {
 
@@ -473,7 +474,8 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
         }
 
         const int ind = (_tableDetail->rowCount() == 1) ? 0 : 1;
-        _afficherDetail->setFixedSize(lrg, _tableDetail->horizontalHeader()->height() + _tableDetail->rowHeight(ind) * qMin(10, _tableDetail->rowCount()));
+        _afficherDetail->setFixedSize(lrg, _tableDetail->horizontalHeader()->height() + _tableDetail->rowHeight(ind) *
+                                      qMin(10, _tableDetail->rowCount()));
         _afficherDetail->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, _afficherDetail->size(), geometry()));
         _afficherDetail->show();
     }
@@ -527,7 +529,6 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
             QStringList evts;
             QStringList elems;
 
-            bool ecrireNomColonnes = true;
             QMapIterator<QString, QList<QList<ResultatPrevisions> > > it1(_resultats);
             while (it1.hasNext()) {
                 it1.next();
@@ -560,15 +561,13 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
                     break;
 
                 case TypeCalcul::TRANSITS:
-                    if (ecrireNomColonnes) {
-                        flux << tr("   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps " \
-                                   "Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance",
-                                   "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
-                                   "Constellation, Angle, Type, Body, Illumination, Duration, Altitude of satellite, Range, Solar azimuth, " \
-                                   "Solar elevation, Longitude of the maximum, Latitude of the maximum, Range from the maximum")
-                             << Qt::endl;
-                        ecrireNomColonnes = false;
-                    }
+                    flux << nomsat << Qt::endl;
+                    flux << tr("   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps " \
+                               "Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance",
+                               "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
+                               "Constellation, Angle, Type, Body, Illumination, Duration, Altitude of satellite, Range, Solar azimuth, " \
+                               "Solar elevation, Longitude of the maximum, Latitude of the maximum, Range from the maximum")
+                         << Qt::endl;
                     break;
 
                 case TypeCalcul::EVENEMENTS:
@@ -590,17 +589,17 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
                     QListIterator<ResultatPrevisions> it3(it2.next());
                     while (it3.hasNext()) {
 
-                        kmin = 0;
+                        kmin = 1;
                         elems.clear();
                         const ResultatPrevisions res = it3.next();
 
                         switch (_typeCalcul) {
                         case TypeCalcul::PREVISIONS:
-                            kmin = 1;
                             elems = ElementsDetailsPrevisions(res);
                             break;
 
                         case TypeCalcul::FLASHS:
+                            kmin = 0;
                             elems = ElementsDetailsFlashs(res);
                             break;
 
@@ -611,7 +610,6 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
                             break;
 
                         case TypeCalcul::EVENEMENTS:
-                            kmin = 1;
                             elems = ElementsDetailsEvenements(res);
                             break;
 
@@ -681,7 +679,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
 }
 
 /*
- * Affichage du détail d'un transit ISS
+ * Affichage du détail d'un transit
  */
 void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, const Lune &lune, const QList<ResultatPrevisions> &list)
 {
@@ -763,7 +761,7 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
 
         const ResultatPrevisions res = it.next();
 
-        // Coordonnees relatives de l'ISS par rapport a la Lune ou au Soleil
+        // Coordonnees relatives du satellite par rapport a la Lune ou au Soleil
         if (res.typeCorps == CorpsTransit::CORPS_SOLEIL) {
 
             deltaAzimut = RAD2DEG * (res.azimut - res.azimutSoleil);
@@ -959,12 +957,12 @@ void AfficherResultats::ChargementResultats()
     }
 
     _ui->resultatsPrevisions->setStyleSheet("QHeaderView::section {" \
-                                           "background-color:rgb(235, 235, 235);" \
-                                           "border-top: 0px solid grey;" \
-                                           "border-bottom: 1px solid grey;" \
-                                           "border-right: 1px solid grey;" \
-                                           "font-size: 12px;" \
-                                           "font-weight: 600 }");
+                                            "background-color:rgb(235, 235, 235);" \
+                                            "border-top: 0px solid grey;" \
+                                            "border-bottom: 1px solid grey;" \
+                                            "border-right: 1px solid grey;" \
+                                            "font-size: 12px;" \
+                                            "font-weight: 600 }");
 
     _ui->resultatsPrevisions->horizontalHeader()->setStretchLastSection(true);
     if (_typeCalcul != TypeCalcul::EVENEMENTS) {
@@ -1036,9 +1034,9 @@ void AfficherResultats::EcrireEntete() const
         ligne = QObject::tr("Fuseau horaire            : %1");
         QString chaine = QObject::tr("UTC", "Universal Time Coordinated");
         if (
-#if (BUILD_TEST == false)
+        #if (BUILD_TEST == false)
                 !settings.value("affichage/utc").toBool() &&
-#endif
+        #endif
                 (fabs(_conditions.offset) > EPSDBL100)) {
             QTime heur(0, 0);
             heur = heur.addSecs((int) (_conditions.offset * NB_SEC_PAR_JOUR + EPS_DATES));
@@ -1063,16 +1061,16 @@ void AfficherResultats::EcrireEntete() const
             flux << tr("Unité de distance         : %1").arg(_conditions.unite) << Qt::endl;
         }
 
-        // Age des TLE
+        // Age des elements orbitaux
         const QString date = Date(_conditions.jj1 + _conditions.offset + EPS_DATES, 0.)
                 .ToShortDate(DateFormat::FORMAT_COURT, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H).trimmed();
 
         if (_donnees.ageElementsOrbitaux.count() == 1) {
-            flux << Qt::endl << tr("Age du TLE                : %1 jours (au %2)").arg(_donnees.ageElementsOrbitaux.at(0), 4, 'f', 2).arg(date)
+            flux << Qt::endl << tr("Age de l'élément          : %1 jours (au %2)").arg(_donnees.ageElementsOrbitaux.at(0), 4, 'f', 2).arg(date)
                  << Qt::endl << Qt::endl << Qt::endl;
         } else {
 
-            flux << Qt::endl << tr("Age du TLE le plus récent : %1 jours (au %2)\nAge du TLE le plus ancien : %3 jours")
+            flux << Qt::endl << tr("Age de l'élément le plus récent : %1 jours (au %2)\nAge de l'élément le plus ancien : %3 jours")
                     .arg(_donnees.ageElementsOrbitaux.at(0), 4, 'f', 2).arg(date).arg(_donnees.ageElementsOrbitaux.at(1), 4, 'f', 2)
                  << Qt::endl << Qt::endl << Qt::endl;
         }
@@ -1408,7 +1406,7 @@ QStringList AfficherResultats::ElementsDetailsPrevisions(const ResultatPrevision
 }
 
 /*
- * Elements des transits ISS a afficher dans la fenetre de resultats
+ * Elements des transits a afficher dans la fenetre de resultats
  */
 QStringList AfficherResultats::ElementsTransits(const QList<ResultatPrevisions> &liste) const
 {
@@ -1418,6 +1416,9 @@ QStringList AfficherResultats::ElementsTransits(const QList<ResultatPrevisions> 
     /* Initialisations */
 
     /* Corps de la methode */
+    // Nom du satellite
+    elems.append(liste.first().nom);
+
     // Date de debut
     const double offset1 = Date::CalculOffsetUTC(liste.first().date.ToQDateTime(1));
     const Date dateDeb(liste.first().date, offset1);
@@ -1488,7 +1489,7 @@ QStringList AfficherResultats::ElementsTransits(const QList<ResultatPrevisions> 
 }
 
 /*
- * Elements des transits ISS pour la sauvegarde dans un fichier texte ou pour afficher des details
+ * Elements des transits pour la sauvegarde dans un fichier texte ou pour afficher des details
  */
 QStringList AfficherResultats::ElementsDetailsTransits(const ResultatPrevisions &res) const
 {
@@ -1498,6 +1499,9 @@ QStringList AfficherResultats::ElementsDetailsTransits(const ResultatPrevisions 
     /* Initialisations */
 
     /* Corps de la methode */
+    // Nom du satellite
+    elems.append(res.nom);
+
     // Date
     const double offset = Date::CalculOffsetUTC(res.date.ToQDateTime(1));
     const Date date(res.date, offset);
@@ -1652,7 +1656,7 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
                 dateMax,
                 dateFin);
 
-    // Affichage du detail du transit ISS
+    // Affichage du detail du transit
     if (_typeCalcul == TypeCalcul::TRANSITS) {
 
         _ui->detailsTransit->setVisible(list.at(2).transit);

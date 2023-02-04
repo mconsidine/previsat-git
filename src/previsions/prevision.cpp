@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 octobre 2022
+ * >    4 fevrier 2023
  *
  */
 
@@ -102,25 +102,15 @@ int Prevision::CalculPrevisions(int &nombre)
     /* Declarations des variables locales */
     QElapsedTimer tps;
     QList<Satellite> sats;
-    QMap<QString, ElementsOrbitaux> tabElem;
 
     /* Initialisations */
-    double tlemin = -DATE_INFINIE;
-    double tlemax = DATE_INFINIE;
+    double elemMin = -DATE_INFINIE;
+    double elemMax = DATE_INFINIE;
+    QMap<QString, ElementsOrbitaux> tabElem = _conditions.tabElem;
 
     tps.start();
     _donnees.ageElementsOrbitaux.clear();
     _resultats.clear();
-
-    // Creation de la liste d'elements orbitaux
-    const QFileInfo ff(_conditions.fichier);
-    if (ff.suffix() == "xml") {
-        tabElem = GPFormat::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
-                                           _conditions.listeSatellites);
-    } else {
-        tabElem = TLE::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
-                                      _conditions.listeSatellites);
-    }
 
     // Creation du tableau de satellites
     QMapIterator it1(tabElem);
@@ -131,21 +121,21 @@ int Prevision::CalculPrevisions(int &nombre)
         sats.append(Satellite(elem));
 
         const double epok = elem.epoque.jourJulienUTC();
-        if (epok > tlemin) {
-            tlemin = epok;
+        if (epok > elemMin) {
+            elemMin = epok;
         }
 
-        if (epok < tlemax) {
-            tlemax = epok;
+        if (epok < elemMax) {
+            elemMax = epok;
         }
     }
 
     if (tabElem.keys().count() == 1) {
-        _donnees.ageElementsOrbitaux.append(fabs(_conditions.jj1 - tlemin));
+        _donnees.ageElementsOrbitaux.append(fabs(_conditions.jj1 - elemMin));
     } else {
 
-        const double age1 = fabs(_conditions.jj1 - tlemin);
-        const double age2 = fabs(_conditions.jj1 - tlemax);
+        const double age1 = fabs(_conditions.jj1 - elemMin);
+        const double age2 = fabs(_conditions.jj1 - elemMax);
         _donnees.ageElementsOrbitaux.append(qMin(age1, age2));
         _donnees.ageElementsOrbitaux.append(qMax(age1, age2));
     }

@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    22 mai 2022
+ * >    4 fevrier 2023
  *
  */
 
@@ -44,6 +44,7 @@
 #include "configuration/configuration.h"
 #include "interface/afficherresultats.h"
 #include "librairies/corps/corps.h"
+#include "librairies/corps/satellite/tle.h"
 #include "previsions/prevision.h"
 #include "previsiontest.h"
 #include "test/src/testtools.h"
@@ -99,10 +100,10 @@ void PrevisionTest::testCalculPrevisions1()
 
     // Test des satellites potentiellement visibles
     int n = 0;
-    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
+    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "previsions1_20200815_20200822.txt";
 
-    conditions.fichier = fichier;
+    conditions.tabElem = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions
@@ -124,13 +125,13 @@ void PrevisionTest::testCalculPrevisions2()
 
     // Test des satellites geostationnaires
     int n = 0;
-    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "geo.txt";
+    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "geo.txt";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "previsions2_20200815_20200822.txt";
 
     conditions.pas = 0.0034722222222222222;
     conditions.hauteur = 10. * DEG2RAD;
     conditions.crepuscule = -6. * DEG2RAD;
-    conditions.fichier = fichier;
+    conditions.tabElem = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions
@@ -152,13 +153,13 @@ void PrevisionTest::testCalculPrevisions3()
 
     // Test des satellites HEO
     int n = 0;
-    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "heo.txt";
+    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "heo.txt";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "previsions3_20200815_20200822.txt";
 
     conditions.pas = 0.0034722222222222222;
     conditions.hauteur = 5. * DEG2RAD;
     conditions.crepuscule = -6. * DEG2RAD;
-    conditions.fichier = fichier;
+    conditions.tabElem = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions

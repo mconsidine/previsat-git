@@ -56,6 +56,7 @@ class CalculsEvenementsOrbitaux;
 
 class QListWidgetItem;
 class AfficherResultats;
+class Date;
 
 
 class CalculsEvenementsOrbitaux : public QFrame
@@ -91,6 +92,8 @@ public:
     /*
      * Methodes publiques
      */
+    void show(const Date &date);
+
 
 public slots:
 

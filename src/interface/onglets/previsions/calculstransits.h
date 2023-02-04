@@ -56,6 +56,8 @@ class CalculsTransits;
 
 class QListWidgetItem;
 class AfficherResultats;
+class Date;
+class ElementsOrbitaux;
 
 
 class CalculsTransits : public QFrame
@@ -121,6 +123,8 @@ public slots:
 
     void changeEvent(QEvent *evt);
 
+    void show(const Date &date);
+
 
 signals:
 
@@ -150,12 +154,18 @@ private:
     QAction *_aucun;
     QAction *_tous;
 
+    bool _etatElementsIss;
+    QPalette _paletteBouton;
+    QList<ElementsOrbitaux> _listeElemIss;
+
 
     /*
      * Methodes privees
      */
-
-    void CalculAgeElementsOrbitauxTransit();
+    /**
+     * @brief CalculAgeElementsOrbitaux Calcul de l'age des elements orbitaux
+     */
+    void CalculAgeElementsOrbitaux();
 
     /**
      * @brief Initialisation Initialisation de la classe CalculsTransits

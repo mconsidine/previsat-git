@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    29 janvier 2023
+ * >    4 fevrier 2023
  *
  */
 
@@ -281,6 +281,16 @@ void Onglets::show(const Date &date)
 
     AffichageOngletInformations();
 
+    if (_prev) {
+
+        _previsions->show(date);
+        _flashs->show(date);
+        _transits->show(date);
+        _evenements->show(date);
+
+        _prev = false;
+    }
+
 
 #if defined (Q_OS_WIN)
     if (_ui->telescope->isVisible() && (_suiviTelescope->getListItemChecked(_suiviTelescope->ui()->listeTelescope) > 0)) {
@@ -429,6 +439,7 @@ void Onglets::Initialisation()
     /* Corps de la methode */
     qInfo() << "Début Initialisation" << metaObject()->className();
 
+    _prev = true;
     _indexInformations = settings.value("affichage/indexInformations", 0).toUInt();
     _indexPrevisions = settings.value("affichage/indexPrevisions", 0).toUInt();
 
@@ -451,16 +462,8 @@ void Onglets::Initialisation()
 
     // Calculs de previsions
     _previsions = new CalculsPrevisions(_ui->prevision);
-    _previsions->show();
-
-    _flashs->show();
-
     _transits = new CalculsTransits(_ui->transits);
-    _transits->show();
-
     _evenements = new CalculsEvenementsOrbitaux(_ui->evenementsOrbitaux);
-    _evenements->show();
-
 
 #if defined (Q_OS_WIN)
     // Suivi avec un telescope
@@ -523,6 +526,7 @@ void Onglets::on_infoSuiv_clicked()
 
 void Onglets::on_previsionPrec_clicked()
 {
+    _prev = true;
     _indexPrevisions = (_ui->stackedWidget_previsions->currentIndex() + _ui->stackedWidget_previsions->count() - 1)
             % _ui->stackedWidget_previsions->count();
     _ui->stackedWidget_previsions->setCurrentIndex(_indexPrevisions);
@@ -531,6 +535,7 @@ void Onglets::on_previsionPrec_clicked()
 
 void Onglets::on_previsionSuiv_clicked()
 {
+    _prev = true;
     _indexPrevisions = (_ui->stackedWidget_previsions->currentIndex() + 1) % _ui->stackedWidget_previsions->count();
     _ui->stackedWidget_previsions->setCurrentIndex(_indexPrevisions);
     setTabText(indexOf(_ui->previsions), QCoreApplication::translate("Onglets", _titresPrevisions[_indexPrevisions]));
@@ -540,6 +545,7 @@ void Onglets::on_stackedWidget_previsions_currentChanged(int arg1)
 {
     Q_UNUSED(arg1)
 
+    _prev = true;
     _ui->previsionPrec->setToolTip(
                 QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)
                 % _ui->stackedWidget_previsions->count()]));

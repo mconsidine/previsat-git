@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    22 mai 2022
+ * >    4 fevrier 2023
  *
  */
 
@@ -44,6 +44,7 @@
 #include "configuration/configuration.h"
 #include "interface/afficherresultats.h"
 #include "librairies/corps/corps.h"
+#include "librairies/corps/satellite/tle.h"
 #include "previsions/evenementsorbitaux.h"
 #include "evenementsorbitauxtest.h"
 #include "test/src/testtools.h"
@@ -95,10 +96,11 @@ void EvenementsOrbitauxTest::testCalculEvenements1()
     qInfo(Q_FUNC_INFO);
 
     int n = 0;
-    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
+    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "evenements1_20200815_20200822.txt";
 
-    conditions.fichier = fichier;
+    conditions.tabElem = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
+                                             conditions.listeSatellites);
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions
