@@ -2,10 +2,11 @@
 \page Historique Version history
 
 <b><span style="color:red;">Version 5.1 (revision 2) :</span><br />
-December 2022 :</b>
+October 2022 - February 2023 :</b>
 <ul>
-<li>Display corrections in the Information tab
-<li>Modification of contact of the author
+<li>Add Antenna tab
+<li>Correction of taking into account real time step
+<li>Correction at launch
 </ul>
 
 <hr />
