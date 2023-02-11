@@ -4759,12 +4759,12 @@ Le répertoire %1 n&apos;existe pas, veuillez réinstaller %2</source>
 「%1」フォルダが存在しません</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="2122"/>
+        <location filename="../src/configuration/configuration.cpp" line="2125"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="2129"/>
+        <location filename="../src/configuration/configuration.cpp" line="2132"/>
         <source>Le fichier %1 est vide, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が空なので、「%2」を再インストールしてください</translation>
     </message>
