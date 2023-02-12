@@ -162,7 +162,7 @@ void EvenementsTest::testCalculOmbrePenombre()
 
     Lune lune;
     lune.CalculPosition(date);
-    sat._conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, lune, true);
+    sat._conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, &lune, true);
 
     // Prochain passage penombre->ombre
     QCOMPARE(Evenements::CalculOmbrePenombre(date, sat, 2, true, true).jourJulienUTC(), 7314.86554398148);

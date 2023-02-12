@@ -500,7 +500,7 @@ QMap<QString, QList<EphemeridesEvenements> > EvenementsOrbitaux::CalculEphemerid
             // Position du satellite
             sat.CalculPosVit(date);
 
-            condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune);
+            condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune);
             sat.CalculElementsOsculateurs(date);
 
             // Sauvegarde des donnees

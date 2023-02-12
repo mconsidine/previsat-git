@@ -36,7 +36,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >
+ * >     12 fevrier 2023
  *
  */
 
@@ -115,6 +115,11 @@ public slots:
     void SauveOngletGeneral(const QString &fichier);
 
     void changeEvent(QEvent *evt);
+
+
+signals:
+
+    void ModeManuel(const bool enable);
 
 
 protected:
@@ -198,6 +203,13 @@ private slots:
     void on_soleilLuneSuiv_clicked();
     void on_soleilLunePrec_clicked();
     void on_stackedWidget_soleilLune_currentChanged(int arg1);
+
+    void on_pause_clicked();
+    void on_play_clicked();
+    void on_rewind_clicked();
+    void on_forward_clicked();
+    void on_backward_clicked();
+
 };
 
 #endif // GENERAL_H

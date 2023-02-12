@@ -118,7 +118,7 @@ void GeneralTest::testSauveOngletGeneral()
     sat.CalculPosVit(date);
     sat.CalculCoordHoriz(observateur);
 
-    sat._conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, lune, true);
+    sat._conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, &lune, true);
     sat.CalculCoordTerrestres(observateur);
     sat.CalculCoordEquat(observateur);
     sat._magnitude.Calcul(sat.conditionEclipse(), observateur, sat.distance(), sat.hauteur(),

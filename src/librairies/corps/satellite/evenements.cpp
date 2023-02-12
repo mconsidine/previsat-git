@@ -290,7 +290,7 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
                 }
 
                 // Conditions d'eclipse du satellite
-                conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, lune, refraction);
+                conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, &lune, refraction);
                 const ElementsEclipse elements = (conditionEclipse.eclipseLune().luminosite < conditionEclipse.eclipseSoleil().luminosite) ?
                             conditionEclipse.eclipseLune() : conditionEclipse.eclipseSoleil();
                 ecl[j] = elements.phi - elements.phiSoleil - elements.elongation;

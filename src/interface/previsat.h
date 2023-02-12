@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 novembre 2022
+ * >    12 fevrier 2023
  *
  */
 
@@ -353,6 +353,7 @@ private slots:
 
     void closeEvent(QCloseEvent *evt);
     bool eventFilter(QObject *watched, QEvent *event);
+    void mousePressEvent(QMouseEvent *evt);
 
     // Boutons de l'interface graphique
     void on_configuration_clicked();

@@ -238,7 +238,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date,
         satellites[i].CalculCoordHoriz(observateur, true, refractionAtmospherique);
 
         // Calcul des conditions d'eclipse
-        satellites[i]._conditionEclipse.CalculSatelliteEclipse(satellites[i]._position, soleil, lune, refractionAtmospherique);
+        satellites[i]._conditionEclipse.CalculSatelliteEclipse(satellites[i]._position, soleil, &lune, refractionAtmospherique);
 
         // Coordonnees terrestres du satellite
         satellites[i].CalculCoordTerrestres(observateur);
@@ -344,7 +344,7 @@ void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, c
                 }
 
                 // Conditions d'eclipse
-                sat._conditionEclipse.CalculSatelliteEclipse(sat._position, soleil, lune, refraction);
+                sat._conditionEclipse.CalculSatelliteEclipse(sat._position, soleil, &lune, refraction);
 
                 elem.azimut = sat.azimut();
                 elem.hauteur = sat.hauteur();
@@ -409,7 +409,7 @@ void Satellite::CalculTracesAuSol(const Date &dateInit, const int nbOrb, const b
         }
 
         // Conditions d'eclipse
-        sat._conditionEclipse.CalculSatelliteEclipse(pos, soleil, lune, refraction);
+        sat._conditionEclipse.CalculSatelliteEclipse(pos, soleil, &lune, refraction);
 
         elem.jourJulienUTC = date.jourJulienUTC();
         elem.eclipseTotale = sat._conditionEclipse.eclipseTotale();

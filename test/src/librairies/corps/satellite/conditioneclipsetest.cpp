@@ -131,7 +131,7 @@ void ConditionEclipseTest::testCalcul()
     lune.CalculPosition(date);
     soleil.CalculPosition(date);
 
-    cond.CalculSatelliteEclipse(sgp4.position(), soleil, lune);
+    cond.CalculSatelliteEclipse(sgp4.position(), soleil, &lune);
     QCOMPARE(arrondi(cond.eclipseLune().elongation, 9), 0.009338529);
     QCOMPARE(arrondi(cond.eclipseLune().luminosite, 8), 0.99999127);
     QCOMPARE(cond.eclipseLune().phi, 0.004608512352456751);
@@ -154,7 +154,7 @@ void ConditionEclipseTest::testCalcul()
     lune.CalculPosition(date);
     soleil.CalculPosition(date);
 
-    cond.CalculSatelliteEclipse(sgp4.position(), soleil, lune);
+    cond.CalculSatelliteEclipse(sgp4.position(), soleil, &lune);
     QCOMPARE(arrondi(cond.eclipseLune().elongation, 10), 0.0002125044);
     QCOMPARE(cond.eclipseLune().luminosite, 0.08983496455163091);
     QCOMPARE(cond.eclipseLune().phi, 0.004515254625907768);

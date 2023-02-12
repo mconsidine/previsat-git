@@ -112,7 +112,7 @@ void TelescopeTest::testCalculSuiviTelescope1()
     lune.CalculPosition(date);
 
     ConditionEclipse condEcl;
-    condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, true);
+    condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, true);
 
     // Date de lever
     const ElementsAOS elemAOS = Evenements::CalculAOS(date, sat, conditions.observateur);
@@ -127,7 +127,7 @@ void TelescopeTest::testCalculSuiviTelescope1()
 
     soleil.CalculPosition(date);
     lune.CalculPosition(date);
-    condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, true);
+    condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, true);
 
     const ElementsAOS elemLOS = Evenements::CalculAOS(date, sat, conditions.observateur);
     const Date dateLosSuivi(elemLOS.date.jourJulienUTC(), conditions.offset);

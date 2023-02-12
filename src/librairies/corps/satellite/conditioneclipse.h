@@ -83,7 +83,7 @@ public:
      * @param lune Lune
      * @param refraction prise en compte de la refraction (cas de la Terre)
      */
-    void CalculSatelliteEclipse(const Vecteur3D &position, const Soleil &soleil, const Lune &lune = Lune(), const bool refraction = true);
+    void CalculSatelliteEclipse(const Vecteur3D &position, const Soleil &soleil, const Lune *lune = nullptr, const bool refraction = true);
 
 
     /*

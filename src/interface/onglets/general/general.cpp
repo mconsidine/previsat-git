@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >
+ * >     12 fevrier 2023
  *
  */
 
@@ -40,6 +40,7 @@
 #include <QFileInfo>
 #include <QSettings>
 #include <QSoundEffect>
+#include <QThread>
 #include "ui_options.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
@@ -899,6 +900,8 @@ void General::Initialisation()
     _ui->soleilLuneSuiv->setToolTip(QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + 1) %
                                     _ui->stackedWidget_soleilLune->count()]));
 
+    _ui->frameSimu->setVisible(false);
+
     connect(_osculateurs, &Osculateurs::AffichageVitesses, this, &General::AffichageVitesses);
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
@@ -951,4 +954,107 @@ void General::on_stackedWidget_soleilLune_currentChanged(int arg1)
                 % _ui->stackedWidget_soleilLune->count()]));
     _ui->soleilLuneSuiv->setToolTip(QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + 1) %
                                     _ui->stackedWidget_soleilLune->count()]));
+}
+
+void General::on_pause_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->pause->setEnabled(!_ui->pause->isEnabled());
+    const bool enb = !_ui->pause->isEnabled();
+    _ui->play->setEnabled(enb);
+    _ui->rewind->setEnabled(enb);
+    _ui->forward->setEnabled(enb);
+    _ui->backward->setEnabled(enb);
+    _ui->frameSimu->setFocus();
+    QThread::msleep(100);
+    emit ModeManuel(enb);
+
+    /* Retour */
+    return;
+}
+
+void General::on_play_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->play->setEnabled(!_ui->play->isEnabled());
+    const bool enb = !_ui->play->isEnabled();
+    _ui->pause->setEnabled(enb);
+    _ui->rewind->setEnabled(enb);
+    _ui->forward->setEnabled(enb);
+    _ui->backward->setEnabled(enb);
+    _ui->frameSimu->setFocus();
+    emit ModeManuel(enb);
+
+    /* Retour */
+    return;
+}
+
+void General::on_rewind_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->rewind->setEnabled(!_ui->rewind->isEnabled());
+    const bool enb = !_ui->rewind->isEnabled();
+    _ui->play->setEnabled(enb);
+    _ui->pause->setEnabled(enb);
+    _ui->forward->setEnabled(enb);
+    _ui->backward->setEnabled(enb);
+    _ui->frameSimu->setFocus();
+    emit ModeManuel(enb);
+
+    /* Retour */
+    return;
+}
+
+void General::on_forward_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->forward->setEnabled(!_ui->forward->isEnabled());
+    const bool enb = !_ui->forward->isEnabled();
+    _ui->play->setEnabled(enb);
+    _ui->pause->setEnabled(enb);
+    _ui->rewind->setEnabled(enb);
+    _ui->backward->setEnabled(enb);
+    _ui->frameSimu->setFocus();
+    QThread::msleep(100);
+    emit ModeManuel(enb);
+
+    /* Retour */
+    return;
+}
+
+void General::on_backward_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->backward->setEnabled(!_ui->backward->isEnabled());
+    const bool enb = !_ui->backward->isEnabled();
+    _ui->play->setEnabled(enb);
+    _ui->pause->setEnabled(enb);
+    _ui->rewind->setEnabled(enb);
+    _ui->forward->setEnabled(enb);
+    _ui->frameSimu->setFocus();
+    QThread::msleep(100);
+    emit ModeManuel(enb);
+
+    /* Retour */
+    return;
 }
