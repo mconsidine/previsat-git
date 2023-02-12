@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 janvier 2023
+ * >    12 fevrier 2023
  *
  */
 
@@ -529,6 +529,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_onglets->transits(), &CalculsTransits::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->evenements(), &CalculsEvenementsOrbitaux::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->suiviTelescope(), &SuiviTelescope::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+    connect(_onglets->general(), &General::ModeManuel, this, &PreviSat::on_modeManuel_toggled);
 
     connect(this, &PreviSat::SauveOngletGeneral, _onglets->general(), &General::SauveOngletGeneral);
     connect(this, &PreviSat::SauveOngletElementsOsculateurs, _onglets->osculateurs(), &Osculateurs::SauveOngletElementsOsculateurs);
@@ -1663,50 +1664,49 @@ void PreviSat::GestionTempsReel()
         _onglets->setAcalcDN(true);
         _onglets->setAcalcAOS(true);
 
-        // if (_onglets->general()->ui()->pause->isEnabled()) {
+        if (_onglets->general()->ui()->pause->isEnabled()) {
 
-        if (!_ui->pasManuel->view()->isVisible()) {
+            if (!_ui->pasManuel->view()->isVisible()) {
 
-            // TODO
-            //                double pas;
-            //                if (_ui->valManuel->currentIndex() < 3) {
-            //                    pas = _ui->pasManuel->currentText().toDouble() * qPow(NB_SEC_PAR_MIN, _ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC;
-            //                } else {
-            //                    pas = _ui->pasManuel->currentText().toDouble();
-            //                }
+                double pas;
+                if (_ui->valManuel->currentIndex() < 3) {
+                    pas = _ui->pasManuel->currentText().toDouble() * qPow(NB_SEC_PAR_MIN, _ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC;
+                } else {
+                    pas = _ui->pasManuel->currentText().toDouble();
+                }
 
-            double jd = _dateCourante->jourJulienUTC();
-            //                if (!_onglets->ui()->rewind->isEnabled() || !_onglets->ui()->backward->isEnabled()) {
-            //                    jd -= pas;
-            //                }
-            //                if (!_onglets->ui()->play->isEnabled() || !_onglets->ui()->forward->isEnabled()) {
-            //                    jd += pas;
-            //                }
+                double jd = _dateCourante->jourJulienUTC();
+                if (!_onglets->general()->ui()->rewind->isEnabled() || !_onglets->general()->ui()->backward->isEnabled()) {
+                    jd -= pas;
+                }
+                if (!_onglets->general()->ui()->play->isEnabled() || !_onglets->general()->ui()->forward->isEnabled()) {
+                    jd += pas;
+                }
 
-            const double offset = _dateCourante->offsetUTC();
-            if (_dateCourante != nullptr) {
-                delete _dateCourante;
-                _dateCourante = nullptr;
+                const double offset = _dateCourante->offsetUTC();
+                if (_dateCourante != nullptr) {
+                    delete _dateCourante;
+                    _dateCourante = nullptr;
+                }
+                _dateCourante = new Date(jd, offset);
+
+                // Enchainement de l'ensemble des calculs
+                EnchainementCalculs();
+
+                const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
+
+                if (_onglets->osculateurs()->isVisible()) {
+                    _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
+                    _onglets->osculateurs()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
+                } else {
+                    _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
+                    _onglets->general()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
+                    _onglets->general()->ui()->dateHeure2->setFocus();
+                }
+
+                _onglets->show(*_dateCourante);
             }
-            _dateCourante = new Date(jd, offset);
-
-            // Enchainement de l'ensemble des calculs
-            EnchainementCalculs();
-
-            const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
-
-            if (_onglets->osculateurs()->isVisible()) {
-                _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
-                _onglets->osculateurs()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
-            } else {
-                _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
-                _onglets->general()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
-                _onglets->general()->ui()->dateHeure2->setFocus();
-            }
-
-            _onglets->show(*_dateCourante);
         }
-        // }
     }
 
     /* Retour */
@@ -2032,6 +2032,23 @@ bool PreviSat::eventFilter(QObject *watched, QEvent *event)
     return QMainWindow::eventFilter(watched, event);
 }
 
+void PreviSat::mousePressEvent(QMouseEvent *evt)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(evt)
+
+    /* Corps de la methode */
+    if (_stsDate->underMouse() || _stsHeure->underMouse()) {
+        _options->ui()->calJulien->setChecked(!_options->ui()->calJulien->isChecked());
+        TempsReel();
+    }
+
+    /* Retour */
+    return;
+}
+
 /*
  * Boutons de l'interface graphique
  */
@@ -2070,6 +2087,7 @@ void PreviSat::on_tempsReel_toggled(bool checked)
     _ui->valManuel->setVisible(!checked);
     _ui->pasReel->setVisible(checked);
     _ui->secondes->setVisible(checked);
+    _onglets->general()->ui()->frameSimu->setVisible(!checked);
 }
 
 void PreviSat::on_modeManuel_toggled(bool checked)
@@ -2078,6 +2096,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
     _ui->secondes->setVisible(!checked);
     _ui->pasManuel->setVisible(checked);
     _ui->valManuel->setVisible(checked);
+    _onglets->general()->ui()->frameSimu->setVisible(checked);
 }
 
 /*

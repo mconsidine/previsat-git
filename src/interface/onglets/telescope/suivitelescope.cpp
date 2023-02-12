@@ -289,7 +289,7 @@ void SuiviTelescope::CalculAos() const
         Lune lun;
         lun.CalculPosition(dateCalcul);
 
-        condEcl.CalculSatelliteEclipse(satSuivi.position(), sol, lun, true);
+        condEcl.CalculSatelliteEclipse(satSuivi.position(), sol, &lun, true);
         const QString ecl = (condEcl.eclipseTotale()) ? tr("Satellite en éclipse") : tr("Satellite éclairé");
 
         // Date de lever ou de coucher

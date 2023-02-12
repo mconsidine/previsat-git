@@ -328,7 +328,7 @@ int Transits::CalculTransits(int &nombre)
                             const bool ilu = (typeCorps == CorpsTransit::CORPS_LUNE) && (itr || iconj) &&
                                     (_conditions.calcTransitLunaireJour || (soleil.hauteur() < 0.));
 
-                            condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
+                            condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
 
                             if ((itr && (typeCorps == CorpsTransit::CORPS_SOLEIL)) || ilu) {
 
@@ -366,7 +366,7 @@ int Transits::CalculTransits(int &nombre)
 
                                     // Position de la Lune
                                     lune.CalculPosition(dates[j]);
-                                    condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
+                                    condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
 
                                     // Date calendaire
                                     res.date = Date(dates[j].jourJulien() + EPS_DATES, 0.);

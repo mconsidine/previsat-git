@@ -52,7 +52,7 @@
 /*
  * Calcul de la condition d'eclipse du satellite
  */
-void ConditionEclipse::CalculSatelliteEclipse(const Vecteur3D &position, const Soleil &soleil, const Lune &lune, const bool refraction)
+void ConditionEclipse::CalculSatelliteEclipse(const Vecteur3D &position, const Soleil &soleil, const Lune *lune, const bool refraction)
 {
     /* Declarations des variables locales */
 
@@ -64,8 +64,8 @@ void ConditionEclipse::CalculSatelliteEclipse(const Vecteur3D &position, const S
     _eclipseSoleil = CalculEclipse(position, soleil.position(), CorpsOccultant::TERRE, refraction);
 
     // Calcul de l'eclipse par la Lune
-    if (lune.position().Norme() > EPSDBL100) {
-        _eclipseLune = CalculEclipse(position, lune.position(), CorpsOccultant::LUNE, false);
+    if (lune != nullptr) {
+        _eclipseLune = CalculEclipse(position, lune->position(), CorpsOccultant::LUNE, false);
     }
 
     if ((_eclipseSoleil.type != TypeEclipse::NON_ECLIPSE) && (_eclipseLune.type != TypeEclipse::NON_ECLIPSE)) {

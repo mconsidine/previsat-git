@@ -196,7 +196,7 @@ int Prevision::CalculPrevisions(int &nombre)
                 }
 
                 // Conditions d'eclipse du satellite
-                condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
+                condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
 
                 // Le satellite n'est pas eclipse
                 if (!condEcl.eclipseTotale() || !_conditions.eclipse) {
@@ -281,7 +281,7 @@ int Prevision::CalculPrevisions(int &nombre)
                                     if (_conditions.calcEclipseLune) {
                                         lune.CalculPosition(date);
                                     }
-                                    condEcl.CalculSatelliteEclipse(sat.position(), soleil, lune, _conditions.refraction);
+                                    condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
                                     magnitude.Calcul(condEcl, _conditions.observateur, sat.distance(), sat.hauteur(),
                                                      sat.elementsOrbitaux().donnees.magnitudeStandard(), _conditions.extinction,
                                                      _conditions.effetEclipsePartielle);
