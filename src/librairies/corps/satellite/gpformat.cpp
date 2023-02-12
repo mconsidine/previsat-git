@@ -168,7 +168,8 @@ QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichi
 /*
  * Lecture d'un fichier GP contenant une liste d'elements orbitaux pour un meme satellite
  */
-QList<ElementsOrbitaux> GPFormat::LectureFichierListeGP(const QString &nomFichier, const QString &donneesSat, const int lgRec)
+QList<ElementsOrbitaux> GPFormat::LectureFichierListeGP(const QString &nomFichier, const QString &donneesSat, const int lgRec,
+                                                        const bool alarme)
 {
     /* Declarations des variables locales */
     QString norad;
@@ -186,7 +187,9 @@ QList<ElementsOrbitaux> GPFormat::LectureFichierListeGP(const QString &nomFichie
 #if (BUILD_TEST == false)
         qWarning() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
 #endif
-        throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
+        if (alarme) {
+            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
+        }
     }
 
     if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
