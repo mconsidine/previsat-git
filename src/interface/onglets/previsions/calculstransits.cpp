@@ -272,24 +272,34 @@ void CalculsTransits::CalculAgeElementsOrbitaux()
         }
     }
 
-    const double age = fabs(jj1 - elemMax);
+    if (fabs(elemMax - DATE_INFINIE) < EPS_DATES) {
 
-    QPalette palette;
-    QBrush couleur;
-    if (age <= 5.) {
-        couleur.setColor(QColor("forestgreen"));
-    } else if (age <= 10.) {
-        couleur.setColor(Qt::darkYellow);
-    } else if (age <= 15.) {
-        couleur.setColor(QColor("orange"));
+        _ui->lbl_ageElementsOrbitauxTransit->setVisible(false);
+        _ui->ageElementsOrbitauxTransit->setVisible(false);
+
     } else {
-        couleur.setColor(Qt::red);
-    }
 
-    couleur.setStyle(Qt::SolidPattern);
-    palette.setBrush(QPalette::WindowText, couleur);
-    _ui->ageElementsOrbitauxTransit->setPalette(palette);
-    _ui->ageElementsOrbitauxTransit->setText(QString("%1 %2").arg(age, 0, 'f', 2).arg(tr("jours")));
+        const double age = fabs(jj1 - elemMax);
+
+        QPalette palette;
+        QBrush couleur;
+        if (age <= 5.) {
+            couleur.setColor(QColor("forestgreen"));
+        } else if (age <= 10.) {
+            couleur.setColor(Qt::darkYellow);
+        } else if (age <= 15.) {
+            couleur.setColor(QColor("orange"));
+        } else {
+            couleur.setColor(Qt::red);
+        }
+
+        couleur.setStyle(Qt::SolidPattern);
+        palette.setBrush(QPalette::WindowText, couleur);
+        _ui->ageElementsOrbitauxTransit->setPalette(palette);
+        _ui->ageElementsOrbitauxTransit->setText(QString("%1 %2").arg(age, 0, 'f', 2).arg(tr("jours")));
+        _ui->lbl_ageElementsOrbitauxTransit->setVisible(true);
+        _ui->ageElementsOrbitauxTransit->setVisible(true);
+    }
 
     // Lecture du fichier d'elements orbitaux de l'ISS
     const QString fichier = Configuration::instance()->dirElem() + QDir::separator() + "iss.gp";

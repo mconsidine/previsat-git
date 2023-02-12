@@ -81,6 +81,7 @@ public:
      * @param lgRec longueur d'une ligne dans les donnees satellite
      * @param listeSatellites liste des numeros NORAD (si elle est vide on recupere tous les elements orbitaux)
      * @param ajoutDonnees ajout des donnees satellite
+     * @param alarme affichage des messages d'erreurs ou de warnings
      * @return tableau d'elements orbitaux
      */
     static QMap<QString, ElementsOrbitaux> LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
@@ -92,9 +93,11 @@ public:
      * @param fichier nom du fichier d'elements orbitaux
      * @param donneesSat donnees satellites
      * @param lgRec longueur d'une ligne dans les donnees satellite
+     * @param alarme affichage des messages d'erreurs ou de warnings
      * @return liste d'elements orbitaux
      */
-    static QList<ElementsOrbitaux> LectureFichierListeGP(const QString &nomFichier, const QString &donneesSat, const int lgRec);
+    static QList<ElementsOrbitaux> LectureFichierListeGP(const QString &nomFichier, const QString &donneesSat, const int lgRec,
+                                                         const bool alarme = false);
 
     /**
      * @brief RecupereNomsat Recupere le nom du satellite
