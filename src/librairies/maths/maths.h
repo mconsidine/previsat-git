@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 juin 2015
+ * >    25 fevrier 2023
  *
  */
 
@@ -68,8 +68,8 @@ public:
      * @param ytab Tableau des ordonnees
      * @return Coordonnees de l'extremum
      */
-    static QPair<double, double> CalculExtremumInterpolation3(const std::array<double, DEGRE_INTERPOLATION> &xtab,
-                                                              const std::array<double, DEGRE_INTERPOLATION> &ytab);
+    static QPair<double, double> CalculExtremumInterpolation3(const std::array<double, MATHS::DEGRE_INTERPOLATION> &xtab,
+                                                              const std::array<double, MATHS::DEGRE_INTERPOLATION> &ytab);
 
     /**
      * @brief CalculValeurXInterpolation3 Calcul d'une valeur x pour une valeur y donnee, par interpolation a l'ordre 3,
@@ -80,8 +80,8 @@ public:
      * @param Epsilon Seuil de comparaison
      * @return valeur x correspondante
      */
-    static double CalculValeurXInterpolation3(const std::array<double, DEGRE_INTERPOLATION> &xtab,
-                                              const std::array<double, DEGRE_INTERPOLATION> &ytab,
+    static double CalculValeurXInterpolation3(const std::array<double, MATHS::DEGRE_INTERPOLATION> &xtab,
+                                              const std::array<double, MATHS::DEGRE_INTERPOLATION> &ytab,
                                               const double yval,
                                               const double epsilon);
 

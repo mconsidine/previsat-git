@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 novembre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -109,7 +109,7 @@ void Soleil::CalculLeverMeridienCoucher(const Date &date, const Observateur &obs
 
         _ephem.append(eph);
 
-        dateCalcul = Date(dateCalcul.jourJulienUTC() + NB_JOUR_PAR_MIN, 0., false);
+        dateCalcul = Date(dateCalcul.jourJulienUTC() + DATE::NB_JOUR_PAR_MIN, 0., false);
 
     } while (dateCalcul.jourJulienUTC() <= dateFin.jourJulienUTC());
 
@@ -129,14 +129,14 @@ void Soleil::CalculPosition(const Date &date)
     double u1;
 
     /* Initialisations */
-    const double t = date.jourJulienTT() * NB_SIECJ_PAR_JOURS;
+    const double t = date.jourJulienTT() * DATE::NB_SIECJ_PAR_JOURS;
 
     /* Corps de la methode */
     // Longitude moyenne
-    const double ls = DEG2RAD * modulo(280.466457 + t * (36000.7698278 + 0.00030322 * t), T360);
+    const double ls = MATHS::DEG2RAD * modulo(280.466457 + t * (36000.7698278 + 0.00030322 * t), MATHS::T360);
 
     // Longitude du perihelie
-    const double lp = DEG2RAD * modulo(282.937348 + t * (1.7195366 + 0.00045688 * t), T360);
+    const double lp = MATHS::DEG2RAD * modulo(282.937348 + t * (1.7195366 + 0.00045688 * t), MATHS::T360);
 
     // Excentricite
     const double e = 0.016708634 - t * (4.2037e-5 + 1.267e-7 * t);
@@ -155,14 +155,14 @@ void Soleil::CalculPosition(const Date &date)
     const double v = 2. * atan(sqrt((1. + e) / (1. - e)) * tan(0.5 * u));
 
     // Rayon vecteur
-    _distanceUA = DEMI_GRAND_AXE_TERRE * (1. - e * cos(u));
+    _distanceUA = SOLEIL::DEMI_GRAND_AXE_TERRE * (1. - e * cos(u));
 
     // Longitude apparente
-    _lonEcl = lp + v - DEG2RAD * 0.00569;
+    _lonEcl = lp + v - MATHS::DEG2RAD * 0.00569;
     const Vecteur3D pos(_lonEcl, 0., _distanceUA);
 
     // Position cartesienne equatoriale
-    _position = Sph2Cart(pos, date) * UA2KM;
+    _position = Sph2Cart(pos, date) * SOLEIL::UA2KM;
 
     /* Retour */
     return;

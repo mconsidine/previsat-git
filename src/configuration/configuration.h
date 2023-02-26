@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    4 fevrier 2023
+ * >    25 fevrier 2023
  *
  */
 
@@ -152,6 +152,7 @@ public:
     // Adresses internet
     const QString &adresseCelestrak() const;
     const QString &adresseCelestrakNorad() const;
+    const QString &adresseCelestrakSupplementalNorad() const;
 
     // Evenements Station Spatiale
     const QString &nomFichierEvenementsStationSpatiale() const;
@@ -168,7 +169,7 @@ public:
     // Soleil, Lune, planetes
     Soleil &soleil();
     Lune &lune();
-    std::array<Planete, NB_PLANETES> &planetes();
+    std::array<Planete, PLANETE::NB_PLANETES> &planetes();
 
 
     QMap<QString, QList<CategorieElementsOrbitaux> > &mapCategoriesElementsOrbitaux() ;
@@ -251,6 +252,11 @@ private:
      * @brief Configuration Creation du singleton
      */
     Configuration() {
+        _isCarteMaximisee = false;
+        _issLive = false;
+        _lgRec = 0;
+        _notifAOS = NotificationSonore::ATTENTE_LOS;
+        _notifFlashs = NotificationSonore::ATTENTE_LOS;
     }
 
 
@@ -301,6 +307,7 @@ private:
     // Adresses internet
     QString _adresseCelestrak;
     QString _adresseCelestrakNorad;
+    QString _adresseCelestrakSupplementalNorad;
 
     // Categories d'orbite
     QMap<QString, QString> _mapCategoriesOrbite;
@@ -336,7 +343,7 @@ private:
     // Evenements Station Spatiale
     QString _nomFichierEvenementsStationSpatiale;
     QString _noradStationSpatiale;
-    EvenementsStation _evenementsStation;
+    EvenementsStation _evenementsStation {};
 
     // Frequences radio des satellites
     QMap<QString, QList<FrequenceRadio> > _mapFrequencesRadio;
@@ -360,7 +367,7 @@ private:
     // Soleil, Lune, planetes
     Soleil _soleil;
     Lune _lune;
-    std::array<Planete, NB_PLANETES> _planetes;
+    std::array<Planete, PLANETE::NB_PLANETES> _planetes;
 
 
     // Adresses de telechargement

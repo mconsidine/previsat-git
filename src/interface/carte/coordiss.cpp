@@ -30,7 +30,7 @@
  * >    13 mars 2022
  *
  * Date de revision
- * >    17 septembre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -41,6 +41,7 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/evenements.h"
+#include "librairies/exceptions/previsatexception.h"
 #include "coordiss.h"
 
 
@@ -60,7 +61,18 @@ CoordISS::CoordISS(QWidget *parent) :
 {
     _ui->setupUi(this);
 
-    setPolice();
+    try {
+
+        qInfo() << "Début Initialisation" << metaObject()->className();
+
+        setPolice();
+
+        qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    } catch (PreviSatException &e) {
+        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        throw PreviSatException();
+    }
 }
 
 
@@ -101,7 +113,7 @@ int CoordISS::CalculNumeroOrbiteISS(const Date &date)
         Satellite sat = Configuration::instance()->listeSatellites().first();
         sat.CalculPosVit(date);
         sat.CalculElementsOsculateurs(date);
-        Date dateCalcul(date.jourJulienUTC() + sat.elementsOsculateurs().periode() * NB_JOUR_PAR_HEUR, 0., false);
+        Date dateCalcul(date.jourJulienUTC() + sat.elementsOsculateurs().periode() * DATE::NB_JOUR_PAR_HEUR, 0., false);
 
         sat.CalculPosVit(dateCalcul);
         sat.CalculCoordTerrestres(dateCalcul);
@@ -114,7 +126,7 @@ int CoordISS::CalculNumeroOrbiteISS(const Date &date)
         bool atrouveOrb = false;
         while (!atrouveOrb) {
 
-            dateCalcul = Date(dateNA.jourJulienUTC() - NB_JOUR_PAR_MIN, 0., false);
+            dateCalcul = Date(dateNA.jourJulienUTC() - DATE::NB_JOUR_PAR_MIN, 0., false);
             sat.CalculPosVit(dateCalcul);
             sat.CalculCoordTerrestres(dateCalcul);
 
@@ -155,17 +167,17 @@ void CoordISS::show(const Date &dateCourante, const Date &dateEcl)
 
     // Affichage des donnees du blackboard
     chaine = "LAT = %1";
-    _ui->latitudeISS->setText(chaine.arg(satellite.latitude() * RAD2DEG, 0, 'f', 1));
+    _ui->latitudeISS->setText(chaine.arg(satellite.latitude() * MATHS::RAD2DEG, 0, 'f', 1));
     chaine = "ALT = %1";
-    _ui->altitudeISS->setText(chaine.arg(satellite.altitude() * MILE_PAR_KM, 0, 'f', 1));
+    _ui->altitudeISS->setText(chaine.arg(satellite.altitude() * TERRE::MILE_PAR_KM, 0, 'f', 1));
     chaine = "LON = %1";
-    _ui->longitudeISS->setText(chaine.arg(-satellite.longitude() * RAD2DEG, 0, 'f', 1));
+    _ui->longitudeISS->setText(chaine.arg(-satellite.longitude() * MATHS::RAD2DEG, 0, 'f', 1));
     chaine = "INC = %1";
-    _ui->inclinaisonISS->setText(chaine.arg(satellite.elementsOsculateurs().inclinaison() * RAD2DEG, 0, 'f', 1));
+    _ui->inclinaisonISS->setText(chaine.arg(satellite.elementsOsculateurs().inclinaison() * MATHS::RAD2DEG, 0, 'f', 1));
     chaine = "ORB = %1";
     _ui->orbiteISS->setText(chaine.arg(numOrb));
     chaine = "BETA = %1";
-    _ui->betaISS->setText(chaine.arg(satellite.beta() * RAD2DEG, 0, 'f', 1));
+    _ui->betaISS->setText(chaine.arg(satellite.beta() * MATHS::RAD2DEG, 0, 'f', 1));
 
     /* Retour */
     return;

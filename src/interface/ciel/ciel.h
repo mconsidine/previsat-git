@@ -36,7 +36,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    18 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -113,7 +113,7 @@ public:
               const QList<LigneConstellation> &lignesCst,
               const QList<Constellation> &constellations,
               const QList<Etoile> &etoiles,
-              const std::array<Planete, NB_PLANETES> &planetes,
+              const std::array<Planete, PLANETE::NB_PLANETES> &planetes,
               const QList<Satellite> &satellites,
               const bool fenetreMax,
               const bool maxFlash = false,
@@ -174,7 +174,7 @@ private:
 
     Observateur _observateur;
     QList<Satellite> _satellites;
-    std::array<Planete, NB_PLANETES> _planetes;
+    std::array<Planete, PLANETE::NB_PLANETES> _planetes;
     Soleil _soleil;
     Lune _lune;
     bool _fenetreMax;

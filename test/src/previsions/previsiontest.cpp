@@ -83,7 +83,7 @@ void PrevisionTest::testAll()
     conditions.eclipse = true;
     conditions.magnitudeLimite = 99.;
     conditions.hauteur = 0.;
-    conditions.crepuscule = PI_SUR_DEUX;
+    conditions.crepuscule = MATHS::PI_SUR_DEUX;
     conditions.extinction = true;
     conditions.refraction = true;
     conditions.effetEclipsePartielle = true;
@@ -129,8 +129,8 @@ void PrevisionTest::testCalculPrevisions2()
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "previsions2_20200815_20200822.txt";
 
     conditions.pas = 0.0034722222222222222;
-    conditions.hauteur = 10. * DEG2RAD;
-    conditions.crepuscule = -6. * DEG2RAD;
+    conditions.hauteur = 10. * MATHS::DEG2RAD;
+    conditions.crepuscule = -6. * MATHS::DEG2RAD;
     conditions.tabElem = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
     conditions.ficRes = ficRes;
 
@@ -157,8 +157,8 @@ void PrevisionTest::testCalculPrevisions3()
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "previsions3_20200815_20200822.txt";
 
     conditions.pas = 0.0034722222222222222;
-    conditions.hauteur = 5. * DEG2RAD;
-    conditions.crepuscule = -6. * DEG2RAD;
+    conditions.hauteur = 5. * MATHS::DEG2RAD;
+    conditions.crepuscule = -6. * MATHS::DEG2RAD;
     conditions.tabElem = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
     conditions.ficRes = ficRes;
 

@@ -119,7 +119,7 @@ void TelescopeTest::testCalculSuiviTelescope1()
     const Date dateAosSuivi(elemAOS.date.jourJulienUTC(), conditions.offset);
 
     // Date de coucher
-    date = Date(dateAosSuivi.jourJulienUTC() + 10. * NB_JOUR_PAR_SEC, 0., false);
+    date = Date(dateAosSuivi.jourJulienUTC() + 10. * DATE::NB_JOUR_PAR_SEC, 0., false);
     conditions.observateur.CalculPosVit(date);
 
     sat.CalculPosVit(date);
@@ -133,7 +133,7 @@ void TelescopeTest::testCalculSuiviTelescope1()
     const Date dateLosSuivi(elemLOS.date.jourJulienUTC(), conditions.offset);
 
     conditions.jj1 = dateAosSuivi.jourJulienUTC();
-    conditions.nbIter = qRound(((dateLosSuivi.jourJulienUTC() - dateAosSuivi.jourJulienUTC()) * NB_MILLISEC_PAR_JOUR + 1000.) / conditions.pas);
+    conditions.nbIter = qRound(((dateLosSuivi.jourJulienUTC() - dateAosSuivi.jourJulienUTC()) * DATE::NB_MILLISEC_PAR_JOUR + 1000.) / conditions.pas);
 
     // Nom du fichier genere
     const QString fmtFicOut = "%1%2%3T%4%5_%6%7%8T%9%10_%11.csv";

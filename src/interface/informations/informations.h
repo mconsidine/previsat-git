@@ -33,7 +33,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    17 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -120,6 +120,11 @@ private:
     /*
      * Methodes privees
      */
+    /**
+     * @brief Initialisation Initialisation de la classe Informations
+     */
+    void Initialisation();
+
     /**
      * @brief OuvertureInfo Ouverture du fichier d'informations
      * @param nomfic nom du fichier

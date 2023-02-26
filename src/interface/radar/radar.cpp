@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    28 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -47,6 +47,7 @@
 #include "configuration/gestionnairexml.h"
 #include "interface/ciel/ciel.h"
 #include "interface/options/options.h"
+#include "librairies/exceptions/previsatexception.h"
 #include "radar.h"
 
 
@@ -69,7 +70,19 @@ Radar::Radar(QWidget *parent) :
     _ui(new Ui::Radar)
 {
     _ui->setupUi(this);
-    scene = nullptr;
+
+    try {
+
+        qInfo() << "Début Initialisation" << metaObject()->className();
+
+        scene = nullptr;
+
+        qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    } catch (PreviSatException &e) {
+        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        throw PreviSatException();
+    }
 }
 
 /*
@@ -97,6 +110,7 @@ void Radar::mouseMoveEvent(QMouseEvent *evt)
 
     /* Corps de la methode */
     if (_ui->vueRadar->underMouse()) {
+
         const int lciel = qRound(0.5 * _ui->vueRadar->width());
         const int hciel = qRound(0.5 * _ui->vueRadar->height());
 
@@ -115,24 +129,24 @@ void Radar::mouseMoveEvent(QMouseEvent *evt)
             const double x2 = -x1 * xf / (double) lciel;
             const double y2 = -y1 * yf / (double) hciel;
 
-            const double ht = PI_SUR_DEUX * (1. - sqrt(x2 * x2 + y2 * y2));
+            const double ht = MATHS::PI_SUR_DEUX * (1. - sqrt(x2 * x2 + y2 * y2));
             double az = atan2(x2, y2);
             if (az < 0.) {
-                az += DEUX_PI;
+                az += MATHS::DEUX_PI;
             }
 
             // Affichage des coordonnees dans la barre de statut
-            emit AfficherMessageStatut2(tr("Azimut : %1°").arg(fabs(az) * RAD2DEG, 6, 'f', 2, QChar('0')));
-            emit AfficherMessageStatut3(tr("Hauteur : %1°").arg(fabs(ht) * RAD2DEG, 5, 'f', 2, QChar('0')));
+            emit AfficherMessageStatut2(tr("Azimut : %1°").arg(fabs(az) * MATHS::RAD2DEG, 6, 'f', 2, QChar('0')));
+            emit AfficherMessageStatut3(tr("Hauteur : %1°").arg(fabs(ht) * MATHS::RAD2DEG, 5, 'f', 2, QChar('0')));
 
             // Survol d'un satellite avec le curseur
-            QListIterator<Satellite> it(Configuration::instance()->listeSatellites());
+            QListIterator it(Configuration::instance()->listeSatellites());
             bool atrouve = false;
             while (it.hasNext() && !atrouve) {
 
                 const Satellite sat = it.next();
-                const int lsat = qRound(-lciel2 * (1. - sat.hauteur() * DEUX_SUR_PI) * sin(sat.azimut()));
-                const int bsat = qRound(-hciel2 * (1. - sat.hauteur() * DEUX_SUR_PI) * cos(sat.azimut()));
+                const int lsat = qRound(-lciel2 * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * sin(sat.azimut()));
+                const int bsat = qRound(-hciel2 * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * cos(sat.azimut()));
 
                 // Distance au carre du satellite au curseur
                 const int dt = (x1 - lsat) * (x1 - lsat) + (y1 - bsat) * (y1 - bsat);
@@ -161,8 +175,8 @@ void Radar::mouseMoveEvent(QMouseEvent *evt)
                 static bool asoleil = false;
                 const Soleil &soleil = Configuration::instance()->soleil();
 
-                const int lsol = qRound(-lciel2 * (1. - soleil.hauteur() * DEUX_SUR_PI) * sin(soleil.azimut()));
-                const int bsol = qRound(-hciel2 * (1. - soleil.hauteur() * DEUX_SUR_PI) * cos(soleil.azimut()));
+                const int lsol = qRound(-lciel2 * (1. - soleil.hauteur() * MATHS::DEUX_SUR_PI) * sin(soleil.azimut()));
+                const int bsol = qRound(-hciel2 * (1. - soleil.hauteur() * MATHS::DEUX_SUR_PI) * cos(soleil.azimut()));
 
                 // Distance au carre du Soleil au curseur
                 const int dt = (x1 - lsol) * (x1 - lsol) + (y1 - bsol) * (y1 - bsol);
@@ -189,8 +203,8 @@ void Radar::mouseMoveEvent(QMouseEvent *evt)
                 static bool alune = false;
                 const Lune &lune = Configuration::instance()->lune();
 
-                const int llun = qRound(-lciel2 * (1. - lune.hauteur() * DEUX_SUR_PI) * sin(lune.azimut()));
-                const int blun = qRound(-hciel2 * (1. - lune.hauteur() * DEUX_SUR_PI) * cos(lune.azimut()));
+                const int llun = qRound(-lciel2 * (1. - lune.hauteur() * MATHS::DEUX_SUR_PI) * sin(lune.azimut()));
+                const int blun = qRound(-hciel2 * (1. - lune.hauteur() * MATHS::DEUX_SUR_PI) * cos(lune.azimut()));
 
                 // Distance au carre de la Lune au curseur
                 const int dt = (x1 - llun) * (x1 - llun) + (y1 - blun) * (y1 - blun);
@@ -247,14 +261,14 @@ void Radar::mousePressEvent(QMouseEvent *evt)
         if (evt->button() == Qt::LeftButton) {
 
             // Clic sur un satellite
-            QListIterator<Satellite> it(Configuration::instance()->listeSatellites());
+            QListIterator it(Configuration::instance()->listeSatellites());
             bool atrouve = false;
             int idx = 0;
             while (it.hasNext() && !atrouve) {
 
                 const Satellite sat = it.next();
-                const int lsat = qRound(-lciel2 * (1. - sat.hauteur() * DEUX_SUR_PI) * sin(sat.azimut()));
-                const int bsat = qRound(-hciel2 * (1. - sat.hauteur() * DEUX_SUR_PI) * cos(sat.azimut()));
+                const int lsat = qRound(-lciel2 * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * sin(sat.azimut()));
+                const int bsat = qRound(-hciel2 * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * cos(sat.azimut()));
 
                 // Distance au carre du curseur au satellite
                 const int dt = (x1 - lsat) * (x1 - lsat) + (y1 - bsat) * (y1 - bsat);
@@ -300,7 +314,7 @@ void Radar::show()
     QPen crayon(Qt::white);
 
     // Determination de la couleur du ciel
-    const double hts = Configuration::instance()->soleil().hauteur() * RAD2DEG;
+    const double hts = Configuration::instance()->soleil().hauteur() * MATHS::RAD2DEG;
     const QBrush couleurCiel = Ciel::CalculCouleurCiel(hts);
 
     if (scene != nullptr) {
@@ -355,8 +369,8 @@ void Radar::show()
     if (settings.value("affichage/affsoleil").toBool() && soleil.isVisible()) {
 
         // Calcul des coordonnees radar du Soleil
-        const int lsol = qRound(100. - 100. * xf * (1. - soleil.hauteur() * DEUX_SUR_PI) * sin(soleil.azimut()));
-        const int bsol = qRound(100. - 100. * yf * (1. - soleil.hauteur() * DEUX_SUR_PI) * cos(soleil.azimut()));
+        const int lsol = qRound(100. - 100. * xf * (1. - soleil.hauteur() * MATHS::DEUX_SUR_PI) * sin(soleil.azimut()));
+        const int bsol = qRound(100. - 100. * yf * (1. - soleil.hauteur() * MATHS::DEUX_SUR_PI) * cos(soleil.azimut()));
 
         QPixmap pixsol;
         pixsol.load(":/resources/interface/soleil.png");
@@ -374,11 +388,11 @@ void Radar::show()
     if (settings.value("affichage/afflune").toBool() && lune.isVisible()) {
 
         // Calcul des coordonnees radar de la Lune
-        const int llun = qRound(100. - 100. * xf * (1. - lune.hauteur() * DEUX_SUR_PI) * sin(lune.azimut()));
-        const int blun = qRound(100. - 100. * yf * (1. - lune.hauteur() * DEUX_SUR_PI) * cos(lune.azimut()));
+        const int llun = qRound(100. - 100. * xf * (1. - lune.hauteur() * MATHS::DEUX_SUR_PI) * sin(lune.azimut()));
+        const int blun = qRound(100. - 100. * yf * (1. - lune.hauteur() * MATHS::DEUX_SUR_PI) * cos(lune.azimut()));
 
         const int lpol = 100;
-        const int bpol = qRound(100 - 100 * (1. - Configuration::instance()->observateurs().at(0).latitude() * DEUX_SUR_PI));
+        const int bpol = qRound(100 - 100 * (1. - Configuration::instance()->observateurs().first().latitude() * MATHS::DEUX_SUR_PI));
 
         QPixmap pixlun;
         pixlun.load(":/resources/interface/lune.png");
@@ -388,7 +402,7 @@ void Radar::show()
         QTransform transform;
         transform.translate(llun, blun);
         transform.rotate(180. - QLineF(llun, blun, lpol, bpol).normalVector().angle());
-        if (settings.value("affichage/rotationLune").toBool() && (Configuration::instance()->observateurs().at(0).latitude() < 0.)) {
+        if (settings.value("affichage/rotationLune").toBool() && (Configuration::instance()->observateurs().first().latitude() < 0.)) {
             transform.rotate(180.);
         }
         transform.translate(-7, -7);
@@ -419,10 +433,10 @@ void Radar::show()
             const QList<ElementsTraceCiel> &trace = satellites.at(isat).traceCiel();
             if (settings.value("affichage/afftraceCiel").toBool() && (trace.size() > 0)) {
 
-                const double ht1 = trace.at(0).hauteur;
-                const double az1 = trace.at(0).azimut;
-                lsat1 = qRound(100. - 100. * xf * (1. - ht1 * DEUX_SUR_PI) * sin(az1));
-                bsat1 = qRound(100. - 100. * yf * (1. - ht1 * DEUX_SUR_PI) * cos(az1));
+                const double ht1 = trace.first().hauteur;
+                const double az1 = trace.first().azimut;
+                lsat1 = qRound(100. - 100. * xf * (1. - ht1 * MATHS::DEUX_SUR_PI) * sin(az1));
+                bsat1 = qRound(100. - 100. * yf * (1. - ht1 * MATHS::DEUX_SUR_PI) * cos(az1));
 
                 for(int i=1; i<trace.size(); i++) {
 
@@ -449,8 +463,8 @@ void Radar::show()
                         }
                     }
 
-                    const int lsat2 = qRound(100. - 100. * xf * (1. - ht2 * DEUX_SUR_PI) * sin(az2));
-                    const int bsat2 = qRound(100. - 100. * yf * (1. - ht2 * DEUX_SUR_PI) * cos(az2));
+                    const int lsat2 = qRound(100. - 100. * xf * (1. - ht2 * MATHS::DEUX_SUR_PI) * sin(az2));
+                    const int bsat2 = qRound(100. - 100. * yf * (1. - ht2 * MATHS::DEUX_SUR_PI) * cos(az2));
 
                     scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
 
@@ -460,8 +474,8 @@ void Radar::show()
             }
 
             // Calcul des coordonnees radar du satellite
-            const int lsat = qRound(100. - 100. * xf * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) * sin(satellites.at(isat).azimut()));
-            const int bsat = qRound(100. - 100. * yf * (1. - satellites.at(isat).hauteur() * DEUX_SUR_PI) * cos(satellites.at(isat).azimut()));
+            const int lsat = qRound(100. - 100. * xf * (1. - satellites.at(isat).hauteur() * MATHS::DEUX_SUR_PI) * sin(satellites.at(isat).azimut()));
+            const int bsat = qRound(100. - 100. * yf * (1. - satellites.at(isat).hauteur() * MATHS::DEUX_SUR_PI) * cos(satellites.at(isat).azimut()));
 
             rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
 

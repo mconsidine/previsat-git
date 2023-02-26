@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -63,6 +63,12 @@ public:
     Observateur();
 
     /**
+     * @brief Observateur Definition a partir d'un objet Observateur
+     * @param observateur lieu d'observation
+     */
+    Observateur(const Observateur &observateur) = default;
+
+    /**
      * @brief Observateur Constructeur a partir des coordonnees geographiques d'un lieu d'observation
      * @param nom nom du lieu d'observation
      * @param lon longitude en degres (negative a l'est)
@@ -70,12 +76,6 @@ public:
      * @param alt altitude en metres
      */
     Observateur(const QString &nom, const double lon, const double lat, const double alt = 0.);
-
-    /**
-     * @brief Observateur Definition a partir d'un objet Observateur
-     * @param observateur lieu d'observation
-     */
-    Observateur(const Observateur &observateur);
 
     /**
      * @brief Observateur Constructeur a partir des donnees relatives au lieu d'observation a une date donnee
@@ -136,7 +136,7 @@ public:
      * @brief operator = Affectation d'un observateur
      * @param observateur observateur
      */
-    Observateur &operator = (const Observateur &observateur);
+    Observateur &operator = (const Observateur &observateur) = default;
 
 
     /*

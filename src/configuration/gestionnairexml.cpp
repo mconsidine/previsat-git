@@ -104,8 +104,8 @@ void GestionnaireXml::EcritureConfiguration()
             cfg.writeStartElement("Observateur");
             cfg.writeTextElement("Nom", obs.nomlieu());
 
-            cfg.writeTextElement("Longitude", QString::number(obs.longitude() * RAD2DEG, 'f', 9));
-            cfg.writeTextElement("Latitude", QString::number(obs.latitude() * RAD2DEG, 'f', 9));
+            cfg.writeTextElement("Longitude", QString::number(obs.longitude() * MATHS::RAD2DEG, 'f', 9));
+            cfg.writeTextElement("Latitude", QString::number(obs.latitude() * MATHS::RAD2DEG, 'f', 9));
             cfg.writeTextElement("Altitude", QString::number(obs.altitude() * 1000.));
             cfg.writeEndElement();
         }
@@ -263,7 +263,6 @@ void GestionnaireXml::EcritureGestionnaireElementsOrbitaux()
 QMap<QString, QString> GestionnaireXml::LectureCategoriesOrbite()
 {
     /* Declarations des variables locales */
-    QString version;
     QMap<QString, QString> mapCategoriesOrbite;
 
     /* Initialisations */
@@ -271,6 +270,7 @@ QMap<QString, QString> GestionnaireXml::LectureCategoriesOrbite()
 
     try {
 
+        QString version;
         const QString nomficXml = "categories.xml";
 
         VerifieFichierXml(nomficXml, version);
@@ -800,13 +800,13 @@ QList<Observateur> GestionnaireXml::LectureLieuxObservation(QXmlStreamReader &cf
 QMap<QString, QString> GestionnaireXml::LecturePays()
 {
     /* Declarations des variables locales */
-    QString version;
     QMap<QString, QString> mapPays;
 
     /* Initialisations */
 
     try {
 
+        QString version;
         const QString nomficXml = "pays.xml";
 
         VerifieFichierXml(nomficXml, version);
@@ -880,7 +880,6 @@ QMap<QString, QString> GestionnaireXml::LecturePays()
 QMap<int, SatelliteTDRS> GestionnaireXml::LectureSatellitesTDRS()
 {
     /* Declarations des variables locales */
-    QString version;
     QMap<int, SatelliteTDRS> mapTDRS;
 
     /* Initialisations */
@@ -888,6 +887,7 @@ QMap<int, SatelliteTDRS> GestionnaireXml::LectureSatellitesTDRS()
 
     try {
 
+        QString version;
         const QString nomficXml = "tdrs.xml";
 
         VerifieFichierXml(nomficXml, version);
@@ -973,7 +973,6 @@ QMap<int, SatelliteTDRS> GestionnaireXml::LectureSatellitesTDRS()
 QMap<QString, Observateur> GestionnaireXml::LectureSitesLancement()
 {
     /* Declarations des variables locales */
-    QString version;
     QMap<QString, Observateur> mapSitesLancement;
 
     /* Initialisations */
@@ -981,6 +980,7 @@ QMap<QString, Observateur> GestionnaireXml::LectureSitesLancement()
 
     try {
 
+        QString version;
         const QString nomficXml = "sites.xml";
 
         VerifieFichierXml(nomficXml, version);
@@ -1062,7 +1062,6 @@ QMap<QString, Observateur> GestionnaireXml::LectureSitesLancement()
 QMap<QString, Observateur> GestionnaireXml::LectureStations()
 {
     /* Declarations des variables locales */
-    QString version;
     QMap<QString, Observateur> mapStations;
 
     /* Initialisations */
@@ -1070,6 +1069,7 @@ QMap<QString, Observateur> GestionnaireXml::LectureStations()
 
     try {
 
+        QString version;
         const QString nomficXml = "stations.xml";
 
         VerifieFichierXml(nomficXml, version);
@@ -1209,10 +1209,10 @@ QMap<QString, SatellitesFlashs> GestionnaireXml::LectureStatutSatellitesFlashs()
                                 while (cfg.readNextStartElement()) {
 
                                     if (cfg.name().toString() == "Yaw") {
-                                        angles.first = cfg.readElementText().toDouble() * DEG2RAD;
+                                        angles.first = cfg.readElementText().toDouble() * MATHS::DEG2RAD;
 
                                     } else if (cfg.name().toString() == "Pitch") {
-                                        angles.second = cfg.readElementText().toDouble() * DEG2RAD;
+                                        angles.second = cfg.readElementText().toDouble() * MATHS::DEG2RAD;
 
                                     } else {
                                         cfg.skipCurrentElement();

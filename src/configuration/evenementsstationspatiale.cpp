@@ -74,6 +74,7 @@ EvenementsStation EvenementsStationSpatiale::LectureEvenementsStationSpatiale()
 
     /* Corps de la methode */
     try {
+
         QFile fi(Configuration::instance()->dirLocalData() + QDir::separator() +
                  Configuration::instance()->nomFichierEvenementsStationSpatiale());
 
@@ -84,13 +85,9 @@ EvenementsStation EvenementsStationSpatiale::LectureEvenementsStationSpatiale()
             cfg.readNextStartElement();
             if (cfg.name().toString().toLower() == "ndm") {
 
-                QString version;
-
                 while (cfg.readNextStartElement()) {
 
                     if (cfg.name().toString().toLower() == "oem") {
-
-                        version = cfg.attributes().value("version").toString();
 
                         while (cfg.readNextStartElement()) {
 

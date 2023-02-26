@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 fevrier 2023
+ * >    25 fevrier 2023
  *
  */
 
@@ -66,6 +66,7 @@ TLE::TLE()
     /* Initialisations */
 
     /* Corps du constructeur */
+    _elements.epoque = Date();
 
     /* Retour */
     return;
@@ -87,13 +88,13 @@ TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2) :
 
     // Designation COSPAR
     int annee = _ligne1.mid(9, 2).toInt();
-    annee += (annee < 57) ? AN2000 : 1900;
+    annee += (annee < 57) ? DATE::AN2000 : 1900;
     _elements.cospar = QString("%1-%2").arg(annee).arg(_ligne1.mid(11, 6).trimmed());
 
     // Epoque
     annee = _ligne1.mid(18, 2).toInt();
     const double jrs = _ligne1.mid(20, 12).toDouble();
-    annee += (annee < 57) ? AN2000 : 1900;
+    annee += (annee < 57) ? DATE::AN2000 : 1900;
     const Date date(annee, 1, 1., 0.);
     _elements.epoque = Date(date.jourJulienUTC() + jrs - 1., 0., true);
 
@@ -153,13 +154,13 @@ QMap<QString, ElementsOrbitaux> TLE::LectureFichier(const QString &nomFichier, c
         throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
     }
 
-    QString lig0;
-    QString lig1;
-    QString lig2;
-    QString numeroNorad;
-    TLE tle;
-
     if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+        QString lig0;
+        QString lig1;
+        QString lig2;
+        QString numeroNorad;
+        TLE tle;
 
         const QString contenuFichier = fi.readAll();
 
@@ -439,7 +440,6 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
                 QString lig0;
                 QString lig1;
                 QString lig2;
-                QString msg;
 
                 const QString contenuFichier = fi.readAll();
 

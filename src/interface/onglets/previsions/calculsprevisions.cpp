@@ -298,7 +298,6 @@ void CalculsPrevisions::on_calculsPrev_clicked()
     ConditionsPrevisions conditions;
 
     /* Initialisations */
-    int j = 0;
     conditions.listeSatellites.clear();
     vecSat.append(0);
 
@@ -306,6 +305,8 @@ void CalculsPrevisions::on_calculsPrev_clicked()
     try {
 
         qInfo() << "Lancement des calculs de prévisions";
+
+        int j = 0;
 
         if (_ui->listePrevisions->count() == 0) {
             qCritical() << "Aucun satellite n'est affiché dans la liste";
@@ -357,9 +358,9 @@ void CalculsPrevisions::on_calculsPrev_clicked()
         // Pas de generation
         conditions.pas = _ui->pasGeneration->currentText().split(QRegularExpression("[^0-9]+")).first().toDouble();
         if (_ui->pasGeneration->currentIndex() < 5) {
-            conditions.pas *= NB_JOUR_PAR_SEC;
+            conditions.pas *= DATE::NB_JOUR_PAR_SEC;
         } else {
-            conditions.pas *= NB_JOUR_PAR_MIN;
+            conditions.pas *= DATE::NB_JOUR_PAR_MIN;
         }
 
         // Lieu d'observation
@@ -375,16 +376,16 @@ void CalculsPrevisions::on_calculsPrev_clicked()
         conditions.magnitudeLimite = (_ui->magnitudeMaxPrev->isChecked()) ? _ui->valMagnitudeMaxPrev->value() : 99.;
 
         // Hauteur minimale du satellite
-        conditions.hauteur = DEG2RAD * ((_ui->hauteurSatPrev->currentIndex() == 5) ?
+        conditions.hauteur = MATHS::DEG2RAD * ((_ui->hauteurSatPrev->currentIndex() == 5) ?
                                             abs(_ui->valHauteurSatPrev->text().toInt()) : 5 * _ui->hauteurSatPrev->currentIndex());
 
         // Hauteur maximale du Soleil
         if (_ui->hauteurSoleilPrev->currentIndex() <= 3) {
-            conditions.crepuscule = -6. * DEG2RAD * _ui->hauteurSoleilPrev->currentIndex();
+            conditions.crepuscule = -6. * MATHS::DEG2RAD * _ui->hauteurSoleilPrev->currentIndex();
         } else if (_ui->hauteurSoleilPrev->currentIndex() == 4) {
-            conditions.crepuscule = PI_SUR_DEUX;
+            conditions.crepuscule = MATHS::PI_SUR_DEUX;
         } else if (_ui->hauteurSoleilPrev->currentIndex() == 5) {
-            conditions.crepuscule = DEG2RAD * _ui->valHauteurSoleilPrev->text().toInt();
+            conditions.crepuscule = MATHS::DEG2RAD * _ui->valHauteurSoleilPrev->text().toInt();
         } else {
         }
 
@@ -401,13 +402,47 @@ void CalculsPrevisions::on_calculsPrev_clicked()
         conditions.calcEclipseLune = settings.value("affichage/eclipsesLune").toBool();
 
         // Elements orbitaux
-        conditions.tabElem = Configuration::instance()->mapElementsOrbitaux();
+        conditions.tabElem.clear();
+        for(int i=0; i<_ui->listePrevisions->count(); i++) {
+            if (_ui->listePrevisions->item(i)->checkState() == Qt::Checked) {
+                const QString norad = _ui->listePrevisions->item(i)->data(Qt::UserRole).toString();
+                conditions.tabElem.insert(norad, Configuration::instance()->mapElementsOrbitaux()[norad]);
+            }
+        }
+
+        // Ecriture des informations de prévisions dans le fichier de log
+        qInfo() << "--";
+        qInfo() << "Calcul des prévisions de passage :";
+        qInfo() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo() << "Ecart UTC date1 =" << offset1;
+
+        qInfo() << "Date de fin =" << date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo() << "Ecart UTC date2 =" << offset2;
+        qInfo() << "Pas de génération =" << conditions.pas;
+
+        qInfo() << QString("Lieu d'observation : %1 %2 %3")
+                   .arg(conditions.observateur.longitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                   .arg(conditions.observateur.latitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                   .arg(conditions.observateur.altitude() * 1.e3);
+
+        qInfo() << "Unité de longueur =" << conditions.unite;
+        qInfo() << "Conditions d'eclairement du satellite =" << conditions.eclipse;
+        qInfo() << "Magnitude limite =" << conditions.magnitudeLimite;
+        qInfo() << "Hauteur minimale du satellite =" << conditions.hauteur;
+        qInfo() << "Hauteur maximale du Soleil = " << conditions.crepuscule;
+        qInfo() << "Prise en compte de l'extinction atmospherique =" << conditions.extinction;
+        qInfo() << "Prise en compte de la refraction atmospherique =" << conditions.refraction;
+        qInfo() << "Prise en compte de l'effet des eclipses partielles sur la magnitude =" << conditions.effetEclipsePartielle;
+        qInfo() << "Prise en compte des eclipses de Lune =" << conditions.calcEclipseLune;
+        qInfo() << "Liste de numéros NORAD =" << conditions.tabElem.keys();
+
+        qInfo() << "--";
 
         // Nom du fichier resultat
         const QString chaine = tr("previsions", "filename (without accent)") + "_%1_%2.txt";
         conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
-                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").at(0));
+                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first()).
+                arg(date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first());
 
         // Barre de progression
         auto barreProgression = new QProgressBar();

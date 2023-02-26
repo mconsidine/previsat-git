@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -122,7 +122,7 @@ private:
      * @param soleil Soleil
      * @param minmax tableau de la date et de l'angle minimum
      */
-    static QPair<double, double> CalculAngleMin(const std::array<double, DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps, Satellite &satellite);
+    static QPair<double, double> CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps, Satellite &satellite);
 
     /**
      * @brief CalculDate Calcul de la date ou la distance angulaire est minimale
@@ -132,7 +132,7 @@ private:
      * @param satellite satellite
      * @return date ou la distance angulaire est minimale
      */
-    static double CalculDate(const std::array<double, DEGRE_INTERPOLATION> jjm, const CorpsTransit & typeCorps, const bool itransit, Satellite &satellite);
+    static double CalculDate(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit & typeCorps, const bool itransit, Satellite &satellite);
 
     /**
      * @brief CalculElements Calcul des dates caracteristiques de la conjonction ou du transit

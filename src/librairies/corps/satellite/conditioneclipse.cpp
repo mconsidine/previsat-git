@@ -30,7 +30,7 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -155,31 +155,31 @@ ElementsEclipse ConditionEclipse::CalculEclipse(const Vecteur3D &position, const
     {
         rho = position;
         const double tanlat = position.z() / sqrt(position.x() * position.x() + position.y() * position.y());
-        const double u = atan(tanlat / (1. - APLA));
+        const double u = atan(tanlat / (1. - TERRE::APLA));
         const double cu = cos(u);
         const double su = sin(u);
-        rayon = RAYON_TERRESTRE * sqrt(cu * cu + G2 * su * su);
+        rayon = TERRE::RAYON_TERRESTRE * sqrt(cu * cu + TERRE::G2 * su * su);
         break;
     }
     case CorpsOccultant::LUNE:
         rho = position - positionCorpsOccultant;
-        rayon = RAYON_LUNAIRE;
+        rayon = LUNE::RAYON_LUNAIRE;
         break;
     }
 
-    elements.phiSoleil = asin(RAYON_SOLAIRE / distSatSol);
+    elements.phiSoleil = asin(SOLEIL::RAYON_SOLAIRE / distSatSol);
     if (std::isnan(elements.phiSoleil)) {
-        elements.phiSoleil = PI_SUR_DEUX;
+        elements.phiSoleil = MATHS::PI_SUR_DEUX;
     } else {
         if ((corpsOccultant == CorpsOccultant::TERRE) && refraction) {
-            elements.phiSoleil += REFRACTION_HZ;
+            elements.phiSoleil += TERRE::REFRACTION_HZ;
         }
     }
 
     const double distance = rho.Norme();
     elements.phi = asin(rayon / distance);
     if (std::isnan(elements.phi)) {
-        elements.phi = PI_SUR_DEUX;
+        elements.phi = MATHS::PI_SUR_DEUX;
     }
 
     elements.elongation = (-rho).Angle(rhoSatSol);
@@ -215,7 +215,7 @@ ElementsEclipse ConditionEclipse::CalculEclipse(const Vecteur3D &position, const
         const double tmp2 = cpc * acos((cps - cpc * cth) / (spc * sth));
         const double tmp3 = acos((cth - cps * cpc) / (sps * spc));
 
-        elements.luminosite = 1. - (PI - tmp1 - tmp2 - tmp3) / (PI * (1. - cps));
+        elements.luminosite = 1. - (MATHS::PI - tmp1 - tmp2 - tmp3) / (MATHS::PI * (1. - cps));
 
         if (elements.luminosite > 1.) {
             elements.luminosite = 1.;

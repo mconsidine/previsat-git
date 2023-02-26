@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 fevrier 2023
+ * >    25 fevrier 2023
  *
  */
 
@@ -104,8 +104,8 @@ int Prevision::CalculPrevisions(int &nombre)
     QList<Satellite> sats;
 
     /* Initialisations */
-    double elemMin = -DATE_INFINIE;
-    double elemMax = DATE_INFINIE;
+    double elemMin = -DATE::DATE_INFINIE;
+    double elemMax = DATE::DATE_INFINIE;
     QMap<QString, ElementsOrbitaux> tabElem = _conditions.tabElem;
 
     tps.start();
@@ -165,9 +165,9 @@ int Prevision::CalculPrevisions(int &nombre)
         resultatSat.clear();
         sat = it2.next();
 
-        const double perigee = RAYON_TERRESTRE * pow(KE * NB_MIN_PAR_JOUR / (DEUX_PI * sat.elementsOrbitaux().no), DEUX_TIERS) *
+        const double perigee = TERRE::RAYON_TERRESTRE * pow(TERRE::KE * DATE::NB_MIN_PAR_JOUR / (MATHS::DEUX_PI * sat.elementsOrbitaux().no), MATHS::DEUX_TIERS) *
                 (1. - sat.elementsOrbitaux().ecco);
-        const double periode = NB_JOUR_PAR_MIN * (floor(KE * pow(DEUX_PI * perigee, DEUX_TIERS)) - 16.);
+        const double periode = DATE::NB_JOUR_PAR_MIN * (floor(TERRE::KE * pow(MATHS::DEUX_PI * perigee, MATHS::DEUX_TIERS)) - 16.);
 
         // Boucle sur le tableau d'ephemerides
         it3.toFront();
@@ -349,7 +349,7 @@ QList<EphemeridesPrevisions> Prevision::CalculEphemSoleilObservateur()
     QList<EphemeridesPrevisions> tabEphem;
 
     /* Initialisations */
-    const double pas = NB_JOUR_PAR_MIN;
+    const double pas = DATE::NB_JOUR_PAR_MIN;
 
     /* Corps de la methode */
     Date date(_conditions.jj1, 0., false);

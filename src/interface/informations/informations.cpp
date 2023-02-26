@@ -36,7 +36,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    17 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -79,23 +79,17 @@ Informations::Informations(QWidget *fenetreParent) :
 
     /* Corps de la methode */
     _ui->setupUi(this);
-    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), fenetreParent->geometry()));
 
-    _ui->ongletsInfos->setCurrentIndex(0);
-    _ui->afficherInfosDemarrage->setChecked(settings.value("affichage/informationsDemarrage", true).toBool());
-    _ui->ok->setFocus();
+    try {
 
-    // Derniere information
-    const QString nomDerniereInfo = "last_news_" + Configuration::instance()->locale() + ".html";
-    OuvertureInfo(nomDerniereInfo, _ui->ongletDerniereInfo, _ui->derniereInfo);
+        setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), fenetreParent->geometry()));
 
-    // Anciennes informations
-    const QString nomInfosAnciennes = "histo_news_" + Configuration::instance()->locale() + ".html";
-    OuvertureInfo(nomInfosAnciennes, _ui->ongletAnciennesInfos, _ui->anciennesInfos);
+        Initialisation();
 
-    // Versions
-    const QString nomVersions = "histo_versions_" + Configuration::instance()->locale() + ".html";
-    OuvertureInfo(nomVersions, _ui->ongletVersions, _ui->versions);
+    } catch (PreviSatException &e) {
+        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        throw PreviSatException();
+    }
 
     /* Retour */
     return;
@@ -176,6 +170,40 @@ void Informations::changeEvent(QEvent *evt)
  * Methodes privees
  */
 /*
+ * Initialisation de la classe Informations
+ */
+void Informations::Initialisation()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    qInfo() << "Début Initialisation" << metaObject()->className();
+
+    _ui->ongletsInfos->setCurrentIndex(0);
+    _ui->afficherInfosDemarrage->setChecked(settings.value("affichage/informationsDemarrage", true).toBool());
+    _ui->ok->setFocus();
+
+    // Derniere information
+    const QString nomDerniereInfo = "last_news_" + Configuration::instance()->locale() + ".html";
+    OuvertureInfo(nomDerniereInfo, _ui->ongletDerniereInfo, _ui->derniereInfo);
+
+    // Anciennes informations
+    const QString nomInfosAnciennes = "histo_news_" + Configuration::instance()->locale() + ".html";
+    OuvertureInfo(nomInfosAnciennes, _ui->ongletAnciennesInfos, _ui->anciennesInfos);
+
+    // Versions
+    const QString nomVersions = "histo_versions_" + Configuration::instance()->locale() + ".html";
+    OuvertureInfo(nomVersions, _ui->ongletVersions, _ui->versions);
+
+    qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+/*
  * Ouverture du fichier d'informations
  */
 void Informations::OuvertureInfo(const QString &nomfic, QWidget *onglet, QTextBrowser *zoneTexte)
@@ -210,7 +238,7 @@ void Informations::OuvertureInfo(const QString &nomfic, QWidget *onglet, QTextBr
                 _ui->ongletsInfos->removeTab(_ui->ongletsInfos->indexOf(onglet));
             }
         }
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */

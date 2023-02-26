@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >     12 fevrier 2023
+ * >     25 fevrier 2023
  *
  */
 
@@ -216,9 +216,9 @@ void General::AffichageDate(const Date &date)
     /* Initialisations */
 
     /* Corps de la methode */
-    if (fabs(date.offsetUTC()) > EPSDBL100) {
+    if (fabs(date.offsetUTC()) > MATHS::EPSDBL100) {
         QTime heur(0, 0);
-        heur = heur.addSecs(qRound(fabs(date.offsetUTC()) * NB_SEC_PAR_JOUR));
+        heur = heur.addSecs(qRound(fabs(date.offsetUTC()) * DATE::NB_SEC_PAR_JOUR));
         chaineUTC = tr("UTC %1 %2", "Universal Time Coordinated").arg((date.offsetUTC() > 0.) ? "+" : "-").arg(heur.toString("hh:mm"));
         _ui->utcDateHeure->setText(chaineUTC);
     } else {
@@ -279,7 +279,7 @@ void General::AffichageDonneesSatellite(const Date &date)
     if (settings.value("affichage/unite").toBool()) {
         _ui->altitudeSat->setText(text.asprintf("%.1f ", satellite.altitude()) + unite);
     } else {
-        _ui->altitudeSat->setText(text.asprintf("%.1f ", satellite.altitude() * MILE_PAR_KM) + unite);
+        _ui->altitudeSat->setText(text.asprintf("%.1f ", satellite.altitude() * TERRE::MILE_PAR_KM) + unite);
     }
 
     // Hauteur/Azimut/Distance
@@ -288,7 +288,7 @@ void General::AffichageDonneesSatellite(const Date &date)
     if (settings.value("affichage/unite").toBool()) {
         _ui->distanceSat->setText(text.asprintf("%.1f ", satellite.distance()) + unite);
     } else {
-        _ui->distanceSat->setText(text.asprintf("%.1f ", satellite.distance() * MILE_PAR_KM) + unite);
+        _ui->distanceSat->setText(text.asprintf("%.1f ", satellite.distance() * TERRE::MILE_PAR_KM) + unite);
     }
 
     // Ascension droite/declinaison/constellation
@@ -347,7 +347,7 @@ void General::AffichageDonneesSatellite(const Date &date)
                         crep = _flashs->ui()->valHauteurSoleilMetOp->text().toInt();
                     } else {
                     }
-                    crep *= DEG2RAD;
+                    crep *= MATHS::DEG2RAD;
 
                     NotificationSonore notif = Configuration::instance()->notifFlashs();
                     if (Configuration::instance()->soleil().hauteur() <= crep) {
@@ -418,7 +418,7 @@ void General::AffichageDonneesSatellite(const Date &date)
     const DateSysteme syst = (settings.value("affichage/systemeHoraire").toBool()) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H;
     double delai = _dateEclipse->jourJulienUTC() - date.jourJulienUTC();
 
-    if ((delai >= -EPS_DATES) && (_dateEclipse->jourJulienUTC() < satellite.traceAuSol().last().jourJulienUTC)) {
+    if ((delai >= -DATE::EPS_DATES) && (_dateEclipse->jourJulienUTC() < satellite.traceAuSol().last().jourJulienUTC)) {
 
         QString transitionJN = tr("Prochain %1 :");
         _ui->lbl_prochainJN->setText(transitionJN.arg((satellite.conditionEclipse().eclipseTotale()) ?
@@ -427,7 +427,7 @@ void General::AffichageDonneesSatellite(const Date &date)
 
         // Delai de l'evenement
         transitionJN = tr("%1 (dans %2).", "Delay in hours, minutes or seconds");
-        const Date delaiEcl = Date(delai - 0.5 + EPS_DATES, 0.);
+        const Date delaiEcl = Date(delai - 0.5 + DATE::EPS_DATES, 0.);
         QString cDelaiEcl;
 
         if (delai >= 1.) {
@@ -435,7 +435,7 @@ void General::AffichageDonneesSatellite(const Date &date)
             transitionJN = "%1%2";
             cDelaiEcl = "";
 
-        } else if (delai >= (NB_JOUR_PAR_HEUR - EPS_DATES)) {
+        } else if (delai >= (DATE::NB_JOUR_PAR_HEUR - DATE::EPS_DATES)) {
 
             cDelaiEcl = delaiEcl.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).section(" ", 1).mid(0, 5)
                     .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
@@ -479,7 +479,7 @@ void General::AffichageDonneesSatellite(const Date &date)
         Date dateAOS = Date(_elementsAOS->date, date.offsetUTC());
         delai = dateAOS.jourJulienUTC() - date.jourJulienUTC();
 
-        const Date delaiAOS = Date(delai - 0.5 + EPS_DATES, 0.);
+        const Date delaiAOS = Date(delai - 0.5 + DATE::EPS_DATES, 0.);
         QString cDelaiAOS;
 
         if (delai >= 1.) {
@@ -487,7 +487,7 @@ void General::AffichageDonneesSatellite(const Date &date)
             chaine = "%1%2";
             cDelaiAOS = "";
 
-        } else if (delai >= (NB_JOUR_PAR_HEUR - EPS_DATES)) {
+        } else if (delai >= (DATE::NB_JOUR_PAR_HEUR - DATE::EPS_DATES)) {
 
             cDelaiAOS = delaiAOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).section(" ", 1).mid(0, 5)
                     .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
@@ -528,7 +528,7 @@ void General::AffichageDonneesSoleilLune()
 
     /* Corps de la methode */
     // Conditions d'observation
-    const double ht = soleil.hauteur() * RAD2DEG;
+    const double ht = soleil.hauteur() * MATHS::RAD2DEG;
     if (ht >= 0.) {
         cond = tr("Jour");
     } else if (ht >= -6.) {
@@ -561,8 +561,8 @@ void General::AffichageDonneesSoleilLune()
     _ui->longitudeSol->setText(fmt.arg(Maths::ToSexagesimal(fabs(soleil.longitude()), AngleFormatType::DEGRE, 3, 0, false, true)).arg(ews));
     const QString nss = (soleil.latitude() >= 0.) ? tr("Nord") : tr("Sud");
     _ui->latitudeSol->setText(fmt.arg(Maths::ToSexagesimal(fabs(soleil.latitude()), AngleFormatType::DEGRE, 2, 0, false, true)).arg(nss));
-    _ui->diametreApparentSol->setText(Maths::ToSexagesimal(2. * asin(RAYON_SOLAIRE / soleil.distance()), AngleFormatType::DEGRE, 0, 0, false, true)
-                                      .section("°", 1));
+    _ui->diametreApparentSol->setText(Maths::ToSexagesimal(2. * asin(SOLEIL::RAYON_SOLAIRE / soleil.distance()),
+                                                           AngleFormatType::DEGRE, 0, 0, false, true).section("°", 1));
 
     // Heures de lever/passage au meridien/coucher/crepuscules
     _ui->leverSoleil->setText(soleil.dateLever());
@@ -596,7 +596,7 @@ void General::AffichageDonneesSoleilLune()
     // Phase/illumination/magnitude
     _ui->phaseLune->setText(lune.phase());
     _ui->magnitudeIllumLune->setText(QString("%1 (%2%)").arg(lune.magnitude(), 0, 'f', 2).arg(lune.fractionIlluminee() * 100., 0, 'f', 0));
-    _ui->diametreApparentLune->setText(Maths::ToSexagesimal(2. * asin(RAYON_LUNAIRE / lune.distance()), AngleFormatType::DEGRE, 0, 0, false, true)
+    _ui->diametreApparentLune->setText(Maths::ToSexagesimal(2. * asin(LUNE::RAYON_LUNAIRE / lune.distance()), AngleFormatType::DEGRE, 0, 0, false, true)
                                        .section("°", 1));
 
     // Lever/passage au meridien/coucher/phases
@@ -665,17 +665,17 @@ void General::AffichageVitesses(const Date &date)
         unite = (_uniteVitesse) ? tr("km/h", "Kilometer per hour") : tr("km/s", "Kilometer per second");
     } else {
         unite = (_uniteVitesse) ? tr("kn", "Knot") : tr("nmi/s", "Nautical mile per second");
-        vitesse *= MILE_PAR_KM;
-        rangeRate *= MILE_PAR_KM;
+        vitesse *= TERRE::MILE_PAR_KM;
+        rangeRate *= TERRE::MILE_PAR_KM;
     }
 
     /* Corps de la methode */
     if (_uniteVitesse) {
 
-        vitesse *= NB_SEC_PAR_HEUR;
+        vitesse *= DATE::NB_SEC_PAR_HEUR;
 
         _ui->vitesseSat->setText(text.asprintf("%.0f ", vitesse.Norme()) + unite);
-        _ui->rangeRate->setText(text.asprintf("%+.0f ", rangeRate * NB_SEC_PAR_HEUR) + unite);
+        _ui->rangeRate->setText(text.asprintf("%+.0f ", rangeRate * DATE::NB_SEC_PAR_HEUR) + unite);
 
         // Vitesse cartesienne
         _osculateurs->ui()->vxsat->setText(text.asprintf("%+.3f ", vitesse.x()) + unite);
@@ -731,7 +731,7 @@ void General::AffichageLieuObs()
             const QString fmt = "%1 %2";
             _ui->longitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(lo), AngleFormatType::DEGRE, 3, 0, false, true)).arg(ew));
             _ui->latitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(la), AngleFormatType::DEGRE, 2, 0,false, true)).arg(ns));
-            _ui->altitudeObs->setText(fmt.arg((settings.value("affichage/unite").toBool()) ? atd : qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd))).
+            _ui->altitudeObs->setText(fmt.arg((settings.value("affichage/unite").toBool()) ? atd : qRound(atd * TERRE::PIED_PAR_METRE + 0.5 * sgn(atd))).
                                       arg((settings.value("affichage/unite").toBool()) ? tr("m", "meter") : tr("ft", "foot")));
             premier = false;
         }
@@ -781,8 +781,9 @@ void General::SauveOngletGeneral(const QString &fichier)
             flux << chaine.arg(_ui->conditionsObservation->text()) << Qt::endl << Qt::endl << Qt::endl;
 
 #if (BUILD_TEST == false)
-            if (_ui->frame_satellite->isVisible()) {
+            if (_ui->frame_satellite->isVisible())
 #endif
+            {
                 // Donnees sur le satellite
                 flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
@@ -819,8 +820,8 @@ void General::SauveOngletGeneral(const QString &fichier)
 #else
                         .arg((_ui->dateAOS1->isVisible()) ? _ui->lbl_prochainAOS1->text() + " " + _ui->dateAOS1->text() + " " + _ui->lbl_azimut1->text()
                                                           : _ui->lbl_beta1->text()).trimmed() << Qt::endl << Qt::endl << Qt::endl;
-            }
 #endif
+            }
 
             // Donnees sur le Soleil
             flux << tr("Coordonnées du Soleil :") << Qt::endl;
@@ -871,7 +872,7 @@ void General::SauveOngletGeneral(const QString &fichier)
 
         sw.close();
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */

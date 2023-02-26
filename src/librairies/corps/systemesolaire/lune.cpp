@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 novembre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -44,45 +44,6 @@
 #include "librairies/observateur/observateur.h"
 #include "lune.h"
 #include "soleil.h"
-
-
-static const std::array<double, NB_TERMES_PERIODIQUES> _tabLon = {
-    6288774., 1274027., 658314., 213618., -185116., -114332., 58793., 57066., 53322., 45758., -40923., -34720., -30383., 15327., -12528., 10980., 10675.,
-    10034., 8548., -7888., -6766., -5163., 4987., 4036., 3994., 3861., 3665., -2689., -2602., 2390., -2348., 2236., -2120., -2069., 2048., -1773., -1595.,
-    1215., -1110., -892., -810., 759., -713., -700., 691., 596., 549., 537., 520., -487., -399., -381., 351., -340., 330., 327., -323., 299., 294., 0.
-};
-
-static const std::array<double, NB_TERMES_PERIODIQUES> _tabDist = {
-    -20905355., -3699111., -2955968., -569925., 48888., -3149., 246158., -152138., -170733., -204586., -129620., 108743., 104755., 10321., 0., 79661.,
-    -34782., -23210., -21636., 24208., 30824., -8379., -16675., -12831., -10445., -11650., 14403., -7003., 0., 10056., 6322., -9884., 5751., 0., -4950.,
-    4130., 0., -3958., 0., 3258., 2616., -1897., -2117., 2354., 0., 0., -1423., -1117., -1571., -1739., 0., -4421., 0., 0., 0., 0., 1165., 0., 0., 8752.
-};
-
-static const std::array<double, NB_TERMES_PERIODIQUES> _tabLat = {
-    5128122., 280602., 277693., 173237., 55413., 46271., 32573., 17198., 9266., 8822., 8216., 4324., 4200., -3359., 2463., 2211., 2065., -1870., 1828.,
-    -1794., -1749., -1565., -1491., -1475., -1410., -1344., -1335., 1107., 1021., 833., 777., 671., 607., 596., 491., -451., 439., 422., 421., -366.,
-    -351., 331., 315., 302., -283., -229., 223., 223., -220., -220., -185., 181., -177., 176., 166., -164., 132., -119., 115., 107. };
-
-static const std::array<std::array<int, 4>, NB_TERMES_PERIODIQUES> _tabCoef1 = {
-    { {0, 0, 1, 0}, {2, 0, -1, 0}, {2, 0, 0, 0}, {0, 0, 2, 0}, {0, 1, 0, 0}, {0, 0, 0, 2}, {2, 0, -2, 0}, {2, -1, -1, 0}, {2, 0, 1, 0}, {2, -1, 0, 0},
-      {0, 1, -1, 0}, {1, 0, 0, 0}, {0, 1, 1, 0}, {2, 0, 0, -2}, {0, 0, 1, 2}, {0, 0, 1, -2}, {4, 0, -1, 0}, {0, 0, 3, 0}, {4, 0, -2, 0}, {2, 1, -1, 0},
-      {2, 1, 0, 0}, {1, 0, -1, 0}, {1, 1, 0, 0}, {2, -1, 1, 0}, {2, 0, 2, 0}, {4, 0, 0, 0}, {2, 0, -3, 0}, {0, 1, -2, 0}, {2, 0, -1, 2}, {2, -1, -2, 0},
-      {1, 0, 1, 0}, {2, -2, 0, 0}, {0, 1, 2, 0}, {0, 2, 0, 0}, {2, -2, -1, 0}, {2, 0, 1, -2}, {2, 0, 0, 2}, {4, -1, -1, 0}, {0, 0, 2, 2}, {3, 0, -1, 0},
-      {2, 1, 1, 0}, {4, -1, -2, 0}, {0, 2, -1, 0}, {2, 2, -1, 0}, {2, 1, -2, 0}, {2, -1, 0, -2}, {4, 0, 1, 0}, {0, 0, 4, 0}, {4, -1, 0, 0}, {1, 0, -2, 0},
-      {2, 1, 0, -2}, {0, 0, 2, -2}, {1, 1, 1, 0}, {3, 0, -2, 0}, {4, 0, -3, 0}, {2, -1, 2, 0}, {0, 2, 1, 0}, {1, 1, -1, 0}, {2, 0, 3, 0}, {2, 0, -1, -2} }
-};
-
-static const std::array<std::array<int, 4>, NB_TERMES_PERIODIQUES> _tabCoef2 = {
-    { {0, 0, 0, 1}, {0, 0, 1, 1}, {0, 0, 1, -1}, {2, 0, 0, -1}, {2, 0, -1, 1}, {2, 0, -1, -1}, {2, 0, 0, 1}, {0, 0, 2, 1}, {2, 0, 1, -1}, {0, 0, 2, -1},
-      {2, -1, 0, -1}, {2, 0, -2, -1}, {2, 0, 1, 1}, {2, 1, 0, -1}, {2, -1, -1, 1}, {2, -1, 0, 1}, {2, -1, -1, -1}, {0, 1, -1, -1}, {4, 0, -1, -1},
-      {0, 1, 0, 1}, {0, 0, 0, 3}, {0, 1, -1, 1}, {1, 0, 0, 1}, {0, 1, 1, 1}, {0, 1, 1, -1}, {0, 1, 0, -1}, {1, 0, 0, -1}, {0, 0, 3, 1}, {4, 0, 0, -1},
-      {4, 0, -1, 1}, {0, 0, 1, -3}, {4, 0, -2, 1}, {2, 0, 0, -3}, {2, 0, 2, -1}, {2, -1, 1, -1}, {2, 0, -2, 1}, {0, 0, 3, -1}, {2, 0, 2, 1},
-      {2, 0, -3, -1}, {2, 1, -1, 1}, {2, 1, 0, 1}, {4, 0, 0, 1}, {2, -1, 1, 1}, {2, -2, 0, -1}, {0, 0, 1, 3}, {2, 1, 1, -1}, {1, 1, 0, -1}, {1, 1, 0, 1},
-      {0, 1, -2, -1}, {2, 1, -1, -1}, {1, 0, 1, 1}, {2, -1, -2, -1}, {0, 1, 2, 1}, {4, 0, -2, -1}, {4, -1, -1, -1}, {1, 0, 1, -1}, {4, 0, 1, -1},
-      {1, 0, -1, -1}, {4, -1, 0, -1}, {2, -2, 0, 1} }
-};
-
-static const Vecteur3D w(0., 0., 1.);
 
 
 /**********
@@ -102,7 +63,7 @@ Lune::Lune()
     _luneCroissante = false;
     _anglePhase = 0.;
     _fractionIlluminee = 0.;
-    _magnitude = MAGNITUDE_INDEFINIE;
+    _magnitude = CORPS::MAGNITUDE_INDEFINIE;
 
     /* Retour */
     return;
@@ -120,27 +81,26 @@ void Lune::CalculDatesPhases(const Date &date, const DateSysteme &syst)
     /* Declarations des variables locales */
     unsigned int iter;
     double dateEvt;
-    double k;
     double pas;
     double t_evt;
     Lune lune;
     Soleil soleil;
-    std::array<double, DEGRE_INTERPOLATION> jjm;
-    std::array<double, NB_PHASES> jjPhases;
-    std::array<double, DEGRE_INTERPOLATION> ecartAngle;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
+    std::array<double, LUNE::NB_PHASES> jjPhases;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> ecartAngle;
 
     /* Initialisations */
     const double annee = date.annee() + (date.mois() - 1) / 12. + date.jour() / 365.;
 
     /* Corps de la methode */
-    for(unsigned int i=0; i<NB_PHASES; i++) {
+    for(unsigned int i=0; i<LUNE::NB_PHASES; i++) {
 
-        k = arrondi((annee - AN2000) * 12.3685, 0) + 0.25 * i;
+        const double k = arrondi((annee - DATE::AN2000) * 12.3685, 0) + 0.25 * i;
 
         // Dates approximatives des phases lunaires
-        jjPhases[i] = CalculJurJulienPhase(k);
-        const double jj1 = CalculJurJulienPhase(k-1);
-        const double jj2 = CalculJurJulienPhase(k+1);
+        jjPhases[i] = CalculJourJulienPhase(k);
+        const double jj1 = CalculJourJulienPhase(k-1);
+        const double jj2 = CalculJourJulienPhase(k+1);
 
         if (jj1 > date.jourJulienUTC()) {
             jjPhases[i] = jj1;
@@ -156,23 +116,23 @@ void Lune::CalculDatesPhases(const Date &date, const DateSysteme &syst)
 
         dateEvt = 0.;
         t_evt = jjPhases[i];
-        const double angle = PI_SUR_DEUX * i;
+        const double angle = MATHS::PI_SUR_DEUX * i;
 
         iter = 0;
-        while ((fabs(dateEvt - t_evt) > EPS_DATES) && (iter < ITERATIONS_MAX)) {
+        while ((fabs(dateEvt - t_evt) > DATE::EPS_DATES) && (iter < MATHS::ITERATIONS_MAX)) {
 
             dateEvt = t_evt;
 
-            for(unsigned int j=0; j<DEGRE_INTERPOLATION; j++) {
+            for(unsigned int j=0; j<MATHS::DEGRE_INTERPOLATION; j++) {
 
                 const Date dateCalcul(jjm.at(j), 0., false);
 
                 lune.CalculPosition(dateCalcul);
                 soleil.CalculPosition(dateCalcul);
 
-                ecartAngle[j] = modulo(lune._lonEcl - soleil.lonEcl() - angle, DEUX_PI);
-                if (ecartAngle[j] > PI) {
-                    ecartAngle[j] -= DEUX_PI;
+                ecartAngle[j] = modulo(lune._lonEcl - soleil.lonEcl() - angle, MATHS::DEUX_PI);
+                if (ecartAngle[j] > MATHS::PI) {
+                    ecartAngle[j] -= MATHS::DEUX_PI;
                 }
             }
 
@@ -186,7 +146,7 @@ void Lune::CalculDatesPhases(const Date &date, const DateSysteme &syst)
             iter++;
         }
 
-        if (iter < ITERATIONS_MAX) {
+        if (iter < MATHS::ITERATIONS_MAX) {
             _datesPhases[i] = Date(dateEvt, date.offsetUTC()).ToShortDate(DateFormat::FORMAT_COURT, syst).remove(16, 3).replace(":", "h").trimmed();
         }
     }
@@ -224,7 +184,7 @@ void Lune::CalculLeverMeridienCoucher(const Date &date, const Observateur &obser
 
         _ephem.append(eph);
 
-        dateCalcul = Date(dateCalcul.jourJulienUTC() + NB_JOUR_PAR_MIN, 0., false);
+        dateCalcul = Date(dateCalcul.jourJulienUTC() + DATE::NB_JOUR_PAR_MIN, 0., false);
 
     } while (dateCalcul.jourJulienUTC() <= dateFin.jourJulienUTC());
 
@@ -247,9 +207,9 @@ void Lune::CalculMagnitude(const Soleil &soleil)
     const double cosang = cos(_anglePhase);
     const double angs2 = 0.5 * _anglePhase;
     const double tanAngs2 = tan(angs2);
-    const double b = B0 / (1. + tanAngs2 / H);
+    const double b = LUNE::B0 / (1. + tanAngs2 / LUNE::H);
 
-    const double z = tan(THETA) * tanAngs2;
+    const double z = tan(LUNE::THETA) * tanAngs2;
     double fCorr = 1.;
     if (_anglePhase < 1.45) {
         fCorr = (((((0.4619942495 * _anglePhase - 1.9799023103) * _anglePhase + 3.2706222793) * _anglePhase - 2.3757732575) * _anglePhase +
@@ -268,16 +228,16 @@ void Lune::CalculMagnitude(const Soleil &soleil)
                   229573.277184166) * _anglePhase - 273606.243897778) * _anglePhase + 135882.646837775;
     }
 
-    const double kappa = exp(-THETA * (0.32 * sqrt(z) + 0.52 * z)) * fCorr;
+    const double kappa = exp(-LUNE::THETA * (0.32 * sqrt(z) + 0.52 * z)) * fCorr;
 
-    const double p = W0S8 * ((1. + B0) * P0 - 1.) + R0S2 + R2 * (1. / 6.);
+    const double p = LUNE::W0S8 * ((1. + LUNE::B0) * LUNE::P0 - 1.) + LUNE::R0S2 + LUNE::R2 * (1. / 6.);
     const double ppi = 1. + 0.29 * cosang + 0.39 * (1.5 * cosang * cosang - 0.5);
 
-    const double phi = (W0S8 * ((1. + b) * ppi - 1.) + R0S2 * (1. - R0) * (1. + sin(angs2) * tanAngs2 * log(tan(0.5 * angs2))) +
-                        DEUX_TIERS * R2 / PI * (sin(_anglePhase) + (PI - _anglePhase) * cosang)) / p;
+    const double phi = (LUNE::W0S8 * ((1. + b) * ppi - 1.) + LUNE::R0S2 * (1. - LUNE::R0) * (1. + sin(angs2) * tanAngs2 * log(tan(0.5 * angs2))) +
+                        MATHS::DEUX_TIERS * LUNE::R2 / MATHS::PI * (sin(_anglePhase) + (MATHS::PI - _anglePhase) * cosang)) / p;
 
     const double dm = kappa * phi;
-    const double distlune = _position.Norme() * KM2UA;
+    const double distlune = _position.Norme() * SOLEIL::KM2UA;
 
     _magnitude = 0.21 + 5. * log10(distlune * soleil.distanceUA()) - 2.5 * log10(dm);
 
@@ -293,17 +253,17 @@ void Lune::CalculPhase(const Soleil &soleil)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double distlune = _position.Norme() * KM2UA;
+    const double distlune = _position.Norme() * SOLEIL::KM2UA;
 
     /* Corps de la methode */
     // Determination si la lune est croissante
-    _luneCroissante = ((soleil.position() ^ _position) * w > 0.);
+    _luneCroissante = ((soleil.position() ^ _position) * _w > 0.);
 
     // Angle de phase
     const double cospsi = cos(_latEcl) * cos(_lonEcl - soleil.lonEcl());
-    _anglePhase = fmod(atan(soleil.distanceUA() * sqrt(1. - cospsi * cospsi) / (distlune - soleil.distanceUA() * cospsi)), PI);
+    _anglePhase = fmod(atan(soleil.distanceUA() * sqrt(1. - cospsi * cospsi) / (distlune - soleil.distanceUA() * cospsi)), MATHS::PI);
     if (_anglePhase < 0.) {
-        _anglePhase += PI;
+        _anglePhase += MATHS::PI;
     }
 
     // Fraction illuminee
@@ -347,27 +307,27 @@ void Lune::CalculPosition(const Date &date)
     double b0 = 0.;
     double l0 = 0.;
     double r0 = 0.;
-    const double t = date.jourJulienTT() * NB_SIECJ_PAR_JOURS;
+    const double t = date.jourJulienTT() * DATE::NB_SIECJ_PAR_JOURS;
 
     // Longitude moyenne de la Lune
-    const double ll = DEG2RAD * modulo(218.3164477 + t * (481267.88123421 - t * (0.0015786 + t * ((1. / 538841.) - t * (1. / 65194000.)))), T360);
+    const double ll = MATHS::DEG2RAD * modulo(218.3164477 + t * (481267.88123421 - t * (0.0015786 + t * ((1. / 538841.) - t * (1. / 65194000.)))), MATHS::T360);
 
     // Elongation moyenne de la Lune
-    coef[0] = DEG2RAD * modulo(297.8501921 + t * (445267.1114034 - t * (0.0018819 + t * ((1. / 545868.) - t * (1. / 113065000.)))), T360);
+    coef[0] = MATHS::DEG2RAD * modulo(297.8501921 + t * (445267.1114034 - t * (0.0018819 + t * ((1. / 545868.) - t * (1. / 113065000.)))), MATHS::T360);
 
     // Anomalie moyenne du Soleil
-    coef[1] = DEG2RAD * modulo(357.5291092 + t * (35999.0502909 - t * (0.0001536 + t * (1. / 24490000.))), T360);
+    coef[1] = MATHS::DEG2RAD * modulo(357.5291092 + t * (35999.0502909 - t * (0.0001536 + t * (1. / 24490000.))), MATHS::T360);
 
     // Anomalie moyenne de la Lune
-    coef[2] = DEG2RAD * modulo(134.9633964 + t * (477198.8675055 + t * (0.0087414 + t * ((1. / 69699.) - t * (1. / 14712000.)))), T360);
+    coef[2] = MATHS::DEG2RAD * modulo(134.9633964 + t * (477198.8675055 + t * (0.0087414 + t * ((1. / 69699.) - t * (1. / 14712000.)))), MATHS::T360);
 
     // Argument de latitude de la Lune
-    coef[3] = DEG2RAD * modulo(93.272095 + t * (483202.0175233 - t * (0.0036539 - t * ((1. / 3526000.) + t * (1. / 863310000.)))), T360);
+    coef[3] = MATHS::DEG2RAD * modulo(93.272095 + t * (483202.0175233 - t * (0.0036539 - t * ((1. / 3526000.) + t * (1. / 863310000.)))), MATHS::T360);
 
     coef[4] = 1. - t * (0.002516 + 0.0000074 * t);
 
     /* Corps de la methode */
-    for (unsigned int i=0; i<NB_TERMES_PERIODIQUES; i++) {
+    for (unsigned int i=0; i<LUNE::NB_TERMES_PERIODIQUES; i++) {
 
         double ang1 = 0.;
         double ang2 = 0.;
@@ -391,14 +351,14 @@ void Lune::CalculPosition(const Date &date)
     }
 
     // Principaux termes planetaires
-    const double a1 = DEG2RAD * modulo(119.75 + 131.849 * t, T360);
-    const double a2 = DEG2RAD * modulo(53.09 + 479264.29 * t, T360);
-    const double a3 = DEG2RAD * modulo(313.45 + 481266.484 * t, T360);
+    const double a1 = MATHS::DEG2RAD * modulo(119.75 + 131.849 * t, MATHS::T360);
+    const double a2 = MATHS::DEG2RAD * modulo(53.09 + 479264.29 * t, MATHS::T360);
+    const double a3 = MATHS::DEG2RAD * modulo(313.45 + 481266.484 * t, MATHS::T360);
     l0 += 3958. * sin(a1) + 1962. * sin(ll - coef[3]) + 318. * sin(a2);
     b0 += -2235. * sin(ll) + 382. * sin(a3) + 175. * (sin(a1 - coef[3]) + sin(a1 + coef[3])) + 127. * sin(ll - coef[2]) - 115. * sin(ll + coef[2]);
 
     // Coordonnees ecliptiques en repere spherique
-    const double temp = DEG2RAD * 1.e-6;
+    const double temp = MATHS::DEG2RAD * 1.e-6;
     _lonEcl = ll + temp * l0;
     _latEcl = temp * b0;
     const double rp = 385000.56 + r0 * 1.e-3;
@@ -440,7 +400,7 @@ const QString &Lune::phase() const
     return _phase;
 }
 
-const std::array<QString, NB_PHASES> &Lune::datesPhases() const
+const std::array<QString, LUNE::NB_PHASES> &Lune::datesPhases() const
 {
     return _datesPhases;
 }
@@ -465,7 +425,7 @@ const std::array<QString, NB_PHASES> &Lune::datesPhases() const
 /*
  * Calcul du jour julien approximatif d'une phase lunaire
  */
-double Lune::CalculJurJulienPhase(const double k)
+double Lune::CalculJourJulienPhase(const double k)
 {
     const double t = k / 1236.85;
     const double t2 = t * t;

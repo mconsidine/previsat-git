@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -107,7 +107,7 @@ public:
     double fractionIlluminee() const;
     double magnitude() const;
     const QString &phase() const;
-    const std::array<QString, NB_PHASES> &datesPhases() const;
+    const std::array<QString, LUNE::NB_PHASES> &datesPhases() const;
 
 
 protected:
@@ -131,18 +131,18 @@ private:
     double _fractionIlluminee;
     double _magnitude;
     QString _phase;
-    std::array<QString, NB_PHASES> _datesPhases;
+    std::array<QString, LUNE::NB_PHASES> _datesPhases;
 
 
     /*
      * Methodes privees
      */
     /**
-     * @brief CalculJurJulienPhase Calcul du jour julien approximatif d'une phase lunaire
+     * @brief CalculJourJulienPhase Calcul du jour julien approximatif d'une phase lunaire
      * @param k nombre de lunaison depuis le 1er janvier 2000 (sans partie fractionnaire pour la nouvelle lune, +0.25 pour le premier quartier, etc.)
      * @return jour julien approximatif de la phase
      */
-    double CalculJurJulienPhase(const double k);
+    double CalculJourJulienPhase(const double k);
 
 
 };

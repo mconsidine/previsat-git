@@ -30,7 +30,7 @@
  * >    28 mars 2020
  *
  * Date de revision
- * >    17 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -70,16 +70,16 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
     /* Corps de la methode */
     if (elements.aos) {
 
-        double periode = st * NB_JOUR_PAR_MIN;
-        if (((sat.hauteur() - hauteurMin) * st) > EPSDBL100) {
+        double periode = st * DATE::NB_JOUR_PAR_MIN;
+        if (((sat.hauteur() - hauteurMin) * st) > MATHS::EPSDBL100) {
             elements.typeAOS = QObject::tr("LOS", "Loss of signal");
         }
 
         double tAOS = 0.;
         double t_ht = dateInit.jourJulienUTC();
 
-        std::array<double, DEGRE_INTERPOLATION> jjm;
-        std::array<double, DEGRE_INTERPOLATION> ht;
+        std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
+        std::array<double, MATHS::DEGRE_INTERPOLATION> ht;
 
         bool afin = false;
         unsigned int iter = 0;
@@ -89,7 +89,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
             jjm[1] = jjm[0] + 0.5 * periode;
             jjm[2] = jjm[0] + periode;
 
-            for(unsigned int i=0; i<DEGRE_INTERPOLATION; i++) {
+            for(unsigned int i=0; i<MATHS::DEGRE_INTERPOLATION; i++) {
 
                 const Date date(jjm[i], 0., false);
                 obs.CalculPosVit(date);
@@ -115,11 +115,11 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
                     jjm[2] = t_ht + periode;
                 }
 
-                while (fabs(tAOS - t_ht) > EPSDBL100) {
+                while (fabs(tAOS - t_ht) > MATHS::EPSDBL100) {
 
                     tAOS = t_ht;
 
-                    for(unsigned int i=0; i<DEGRE_INTERPOLATION; i++) {
+                    for(unsigned int i=0; i<MATHS::DEGRE_INTERPOLATION; i++) {
 
                         const Date date(jjm[i], 0., false);
                         obs.CalculPosVit(date);
@@ -128,7 +128,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
                         ht[i] = sat.hauteur() - hauteurMin;
                     }
 
-                    t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, 0., EPSDBL100);
+                    t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, 0., MATHS::EPSDBL100);
                     periode *= 0.5;
 
                     jjm[0] = t_ht - periode;
@@ -149,7 +149,7 @@ ElementsAOS Evenements::CalculAOS(const Date &dateInit, const Satellite &satelli
                 t_ht += periode;
                 iter++;
 
-                if (iter > ITERATIONS_MAX) {
+                if (iter > MATHS::ITERATIONS_MAX) {
                     afin = true;
                     elements.aos = false;
                 }
@@ -171,7 +171,7 @@ Date Evenements::CalculNoeudOrbite(const Date &dateInit, const Satellite &satell
     /* Initialisations */
     Date date = dateInit;
     Satellite sat = satellite;
-    const double st = ((sensCalcul == SensCalcul::CHRONOLOGIQUE) ? 1. : -1.) / (sat.elementsOrbitaux().no * T360);
+    const double st = ((sensCalcul == SensCalcul::CHRONOLOGIQUE) ? 1. : -1.) / (sat.elementsOrbitaux().no * MATHS::T360);
     double lat1 = sat.latitude();
 
     /* Corps de la methode */
@@ -194,8 +194,8 @@ Date Evenements::CalculNoeudOrbite(const Date &dateInit, const Satellite &satell
     }
 
 
-    std::array<double, DEGRE_INTERPOLATION> jjm;
-    std::array<double, DEGRE_INTERPOLATION> lati;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> lati;
 
     double t_n = date.jourJulienUTC();
     double periode = st;
@@ -206,15 +206,15 @@ Date Evenements::CalculNoeudOrbite(const Date &dateInit, const Satellite &satell
         jjm[1] = t_n;
         jjm[2] = t_n + periode;
 
-        for(unsigned int i=0; i<DEGRE_INTERPOLATION; i++) {
+        for(unsigned int i=0; i<MATHS::DEGRE_INTERPOLATION; i++) {
 
             date = Date(jjm[i], 0., false);
             sat.CalculPosVit(date);
             lati[i] = sat.CalculLatitude(sat.position());
         }
 
-        const double tNoeud = Maths::CalculValeurXInterpolation3(jjm, lati, 0., EPS_DATES);
-        if (fabs(t_n - tNoeud) < EPS_DATES) {
+        const double tNoeud = Maths::CalculValeurXInterpolation3(jjm, lati, 0., DATE::EPS_DATES);
+        if (fabs(t_n - tNoeud) < DATE::EPS_DATES) {
             afin = true;
         }
         t_n = tNoeud;
@@ -261,8 +261,8 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
         double t_ecl = sat.traceAuSol().at(i-1).jourJulienUTC;
         double periode = sat.traceAuSol().at(i).jourJulienUTC - t_ecl;
 
-        std::array<double, DEGRE_INTERPOLATION> jjm;
-        std::array<double, DEGRE_INTERPOLATION> ecl;
+        std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
+        std::array<double, MATHS::DEGRE_INTERPOLATION> ecl;
         Soleil soleil;
         Lune lune;
         ConditionEclipse conditionEclipse;
@@ -274,7 +274,7 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
             jjm[1] = t_ecl;
             jjm[2] = t_ecl + periode;
 
-            for(unsigned int j=0; j<DEGRE_INTERPOLATION; j++) {
+            for(unsigned int j=0; j<MATHS::DEGRE_INTERPOLATION; j++) {
 
                 const Date date(jjm[j], 0., false);
 
@@ -297,11 +297,11 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit, const Satellite &sate
             }
 
             if (((ecl[0] * ecl[2]) < 0.) || ((ecl[0] > 0.) && (ecl[2] > 0.))) {
-                tdn = qRound(NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(jjm, ecl, 0., EPS_DATES)) * NB_JOUR_PAR_SEC;
+                tdn = qRound(DATE::NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(jjm, ecl, 0., DATE::EPS_DATES)) * DATE::NB_JOUR_PAR_SEC;
             }
 
             periode *= 0.5;
-            if (fabs(tdn - t_ecl) < EPS_DATES) {
+            if (fabs(tdn - t_ecl) < DATE::EPS_DATES) {
                 afin = true;
             }
             t_ecl = tdn;

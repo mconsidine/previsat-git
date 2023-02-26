@@ -53,7 +53,7 @@ void CompareDates(const Date &date1, const Date &date2)
     QCOMPARE(date1.jour(), date2.jour());
     QCOMPARE(date1.heure(), date2.heure());
     QCOMPARE(date1.minutes(), date2.minutes());
-    QCOMPARE(fabs(date1.secondes() - date2.secondes()) < EPS_DATES, true);
+    QCOMPARE(fabs(date1.secondes() - date2.secondes()) < DATE::EPS_DATES, true);
     QCOMPARE(date1.offsetUTC(), date2.offsetUTC());
     QCOMPARE(date1.jourJulienUTC(), date2.jourJulienUTC());
     QCOMPARE(date1.jourJulienTT(), date2.jourJulienTT());

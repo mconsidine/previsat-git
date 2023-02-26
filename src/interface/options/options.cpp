@@ -292,7 +292,7 @@ void Options::AfficherLieu(const Observateur &obs)
     const QString fmt = "%1 %2";
     _ui->nLongitude->setText(fmt.arg(Maths::ToSexagesimal(fabs(lo), AngleFormatType::DEGRE, 3, 0, false, true)).arg(ew));
     _ui->nLatitude->setText(fmt.arg(Maths::ToSexagesimal(fabs(la), AngleFormatType::DEGRE, 2, 0,false, true)).arg(ns));
-    _ui->nAltitude->setText(fmt.arg((settings.value("affichage/unite").toBool()) ? atd : qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd))).
+    _ui->nAltitude->setText(fmt.arg((settings.value("affichage/unite").toBool()) ? atd : qRound(atd * TERRE::PIED_PAR_METRE + 0.5 * sgn(atd))).
                             arg((settings.value("affichage/unite").toBool()) ? tr("m", "meter") : tr("ft", "foot")));
 
     _ui->outilsLieuxObservation->setCurrentIndex(0);
@@ -329,19 +329,20 @@ void Options::ChargementPref()
                 const QStringList item = it.next().split(" ", Qt::SkipEmptyParts);
 
                 if (item.at(1) == "true") {
-                    settings.setValue(item.at(0), true);
+                    settings.setValue(item.first(), true);
 
                 } else if (item.at(1) == "false") {
-                    settings.setValue(item.at(0), false);
+                    settings.setValue(item.first(), false);
 
                 } else {
-                    if (item.at(0) == "affichage/magnitudeEtoiles") {
-                        settings.setValue(item.at(0), item.at(1).toDouble());
+                    if (item.first() == "affichage/magnitudeEtoiles") {
+                        settings.setValue(item.first(), item.at(1).toDouble());
 
-                    } else if ((item.at(0) == "affichage/affconst") || (item.at(0) == "affichage/affnomlieu") || (item.at(0) == "affichage/affnomsat") ||
-                               (item.at(0) == "affichage/affplanetes") || (item.at(0) == "affichage/affradar") || (item.at(0) == "affichage/affvisib") ||
-                               (item.at(0) == "affichage/intensiteOmbre") || (item.at(0) == "affichage/intensiteVision")) {
-                        settings.setValue(item.at(0), item.at(1).toUInt());
+                    } else if ((item.first() == "affichage/affconst") || (item.first() == "affichage/affnomlieu")
+                               || (item.first() == "affichage/affnomsat") || (item.first() == "affichage/affplanetes")
+                               || (item.first() == "affichage/affradar") || (item.first() == "affichage/affvisib")
+                               || (item.first() == "affichage/intensiteOmbre") || (item.first() == "affichage/intensiteVision")) {
+                        settings.setValue(item.first(), item.at(1).toUInt());
                     } else {
                     }
                 }
@@ -449,7 +450,7 @@ void Options::InitChargementStations()
     _ui->listeStations->clear();
 
     /* Corps de la methode */
-    QMapIterator<QString, Observateur> it(Configuration::instance()->mapStations());
+    QMapIterator it(Configuration::instance()->mapStations());
     while (it.hasNext()) {
         it.next();
 
@@ -789,7 +790,7 @@ void Options::SauvePreferences(const QString &fichierPref)
             fi.close();
         }
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */
@@ -1047,7 +1048,7 @@ void Options::AjouterLieuMesPreferes()
             _ui->categoriesObs->setCurrentRow(0);
         }
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */
@@ -1136,7 +1137,7 @@ void Options::ModifierLieu()
         if (_ui->unitesKm->isChecked()) {
             _ui->nvAltitude->setText(alt.arg(atd, 4, 10, QChar('0')));
         } else {
-            _ui->nvAltitude->setText(alt.arg(qRound(atd * PIED_PAR_METRE + 0.5 * sgn(atd)), 5, 10, QChar('0')));
+            _ui->nvAltitude->setText(alt.arg(qRound(atd * TERRE::PIED_PAR_METRE + 0.5 * sgn(atd)), 5, 10, QChar('0')));
         }
 
         _ui->nvAltitude->setPalette(QPalette());
@@ -1144,7 +1145,7 @@ void Options::ModifierLieu()
 
         _ui->nvLieu->setFocus();
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */
@@ -1183,7 +1184,7 @@ void Options::SupprimerLieu()
             on_categoriesObs_currentRowChanged(_ui->categoriesObs->currentRow());
         }
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */
@@ -1425,11 +1426,13 @@ void Options::on_validerObs_clicked()
         // Recuperation de l'altitude
         int atd = _ui->nvAltitude->text().toInt();
         if (_ui->unitesMi->isChecked()) {
-            atd = qRound(atd / PIED_PAR_METRE);
+            atd = qRound(atd / TERRE::PIED_PAR_METRE);
         }
 
-        const double longitude = ((_ui->nvEw->currentText() == tr("Est")) ? -1. : 1.) * (lo1 + lo2 * DEG_PAR_ARCMIN + lo3 * DEG_PAR_ARCSEC);
-        const double latitude = ((_ui->nvNs->currentText() == tr("Sud")) ? -1. : 1.) * (la1 + la2 * DEG_PAR_ARCMIN + la3 * DEG_PAR_ARCSEC);
+        const double longitude = ((_ui->nvEw->currentText() == tr("Est")) ? -1. : 1.) *
+                (lo1 + lo2 * MATHS::DEG_PAR_ARCMIN + lo3 * MATHS::DEG_PAR_ARCSEC);
+        const double latitude = ((_ui->nvNs->currentText() == tr("Sud")) ? -1. : 1.) *
+                (la1 + la2 * MATHS::DEG_PAR_ARCMIN + la3 * MATHS::DEG_PAR_ARCSEC);
 
         const Observateur obs(nomlieu, longitude, latitude, atd);
         Configuration::instance()->mapObs().insert(nomlieu, obs);
@@ -1440,7 +1443,7 @@ void Options::on_validerObs_clicked()
         on_categoriesObs_currentRowChanged(_ui->categoriesObs->currentRow());
         _ui->outilsLieuxObservation->setVisible(false);
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */

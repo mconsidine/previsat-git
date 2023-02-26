@@ -261,11 +261,9 @@ void CalculsEvenementsOrbitaux::closeEvent(QCloseEvent *evt)
 void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
 {
     /* Declarations des variables locales */
-    QVector<int> vecSat;
     ConditionsPrevisions conditions;
 
     /* Initialisations */
-    int j = 0;
     conditions.listeSatellites.clear();
 
     /* Corps de la methode */
@@ -275,7 +273,9 @@ void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
             throw PreviSatException();
         }
 
+        QVector<int> vecSat;
         vecSat.append(0);
+        int j = 0;
 
         for(int i = 0; i < _ui->listeEvenements->count(); i++) {
             if (_ui->listeEvenements->item(i)->checkState() == Qt::Checked) {
@@ -326,13 +326,32 @@ void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
         conditions.calcEclipseLune = settings.value("affichage/eclipsesLune").toBool();
 
         // Elements orbitaux
-        conditions.tabElem = Configuration::instance()->mapElementsOrbitaux();
+        conditions.tabElem.clear();
+        for(int i=0; i<_ui->listeEvenements->count(); i++) {
+            if (_ui->listeEvenements->item(i)->checkState() == Qt::Checked) {
+                const QString norad = _ui->listeEvenements->item(i)->data(Qt::UserRole).toString();
+                conditions.tabElem.insert(norad, Configuration::instance()->mapElementsOrbitaux()[norad]);
+            }
+        }
+
+        qInfo() << "--";
+        qInfo() << "Calcul des évènements orbitaux :";
+        qInfo() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo() << "Ecart UTC date1 =" << offset1;
+
+        qInfo() << "Date de fin =" << date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo() << "Ecart UTC date2 =" << offset2;
+
+        qInfo() << "Unité de longueur =" << conditions.unite;
+        qInfo() << "Prise en compte des eclipses de Lune =" << conditions.calcEclipseLune;
+        qInfo() << "Liste de numéros NORAD =" << conditions.tabElem.keys();
+        qInfo() << "--";
 
         // Nom du fichier resultat
         const QString chaine = tr("evenements", "file name (without accent)") + "_%1_%2.txt";
         conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
-                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").at(0));
+                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first()).
+                arg(date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first());
 
         // Barre de progression
         auto barreProgression = new QProgressBar();

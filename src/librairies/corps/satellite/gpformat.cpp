@@ -55,17 +55,9 @@
 /*
  * Constructeur a partir des elements orbitaux
  */
-GPFormat::GPFormat(const ElementsOrbitaux &elem)
+GPFormat::GPFormat(const ElementsOrbitaux &elem) :
+    _elements(elem)
 {
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps du constructeur */
-    _elements = elem;
-
-    /* Retour */
-    return;
 }
 
 

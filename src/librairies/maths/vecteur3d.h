@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 septembre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -63,7 +63,7 @@ public:
      * @brief Vecteur3D Definition a partir d'un vecteur
      * @param vecteur vecteur
      */
-    Vecteur3D(const Vecteur3D &vecteur);
+    Vecteur3D(const Vecteur3D &vecteur) = default;
 
     /**
      * @brief Vecteur3D Definition du vecteur a partir de ses composantes
@@ -115,7 +115,7 @@ public:
      * @param vecteur vecteur
      * @return vecteur affecte
      */
-    Vecteur3D &operator = (const Vecteur3D &vecteur);
+    Vecteur3D &operator = (const Vecteur3D &vecteur) = default;
 
     /**
      * @brief operator - Oppose du vecteur 3D

@@ -30,7 +30,7 @@
  * >    4 octobre 2020
  *
  * Date de revision
- * >    22 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -94,8 +94,8 @@ int Telescope::CalculSuiviTelescope(int &nombre)
 
             QMap<QString, ElementsOrbitaux> tabElem;
             const QString fmt = "%1,%2,%3,%4";
-            double jjmsec = floor(_conditions.jj1 * NB_MILLISEC_PAR_JOUR + _conditions.pas);
-            Date date(jjmsec * NB_JOUR_PAR_MILLISEC, 0.);
+            double jjmsec = floor(_conditions.jj1 * DATE::NB_MILLISEC_PAR_JOUR + _conditions.pas);
+            Date date(jjmsec * DATE::NB_JOUR_PAR_MILLISEC, 0.);
 
             // Creation de la liste d'elements orbitaux
             const QFileInfo ff(_conditions.fichier);
@@ -134,13 +134,13 @@ int Telescope::CalculSuiviTelescope(int &nombre)
                     sat.CalculCoordEquat(_conditions.observateur, false);
 
                     const QString ephem = fmt.arg(date.ToShortDateAMJmillisec()).arg(sat.distance(), 16, 'f', 6).
-                            arg(sat.ascensionDroite() * RAD2DEG, 16, 'f', 6).arg(sat.declinaison() * RAD2DEG, 16, 'f', 6);
+                            arg(sat.ascensionDroite() * MATHS::RAD2DEG, 16, 'f', 6).arg(sat.declinaison() * MATHS::RAD2DEG, 16, 'f', 6);
 
                     flux << ephem << Qt::endl;
                 }
 
                 jjmsec += _conditions.pas;
-                date = Date(jjmsec * NB_JOUR_PAR_MILLISEC, 0.);
+                date = Date(jjmsec * DATE::NB_JOUR_PAR_MILLISEC, 0.);
                 i++;
             }
         }

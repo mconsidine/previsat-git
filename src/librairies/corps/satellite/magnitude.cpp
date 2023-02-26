@@ -30,7 +30,7 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -59,7 +59,7 @@ Magnitude::Magnitude()
 
     /* Corps du constructeur */
     _fractionIlluminee = 0.;
-    _magnitude = MAGNITUDE_INDEFINIE;
+    _magnitude = CORPS::MAGNITUDE_INDEFINIE;
 
     /* Retour */
     return;
@@ -78,7 +78,7 @@ void Magnitude::Calcul(const ConditionEclipse &conditionEclipse, const Observate
     /* Declarations des variables locales */
 
     /* Initialisations */
-    _magnitude = MAGNITUDE_INDEFINIE;
+    _magnitude = CORPS::MAGNITUDE_INDEFINIE;
 
     /* Corps de la methode */
     if (!conditionEclipse.eclipseTotale()) {
@@ -87,7 +87,7 @@ void Magnitude::Calcul(const ConditionEclipse &conditionEclipse, const Observate
         _fractionIlluminee = 0.5 * (1. + cos(conditionEclipse.eclipseSoleil().elongation));
 
         // Magnitude visuelle
-        if (magnitudeStandard < MAGNITUDE_INDEFINIE) {
+        if (magnitudeStandard < CORPS::MAGNITUDE_INDEFINIE) {
 
             _magnitude = magnitudeStandard - 15.75 + 2.5 * log10(distance * distance / _fractionIlluminee);
 
@@ -123,7 +123,7 @@ double Magnitude::ExtinctionAtmospherique(const Observateur &observateur, const 
 
     /* Corps de la methode */
     if (hauteur >= 0.) {
-        const double cosz = cos(PI_SUR_DEUX - hauteur);
+        const double cosz = cos(MATHS::PI_SUR_DEUX - hauteur);
         corr = (0.016 + observateur.aray() + observateur.aaer()) / (cosz + 0.025 * exp(-11. * cosz));
     }
 

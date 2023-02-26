@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 fevrier 2023
+ * >    25 fevrier 2023
  *
  */
 
@@ -44,10 +44,10 @@
 
 
 // Pas de calcul ou d'interpolation
-static const double PAS0 = NB_JOUR_PAR_MIN;
-static const double PAS1 = 10. * NB_JOUR_PAR_SEC;
-static const double PAS_INT0 = 10. * NB_JOUR_PAR_SEC;
-static const double TEMPS1 = 16. * NB_JOUR_PAR_MIN;
+static constexpr double PAS0 = DATE::NB_JOUR_PAR_MIN;
+static constexpr double PAS1 = 10. * DATE::NB_JOUR_PAR_SEC;
+static constexpr double PAS_INT0 = 10. * DATE::NB_JOUR_PAR_SEC;
+static constexpr double TEMPS1 = 16. * DATE::NB_JOUR_PAR_MIN;
 
 static ConditionsPrevisions _conditions;
 static QMap<QString, QList<QList<ResultatPrevisions> > > _resultats;
@@ -113,8 +113,8 @@ int Transits::CalculTransits(int &nombre)
     tps.start();
     _donnees.ageElementsOrbitaux.clear();
     _resultats.clear();
-    double elemMin = -DATE_INFINIE;
-    double elemMax = DATE_INFINIE;
+    double elemMin = -DATE::DATE_INFINIE;
+    double elemMax = DATE::DATE_INFINIE;
     QMap<QString, ElementsOrbitaux> tabElem = _conditions.tabElem;
 
     // Creation du tableau de satellites
@@ -175,7 +175,7 @@ int Transits::CalculTransits(int &nombre)
     Observateur obsmax;
     ConditionEclipse condEcl;
     Satellite sat;
-    std::array<double, DEGRE_INTERPOLATION> jjm;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
     QList<Date> dates;
     QPair<double, double> minmax;
     ResultatPrevisions res;
@@ -189,9 +189,9 @@ int Transits::CalculTransits(int &nombre)
         resultatSat.clear();
         sat = it1.next();
 
-        const double perigee = RAYON_TERRESTRE * pow(KE * NB_MIN_PAR_JOUR / (DEUX_PI * sat.elementsOrbitaux().no), DEUX_TIERS) *
-                (1. - sat.elementsOrbitaux().ecco);
-        const double periode = NB_JOUR_PAR_MIN * (floor(KE * pow(DEUX_PI * perigee, DEUX_TIERS)) - 16.);
+        const double perigee = TERRE::RAYON_TERRESTRE * pow(TERRE::KE * DATE::NB_MIN_PAR_JOUR / (MATHS::DEUX_PI * sat.elementsOrbitaux().no),
+                                                            MATHS::DEUX_TIERS) * (1. - sat.elementsOrbitaux().ecco);
+        const double periode = DATE::NB_JOUR_PAR_MIN * (floor(TERRE::KE * pow(MATHS::DEUX_PI * perigee, MATHS::DEUX_TIERS)) - 16.);
 
         // Boucle sur le tableau d'ephemerides
         QMapIterator it2(tabEphem);
@@ -224,7 +224,7 @@ int Transits::CalculTransits(int &nombre)
                     jj2 = jj0 + TEMPS1;
 
                     ang = 0.;
-                    ang0 = PI;
+                    ang0 = MATHS::PI;
 
                     resultatSat.clear();
 
@@ -257,10 +257,10 @@ int Transits::CalculTransits(int &nombre)
                         }
 
                         jj0 += PAS1;
-                    } while ((jj0 <= jj2) && (ang < (ang0 + EPSDBL100)));
+                    } while ((jj0 <= jj2) && (ang < (ang0 + MATHS::EPSDBL100)));
 
                     // Il y a une conjonction ou un transit : on determine l'angle de separation minimum
-                    if ((jj0 <= jj2 - PAS1) && (ang0 < _conditions.seuilConjonction + DEG2RAD) && (sat.hauteur() >= 0.)) {
+                    if ((jj0 <= jj2 - PAS1) && (ang0 < _conditions.seuilConjonction + MATHS::DEG2RAD) && (sat.hauteur() >= 0.)) {
 
                         // Recherche de l'instant precis de l'angle minimum par interpolation
                         jj0 -= 2. * PAS1;
@@ -306,13 +306,13 @@ int Transits::CalculTransits(int &nombre)
 
                             if (typeCorps == CorpsTransit::CORPS_SOLEIL) {
                                 corps.setPosition(soleil.position());
-                                rayon = RAYON_SOLAIRE;
+                                rayon = SOLEIL::RAYON_SOLAIRE;
                             }
 
                             if (typeCorps == CorpsTransit::CORPS_LUNE) {
                                 lune.CalculPosition(date2);
                                 corps.setPosition(lune.position());
-                                rayon = RAYON_LUNAIRE;
+                                rayon = LUNE::RAYON_LUNAIRE;
                             }
 
                             corps.CalculCoordHoriz(_conditions.observateur, false);
@@ -369,7 +369,7 @@ int Transits::CalculTransits(int &nombre)
                                     condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
 
                                     // Date calendaire
-                                    res.date = Date(dates[j].jourJulien() + EPS_DATES, 0.);
+                                    res.date = Date(dates[j].jourJulien() + DATE::EPS_DATES, 0.);
                                     if (j == 2) {
                                         date3 = res.date;
                                     }
@@ -398,7 +398,7 @@ int Transits::CalculTransits(int &nombre)
                                     res.eclipse = condEcl.eclipseTotale();
                                     res.penombre = (condEcl.eclipseAnnulaire() || condEcl.eclipsePartielle());
                                     if (j == 2) {
-                                        res.duree = fabs(dates[3].jourJulienUTC() - dates[1].jourJulienUTC()) * NB_SEC_PAR_JOUR;
+                                        res.duree = fabs(dates[3].jourJulienUTC() - dates[1].jourJulienUTC()) * DATE::NB_SEC_PAR_JOUR;
                                     } else {
                                         res.duree = 0.;
                                     }
@@ -415,13 +415,13 @@ int Transits::CalculTransits(int &nombre)
                                         if (typeCorps == CorpsTransit::CORPS_SOLEIL) {
                                             soleil.CalculPosition(dates[j]);
                                             corps.setPosition(soleil.position());
-                                            rayon = RAYON_SOLAIRE;
+                                            rayon = SOLEIL::RAYON_SOLAIRE;
                                         }
 
                                         if (typeCorps == CorpsTransit::CORPS_LUNE) {
                                             lune.CalculPosition(dates[j]);
                                             corps.setPosition(lune.position());
-                                            rayon = RAYON_LUNAIRE;
+                                            rayon = LUNE::RAYON_LUNAIRE;
                                         }
 
                                         corps.CalculCoordHoriz(obsmax, false);
@@ -487,13 +487,14 @@ int Transits::CalculTransits(int &nombre)
 /*
  * Calcul de l'angle minimum du panneau
  */
-QPair<double, double> Transits::CalculAngleMin(const std::array<double, DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps, Satellite &satellite)
+QPair<double, double> Transits::CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps,
+                                               Satellite &satellite)
 {
     /* Declarations des variables locales */
     Corps corps;
     Soleil soleil;
     Lune lune;
-    std::array<double, DEGRE_INTERPOLATION> ang;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> ang;
 
     /* Initialisations */
 
@@ -532,14 +533,15 @@ QPair<double, double> Transits::CalculAngleMin(const std::array<double, DEGRE_IN
 /*
  * Calcul de la date ou la distance angulaire est minimale
  */
-double Transits::CalculDate(const std::array<double, DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps, const bool itransit, Satellite &satellite)
+double Transits::CalculDate(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps, const bool itransit,
+                            Satellite &satellite)
 {
     /* Declarations des variables locales */
     double dist;
     Corps corps;
     Soleil soleil;
     Lune lune;
-    std::array<double, DEGRE_INTERPOLATION> angle;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> angle;
 
     /* Initialisations */
 
@@ -572,7 +574,7 @@ double Transits::CalculDate(const std::array<double, DEGRE_INTERPOLATION> jjm, c
 
     if (itransit) {
 
-        const double rayon = (typeCorps == CorpsTransit::CORPS_SOLEIL) ? RAYON_SOLAIRE : RAYON_LUNAIRE;
+        const double rayon = (typeCorps == CorpsTransit::CORPS_SOLEIL) ? SOLEIL::RAYON_SOLAIRE : LUNE::RAYON_LUNAIRE;
         dist = asin(rayon / corps.distance());
 
     } else {
@@ -580,7 +582,7 @@ double Transits::CalculDate(const std::array<double, DEGRE_INTERPOLATION> jjm, c
     }
 
     /* Retour */
-    return Maths::CalculValeurXInterpolation3(jjm, angle, dist, EPS_DATES);
+    return Maths::CalculValeurXInterpolation3(jjm, angle, dist, DATE::EPS_DATES);
 }
 
 /*
@@ -589,7 +591,7 @@ double Transits::CalculDate(const std::array<double, DEGRE_INTERPOLATION> jjm, c
 QList<Date> Transits::CalculElements(const double jmax, const CorpsTransit &typeCorps, const bool itransit, Satellite &satellite)
 {
     /* Declarations des variables locales */
-    std::array<double, DEGRE_INTERPOLATION> jjm;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
 
     /* Initialisations */
 
@@ -604,7 +606,7 @@ QList<Date> Transits::CalculElements(const double jmax, const CorpsTransit &type
     // Iterations supplementaires pour affiner la date
     int it = 0;
     double tmp = 0.;
-    while ((fabs(dateInf - tmp) > EPS_DATES) && (it < 20)) {
+    while ((fabs(dateInf - tmp) > DATE::EPS_DATES) && (it < 20)) {
 
         tmp = dateInf;
         jjm[1] = dateInf;
@@ -616,7 +618,7 @@ QList<Date> Transits::CalculElements(const double jmax, const CorpsTransit &type
     }
 
     // Premiere date pour le trace sur la map
-    double date1 = dateInf - 0.8 * NB_JOUR_PAR_SEC;
+    double date1 = dateInf - 0.8 * DATE::NB_JOUR_PAR_SEC;
 
     // Date de fin
     jjm[0] = jmax;
@@ -628,7 +630,7 @@ QList<Date> Transits::CalculElements(const double jmax, const CorpsTransit &type
     // Iterations supplementaires pour affiner la date
     it = 0;
     tmp = 0.;
-    while ((fabs(dateSup - tmp) > EPS_DATES) && (it < 20)) {
+    while ((fabs(dateSup - tmp) > DATE::EPS_DATES) && (it < 20)) {
 
         tmp = dateSup;
         jjm[1] = dateSup;
@@ -640,7 +642,7 @@ QList<Date> Transits::CalculElements(const double jmax, const CorpsTransit &type
     }
 
     // Deuxieme date pour le trace sur la map
-    double date2 = dateSup + 0.8 * NB_JOUR_PAR_SEC;
+    double date2 = dateSup + 0.8 * DATE::NB_JOUR_PAR_SEC;
 
     QList<Date> dates;
     dates.append(Date(date1, 0., false));

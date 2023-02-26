@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    5 octobre 2020
+ * >    25 fevrier 2023
  *
  */
 
@@ -62,39 +62,42 @@ enum class DateSysteme {
 /*
  * Definitions des constantes
  */
-static const int AN2000 = 2000;
+namespace DATE {
 
-static const double EPS_DATES = 1.e-7;
-static const double TJ2000 = 2451545.;
-static const double DATE_INFINIE = 9999999.;
+static constexpr int AN2000 = 2000;
 
-static const double NB_HEUR_PAR_JOUR = 24.;
-static const double NB_MIN_PAR_HEUR = 60.;
-static const double NB_MIN_PAR_JOUR = 1440.;
-static const double NB_SEC_PAR_MIN = 60.;
-static const double NB_SEC_PAR_HEUR = 3600.;
-static const double NB_SEC_PAR_JOUR = 86400.;
-static const double NB_MILLISEC_PAR_JOUR = 86400000.;
+static constexpr double EPS_DATES = 1.e-7;
+static constexpr double TJ2000 = 2451545.;
+static constexpr double DATE_INFINIE = 9999999.;
 
-static const double NB_JOURS_PAR_ANJ = 365.25;
-static const double NB_JOURS_PAR_SIECJ = 36525.;
-static const double NB_JOURS_PAR_MILLJ = 365250.;
+static constexpr double NB_HEUR_PAR_JOUR = 24.;
+static constexpr double NB_MIN_PAR_HEUR = 60.;
+static constexpr double NB_MIN_PAR_JOUR = 1440.;
+static constexpr double NB_SEC_PAR_MIN = 60.;
+static constexpr double NB_SEC_PAR_HEUR = 3600.;
+static constexpr double NB_SEC_PAR_JOUR = 86400.;
+static constexpr double NB_MILLISEC_PAR_JOUR = 86400000.;
+
+static constexpr double NB_JOURS_PAR_ANJ = 365.25;
+static constexpr double NB_JOURS_PAR_SIECJ = 36525.;
+static constexpr double NB_JOURS_PAR_MILLJ = 365250.;
 
 // Ecart constant TAI-TT (en secondes)
-static const double NB_SEC_TT_TAI = 32.184;
+static constexpr double NB_SEC_TT_TAI = 32.184;
 
-static const double NB_JOUR_PAR_HEUR = 1. / NB_HEUR_PAR_JOUR;
-static const double NB_JOUR_PAR_MIN = 1. / NB_MIN_PAR_JOUR;
-static const double NB_JOUR_PAR_SEC = 1. / NB_SEC_PAR_JOUR;
-static const double NB_JOUR_PAR_MILLISEC = 1. / NB_MILLISEC_PAR_JOUR;
+static constexpr double NB_JOUR_PAR_HEUR = 1. / NB_HEUR_PAR_JOUR;
+static constexpr double NB_JOUR_PAR_MIN = 1. / NB_MIN_PAR_JOUR;
+static constexpr double NB_JOUR_PAR_SEC = 1. / NB_SEC_PAR_JOUR;
+static constexpr double NB_JOUR_PAR_MILLISEC = 1. / NB_MILLISEC_PAR_JOUR;
 
-static const double NB_MIN_PAR_SEC = 1. / NB_SEC_PAR_MIN;
-static const double NB_HEUR_PAR_MIN = 1. / NB_MIN_PAR_HEUR;
-static const double NB_HEUR_PAR_SEC = 1. / NB_SEC_PAR_HEUR;
+static constexpr double NB_MIN_PAR_SEC = 1. / NB_SEC_PAR_MIN;
+static constexpr double NB_HEUR_PAR_MIN = 1. / NB_MIN_PAR_HEUR;
+static constexpr double NB_HEUR_PAR_SEC = 1. / NB_SEC_PAR_HEUR;
 
-static const double NB_ANJ_PAR_JOURS = 1. / NB_JOURS_PAR_ANJ;
-static const double NB_SIECJ_PAR_JOURS = 1. / NB_JOURS_PAR_SIECJ;
-static const double NB_MILLJ_PAR_JOURS = 1. / NB_JOURS_PAR_MILLJ;
+static constexpr double NB_ANJ_PAR_JOURS = 1. / NB_JOURS_PAR_ANJ;
+static constexpr double NB_SIECJ_PAR_JOURS = 1. / NB_JOURS_PAR_SIECJ;
+static constexpr double NB_MILLJ_PAR_JOURS = 1. / NB_JOURS_PAR_MILLJ;
 
+}
 
 #endif // DATESCONST_H

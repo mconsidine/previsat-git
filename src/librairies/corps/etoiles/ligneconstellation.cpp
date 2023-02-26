@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -133,6 +133,8 @@ void LigneConstellation::Initialisation(const QString &dirCommonData)
             }
         }
         fichier.close();
+
+        qInfo() << "Lecture fichier constlines.dat OK";
     }
 
     /* Retour */

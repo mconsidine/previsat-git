@@ -68,8 +68,8 @@ void ObservateurTest::testObservateur()
     QCOMPARE(obs.aaer(), 0.11762384079681);
     QCOMPARE(obs.aray(), 0.144556622780765);
     QCOMPARE(obs.nomlieu(), "Paris");
-    QCOMPARE(obs.longitude(), -2.34864 * DEG2RAD);
-    QCOMPARE(obs.latitude(), 48.85339 * DEG2RAD);
+    QCOMPARE(obs.longitude(), -2.34864 * MATHS::DEG2RAD);
+    QCOMPARE(obs.latitude(), 48.85339 * MATHS::DEG2RAD);
     QCOMPARE(obs.altitude(), 30. * 1.e-3);
 }
 
@@ -77,7 +77,7 @@ void ObservateurTest::testCalculPosVit()
 {
     qInfo(Q_FUNC_INFO);
 
-    const Date date(2453736.5 - TJ2000, 0., false);
+    const Date date(2453736.5 - DATE::TJ2000, 0., false);
     obs.CalculPosVit(date);
     QCOMPARE(obs.tempsSideralGreenwich(), 1.7541749819128);
 
@@ -127,6 +127,6 @@ void ObservateurTest::testCalculTempsSideralGreenwich()
 {
     qInfo(Q_FUNC_INFO);
 
-    const Date date(2453736.5 - TJ2000, 0., false);
+    const Date date(2453736.5 - DATE::TJ2000, 0., false);
     QCOMPARE(Observateur::CalculTempsSideralGreenwich(date), 1.7541749819128);
 }

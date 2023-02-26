@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    22 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -65,16 +65,16 @@ struct EphemeridesFlashs
 };
 
 // Pas de calcul ou d'interpolation
-static const double PAS0 = NB_JOUR_PAR_MIN;
-static const double PAS1 = 10. * NB_JOUR_PAR_SEC;
-static const double PAS_INT0 = 30. * NB_JOUR_PAR_SEC;
-static const double PAS_INT1 = 2. * NB_JOUR_PAR_SEC;
-static const double TEMPS1 = 16. * NB_JOUR_PAR_MIN;
-static const double TEMPS2 = 76. * NB_JOUR_PAR_MIN;
+static constexpr double PAS0 = DATE::NB_JOUR_PAR_MIN;
+static constexpr double PAS1 = 10. * DATE::NB_JOUR_PAR_SEC;
+static constexpr double PAS_INT0 = 30. * DATE::NB_JOUR_PAR_SEC;
+static constexpr double PAS_INT1 = 2. * DATE::NB_JOUR_PAR_SEC;
+static constexpr double TEMPS1 = 16. * DATE::NB_JOUR_PAR_MIN;
+static constexpr double TEMPS2 = 76. * DATE::NB_JOUR_PAR_MIN;
 
 // Nom et numeros des panneaux
 static const QByteArray LISTE_MIR = QObject::tr("FCB", "Front, Central, Backward panels of MetOp satellite").toLatin1();
-static const int LISTE_PAN[NB_PAN] = { 0, 1, 2 };
+static constexpr int LISTE_PAN[NB_PAN] = { 0, 1, 2 };
 
 static int _pan;
 static char _mir;
@@ -130,8 +130,8 @@ int Flashs::CalculFlashs(int &nombre)
     QMap<QString, ElementsOrbitaux> tabElem;
 
     /* Initialisations */
-    double tlemin = -DATE_INFINIE;
-    double tlemax = DATE_INFINIE;
+    double tlemin = -DATE::DATE_INFINIE;
+    double tlemax = DATE::DATE_INFINIE;
     const double angrefMax = 1.;
     const double pasmax = 3. * PAS1;
 
@@ -193,7 +193,7 @@ int Flashs::CalculFlashs(int &nombre)
     Lune lune;
     Satellite sat;
     ConditionEclipse condEcl;
-    std::array<double, DEGRE_INTERPOLATION> jjm;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
     QPair<double, double> minmax;
 
     // Boucle sur les satellites
@@ -202,7 +202,7 @@ int Flashs::CalculFlashs(int &nombre)
 
         sat = it4.next();
 
-        temp = -DATE_INFINIE;
+        temp = -DATE::DATE_INFINIE;
         _resultatSat.clear();
 
         // Boucle sur le tableau d'ephemerides
@@ -249,9 +249,9 @@ int Flashs::CalculFlashs(int &nombre)
 
                         if (angref <= angrefMax) {
 
-                            jjm[0] = jj0 - NB_JOUR_PAR_MIN;
+                            jjm[0] = jj0 - DATE::NB_JOUR_PAR_MIN;
                             jjm[1] = jj0;
-                            jjm[2] = jj0 + NB_JOUR_PAR_MIN;
+                            jjm[2] = jj0 + DATE::NB_JOUR_PAR_MIN;
 
                             // Calcul par interpolation de l'instant correspondant
                             // a l'angle de reflexion minimum
@@ -383,7 +383,7 @@ double Flashs::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
 
     /* Initialisations */
     const SatellitesFlashs sts = Configuration::instance()->mapFlashs()[satellite.elementsOrbitaux().norad];
-    double ang = PI;
+    double ang = MATHS::PI;
     int j = 0;
     imin = _pan;
     imax = static_cast<int> (sts.angles.count());
@@ -424,10 +424,10 @@ double Flashs::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
 /*
  * Calcul de l'angle minimum du panneau
  */
-QPair<double, double> Flashs::CalculAngleMin(const std::array<double, DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil)
+QPair<double, double> Flashs::CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil)
 {
     /* Declarations des variables locales */
-    std::array<double, DEGRE_INTERPOLATION> ang;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> ang;
 
     /* Initialisations */
 
@@ -464,7 +464,7 @@ QList<EphemeridesFlashs> Flashs::CalculEphemSoleilObservateur()
     QList<EphemeridesFlashs> tabEphem;
 
     /* Initialisations */
-    const double pas = NB_JOUR_PAR_MIN;
+    const double pas = DATE::NB_JOUR_PAR_MIN;
 
     /* Corps de la methode */
     Date date(_conditions.jj1, 0., false);
@@ -501,13 +501,13 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Sa
 {
     /* Declarations des variables locales */
     double tmp;
-    std::array<double, DEGRE_INTERPOLATION> jjm;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
     std::array<double, 4> limite;
     std::array<double, 4> lim0;
 
     /* Initialisations */
     double dateInf;
-    double dateSup = DATE_INFINIE;
+    double dateSup = DATE::DATE_INFINIE;
     double jj0 = dateMaxFlash - PAS_INT0;
     double jj2 = dateMaxFlash + PAS_INT0;
 
@@ -519,18 +519,18 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Sa
 
     LimiteFlash(mgn0, jjm, satellite, soleil, limite);
 
-    limite[1] = DATE_INFINIE;
+    limite[1] = DATE::DATE_INFINIE;
 
     int it;
     double pasInt;
 
     for (int i=0; i<4; i++) {
         lim0[i] = limite[i];
-        if (lim0[i] < DATE_INFINIE) {
+        if (lim0[i] < DATE::DATE_INFINIE) {
 
             it = 0;
             pasInt = PAS_INT1;
-            if (fabs(mgn0 - _conditions.magnitudeLimite) <= EPSDBL100) {
+            if (fabs(mgn0 - _conditions.magnitudeLimite) <= MATHS::EPSDBL100) {
                 pasInt *= 0.5;
             }
             do {
@@ -542,11 +542,11 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Sa
 
                 LimiteFlash(mgn0, jjm, satellite, soleil, lim0);
                 pasInt *= 0.5;
-            } while ((fabs(lim0[i] - tmp) > EPS_DATES) && (lim0[i] < DATE_INFINIE) && (it < 10));
+            } while ((fabs(lim0[i] - tmp) > DATE::EPS_DATES) && (lim0[i] < DATE::DATE_INFINIE) && (it < 10));
 
-            limite[i] = ((lim0[i] < DATE_INFINIE) && (it < 10)) ? lim0[i] : -DATE_INFINIE;
+            limite[i] = ((lim0[i] < DATE::DATE_INFINIE) && (it < 10)) ? lim0[i] : -DATE::DATE_INFINIE;
         } else {
-            limite[i] = -DATE_INFINIE;
+            limite[i] = -DATE::DATE_INFINIE;
         }
     }
 
@@ -562,15 +562,15 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Sa
 
     LimiteFlash(mgn0, jjm, satellite, soleil, limite);
 
-    limite[1] = DATE_INFINIE;
+    limite[1] = DATE::DATE_INFINIE;
 
     for (int i=0; i<4; i++) {
         lim0[i] = limite[i];
-        if (lim0[i] < DATE_INFINIE) {
+        if (lim0[i] < DATE::DATE_INFINIE) {
 
             it = 0;
             pasInt = PAS_INT1;
-            if (fabs(mgn0 - _conditions.magnitudeLimite) <= EPSDBL100) {
+            if (fabs(mgn0 - _conditions.magnitudeLimite) <= MATHS::EPSDBL100) {
                 pasInt *= 0.5;
             }
             do {
@@ -582,11 +582,11 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Sa
 
                 LimiteFlash(mgn0, jjm, satellite, soleil, lim0);
                 pasInt *= 0.5;
-            } while ((fabs(lim0[i] - tmp) > EPS_DATES) && (lim0[i] < DATE_INFINIE) && (it < 10));
+            } while ((fabs(lim0[i] - tmp) > DATE::EPS_DATES) && (lim0[i] < DATE::DATE_INFINIE) && (it < 10));
 
-            limite[i] = ((lim0[i] < DATE_INFINIE) && (it < 10)) ? lim0[i] : DATE_INFINIE;
+            limite[i] = ((lim0[i] < DATE::DATE_INFINIE) && (it < 10)) ? lim0[i] : DATE::DATE_INFINIE;
         } else {
-            limite[i] = DATE_INFINIE;
+            limite[i] = DATE::DATE_INFINIE;
         }
     }
 
@@ -617,7 +617,7 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Sa
 
     dateMax = minmax.first;
 
-    if ((dateInf < (dateSup - EPS_DATES)) && (fabs(dateInf) < DATE_INFINIE) && (fabs(dateSup) < DATE_INFINIE)) {
+    if ((dateInf < (dateSup - DATE::EPS_DATES)) && (fabs(dateInf) < DATE::DATE_INFINIE) && (fabs(dateSup) < DATE::DATE_INFINIE)) {
 
         if (dateMax < dateInf) {
             dateMax = dateInf;
@@ -632,7 +632,7 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Sa
         lim[2] = Date(dateSup, 0., false);
 
     } else {
-        lim[1] = Date(DATE_INFINIE, 0., false);
+        lim[1] = Date(DATE::DATE_INFINIE, 0., false);
     }
 
     /* Retour */
@@ -689,7 +689,7 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
                 CalculLimitesFlash(mgn0, minmax.first, sat, soleil, dates);
                 const double pasmax = 3. * PAS1;
 
-                if ((dates[1].jourJulienUTC() < DATE_INFINIE) && (fabs(dates[1].jourJulienUTC() - temp) > pasmax)) {
+                if ((dates[1].jourJulienUTC() < DATE::DATE_INFINIE) && (fabs(dates[1].jourJulienUTC() - temp) > pasmax)) {
 
                     temp = minmax.first;
 
@@ -815,16 +815,16 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
 /*
  * Calcul d'une limite du flash
  */
-void Flashs::LimiteFlash(const double mgn0, const std::array<double, DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil,
+void Flashs::LimiteFlash(const double mgn0, const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil,
                          std::array<double, 4> &limite)
 {
     /* Declarations des variables locales */
     Lune lune;
     ConditionEclipse condEcl;
-    std::array<double, DEGRE_INTERPOLATION> ang;
-    std::array<double, DEGRE_INTERPOLATION> ecl;
-    std::array<double, DEGRE_INTERPOLATION> ht;
-    std::array<double, DEGRE_INTERPOLATION> mag;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> ang;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> ecl;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> ht;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> mag;
 
     /* Initialisations */
 
@@ -862,23 +862,23 @@ void Flashs::LimiteFlash(const double mgn0, const std::array<double, DEGRE_INTER
 
     double t_ecl, t_ht;
     // Calcul par interpolation de la date pour laquelle la magnitude est egale a la magnitude specifiee par l'utilisateur
-    const double t_mag = Maths::CalculValeurXInterpolation3(jjm, mag, mgn0, EPS_DATES);
+    const double t_mag = Maths::CalculValeurXInterpolation3(jjm, mag, mgn0, DATE::EPS_DATES);
 
     // Calcul par interpolation de la date pour laquelle l'angle de reflexion est egal a l'angle de reflexion specifie par l'utilisateur
-    const double t_ang = Maths::CalculValeurXInterpolation3(jjm, ang, _conditions.angleLimite, EPS_DATES);
+    const double t_ang = Maths::CalculValeurXInterpolation3(jjm, ang, _conditions.angleLimite, DATE::EPS_DATES);
 
     // Calcul par interpolation de la date pour laquelle la hauteur est egale a la hauteur specifie par l'utilisateur
     if (((ht[0] - _conditions.hauteur) * (ht[2] - _conditions.hauteur) < 0.) ||
             ((ht[0] < _conditions.hauteur) && (ht[2] < _conditions.hauteur))) {
-        t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, _conditions.hauteur, EPS_DATES);
+        t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, _conditions.hauteur, DATE::EPS_DATES);
     } else {
-        t_ht = DATE_INFINIE;
+        t_ht = DATE::DATE_INFINIE;
     }
 
     if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.)) {
-        t_ecl = Maths::CalculValeurXInterpolation3(jjm, ecl, 0., EPS_DATES);
+        t_ecl = Maths::CalculValeurXInterpolation3(jjm, ecl, 0., DATE::EPS_DATES);
     } else {
-        t_ecl = DATE_INFINIE;
+        t_ecl = DATE::DATE_INFINIE;
     }
 
     limite[0] = t_mag;
@@ -898,8 +898,8 @@ double Flashs::MagnitudeFlash(const double angle, const ConditionEclipse &condEc
     /* Declarations des variables locales */
 
     /* Initialisations */
-    double magnitude = MAGNITUDE_INDEFINIE;
-    const double angDeg = angle * RAD2DEG;
+    double magnitude = CORPS::MAGNITUDE_INDEFINIE;
+    const double angDeg = angle * MATHS::RAD2DEG;
 
     /* Corps de la methode */
     if (satellite.elementsOrbitaux().nom.contains("metop", Qt::CaseInsensitive)) {
@@ -944,7 +944,7 @@ Matrice3D Flashs::RotationRV(const Vecteur3D &position, const Vecteur3D &vitesse
     const Vecteur3D w((position ^ vitesse).Normalise());
 
     /* Corps de la methode */
-    const double alpha = atan2(w.y(), w.x()) + PI;
+    const double alpha = atan2(w.y(), w.x()) + MATHS::PI;
     const Matrice3D matrice1(AxeType::AXE_Z, alpha);
 
     const double beta = -acos(w.z());
@@ -959,12 +959,12 @@ Matrice3D Flashs::RotationRV(const Vecteur3D &position, const Vecteur3D &vitesse
     Matrice3D matrice = matrice4 * matrice3;
 
     if (inpl != 0) {
-        const Matrice3D matrice5(AxeType::AXE_X, PI_SUR_DEUX);
+        const Matrice3D matrice5(AxeType::AXE_X, MATHS::PI_SUR_DEUX);
         const Matrice3D matrice6 = matrice5 * matrice;
         matrice = matrice6;
 
         if (inpl == 2) {
-            const double delta = position.Angle(vitesse) - PI_SUR_DEUX;
+            const double delta = position.Angle(vitesse) - MATHS::PI_SUR_DEUX;
             const Matrice3D matrice7(AxeType::AXE_Y, delta);
             const Matrice3D matrice8 = matrice7 * matrice;
             matrice = matrice8;
@@ -972,14 +972,14 @@ Matrice3D Flashs::RotationRV(const Vecteur3D &position, const Vecteur3D &vitesse
     }
 
     // Rotation en lacet
-    if (fabs(lacet) > EPSDBL100) {
+    if (fabs(lacet) > MATHS::EPSDBL100) {
         const Matrice3D matrice9(AxeType::AXE_Z, -lacet);
         const Matrice3D matrice10 = matrice9 * matrice;
         matrice = matrice10;
     }
 
     // Rotation en tangage
-    if (fabs(tangage) > EPSDBL100) {
+    if (fabs(tangage) > MATHS::EPSDBL100) {
         const Matrice3D matrice11(AxeType::AXE_Y, -tangage);
         const Matrice3D matrice12 = matrice11 * matrice;
         matrice = matrice12;
@@ -1006,7 +1006,7 @@ Matrice3D Flashs::RotationYawSteering(const Satellite &satellite, const double l
     const double cosphisq = 1. - vecteur1.z() * vecteur1.z();
     const double cosphi = (cosphisq < 0.) ? 0. : sqrt(cosphisq);
     double cosphi1 = cosphi;
-    const double cosinc = cos(satellite.elementsOrbitaux().inclo * DEG2RAD);
+    const double cosinc = cos(satellite.elementsOrbitaux().inclo * MATHS::DEG2RAD);
 
     if ((cosphi > 0.) && (cosphi > fabs(cosinc))) {
 
@@ -1018,12 +1018,12 @@ Matrice3D Flashs::RotationYawSteering(const Satellite &satellite, const double l
 
             double psi1 = psi;
             if (satellite.vitesse().z() < 0.) {
-                psi1 = PI - psi1;
+                psi1 = MATHS::PI - psi1;
             }
-            psi1 = modulo(psi1, DEUX_PI);
+            psi1 = modulo(psi1, MATHS::DEUX_PI);
 
             double phi1 = acos(cosphi1);
-            double corrgeo = fabs(APLA * sin(2. * phi1));
+            double corrgeo = fabs(TERRE::APLA * sin(2. * phi1));
             if (satellite.position().z() < 0.) {
                 corrgeo = -corrgeo;
             }
@@ -1036,7 +1036,7 @@ Matrice3D Flashs::RotationYawSteering(const Satellite &satellite, const double l
             matrice = matrice5 * matrice4;
 
             const double tanalpha = (sinpsi - cosphi / satellite.elementsOrbitaux().no) / cospsi;
-            if (tanalpha < PI_SUR_DEUX) {
+            if (tanalpha < MATHS::PI_SUR_DEUX) {
 
                 double alpha = atan(tanalpha);
                 alpha -= psi;
@@ -1049,14 +1049,14 @@ Matrice3D Flashs::RotationYawSteering(const Satellite &satellite, const double l
     }
 
     // Rotation en lacet
-    if (fabs(yaw) > EPSDBL100) {
+    if (fabs(yaw) > MATHS::EPSDBL100) {
         const Matrice3D matrice6(AxeType::AXE_Z, -yaw);
         const Matrice3D matrice7 = matrice6 * matrice;
         matrice = matrice7;
     }
 
     // Rotation en tangage
-    if (fabs(tangage) > EPSDBL100) {
+    if (fabs(tangage) > MATHS::EPSDBL100) {
         const Matrice3D matrice8(AxeType::AXE_Y, -tangage);
         const Matrice3D matrice9 = matrice8 * matrice;
         matrice = matrice9;
