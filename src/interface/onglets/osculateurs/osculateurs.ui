@@ -120,7 +120,7 @@
       <item row="0" column="2">
        <widget class="QLabel" name="utcDateHeure">
         <property name="text">
-         <string>UTC + 12:00</string>
+         <string notr="true">UTC + 12:00</string>
         </property>
        </widget>
       </item>

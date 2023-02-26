@@ -838,11 +838,11 @@ void General::SauveOngletGeneral(const QString &fichier)
                  << Qt::endl << Qt::endl;
 
             flux << tr("Évènements Soleil :") << Qt::endl;
-            chaine = tr("Lever    : %1\t\t\tAube astronomique : %2\t\tCrépuscule civil         : %3");
+            chaine = tr("Lever    : %1\t\t\tAube astronomique : %2\t\tCrépuscule civil         : %3", "Sunrise");
             flux << chaine.arg(_ui->leverSoleil->text()).arg(_ui->aubeAstro->text()).arg(_ui->crepusculeCivil->text()) << Qt::endl;
-            chaine = tr("Méridien : %1\t\t\tAube nautique     : %2\t\tCrépuscule nautique      : %3");
+            chaine = tr("Méridien : %1\t\t\tAube nautique     : %2\t\tCrépuscule nautique      : %3", "Meridian pass for the Sun");
             flux << chaine.arg(_ui->meridienSoleil->text()).arg(_ui->aubeNautique->text()).arg(_ui->crepusculeNautique->text()) << Qt::endl;
-            chaine = tr("Coucher  : %1\t\t\tAube civile       : %2\t\tCrépuscule astronomique  : %3");
+            chaine = tr("Coucher  : %1\t\t\tAube civile       : %2\t\tCrépuscule astronomique  : %3", "Sunset");
             flux << chaine.arg(_ui->coucherSoleil->text()).arg(_ui->aubeCivile->text()).arg(_ui->crepusculeAstro->text())
                  << Qt::endl << Qt::endl << Qt::endl;
 
@@ -860,9 +860,9 @@ void General::SauveOngletGeneral(const QString &fichier)
                  << Qt::endl << Qt::endl;
 
             flux << tr("Évènements Lune :") << Qt::endl;
-            flux << tr("Lever    : %1").arg(_ui->leverLune->text()) << Qt::endl;
-            flux << tr("Méridien : %1").arg(_ui->meridienLune->text()) << Qt::endl;
-            flux << tr("Coucher  : %1").arg(_ui->coucherLune->text()) << Qt::endl << Qt::endl;
+            flux << tr("Lever    : %1", "Moonrise").arg(_ui->leverLune->text()) << Qt::endl;
+            flux << tr("Méridien : %1", "Meridian pass for the Moon").arg(_ui->meridienLune->text()) << Qt::endl;
+            flux << tr("Coucher  : %1", "Moonset").arg(_ui->coucherLune->text()) << Qt::endl << Qt::endl;
 
             flux << tr("Nouvelle Lune    : %1").arg(_ui->nouvelleLune->text()) << Qt::endl;
             flux << tr("Premier quartier : %1").arg(_ui->premierQuartier->text()) << Qt::endl;
