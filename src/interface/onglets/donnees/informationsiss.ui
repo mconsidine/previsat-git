@@ -147,7 +147,7 @@
     <item row="0" column="1">
      <widget class="QLabel" name="masseISS">
       <property name="text">
-       <string>463000 kg</string>
+       <string notr="true">463000 kg</string>
       </property>
      </widget>
     </item>
@@ -161,7 +161,7 @@
     <item row="1" column="1">
      <widget class="QLabel" name="surfaceTrainee">
       <property name="text">
-       <string>1480 m2</string>
+       <string notr="true">1480 m2</string>
       </property>
      </widget>
     </item>
@@ -187,7 +187,7 @@
     <item row="0" column="1">
      <widget class="QLabel" name="coefficientTrainee">
       <property name="text">
-       <string>2.50</string>
+       <string notr="true">2.50</string>
       </property>
      </widget>
     </item>

@@ -412,7 +412,7 @@
        <font/>
       </property>
       <property name="text">
-       <string>Age des éléments orbitaux : </string>
+       <string>Age des éléments orbitaux :</string>
       </property>
      </widget>
     </item>
