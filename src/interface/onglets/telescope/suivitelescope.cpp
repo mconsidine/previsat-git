@@ -238,8 +238,6 @@ void SuiviTelescope::changeEvent(QEvent *evt)
 void SuiviTelescope::CalculAos() const
 {
     /* Declarations des variables locales */
-    double azim;
-    double delai;
     QFont bld;
     ConditionEclipse condEcl;
 
@@ -298,12 +296,14 @@ void SuiviTelescope::CalculAos() const
 
         if (elemAos.aos) {
 
+            double azim;
+            double delai;
             Date dateLosSuivi;
             QString chaine = tr("%1 (dans %2). Azimut : %3", "Delay in hour, minutes, seconds");
 
             if (elemAos.typeAOS == tr("AOS", "Acquisition of signal")) {
 
-                const ElementsAOS elemLos = Evenements::CalculAOS(Date(dateAosSuivi.jourJulienUTC() + 10. * NB_JOUR_PAR_SEC, _date->offsetUTC()),
+                const ElementsAOS elemLos = Evenements::CalculAOS(Date(dateAosSuivi.jourJulienUTC() + 10. * DATE::NB_JOUR_PAR_SEC, _date->offsetUTC()),
                                                                   satSuivi, obs, SensCalcul::CHRONOLOGIQUE, 0.);
 
                 // Date de coucher
@@ -312,7 +312,7 @@ void SuiviTelescope::CalculAos() const
 
                 // Lever
                 delai = dateAosSuivi.jourJulienUTC() - dateCalcul.jourJulienUTC();
-                const Date delaiAOS = Date(delai - 0.5 + EPS_DATES, 0.);
+                const Date delaiAOS = Date(delai - 0.5 + DATE::EPS_DATES, 0.);
 
                 QString cDelaiAOS;
 
@@ -321,7 +321,7 @@ void SuiviTelescope::CalculAos() const
                     cDelaiAOS = "";
                     chaine = tr("%1%2. Azimut : %3");
 
-                } else if (delai >= (NB_JOUR_PAR_HEUR - EPS_DATES)) {
+                } else if (delai >= (DATE::NB_JOUR_PAR_HEUR - DATE::EPS_DATES)) {
 
                     cDelaiAOS = delaiAOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).mid(11, 5)
                             .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
@@ -351,7 +351,7 @@ void SuiviTelescope::CalculAos() const
 
                 dateLosSuivi = dateAosSuivi;
 
-                const ElementsAOS elem = Evenements::CalculAOS(Date(dateLosSuivi.jourJulienUTC() - 10. * NB_JOUR_PAR_SEC, _date->offsetUTC()),
+                const ElementsAOS elem = Evenements::CalculAOS(Date(dateLosSuivi.jourJulienUTC() - 10. * DATE::NB_JOUR_PAR_SEC, _date->offsetUTC()),
                                                                satSuivi, obs, SensCalcul::ANTI_CHRONOLOGIQUE, 0.);
 
                 dateAosSuivi = elem.date;
@@ -372,13 +372,13 @@ void SuiviTelescope::CalculAos() const
 
             // Coucher
             delai = dateLosSuivi.jourJulienUTC() - _date->jourJulienUTC();
-            const Date delaiLOS = Date(delai - 0.5 + EPS_DATES, 0.);
+            const Date delaiLOS = Date(delai - 0.5 + DATE::EPS_DATES, 0.);
 
             QString cDelaiLOS;
             if (delai >= 1.) {
                 cDelaiLOS = "";
 
-            } else if (delai >= (NB_JOUR_PAR_HEUR - EPS_DATES)) {
+            } else if (delai >= (DATE::NB_JOUR_PAR_HEUR - DATE::EPS_DATES)) {
 
                 cDelaiLOS = delaiLOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).mid(11, 5)
                         .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
@@ -393,7 +393,7 @@ void SuiviTelescope::CalculAos() const
                                    .trimmed()).arg(cDelaiLOS).arg(Maths::ToSexagesimal(azim, AngleFormatType::DEGRE, 3, 0, false, true).mid(0, 9)));
 
             // Hauteur max
-            std::array<double, DEGRE_INTERPOLATION> jjm;
+            std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
             QPair<double, double> minmax;
 
             double jj0 = 0.5 * (dateAosSuivi.jourJulienUTC() + dateLosSuivi.jourJulienUTC());
@@ -454,7 +454,7 @@ void SuiviTelescope::CalculAos() const
             }
         }
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */
@@ -464,7 +464,7 @@ void SuiviTelescope::CalculAos() const
 /*
  * Calcul de la hauteur maximale d'un satellite dans le ciel
  */
-QPair<double, double> SuiviTelescope::CalculHauteurMax(const std::array<double, DEGRE_INTERPOLATION> &jjm, Observateur &obs, Satellite &satSuivi) const
+QPair<double, double> SuiviTelescope::CalculHauteurMax(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, Observateur &obs, Satellite &satSuivi) const
 {
     /* Declarations des variables locales */
     std::array<double, 3> ht;
@@ -472,7 +472,7 @@ QPair<double, double> SuiviTelescope::CalculHauteurMax(const std::array<double, 
     /* Initialisations */
 
     /* Corps de la methode */
-    for (unsigned int i=0; i<DEGRE_INTERPOLATION; i++) {
+    for (unsigned int i=0; i<MATHS::DEGRE_INTERPOLATION; i++) {
 
         const Date date(jjm[i], 0., false);
 
@@ -596,7 +596,7 @@ void SuiviTelescope::on_genererPositions_clicked()
         satSuivi.CalculElementsOsculateurs(date);
 
         // Hauteur minimale du satellite
-        const double hauteurMin = DEG2RAD * ((_ui->hauteurSatSuivi->currentIndex() == 5) ?
+        const double hauteurMin = MATHS::DEG2RAD * ((_ui->hauteurSatSuivi->currentIndex() == 5) ?
                                                  abs(_ui->valHauteurSatSuivi->text().toInt()) : 5 * _ui->hauteurSatSuivi->currentIndex());
 
 
@@ -608,17 +608,17 @@ void SuiviTelescope::on_genererPositions_clicked()
         if (elementsAos.aos) {
 
             if (elementsAos.typeAOS == tr("AOS", "Acquisition of signal")) {
-                date2 = Evenements::CalculAOS(Date(date1.jourJulienUTC() + 10. * NB_JOUR_PAR_SEC, 0.), satSuivi, obs, SensCalcul::CHRONOLOGIQUE,
+                date2 = Evenements::CalculAOS(Date(date1.jourJulienUTC() + 10. * DATE::NB_JOUR_PAR_SEC, 0.), satSuivi, obs, SensCalcul::CHRONOLOGIQUE,
                                               hauteurMin).date;
 
             } else {
                 // Le satellite est deja dans le ciel
-                date2 = Evenements::CalculAOS(Date(date.jourJulienUTC() + NB_JOUR_PAR_SEC, 0.), satSuivi, obs, SensCalcul::CHRONOLOGIQUE,
+                date2 = Evenements::CalculAOS(Date(date.jourJulienUTC() + DATE::NB_JOUR_PAR_SEC, 0.), satSuivi, obs, SensCalcul::CHRONOLOGIQUE,
                                               hauteurMin).date;
                 date1 = date;
             }
 
-            nbIter = qRound((date2.jourJulienUTC() - date1.jourJulienUTC()) * NB_MILLISEC_PAR_JOUR + 10000.) / _ui->pasSuivi->value();
+            nbIter = qRound((date2.jourJulienUTC() - date1.jourJulienUTC()) * DATE::NB_MILLISEC_PAR_JOUR + 10000.) / _ui->pasSuivi->value();
 
         } else {
 
@@ -626,7 +626,7 @@ void SuiviTelescope::on_genererPositions_clicked()
             if (satSuivi.hauteur() > 0.) {
                 date1 = date;
                 nbIter = 600000 / _ui->pasSuivi->value();
-                date2 = Date(date1.jourJulienUTC() + nbIter * NB_JOUR_PAR_MILLISEC, 0.);
+                date2 = Date(date1.jourJulienUTC() + nbIter * DATE::NB_JOUR_PAR_MILLISEC, 0.);
             }
         }
 
@@ -638,7 +638,7 @@ void SuiviTelescope::on_genererPositions_clicked()
             const QString ficOut = fmtFicOut.arg(date1.annee()).arg(date1.mois(), 2, 10, QChar('0')).arg(date1.jour(), 2, 10, QChar('0'))
                     .arg(date1.heure(), 2, 10, QChar('0')).arg(date1.minutes(), 2, 10, QChar('0'))
                     .arg(date2.annee()).arg(date2.mois(), 2, 10, QChar('0')).arg(date2.jour(), 2, 10, QChar('0'))
-                    .arg(date2.heure(), 2, 10, QChar('0')).arg(date2.minutes() + 1, 2, 10, QChar('0')).arg(satelliteSelectionne.at(0));
+                    .arg(date2.heure(), 2, 10, QChar('0')).arg(date2.minutes() + 1, 2, 10, QChar('0')).arg(satelliteSelectionne.first());
 
             ConditionsPrevisions conditions;
             conditions.observateur = obs;
@@ -648,6 +648,22 @@ void SuiviTelescope::on_genererPositions_clicked()
             conditions.fichier = Configuration::instance()->nomfic();
             conditions.ficRes = Configuration::instance()->dirOut() + QDir::separator() + ficOut;
             conditions.jj1 = date1.jourJulienUTC();
+
+            // Ecriture des informations de prévisions dans le fichier de log
+            qInfo() << "--";
+            qInfo() << "Génération des positions pour le suivi avec in télescope :";
+            qInfo() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+            qInfo() << "Pas de génération =" << conditions.pas;
+            qInfo() << "Nombre d'itérations =" << conditions.nbIter;
+
+            qInfo() << QString("Lieu d'observation : %1 %2 %3")
+                       .arg(conditions.observateur.longitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                       .arg(conditions.observateur.latitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                       .arg(conditions.observateur.altitude() * 1.e3);
+
+            qInfo() << "Satellite sélectionné =" << conditions.listeSatellites;
+
+            qInfo() << "--";
 
             _ficSuivi = conditions.ficRes;
 

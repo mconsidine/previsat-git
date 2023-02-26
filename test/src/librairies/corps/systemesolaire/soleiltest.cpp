@@ -76,7 +76,7 @@ void SoleilTest::testCalculPosition()
 
     const Vecteur3D pos(-140328287.9615894, -46628772.91250957, -20216954.727520175);
     CompareVecteurs3D(soleil.position(), pos);
-    QCOMPARE(soleil.distanceUA(), pos.Norme() * KM2UA);
+    QCOMPARE(soleil.distanceUA(), pos.Norme() * SOLEIL::KM2UA);
 }
 
 void SoleilTest::testCalculLeverMeridienCoucher()

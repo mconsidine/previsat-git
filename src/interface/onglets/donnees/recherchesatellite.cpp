@@ -155,7 +155,7 @@ void RechercheSatellite::SauveOngletRecherche(const QString &fichier)
         }
         sw.close();
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */
@@ -296,9 +296,9 @@ void RechercheSatellite::on_nom_returnPressed()
             _ui->noradDonneesSat->blockSignals(false);
             _ui->cosparDonneesSat->setText("");
         } else {
-            _ui->cosparDonneesSat->setText(_resultatsSatellitesTrouves.at(0).mid(7, 11).toUpper().trimmed());
+            _ui->cosparDonneesSat->setText(_resultatsSatellitesTrouves.first().mid(7, 11).toUpper().trimmed());
             _ui->noradDonneesSat->blockSignals(true);
-            _ui->noradDonneesSat->setValue(_resultatsSatellitesTrouves.at(0).mid(0, 6).toInt());
+            _ui->noradDonneesSat->setValue(_resultatsSatellitesTrouves.first().mid(0, 6).toInt());
             _ui->noradDonneesSat->blockSignals(false);
         }
 
@@ -342,9 +342,9 @@ void RechercheSatellite::on_cosparDonneesSat_returnPressed()
             _ui->noradDonneesSat->setValue(999999);
             _ui->noradDonneesSat->blockSignals(false);
         } else {
-            _ui->nom->setText(_resultatsSatellitesTrouves.at(0).mid(125).toUpper().trimmed());
+            _ui->nom->setText(_resultatsSatellitesTrouves.first().mid(125).toUpper().trimmed());
             _ui->noradDonneesSat->blockSignals(true);
-            _ui->noradDonneesSat->setValue(_resultatsSatellitesTrouves.at(0).mid(0, 6).toInt());
+            _ui->noradDonneesSat->setValue(_resultatsSatellitesTrouves.first().mid(0, 6).toInt());
             _ui->noradDonneesSat->blockSignals(false);
         }
 
@@ -372,8 +372,8 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
         double perigee = ligne.mid(82, 7).trimmed().toDouble();
         double apogee = ligne.mid(90, 7).trimmed().toDouble();
 
-        double ap = apogee + RAYON_TERRESTRE;
-        double per = perigee + RAYON_TERRESTRE;
+        double ap = apogee + TERRE::RAYON_TERRESTRE;
+        double per = perigee + TERRE::RAYON_TERRESTRE;
 
         // Nom du satellite
         const QString nomsat = ligne.mid(125).trimmed();
@@ -395,14 +395,14 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
 
 
         // Magnitude standard/maximale
-        if ((magnitudeStandard > 98.) || (perigee < EPSDBL100) || (apogee < EPSDBL100)) {
+        if ((magnitudeStandard > 98.) || (perigee < MATHS::EPSDBL100) || (apogee < MATHS::EPSDBL100)) {
             _ui->magnitudeStdMaxDonneesSat->setText("?/?");
         } else {
 
             // Estimation de la magnitude maximale
             const double demiGrandAxe = 0.5 * (ap + per);
             const double exc = 2. * ap / (ap + per) - 1.;
-            const double magMax = magnitudeStandard - 15.75 + 5. * log10(1.45 * (demiGrandAxe * (1. - exc) - RAYON_TERRESTRE));
+            const double magMax = magnitudeStandard - 15.75 + 5. * log10(1.45 * (demiGrandAxe * (1. - exc) - TERRE::RAYON_TERRESTRE));
             char methMagnitude = ligne.at(40).toLower().toLatin1();
 
             QString text;
@@ -428,37 +428,37 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
         QString unite2 = tr("km", "kilometer");
         if (!settings.value("affichage/unite").toBool()) {
 
-            apogee *= MILE_PAR_KM;
-            perigee *= MILE_PAR_KM;
-            ap *= MILE_PAR_KM;
-            per *= MILE_PAR_KM;
+            apogee *= TERRE::MILE_PAR_KM;
+            perigee *= TERRE::MILE_PAR_KM;
+            ap *= TERRE::MILE_PAR_KM;
+            per *= TERRE::MILE_PAR_KM;
 
-            t1 *= PIED_PAR_METRE;
-            t2 *= PIED_PAR_METRE;
-            t3 *= PIED_PAR_METRE;
-            section = arrondi(section * PIED_PAR_METRE * PIED_PAR_METRE, 0);
+            t1 *= TERRE::PIED_PAR_METRE;
+            t2 *= TERRE::PIED_PAR_METRE;
+            t3 *= TERRE::PIED_PAR_METRE;
+            section = arrondi(section * TERRE::PIED_PAR_METRE * TERRE::PIED_PAR_METRE, 0);
             unite1 = tr("ft", "foot");
             unite2 = tr("nmi", "nautical mile");
         }
 
         QString dimensions;
-        if ((fabs(t2) < EPSDBL100) && (fabs(t3) < EPSDBL100)) {
+        if ((fabs(t2) < MATHS::EPSDBL100) && (fabs(t3) < MATHS::EPSDBL100)) {
             const QString fmt3 = tr("Sphérique. R=%1 %2", "R = radius");
             dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite1);
         }
-        if ((fabs(t2) >= EPSDBL100) && (fabs(t3) < EPSDBL100)) {
+        if ((fabs(t2) >= MATHS::EPSDBL100) && (fabs(t3) < MATHS::EPSDBL100)) {
             const QString fmt3 = tr("Cylindrique. L=%1 %2, R=%3 %2", "L = height, R = radius");
             dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite1).arg(t2, 0, 'f', 1);
         }
-        if ((fabs(t2) >= EPSDBL100) && (fabs(t3) >= EPSDBL100)) {
+        if ((fabs(t2) >= MATHS::EPSDBL100) && (fabs(t3) >= MATHS::EPSDBL100)) {
             const QString fmt3 = tr("Boîte. %1 x %2 x %3 %4");
             dimensions = fmt3.arg(t1, 0, 'f', 1).arg(t2, 0, 'f', 1).arg(t3, 0, 'f', 1).arg(unite1);
         }
-        if (fabs(t1) < EPSDBL100) {
+        if (fabs(t1) < MATHS::EPSDBL100) {
             dimensions = tr("Inconnues");
         }
 
-        if (fabs(section) > EPSDBL100) {
+        if (fabs(section) > MATHS::EPSDBL100) {
             dimensions.append(" / %1 %2");
             dimensions = dimensions.arg(section, 0, 'f', 2).arg(unite1);
             _ui->sqDonneesSat->setVisible(true);
@@ -470,13 +470,13 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
 
         // Apogee/perigee/periode orbitale
         const QString fmt = "%1 %2 (%3 %2)";
-        if (fabs(apogee) < EPSDBL100) {
+        if (fabs(apogee) < MATHS::EPSDBL100) {
             _ui->apogeeDonneesSat->setText(tr("Inconnu"));
         } else {
             _ui->apogeeDonneesSat->setText(fmt.arg(ap, 0, 'f', 0).arg(unite2).arg(apogee, 0, 'f', 0));
         }
 
-        if (fabs(perigee) < EPSDBL100) {
+        if (fabs(perigee) < MATHS::EPSDBL100) {
             _ui->perigeeDonneesSat->setText(tr("Inconnu"));
         } else {
             _ui->perigeeDonneesSat->setText(fmt.arg(per, 0, 'f', 0).arg(unite2).arg(perigee, 0, 'f', 0));
@@ -484,7 +484,7 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
 
         const QString period = (periode.isEmpty()) ?
                     tr("Inconnue") :
-                    Maths::ToSexagesimal(periode.toDouble() * NB_HEUR_PAR_MIN * HEUR2RAD, AngleFormatType::HEURE1, 1, 0, false, true).trimmed();
+                    Maths::ToSexagesimal(periode.toDouble() * DATE::NB_HEUR_PAR_MIN * MATHS::HEUR2RAD, AngleFormatType::HEURE1, 1, 0, false, true).trimmed();
         _ui->periodeDonneesSat->setText(period);
 
         // Inclinaison

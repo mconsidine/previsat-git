@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    10 novembre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -135,6 +135,7 @@ void Configuration::Chargement()
         Corps::Initialisation(_dirCommonData);
 
         _adresseCelestrakNorad = _adresseCelestrak + "NORAD/elements/gp.php?GROUP=%1&FORMAT=xml";
+        _adresseCelestrakSupplementalNorad = _adresseCelestrak + "NORAD/elements/supplemental/sup-gp.php?FILE=%1&FORMAT=xml";
 
         const QString httpDir = QString("%1data/").arg(DOMAIN_NAME);
         _mapAdressesTelechargement.insert(AdressesTelechargement::COORDONNEES, httpDir + "coordinates/");
@@ -158,8 +159,8 @@ void Configuration::Chargement()
 
         // Ecriture d'informations dans le fichier de log
         qInfo() << QString("Lieu d'observation : %1 %2 %3")
-                   .arg(_observateurs.first().longitude() * RAD2DEG, 0, 'f', 9)
-                   .arg(_observateurs.first().latitude() * RAD2DEG, 0, 'f', 9)
+                   .arg(_observateurs.first().longitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                   .arg(_observateurs.first().latitude() * MATHS::RAD2DEG, 0, 'f', 9)
                    .arg(_observateurs.first().altitude() * 1.e3);
 
         qInfo() << "Nom du fichier d'éléments orbitaux :" << _nomfic;
@@ -374,6 +375,11 @@ const QString &Configuration::adresseCelestrakNorad() const
     return _adresseCelestrakNorad;
 }
 
+const QString &Configuration::adresseCelestrakSupplementalNorad() const
+{
+    return _adresseCelestrakSupplementalNorad;
+}
+
 
 const QString &Configuration::nomFichierEvenementsStationSpatiale() const
 {
@@ -417,7 +423,7 @@ Lune &Configuration::lune()
     return _lune;
 }
 
-std::array<Planete, NB_PLANETES> &Configuration::planetes()
+std::array<Planete, PLANETE::NB_PLANETES> &Configuration::planetes()
 {
     return _planetes;
 }
@@ -604,7 +610,6 @@ void Configuration::setListeFicElem(const QStringList &listeFic)
 void Configuration::DefinitionArborescences()
 {
     /* Declarations des variables locales */
-    QString dirCommon;
 
     /* Initialisations */
     const QString dirAstr = QString(ORG_NAME) + QDir::separator() + APP_NAME;
@@ -626,11 +631,11 @@ void Configuration::DefinitionArborescences()
     }
 
 #if defined (Q_OS_WIN)
-    dirCommon = listeGenericDir.at(1) + dirAstr;
+    const QString dirCommon = listeGenericDir.at(1) + dirAstr;
 #elif defined (Q_OS_LINUX)
-    dirCommon = ((listeGenericDir.at(2).contains("local")) ? listeGenericDir.at(3) : listeGenericDir.at(2)) + dirAstr;
+    const QString dirCommon = ((listeGenericDir.at(2).contains("local")) ? listeGenericDir.at(3) : listeGenericDir.at(2)) + dirAstr;
 #elif defined (Q_OS_MAC)
-    dirCommon = _dirExe;
+    const QString dirCommon = _dirExe;
     _dirLocalData = dirCommon + QDir::separator() + "data";
     _dirElem = _dirExe + QDir::separator() + "elem";
     _dirLog = _dirExe + QDir::separator() + "log";
@@ -787,10 +792,9 @@ void Configuration::LectureChainesNasa()
 
     /* Initialisations */
     const QString fic = _dirHtml + QDir::separator() + "chaines.chnl";
-
-    /* Corps de la methode */
     QFile fi(fic);
 
+    /* Corps de la methode */
     if (!fi.exists() || (fi.size() == 0)) {
         qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME);
         throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME),
@@ -842,6 +846,8 @@ void Configuration::LectureDonneesSatellites()
     }
     fi.close();
 
+    _lgRec = static_cast<int> ((_donneesSatellites.isEmpty()) ? -1 : _donneesSatellites.size() / _donneesSatellites.count('\n'));
+
     if (_donneesSatellites.isEmpty()) {
         qCritical() <<  QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
         throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
@@ -851,8 +857,6 @@ void Configuration::LectureDonneesSatellites()
 #if (BUILD_TEST == false)
     qInfo() << "Lecture fichier donnees.bin OK";
 #endif
-
-    _lgRec = static_cast<int> ((_donneesSatellites.isEmpty()) ? -1 : _donneesSatellites.size() / _donneesSatellites.count('\n'));
 
     /* Retour */
     return;

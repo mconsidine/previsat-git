@@ -74,21 +74,21 @@ void ElementsOsculateursTest::testCalcul()
 
     QCOMPARE(elem.demiGrandAxe(), 6798.85189976);
     QCOMPARE(elem.excentricite(), 0.0018128223606058153);
-    QCOMPARE(elem.inclinaison() * RAD2DEG, 51.6517225856);
-    QCOMPARE(elem.ascensionDroiteNoeudAscendant() * RAD2DEG, 102.366453861676);
-    QCOMPARE(elem.argumentPerigee() * RAD2DEG, 85.2679709845);
-    QCOMPARE(elem.anomalieMoyenne() * RAD2DEG, 309.721525136);
-    QCOMPARE(elem.anomalieVraie() * RAD2DEG, 309.561512947);
-    QCOMPARE(elem.anomalieExcentrique() * RAD2DEG, 309.641542207352);
+    QCOMPARE(elem.inclinaison() * MATHS::RAD2DEG, 51.6517225856);
+    QCOMPARE(elem.ascensionDroiteNoeudAscendant() * MATHS::RAD2DEG, 102.366453861676);
+    QCOMPARE(elem.argumentPerigee() * MATHS::RAD2DEG, 85.2679709845);
+    QCOMPARE(elem.anomalieMoyenne() * MATHS::RAD2DEG, 309.721525136);
+    QCOMPARE(elem.anomalieVraie() * MATHS::RAD2DEG, 309.561512947);
+    QCOMPARE(elem.anomalieExcentrique() * MATHS::RAD2DEG, 309.641542207352);
     QCOMPARE(elem.apogee(), 6811.17701051);
     QCOMPARE(elem.perigee(), 6786.52678901);
     QCOMPARE(elem.periode(), 1.5465104151524678);
     QCOMPARE(elem.exCirc(), 0.0001495499187907403);
     QCOMPARE(elem.eyCirc(), 0.001806643222360675);
-    QCOMPARE(elem.pso() * RAD2DEG, 34.98950591815299);
+    QCOMPARE(elem.pso() * MATHS::RAD2DEG, 34.98950591815299);
     QCOMPARE(elem.ix(), -0.10364994279345696);
     QCOMPARE(elem.iy(), 0.47274656851982749);
     QCOMPARE(elem.exCEq(), -0.0017967533185599463);
     QCOMPARE(elem.eyCEq(), -0.00024083692274148706);
-    QCOMPARE(elem.argumentLongitudeVraie() * RAD2DEG, 137.195937793353972);
+    QCOMPARE(elem.argumentLongitudeVraie() * MATHS::RAD2DEG, 137.195937793353972);
 }

@@ -30,14 +30,16 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    4 fevrier 2023
+ * >    25 fevrier 2023
  *
  */
 
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QSettings>
+#if defined (Q_OS_WIN)
 #include "ui_suivitelescope.h"
+#endif
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "onglets.h"
@@ -303,6 +305,9 @@ void Onglets::show(const Date &date)
     return;
 }
 
+/*
+ * Reinitialisation des flags d'affichage
+ */
 void Onglets::ReinitFlags()
 {
     setAcalcAOS(true);

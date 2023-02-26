@@ -33,7 +33,7 @@
  * >    Astropedia
  *
  * Date de creation
- * >    28 decembre 2019
+ * >    25 fevrier 2023
  *
  * Date de revision
  * >    4 fevrier 2023
@@ -130,6 +130,9 @@ public:
 
 public slots:
 
+    /**
+     * @brief ReinitFlags Reinitialisation des flags d'affichage
+     */
     void ReinitFlags();
 
     void changeEvent(QEvent *evt);

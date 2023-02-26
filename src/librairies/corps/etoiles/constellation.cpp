@@ -30,7 +30,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -77,8 +77,8 @@ Constellation::Constellation(const QString &nomConst, const double ascDroite, co
     /* Initialisations */
 
     /* Corps du constructeur */
-    _ascensionDroite = ascDroite * HEUR2RAD;
-    _declinaison = decl * DEG2RAD;
+    _ascensionDroite = ascDroite * MATHS::HEUR2RAD;
+    _declinaison = decl * MATHS::DEG2RAD;
 
     /* Retour */
     return;
@@ -139,6 +139,8 @@ void Constellation::Initialisation(const QString &dirCommonData, QList<Constella
             }
         }
         fi.close();
+
+        qInfo() << "Lecture fichier constlabel.dat OK";
     }
 
     /* Retour */

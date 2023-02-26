@@ -71,25 +71,27 @@ void PlaneteTest::testCalculPosition()
 
     const Date date(1992, 10, 12, 23, 59, 0.816, 0.);
 
-    std::array<Vecteur3D, 7> posRef;
-    posRef[static_cast<int> (IndicePlanete::MERCURE)] = Vecteur3D(-151297638.9475474, -107875353.83721398,  -51807455.07121706);
-    posRef[static_cast<int> (IndicePlanete::VENUS)]   = Vecteur3D(-124657523.43849899, -144456598.3549202,  -65228782.47538642);
-    posRef[static_cast<int> (IndicePlanete::MARS)]    = Vecteur3D(-42871016.4223671,    139075545.2313155,   62335531.06638172);
-    posRef[static_cast<int> (IndicePlanete::JUPITER)] = Vecteur3D(-953089064.5931276, -13357932.538614603,  13840000.921255339);
-    posRef[static_cast<int> (IndicePlanete::SATURNE)] = Vecteur3D(948064975.8679179,   -961607082.5213879, -445045350.99212754);
-    posRef[static_cast<int> (IndicePlanete::URANUS)]  = Vecteur3D(759827322.6007938,  -2592358565.0031056,  -1148007264.731504);
-    posRef[static_cast<int> (IndicePlanete::NEPTUNE)] = Vecteur3D(1223773476.7445397, -4028231280.0757127, -1684110165.6722252);
+    QHash<IndicePlanete, Vecteur3D> posRef = {
+        { IndicePlanete::MERCURE, Vecteur3D(-151297638.9475474, -107875353.83721398,  -51807455.07121706) },
+        { IndicePlanete::VENUS,   Vecteur3D(-124657523.43849899, -144456598.3549202,  -65228782.47538642) },
+        { IndicePlanete::MARS,    Vecteur3D(-42871016.4223671,    139075545.2313155,   62335531.06638172) },
+        { IndicePlanete::JUPITER, Vecteur3D(-953089064.5931276, -13357932.538614603,  13840000.921255339) },
+        { IndicePlanete::SATURNE, Vecteur3D(948064975.8679179,   -961607082.5213879, -445045350.99212754) },
+        { IndicePlanete::URANUS,  Vecteur3D(759827322.6007938,  -2592358565.0031056,  -1148007264.731504) },
+        { IndicePlanete::NEPTUNE, Vecteur3D(1223773476.7445397, -4028231280.0757127, -1684110165.6722252) }
+    };
 
     Planete planete;
     Soleil soleil;
     soleil.CalculPosition(date);
 
-    for(unsigned int i=0; i<NB_PLANETES; i++) {
-        planete = Planete(static_cast<IndicePlanete> (i));
+    for(unsigned int i=0; i<PLANETE::NB_PLANETES; i++) {
+
+        const IndicePlanete idx = static_cast<IndicePlanete> (i);
+        planete = Planete(idx);
         planete.CalculPosition(date, soleil);
-        if (i == 0) {
-            QCOMPARE(planete.nom(), QObject::tr("Mercure"));
-        }
-        CompareVecteurs3D(planete.position(), posRef[i]);
+
+        QCOMPARE(planete.nom(), nomPlanetes[idx]);
+        CompareVecteurs3D(planete.position(), posRef[idx]);
     }
 }

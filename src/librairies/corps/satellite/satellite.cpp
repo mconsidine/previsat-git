@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -103,7 +103,7 @@ void Satellite::CalculBeta(const Soleil &soleil)
     const Vecteur3D w = _position ^ _vitesse;
 
     /* Corps de la methode */
-    _beta = PI_SUR_DEUX - soleil.position().Angle(w);
+    _beta = MATHS::PI_SUR_DEUX - soleil.position().Angle(w);
 
     /* Retour */
     return;
@@ -121,7 +121,7 @@ void Satellite::CalculCercleAcquisition(const Observateur &station)
     _latitude = station.latitude();
 
     /* Corps de la methode */
-    const double angleBeta = acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + _altitude)) - 0.5 * REFRACTION_HZ;
+    const double angleBeta = acos(TERRE::RAYON_TERRESTRE / (TERRE::RAYON_TERRESTRE + _altitude)) - 0.5 * TERRE::REFRACTION_HZ;
     CalculZoneVisibilite(angleBeta);
 
     /* Retour */
@@ -147,9 +147,9 @@ void Satellite::CalculElementsOsculateurs(const Date &date)
     // Nombre d'orbites a la date courante
     _nbOrbites = _elementsOrbitaux.nbOrbitesEpoque +
             static_cast<unsigned int> (floor((_elementsOrbitaux.no + _ageElementsOrbitaux * _elementsOrbitaux.bstar) * _ageElementsOrbitaux +
-                                             modulo(_elementsOrbitaux.omegao + _elementsOrbitaux.mo, DEUX_PI) / T360 -
-                                             modulo(_elementsOsculateurs.argumentPerigee() + _elementsOsculateurs.anomalieVraie(), DEUX_PI) /
-                                             DEUX_PI + 0.5));
+                                             modulo(_elementsOrbitaux.omegao + _elementsOrbitaux.mo, MATHS::DEUX_PI) / MATHS::T360 -
+                                             modulo(_elementsOsculateurs.argumentPerigee() + _elementsOsculateurs.anomalieVraie(), MATHS::DEUX_PI) /
+                                             MATHS::DEUX_PI + 0.5));
 
     /* Retour */
     return;
@@ -187,7 +187,7 @@ void Satellite::CalculPosVit(const Date &date)
             }
 
             // Reinitialisation des valeurs du modele SGP4 en cas de changement de TLE
-            if (fabs(_elementsOrbitaux.epoque.jourJulienUTC() - jjsav) > EPS_DATES) {
+            if (fabs(_elementsOrbitaux.epoque.jourJulienUTC() - jjsav) > DATE::EPS_DATES) {
                 _sgp4.setInit(false);
             }
         }
@@ -197,7 +197,7 @@ void Satellite::CalculPosVit(const Date &date)
         _position = _sgp4.position();
         _vitesse = _sgp4.vitesse();
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */
@@ -246,8 +246,8 @@ void Satellite::CalculPosVitListeSatellites(const Date &date,
         // Calcul de la zone de visibilite du satellite
         if (visibilite) {
             const double bt = (mcc && satellites[i]._elementsOrbitaux.nom.toLower().startsWith("tdrs")) ?
-                        PI_SUR_DEUX + 8.7 * DEG2RAD :
-                        acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellites[i]._altitude)) - 0.5 * REFRACTION_HZ;
+                        MATHS::PI_SUR_DEUX + 8.7 * MATHS::DEG2RAD :
+                        acos(TERRE::RAYON_TERRESTRE / (TERRE::RAYON_TERRESTRE + satellites[i]._altitude)) - 0.5 * TERRE::REFRACTION_HZ;
             satellites[i].CalculZoneVisibilite(bt);
         }
 
@@ -272,7 +272,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date,
             if (nbTracesAuSol > 0) {
 
                 const Date dateISS =
-                        Date(Evenements::CalculNoeudOrbite(date, satellites[i], SensCalcul::ANTI_CHRONOLOGIQUE).jourJulienUTC() - EPS_DATES, 0., false);
+                        Date(Evenements::CalculNoeudOrbite(date, satellites[i], SensCalcul::ANTI_CHRONOLOGIQUE).jourJulienUTC() - DATE::EPS_DATES, 0., false);
 
                 const Date dateInit = (mcc && isISS) ? dateISS : Date(date.jourJulienUTC(), 0., false);
 
@@ -305,7 +305,7 @@ void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, c
 
     /* Initialisations */
     _traceCiel.clear();
-    if (_elementsOsculateurs.demiGrandAxe() < EPSDBL100) {
+    if (_elementsOsculateurs.demiGrandAxe() < MATHS::EPSDBL100) {
         CalculElementsOsculateurs(date);
     }
 
@@ -314,8 +314,8 @@ void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, c
 
         bool afin = false;
         int i = 0;
-        const double step = 1. / (_elementsOrbitaux.no * T360);
-        const double st = (sec == 0) ? step : sec * NB_JOUR_PAR_SEC;
+        const double step = 1. / (_elementsOrbitaux.no * MATHS::T360);
+        const double st = (sec == 0) ? step : sec * DATE::NB_JOUR_PAR_SEC;
         Satellite sat = *this;
         Observateur obs = observateur;
         ElementsTraceCiel elem;
@@ -378,7 +378,7 @@ void Satellite::CalculTracesAuSol(const Date &dateInit, const int nbOrb, const b
 
     /* Initialisations */
     Satellite sat = *this;
-    const double st = 1. / (_elementsOrbitaux.no * T360);
+    const double st = 1. / (_elementsOrbitaux.no * MATHS::T360);
     _traceAuSol.clear();
 
     /* Corps de la methode */
@@ -391,14 +391,14 @@ void Satellite::CalculTracesAuSol(const Date &dateInit, const int nbOrb, const b
 
         // Longitude
         const Vecteur3D pos = sat._position;
-        elem.longitude = RAD2DEG * modulo(PI + atan2(pos.y(), pos.x()) - Observateur::CalculTempsSideralGreenwich(date), DEUX_PI);
+        elem.longitude = MATHS::RAD2DEG * modulo(MATHS::PI + atan2(pos.y(), pos.x()) - Observateur::CalculTempsSideralGreenwich(date), MATHS::DEUX_PI);
         if (elem.longitude < 0.) {
-            elem.longitude += T360;
+            elem.longitude += MATHS::T360;
         }
 
         // Latitude
         elem.latitude = sat.CalculLatitude(pos);
-        elem.latitude = RAD2DEG * (PI_SUR_DEUX - elem.latitude);
+        elem.latitude = MATHS::RAD2DEG * (MATHS::PI_SUR_DEUX - elem.latitude);
 
         // Position du Soleil
         soleil.CalculPosition(date);
@@ -429,15 +429,15 @@ bool Satellite::hasAOS(const Observateur &observateur) const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    double incl = _elementsOrbitaux.inclo * DEG2RAD;
-    if (incl >= PI_SUR_DEUX) {
-        incl = PI - incl;
+    double incl = _elementsOrbitaux.inclo * MATHS::DEG2RAD;
+    if (incl >= MATHS::PI_SUR_DEUX) {
+        incl = MATHS::PI - incl;
     }
 
     /* Corps de la methode */
 
     /* Retour */
-    return (incl + acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + _elementsOsculateurs.apogee())) > fabs(observateur.latitude()) && !isGeo());
+    return (incl + acos(TERRE::RAYON_TERRESTRE / (TERRE::RAYON_TERRESTRE + _elementsOsculateurs.apogee())) > fabs(observateur.latitude()) && !isGeo());
 }
 
 /*

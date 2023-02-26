@@ -133,22 +133,22 @@ void Osculateurs::show(const Date &date)
     _ui->nomsat->setText(satellite.elementsOrbitaux().nom);
 
     // Autres elements osculateurs
-    _ui->anomalieVraie->setText(fmt2.arg(elements.anomalieVraie() * RAD2DEG, 0, 'f', 4));
-    _ui->anomalieExcentrique->setText(fmt2.arg(elements.anomalieExcentrique() * RAD2DEG, 0, 'f', 4));
-    _ui->champDeVue->setText("±" + fmt2.arg(acos(RAYON_TERRESTRE / (RAYON_TERRESTRE + satellite.altitude())) * RAD2DEG, 0, 'f', 2));
+    _ui->anomalieVraie->setText(fmt2.arg(elements.anomalieVraie() * MATHS::RAD2DEG, 0, 'f', 4));
+    _ui->anomalieExcentrique->setText(fmt2.arg(elements.anomalieExcentrique() * MATHS::RAD2DEG, 0, 'f', 4));
+    _ui->champDeVue->setText("±" + fmt2.arg(acos(TERRE::RAYON_TERRESTRE / (TERRE::RAYON_TERRESTRE + satellite.altitude())) * MATHS::RAD2DEG, 0, 'f', 2));
 
     // Apogee/perigee/periode orbitale
     const QString fmt3 = "%1 %2 (%3 %2)";
-    const double apogee = (settings.value("affichage/unite").toBool()) ? elements.apogee() : elements.apogee() * MILE_PAR_KM;
-    double apogeeAlt = elements.apogee() - RAYON_TERRESTRE;
-    apogeeAlt = (settings.value("affichage/unite").toBool()) ? apogeeAlt : apogeeAlt * MILE_PAR_KM;
+    const double apogee = (settings.value("affichage/unite").toBool()) ? elements.apogee() : elements.apogee() * TERRE::MILE_PAR_KM;
+    double apogeeAlt = elements.apogee() - TERRE::RAYON_TERRESTRE;
+    apogeeAlt = (settings.value("affichage/unite").toBool()) ? apogeeAlt : apogeeAlt * TERRE::MILE_PAR_KM;
     _ui->apogee->setText(fmt3.arg(apogee, 0, 'f', 1).arg(unite).arg(apogeeAlt, 0, 'f', 1));
 
-    const double perigee = (settings.value("affichage/unite").toBool()) ? elements.perigee() : elements.perigee() * MILE_PAR_KM;
-    double perigeeAlt = elements.perigee() - RAYON_TERRESTRE;
-    perigeeAlt = (settings.value("affichage/unite").toBool()) ? perigeeAlt : perigeeAlt * MILE_PAR_KM;
+    const double perigee = (settings.value("affichage/unite").toBool()) ? elements.perigee() : elements.perigee() * TERRE::MILE_PAR_KM;
+    double perigeeAlt = elements.perigee() - TERRE::RAYON_TERRESTRE;
+    perigeeAlt = (settings.value("affichage/unite").toBool()) ? perigeeAlt : perigeeAlt * TERRE::MILE_PAR_KM;
     _ui->perigee->setText(fmt3.arg(perigee, 0, 'f', 1).arg(unite).arg(perigeeAlt, 0, 'f', 1));
-    _ui->periode->setText(Maths::ToSexagesimal(elements.periode() * HEUR2RAD, AngleFormatType::HEURE1, 1, 0, false, true));
+    _ui->periode->setText(Maths::ToSexagesimal(elements.periode() * MATHS::HEUR2RAD, AngleFormatType::HEURE1, 1, 0, false, true));
 
     // Informations de signal
     _ui->doppler->setText(text.asprintf("%+.0f Hz", satellite.signal().doppler()));
@@ -162,10 +162,10 @@ void Osculateurs::show(const Date &date)
     const int ct0 = satellite.phasage().ct0();
     const int nbOrb = satellite.phasage().nbOrb();
 
-    if ((nu0 == ELEMENT_PHASAGE_INDEFINI)
-            || (dt0 == ELEMENT_PHASAGE_INDEFINI)
-            || (ct0 == ELEMENT_PHASAGE_INDEFINI)
-            || (nbOrb == ELEMENT_PHASAGE_INDEFINI)) {
+    if ((nu0 == CORPS::ELEMENT_PHASAGE_INDEFINI)
+            || (dt0 == CORPS::ELEMENT_PHASAGE_INDEFINI)
+            || (ct0 == CORPS::ELEMENT_PHASAGE_INDEFINI)
+            || (nbOrb == CORPS::ELEMENT_PHASAGE_INDEFINI)) {
         _ui->phasage->setText(tr("N/A", "Not applicable"));
     } else {
         _ui->phasage->setText(fmt4.arg(nu0).arg(dt0).arg(ct0).arg(nbOrb));
@@ -304,7 +304,7 @@ void Osculateurs::SauveOngletElementsOsculateurs(const QString &fichier)
 
         sw.close();
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */
@@ -352,7 +352,7 @@ void Osculateurs::AffichageElementsOsculateurs()
     double demiGrandAxe = elements.demiGrandAxe();
 
     if (!settings.value("affichage/unite").toBool()) {
-        demiGrandAxe *= MILE_PAR_KM;
+        demiGrandAxe *= TERRE::MILE_PAR_KM;
     }
 
     const QString demiGdAxe = text.asprintf("%.1f ", demiGrandAxe) + unite;
@@ -371,10 +371,10 @@ void Osculateurs::AffichageElementsOsculateurs()
 
         // Parametres kepleriens
         _ui->excentricite->setText(fmt1.arg(elements.excentricite(), 0, 'f', 7));
-        _ui->inclinaison->setText(fmt2.arg(elements.inclinaison() * RAD2DEG, 0, 'f', 4));
-        _ui->ADNoeudAscendant->setText(fmt2.arg(elements.ascensionDroiteNoeudAscendant() * RAD2DEG, 0, 'f', 4));
-        _ui->argumentPerigee->setText(fmt2.arg(elements.argumentPerigee() * RAD2DEG, 0, 'f', 4));
-        _ui->anomalieMoyenne->setText(fmt2.arg(elements.anomalieMoyenne() * RAD2DEG, 0, 'f', 4));
+        _ui->inclinaison->setText(fmt2.arg(elements.inclinaison() * MATHS::RAD2DEG, 0, 'f', 4));
+        _ui->ADNoeudAscendant->setText(fmt2.arg(elements.ascensionDroiteNoeudAscendant() * MATHS::RAD2DEG, 0, 'f', 4));
+        _ui->argumentPerigee->setText(fmt2.arg(elements.argumentPerigee() * MATHS::RAD2DEG, 0, 'f', 4));
+        _ui->anomalieMoyenne->setText(fmt2.arg(elements.anomalieMoyenne() * MATHS::RAD2DEG, 0, 'f', 4));
         break;
 
     case 1:
@@ -382,9 +382,9 @@ void Osculateurs::AffichageElementsOsculateurs()
         // Parametres circulaires
         _ui->ex1->setText(fmt1.arg(elements.exCirc(), 0, 'f', 7));
         _ui->ey1->setText(fmt1.arg(elements.eyCirc(), 0, 'f', 7));
-        _ui->inclinaison2->setText(fmt2.arg(elements.inclinaison() * RAD2DEG, 0, 'f', 4));
-        _ui->ADNoeudAscendant2->setText(fmt2.arg(elements.ascensionDroiteNoeudAscendant() * RAD2DEG, 0, 'f', 4));
-        _ui->positionSurOrbite->setText(fmt2.arg(elements.pso() * RAD2DEG, 0, 'f', 4));
+        _ui->inclinaison2->setText(fmt2.arg(elements.inclinaison() * MATHS::RAD2DEG, 0, 'f', 4));
+        _ui->ADNoeudAscendant2->setText(fmt2.arg(elements.ascensionDroiteNoeudAscendant() * MATHS::RAD2DEG, 0, 'f', 4));
+        _ui->positionSurOrbite->setText(fmt2.arg(elements.pso() * MATHS::RAD2DEG, 0, 'f', 4));
         break;
 
     case 2:
@@ -393,8 +393,8 @@ void Osculateurs::AffichageElementsOsculateurs()
         _ui->excentricite2->setText(fmt1.arg(elements.excentricite(), 0, 'f', 7));
         _ui->ix1->setText(fmt1.arg(elements.ix(), 0, 'f', 7));
         _ui->iy1->setText(fmt1.arg(elements.iy(), 0, 'f', 7));
-        _ui->longitudePerigee->setText(fmt2.arg((elements.ascensionDroiteNoeudAscendant() + elements.argumentPerigee()) * RAD2DEG, 0, 'f', 4));
-        _ui->anomalieMoyenne2->setText(fmt2.arg(elements.anomalieMoyenne() * RAD2DEG, 0, 'f', 4));
+        _ui->longitudePerigee->setText(fmt2.arg((elements.ascensionDroiteNoeudAscendant() + elements.argumentPerigee()) * MATHS::RAD2DEG, 0, 'f', 4));
+        _ui->anomalieMoyenne2->setText(fmt2.arg(elements.anomalieMoyenne() * MATHS::RAD2DEG, 0, 'f', 4));
         break;
 
     case 3:
@@ -404,7 +404,7 @@ void Osculateurs::AffichageElementsOsculateurs()
         _ui->ey2->setText(fmt1.arg(elements.eyCEq(), 0, 'f', 7));
         _ui->ix2->setText(fmt1.arg(elements.ix(), 0, 'f', 7));
         _ui->iy2->setText(fmt1.arg(elements.iy(), 0, 'f', 7));
-        _ui->argumentLongitudeVraie2->setText(fmt2.arg(elements.argumentLongitudeVraie() * RAD2DEG, 0, 'f', 4));
+        _ui->argumentLongitudeVraie2->setText(fmt2.arg(elements.argumentLongitudeVraie() * MATHS::RAD2DEG, 0, 'f', 4));
         break;
     }
 
@@ -435,7 +435,7 @@ void Osculateurs::AffichageVecteurEtat(const Date &date)
     }
 
     if (!settings.value("affichage/unite").toBool()) {
-        position *= MILE_PAR_KM;
+        position *= TERRE::MILE_PAR_KM;
     }
 
     // Position cartesienne

@@ -50,10 +50,13 @@
 /*
  * Definitions des constantes
  */
-static const int ELEMENT_PHASAGE_INDEFINI = -999;
-static const int NB_ORB_INDEFINI = -1;
+namespace CORPS {
 
-static const double MAGNITUDE_INDEFINIE = 99.;
+static constexpr int ELEMENT_PHASAGE_INDEFINI = -999;
+static constexpr int NB_ORB_INDEFINI = -1;
 
+static constexpr double MAGNITUDE_INDEFINIE = 99.;
+
+}
 
 #endif // CORPSCONST_H

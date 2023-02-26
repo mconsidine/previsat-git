@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    4 fevrier 2023
+ * >    25 fevrier 2023
  *
  */
 
@@ -74,16 +74,16 @@ QList<Constellation> constellations;
 AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const ConditionsPrevisions &conditions, const DonneesPrevisions &donnees,
                                      const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats, const int zoom, QWidget *parent) :
     QMainWindow(parent),
-    _ui(new Ui::AfficherResultats)
+    _ui(new Ui::AfficherResultats),
+    _resultats(resultats),
+    _conditions(conditions),
+    _donnees(donnees),
+    _typeCalcul(typeCalcul)
 {
     /* Declarations des variables locales */
     QStringList titres;
 
     /* Initialisations */
-    _typeCalcul = typeCalcul;
-    _conditions = conditions;
-    _donnees = donnees;
-    _resultats = resultats;
     _ciel = nullptr;
     _tableDetail = nullptr;
     _afficherDetail = nullptr;
@@ -719,7 +719,7 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
         const double angleHoraire = observateur.tempsSideralGreenwich() - observateur.longitude() - lune.ascensionDroite();
 
         // Angle parallactique
-        const double angleParallactique = RAD2DEG *
+        const double angleParallactique = MATHS::RAD2DEG *
                 atan(sin(angleHoraire) / (tan(observateur.latitude()) * cos(lune.declinaison()) - sin(lune.declinaison()) * cos(angleHoraire)));
 
         QPixmap pixlun;
@@ -764,12 +764,12 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
         // Coordonnees relatives du satellite par rapport a la Lune ou au Soleil
         if (res.typeCorps == CorpsTransit::CORPS_SOLEIL) {
 
-            deltaAzimut = RAD2DEG * (res.azimut - res.azimutSoleil);
-            deltaHauteur = RAD2DEG * (res.hauteur - res.hauteurSoleil);
+            deltaAzimut = MATHS::RAD2DEG * (res.azimut - res.azimutSoleil);
+            deltaHauteur = MATHS::RAD2DEG * (res.hauteur - res.hauteurSoleil);
 
         } else {
-            deltaAzimut = RAD2DEG * (res.azimut - lune.azimut());
-            deltaHauteur = RAD2DEG * (res.hauteur - lune.hauteur());
+            deltaAzimut = MATHS::RAD2DEG * (res.azimut - lune.azimut());
+            deltaHauteur = MATHS::RAD2DEG * (res.hauteur - lune.hauteur());
         }
 
         const double lsat = static_cast<int> (180. * deltaAzimut);
@@ -794,7 +794,7 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
         const QLineF lig(xy.first, xy.second, lsat1, hsat1);
         scene->addLine(lig, couleur);
 
-        if ((fabs(xy.first - coord.last().first) < EPSDBL100) && (fabs(xy.second - coord.last().second) < EPSDBL100)) {
+        if ((fabs(xy.first - coord.last().first) < MATHS::EPSDBL100) && (fabs(xy.second - coord.last().second) < MATHS::EPSDBL100)) {
 
             lig1 = lig.normalVector();
             lig2 = lig1;
@@ -827,11 +827,11 @@ void AfficherResultats::ChargementCarte(const Observateur &observateur, const QL
     static QString map;
 
     /* Initialisations */
-    const QString lon(QString::number(-observateur.longitude() * RAD2DEG));
-    const QString lat(QString::number(observateur.latitude() * RAD2DEG));
+    const QString lon(QString::number(-observateur.longitude() * MATHS::RAD2DEG));
+    const QString lat(QString::number(observateur.latitude() * MATHS::RAD2DEG));
     const QString unite((_conditions.unite == tr("km", "Kilometer")) ? tr("m", "meter") : tr("ft", "foot"));
-    const QString alt(QString::number((int) (observateur.altitude() * 1000. * ((unite == tr("m", "meter")) ? 1. : PIED_PAR_METRE) + EPSDBL100)) +
-                      " " + unite);
+    const QString alt(QString::number((int) (observateur.altitude() * 1000. * ((unite == tr("m", "meter")) ? 1. : TERRE::PIED_PAR_METRE) +
+                                             MATHS::EPSDBL100)) + " " + unite);
 
     /* Corps de la methode */
     // Lecture du fichier balise
@@ -858,10 +858,10 @@ void AfficherResultats::ChargementCarte(const Observateur &observateur, const QL
             .replace("CHAINE_LONGITUDE", tr("Longitude"))
             .replace("CHAINE_LATITUDE", tr("Latitude"))
             .replace("CHAINE_ALTITUDE", tr("Altitude", "Altitude of observer"))
-            .replace("LONGITUDE1", QString::number(-list.first().obsmax.longitude() * RAD2DEG))
-            .replace("LONGITUDE2", QString::number(-list.last().obsmax.longitude() * RAD2DEG))
-            .replace("LATITUDE1", QString::number(list.first().obsmax.latitude() * RAD2DEG))
-            .replace("LATITUDE2", QString::number(list.last().obsmax.latitude() * RAD2DEG))
+            .replace("LONGITUDE1", QString::number(-list.first().obsmax.longitude() * MATHS::RAD2DEG))
+            .replace("LONGITUDE2", QString::number(-list.last().obsmax.longitude() * MATHS::RAD2DEG))
+            .replace("LATITUDE1", QString::number(list.first().obsmax.latitude() * MATHS::RAD2DEG))
+            .replace("LATITUDE2", QString::number(list.last().obsmax.latitude() * MATHS::RAD2DEG))
             .replace("VALEUR_ZOOM", QString::number(_zoom));
 
     // Creation du fichier html
@@ -1023,7 +1023,7 @@ void AfficherResultats::EcrireEntete() const
             const QString ns = (_conditions.observateur.latitude() >= 0.) ? QObject::tr("Nord") : QObject::tr("Sud");
 
             const double alt = (_conditions.unite == QObject::tr("km", "kilometer")) ? _conditions.observateur.altitude() :
-                                                                                       _conditions.observateur.altitude() * PIED_PAR_METRE;
+                                                                                       _conditions.observateur.altitude() * TERRE::PIED_PAR_METRE;
             const QString unite = (_conditions.unite == QObject::tr("km", "kilometer")) ? QObject::tr("m", "meter") : QObject::tr("ft", "foot");
 
             ligne = ligne.arg(_conditions.observateur.nomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unite);
@@ -1037,9 +1037,9 @@ void AfficherResultats::EcrireEntete() const
         #if (BUILD_TEST == false)
                 !settings.value("affichage/utc").toBool() &&
         #endif
-                (fabs(_conditions.offset) > EPSDBL100)) {
+                (fabs(_conditions.offset) > MATHS::EPSDBL100)) {
             QTime heur(0, 0);
-            heur = heur.addSecs((int) (_conditions.offset * NB_SEC_PAR_JOUR + EPS_DATES));
+            heur = heur.addSecs((int) (_conditions.offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES));
             chaine = chaine.append((_conditions.offset > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
         }
         flux << ligne.arg(chaine) << Qt::endl;
@@ -1051,10 +1051,10 @@ void AfficherResultats::EcrireEntete() const
 
             // Conditions d'observations
             if (_typeCalcul == TypeCalcul::TRANSITS) {
-                flux << (cond1 + cond2).arg(_conditions.hauteur * RAD2DEG) << Qt::endl;
+                flux << (cond1 + cond2).arg(_conditions.hauteur * MATHS::RAD2DEG) << Qt::endl;
             } else {
-                flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1°").arg(_conditions.crepuscule * RAD2DEG) << " / ";
-                flux << cond2.arg(_conditions.hauteur * RAD2DEG) << Qt::endl;
+                flux << cond1 + QObject::tr("Hauteur maximale du Soleil = %1°").arg(_conditions.crepuscule * MATHS::RAD2DEG) << " / ";
+                flux << cond2.arg(_conditions.hauteur * MATHS::RAD2DEG) << Qt::endl;
             }
 
             // Unite de distance
@@ -1062,7 +1062,7 @@ void AfficherResultats::EcrireEntete() const
         }
 
         // Age des elements orbitaux
-        const QString date = Date(_conditions.jj1 + _conditions.offset + EPS_DATES, 0.)
+        const QString date = Date(_conditions.jj1 + _conditions.offset + DATE::EPS_DATES, 0.)
                 .ToShortDate(DateFormat::FORMAT_COURT, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H).trimmed();
 
         if (_donnees.ageElementsOrbitaux.count() == 1) {
@@ -1118,14 +1118,14 @@ QStringList AfficherResultats::ElementsDetailsEvenements(const ResultatPrevision
     elems.append(date.ToShortDateAMJ(DateFormat::FORMAT_COURT, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
     // PSO
-    elems.append(QString("%1°").arg(res.pso * RAD2DEG, 6, 'f', 2, QChar('0')));
+    elems.append(QString("%1°").arg(res.pso * MATHS::RAD2DEG, 6, 'f', 2, QChar('0')));
 
     // Longitude, latitude
     elems.append(QString("  %1° %2")
-                 .arg(fabs(res.longitude * RAD2DEG), 6, 'f', 2, QChar('0')).arg((res.longitude >= 0.) ?
+                 .arg(fabs(res.longitude * MATHS::RAD2DEG), 6, 'f', 2, QChar('0')).arg((res.longitude >= 0.) ?
                                                                                     tr("W", "West") : tr("E", "East")));
     elems.append(QString(" %1° %2 ")
-                 .arg(fabs(res.latitude * RAD2DEG), 5, 'f', 2, QChar('0')).arg((res.latitude >= 0.) ?
+                 .arg(fabs(res.latitude * MATHS::RAD2DEG), 5, 'f', 2, QChar('0')).arg((res.latitude >= 0.) ?
                                                                                    tr("N", "North") : tr("S", "South")));
 
     // Type d'evenement
@@ -1232,7 +1232,7 @@ QStringList AfficherResultats::ElementsDetailsFlashs(const ResultatPrevisions &r
     elems.append(" " + res.constellation);
 
     // Angle de reflexion, miroir
-    elems.append(QString("%1  ").arg(res.angleReflexion * RAD2DEG, 5, 'f', 2));
+    elems.append(QString("%1  ").arg(res.angleReflexion * MATHS::RAD2DEG, 5, 'f', 2));
     elems.append(QString("%1 ").arg(res.miroir));
 
     // Magnitude
@@ -1245,8 +1245,8 @@ QStringList AfficherResultats::ElementsDetailsFlashs(const ResultatPrevisions &r
     double altitude = res.altitude;
     double distance = res.distance;
     if (_conditions.unite == tr("nmi", "nautical mile")) {
-        altitude *= MILE_PAR_KM;
-        distance *= MILE_PAR_KM;
+        altitude *= TERRE::MILE_PAR_KM;
+        distance *= TERRE::MILE_PAR_KM;
     }
     elems.append(QString("%1").arg(altitude, 8, 'f', 1));
     elems.append(QString("%1").arg(distance, 9, 'f', 1));
@@ -1261,10 +1261,10 @@ QStringList AfficherResultats::ElementsDetailsFlashs(const ResultatPrevisions &r
         const QString ns = (res.obsmax.latitude() >= 0.) ? QObject::tr("N", "North") : QObject::tr("S", "South");
 
         // Longitude du maximum
-        elems.append(QString("  %1 %2").arg(fabs(res.obsmax.longitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew));
+        elems.append(QString("  %1 %2").arg(fabs(res.obsmax.longitude() * MATHS::RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew));
 
         // Latitude du maximum
-        elems.append(QString(" %1 %2    ").arg(fabs(res.obsmax.latitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns));
+        elems.append(QString(" %1 %2    ").arg(fabs(res.obsmax.latitude() * MATHS::RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns));
 
         // Magnitude au maximum
         signe = (res.magnitudeMax >= 0.) ? "+" : "-";
@@ -1391,8 +1391,8 @@ QStringList AfficherResultats::ElementsDetailsPrevisions(const ResultatPrevision
     double altitude = res.altitude;
     double distance = res.distance;
     if (_conditions.unite == tr("nmi", "nautical mile")) {
-        altitude *= MILE_PAR_KM;
-        distance *= MILE_PAR_KM;
+        altitude *= TERRE::MILE_PAR_KM;
+        distance *= TERRE::MILE_PAR_KM;
     }
     elems.append(QString("%1").arg(altitude, 8, 'f', 1));
     elems.append(QString("%1").arg(distance, 9, 'f', 1));
@@ -1431,7 +1431,7 @@ QStringList AfficherResultats::ElementsTransits(const QList<ResultatPrevisions> 
 
     bool eclipse = false;
     bool penombre = false;
-    double angMin = PI;
+    double angMin = MATHS::PI;
     double duree = 0.;
     QString cst;
     QString type;
@@ -1460,7 +1460,7 @@ QStringList AfficherResultats::ElementsTransits(const QList<ResultatPrevisions> 
     elems.append(cst);
 
     // Angle minimal
-    elems.append(QString("%1").arg(angMin * RAD2DEG, 5, 'f', 2));
+    elems.append(QString("%1").arg(angMin * MATHS::RAD2DEG, 5, 'f', 2));
 
     // Type, corps
     elems.append(type);
@@ -1517,7 +1517,7 @@ QStringList AfficherResultats::ElementsDetailsTransits(const ResultatPrevisions 
     elems.append(" " + res.constellation);
 
     // Angle de reflexion, type, corps
-    elems.append(QString("%1  ").arg(res.angle * RAD2DEG, 5, 'f', 2));
+    elems.append(QString("%1  ").arg(res.angle * MATHS::RAD2DEG, 5, 'f', 2));
     elems.append(QString("%1   ").arg((res.transit) ? tr("T", "transit") : tr("C", "conjunction")));
     elems.append(QString("%1  ").arg((res.typeCorps == CorpsTransit::CORPS_SOLEIL) ? tr("S", "Sun") : tr("L", "Moon")));
 
@@ -1540,8 +1540,8 @@ QStringList AfficherResultats::ElementsDetailsTransits(const ResultatPrevisions 
     double altitude = res.altitude;
     double distance = res.distance;
     if (_conditions.unite == tr("nmi", "nautical mile")) {
-        altitude *= MILE_PAR_KM;
-        distance *= MILE_PAR_KM;
+        altitude *= TERRE::MILE_PAR_KM;
+        distance *= TERRE::MILE_PAR_KM;
     }
     elems.append(QString("%1").arg(altitude, 6, 'f', 1));
     elems.append(QString("%1").arg(distance, 7, 'f', 1));
@@ -1556,10 +1556,10 @@ QStringList AfficherResultats::ElementsDetailsTransits(const ResultatPrevisions 
         const QString ns = (res.obsmax.latitude() >= 0.) ? QObject::tr("N", "North") : QObject::tr("S", "South");
 
         // Longitude du maximum
-        elems.append(QString("  %1 %2").arg(fabs(res.obsmax.longitude() * RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew));
+        elems.append(QString("  %1 %2").arg(fabs(res.obsmax.longitude() * MATHS::RAD2DEG), 8, 'f', 4, QChar('0')).arg(ew));
 
         // Latitude du maximum
-        elems.append(QString(" %1 %2 ").arg(fabs(res.obsmax.latitude() * RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns));
+        elems.append(QString(" %1 %2 ").arg(fabs(res.obsmax.latitude() * MATHS::RAD2DEG), 7, 'f', 4, QChar('0')).arg(ns));
 
         // Distance au maximum et cap
         elems.append(QString(" %1 (%2)").arg(res.distanceObs, 6, 'f', 1).arg(res.cap));
@@ -1576,7 +1576,7 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
     Soleil soleil;
     Lune lune;
     QList<LigneConstellation> lignesCst;
-    std::array<Planete, NB_PLANETES> planetes;
+    std::array<Planete, PLANETE::NB_PLANETES> planetes;
     QList<Satellite> satellites;
 
     /* Initialisations */
@@ -1616,7 +1616,7 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
     }
 
     // Calcul de la position des planetes
-    for(unsigned int i=0; i<NB_PLANETES; i++) {
+    for(unsigned int i=0; i<PLANETE::NB_PLANETES; i++) {
 
         planetes[i].CalculPosition(dateDeb, soleil);
         planetes[i].CalculCoordHoriz(observateur);

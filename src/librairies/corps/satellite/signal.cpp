@@ -30,7 +30,7 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >    22 septembre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -78,17 +78,17 @@ void Signal::Calcul(const double rangeRate, const double distance, const double 
 
     /* Initialisations */
     // Delai en secondes
-    const double delai = distance / VITESSE_LUMIERE;
+    const double delaiSec = distance / SOLEIL::VITESSE_LUMIERE;
 
     /* Corps de la methode */
     // Decalage Doppler (Hz)
-    _doppler = -frequence * rangeRate / VITESSE_LUMIERE;
+    _doppler = -frequence * rangeRate / SOLEIL::VITESSE_LUMIERE;
 
     // Attenuation (free-space path loss) avec la formule exacte, en dB
-    _attenuation = 20. * log10(4. * PI * delai * frequence);
+    _attenuation = 20. * log10(4. * MATHS::PI * delaiSec * frequence);
 
     // Delai du signal en millisecondes (dans le vide)
-    _delai = 1000. * delai;
+    _delai = 1000. * delaiSec;
 
     /* Retour */
     return;

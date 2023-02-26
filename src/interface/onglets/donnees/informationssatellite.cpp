@@ -30,7 +30,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >     11 novembre 2022
+ * >
  *
  */
 
@@ -163,12 +163,12 @@ void InformationsSatellite::show()
     _ui->anomalieMoy->setText(fmt2.arg(elem.mo, 0, 'f', 4));
 
     // Magnitude standard, methode de determination de la magnitude, magnitude maximale
-    if (donnee.magnitudeStandard() < MAGNITUDE_INDEFINIE) {
+    if (donnee.magnitudeStandard() < CORPS::MAGNITUDE_INDEFINIE) {
 
         QString text;
         const double magMax = donnee.magnitudeStandard() - 15.75
                 + 5. * log10(1.45 * (satellite.elementsOsculateurs().demiGrandAxe() * (1. - satellite.elementsOsculateurs().excentricite())
-                                     - RAYON_TERRESTRE));
+                                     - TERRE::RAYON_TERRESTRE));
         _ui->magnitudeStdMax->setText(text.asprintf("%+.1f%c/%+.1f", donnee.magnitudeStandard(), donnee.methMagnitude(), magMax));
 
     } else {
@@ -186,30 +186,30 @@ void InformationsSatellite::show()
     double section = donnee.section();
     const QString unite = (settings.value("affichage/unite").toBool()) ? tr("m", "meter") : tr("ft", "foot");
     if (!settings.value("affichage/unite").toBool()) {
-        t1 *= PIED_PAR_METRE;
-        t2 *= PIED_PAR_METRE;
-        t3 *= PIED_PAR_METRE;
-        section = arrondi(section * PIED_PAR_METRE * PIED_PAR_METRE, 0);
+        t1 *= TERRE::PIED_PAR_METRE;
+        t2 *= TERRE::PIED_PAR_METRE;
+        t3 *= TERRE::PIED_PAR_METRE;
+        section = arrondi(section * TERRE::PIED_PAR_METRE * TERRE::PIED_PAR_METRE, 0);
     }
 
     QString dimensions;
-    if ((fabs(t2) < EPSDBL100) && (fabs(t3) < EPSDBL100)) {
+    if ((fabs(t2) < MATHS::EPSDBL100) && (fabs(t3) < MATHS::EPSDBL100)) {
         const QString fmt3 = tr("Sphérique. R=%1 %2", "R = radius");
         dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite);
     }
-    if ((fabs(t2) >= EPSDBL100) && (fabs(t3) < EPSDBL100)) {
+    if ((fabs(t2) >= MATHS::EPSDBL100) && (fabs(t3) < MATHS::EPSDBL100)) {
         const QString fmt3 = tr("Cylindrique. L=%1 %2, R=%3 %2", "L = height; R = radius");
         dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite).arg(t2, 0, 'f', 1);
     }
-    if ((fabs(t2) >= EPSDBL100) && (fabs(t3) >= EPSDBL100)) {
+    if ((fabs(t2) >= MATHS::EPSDBL100) && (fabs(t3) >= MATHS::EPSDBL100)) {
         const QString fmt3 = tr("Boîte. %1 x %2 x %3 %4");
         dimensions = fmt3.arg(t1, 0, 'f', 1).arg(t2, 0, 'f', 1).arg(t3, 0, 'f', 1).arg(unite);
     }
-    if (fabs(t1) < EPSDBL100) {
+    if (fabs(t1) < MATHS::EPSDBL100) {
         dimensions = tr("Inconnues");
     }
 
-    if (fabs(section) > EPSDBL100) {
+    if (fabs(section) > MATHS::EPSDBL100) {
         dimensions.append(" / %1 %2");
         dimensions = dimensions.arg(section, 0, 'f', 2).arg(unite);
         _ui->sq->setVisible(true);
@@ -288,7 +288,7 @@ void InformationsSatellite::SauveOngletInformations(const QString &fichier)
         }
         sw.close();
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */

@@ -179,7 +179,7 @@ void SatelliteTest::testCalculPosVit()
 
         flux << it.key() << Qt::endl;
 
-        temp = (elem.epoque.jourJulienUTC() * NB_MIN_PAR_JOUR + deb) * NB_JOUR_PAR_MIN;
+        temp = (elem.epoque.jourJulienUTC() * DATE::NB_MIN_PAR_JOUR + deb) * DATE::NB_JOUR_PAR_MIN;
         date = Date(temp, 0.);
         do {
 
@@ -189,10 +189,10 @@ void SatelliteTest::testCalculPosVit()
                     .arg(sat.vitesse().x(), 12, 'f', 9).arg(sat.vitesse().y(), 12, 'f', 9).arg(sat.vitesse().z(), 12, 'f', 9) << Qt::endl;
 
             t += pas;
-            temp = (date.jourJulienUTC() * NB_MIN_PAR_JOUR + pas) * NB_JOUR_PAR_MIN;
+            temp = (date.jourJulienUTC() * DATE::NB_MIN_PAR_JOUR + pas) * DATE::NB_JOUR_PAR_MIN;
             date = Date(temp, 0.);
 
-        } while (date.jourJulienUTC() <= elem.epoque.jourJulienUTC() + fin * NB_JOUR_PAR_MIN + NB_JOUR_PAR_MIN);
+        } while (date.jourJulienUTC() <= elem.epoque.jourJulienUTC() + fin * DATE::NB_JOUR_PAR_MIN + DATE::NB_JOUR_PAR_MIN);
     }
     res.close();
 

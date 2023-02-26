@@ -55,41 +55,44 @@
 /*
  * Definitions des constantes
  */
+namespace TERRE {
+
 // Rayon equatorial terrestre (km)
-static const double RAYON_TERRESTRE = 6378.135;
+static constexpr double RAYON_TERRESTRE = 6378.135;
 
 // Constante geocentrique de la gravitation (km^3 s^-2)
-static const double GE = 398600.8;
-static const double KE = NB_SEC_PAR_MIN * sqrt(GE / (RAYON_TERRESTRE * RAYON_TERRESTRE * RAYON_TERRESTRE));
-static const double X1GE = 1. / GE;
+static constexpr double GE = 398600.8;
+static constexpr double KE = DATE::NB_SEC_PAR_MIN * sqrt(GE / (RAYON_TERRESTRE * RAYON_TERRESTRE * RAYON_TERRESTRE));
+static constexpr double X1GE = 1. / GE;
 
 // Premieres harmoniques zonales
-static const double J2 = 0.001082616;
-static const double J3 = -0.00000253881;
-static const double J4 = -0.00000165597;
+static constexpr double J2 = 0.001082616;
+static constexpr double J3 = -0.00000253881;
+static constexpr double J4 = -0.00000165597;
 
 // Rapport du jour solaire moyen sur le jour sideral
-static const double OMEGA0 = 1.0027379093507951;
+static constexpr double OMEGA0 = 1.0027379093507951;
 
 // Vitesse de rotation de la Terre (rad s^-1)
-static const double OMEGA = DEUX_PI * OMEGA0 * NB_JOUR_PAR_SEC;
+static constexpr double OMEGA = MATHS::DEUX_PI * TERRE::OMEGA0 * DATE::NB_JOUR_PAR_SEC;
 
 // Aplatissement de la Terre
-static const double APLA = 1. / 298.26;
-static const double E2 = APLA * (2. - APLA);
-static const double G2 = (1. - APLA) * (1. - APLA);
+static constexpr double APLA = 1. / 298.26;
+static constexpr double E2 = APLA * (2. - APLA);
+static constexpr double G2 = (1. - APLA) * (1. - APLA);
 
 // Refraction totale a l'horizon (rad)
-static const double REFRACTION_HZ = 1.14925 * DEG2RAD;
+static constexpr double REFRACTION_HZ = 1.14925 * MATHS::DEG2RAD;
 
 // Nombre de miles nautiques par kilometre
-static const double MILE_PAR_KM = 1. / 1.852;
+static constexpr double MILE_PAR_KM = 1. / 1.852;
 
 // Nombre de pieds par metre
-static const double PIED_PAR_METRE = 1. / 0.3048;
+static constexpr double PIED_PAR_METRE = 1. / 0.3048;
 
 // Nombre de kilogrammes par livre
-static const double KG_PAR_LIVRE = 0.45359237;
+static constexpr double KG_PAR_LIVRE = 0.45359237;
 
+}
 
 #endif // TERRECONST_H

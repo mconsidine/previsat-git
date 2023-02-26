@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    18 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -58,7 +58,7 @@ static QSettings settings(ORG_NAME, APP_NAME);
 
 
 // SAA
-static const std::array<std::array<double, 2>, 59> tabSAA = {
+static constexpr std::array<std::array<double, 2>, 59> tabSAA = {
     { { -96.5, -29. }, { -95., -24.5 }, { -90., -16. }, { -85., -10. }, { -80., -6. }, { -75., -3.5 }, { -70., 0. }, { -65., 4. }, { -60., 6.5 },
       { -55., 8. }, { -50., 9. }, { -45., 10. }, { -40., 11. }, { -35., 12. }, { -30., 13. }, { -25., 12. }, { -20., 9.5 }, { -15., 8. }, { -10., 7. },
       { -5., 6. }, { 0., 4. }, { 5., 2. }, { 10., -3. }, { 15., -4. }, { 20., -5. }, { 25., -6. }, { 30., -8. }, { 35., -11.5 }, { 40., -14. },
@@ -69,7 +69,7 @@ static const std::array<std::array<double, 2>, 59> tabSAA = {
 };
 
 // SAA pour la visualisation Wall Command Center
-static const std::array<std::array<double, 2>, 16> tabSAA_ISS = {
+static constexpr std::array<std::array<double, 2>, 16> tabSAA_ISS = {
     { { 55.5, -17.3 }, { 47., -17.3 }, { 34.3, -20. }, { 14.5, -28. }, { -16., -31.6 }, { -26.5, -35.5 }, { -28.3, -40.6 }, { -21.6, -45.6 },
       { 2.5, -53. }, { 42., -53. }, { 54., -47.6 }, { 62.2, -36. }, { 63.3, -31. }, { 63.3, -24. }, { 60.5, -19.2 }, { 55.5, -17.3 } }
 };
@@ -146,13 +146,13 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
     }
 
     // Survol d'un satellite avec le curseur
-    QListIterator<Satellite> it(Configuration::instance()->listeSatellites());
+    QListIterator it(Configuration::instance()->listeSatellites());
     bool atrouve = false;
     while (it.hasNext() && !atrouve) {
 
         const Satellite sat = it.next();
-        const int lsat = qRound((180. - sat.longitude() * RAD2DEG) * DEG2PXHZ) + 2;
-        const int bsat = qRound((90. - sat.latitude() * RAD2DEG) * DEG2PXVT) + 2;
+        const int lsat = qRound((180. - sat.longitude() * MATHS::RAD2DEG) * DEG2PXHZ) + 2;
+        const int bsat = qRound((90. - sat.latitude() * MATHS::RAD2DEG) * DEG2PXVT) + 2;
 
         // Distance au carre du curseur au satellite
         const int dt = (xCur - lsat) * (xCur - lsat) + (yCur - bsat) * (yCur - bsat);
@@ -179,8 +179,8 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
     if (settings.value("affichage/affsoleil").toBool()) {
 
         static bool asoleil = false;
-        const int lsol = qRound((180. - Configuration::instance()->soleil().longitude() * RAD2DEG) * DEG2PXHZ) + 2;
-        const int bsol = qRound((90. - Configuration::instance()->soleil().latitude() * RAD2DEG) * DEG2PXVT) + 2;
+        const int lsol = qRound((180. - Configuration::instance()->soleil().longitude() * MATHS::RAD2DEG) * DEG2PXHZ) + 2;
+        const int bsol = qRound((90. - Configuration::instance()->soleil().latitude() * MATHS::RAD2DEG) * DEG2PXVT) + 2;
 
         // Distance au carre du curseur au Soleil
         const int dt = (xCur - lsol) * (xCur - lsol) + (yCur - bsol) * (yCur - bsol);
@@ -205,8 +205,8 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
     if (settings.value("affichage/afflune").toBool()) {
 
         static bool alune = false;
-        const int llun = qRound((180. - Configuration::instance()->lune().longitude() * RAD2DEG) * DEG2PXHZ) + 2;
-        const int blun = qRound((90. - Configuration::instance()->lune().latitude() * RAD2DEG) * DEG2PXVT) + 2;
+        const int llun = qRound((180. - Configuration::instance()->lune().longitude() * MATHS::RAD2DEG) * DEG2PXHZ) + 2;
+        const int blun = qRound((90. - Configuration::instance()->lune().latitude() * MATHS::RAD2DEG) * DEG2PXVT) + 2;
 
         // Distance au carre du curseur a la Lune
         const int dt = (xCur - llun) * (xCur - llun) + (yCur - blun) * (yCur - blun);
@@ -244,14 +244,14 @@ void Carte::mousePressEvent(QMouseEvent *evt)
         const int yCur = static_cast<int> (evt->position().y() + 1);
 
         // Clic sur un satellite
-        QListIterator<Satellite> it(Configuration::instance()->listeSatellites());
+        QListIterator it(Configuration::instance()->listeSatellites());
         bool atrouve = false;
         int idx = 1;
         while (it.hasNext() && !atrouve) {
 
             const Satellite sat = it.next();
-            const int lsat = qRound((180. - sat.longitude() * RAD2DEG) * DEG2PXHZ) + 2;
-            const int bsat = qRound((90. - sat.latitude() * RAD2DEG) * DEG2PXVT) + 2;
+            const int lsat = qRound((180. - sat.longitude() * MATHS::RAD2DEG) * DEG2PXHZ) + 2;
+            const int bsat = qRound((90. - sat.latitude() * MATHS::RAD2DEG) * DEG2PXVT) + 2;
 
             // Distance au carre du curseur au satellite
             const int dt = (xCur - lsat) * (xCur - lsat) + (yCur - bsat) * (yCur - bsat);
@@ -378,8 +378,8 @@ void Carte::resizeEvent(QResizeEvent *evt)
     const int hcarte = _ui->carte->height() - 1;
     const int lcarte = _ui->carte->width() - 1;
 
-    DEG2PXHZ = lcarte * (1. / T360);
-    DEG2PXVT = hcarte * (2. / T360);
+    DEG2PXHZ = lcarte * (1. / MATHS::T360);
+    DEG2PXVT = hcarte * (2. / MATHS::T360);
 
     show();
 
@@ -403,8 +403,8 @@ void Carte::AffichageSiteLancement(const QString &acronyme, const Observateur &s
 
     if (!acronyme.isEmpty()) {
 
-        const int lobs = qRound((180. - siteLancement.longitude() * RAD2DEG) * DEG2PXHZ)+1;
-        const int bobs = qRound((90. - siteLancement.latitude() * RAD2DEG) * DEG2PXVT)+1;
+        const int lobs = qRound((180. - siteLancement.longitude() * MATHS::RAD2DEG) * DEG2PXHZ)+1;
+        const int bobs = qRound((90. - siteLancement.latitude() * MATHS::RAD2DEG) * DEG2PXVT)+1;
 
         scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
         scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
@@ -549,8 +549,8 @@ void Carte::AffichageLune()
         pixlun.load(":/resources/interface/lune.png");
         pixlun = pixlun.scaled(17, 17);
 
-        const int llun = qRound((180. - Configuration::instance()->lune().longitude() * RAD2DEG) * DEG2PXHZ);
-        const int blun = qRound((90. - Configuration::instance()->lune().latitude() * RAD2DEG) * DEG2PXVT);
+        const int llun = qRound((180. - Configuration::instance()->lune().longitude() * MATHS::RAD2DEG) * DEG2PXHZ);
+        const int blun = qRound((90. - Configuration::instance()->lune().latitude() * MATHS::RAD2DEG) * DEG2PXVT);
 
         QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
         QTransform transform;
@@ -673,8 +673,8 @@ void Carte::AffichageSatellites()
 
         if (satellites.at(isat).altitude() >= 0.) {
 
-            const int lsat = qRound((180. - satellites.at(isat).longitude() * RAD2DEG) * DEG2PXHZ)+1;
-            const int bsat = qRound((90. - satellites.at(isat).latitude() * RAD2DEG) * DEG2PXVT)+1;
+            const int lsat = qRound((180. - satellites.at(isat).longitude() * MATHS::RAD2DEG) * DEG2PXHZ)+1;
+            const int bsat = qRound((90. - satellites.at(isat).latitude() * MATHS::RAD2DEG) * DEG2PXVT)+1;
 
             if (_mcc || settings.value("affichage/afficone").toBool()) {
 
@@ -702,7 +702,7 @@ void Carte::AffichageSatellites()
                 } else {
 
                     // Affichage de l'icone satellite
-                    img = QPixmap(listeIcones.at(0));
+                    img = QPixmap(listeIcones.first());
                     img = img.scaled(qMin(_ui->carte->width() / 12, img.width()), qMin(_ui->carte->height() / 6, img.height()));
 
                     pm = scene->addPixmap(img);
@@ -719,7 +719,7 @@ void Carte::AffichageSatellites()
                         const double vysat = satellites.at(isat).vitesse().y();
                         const double vzsat = satellites.at(isat).vitesse().z();
 
-                        angle = RAD2DEG * (-atan(vzsat / sqrt(vxsat * vxsat + vysat * vysat)));
+                        angle = MATHS::RAD2DEG * (-atan(vzsat / sqrt(vxsat * vxsat + vysat * vysat)));
                         transform.rotate(angle);
                     }
 
@@ -763,8 +763,8 @@ void Carte::AffichageSoleil()
 
     /* Corps de la methode */
     const Soleil &soleil = Configuration::instance()->soleil();
-    _lsol = qRound((180. - soleil.longitude() * RAD2DEG) * DEG2PXHZ);
-    _bsol = qRound((90. - soleil.latitude() * RAD2DEG) * DEG2PXVT);
+    _lsol = qRound((180. - soleil.longitude() * MATHS::RAD2DEG) * DEG2PXHZ);
+    _bsol = qRound((90. - soleil.latitude() * MATHS::RAD2DEG) * DEG2PXVT);
 
     if (settings.value("affichage/affsoleil").toBool()) {
 
@@ -842,8 +842,8 @@ void Carte::AffichageStations()
 
                 const Observateur station = Configuration::instance()->mapStations()[acronyme];
 
-                const int lsta = qRound((180. - station.longitude() * RAD2DEG) * DEG2PXHZ);
-                const int bsta = qRound((90. - station.latitude() * RAD2DEG) * DEG2PXVT);
+                const int lsta = qRound((180. - station.longitude() * MATHS::RAD2DEG) * DEG2PXHZ);
+                const int bsta = qRound((90. - station.latitude() * MATHS::RAD2DEG) * DEG2PXVT);
 
                 scene->addLine(lsta-4, bsta, lsta+4, bsta, crayon);
                 scene->addLine(lsta, bsta-4, lsta, bsta+4, crayon);
@@ -1005,9 +1005,9 @@ void Carte::AffichageTraceAuSol()
 
                                 if (!txt.isEmpty()) {
 
-                                    const double ang = fmod(180. - lig.angle(), T360);
-                                    const double ca = cos(ang * DEG2RAD);
-                                    const double sa = sin(ang * DEG2RAD);
+                                    const double ang = fmod(180. - lig.angle(), MATHS::T360);
+                                    const double ca = cos(ang * MATHS::DEG2RAD);
+                                    const double sa = sin(ang * MATHS::DEG2RAD);
 
 #if defined (Q_OS_MAC)
                                     const QFont policeOmb(Configuration::instance()->police().family(), 24);
@@ -1070,7 +1070,7 @@ void Carte::AffichageZoneOmbre()
     /* Corps de la methode */
     if (settings.value("affichage/affnuit") != QVariant(Qt::Unchecked)) {
 
-        double beta = PI_SUR_DEUX - REFRACTION_HZ;
+        double beta = MATHS::PI_SUR_DEUX - TERRE::REFRACTION_HZ;
         const int imax = ((settings.value("affichage/affnuit") == QVariant(Qt::PartiallyChecked)) || _mcc) ? 1 : 4;
 
         const QBrush alpha1 = QBrush(QColor::fromRgb(0, 0, 0, static_cast<int> (2.55 * settings.value("affichage/intensiteOmbre").toDouble())));
@@ -1109,7 +1109,7 @@ void Carte::AffichageZoneOmbre()
                 }
             }
 
-            if ((fabs(soleil.latitude()) > 0.002449 * DEG2RAD) || (i > 0)) {
+            if ((fabs(soleil.latitude()) > 0.002449 * MATHS::DEG2RAD) || (i > 0)) {
 
                 // Cas en dehors des equinoxes (ou pour les crepuscules)
                 switch (idxIntersection.size()) {
@@ -1258,7 +1258,7 @@ void Carte::AffichageZoneOmbre()
                 }
             }
 
-            beta += 6. * DEG2RAD;
+            beta += 6. * MATHS::DEG2RAD;
         }
     }
 
@@ -1373,8 +1373,8 @@ void Carte::AffichageZoneOmbre()
                                             0 : Configuration::instance()->observateurs().size() - 1);
     for(int j=nbMax; j>=0; j--) {
 
-        const int lobs = qRound((180. - Configuration::instance()->observateurs().at(j).longitude() * RAD2DEG) * DEG2PXHZ)+1;
-        const int bobs = qRound((90. - Configuration::instance()->observateurs().at(j).latitude() * RAD2DEG) * DEG2PXVT)+1;
+        const int lobs = qRound((180. - Configuration::instance()->observateurs().at(j).longitude() * MATHS::RAD2DEG) * DEG2PXHZ)+1;
+        const int bobs = qRound((90. - Configuration::instance()->observateurs().at(j).latitude() * MATHS::RAD2DEG) * DEG2PXVT)+1;
 
         scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
         scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
@@ -1435,7 +1435,7 @@ void Carte::AffichageZoneVisibilite()
 
                         const int numeroTDRS = Configuration::instance()->listeSatellites().at(isat).elementsOrbitaux().nom.section(" ", 1).toInt();
 
-                        QMapIterator<int, SatelliteTDRS> it(Configuration::instance()->mapTDRS());
+                        QMapIterator it(Configuration::instance()->mapTDRS());
                         while (it.hasNext()) {
                             it.next();
 
@@ -1449,8 +1449,8 @@ void Carte::AffichageZoneVisibilite()
                                 txtSat->setFont(policeSat);
 
                                 const int lsat =
-                                        qRound((180. - Configuration::instance()->listeSatellites().at(isat).longitude() * RAD2DEG) * DEG2PXHZ);
-                                const int bsat = qRound((90. - Configuration::instance()->listeSatellites().at(isat).latitude() * RAD2DEG) * DEG2PXVT);
+                                        qRound((180. - Configuration::instance()->listeSatellites().at(isat).longitude() * MATHS::RAD2DEG) * DEG2PXHZ);
+                                const int bsat = qRound((90. - Configuration::instance()->listeSatellites().at(isat).latitude() * MATHS::RAD2DEG) * DEG2PXVT);
 
                                 crayon = QPen(QColor(satTDRS.rouge, satTDRS.vert, satTDRS.bleu), 2);
                                 crayon.setCosmetic(true);

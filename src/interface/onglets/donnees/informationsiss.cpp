@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    27 aout 2022
+ * >
  *
  */
 
@@ -111,21 +111,8 @@ void InformationsISS::changeEvent(QEvent *evt)
 void InformationsISS::show()
 {
     /* Declarations des variables locales */
-    QString masse;
-    QString surface;
-    QString uniteMasse;
-    QString uniteDist;
-    QString uniteDv;
-    QString uniteSurface;
-
-    QTableWidgetItem * itemEvt;
-    QTableWidgetItem * itemDate;
-    QTableWidgetItem * itemDeltaV;
-    QTableWidgetItem * itemApogee;
-    QTableWidgetItem * itemPerigee;
 
     /* Initialisations */
-    int j = 0;
     const EvenementsStation &evenements = Configuration::instance()->evenementsStation();
     _ui->evenementsISS->setVisible(false);
     _ui->formLayoutWidget->setVisible(false);
@@ -135,6 +122,13 @@ void InformationsISS::show()
 
     /* Corps de la methode */
     if (evenements.masseStationSpatiale > 0.) {
+
+        QString masse;
+        QString surface;
+        QString uniteMasse;
+        QString uniteDist;
+        QString uniteDv;
+        QString uniteSurface;
 
         if (settings.value("affichage/unite").toBool()) {
 
@@ -153,8 +147,8 @@ void InformationsISS::show()
             uniteMasse = tr("lb", "pound");
             uniteSurface = tr("ft^2", "foot square");
 
-            masse = QString::number(evenements.masseStationSpatiale / KG_PAR_LIVRE, 'f', 2);
-            surface = QString::number(evenements.surfaceTraineeAtmospherique * PIED_PAR_METRE * PIED_PAR_METRE, 'f', 2);
+            masse = QString::number(evenements.masseStationSpatiale / TERRE::KG_PAR_LIVRE, 'f', 2);
+            surface = QString::number(evenements.surfaceTraineeAtmospherique * TERRE::PIED_PAR_METRE * TERRE::PIED_PAR_METRE, 'f', 2);
         }
 
         // Masse de la station spatiale
@@ -177,6 +171,13 @@ void InformationsISS::show()
             _ui->lbl_evenementsISS->setText(tr("Aucun évènement contenu dans le fichier ISS"));
         } else {
 
+            int j = 0;
+            QTableWidgetItem * itemEvt;
+            QTableWidgetItem * itemDate;
+            QTableWidgetItem * itemDeltaV;
+            QTableWidgetItem * itemApogee;
+            QTableWidgetItem * itemPerigee;
+
             // Liste des evenements
             QStringListIterator it(evenements.evenementsStationSpatiale);
             while (it.hasNext()) {
@@ -195,14 +196,14 @@ void InformationsISS::show()
 
                 // Delta-V
                 const QString deltaV = (settings.value("affichage/unite").toBool()) ?
-                            detailsEvt.at(1) : QString::number(detailsEvt.at(1).toDouble() * PIED_PAR_METRE, 'f', 1);
+                            detailsEvt.at(1) : QString::number(detailsEvt.at(1).toDouble() * TERRE::PIED_PAR_METRE, 'f', 1);
 
                 // Apogee et perigee
                 const QString apogee = (settings.value("affichage/unite").toBool()) ?
-                            detailsEvt.at(2) : QString::number(detailsEvt.at(2).toDouble() * MILE_PAR_KM, 'f', 1);
+                            detailsEvt.at(2) : QString::number(detailsEvt.at(2).toDouble() * TERRE::MILE_PAR_KM, 'f', 1);
 
                 const QString perigee = (settings.value("affichage/unite").toBool()) ?
-                            detailsEvt.at(3) : QString::number(detailsEvt.at(3).toDouble() * MILE_PAR_KM, 'f', 1);
+                            detailsEvt.at(3) : QString::number(detailsEvt.at(3).toDouble() * TERRE::MILE_PAR_KM, 'f', 1);
 
                 // Ajout d'une ligne dans le tableau
                 _ui->evenementsISS->insertRow(j);

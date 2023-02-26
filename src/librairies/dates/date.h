@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -175,7 +175,7 @@ public:
      * @brief operator = Affectation d'une date
      * @param date date
      */
-    Date &operator = (const Date &date);
+    Date &operator = (const Date &date) = default;
 
 
     /*

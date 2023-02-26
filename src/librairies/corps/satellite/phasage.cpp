@@ -30,7 +30,7 @@
  * >    6 octobre 2016
  *
  * Date de revision
- * >
+ * >    25 fevrier 2023
  *
  */
 
@@ -60,10 +60,10 @@ Phasage::Phasage()
     /* Initialisations */
 
     /* Corps du constructeur */
-    _nbOrb = ELEMENT_PHASAGE_INDEFINI;
-    _ct0 = ELEMENT_PHASAGE_INDEFINI;
-    _dt0 = ELEMENT_PHASAGE_INDEFINI;
-    _nu0 = ELEMENT_PHASAGE_INDEFINI;
+    _nbOrb = CORPS::ELEMENT_PHASAGE_INDEFINI;
+    _ct0 = CORPS::ELEMENT_PHASAGE_INDEFINI;
+    _dt0 = CORPS::ELEMENT_PHASAGE_INDEFINI;
+    _nu0 = CORPS::ELEMENT_PHASAGE_INDEFINI;
 
     /* Retour */
     return;
@@ -83,19 +83,19 @@ void Phasage::Calcul(const ElementsOsculateurs &elements, const double n0)
     /* Initialisations */
     const double cosincl = cos(elements.inclinaison());
     const double cosincl2 = cosincl * cosincl;
-    const double rsa = RAYON_TERRESTRE / elements.demiGrandAxe();
+    const double rsa = TERRE::RAYON_TERRESTRE / elements.demiGrandAxe();
     const double rsa2 = rsa * rsa;
-    const double moyenMouvement = sqrt(GE / (elements.demiGrandAxe() * elements.demiGrandAxe() * elements.demiGrandAxe()));
-    const double aper = NB_MIN_PAR_JOUR / n0;
+    const double moyenMouvement = sqrt(TERRE::GE / (elements.demiGrandAxe() * elements.demiGrandAxe() * elements.demiGrandAxe()));
+    const double aper = DATE::NB_MIN_PAR_JOUR / n0;
     const double gamma = 1. - elements.excentricite() * elements.excentricite();
     const double gamma2 = gamma * gamma;
 
     /* Corps de la methode */
-    const double precessionNoeud = RAD2DEG * NB_SEC_PAR_JOUR * (-1.5 * J2 * rsa2 * cosincl * moyenMouvement / gamma2);
-    const double precessionPerigee = RAD2DEG * NB_SEC_PAR_JOUR * 0.75 * J2 * rsa2 * (5. * cosincl2 - 1.) * moyenMouvement / gamma2;
-    const double dper = aper / (1. + precessionPerigee * DEG2RAD * NB_JOUR_PAR_SEC / moyenMouvement);
-    const double nd = n0 * T360 + precessionPerigee;
-    const double k = nd / (OMEGA0 * T360 - precessionNoeud);
+    const double precessionNoeud = MATHS::RAD2DEG * DATE::NB_SEC_PAR_JOUR * (-1.5 * TERRE::J2 * rsa2 * cosincl * moyenMouvement / gamma2);
+    const double precessionPerigee = MATHS::RAD2DEG * DATE::NB_SEC_PAR_JOUR * 0.75 * TERRE::J2 * rsa2 * (5. * cosincl2 - 1.) * moyenMouvement / gamma2;
+    const double dper = aper / (1. + precessionPerigee * MATHS::DEG2RAD * DATE::NB_JOUR_PAR_SEC / moyenMouvement);
+    const double nd = n0 * MATHS::T360 + precessionPerigee;
+    const double k = nd / (TERRE::OMEGA0 * MATHS::T360 - precessionNoeud);
     _nu0 = static_cast<int> (qRound(floor(10. * k) * 0.1));
     const double v = n0 * aper / dper;
 
@@ -129,10 +129,10 @@ void Phasage::Calcul(const ElementsOsculateurs &elements, const double n0)
         _nbOrb = static_cast<int> (qRound(nt0));
 
     } else {
-        _nbOrb = ELEMENT_PHASAGE_INDEFINI;
-        _ct0 = ELEMENT_PHASAGE_INDEFINI;
-        _dt0 = ELEMENT_PHASAGE_INDEFINI;
-        _nu0 = ELEMENT_PHASAGE_INDEFINI;
+        _nbOrb = CORPS::ELEMENT_PHASAGE_INDEFINI;
+        _ct0 = CORPS::ELEMENT_PHASAGE_INDEFINI;
+        _dt0 = CORPS::ELEMENT_PHASAGE_INDEFINI;
+        _nu0 = CORPS::ELEMENT_PHASAGE_INDEFINI;
     }
 
     /* Retour */

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -128,7 +128,7 @@ private:
      * @param sat satellite
      * @return elements de l'evenement
      */
-    static ResultatPrevisions CalculEvt(const std::array<double, DEGRE_INTERPOLATION> &jjm, const std::array<double, DEGRE_INTERPOLATION> &evt,
+    static ResultatPrevisions CalculEvt(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, const std::array<double, MATHS::DEGRE_INTERPOLATION> &evt,
                                         const double yval, Satellite &sat);
 
 

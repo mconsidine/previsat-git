@@ -217,7 +217,6 @@ void CalculsFlashs::closeEvent(QCloseEvent *evt)
 void CalculsFlashs::on_calculsFlashs_clicked()
 {
     /* Declarations des variables locales */
-    QVector<int> vecSat;
     ConditionsPrevisions conditions;
 
     /* Initialisations */
@@ -226,8 +225,7 @@ void CalculsFlashs::on_calculsFlashs_clicked()
     /* Corps de la methode */
     try {
 
-        qInfo() << "Lancement des calculs de flashs";
-
+        QVector<int> vecSat;
         vecSat.append(0);
 
         // Fichier d'elements orbitaux
@@ -273,19 +271,19 @@ void CalculsFlashs::on_calculsFlashs_clicked()
         conditions.magnitudeLimite = _ui->magnitudeMaxMetOp->value();
 
         // Angle limite
-        conditions.angleLimite = PI;
+        conditions.angleLimite = MATHS::PI;
 
         // Hauteur minimale du satellite
-        conditions.hauteur = DEG2RAD * ((_ui->hauteurSatMetOp->currentIndex() == 5) ?
+        conditions.hauteur = MATHS::DEG2RAD * ((_ui->hauteurSatMetOp->currentIndex() == 5) ?
                                             abs(_ui->valHauteurSatMetOp->text().toInt()) : 5 * _ui->hauteurSatMetOp->currentIndex());
 
         // Hauteur maximale du Soleil
         if (_ui->hauteurSoleilMetOp->currentIndex() <= 3) {
-            conditions.crepuscule = -6. * DEG2RAD * _ui->hauteurSoleilMetOp->currentIndex();
+            conditions.crepuscule = -6. * MATHS::DEG2RAD * _ui->hauteurSoleilMetOp->currentIndex();
         } else if (_ui->hauteurSoleilMetOp->currentIndex() == 4) {
-            conditions.crepuscule = PI_SUR_DEUX;
+            conditions.crepuscule = MATHS::PI_SUR_DEUX;
         } else if (_ui->hauteurSoleilMetOp->currentIndex() == 5) {
-            conditions.crepuscule = DEG2RAD * _ui->valHauteurSoleilMetOp->text().toInt();
+            conditions.crepuscule = MATHS::DEG2RAD * _ui->valHauteurSoleilMetOp->text().toInt();
         } else {
         }
 
@@ -326,11 +324,38 @@ void CalculsFlashs::on_calculsFlashs_clicked()
         conditions.fichier = fichier;
         conditions.listeSatellites = listeSatellites;
 
+        // Ecriture des informations de prévisions dans le fichier de log
+        qInfo() << "--";
+        qInfo() << "Calcul des flashs :";
+        qInfo() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo() << "Ecart UTC date1 =" << offset1;
+
+        qInfo() << "Date de fin =" << date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo() << "Ecart UTC date2 =" << offset2;
+
+        qInfo() << QString("Lieu d'observation : %1 %2 %3")
+                   .arg(conditions.observateur.longitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                   .arg(conditions.observateur.latitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                   .arg(conditions.observateur.altitude() * 1.e3);
+
+        qInfo() << "Unité de longueur =" << conditions.unite;
+        qInfo() << "Magnitude limite =" << conditions.magnitudeLimite;
+        qInfo() << "Angle limite =" << conditions.angleLimite;
+        qInfo() << "Hauteur minimale du satellite =" << conditions.hauteur;
+        qInfo() << "Hauteur maximale du Soleil = " << conditions.crepuscule;
+        qInfo() << "Prise en compte de l'extinction atmospherique =" << conditions.extinction;
+        qInfo() << "Prise en compte de la refraction atmospherique =" << conditions.refraction;
+        qInfo() << "Prise en compte de l'effet des eclipses partielles sur la magnitude =" << conditions.effetEclipsePartielle;
+        qInfo() << "Prise en compte des eclipses de Lune =" << conditions.calcEclipseLune;
+        qInfo() << "Liste de numéros NORAD =" << conditions.listeSatellites;
+
+        qInfo() << "--";
+
         // Nom du fichier resultat
         const QString chaine = tr("flashs", "file name (without accent)") + "_%1_%2.txt";
         conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
-                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").at(0));
+                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first()).
+                arg(date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first());
 
         // Barre de progression
         auto barreProgression = new QProgressBar();

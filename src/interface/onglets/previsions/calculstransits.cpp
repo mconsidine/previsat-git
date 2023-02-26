@@ -235,7 +235,7 @@ void CalculsTransits::CalculAgeElementsOrbitaux()
     /* Initialisations */
     QPalette pal = _paletteBouton;
     _ui->majElementsOrbitauxIss->setToolTip("");
-    double elemMax = DATE_INFINIE;
+    double elemMax = DATE::DATE_INFINIE;
 
     const double ageElements = _ui->ageMaxElementsOrbitauxTransit->value();
 
@@ -272,7 +272,7 @@ void CalculsTransits::CalculAgeElementsOrbitaux()
         }
     }
 
-    if (fabs(elemMax - DATE_INFINIE) < EPS_DATES) {
+    if (fabs(elemMax - DATE::DATE_INFINIE) < DATE::EPS_DATES) {
 
         _ui->lbl_ageElementsOrbitauxTransit->setVisible(false);
         _ui->ageElementsOrbitauxTransit->setVisible(false);
@@ -454,11 +454,11 @@ void CalculsTransits::on_calculsTransit_clicked()
         conditions.systeme = settings.value("affichage/syst24h").toBool();
 
         // Hauteur minimale du satellite
-        conditions.hauteur = DEG2RAD * ((_ui->hauteurSatTransit->currentIndex() == 5) ?
+        conditions.hauteur = MATHS::DEG2RAD * ((_ui->hauteurSatTransit->currentIndex() == 5) ?
                                             abs(_ui->valHauteurSatTransit->text().toInt()) : 5 * _ui->hauteurSatTransit->currentIndex());
 
         // Elongation maximale
-        conditions.seuilConjonction = DEG2RAD * _ui->elongationMaxCorps->value();
+        conditions.seuilConjonction = MATHS::DEG2RAD * _ui->elongationMaxCorps->value();
 
         // Selection des corps
         conditions.calcEphemSoleil = _ui->soleilTransit->isChecked();
@@ -483,16 +483,51 @@ void CalculsTransits::on_calculsTransit_clicked()
         conditions.calcEclipseLune = settings.value("affichage/eclipsesLune").toBool();
 
         // Elements orbitaux
-        conditions.tabElem = Configuration::instance()->mapElementsOrbitaux();
+        conditions.tabElem.clear();
+        for(int i=0; i<_ui->listeTransits->count(); i++) {
+            if (_ui->listeTransits->item(i)->checkState() == Qt::Checked) {
+                const QString norad = _ui->listeTransits->item(i)->data(Qt::UserRole).toString();
+                conditions.tabElem.insert(norad, Configuration::instance()->mapElementsOrbitaux()[norad]);
+            }
+        }
+
         if (!_listeElemIss.isEmpty()) {
             conditions.listeElemIss = _listeElemIss;
         }
 
+        // Ecriture des informations de prévisions dans le fichier de log
+        qInfo() << "--";
+        qInfo() << "Calcul des transits :";
+        qInfo() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo() << "Ecart UTC date1 =" << offset1;
+
+        qInfo() << "Date de fin =" << date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo() << "Ecart UTC date2 =" << offset2;
+        qInfo() << "Pas de génération =" << conditions.pas;
+
+        qInfo() << QString("Lieu d'observation : %1 %2 %3")
+                   .arg(conditions.observateur.longitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                   .arg(conditions.observateur.latitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                   .arg(conditions.observateur.altitude() * 1.e3);
+
+        qInfo() << "Unité de longueur =" << conditions.unite;
+        qInfo() << "Hauteur minimale du satellite =" << conditions.hauteur;
+        qInfo() << "Elongation maximale = " << conditions.seuilConjonction;
+        qInfo() << "Calcul pour le Soleil =" << conditions.calcEphemSoleil;
+        qInfo() << "Calcul pour la Lune =" << conditions.calcEphemLune;
+        qInfo() << "Prise en compte de la refraction atmospherique =" << conditions.refraction;
+        qInfo() << "Prise en compte de l'effet des eclipses partielles sur la magnitude =" << conditions.effetEclipsePartielle;
+        qInfo() << "Calcul des transits lunaires de jour = " << conditions.calcTransitLunaireJour;
+        qInfo() << "Prise en compte des eclipses de Lune =" << conditions.calcEclipseLune;
+        qInfo() << "Liste de numéros NORAD =" << conditions.tabElem.keys();
+
+        qInfo() << "--";
+
         // Nom du fichier resultat
         const QString chaine = tr("transits", "file name (without accent)") + "_%1_%2.txt";
         conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
-                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").at(0)).
-                arg(date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").at(0));
+                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first()).
+                arg(date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first());
 
         // Barre de progression
         auto barreProgression = new QProgressBar();
@@ -621,7 +656,7 @@ void CalculsTransits::on_majElementsOrbitauxIss_clicked()
 
         // Mise a jour du fichier d'elements orbitaux
         emit AfficherMessageStatut(tr("Téléchargement du fichier d'élements orbitaux de l'ISS..."), -1);
-        const QString ficElem = Configuration::instance()->adresseCelestrakNorad().arg("iss").replace("gp", "sup-gp");
+        const QString ficElem = Configuration::instance()->adresseCelestrakSupplementalNorad().arg("iss");
         Telechargement tel(Configuration::instance()->dirTmp());
         tel.TelechargementFichier(ficElem);
         emit AfficherMessageStatut(tr("Téléchargement terminé"), 5);
@@ -639,7 +674,7 @@ void CalculsTransits::on_majElementsOrbitauxIss_clicked()
         // Mise a jour de l'age des elements orbitaux
         CalculAgeElementsOrbitaux();
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */

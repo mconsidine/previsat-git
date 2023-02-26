@@ -30,7 +30,7 @@
  * >    30 juillet 2011
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -112,52 +112,22 @@ Observateur::Observateur(const QString &nom, const double lon, const double lat,
     _tempsSideralGreenwich = 0.;
 
     /* Corps du constructeur */
-    _longitude = DEG2RAD * lon;
-    _latitude = DEG2RAD * lat;
+    _longitude = MATHS::DEG2RAD * lon;
+    _latitude = MATHS::DEG2RAD * lat;
     _altitude = alt * 1.e-3;
 
     _coslat = cos(_latitude);
     _sinlat = sin(_latitude);
 
-    const double coster = 1. / sqrt(1. - E2 * _sinlat * _sinlat);
-    const double sinter = G2 * coster;
+    const double coster = 1. / sqrt(1. - TERRE::E2 * _sinlat * _sinlat);
+    const double sinter = TERRE::G2 * coster;
 
-    _rayon = (RAYON_TERRESTRE * coster + _altitude) * _coslat;
-    _posZ = (RAYON_TERRESTRE * sinter + _altitude) * _sinlat;
+    _rayon = (TERRE::RAYON_TERRESTRE * coster + _altitude) * _coslat;
+    _posZ = (TERRE::RAYON_TERRESTRE * sinter + _altitude) * _sinlat;
 
     // Pour l'extinction atmospherique
     _aray = 0.1451 * exp(-_altitude * (1. / 7.996));
     _aaer = 0.120 * exp(-_altitude * (1. / 1.5));
-
-    /* Retour */
-    return;
-}
-
-/*
- * Constructeur a partir d'un lieu d'observation
- */
-Observateur::Observateur(const Observateur &observateur) :
-    _nomlieu(observateur.nomlieu()), _position(observateur.position()), _vitesse(observateur.vitesse()), _rotHz(observateur.rotHz())
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    _tempsSideralGreenwich = 0.;
-
-    /* Corps du constructeur */
-    _longitude = observateur._longitude;
-    _latitude = observateur._latitude;
-    _altitude = observateur._altitude;
-
-    _coslat = observateur._coslat;
-    _sinlat = observateur._sinlat;
-
-    _rayon = observateur._rayon;
-    _posZ = observateur._posZ;
-
-    // Pour l'extinction atmospherique
-    _aray = observateur._aray;
-    _aaer = observateur._aaer;
 
     /* Retour */
     return;
@@ -214,7 +184,7 @@ void Observateur::CalculPosVit(const Date &date)
     _position = Vecteur3D(_rayon * costsl, _rayon * sintsl, _posZ);
 
     // Vitesse de l'observateur
-    _vitesse = Vecteur3D(-OMEGA * _position.y(), OMEGA * _position.x(), 0.);
+    _vitesse = Vecteur3D(-TERRE::OMEGA * _position.y(), TERRE::OMEGA * _position.x(), 0.);
 
     // Matrice utile pour le calcul des coordonnees horizontales
     const Vecteur3D v1(_sinlat * costsl, -sintsl, _coslat * costsl);
@@ -235,13 +205,13 @@ double Observateur::CalculTempsSideralGreenwich(const Date &date)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double tu = date.jourJulienUTC() * NB_SIECJ_PAR_JOURS;
+    const double tu = date.jourJulienUTC() * DATE::NB_SIECJ_PAR_JOURS;
     const double tu2 = tu * tu;
 
     /* Corps de la methode */
 
     /* Retour */
-    return (DEG2RAD * modulo(280.46061837 + 360.98564736629 * date.jourJulienUTC() + tu2 * (0.000387933 - tu * (1. / 38710000.)), T360));
+    return (MATHS::DEG2RAD * modulo(280.46061837 + 360.98564736629 * date.jourJulienUTC() + tu2 * (0.000387933 - tu * (1. / 38710000.)), MATHS::T360));
 }
 
 /*
@@ -256,20 +226,20 @@ QPair<QString, double> Observateur::CalculCap(const Observateur &lieuDistant) co
     double cap = 0.;
 
     /* Corps de la methode */
-    if (_coslat < EPSDBL100) {
-        cap = (_latitude > 0.) ? PI : 0.;
+    if (_coslat < MATHS::EPSDBL100) {
+        cap = (_latitude > 0.) ? MATHS::PI : 0.;
     } else {
 
-        if (lieuDistant._coslat < EPSDBL100) {
-            cap = (lieuDistant._latitude > 0.) ? 0. : PI;
+        if (lieuDistant._coslat < MATHS::EPSDBL100) {
+            cap = (lieuDistant._latitude > 0.) ? 0. : MATHS::PI;
         } else {
 
             const double num = sin(_longitude - lieuDistant._longitude) * lieuDistant._coslat;
             const double den = _coslat * lieuDistant._sinlat - _sinlat * lieuDistant._coslat * cos(_longitude - lieuDistant._longitude);
-            cap = modulo(atan2(num, den), DEUX_PI);
+            cap = modulo(atan2(num, den), MATHS::DEUX_PI);
         }
     }
-    const int idx = static_cast<int> (cap * RAD2DEG / 22.5);
+    const int idx = static_cast<int> (cap * MATHS::RAD2DEG / 22.5);
     res.first = QCoreApplication::translate("cardinal point", listeCap[idx]);
     res.second = cap;
 
@@ -312,12 +282,12 @@ double Observateur::CalculDistance(const Observateur &observateur) const
 
     const double om = atan(sqrt(s / c));
     const double r3 = 3. * sqrt(s * c) / om;
-    const double d = 2. * om * RAYON_TERRESTRE;
+    const double d = 2. * om * TERRE::RAYON_TERRESTRE;
     const double h1 = 0.5 * (r3 - 1.) / c;
     const double h2 = 0.5 * (r3 + 1.) / s;
 
     /* Retour */
-    return (d * (1. + APLA * (h1 * sf2 * cg2 - h2 * cf2 * sg2)));
+    return (d * (1. + TERRE::APLA * (h1 * sf2 * cg2 - h2 * cf2 * sg2)));
 }
 
 /*
@@ -345,9 +315,9 @@ Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Ve
     const double cz2 = dx * dx + dy * dy;
 
     /* Corps de la methode */
-    const double a = 1. - E2 * cz2;
-    const double b = -(G2 * (x * dx + y * dy) + z * dz);
-    const double c = G2 * (r2 - RAYON_TERRESTRE * RAYON_TERRESTRE) + z2;
+    const double a = 1. - TERRE::E2 * cz2;
+    const double b = -(TERRE::G2 * (x * dx + y * dy) + z * dz);
+    const double c = TERRE::G2 * (r2 - TERRE::RAYON_TERRESTRE * TERRE::RAYON_TERRESTRE) + z2;
     const double b2 = b * b;
     const double ac = a * c;
 
@@ -362,43 +332,20 @@ Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Ve
         const double tsg = CalculTempsSideralGreenwich(date);
 
         // Longitude
-        lon = modulo(tsg - atan2(intersection.y(), intersection.x()), DEUX_PI);
-        if (fabs(lon) > PI) {
-            lon -= sgn(lon) * DEUX_PI;
+        lon = modulo(tsg - atan2(intersection.y(), intersection.x()), MATHS::DEUX_PI);
+        if (fabs(lon) > MATHS::PI) {
+            lon -= sgn(lon) * MATHS::DEUX_PI;
         }
-        lon *= RAD2DEG;
+        lon *= MATHS::RAD2DEG;
 
         // Latitude
-        lat = RAD2DEG * atan2(intersection.z(), G2 * sqrt(intersection.x() * intersection.x() + intersection.y() * intersection.y()));
+        lat = MATHS::RAD2DEG * atan2(intersection.z(), TERRE::G2 * sqrt(intersection.x() * intersection.x() + intersection.y() * intersection.y()));
 
         nom = "INTERSECT";
     }
 
     /* Retour */
     return (Observateur(nom, lon, lat));
-}
-
-/*
- * Affectation d'un observateur
- */
-Observateur &Observateur::operator = (const Observateur &observateur)
-{
-    _nomlieu = observateur._nomlieu;
-    _longitude = observateur._longitude;
-    _latitude = observateur._latitude;
-    _altitude = observateur._altitude;
-    _coslat = observateur._coslat;
-    _sinlat = observateur._sinlat;
-    _rayon = observateur._rayon;
-    _posZ = observateur._posZ;
-    _position = observateur._position;
-    _vitesse = observateur._vitesse;
-    _rotHz = observateur._rotHz;
-    _aaer = observateur._aaer;
-    _aray = observateur._aray;
-    _tempsSideralGreenwich = observateur._tempsSideralGreenwich;
-
-    return (*this);
 }
 
 

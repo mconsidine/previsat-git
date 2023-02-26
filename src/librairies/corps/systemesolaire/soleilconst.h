@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 aout 2016
+ * >    25 fevrier 2023
  *
  */
 
@@ -62,22 +62,25 @@ enum class TypeEclipse {
 /*
  * Definitions des constantes
  */
+namespace SOLEIL {
+
 // Demi-grand axe de l'orbite de la Terre
-static const double DEMI_GRAND_AXE_TERRE = 1.000001018;
+static constexpr double DEMI_GRAND_AXE_TERRE = 1.000001018;
 
 // Magnitude du centre du disque solaire
-static const double MAGNITUDE_SOLEIL = -26.98;
+static constexpr double MAGNITUDE_SOLEIL = -26.98;
 
 // Rayon equatorial solaire (km)
-static const double RAYON_SOLAIRE = 696342.;
+static constexpr double RAYON_SOLAIRE = 696342.;
 
 // Unite astronomique (km)
-static const double UA2KM = 149597870.;
+static constexpr double UA2KM = 149597870.;
 
 // Vitesse de la lumiere (km/s)
-static const double VITESSE_LUMIERE = 299792.458;
+static constexpr double VITESSE_LUMIERE = 299792.458;
 
-static const double KM2UA = 1. / UA2KM;
+static constexpr double KM2UA = 1. / UA2KM;
 
+}
 
 #endif // SOLEILCONST_H

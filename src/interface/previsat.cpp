@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 fevrier 2023
+ * >    25 fevrier 2023
  *
  */
 
@@ -215,6 +215,8 @@ void PreviSat::MajGP()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     InitDate();
 
     /* Corps de la methode */
@@ -241,6 +243,8 @@ void PreviSat::MajGP()
         VerifAgeGP();
     }
 
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
+
     /* Retour */
     return;
 }
@@ -255,6 +259,8 @@ void PreviSat::DemarrageApplication()
     /* Initialisations */
 
     /* Corps de la methode */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     if (Configuration::instance()->etoiles().isEmpty()) {
         Etoile::Initialisation(Configuration::instance()->dirCommonData(), Configuration::instance()->etoiles());
     }
@@ -318,7 +324,7 @@ void PreviSat::DemarrageApplication()
     // Affichage du radar
     const bool radarVisible = ((_options->ui()->affradar->checkState() == Qt::Checked)
                                || ((_options->ui()->affradar->checkState() == Qt::PartiallyChecked)
-                                   && Configuration::instance()->listeSatellites().at(0).isVisible()));
+                                   && Configuration::instance()->listeSatellites().first().isVisible()));
     if (radarVisible) {
         _radar->show();
     }
@@ -353,6 +359,8 @@ void PreviSat::DemarrageApplication()
         _chronometreMs->start();
     }
 
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
+
     /* Retour */
     return;
 }
@@ -368,6 +376,8 @@ void PreviSat::ChargementGP()
 
     /* Corps de la methode */
     try {
+
+        qInfo() << "Début Fonction" << __FUNCTION__;
 
         QString nomfic = Configuration::instance()->dirElem() + QDir::separator() + Configuration::instance()->nomfic();
         QFileInfo ff(nomfic);
@@ -427,8 +437,10 @@ void PreviSat::ChargementGP()
             AfficherListeSatellites(ff.fileName());
         }
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
+
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
     return;
@@ -500,6 +512,8 @@ void PreviSat::ConnexionsSignauxSlots()
     /* Initialisations */
 
     /* Corps de la methode */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     QAction* effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
     if (effacerFiltre) {
         connect(effacerFiltre, &QAction::triggered, this, &PreviSat::on_filtreSatellites_returnPressed);
@@ -567,6 +581,8 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_outils, &Outils::ChargementGP, this, &PreviSat::ChargementGP);
     connect(_outils, &Outils::InitFicGP, this, &PreviSat::InitFicGP);
 
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
+
     /* Retour */
     return;
 }
@@ -579,6 +595,8 @@ void PreviSat::CreationMenus()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     QStyle * const styleIcones = QApplication::style();
 
     /* Corps de la methode */
@@ -594,6 +612,8 @@ void PreviSat::CreationMenus()
     _ui->actionEnregistrer->setIcon(styleIcones->standardIcon(QStyle::SP_DialogSaveButton));
     _ui->actionInformations->setIcon(styleIcones->standardIcon(QStyle::SP_MessageBoxInformation));
 
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
+
     /* Retour */
     return;
 }
@@ -608,6 +628,8 @@ void PreviSat::CreationRaccourcis()
     /* Initialisations */
 
     /* Corps de la methode */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     // Raccourci Onglet Previsions
     _previsions = new QAction(this);
     _previsions->setShortcut(Qt::ALT | Qt::Key_P);
@@ -649,6 +671,8 @@ void PreviSat::CreationRaccourcis()
     _station->setShortcut(Qt::ALT | Qt::Key_I);
     connect(_station, &QAction::triggered, this, &PreviSat::RaccourciStation);
     this->addAction(_station);
+
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
     return;
@@ -733,9 +757,9 @@ void PreviSat::EnchainementCalculs()
              */
             if (_options->ui()->affplanetes->checkState() != Qt::Unchecked) {
 
-                std::array<Planete, NB_PLANETES> &planetes = Configuration::instance()->planetes();
+                std::array<Planete, PLANETE::NB_PLANETES> &planetes = Configuration::instance()->planetes();
 
-                for(unsigned int i=0; i<NB_PLANETES; i++) {
+                for(unsigned int i=0; i<PLANETE::NB_PLANETES; i++) {
 
                     planetes[i].CalculPosition(*_dateCourante, soleil);
                     planetes[i].CalculCoordHoriz(observateur);
@@ -814,6 +838,8 @@ void PreviSat::GestionPolice()
     /* Initialisations */
 
     /* Corps de la methode */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     QFont police;
 #if defined (Q_OS_WIN)
     police.setFamily("Segoe UI");
@@ -825,6 +851,8 @@ void PreviSat::GestionPolice()
 
     setFont(police);
     Configuration::instance()->setPolice(police);
+
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
     return;
@@ -926,6 +954,8 @@ void PreviSat::InitBarreStatut()
     /* Initialisations */
 
     /* Corps de la methode */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     _messageStatut = new QLabel("", this);
     _messageStatut->setFrameStyle(QFrame::NoFrame);
     _messageStatut->setIndent(3);
@@ -969,6 +999,8 @@ void PreviSat::InitBarreStatut()
     _ui->barreStatut->addPermanentWidget(_stsDate);
     _ui->barreStatut->addPermanentWidget(_stsHeure);
 
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
+
     /* Retour */
     return;
 }
@@ -983,14 +1015,18 @@ void PreviSat::InitDate()
     /* Initialisations */
 
     /* Corps de la methode */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     // Determination automatique de l'ecart heure locale - UTC
     const double ecart = Date::CalculOffsetUTC(QDateTime::currentDateTime());
     double offsetUTC = (_options->ui()->utcAuto->isChecked()) ? ecart : settings.value("temps/dtu", ecart).toDouble();
-    _options->ui()->updown->setValue(sgn(offsetUTC) * (static_cast<int>(fabs(offsetUTC) * NB_SEC_PAR_JOUR + EPS_DATES)));
-    offsetUTC = (_options->ui()->heureLegale->isChecked()) ? _options->ui()->updown->value() * NB_JOUR_PAR_SEC : 0.;
+    _options->ui()->updown->setValue(sgn(offsetUTC) * (static_cast<int>(fabs(offsetUTC) * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES)));
+    offsetUTC = (_options->ui()->heureLegale->isChecked()) ? _options->ui()->updown->value() * DATE::NB_JOUR_PAR_SEC : 0.;
 
     // Date et heure locales
     _dateCourante = new Date(offsetUTC);
+
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
     return;
@@ -1006,6 +1042,8 @@ void PreviSat::InitVerificationsMAJ()
     /* Initialisations */
 
     /* Corps de la methode */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     const QVersionNumber versionPrec = QVersionNumber::fromString(settings.value("fichier/version").toString());
     if (!versionPrec.isNull()) {
 
@@ -1066,6 +1104,8 @@ void PreviSat::InitVerificationsMAJ()
         }
     }
 
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
+
     /* Retour */
     return;
 }
@@ -1120,7 +1160,7 @@ void PreviSat::MajFichierGP()
         ChargementGP();
         DemarrageApplication();
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */
@@ -1171,7 +1211,7 @@ void PreviSat::MajWebGP()
                 }
             }
         }
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */
@@ -1188,6 +1228,8 @@ void PreviSat::VerifAgeGP()
     /* Initialisations */
 
     /* Corps de la methode */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     if (Configuration::instance()->mapElementsOrbitaux().count() > 0) {
 
         const int ageMax = settings.value("temps/ageMax", 15).toInt();
@@ -1210,6 +1252,8 @@ void PreviSat::VerifAgeGP()
         }
     }
 
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
+
     /* Retour */
     return;
 }
@@ -1222,6 +1266,8 @@ bool PreviSat::VerifMajDate(const QString &fichier, const QStringList &listeFich
     /* Declarations des variables locales */
 
     /* Initialisations */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     bool anew = false;
     Telechargement tel(Configuration::instance()->dirTmp());
 
@@ -1266,6 +1312,8 @@ bool PreviSat::VerifMajDate(const QString &fichier, const QStringList &listeFich
         }
     }
 
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
+
     /* Retour */
     return anew;
 }
@@ -1280,6 +1328,8 @@ void PreviSat::VerifMajPreviSat()
     /* Initialisations */
 
     /* Corps de la methode */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     // Version du logiciel
     const bool anew = VerifMajVersion(QString("version%1").arg(APP_NAME));
 
@@ -1328,6 +1378,8 @@ void PreviSat::VerifMajPreviSat()
         }
     }
 
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
+
     /* Retour */
     return;
 }
@@ -1340,6 +1392,8 @@ bool PreviSat::VerifMajVersion(const QString &fichier)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     bool anew = false;
     Telechargement tel(Configuration::instance()->dirTmp());
 
@@ -1382,6 +1436,8 @@ bool PreviSat::VerifMajVersion(const QString &fichier)
             }
         }
     }
+
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
     return anew;
@@ -1575,7 +1631,7 @@ void PreviSat::GestionTempsReel()
         if (_options->ui()->affnotif->isChecked() && !Configuration::instance()->listeSatellites().isEmpty()) {
 
             NotificationSonore &notif = Configuration::instance()->notifAOS();
-            const Satellite sat = Configuration::instance()->listeSatellites().at(0);
+            const Satellite sat = Configuration::instance()->listeSatellites().first();
 
             if (sat.isVisible() && (notif == NotificationSonore::ATTENTE_LOS)) {
                 notif = NotificationSonore::NOTIFICATION_AOS;
@@ -1652,7 +1708,7 @@ void PreviSat::GestionTempsReel()
         // Affichage du radar
         const bool radarVisible = ((_options->ui()->affradar->checkState() == Qt::Checked) ||
                                    ((_options->ui()->affradar->checkState() == Qt::PartiallyChecked)
-                                    && Configuration::instance()->listeSatellites().at(0).isVisible()));
+                                    && Configuration::instance()->listeSatellites().first().isVisible()));
         if (radarVisible) {
             _radar->show();
         }
@@ -1670,7 +1726,7 @@ void PreviSat::GestionTempsReel()
 
                 double pas;
                 if (_ui->valManuel->currentIndex() < 3) {
-                    pas = _ui->pasManuel->currentText().toDouble() * qPow(NB_SEC_PAR_MIN, _ui->valManuel->currentIndex()) * NB_JOUR_PAR_SEC;
+                    pas = _ui->pasManuel->currentText().toDouble() * qPow(DATE::NB_SEC_PAR_MIN, _ui->valManuel->currentIndex()) * DATE::NB_JOUR_PAR_SEC;
                 } else {
                     pas = _ui->pasManuel->currentText().toDouble();
                 }
@@ -1684,10 +1740,7 @@ void PreviSat::GestionTempsReel()
                 }
 
                 const double offset = _dateCourante->offsetUTC();
-                if (_dateCourante != nullptr) {
-                    delete _dateCourante;
-                    _dateCourante = nullptr;
-                }
+                EFFACE_OBJET(_dateCourante);
                 _dateCourante = new Date(jd, offset);
 
                 // Enchainement de l'ensemble des calculs
@@ -1725,6 +1778,8 @@ void PreviSat::InitFicGP()
     /* Corps de la methode */
     try {
 
+        qInfo() << "Début Fonction" << __FUNCTION__;
+
         QString nomfic;
         bool ajout = false;
         bool defaut = false;
@@ -1747,7 +1802,7 @@ void PreviSat::InitFicGP()
                 const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
                                                                                          Configuration::instance()->lgRec());
 
-                ajout = (mapElem.size() != 0);
+                ajout = !mapElem.isEmpty();
                 nomfic = ff.baseName();
 
             } else {
@@ -1795,8 +1850,10 @@ void PreviSat::InitFicGP()
         // Mise a jour de la liste de fichiers d'elements orbitaux
         Configuration::instance()->setListeFicElem(listeElem);
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
+
+    qInfo() << "Début Fonction" << __FUNCTION__;
 
     /* Retour */
     return;
@@ -1811,6 +1868,8 @@ void PreviSat::MettreAjourGroupeElem(const QString &groupe)
     QString adresse;
 
     /* Initialisations */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     AfficherMessageStatut(tr("Mise à jour du groupe d'éléments orbitaux \"%1\"...").arg(groupe));
     Telechargement tel(Configuration::instance()->dirElem());
 
@@ -1843,7 +1902,10 @@ void PreviSat::MettreAjourGroupeElem(const QString &groupe)
             }
         }
     }
+
     AfficherMessageStatut(tr("Mise à jour du groupe d'éléments orbitaux \"%1\" terminée").arg(groupe), 5);
+
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
     return;
@@ -1932,7 +1994,7 @@ void PreviSat::TempsReel()
 
         // Affichage du jour julien dans la barre de statut
         const Date date1(_dateCourante->annee(), 1, 1, 0.);
-        _stsDate->setText(QString::number(_dateCourante->jourJulien() + TJ2000, 'f', 5));
+        _stsDate->setText(QString::number(_dateCourante->jourJulien() + DATE::TJ2000, 'f', 5));
         _stsHeure->setText(QString::number(_dateCourante->jourJulien() - date1.jourJulien() + 1., 'f', 5));
         _stsDate->setToolTip(tr("Jour julien"));
         _stsHeure->setToolTip(tr("Jour"));
@@ -1974,7 +2036,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("temps/valManuel", _ui->valManuel->currentIndex());
     settings.setValue("temps/pasManuel", _ui->pasManuel->currentIndex());
     settings.setValue("temps/pasReel", _ui->pasReel->currentIndex());
-    settings.setValue("temps/dtu", _options->ui()->updown->value() * NB_JOUR_PAR_SEC);
+    settings.setValue("temps/dtu", _options->ui()->updown->value() * DATE::NB_JOUR_PAR_SEC);
 
     settings.setValue("affichage/geometrie", saveGeometry());
     settings.setValue("affichage/etat", saveState());
@@ -2054,6 +2116,7 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
  */
 void PreviSat::on_configuration_clicked()
 {
+    qInfo() << "Ouverture de la fenêtre de configuration";
     _options->Initialisation();
     _options->setModal(true);
     _options->show();
@@ -2061,6 +2124,7 @@ void PreviSat::on_configuration_clicked()
 
 void PreviSat::on_outils_clicked()
 {
+    qInfo() << "Ouverture de la fenêtre d'outils";
     _outils->Initialisation();
     _outils->show();
 }
@@ -2073,7 +2137,10 @@ void PreviSat::on_aide_clicked()
     const QString ficDox = QString("%1/%2/html/index.html").arg(Configuration::instance()->dirDox()).arg(Configuration::instance()->locale());
 
     /* Corps de la methode */
-    if (!QDesktopServices::openUrl("file:///" + ficDox)) {
+    if (QDesktopServices::openUrl("file:///" + ficDox)) {
+        qInfo() << "Ouverture de l'aide en ligne";
+    } else {
+        qWarning() << "Impossible d'afficher l'aide en ligne";
         Message::Afficher(tr("Impossible d'afficher l'aide en ligne"), MessageType::WARNING);
     }
 
@@ -2083,6 +2150,7 @@ void PreviSat::on_aide_clicked()
 
 void PreviSat::on_tempsReel_toggled(bool checked)
 {
+    qInfo() << "Fonction" << __FUNCTION__ << ":" << checked;
     _ui->pasManuel->setVisible(!checked);
     _ui->valManuel->setVisible(!checked);
     _ui->pasReel->setVisible(checked);
@@ -2092,6 +2160,7 @@ void PreviSat::on_tempsReel_toggled(bool checked)
 
 void PreviSat::on_modeManuel_toggled(bool checked)
 {
+    qInfo() << "Fonction" << __FUNCTION__ << ":" << checked;
     _ui->pasReel->setVisible(!checked);
     _ui->secondes->setVisible(!checked);
     _ui->pasManuel->setVisible(checked);
@@ -2111,6 +2180,8 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
     /* Corps de la methode */
     try {
 
+        qInfo() << "Début Fonction" << __FUNCTION__;
+
         // Ouverture d'un fichier TLE
         const QString fichier = QFileDialog::getOpenFileName(this, tr("Importer fichier GP / TLE"),
                                                              QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
@@ -2127,8 +2198,9 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
             if (ff.suffix() == "xml") {
 
                 // Cas d'un fichier GP
-                const QMap<QString, ElementsOrbitaux> mapElements = GPFormat::LectureFichier(fichier, Configuration::instance()->donneesSatellites(),
-                                                                                             Configuration::instance()->lgRec(), QStringList(), true, true);
+                const QMap<QString, ElementsOrbitaux> mapElements =
+                        GPFormat::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
+                                                 QStringList(), true, true);
 
                 if (mapElements.isEmpty()) {
 
@@ -2147,7 +2219,6 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
                     } else {
                         qWarning() << "Import du fichier GP" << ff.fileName() << "KO";
                     }
-
                 }
 
             } else {
@@ -2175,8 +2246,10 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
             }
         }
 
-    } catch (PreviSatException &ex) {
+    } catch (PreviSatException const &e) {
     }
+
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
     return;
@@ -2189,6 +2262,8 @@ void PreviSat::on_actionEnregistrer_triggered()
     /* Initialisations */
 
     /* Corps de la methode */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     if (_ui->actionEnregistrer->isVisible() && (_onglets->currentIndex() < 3)) {
 
         const QStringList listeNoms(QStringList() << tr("onglet_general", "file name (without accent)")
@@ -2231,6 +2306,9 @@ void PreviSat::on_actionEnregistrer_triggered()
         }
     }
 
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
+
+
     /* Retour */
     return;
 }
@@ -2243,6 +2321,8 @@ void PreviSat::on_actionImprimer_carte_triggered()
     /* Initialisations */
 
     /* Corps de la methode */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     printer.setPageOrientation((_carte->isVisible()) ? QPageLayout::Landscape : QPageLayout::Portrait);
     QPrintDialog dial(&printer, this);
 
@@ -2271,6 +2351,8 @@ void PreviSat::on_actionImprimer_carte_triggered()
         p.end();
     }
 
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     /* Retour */
     return;
 }
@@ -2287,6 +2369,8 @@ void PreviSat::on_actionInformations_triggered()
     /* Initialisations */
 
     /* Corps de la methode */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     const QUrl urlLastNews(QString("%1/data/informations/").arg(DOMAIN_NAME) + "last_news_" + Configuration::instance()->locale() + ".html");
 
     if (Informations::UrlExiste(urlLastNews)) {
@@ -2307,6 +2391,8 @@ void PreviSat::on_actionInformations_triggered()
             Message::Afficher(tr("Pas d'informations à afficher"), MessageType::INFO);
         }
     }
+
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
     return;
@@ -2349,6 +2435,8 @@ void PreviSat::on_actionMettre_a_jour_les_fichiers_de_donnees_triggered()
     QFile fi2;
 
     /* Initialisations */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     Telechargement tel(Configuration::instance()->dirLocalData());
 
     /* Corps de la methode */
@@ -2370,12 +2458,15 @@ void PreviSat::on_actionMettre_a_jour_les_fichiers_de_donnees_triggered()
         }
     }
 
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
+
     /* Retour */
     return;
 }
 
 void PreviSat::on_actionExporter_fichier_log_triggered()
 {
+    qInfo() << "Ouverture de la fenêtre d'export de fichier log";
     _logging->show();
 }
 
@@ -2500,19 +2591,17 @@ void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
             item->setData(Qt::BackgroundRole, QColor(Qt::transparent));
 
             QList<Satellite> &listeSatellites = Configuration::instance()->listeSatellites();
-            bool afin = false;
-            int i;
-            for(i = 0; i < listeSatellites.size() && !afin; i++) {
-                afin = (listeSatellites.at(i).elementsOrbitaux().norad == norad);
-            }
+            const auto sat = std::find_if(listeSatellites.begin(), listeSatellites.end(), [norad](Satellite s) {
+                    return (s.elementsOrbitaux().norad == norad);
+            });
 
-            if (i > 0) {
-                listeSatellites.removeAt(--i);
+            if (sat != listeSatellites.end()) {
+                listeSatellites.erase(sat);
                 Configuration::instance()->SuppressionSatelliteFichierElem(norad);
             }
 
             bool atrouve = false;
-            const QString noradDefaut = listeSatellites.at(0).elementsOrbitaux().norad;
+            const QString noradDefaut = listeSatellites.first().elementsOrbitaux().norad;
             for(int j=0; j<_ui->listeSatellites->count() && !atrouve; j++) {
                 if (_ui->listeSatellites->item(j)->data(Qt::UserRole).toString() == noradDefaut) {
                     _ui->listeSatellites->item(j)->setData(Qt::BackgroundRole, QColor(160, 220, 240));
@@ -2569,7 +2658,7 @@ void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
         // Affichage du radar
         const bool radarVisible = ((_options->ui()->affradar->checkState() == Qt::Checked) ||
                                    ((_options->ui()->affradar->checkState() == Qt::PartiallyChecked)
-                                    && Configuration::instance()->listeSatellites().at(0).isVisible()));
+                                    && Configuration::instance()->listeSatellites().first().isVisible()));
         if (radarVisible) {
             _radar->show();
         }
@@ -2621,6 +2710,8 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
     const QString norad = _ui->listeSatellites->currentItem()->data(Qt::UserRole).toString();
     const QFileInfo fi(Configuration::instance()->nomfic());
     const bool atrouve = Configuration::instance()->mapSatellitesFichierElem().value(fi.fileName()).contains(norad);
@@ -2629,19 +2720,25 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
     /* Corps de la methode */
     if (atrouve) {
 
-        bool afin = false;
-        int i;
-        for(i = 1; i < Configuration::instance()->listeSatellites().size() && !afin; i++) {
-            afin = (Configuration::instance()->listeSatellites().at(i).elementsOrbitaux().norad == norad);
+        // Le satellite fait partie de la liste de satellites, on intervertit
+        QList<Satellite> &listeSatellites = Configuration::instance()->listeSatellites();
+        const auto sat = std::find_if(listeSatellites.begin(), listeSatellites.end(), [norad](Satellite s) {
+                return (s.elementsOrbitaux().norad == norad);
+        });
+
+        if (sat != listeSatellites.end()) {
+            const int idx = static_cast<int> (std::distance(listeSatellites.begin(), sat));
+            Configuration::instance()->listeSatellites().swapItemsAt(idx, 0);
         }
 
-        Configuration::instance()->listeSatellites().swapItemsAt(--i, 0);
-
     } else {
+
         // Le satellite choisi ne fait pas partie de la liste de satellites, on l'ajoute
         Configuration::instance()->listeSatellites().insert(0, Satellite(elem));
         Configuration::instance()->AjoutSatelliteFichierElem(norad);
     }
+
+    qInfo() << "Numéro NORAD par défaut :" << norad;
 
     // On definit le satellite choisi comme satellite par defaut
     _ui->listeSatellites->currentItem()->setData(Qt::CheckStateRole, Qt::Checked);
@@ -2660,6 +2757,8 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
 
     GestionnaireXml::EcritureConfiguration();
 
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
+
     /* Retour */
     return;
 }
@@ -2672,6 +2771,8 @@ void PreviSat::on_lancementVideoNasa_clicked()
 
     /* Corps de la methode */
     try {
+
+        qInfo() << "Début Fonction" << __FUNCTION__;
 
         QString val;
         QStringListIterator it(Configuration::instance()->listeChainesNasa());
@@ -2712,8 +2813,10 @@ void PreviSat::on_lancementVideoNasa_clicked()
         // Ouverture du fichier html
         QDesktopServices::openUrl(QUrl("file:///" + fr.fileName()));
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
+
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
     return;

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
         /* Retour */
         return a.exec();
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
         return EXIT_FAILURE;
     }
 }

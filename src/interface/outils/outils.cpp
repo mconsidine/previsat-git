@@ -250,7 +250,7 @@ void Outils::EcritureCompteRenduMaj(const QStringList &compteRendu, QPlainTextEd
         msgcpt = tr("TLE du satellite %1 (%2) non réactualisé");
 
         for(int i=0; i<compteRendu.count()-5; i++) {
-            const QString nomsat = compteRendu.at(i).split("#").at(0);
+            const QString nomsat = compteRendu.at(i).split("#").first();
             const QString norad = compteRendu.at(i).split("#").at(1);
             compteRenduMaj->appendPlainText(msgcpt.arg(nomsat).arg(norad));
         }
@@ -676,7 +676,7 @@ void Outils::on_valider_clicked()
         GestionnaireXml::EcritureGestionnaireElementsOrbitaux();
         InitListeDomaines();
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */
@@ -858,7 +858,7 @@ void Outils::on_mettreAJourTLE_clicked()
         _ui->compteRenduMajManuel->setVisible(true);
 
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */

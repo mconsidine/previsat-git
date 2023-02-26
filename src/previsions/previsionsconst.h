@@ -36,7 +36,7 @@
  * >    15 aout 2020
  *
  * Date de revision
- * >    4 fevrier 2023
+ * >    25 fevrier 2023
  *
  */
 
@@ -119,29 +119,29 @@ struct ConditionsPrevisions
 
 struct ResultatPrevisions
 {
-    bool eclipse;
-    bool penombre;
-    bool penombreMax;
-    bool transit;
+    bool eclipse = false;
+    bool penombre = false;
+    bool penombreMax = false;
+    bool transit = false;
 
-    double altitude;
-    double angle;
-    double angleReflexion;
-    double ascensionDroite;
-    double azimut;
-    double azimutSoleil;
-    double declinaison;
-    double distance;
-    double distanceObs;
-    double duree;
-    double hauteur;
-    double hauteurSoleil;
-    double latitude;
-    double longitude;
-    double magnitude;
-    double magnitudeMax;
-    double magnitudeStd;
-    double pso;
+    double altitude = 0.;
+    double angle = 0.;
+    double angleReflexion = 0.;
+    double ascensionDroite = 0.;
+    double azimut = 0.;
+    double azimutSoleil = 0.;
+    double declinaison = 0.;
+    double distance = 0.;
+    double distanceObs = 0.;
+    double duree = 0.;
+    double hauteur = 0.;
+    double hauteurSoleil = 0.;
+    double latitude = 0.;
+    double longitude = 0.;
+    double magnitude = 0.;
+    double magnitudeMax = 0.;
+    double magnitudeStd = 0.;
+    double pso = 0.;
 
     QString cap;
     QString constellation;
@@ -149,7 +149,7 @@ struct ResultatPrevisions
     QString nom;
     QString typeEvenement;
 
-    CorpsTransit typeCorps;
+    CorpsTransit typeCorps = CorpsTransit::CORPS_SOLEIL;
     Date date;
     ElementsOrbitaux elements;
     Observateur obsmax;

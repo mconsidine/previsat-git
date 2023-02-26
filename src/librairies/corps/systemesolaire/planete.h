@@ -36,7 +36,7 @@
  * >    28 janvier 2012
  *
  * Date de revision
- * >    4 decembre 2015
+ * >    25 fevrier 2023
  *
  */
 
@@ -102,7 +102,7 @@ private:
      * Variables privees
      */
     IndicePlanete _iplanete;
-    double _elem[6];
+    std::array<double, PLANETE::NB_ELEMENTS> _elem;
     Vecteur3D _positionSph;
     QString _nom;
 

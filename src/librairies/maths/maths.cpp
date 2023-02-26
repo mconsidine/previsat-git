@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -57,8 +57,8 @@
 /*
  * Calcul d'un extremum par interpolation a l'ordre 3
  */
-QPair<double, double> Maths::CalculExtremumInterpolation3(const std::array<double, DEGRE_INTERPOLATION> &xtab,
-                                                          const std::array<double, DEGRE_INTERPOLATION> &ytab)
+QPair<double, double> Maths::CalculExtremumInterpolation3(const std::array<double, MATHS::DEGRE_INTERPOLATION> &xtab,
+                                                          const std::array<double, MATHS::DEGRE_INTERPOLATION> &ytab)
 {
     /* Declarations des variables locales */
     QPair<double, double> res;
@@ -79,20 +79,20 @@ QPair<double, double> Maths::CalculExtremumInterpolation3(const std::array<doubl
 /*
  * Calcul d'une valeur x pour une valeur y donnee, par interpolation a l'ordre 3
  */
-double Maths::CalculValeurXInterpolation3(const std::array<double, DEGRE_INTERPOLATION> &xtab,
-                                          const std::array<double, DEGRE_INTERPOLATION> &ytab,
+double Maths::CalculValeurXInterpolation3(const std::array<double, MATHS::DEGRE_INTERPOLATION> &xtab,
+                                          const std::array<double, MATHS::DEGRE_INTERPOLATION> &ytab,
                                           const double yval,
                                           const double epsilon)
 {
     /* Declarations des variables locales */
-    std::array<double, DEGRE_INTERPOLATION> yy;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> yy;
 
     /* Initialisations */
     unsigned int iter = 0;
     double dn0 = 100000.;
     double n0 = 0.;
 
-    for (unsigned int i=0; i<DEGRE_INTERPOLATION; i++) {
+    for (unsigned int i=0; i<MATHS::DEGRE_INTERPOLATION; i++) {
         yy[i] = ytab[i] - yval;
     }
 
@@ -102,7 +102,7 @@ double Maths::CalculValeurXInterpolation3(const std::array<double, DEGRE_INTERPO
 
     /* Corps de la methode */
     const double dy = 2. * yy[1];
-    while ((fabs(dn0) >= epsilon) && (iter < ITERATIONS_MAX)) {
+    while ((fabs(dn0) >= epsilon) && (iter < MATHS::ITERATIONS_MAX)) {
 
         const double tmp1 = c * n0;
         const double tmp2 = a + b + tmp1;
@@ -132,12 +132,12 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType &typeAngle
     /* Initialisations */
     switch (typeAngle) {
     case AngleFormatType::DEGRE:
-        xval = xdec * RAD2DEG;
+        xval = xdec * MATHS::RAD2DEG;
         break;
 
     case AngleFormatType::HEURE1:
     case AngleFormatType::HEURE2:
-        xval = xdec * RAD2HEUR;
+        xval = xdec * MATHS::RAD2HEUR;
         break;
 
     case AngleFormatType::ARCSEC:
@@ -147,7 +147,7 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType &typeAngle
         xval = xdec;
     }
 
-    double y = fabs(xval) + EPSDBL100;
+    double y = fabs(xval) + MATHS::EPSDBL100;
 
     int degr = nbDeg;
     if (degr < 0) {
@@ -175,15 +175,15 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType &typeAngle
 
     /* Corps de la methode */
     int deg = static_cast<int> (y);
-    int min = static_cast<int> (ARCMIN_PAR_DEG * (y - deg));
-    double sec = ARCSEC_PAR_DEG * (y - deg) - ARCMIN_PAR_DEG * min;
+    int min = static_cast<int> (MATHS::ARCMIN_PAR_DEG * (y - deg));
+    double sec = MATHS::ARCSEC_PAR_DEG * (y - deg) - MATHS::ARCMIN_PAR_DEG * min;
 
-    if (fabs(arrondi(sec, dec) - ARCSEC_PAR_MIN) < EPSDBL100) {
+    if (fabs(arrondi(sec, dec) - MATHS::ARCSEC_PAR_MIN) < MATHS::EPSDBL100) {
         sec = 0.;
         min++;
     }
 
-    if (min == static_cast<int>(ARCMIN_PAR_DEG + EPSDBL100)) {
+    if (min == static_cast<int>(MATHS::ARCMIN_PAR_DEG + MATHS::EPSDBL100)) {
         min = 0;
         deg++;
     }

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 fevrier 2023
+ * >    25 fevrier 2023
  *
  */
 
@@ -125,8 +125,8 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
     QList<Satellite> sats;
 
     /* Initialisations */
-    double tlemin = -DATE_INFINIE;
-    double tlemax = DATE_INFINIE;
+    double tlemin = -DATE::DATE_INFINIE;
+    double tlemax = DATE::DATE_INFINIE;
     QMap<QString, ElementsOrbitaux> tabElem = _conditions.tabElem;
 
     tps.start();
@@ -179,8 +179,8 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
     double rayonVecteur;
     double altitude;
     Satellite sat;
-    std::array<double, DEGRE_INTERPOLATION> jjm;
-    std::array<double, DEGRE_INTERPOLATION> evt;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> evt;
     ResultatPrevisions res;
     QList<ResultatPrevisions> result;
     QList<QList<ResultatPrevisions> > resultatSat;
@@ -355,17 +355,17 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
 
                     // Calcul de la PSO
                     sat.CalculElementsOsculateurs(res.date);
-                    res.pso = modulo(sat.elementsOsculateurs().anomalieVraie() + sat.elementsOsculateurs().argumentPerigee(), DEUX_PI);
+                    res.pso = modulo(sat.elementsOsculateurs().anomalieVraie() + sat.elementsOsculateurs().argumentPerigee(), MATHS::DEUX_PI);
 
                     // Longitude, latitude
                     res.longitude = sat.longitude();
                     res.latitude = sat.latitude();
 
                     rayonVecteur = minmax.second;
-                    altitude = minmax.second - RAYON_TERRESTRE;
+                    altitude = minmax.second - TERRE::RAYON_TERRESTRE;
                     if (_conditions.unite == QObject::tr("nmi", "nautical mile")) {
-                        rayonVecteur *= MILE_PAR_KM;
-                        altitude *= MILE_PAR_KM;
+                        rayonVecteur *= TERRE::MILE_PAR_KM;
+                        altitude *= TERRE::MILE_PAR_KM;
                     }
 
                     const QString typeEvt = (evt.at(2) >= minmax.second) ? QObject::tr("Périgée : %1%2 (%3%2)") : QObject::tr("Apogée : %1%2 (%3%2)");
@@ -403,7 +403,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                 n = i;
                 for(int p=1; p<4; p+=2) {
 
-                    const double noeud = 90. * p * DEG2RAD;
+                    const double noeud = 90. * p * MATHS::DEG2RAD;
                     if (((eph1.pso - noeud) * (eph3.pso - noeud)) < 0. && (eph1.pso < noeud) && !passPso) {
 
                         // Il y a un passage aux quadrangles : calcul par interpolation de la date
@@ -414,7 +414,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                         evt[2] = eph3.pso;
 
                         res = CalculEvt(jjm, evt, noeud, sat);
-                        res.typeEvenement = QObject::tr("Passage à PSO = %1°", "In orbit position").arg(noeud * RAD2DEG);
+                        res.typeEvenement = QObject::tr("Passage à PSO = %1°", "In orbit position").arg(noeud * MATHS::RAD2DEG);
 
                         result.append(res);
                         n++;
@@ -477,7 +477,7 @@ QMap<QString, QList<EphemeridesEvenements> > EvenementsOrbitaux::CalculEphemerid
     QMap<QString, QList<EphemeridesEvenements> > tabEphem;
 
     /* Initialisations */
-    const double pas = NB_JOUR_PAR_MIN;
+    const double pas = DATE::NB_JOUR_PAR_MIN;
 
     /* Corps de la methode */
     QListIterator it(satellites);
@@ -528,7 +528,7 @@ QMap<QString, QList<EphemeridesEvenements> > EvenementsOrbitaux::CalculEphemerid
             eph.transition = sat.position() * soleil.position();
 
             // Pour les passages aux quadrangles
-            eph.pso = modulo(sat.elementsOsculateurs().anomalieVraie() + sat.elementsOsculateurs().argumentPerigee(), DEUX_PI);
+            eph.pso = modulo(sat.elementsOsculateurs().anomalieVraie() + sat.elementsOsculateurs().argumentPerigee(), MATHS::DEUX_PI);
 
             listeEphem.append(eph);
 
@@ -545,7 +545,7 @@ QMap<QString, QList<EphemeridesEvenements> > EvenementsOrbitaux::CalculEphemerid
 /*
  * Calcul des elements de l'evenement orbital
  */
-ResultatPrevisions EvenementsOrbitaux::CalculEvt(const std::array<double, DEGRE_INTERPOLATION> &jjm, const std::array<double, DEGRE_INTERPOLATION> &evt,
+ResultatPrevisions EvenementsOrbitaux::CalculEvt(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, const std::array<double, MATHS::DEGRE_INTERPOLATION> &evt,
                                                  const double yval, Satellite &sat)
 {
     /* Declarations des variables locales */
@@ -558,7 +558,7 @@ ResultatPrevisions EvenementsOrbitaux::CalculEvt(const std::array<double, DEGRE_
     res.nom = sat.elementsOrbitaux().nom;
 
     // Calcul de la date par interpolation
-    res.date = Date(Maths::CalculValeurXInterpolation3(jjm, evt, yval, EPS_DATES), 0.);
+    res.date = Date(Maths::CalculValeurXInterpolation3(jjm, evt, yval, DATE::EPS_DATES), 0.);
 
     // Calcul de la position du satellite
     sat.CalculPosVit(res.date);
@@ -566,7 +566,7 @@ ResultatPrevisions EvenementsOrbitaux::CalculEvt(const std::array<double, DEGRE_
 
     // Calcul de la PSO
     sat.CalculElementsOsculateurs(res.date);
-    res.pso = modulo(sat.elementsOsculateurs().anomalieVraie() + sat.elementsOsculateurs().argumentPerigee(), DEUX_PI);
+    res.pso = modulo(sat.elementsOsculateurs().anomalieVraie() + sat.elementsOsculateurs().argumentPerigee(), MATHS::DEUX_PI);
 
     // Longitude, latitude
     res.longitude = sat.longitude();

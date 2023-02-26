@@ -36,7 +36,7 @@
  * >    25 octobre 2015
  *
  * Date de revision
- * >    30 avril 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -48,8 +48,6 @@
 #include "elementsorbitaux.h"
 #include "sgp4const.h"
 
-
-struct SGP4Private;
 
 class SGP4
 {
@@ -109,7 +107,7 @@ private:
     ElementsOrbitaux _elements;
 
     // Variables du modele SGP4
-    SGP4Private *d_data;
+    SGP4Data _data {};
 
     bool _init;
     Vecteur3D _position;

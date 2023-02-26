@@ -82,9 +82,9 @@ void TransitsTest::testAll()
     conditions.observateur = Observateur("Paris", -2.34864, 48.85339, 30.);
     conditions.unite = "km";
     conditions.eclipse = false;
-    conditions.seuilConjonction = 20. * DEG2RAD;
-    conditions.hauteur = 5. * DEG2RAD;
-    conditions.crepuscule = PI_SUR_DEUX;
+    conditions.seuilConjonction = 20. * MATHS::DEG2RAD;
+    conditions.hauteur = 5. * MATHS::DEG2RAD;
+    conditions.crepuscule = MATHS::PI_SUR_DEUX;
     conditions.extinction = false;
     conditions.refraction = true;
     conditions.effetEclipsePartielle = true;

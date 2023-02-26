@@ -85,8 +85,8 @@ void FichierObs::Ecriture(const QString &ficObsXml)
             cfg.writeStartElement("Observateur");
             cfg.writeTextElement("Nom", obs.nomlieu());
 
-            cfg.writeTextElement("Longitude", QString::number(obs.longitude() * RAD2DEG, 'f', 9));
-            cfg.writeTextElement("Latitude", QString::number(obs.latitude() * RAD2DEG, 'f', 9));
+            cfg.writeTextElement("Longitude", QString::number(obs.longitude() * MATHS::RAD2DEG, 'f', 9));
+            cfg.writeTextElement("Latitude", QString::number(obs.latitude() * MATHS::RAD2DEG, 'f', 9));
             cfg.writeTextElement("Altitude", QString::number(obs.altitude() * 1000.));
             cfg.writeEndElement();
         }

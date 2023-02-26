@@ -61,7 +61,7 @@ public:
      * @brief GPFormat Constructeur a partir des elements orbitaux
      * @param elem elements orbitaux
      */
-    GPFormat(const ElementsOrbitaux &elem);
+    explicit GPFormat(const ElementsOrbitaux &elem);
 
 
     /*

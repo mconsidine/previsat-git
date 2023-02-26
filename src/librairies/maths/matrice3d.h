@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 septembre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -67,11 +67,7 @@ public:
      * @brief Matrice3D Definition a partir d'une matrice
      * @param matrice matrice
      */
-    Matrice3D(const Matrice3D &matrice) :
-        _vecteur1(matrice._vecteur1),
-        _vecteur2(matrice._vecteur2),
-        _vecteur3(matrice._vecteur3) {
-    }
+    Matrice3D(const Matrice3D &matrice) = default;
 
     /**
      * @brief Matrice3D Definition d'une matrice de rotation
@@ -107,7 +103,7 @@ public:
      * @param matrice
      * @return matrice affectee
      */
-    Matrice3D &operator = (const Matrice3D &matrice);
+    Matrice3D &operator = (const Matrice3D &matrice) = default;
 
     /**
      * @brief operator * produit d'une matrice 3x3 par un vecteur 3D

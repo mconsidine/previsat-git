@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 novembre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -50,7 +50,7 @@
 #include "librairies/observateur/observateur.h"
 
 
-static const double RE2 = RAYON_TERRESTRE * E2;
+static constexpr double RE2 = TERRE::RAYON_TERRESTRE * TERRE::E2;
 
 struct ConstElem {
     double ad1;
@@ -129,7 +129,7 @@ double Corps::CalculAltitude(const Vecteur3D &pos) const
     /* Corps de la methode */
 
     /* Retour */
-    return ((_r0 < 1.e-3) ? fabs(pos.z()) - RAYON_TERRESTRE * (1. - APLA) : _r0 / cos(_latitude) - RAYON_TERRESTRE * _ct);
+    return ((_r0 < 1.e-3) ? fabs(pos.z()) - TERRE::RAYON_TERRESTRE * (1. - TERRE::APLA) : _r0 / cos(_latitude) - TERRE::RAYON_TERRESTRE * _ct);
 }
 
 /*
@@ -153,7 +153,7 @@ void Corps::CalculCoordEquat(const Observateur &observateur, const bool determin
     // Ascension droite
     _ascensionDroite = atan2(vec2.y(), vec2.x());
     if (_ascensionDroite < 0.) {
-        _ascensionDroite += DEUX_PI;
+        _ascensionDroite += MATHS::DEUX_PI;
     }
 
     // Determination de la constellation
@@ -226,7 +226,7 @@ void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc, c
         // Azimut
         _azimut = atan2(vec.y(), -vec.x());
         if (_azimut < 0.) {
-            _azimut += DEUX_PI;
+            _azimut += MATHS::DEUX_PI;
         }
 
         const Vecteur3D distp = _vitesse - observateur.vitesse();
@@ -248,7 +248,7 @@ void Corps::CalculCoordHoriz2(const Observateur &observateur)
 
     /* Initialisations */
     _visible = false;
-    _hauteur = -PI;
+    _hauteur = -MATHS::PI;
     const double cd = cos(_declinaison);
     const Vecteur3D _vec1 = Vecteur3D(cos(_ascensionDroite) * cd, sin(_ascensionDroite) * cd, sin(_declinaison));
     const Vecteur3D vec2 = observateur.rotHz() * _vec1;
@@ -257,7 +257,7 @@ void Corps::CalculCoordHoriz2(const Observateur &observateur)
     // Hauteur
     const double ht = asin(vec2.z());
 
-    if (ht > -DEG2RAD) {
+    if (ht > -MATHS::DEG2RAD) {
 
         // Prise en compte de la refraction atmospherique
         const double refraction = CalculRefractionAtmospherique(ht);
@@ -268,7 +268,7 @@ void Corps::CalculCoordHoriz2(const Observateur &observateur)
             // Azimut
             _azimut = atan2(vec2.y(), -vec2.x());
             if (_azimut < 0.) {
-                _azimut += DEUX_PI;
+                _azimut += MATHS::DEUX_PI;
             }
             _visible = true;
 
@@ -293,9 +293,9 @@ void Corps::CalculCoordTerrestres(const Observateur &observateur)
 
     /* Corps de la methode */
     // Longitude
-    _longitude = modulo(observateur.tempsSideralGreenwich() - atan2(_position.y(), _position.x()), DEUX_PI);
-    if (fabs(_longitude) > PI) {
-        _longitude -= sgn(_longitude) * DEUX_PI;
+    _longitude = modulo(observateur.tempsSideralGreenwich() - atan2(_position.y(), _position.x()), MATHS::DEUX_PI);
+    if (fabs(_longitude) > MATHS::PI) {
+        _longitude -= sgn(_longitude) * MATHS::DEUX_PI;
     }
 
     CalculLatitudeAltitude();
@@ -315,9 +315,9 @@ void Corps::CalculCoordTerrestres(const Date &date)
 
     /* Corps de la methode */
     // Longitude
-    _longitude = modulo(Observateur::CalculTempsSideralGreenwich(date) - atan2(_position.y(), _position.x()), DEUX_PI);
-    if (fabs(_longitude) > PI) {
-        _longitude -= sgn(_longitude) * DEUX_PI;
+    _longitude = modulo(Observateur::CalculTempsSideralGreenwich(date) - atan2(_position.y(), _position.x()), MATHS::DEUX_PI);
+    if (fabs(_longitude) > MATHS::PI) {
+        _longitude -= sgn(_longitude) * MATHS::DEUX_PI;
     }
 
     CalculLatitudeAltitude();
@@ -336,7 +336,7 @@ double Corps::CalculLatitude(const Vecteur3D &pos)
 
     /* Initialisations */
     _ct = 1.;
-    _latitude = PI;
+    _latitude = MATHS::PI;
 
     /* Corps de la methode */
     _r0 = sqrt(pos.x() * pos.x() + pos.y() * pos.y());
@@ -345,7 +345,7 @@ double Corps::CalculLatitude(const Vecteur3D &pos)
     do {
         lat = _latitude;
         const double sph = sin(lat);
-        _ct = 1. / sqrt(1. - E2 * sph * sph);
+        _ct = 1. / sqrt(1. - TERRE::E2 * sph * sph);
         _latitude = atan((pos.z() + RE2 * _ct * sph) / _r0);
 
     } while (fabs(_latitude - lat) > 1.e-7);
@@ -367,7 +367,7 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
     std::array<Date, 9> datesEvt;
     std::array<int, 9> listIdx;
 
-    datesEvt.fill(Date(DATE_INFINIE, 0.));
+    datesEvt.fill(Date(DATE::DATE_INFINIE, 0.));
     listIdx.fill(-1);
 
     int idx = 1;
@@ -400,7 +400,7 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
             }
         }
 
-        if ((az1 < PI) && (az2 > PI)) {
+        if ((az1 < MATHS::PI) && (az2 > MATHS::PI)) {
 
             // Passage au meridien
             listIdx[1] = idx;
@@ -410,8 +410,8 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
         if (calculCrepuscules) {
             for(int i=1; i<=3; i++) {
 
-                const double ht1a = ht1 + 6. * i * DEG2RAD;
-                const double ht2a = ht2 + 6. * i * DEG2RAD;
+                const double ht1a = ht1 + 6. * i * MATHS::DEG2RAD;
+                const double ht2a = ht2 + 6. * i * MATHS::DEG2RAD;
 
                 if ((ht1a * ht2a) < 0.) {
 
@@ -446,8 +446,8 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
     double dateEvt;
     double t_val;
     double yval;
-    std::array<double, DEGRE_INTERPOLATION> jjm;
-    std::array<double, DEGRE_INTERPOLATION> val;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> val;
 
     for(unsigned int i=0; i<taille; i++) {
 
@@ -480,7 +480,7 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
                 val[0] = eph0.azimut;
                 val[1] = eph1.azimut;
                 val[2] = eph2.azimut;
-                yval = PI;
+                yval = MATHS::PI;
 
             } else {
 
@@ -493,17 +493,17 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
                 // Crepuscules
                 if (calculCrepuscules) {
                     if ((i == 3) || (i == 6)) {
-                        yval = -6. * DEG2RAD;
+                        yval = -6. * MATHS::DEG2RAD;
                     } else if ((i == 4) || (i == 7)) {
-                        yval = -12. * DEG2RAD;
+                        yval = -12. * MATHS::DEG2RAD;
                     } else if ((i == 5) || (i == 8)) {
-                        yval = -18. * DEG2RAD;
+                        yval = -18. * MATHS::DEG2RAD;
                     }
                 }
             }
 
             iter = 0;
-            while ((fabs(t_val - dateEvt) > EPS_DATES) && (iter < ITERATIONS_MAX)) {
+            while ((fabs(t_val - dateEvt) > DATE::EPS_DATES) && (iter < MATHS::ITERATIONS_MAX)) {
 
                 t_val = dateEvt;
                 dateEvt = Maths::CalculValeurXInterpolation3(jjm, val, yval, 1.e-8);
@@ -511,10 +511,10 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
                 iter++;
             }
 
-            if (iter < ITERATIONS_MAX) {
+            if (iter < MATHS::ITERATIONS_MAX) {
 
                 // Date arrondie a la minute
-                const Date dateCalc = Date(floor(dateEvt * NB_MIN_PAR_JOUR + 0.5) * NB_JOUR_PAR_MIN, date.offsetUTC());
+                const Date dateCalc = Date(floor(dateEvt * DATE::NB_MIN_PAR_JOUR + 0.5) * DATE::NB_JOUR_PAR_MIN, date.offsetUTC());
                 if (date.jour() == dateCalc.jour()) {
                     datesEvt[i] = dateCalc;
                 }
@@ -522,17 +522,17 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
         }
     }
 
-    _dateLever = (fabs(datesEvt[0].jourJulienUTC() - DATE_INFINIE) < EPS_DATES) ?
+    _dateLever = (fabs(datesEvt[0].jourJulienUTC() - DATE::DATE_INFINIE) < DATE::EPS_DATES) ?
                 "-" : datesEvt[0].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
-    _dateMeridien = (fabs(datesEvt[1].jourJulienUTC() - DATE_INFINIE) < EPS_DATES) ?
+    _dateMeridien = (fabs(datesEvt[1].jourJulienUTC() - DATE::DATE_INFINIE) < DATE::EPS_DATES) ?
                 "-" : datesEvt[1].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
-    _dateCoucher = (fabs(datesEvt[2].jourJulienUTC() - DATE_INFINIE) < EPS_DATES) ?
+    _dateCoucher = (fabs(datesEvt[2].jourJulienUTC() - DATE::DATE_INFINIE) < DATE::EPS_DATES) ?
                 "-" : datesEvt[2].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
 
     if (calculCrepuscules) {
         for(int i=3; i<9; i++) {
             _datesCrepuscules[i-3] =
-                    (fabs(datesEvt[i].jourJulienUTC() - DATE_INFINIE) < EPS_DATES) ?
+                    (fabs(datesEvt[i].jourJulienUTC() - DATE::DATE_INFINIE) < DATE::EPS_DATES) ?
                         "-" : datesEvt[i].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
         }
     }
@@ -550,7 +550,7 @@ void Corps::CalculPosVitECEF(const Date &date, Vecteur3D &positionECEF, Vecteur3
 
     /* Initialisations */
     const double gmst = Observateur::CalculTempsSideralGreenwich(date);
-    const Vecteur3D omegaTerre(0., 0., OMEGA);
+    const Vecteur3D omegaTerre(0., 0., TERRE::OMEGA);
 
     /* Corps de la methode */
     positionECEF = _position.Rotation(AxeType::AXE_Z, gmst);
@@ -568,12 +568,12 @@ double Corps::CalculRefractionAtmospherique(const double ht) const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double htd = ht * RAD2DEG;
+    const double htd = ht * MATHS::RAD2DEG;
 
     /* Corps de la methode */
 
     /* Retour */
-    return (htd >= -3.) ? DEG2RAD * 1.02 / (ARCMIN_PAR_DEG * tan(DEG2RAD * (htd + 10.3 / (htd + 5.11)))) : 0.;
+    return (htd >= -3.) ? MATHS::DEG2RAD * 1.02 / (MATHS::ARCMIN_PAR_DEG * tan(MATHS::DEG2RAD * (htd + 10.3 / (htd + 5.11)))) : 0.;
 }
 
 /*
@@ -584,7 +584,7 @@ void Corps::CalculZoneVisibilite(const double beta)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double srad = beta + REFRACTION_HZ;
+    const double srad = beta + TERRE::REFRACTION_HZ;
     const double cla = cos(_latitude);
     const double sla = sin(_latitude);
     const double clo = cos(_longitude);
@@ -607,7 +607,7 @@ void Corps::CalculZoneVisibilite(const double beta)
         const double lo1 = atan2(y3, x3);
         const double la1 = asin(z2);
 
-        const QPointF pt(fmod(PI - lo1, DEUX_PI) * RAD2DEG, (PI_SUR_DEUX - la1) * RAD2DEG);
+        const QPointF pt(fmod(MATHS::PI - lo1, MATHS::DEUX_PI) * MATHS::RAD2DEG, (MATHS::PI_SUR_DEUX - la1) * MATHS::RAD2DEG);
         _zone[i] = pt;
     }
     _zone[360] = _zone[0];
@@ -629,7 +629,7 @@ void Corps::Initialisation(const QString &dirCommonData)
     /* Corps de la methode */
     // Tableaux des cosinus et des sinus de l'azimut
     for(unsigned int i=0; i<_caz.size(); i++) {
-        const double az = i * DEG2RAD;
+        const double az = i * MATHS::DEG2RAD;
         _caz[i] = cos(az);
         _saz[i] = sin(az);
     }
@@ -658,9 +658,9 @@ void Corps::Initialisation(const QString &dirCommonData)
                         const QStringList list = ligne.split(" ", Qt::SkipEmptyParts);
 
                         cst.nom = list.first();
-                        cst.ad1 = list.at(1).toDouble() * HEUR2RAD;
-                        cst.ad2 = list.at(2).toDouble() * HEUR2RAD;
-                        cst.dec = list.at(3).toDouble() * DEG2RAD;
+                        cst.ad1 = list.at(1).toDouble() * MATHS::HEUR2RAD;
+                        cst.ad2 = list.at(2).toDouble() * MATHS::HEUR2RAD;
+                        cst.dec = list.at(3).toDouble() * MATHS::DEG2RAD;
                         _tabConst.append(cst);
                     }
                 }
@@ -683,7 +683,7 @@ void Corps::Initialisation(const QString &dirCommonData)
                                     .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */
@@ -698,12 +698,12 @@ Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date) const
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double t = date.jourJulienTT() * NB_SIECJ_PAR_JOURS;
+    const double t = date.jourJulienTT() * DATE::NB_SIECJ_PAR_JOURS;
 
     /* Corps de la methode */
-    const double om = DEG2RAD * modulo(125.04 - 1934.136 * t, T360);
-    const double x = vecteur.x() - DEG2RAD * 0.00478 * sin(om);
-    const double obliquite = ARCSEC2RAD * (84381.448 + t * (-46.815 + t * (-0.00059 + 0.001813 * t)));
+    const double om = MATHS::DEG2RAD * modulo(125.04 - 1934.136 * t, MATHS::T360);
+    const double x = vecteur.x() - MATHS::DEG2RAD * 0.00478 * sin(om);
+    const double obliquite = MATHS::ARCSEC2RAD * (84381.448 + t * (-46.815 + t * (-0.00059 + 0.001813 * t)));
     const double cb = cos(vecteur.y());
     const double sb = sin(vecteur.y());
     const double ce = cos(obliquite);

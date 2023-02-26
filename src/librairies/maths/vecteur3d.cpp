@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 avril 2018
+ * >    26 fevrier 2023
  *
  */
 
@@ -58,24 +58,6 @@ Vecteur3D::Vecteur3D(const double valeurInit)
     _x = valeurInit;
     _y = valeurInit;
     _z = valeurInit;
-
-    /* Retour */
-    return;
-}
-
-/*
- * Definition a prtir d'un vecteur
- */
-Vecteur3D::Vecteur3D(const Vecteur3D &vecteur)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps du constructeur */
-    _x = vecteur._x;
-    _y = vecteur._y;
-    _z = vecteur._z;
 
     /* Retour */
     return;
@@ -116,7 +98,7 @@ double Vecteur3D::Angle(const Vecteur3D &vecteur) const
     const double norme2 = vecteur.Norme();
 
     /* Corps de la methode */
-    if ((norme1 > EPSDBL) && (norme2 > EPSDBL)) {
+    if ((norme1 > MATHS::EPSDBL) && (norme2 > MATHS::EPSDBL)) {
         const double cosang = (*this) * vecteur / (norme1 * norme2);
         res = (cosang < 1.) ? acos(cosang) : 0.;
     }
@@ -134,7 +116,7 @@ Vecteur3D Vecteur3D::Normalise() const
 
     /* Initialisations */
     const double norme = Norme();
-    const double val = (norme < EPSDBL) ? 1. : 1. / norme;
+    const double val = (norme < MATHS::EPSDBL) ? 1. : 1. / norme;
 
     /* Corps de la methode */
 
@@ -169,7 +151,7 @@ bool Vecteur3D::Nul() const
     /* Corps de la methode */
 
     /* Retour */
-    return ((fabs(_x) < EPSDBL) && (fabs(_y) < EPSDBL) && (fabs(_z) < EPSDBL));
+    return ((fabs(_x) < MATHS::EPSDBL) && (fabs(_y) < MATHS::EPSDBL) && (fabs(_z) < MATHS::EPSDBL));
 }
 
 /*
@@ -208,18 +190,6 @@ Vecteur3D Vecteur3D::Rotation(const AxeType &axe, const double angle) const
 
     /* Retour */
     return (vecteur);
-}
-
-
-/*
- * Affectation d'un vecteur 3D
- */
-Vecteur3D &Vecteur3D::operator = (const Vecteur3D &vecteur)
-{
-    _x = vecteur._x;
-    _y = vecteur._y;
-    _z = vecteur._z;
-    return (*this);
 }
 
 

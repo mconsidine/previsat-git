@@ -85,9 +85,9 @@ void FlashsTest::testAll()
     conditions.unite = "km";
     conditions.eclipse = true;
     conditions.magnitudeLimite = 2.;
-    conditions.hauteur = 10. * DEG2RAD;
-    conditions.crepuscule = -6. * DEG2RAD;
-    conditions.angleLimite = PI;
+    conditions.hauteur = 10. * MATHS::DEG2RAD;
+    conditions.crepuscule = -6. * MATHS::DEG2RAD;
+    conditions.angleLimite = MATHS::PI;
     conditions.extinction = true;
     conditions.refraction = true;
     conditions.effetEclipsePartielle = true;

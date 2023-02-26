@@ -55,17 +55,9 @@
 /*
  * Constructeur par defaut
  */
-Telechargement::Telechargement(const QString &dir)
+Telechargement::Telechargement(const QString &dir) :
+    _dirDwn(dir)
 {
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps du constructeur */
-    _dirDwn = dir;
-
-    /* Retour */
-    return;
 }
 
 
@@ -109,8 +101,12 @@ void Telechargement::TelechargementFichier(const QUrl &url, const bool alarme)
 
             fi.write(reponse->readAll());
             fi.close();
+#if (BUILD_TEST == false)
+            qInfo () << "Téléchargement du fichier" << fic << "OK";
+#endif
 
         } else {
+
             qWarning() << QString("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn);
 
             if (alarme) {

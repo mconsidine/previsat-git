@@ -133,7 +133,7 @@ void Antenne::InitAffichageFrequences()
 
         // Recuperation des frequences
         const QList<FrequenceRadio> listeFrequences = Configuration::instance()->mapFrequencesRadio()[norad];
-        QListIterator<FrequenceRadio> it(listeFrequences);
+        QListIterator it(listeFrequences);
         while (it.hasNext()) {
 
             const FrequenceRadio frequences = it.next();
@@ -256,14 +256,14 @@ void Antenne::show(const Date &date)
         const Date dateAOS = Date(elementsAOS.date, date.offsetUTC());
         const double delai = dateAOS.jourJulienUTC() - date.jourJulienUTC();
 
-        const Date delaiAOS(delai - 0.5 + EPS_DATES, 0.);
+        const Date delaiAOS(delai - 0.5 + DATE::EPS_DATES, 0.);
         QString cDelaiAOS;
 
         if (delai >= 1.) {
 
             cDelaiAOS = "";
 
-        } else if (delai >= (NB_JOUR_PAR_HEUR - EPS_DATES)) {
+        } else if (delai >= (DATE::NB_JOUR_PAR_HEUR - DATE::EPS_DATES)) {
 
             cDelaiAOS = delaiAOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).mid(11, 5)
                     .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
@@ -273,7 +273,7 @@ void Antenne::show(const Date &date)
                     .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
         }
 
-        const QString chaine = tr("Prochain %1 %2").arg(elementsAOS.typeAOS).arg(delai);
+        const QString chaine = tr("Prochain %1 %2").arg(elementsAOS.typeAOS).arg(cDelaiAOS);
         _ui->prochainAOS->setText(chaine);
         _ui->prochainAOS->setToolTip((chaine.contains(tr("AOS"))) ? tr("Acquisition du signal") : tr("Perte du signal"));
         _ui->prochainAOS->setVisible(true);
@@ -375,8 +375,8 @@ void Antenne::EnvoiUdp()
     const QHostAddress adresse(_ui->adresse->text());
     const quint16 port = static_cast<quint16> (_ui->port->value());
     const Satellite &sat = Configuration::instance()->listeSatellites().first();
-    const QString azimut = QString("%1").arg(sat.azimut() * RAD2DEG, 0, 'f', 1);
-    const QString hauteur = QString("%1").arg(sat.hauteur() * RAD2DEG, 0, 'f', 1);
+    const QString azimut = QString("%1").arg(sat.azimut() * MATHS::RAD2DEG, 0, 'f', 1);
+    const QString hauteur = QString("%1").arg(sat.hauteur() * MATHS::RAD2DEG, 0, 'f', 1);
 
     /* Corps de la methode */
     donnees = QByteArray(_structureMessageUdp.arg(sat.elementsOrbitaux().nom)
@@ -468,7 +468,7 @@ void Antenne::on_connexion_clicked()
             _chronometreUdp = nullptr;
         }
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */

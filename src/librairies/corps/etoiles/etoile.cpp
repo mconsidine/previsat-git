@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 mai 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -78,8 +78,8 @@ Etoile::Etoile(const QString &nomEtoile, const double ascDroite, const double de
     /* Initialisations */
 
     /* Corps du constructeur */
-    _ascensionDroite = ascDroite * HEUR2RAD;
-    _declinaison = decl * DEG2RAD;
+    _ascensionDroite = ascDroite * MATHS::HEUR2RAD;
+    _declinaison = decl * MATHS::DEG2RAD;
     _magnitude = mag;
 
     /* Retour */
@@ -151,13 +151,13 @@ void Etoile::Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles
                     const int ad1 = ligne.mid(0, 2).toInt();
                     const int ad2 = ligne.mid(2, 2).toInt();
                     const double ad3 = ligne.mid(4, 4).toDouble();
-                    ascDte = ad1 + ad2 * DEG_PAR_ARCMIN + ad3 * DEG_PAR_ARCSEC;
+                    ascDte = ad1 + ad2 * MATHS::DEG_PAR_ARCMIN + ad3 * MATHS::DEG_PAR_ARCSEC;
 
                     const int sgnd = (ligne.at(9) == '-') ? -1 : 1;
                     const int de1 = ligne.mid(10, 2).toInt();
                     const int de2 = ligne.mid(12, 2).toInt();
                     const int de3 = ligne.mid(14, 2).toInt();
-                    dec = sgnd * (de1 + de2 * DEG_PAR_ARCMIN + de3 * DEG_PAR_ARCSEC);
+                    dec = sgnd * (de1 + de2 * MATHS::DEG_PAR_ARCMIN + de3 * MATHS::DEG_PAR_ARCSEC);
 
                     mag = ligne.mid(31, 5).toDouble();
                     nomEtoile = (ligne.length() > 37) ? ligne.mid(37, ligne.length()) : "";
@@ -166,6 +166,8 @@ void Etoile::Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles
             }
         }
         fi.close();
+
+        qInfo() << "Lecture fichier etoiles.dat OK";
     }
 
     /* Retour */

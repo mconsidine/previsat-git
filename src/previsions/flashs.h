@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 octobre 2022
+ * >    25 fevrier 2023
  *
  */
 
@@ -127,7 +127,7 @@ private:
      * @param soleil Soleil
      * @param minmax tableau de la date et de l'angle minimum
      */
-    static QPair<double, double> CalculAngleMin(const std::array<double, DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil);
+    static QPair<double, double> CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil);
 
     /**
      * @brief CalculEphemSoleilObservateur Calcul des ephemerides du Soleil et de l'observateur
@@ -162,7 +162,7 @@ private:
      * @param soleil Soleil
      * @param limite date et valeur limite du flash
      */
-    static void LimiteFlash(const double mgn0, const std::array<double, DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil,
+    static void LimiteFlash(const double mgn0, const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil,
                             std::array<double, 4> &limite);
 
     /**
