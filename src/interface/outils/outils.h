@@ -152,6 +152,12 @@ private:
      */
     void InitListeDomaines();
 
+    /**
+     * @brief InitGestionnaireTLE Initialisation du gestionnaire de suppression de TLE
+     * @param listeFicTLE liste des fichiers TLE
+     */
+    void InitGestionnaireTLE(const QStringList &listeFicTLE);
+
 
 private slots:
 
@@ -209,6 +215,9 @@ private slots:
     void on_parcourirMaj2_clicked();
     void on_mettreAJourTLE_clicked();
     void on_compteRenduMajManuel_customContextMenuRequested(const QPoint &pos);
+
+    void on_listeTLE_itemClicked(QListWidgetItem *item);
+    void on_supprimerTLE_clicked();
 
 };
 

@@ -145,9 +145,14 @@ void Outils::Initialisation()
 
     const QDir di(Configuration::instance()->dirElem());
     const QStringList filtres(QStringList () << "*.txt" << "*.tle");
-    _ui->majMaintenant->setEnabled(!di.entryList(filtres, QDir::Files).isEmpty());
+    const QStringList listeFicTLE = di.entryList(filtres, QDir::Files);
+
+    InitGestionnaireTLE(listeFicTLE);
+
+    _ui->majMaintenant->setEnabled(!listeFicTLE.isEmpty());
     _ui->majMaintenant->setDefault(_ui->majMaintenant->isEnabled());
     _ui->majMaintenant->setToolTip((_ui->majMaintenant->isEnabled()) ? "" : tr("Aucun fichier TLE dans le répertoire d'éléments orbitaux"));
+    _ui->affichageMsgMAJ->setEnabled(_ui->majMaintenant->isEnabled());
     _ui->frameBarreProgressionTLE->setVisible(false);
     _ui->compteRenduMajAuto->setVisible(false);
     _ui->compteRenduMajManuel->setVisible(false);
@@ -310,6 +315,38 @@ void Outils::InitListeDomaines()
     _ui->serveur->blockSignals(etat);
     _ui->serveur->setCurrentIndex(-1);
     _ui->serveur->setCurrentIndex(settings.value("fichier/serveur").toInt());
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Initialisation du gestionnaire de suppression de TLE
+ */
+void Outils::InitGestionnaireTLE(const QStringList &listeFicTLE)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _ui->listeTLE->clear();
+    QListWidgetItem *elem;
+
+    /* Corps de la methode */
+    QStringListIterator it(listeFicTLE);
+    while (it.hasNext()) {
+
+        const QString nom = it.next();
+        const QString fic = QDir::toNativeSeparators(Configuration::instance()->dirElem() + QDir::separator() + nom);
+
+        if (TLE::VerifieFichier(fic) > 0) {
+
+            elem = new QListWidgetItem(nom, _ui->listeTLE);
+            elem->setData(Qt::CheckStateRole, Qt::Unchecked);
+            elem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
+        }
+    }
+
+    _ui->supprimerTLE->setEnabled(false);
 
     /* Retour */
     return;
@@ -876,6 +913,71 @@ void Outils::on_compteRenduMajManuel_customContextMenuRequested(const QPoint &po
     QMenu menu(this);
     menu.addAction(_copier);
     menu.exec(QCursor::pos());
+
+    /* Retour */
+    return;
+}
+
+void Outils::on_listeTLE_itemClicked(QListWidgetItem *item)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->listeTLE->hasFocus() && (_ui->listeTLE->currentRow() >= 0)) {
+
+        item->setData(Qt::CheckStateRole, (item->checkState() == Qt::Checked) ? Qt::Unchecked : Qt::Checked);
+    }
+
+    _ui->supprimerTLE->setEnabled(false);
+    for(int i=0; i<_ui->listeTLE->count(); i++) {
+        if (_ui->listeTLE->item(i)->checkState() == Qt::Checked) {
+            _ui->supprimerTLE->setEnabled(true);
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+void Outils::on_supprimerTLE_clicked()
+{
+    /* Declarations des variables locales */
+    QStringList listeFicTLE;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    for(int i=0; i<_ui->listeTLE->count(); i++) {
+        if (_ui->listeTLE->item(i)->checkState() == Qt::Checked) {
+            listeFicTLE.append(_ui->listeTLE->item(i)->text());
+        }
+    }
+
+    QMessageBox msgbox(QMessageBox::Question, tr("Avertissement"), tr("Voulez-vous vraiment supprimer les fichiers TLE sélectionnés ?"));
+    const QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
+    QPushButton * const non = msgbox.addButton(tr("Non"), QMessageBox::NoRole);
+    msgbox.setDefaultButton(non);
+    msgbox.exec();
+
+    if (msgbox.clickedButton() == oui) {
+
+        QFile fi;
+        QStringListIterator it(listeFicTLE);
+        while (it.hasNext()) {
+
+            const QString fic = it.next();
+            fi.setFileName(Configuration::instance()->dirElem() + QDir::separator() + fic);
+            fi.remove();
+        }
+
+        emit InitFicGP();
+
+        const QDir di(Configuration::instance()->dirElem());
+        const QStringList filtres(QStringList () << "*.txt" << "*.tle");
+        InitGestionnaireTLE(di.entryList(filtres, QDir::Files));
+    }
 
     /* Retour */
     return;

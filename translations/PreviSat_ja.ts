@@ -3990,106 +3990,116 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>TLEの更新</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="102"/>
+        <location filename="../src/interface/outils/outils.ui" line="68"/>
+        <source>Gestionnaire TLE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/outils/outils.ui" line="107"/>
         <source>Age maximal des éléments orbitaux (en jours) :</source>
         <translation type="unfinished">TLEの最大年齢 (日数) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="155"/>
+        <location filename="../src/interface/outils/outils.ui" line="160"/>
         <source>Liste des fichiers d&apos;éléments orbitaux :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="171"/>
+        <location filename="../src/interface/outils/outils.ui" line="176"/>
         <source>Valider</source>
         <translation>確定する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="187"/>
+        <location filename="../src/interface/outils/outils.ui" line="192"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="225"/>
-        <location filename="../src/interface/outils/outils.ui" line="384"/>
+        <location filename="../src/interface/outils/outils.ui" line="230"/>
+        <location filename="../src/interface/outils/outils.ui" line="389"/>
         <source>Domaine :</source>
         <translation>ドメイン :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="266"/>
+        <location filename="../src/interface/outils/outils.ui" line="271"/>
         <source>Nom du groupe :</source>
         <translation>グループ名 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="318"/>
+        <location filename="../src/interface/outils/outils.ui" line="323"/>
         <source>Fichiers d&apos;éléments orbitaux :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="334"/>
+        <location filename="../src/interface/outils/outils.ui" line="339"/>
         <source>Groupe d&apos;éléments orbitaux :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="356"/>
+        <location filename="../src/interface/outils/outils.ui" line="361"/>
         <source>Cocher un groupe pour activer sa mise à jour</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="407"/>
+        <location filename="../src/interface/outils/outils.ui" line="412"/>
         <source>Mettre à jour le groupe sélectionné</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="550"/>
+        <location filename="../src/interface/outils/outils.ui" line="555"/>
         <source>Mise à jour TLE auto</source>
         <translation>TLEの自動更新</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="666"/>
+        <location filename="../src/interface/outils/outils.ui" line="671"/>
         <source>Mettre à jour maintenant</source>
         <translation>今すぐ更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="695"/>
+        <location filename="../src/interface/outils/outils.ui" line="700"/>
         <source>Affichage des messages informatifs</source>
         <translation>情報メッセージを表示する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="700"/>
+        <location filename="../src/interface/outils/outils.ui" line="705"/>
         <source>Accepter ajout/suppression de TLE</source>
         <translation>TLEの追加・削除を受け入れる</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="705"/>
+        <location filename="../src/interface/outils/outils.ui" line="710"/>
         <source>Refuser ajout/suppression de TLE</source>
         <translation>TLEの追加・削除を断る</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="715"/>
+        <location filename="../src/interface/outils/outils.ui" line="720"/>
         <source>Mise à jour TLE manuelle</source>
         <translation>TLEの手動更新</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="745"/>
-        <location filename="../src/interface/outils/outils.ui" line="775"/>
+        <location filename="../src/interface/outils/outils.ui" line="750"/>
+        <location filename="../src/interface/outils/outils.ui" line="780"/>
         <source>Parcourir...</source>
         <translation>ブラウズ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="755"/>
+        <location filename="../src/interface/outils/outils.ui" line="760"/>
         <source>Fichier à mettre à jour :</source>
         <translation>更新するファイル :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="795"/>
+        <location filename="../src/interface/outils/outils.ui" line="800"/>
         <source>Fichier TLE à lire :</source>
         <translation>読み込むTLEファイル :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="811"/>
+        <location filename="../src/interface/outils/outils.ui" line="816"/>
         <source>Mettre à jour</source>
         <translation>更新する</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/outils/outils.ui" line="884"/>
+        <source>Liste de fichiers TLE :</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="140"/>
@@ -4102,135 +4112,148 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="150"/>
+        <location filename="../src/interface/outils/outils.cpp" line="154"/>
         <source>Aucun fichier TLE dans le répertoire d&apos;éléments orbitaux</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="201"/>
+        <location filename="../src/interface/outils/outils.cpp" line="206"/>
         <source>Copier dans le presse-papier</source>
         <translation>クリップボードにコピー</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="204"/>
+        <location filename="../src/interface/outils/outils.cpp" line="209"/>
         <source>Créer un groupe</source>
         <translation>グループを作成する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="208"/>
-        <location filename="../src/interface/outils/outils.cpp" line="216"/>
+        <location filename="../src/interface/outils/outils.ui" line="871"/>
+        <location filename="../src/interface/outils/outils.cpp" line="213"/>
+        <location filename="../src/interface/outils/outils.cpp" line="221"/>
         <source>Supprimer</source>
         <translation>削除する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="212"/>
+        <location filename="../src/interface/outils/outils.cpp" line="217"/>
         <source>Ajouter des fichiers</source>
         <translation>ファイルを追加する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="245"/>
+        <location filename="../src/interface/outils/outils.cpp" line="250"/>
         <source>Fichier %1 :</source>
         <translation>ファイル「%1」 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="250"/>
+        <location filename="../src/interface/outils/outils.cpp" line="255"/>
         <source>TLE du satellite %1 (%2) non réactualisé</source>
         <translation>衛星「%1」(%2)のTLEは既に最新です</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="260"/>
+        <location filename="../src/interface/outils/outils.cpp" line="265"/>
         <source>Nombre de TLE(s) supprimés : %1</source>
         <translation>削除されたTLE数 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="265"/>
+        <location filename="../src/interface/outils/outils.cpp" line="270"/>
         <source>Nombre de TLE(s) ajoutés : %1</source>
         <translation>追加されたTLE数 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="270"/>
+        <location filename="../src/interface/outils/outils.cpp" line="275"/>
         <source>%1 TLE(s) sur %2 mis à jour</source>
         <translation>%1つのTLEに%2つが更新されました</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="275"/>
+        <location filename="../src/interface/outils/outils.cpp" line="280"/>
         <source>Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))</source>
         <translation>すべてのTLEが更新されました (%1基の衛星が含まれているファイル)</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="280"/>
+        <location filename="../src/interface/outils/outils.cpp" line="285"/>
         <source>Aucun TLE mis à jour</source>
         <translation>更新されたTLEはありません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="351"/>
-        <location filename="../src/interface/outils/outils.cpp" line="381"/>
+        <location filename="../src/interface/outils/outils.cpp" line="388"/>
+        <location filename="../src/interface/outils/outils.cpp" line="418"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="351"/>
+        <location filename="../src/interface/outils/outils.cpp" line="388"/>
         <source>Voulez-vous vraiment supprimer ce fichier du groupe &lt;b&gt;%1&lt;/b&gt; ?</source>
         <translation>ファイルを&lt;b&gt;%1&lt;/b&gt;グループから本当に削除しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="352"/>
-        <location filename="../src/interface/outils/outils.cpp" line="382"/>
+        <location filename="../src/interface/outils/outils.cpp" line="389"/>
+        <location filename="../src/interface/outils/outils.cpp" line="419"/>
+        <location filename="../src/interface/outils/outils.cpp" line="959"/>
         <source>Oui</source>
         <translation>はい</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="353"/>
-        <location filename="../src/interface/outils/outils.cpp" line="383"/>
+        <location filename="../src/interface/outils/outils.cpp" line="390"/>
+        <location filename="../src/interface/outils/outils.cpp" line="420"/>
+        <location filename="../src/interface/outils/outils.cpp" line="960"/>
         <source>Non</source>
         <translation>いいえ</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="381"/>
+        <location filename="../src/interface/outils/outils.cpp" line="418"/>
         <source>Voulez-vous vraiment supprimer le groupe &lt;b&gt;%1&lt;/b&gt; ?</source>
         <translation>&lt;b&gt;%1&lt;/b&gt;グループを本当に削除しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="633"/>
+        <location filename="../src/interface/outils/outils.cpp" line="670"/>
         <source>Le nom du domaine n&apos;est pas spécifié</source>
         <translation>ドメイン名が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="639"/>
+        <location filename="../src/interface/outils/outils.cpp" line="676"/>
         <source>Le nom du groupe n&apos;est pas spécifié</source>
         <translation>グループ名が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="645"/>
+        <location filename="../src/interface/outils/outils.cpp" line="682"/>
         <source>La liste de fichiers est vide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="783"/>
-        <location filename="../src/interface/outils/outils.cpp" line="805"/>
+        <location filename="../src/interface/outils/outils.cpp" line="820"/>
+        <location filename="../src/interface/outils/outils.cpp" line="842"/>
         <source>Ouvrir fichier TLE</source>
         <translation>TLEファイルを開く</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="785"/>
-        <location filename="../src/interface/outils/outils.cpp" line="807"/>
+        <location filename="../src/interface/outils/outils.cpp" line="822"/>
+        <location filename="../src/interface/outils/outils.cpp" line="844"/>
         <source>Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)</source>
         <translation>TLEファイル (*.txt *.tle);;すべてのファイル (*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="832"/>
+        <location filename="../src/interface/outils/outils.cpp" line="869"/>
         <source>Le nom du fichier à mettre à jour n&apos;est pas spécifié</source>
         <translation>更新するファイル名が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="836"/>
+        <location filename="../src/interface/outils/outils.cpp" line="873"/>
         <source>Le nom du fichier à lire n&apos;est pas spécifié</source>
         <translation>読み取るファイルの名前が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="846"/>
+        <location filename="../src/interface/outils/outils.cpp" line="883"/>
         <source>Le fichier %1 n&apos;existe pas</source>
         <translation>ファイル「%1」が存在しません</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/outils/outils.cpp" line="958"/>
+        <source>Avertissement</source>
+        <translation type="unfinished">警告</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/outils/outils.cpp" line="958"/>
+        <source>Voulez-vous vraiment supprimer les fichiers TLE sélectionnés ?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4712,6 +4735,11 @@ le flux vidéo</source>
         <translation>ご注意 : Utipでペイパルのご寄付をすることは可能ですが、これには追加料金がかかります</translation>
     </message>
     <message>
+        <location filename="../src/interface/previsat.cpp" line="2574"/>
+        <source>Ouverture du fichier d&apos;éléments orbitaux %1 ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/interface/previsat.cpp" line="2269"/>
         <source>onglet_general</source>
         <comment>file name (without accent)</comment>
@@ -4745,7 +4773,12 @@ le flux vidéo</source>
         <translation>表示する情報がありません</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2685"/>
+        <location filename="../src/interface/previsat.cpp" line="2576"/>
+        <source>Fichier d&apos;éléments orbitaux de %1 satellites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/previsat.cpp" line="2733"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>

@@ -63,6 +63,11 @@
      <string>Mise à jour TLE</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>Gestionnaire TLE</string>
+    </property>
+   </item>
   </widget>
   <widget class="QStackedWidget" name="stackedWidget_outils">
    <property name="geometry">
@@ -74,7 +79,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="gestionnaireElementsOrbitaux">
     <widget class="QWidget" name="gridLayoutWidget_11">
@@ -837,6 +842,47 @@
        </property>
       </widget>
      </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="gestionnaireTLE">
+    <widget class="QListWidget" name="listeTLE">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>18</y>
+       <width>221</width>
+       <height>281</height>
+      </rect>
+     </property>
+     <property name="mouseTracking">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="supprimerTLE">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>20</y>
+       <width>141</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Supprimer</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_listeTLE">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>221</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Liste de fichiers TLE :</string>
+     </property>
     </widget>
    </widget>
   </widget>

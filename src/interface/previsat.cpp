@@ -2571,7 +2571,7 @@ void PreviSat::on_listeFichiersElem_currentIndexChanged(int index)
     Configuration::instance()->listeSatellites().clear();
     _ui->listeFichiersElem->setItemData(index, QColor(Qt::gray), Qt::BackgroundRole);
 
-    AfficherMessageStatut(tr("Ouverture du fichier TLE %1 ...").arg(fi.fileName()));
+    AfficherMessageStatut(tr("Ouverture du fichier d'éléments orbitaux %1 ...").arg(fi.fileName()));
     ChargementGP();
     AfficherMessageStatut(tr("Fichier d'éléments orbitaux de %1 satellites").arg(Configuration::instance()->mapElementsOrbitaux().size()), 5);
 
