@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    27 fevrier 2023
  *
  */
 
@@ -2556,6 +2556,55 @@ void PreviSat::on_actionApropos_triggered()
     return;
 }
 
+void PreviSat::on_listeFichiersElem_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QFileInfo fi(Configuration::instance()->nomfic());
+    const int idx = static_cast<int> (Configuration::instance()->listeFichiersElem().indexOf(fi.fileName()));
+    _ui->listeFichiersElem->setItemData(idx, QColor(Qt::white), Qt::BackgroundRole);
+
+    /* Corps de la methode */
+    Configuration::instance()->nomfic() = Configuration::instance()->dirElem() + QDir::separator() +
+            Configuration::instance()->listeFichiersElem().at(index);
+    Configuration::instance()->listeSatellites().clear();
+    _ui->listeFichiersElem->setItemData(index, QColor(Qt::gray), Qt::BackgroundRole);
+
+    AfficherMessageStatut(tr("Ouverture du fichier TLE %1 ...").arg(fi.fileName()));
+    ChargementGP();
+    AfficherMessageStatut(tr("Fichier d'éléments orbitaux de %1 satellites").arg(Configuration::instance()->mapElementsOrbitaux().size()), 5);
+
+    const QString noradDefaut = Configuration::instance()->noradDefaut();
+    QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
+    const QFileInfo ff(Configuration::instance()->nomfic());
+
+    if (!Configuration::instance()->mapElementsOrbitaux().isEmpty()) {
+
+        QStringListIterator it(Configuration::instance()->mapSatellitesFichierElem()[ff.fileName()]);
+        while (it.hasNext()) {
+
+            const QString norad = it.next();
+            const ElementsOrbitaux elem = Configuration::instance()->mapElementsOrbitaux()[norad];
+
+            if (norad == noradDefaut) {
+                satellites.insert(0, Satellite(elem));
+            } else {
+                satellites.append(Satellite(elem));
+            }
+        }
+    }
+
+    _onglets->ReinitFlags();
+    DeconnecterUdp();
+    Configuration::instance()->notifAOS() = NotificationSonore::ATTENTE_LOS;
+
+    GestionTempsReel();
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::on_filtreSatellites_textChanged(const QString &arg1)
 {
     for(int i=0; i<_ui->listeSatellites->count(); i++) {
@@ -2581,10 +2630,9 @@ void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
     if (_ui->listeSatellites->hasFocus() && (_ui->listeSatellites->currentRow() >= 0)) {
 
         const QString norad = item->data(Qt::UserRole).toString();
-        const Qt::CheckState check = static_cast<Qt::CheckState> (item->data(Qt::CheckStateRole).toInt());
         const ElementsOrbitaux elem = Configuration::instance()->mapElementsOrbitaux()[norad];
 
-        if (check == Qt::Checked) {
+        if (item->checkState() == Qt::Checked) {
 
             // Suppression d'un satellite dans la liste
             item->setData(Qt::CheckStateRole, Qt::Unchecked);

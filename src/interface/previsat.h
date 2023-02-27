@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 fevrier 2023
+ * >    27 fevrier 2023
  *
  */
 
@@ -393,6 +393,8 @@ private slots:
 
     void on_actionContact_triggered();
     void on_actionApropos_triggered();
+
+    void on_listeFichiersElem_currentIndexChanged(int index);
 
     // Filtre sur les satellites
     void on_filtreSatellites_textChanged(const QString &arg1);
