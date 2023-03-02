@@ -97,7 +97,7 @@ void InformationsTest::testSauveOngletInformations()
         const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + fic;
 
         if (i == 1) {
-            informations->show();
+            informations->show(sat);
             informations->SauveOngletInformations(ficRes);
         } else {
             recherche->on_noradDonneesSat_valueChanged(25544);
