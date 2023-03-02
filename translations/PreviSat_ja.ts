@@ -1272,116 +1272,106 @@ PreviSatは、完全無料です!</translation>
         <translation>天体からの最大離角 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="113"/>
-        <source>Age maximal des éléments orbitaux :</source>
-        <translation type="unfinished">TLEの最大年齢 :</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="160"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="101"/>
         <source>Calculs</source>
         <translation>計算</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="196"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="137"/>
         <source>Hauteur minimale du satellite :</source>
         <translation>最低衛星仰角 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="213"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="154"/>
         <source>0°</source>
         <translation>0°</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="218"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="159"/>
         <source>5°</source>
         <translation>5°</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="223"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="164"/>
         <source>10°</source>
         <translation>10°</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="228"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="169"/>
         <source>15°</source>
         <translation>15°</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="233"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="174"/>
         <source>20°</source>
         <translation>20°</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="238"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="179"/>
         <source>Autre...</source>
         <translation>その他...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="301"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="242"/>
         <source>Date initiale :</source>
         <translation>開始日 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="311"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="252"/>
         <source>Date finale :</source>
         <translation>終了日 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="330"/>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="352"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="271"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="293"/>
         <source>dd/MM/yyyy HH:mm:ss</source>
         <extracomment>Date format</extracomment>
         <translation>yyyy年MM月dd日 hh:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="371"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="312"/>
         <source>Effacer heures</source>
         <translation>時刻を消す</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="387"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="328"/>
         <source>Mettre à jour Éléments orbitaux de l&apos;ISS...</source>
         <translation type="unfinished">ISSのTLEを更新する...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="415"/>
-        <source>Age des éléments orbitaux :</source>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="538"/>
+        <source>Ages des éléments orbitaux : [</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="450"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="347"/>
         <source>Corps</source>
         <translation>天体</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="465"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="362"/>
         <source>Soleil</source>
         <translation>太陽</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="484"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="381"/>
         <source>Lune</source>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="516"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="413"/>
         <source>Lieu d&apos;observation :</source>
         <translation>観測地 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="551"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="448"/>
         <source>Paramétrage par défaut</source>
         <translation>デフォルト設定</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="603"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="500"/>
         <source>Filtre</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="299"/>
-        <source>jours</source>
-        <translation>日</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="336"/>
@@ -1389,60 +1379,60 @@ PreviSatは、完全無料です!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="373"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="372"/>
         <source>Aucun</source>
         <translation>無し</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="376"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="375"/>
         <source>Tous</source>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="471"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="469"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="471"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="469"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="527"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="525"/>
         <source>transits</source>
         <comment>file name (without accent)</comment>
         <translation>transits</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="537"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="535"/>
         <source>Calculs en cours...</source>
         <translation>進行中の計算...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="538"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="536"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="561"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="559"/>
         <source>Calculs terminés</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="564"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="562"/>
         <source>Aucun transit ISS n&apos;a été trouvé sur la période donnée</source>
         <translation type="unfinished">指定された期間にISSの通過が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="658"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="655"/>
         <source>Téléchargement du fichier d&apos;élements orbitaux de l&apos;ISS...</source>
         <translation type="unfinished">ISSのTLEファイルのダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="662"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="659"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
     </message>

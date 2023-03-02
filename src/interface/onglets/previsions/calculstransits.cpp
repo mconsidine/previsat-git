@@ -235,9 +235,8 @@ void CalculsTransits::CalculAgeElementsOrbitaux()
     /* Initialisations */
     QPalette pal = _paletteBouton;
     _ui->majElementsOrbitauxIss->setToolTip("");
+    double elemMin = -DATE::DATE_INFINIE;
     double elemMax = DATE::DATE_INFINIE;
-
-    const double ageElements = _ui->ageMaxElementsOrbitauxTransit->value();
 
     // Ecart heure locale - UTC
     const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialeTransit->dateTime());
@@ -265,41 +264,42 @@ void CalculsTransits::CalculAgeElementsOrbitaux()
         it.next();
 
         const ElementsOrbitaux elem = it.value();
-
         const double epok = elem.epoque.jourJulienUTC();
+
+        if (epok > elemMin) {
+            elemMin = epok;
+        }
+
         if (epok < elemMax) {
             elemMax = epok;
         }
     }
 
-    if (fabs(elemMax - DATE::DATE_INFINIE) < DATE::EPS_DATES) {
+    QBrush couleur;
+    const std::array<double, 2> age = { fabs(jj1 - elemMin), fabs(jj1 - elemMax) };
+    std::array<QPalette, 2> palette;
 
-        _ui->lbl_ageElementsOrbitauxTransit->setVisible(false);
-        _ui->ageElementsOrbitauxTransit->setVisible(false);
+    for(int i=0; i<2; i++) {
 
-    } else {
-
-        const double age = fabs(jj1 - elemMax);
-
-        QPalette palette;
-        QBrush couleur;
-        if (age <= 5.) {
+        if (age[i] <= 5.) {
             couleur.setColor(QColor("forestgreen"));
-        } else if (age <= 10.) {
+        } else if (age[i] <= 10.) {
             couleur.setColor(Qt::darkYellow);
-        } else if (age <= 15.) {
+        } else if (age[i] <= 15.) {
             couleur.setColor(QColor("orange"));
         } else {
             couleur.setColor(Qt::red);
         }
 
         couleur.setStyle(Qt::SolidPattern);
-        palette.setBrush(QPalette::WindowText, couleur);
-        _ui->ageElementsOrbitauxTransit->setPalette(palette);
-        _ui->ageElementsOrbitauxTransit->setText(QString("%1 %2").arg(age, 0, 'f', 2).arg(tr("jours")));
-        _ui->lbl_ageElementsOrbitauxTransit->setVisible(true);
-        _ui->ageElementsOrbitauxTransit->setVisible(true);
+        palette[i].setBrush(QPalette::WindowText, couleur);
     }
+
+    _ui->ageElementsOrbitauxTransit1->setPalette(palette[0]);
+    _ui->ageElementsOrbitauxTransit1->setText(QString("%1").arg(age[0], 0, 'f', 2));
+
+    _ui->ageElementsOrbitauxTransit2->setPalette(palette[1]);
+    _ui->ageElementsOrbitauxTransit2->setText(QString("%1").arg(age[1], 0, 'f', 2));
 
     // Lecture du fichier d'elements orbitaux de l'ISS
     const QString fichier = Configuration::instance()->dirElem() + QDir::separator() + "iss.gp";
@@ -329,7 +329,7 @@ void CalculsTransits::CalculAgeElementsOrbitaux()
             age2 = jj2 - dateDernierElem;
         }
 
-        if ((age1 > (ageElements + 0.05)) || (age2 > (ageElements + 0.05))) {
+        if ((age1 > (2.05)) || (age2 > (2.05))) {
 
             // Affichage du contour du bouton en rouge
             pal.setColor(QPalette::Button, QColor(Qt::red));
@@ -359,7 +359,6 @@ void CalculsTransits::Initialisation()
     _ui->valHauteurSatTransit->setVisible(false);
     _ui->hauteurSatTransit->setCurrentIndex(settings.value("previsions/hauteurSatTransit", 1).toInt());
     _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservationTransit", 0).toInt());
-    _ui->ageMaxElementsOrbitauxTransit->setValue(settings.value("previsions/ageMaxElementsOrbitauxTransit", 2.).toDouble());
     _ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
 
     QAction* effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
@@ -403,7 +402,6 @@ void CalculsTransits::closeEvent(QCloseEvent *evt)
     settings.setValue("previsions/hauteurSatTransit", _ui->hauteurSatTransit->currentIndex());
     settings.setValue("previsions/valHauteurSatTransit", _ui->valHauteurSatTransit->text().toInt());
     settings.setValue("previsions/lieuxObservationTransit", _ui->lieuxObservation->currentIndex());
-    settings.setValue("previsions/ageMaxElementsOrbitauxTransit", _ui->ageMaxElementsOrbitauxTransit->value());
     settings.setValue("previsions/elongationMaxCorps", _ui->elongationMaxCorps->value());
     settings.setValue("previsions/calcTransitLunaireJour", _ui->calcTransitLunaireJour->isChecked());
 }
@@ -455,7 +453,7 @@ void CalculsTransits::on_calculsTransit_clicked()
 
         // Hauteur minimale du satellite
         conditions.hauteur = MATHS::DEG2RAD * ((_ui->hauteurSatTransit->currentIndex() == 5) ?
-                                            abs(_ui->valHauteurSatTransit->text().toInt()) : 5 * _ui->hauteurSatTransit->currentIndex());
+                                                   abs(_ui->valHauteurSatTransit->text().toInt()) : 5 * _ui->hauteurSatTransit->currentIndex());
 
         // Elongation maximale
         conditions.seuilConjonction = MATHS::DEG2RAD * _ui->elongationMaxCorps->value();
@@ -601,7 +599,6 @@ void CalculsTransits::on_parametrageDefautTransit_clicked()
     _ui->hauteurSatTransit->setCurrentIndex(1);
     _ui->valHauteurSatTransit->setVisible(false);
     _ui->lieuxObservation->setCurrentIndex(0);
-    _ui->ageMaxElementsOrbitauxTransit->setValue(2.);
     _ui->elongationMaxCorps->setValue(5.);
     if (!_ui->calculsTransit->isEnabled()) {
         _ui->calculsTransit->setEnabled(true);

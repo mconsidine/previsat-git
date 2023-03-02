@@ -17,8 +17,8 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>132</y>
-     <width>281</width>
+     <y>156</y>
+     <width>261</width>
      <height>18</height>
     </rect>
    </property>
@@ -80,65 +80,6 @@
       </property>
       <property name="value">
        <double>5.000000000000000</double>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="formLayoutWidget_53">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>153</y>
-     <width>281</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <layout class="QFormLayout" name="formLayout_transit3">
-    <property name="labelAlignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-    </property>
-    <property name="horizontalSpacing">
-     <number>3</number>
-    </property>
-    <property name="verticalSpacing">
-     <number>0</number>
-    </property>
-    <item row="0" column="0">
-     <widget class="QCheckBox" name="lbl_ageMaxElementsOrbitauxTransit">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string>Age maximal des éléments orbitaux :</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QDoubleSpinBox" name="ageMaxElementsOrbitauxTransit">
-      <property name="maximumSize">
-       <size>
-        <width>41</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="font">
-       <font/>
-      </property>
-      <property name="decimals">
-       <number>1</number>
-      </property>
-      <property name="minimum">
-       <double>1.000000000000000</double>
-      </property>
-      <property name="maximum">
-       <double>7.000000000000000</double>
-      </property>
-      <property name="value">
-       <double>2.000000000000000</double>
       </property>
      </widget>
     </item>
@@ -387,50 +328,6 @@
     <string>Mettre à jour Éléments orbitaux de l'ISS...</string>
    </property>
   </widget>
-  <widget class="QWidget" name="formLayoutWidget_54">
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>156</y>
-     <width>215</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <layout class="QFormLayout" name="formLayout_transit4">
-    <property name="labelAlignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-    </property>
-    <property name="horizontalSpacing">
-     <number>3</number>
-    </property>
-    <property name="verticalSpacing">
-     <number>0</number>
-    </property>
-    <item row="0" column="0">
-     <widget class="QLabel" name="lbl_ageElementsOrbitauxTransit">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string>Age des éléments orbitaux :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLabel" name="ageElementsOrbitauxTransit">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string notr="true">-360.3 jours</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QGroupBox" name="groupBoxChoixCorps">
    <property name="geometry">
     <rect>
@@ -605,6 +502,70 @@
    <property name="clearButtonEnabled">
     <bool>true</bool>
    </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>132</y>
+     <width>278</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_ageElem">
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <item row="0" column="1">
+     <widget class="QLabel" name="ageElementsOrbitauxTransit1">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string notr="true">-360.3 </string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_ageElementsOrbitauxTransit">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="text">
+       <string>Ages des éléments orbitaux : [</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="ageElementsOrbitauxTransit2">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string notr="true">-360.3</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="lbl_jours">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string notr="true">] jours</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
