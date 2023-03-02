@@ -51,6 +51,8 @@
 #include "outils.h"
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
+#include "interface/onglets/donnees/informationssatellite.h"
+#include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/exceptions/previsatexception.h"
 #include "librairies/systeme/telechargement.h"
@@ -85,6 +87,7 @@ Outils::Outils(QWidget *parent) :
         _ajouterFichiers = nullptr;
         _supprimerFichier = nullptr;
         _copier = nullptr;
+        _informations = new InformationsSatellite(_ui->frameInformations);
 
         Initialisation();
 
@@ -105,6 +108,8 @@ Outils::~Outils()
     EFFACE_OBJET(_ajouterFichiers);
     EFFACE_OBJET(_supprimerFichier);
     EFFACE_OBJET(_copier);
+    EFFACE_OBJET(_informations);
+
     delete _ui;
 }
 
@@ -140,8 +145,11 @@ void Outils::Initialisation()
     _ui->creationGroupe->setToolTip(tr("Créer un groupe d'éléments orbitaux"));
     _ui->ajoutFichiersElem->setIcon(QIcon(":/resources/interface/ajout.png"));
     _ui->ajoutFichiersElem->setToolTip(tr("Ajouter des fichiers d'éléments orbitaux"));
-    _ui->groupe->setVisible(false);
+    _ui->stackedWidget_satellites->setVisible(false);
     _ui->frameBarreProgressionElem->setVisible(false);
+
+    setFixedHeight(360);
+    _ui->listeBoutonsOutils->setGeometry(_ui->listeBoutonsOutils->x(), 320, _ui->listeBoutonsOutils->width(), _ui->listeBoutonsOutils->height());
 
     const QDir di(Configuration::instance()->dirElem());
     const QStringList filtres(QStringList () << "*.txt" << "*.tle");
@@ -173,6 +181,10 @@ void Outils::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
         _ui->retranslateUi(this);
+
+        if (_informations != nullptr) {
+            _informations->changeEvent(evt);
+        }
     }
 }
 
@@ -467,6 +479,15 @@ void Outils::closeEvent(QCloseEvent *evt)
 void Outils::on_listeOutils_currentRowChanged(int currentRow)
 {
     _ui->stackedWidget_outils->setCurrentIndex(currentRow);
+    _ui->stackedWidget_satellites->setVisible(false);
+}
+
+void Outils::on_listeOutils_itemSelectionChanged()
+{
+    setFixedHeight(360);
+    _ui->listeFichiersElem->setCurrentRow(-1);
+    _ui->stackedWidget_satellites->setVisible(false);
+    _ui->listeBoutonsOutils->setGeometry(_ui->listeBoutonsOutils->x(), 320, _ui->listeBoutonsOutils->width(), _ui->listeBoutonsOutils->height());
 }
 
 void Outils::on_serveur_currentTextChanged(const QString &arg1)
@@ -508,7 +529,7 @@ void Outils::on_listeGroupeElem_currentRowChanged(int currentRow)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    _ui->groupe->setVisible(false);
+    _ui->stackedWidget_satellites->setVisible(false);
     _ui->listeFichiersElem->clear();
 
     /* Corps de la methode */
@@ -584,6 +605,7 @@ void Outils::on_creationGroupe_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
+    _ui->listeFichiersElem->setCurrentRow(-1);
     _ui->listeFichiers->clear();
     _ui->domaine->clear();
     _ui->domaine->setEnabled(true);
@@ -591,8 +613,12 @@ void Outils::on_creationGroupe_clicked()
 
     _ui->nomGroupe->clear();
     _ui->nomGroupe->setEnabled(true);
-    _ui->groupe->setVisible(true);
+    _ui->stackedWidget_satellites->setVisible(true);
+    _ui->stackedWidget_satellites->setCurrentWidget(_ui->groupe);
     _ui->valider->setDefault(true);
+
+    setFixedHeight(360);
+    _ui->listeBoutonsOutils->setGeometry(_ui->listeBoutonsOutils->x(), 320, _ui->listeBoutonsOutils->width(), _ui->listeBoutonsOutils->height());
 
     /* Retour */
     return;
@@ -605,7 +631,9 @@ void Outils::on_ajoutFichiersElem_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    _ui->groupe->setVisible(true);
+    _ui->listeFichiersElem->setCurrentRow(-1);
+    _ui->stackedWidget_satellites->setVisible(true);
+    _ui->stackedWidget_satellites->setCurrentWidget(_ui->groupe);
     _ui->domaine->setText(_ui->serveur->currentText());
     _ui->domaine->setEnabled(false);
     _ui->nomGroupe->setText(_ui->listeGroupeElem->currentItem()->text());
@@ -618,6 +646,9 @@ void Outils::on_ajoutFichiersElem_clicked()
     _ui->listeFichiers->moveCursor(QTextCursor::End);
     _ui->listeFichiers->setFocus();
     _ui->valider->setDefault(true);
+
+    setFixedHeight(360);
+    _ui->listeBoutonsOutils->setGeometry(_ui->listeBoutonsOutils->x(), 320, _ui->listeBoutonsOutils->width(), _ui->listeBoutonsOutils->height());
 
     /* Retour */
     return;
@@ -727,9 +758,81 @@ void Outils::on_annuler_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    _ui->groupe->setVisible(false);
+    _ui->stackedWidget_satellites->setVisible(false);
     _ui->domaine->setVisible(true);
     _ui->nomGroupe->setVisible(true);
+
+    /* Retour */
+    return;
+}
+
+void Outils::on_listeFichiersElem_currentRowChanged(int currentRow)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _ui->listeSatellites->clear();
+    _ui->stackedWidget_satellites->setVisible(false);
+
+    /* Corps de la methode */
+    if (currentRow >= 0) {
+
+        QListWidgetItem *item;
+        const QString fichier = Configuration::instance()->dirElem() + QDir::separator() + _ui->listeFichiersElem->currentItem()->text();
+
+        QFileInfo ff(fichier);
+        if (ff.exists()) {
+
+            _mapElem = GPFormat::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+
+            QMapIterator it(_mapElem);
+            while (it.hasNext()) {
+                it.next();
+
+                const ElementsOrbitaux elem = it.value();
+
+                item = new QListWidgetItem(elem.nom, _ui->listeSatellites);
+                item->setData(Qt::UserRole, it.key());
+            }
+
+            _ui->listeSatellites->sortItems();
+
+            _ui->stackedWidget_satellites->setVisible(true);
+            _ui->stackedWidget_satellites->setCurrentWidget(_ui->satellites);
+
+        } else {
+            setFixedHeight(360);
+            _ui->listeBoutonsOutils->setGeometry(_ui->listeBoutonsOutils->x(), 320, _ui->listeBoutonsOutils->width(), _ui->listeBoutonsOutils->height());
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+void Outils::on_listeFichiersElem_itemSelectionChanged()
+{
+   if (_ui->listeFichiersElem->selectedItems().isEmpty()) {
+       setFixedHeight(360);
+       _ui->listeBoutonsOutils->setGeometry(_ui->listeBoutonsOutils->x(), 320, _ui->listeBoutonsOutils->width(), _ui->listeBoutonsOutils->height());
+   }
+}
+
+void Outils::on_listeSatellites_currentRowChanged(int currentRow)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (currentRow >= 0) {
+
+        const QString norad = _ui->listeSatellites->currentItem()->data(Qt::UserRole).toString();
+        Satellite satellite(_mapElem[norad]);
+        _informations->show(satellite);
+        setFixedHeight(600);
+        _ui->listeBoutonsOutils->setGeometry(_ui->listeBoutonsOutils->x(), 560, _ui->listeBoutonsOutils->width(), _ui->listeBoutonsOutils->height());
+    }
 
     /* Retour */
     return;

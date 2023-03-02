@@ -48,6 +48,7 @@
 #include <QDialog>
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "librairies/corps/satellite/elementsorbitaux.h"
 
 
 namespace Ui {
@@ -56,6 +57,7 @@ class Outils;
 
 class QListWidgetItem;
 class QPlainTextEdit;
+class InformationsSatellite;
 
 class Outils : public QDialog
 {
@@ -131,6 +133,9 @@ private:
     QAction *_supprimerFichier;
     QAction *_copier;
 
+    QMap<QString, ElementsOrbitaux> _mapElem;
+    InformationsSatellite *_informations;
+
 
     /*
      * Methodes privees
@@ -197,6 +202,7 @@ private slots:
     void closeEvent(QCloseEvent *evt);
 
     void on_listeOutils_currentRowChanged(int currentRow);
+    void on_listeOutils_itemSelectionChanged();
     void on_serveur_currentTextChanged(const QString &arg1);
     void on_listeGroupeElem_currentRowChanged(int currentRow);
     void on_listeGroupeElem_itemClicked(QListWidgetItem *item);
@@ -207,6 +213,9 @@ private slots:
     void on_majGroupe_clicked();
     void on_valider_clicked();
     void on_annuler_clicked();
+    void on_listeFichiersElem_currentRowChanged(int currentRow);
+    void on_listeFichiersElem_itemSelectionChanged();
+    void on_listeSatellites_currentRowChanged(int currentRow);
 
     void on_majMaintenant_clicked();
     void on_listeBoutonsOutils_rejected();

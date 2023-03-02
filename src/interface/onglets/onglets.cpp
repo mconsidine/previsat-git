@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    2 mars 2023
  *
  */
 
@@ -271,7 +271,7 @@ void Onglets::show(const Date &date)
         // Affichage des informations sur le satellite
         if (_info) {
 
-            _informationsSatellite->show();
+            _informationsSatellite->show(Configuration::instance()->listeSatellites().first());
             _rechercheSatellite->on_noradDonneesSat_valueChanged(Configuration::instance()->noradDefaut().toInt());
             _informationsISS->show();
             _antenne->InitAffichageFrequences();

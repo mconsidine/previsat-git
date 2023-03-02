@@ -54,6 +54,8 @@ namespace Ui {
 class InformationsSatellite;
 }
 
+class Satellite;
+
 class InformationsSatellite : public QFrame
 {
     Q_OBJECT
@@ -87,7 +89,7 @@ public:
     /*
      * Methodes publiques
      */
-    void show();
+    void show(const Satellite &satellite);
 
 
 public slots:
