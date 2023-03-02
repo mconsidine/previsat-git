@@ -40,7 +40,7 @@
 #include <QSettings>
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
-#include "configuration/configuration.h"
+#include "librairies/corps/satellite/satellite.h"
 #include "informationssatellite.h"
 #include "ui_informationssatellite.h"
 #include "librairies/exceptions/previsatexception.h"
@@ -91,14 +91,13 @@ InformationsSatellite::~InformationsSatellite()
 /*
  * Methodes publiques
  */
-void InformationsSatellite::show()
+void InformationsSatellite::show(const Satellite &satellite)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
     const QString fmt1 = "%1";
     const QString fmt2 = "%1°";
-    const Satellite satellite = Configuration::instance()->listeSatellites().first();
     const ElementsOrbitaux elem = satellite.elementsOrbitaux();
     const Donnees donnee = elem.donnees;
 
@@ -112,7 +111,7 @@ void InformationsSatellite::show()
     // Designation COSPAR
     _ui->cospar->setText(elem.cospar);
 
-    // Epoque du TLE
+    // Epoque des elements orbitaux
     _ui->epoque->setText(elem.epoque.ToShortDate(DateFormat::FORMAT_COURT, ( settings.value("affichage/systemeHoraire").toBool()) ?
                                                      DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -166,9 +165,12 @@ void InformationsSatellite::show()
     if (donnee.magnitudeStandard() < CORPS::MAGNITUDE_INDEFINIE) {
 
         QString text;
-        const double magMax = donnee.magnitudeStandard() - 15.75
-                + 5. * log10(1.45 * (satellite.elementsOsculateurs().demiGrandAxe() * (1. - satellite.elementsOsculateurs().excentricite())
-                                     - TERRE::RAYON_TERRESTRE));
+        Satellite sat(satellite.elementsOrbitaux());
+        sat.CalculPosVit(sat.elementsOrbitaux().epoque);
+        sat.CalculElementsOsculateurs(sat.elementsOrbitaux().epoque);
+        const ElementsOsculateurs elements = sat.elementsOsculateurs();
+        const double magMax = donnee.magnitudeStandard() - 15.75 + 5. * log10(1.45 * (elements.demiGrandAxe() * (1. - elements.excentricite())
+                                                                                      - TERRE::RAYON_TERRESTRE));
         _ui->magnitudeStdMax->setText(text.asprintf("%+.1f%c/%+.1f", donnee.magnitudeStandard(), donnee.methMagnitude(), magMax));
 
     } else {
