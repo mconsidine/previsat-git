@@ -30,7 +30,7 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    2 mars 2023
  *
  */
 
@@ -68,20 +68,14 @@ void ConditionEclipse::CalculSatelliteEclipse(const Vecteur3D &position, const S
         _eclipseLune = CalculEclipse(position, lune->position(), CorpsOccultant::LUNE, false);
     }
 
-    if ((_eclipseSoleil.type != TypeEclipse::NON_ECLIPSE) && (_eclipseLune.type != TypeEclipse::NON_ECLIPSE)) {
-
-        if (_eclipseSoleil.luminosite < _eclipseLune.luminosite) {
-            _eclipseLune.type = TypeEclipse::NON_ECLIPSE;
-            _eclipseLune.luminosite = 1.;
-        } else {
-            _eclipseSoleil.type = TypeEclipse::NON_ECLIPSE;
-            _eclipseSoleil.luminosite = 1.;
-        }
-    }
-
     _eclipseTotale = ((_eclipseSoleil.type == TypeEclipse::ECLIPSE_TOTALE) || (_eclipseLune.type == TypeEclipse::ECLIPSE_TOTALE));
-    _eclipsePartielle = ((_eclipseSoleil.type == TypeEclipse::ECLIPSE_PARTIELLE) || (_eclipseLune.type == TypeEclipse::ECLIPSE_PARTIELLE));
-    _eclipseAnnulaire = ((_eclipseSoleil.type == TypeEclipse::ECLIPSE_ANNULAIRE) || (_eclipseLune.type == TypeEclipse::ECLIPSE_ANNULAIRE));
+
+    _eclipsePartielle = false;
+    _eclipseAnnulaire = false;
+    if (!_eclipseTotale) {
+        _eclipsePartielle = ((_eclipseSoleil.type == TypeEclipse::ECLIPSE_PARTIELLE) || (_eclipseLune.type == TypeEclipse::ECLIPSE_PARTIELLE));
+        _eclipseAnnulaire = ((_eclipseSoleil.type == TypeEclipse::ECLIPSE_ANNULAIRE) || (_eclipseLune.type == TypeEclipse::ECLIPSE_ANNULAIRE));
+    }
 
     /* Retour */
     return;
