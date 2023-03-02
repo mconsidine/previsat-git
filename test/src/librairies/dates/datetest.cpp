@@ -117,12 +117,12 @@ void DateTest::testToShortDate()
 {
     qInfo(Q_FUNC_INFO);
 
-    const Date date(2006, 1, 15, 21, 24, 37.5345, 1. / 24.);
-    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H), "15/01/2006 22:24:38 ");
-    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_12H), "15/01/2006 10:24:38p");
-    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_LONG, DateSysteme::SYSTEME_24H), "15/01/2006 22:24:37.5 ");
-    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_MILLISEC, DateSysteme::SYSTEME_24H), "15/01/2006 22:24:37.535 ");
-    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_MILLISEC, DateSysteme::SYSTEME_12H), "15/01/2006 10:24:37.535p");
+    const Date date(2006, 1, 15, 23, 24, 37.5345, 1. / 24.);
+    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H), "16/01/2006 00:24:38 ");
+    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_12H), "16/01/2006 12:24:38a");
+    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_LONG, DateSysteme::SYSTEME_24H), "16/01/2006 00:24:37.5 ");
+    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_MILLISEC, DateSysteme::SYSTEME_24H), "16/01/2006 00:24:37.535 ");
+    QCOMPARE(date.ToShortDate(DateFormat::FORMAT_MILLISEC, DateSysteme::SYSTEME_12H), "16/01/2006 12:24:37.535a");
 }
 
 void DateTest::testToShortDateAMJ()

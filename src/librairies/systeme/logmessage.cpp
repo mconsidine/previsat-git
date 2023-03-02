@@ -76,6 +76,11 @@ LogMessage::LogMessage(const QString &baseNomFichier, const unsigned int nbMaxFi
     /* Declarations des variables locales */
 
     /* Initialisations */
+
+#if (BUILD_TEST == true)
+    Q_UNUSED(nbMaxFic)
+    const QString dateFichierLog = "";
+#else
     const QFileInfo ff(baseNomFichier);
     const QDir di(ff.absoluteDir());
     const QStringList filtre(QStringList () << ff.fileName() + "*.log");
@@ -88,9 +93,6 @@ LogMessage::LogMessage(const QString &baseNomFichier, const unsigned int nbMaxFi
         listeFicLog.removeFirst();
     }
 
-#if (BUILD_TEST == true)
-    const QString dateFichierLog = "";
-#else
     const QString dateFichierLog = QDateTime::currentDateTimeUtc().toString("_yyyy-MM-dd_hh-mm-ss-zzz");
 #endif
 
