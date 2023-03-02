@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >     25 fevrier 2023
+ * >     2 mars 2023
  *
  */
 
@@ -894,6 +894,7 @@ void General::Initialisation()
     _indexLuneSoleil = settings.value("affichage/indexInformations", 0).toUInt();
 
     _ui->stackedWidget_soleilLune->setCurrentIndex(_indexLuneSoleil);
+    _ui->lbl_crepusculeCivil->setContentsMargins(0, 3, 0, 0);
 
     _ui->soleilLunePrec->setToolTip(
                 QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + _ui->stackedWidget_soleilLune->count() - 1)

@@ -324,7 +324,7 @@
     <enum>QFrame::StyledPanel</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="coordonneesSoleil">
     <widget class="QLabel" name="lbl_coordonneesSoleil">
@@ -1042,7 +1042,7 @@
        <x>2</x>
        <y>72</y>
        <width>174</width>
-       <height>52</height>
+       <height>103</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout_aubes">
@@ -1143,6 +1143,93 @@
       </item>
       <item row="2" column="1">
        <widget class="QLabel" name="aubeCivile">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">06:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lbl_crepusculeCivil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Crépuscule civil :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLabel" name="crepusculeCivil">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">06:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="lbl_crepusculeNautique">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Crépuscule nautique :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="crepusculeNautique">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">06:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="lbl_crepusculeAstro">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Crépuscule astronomique :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QLabel" name="crepusculeAstro">
         <property name="font">
          <font/>
         </property>
@@ -1286,117 +1373,6 @@
         </property>
         <property name="text">
          <string notr="true">18:00</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QWidget" name="formLayoutWidget_14">
-     <property name="geometry">
-      <rect>
-       <x>2</x>
-       <y>126</y>
-       <width>174</width>
-       <height>52</height>
-      </rect>
-     </property>
-     <layout class="QFormLayout" name="formLayout_crepuscules">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetFixedSize</enum>
-      </property>
-      <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-      <property name="horizontalSpacing">
-       <number>3</number>
-      </property>
-      <property name="verticalSpacing">
-       <number>1</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="lbl_crepusculeCivil">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Crépuscule civil :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="lbl_crepusculeNautique">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Crépuscule nautique :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="lbl_crepusculeAstro">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Crépuscule astronomique :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="crepusculeCivil">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string notr="true">06:00</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="crepusculeNautique">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string notr="true">06:00</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="crepusculeAstro">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string notr="true">06:00</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1616,7 +1592,7 @@
    <property name="geometry">
     <rect>
      <x>720</x>
-     <y>30</y>
+     <y>31</y>
      <width>16</width>
      <height>22</height>
     </rect>
@@ -1640,7 +1616,7 @@
    <property name="geometry">
     <rect>
      <x>736</x>
-     <y>30</y>
+     <y>31</y>
      <width>16</width>
      <height>22</height>
     </rect>
