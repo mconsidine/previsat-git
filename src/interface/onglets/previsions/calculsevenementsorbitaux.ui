@@ -47,7 +47,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>80</y>
+     <y>70</y>
      <width>401</width>
      <height>81</height>
     </rect>
@@ -279,7 +279,7 @@
     <rect>
      <x>20</x>
      <y>185</y>
-     <width>151</width>
+     <width>161</width>
      <height>23</height>
     </rect>
    </property>
@@ -310,6 +310,83 @@
    </property>
    <property name="clearButtonEnabled">
     <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>160</y>
+     <width>278</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_ageElem">
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <item row="0" column="1">
+     <widget class="QLabel" name="ageElementsOrbitaux1">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string notr="true">-360.3 </string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_ageElementsOrbitaux">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="text">
+       <string>Ages des éléments orbitaux : [</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="ageElementsOrbitaux2">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string notr="true">-360.3</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="lbl_jours">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>] jours</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="majElementsOrbitaux">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>185</y>
+     <width>261</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Mettre à jour les éléments orbitaux...</string>
    </property>
   </widget>
  </widget>

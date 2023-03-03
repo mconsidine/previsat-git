@@ -130,6 +130,7 @@ public slots:
 signals:
 
     void AfficherMessageStatut(const QString &, const int );
+    void MajFichierGP();
 
 
 protected:
@@ -160,6 +161,11 @@ private:
      * Methodes privees
      */
     /**
+     * @brief CalculAgeElementsOrbitaux Calcul de l'age des elements orbitaux
+     */
+    void CalculAgeElementsOrbitaux();
+
+    /**
      * @brief Initialisation Initialisation de la classe CalculsPrevisions
      */
     void Initialisation();
@@ -180,6 +186,7 @@ private slots:
     void on_hauteurSatPrev_currentIndexChanged(int index);
     void on_hauteurSoleilPrev_currentIndexChanged(int index);
     void on_magnitudeMaxPrev_toggled(bool checked);
+    void on_majElementsOrbitaux_clicked();
 
 };
 

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 fevrier 2023
+ * >    3 mars 2023
  *
  */
 
@@ -107,11 +107,6 @@ public:
      */
     void MajGP();
 
-    /**
-     * @brief DemarrageApplication Demarrage de l'application apres le chargement de la configuration
-     */
-    void DemarrageApplication();
-
 
 public slots:
 
@@ -119,6 +114,11 @@ public slots:
      * @brief ChargementGP Chargement du fichier d'elements orbitaux par defaut
      */
     void ChargementGP();
+
+    /**
+     * @brief DemarrageApplication Demarrage de l'application apres le chargement de la configuration
+     */
+    void DemarrageApplication();
 
 
 signals:
@@ -252,11 +252,6 @@ private:
     void InstallationTraduction(const QString &langue, QTranslator &traduction);
 
     /**
-     * @brief MajFichierGP Mise a jour du fichier GP courant
-     */
-    void MajFichierGP();
-
-    /**
      * @brief MajWebGP Mise a jour automatique des elements orbitaux
      */
     void MajWebGP();
@@ -330,6 +325,11 @@ private slots:
      * @brief InitFicGP Liste des fichiers d'elements orbitaux
      */
     void InitFicGP();
+
+    /**
+     * @brief MajFichierGP Mise a jour du fichier GP courant
+     */
+    void MajFichierGP();
 
     /**
      * @brief MettreAjourGroupeElem Mise a jour d'un groupe d'elements orbitaux

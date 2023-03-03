@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>792</width>
-    <height>226</height>
+    <height>229</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>156</y>
+     <y>136</y>
      <width>261</width>
      <height>18</height>
     </rect>
@@ -507,7 +507,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>132</y>
+     <y>160</y>
      <width>278</width>
      <height>18</height>
     </rect>
@@ -561,11 +561,24 @@
        <bool>true</bool>
       </property>
       <property name="text">
-       <string notr="true">] jours</string>
+       <string>] jours</string>
       </property>
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QPushButton" name="majElementsOrbitaux">
+   <property name="geometry">
+    <rect>
+     <x>304</x>
+     <y>158</y>
+     <width>146</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Mettre à jour...</string>
+   </property>
   </widget>
  </widget>
  <resources/>

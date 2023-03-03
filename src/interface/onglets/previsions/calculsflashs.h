@@ -109,6 +109,8 @@ public slots:
 signals:
 
     void AfficherMessageStatut(const QString &, const int );
+    void ChargementGP();
+    void DemarrageApplication();
 
 
 protected:
@@ -136,6 +138,11 @@ private:
      * Methodes privees
      */
     /**
+     * @brief CalculAgeElementsOrbitaux Calcul de l'age des elements orbitaux
+     */
+    void CalculAgeElementsOrbitaux();
+
+    /**
      * @brief Initialisation Initialisation de la classe Flashs
      */
     void Initialisation();
@@ -149,6 +156,7 @@ private slots:
     void on_effacerHeuresMetOp_clicked();
     void on_hauteurSatMetOp_currentIndexChanged(int index);
     void on_hauteurSoleilMetOp_currentIndexChanged(int index);
+    void on_majElementsOrbitaux_clicked();
 
 };
 

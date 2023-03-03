@@ -53,6 +53,7 @@
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
+#include "librairies/systeme/telechargement.h"
 #include "previsions/flashs.h"
 
 
@@ -126,6 +127,8 @@ void CalculsFlashs::show(const Date &date)
     _ui->dateInitialeMetOp->setDateTime(date.ToQDateTime(0));
     _ui->dateFinaleMetOp->setDateTime(_ui->dateInitialeMetOp->dateTime().addDays(7));
 
+    CalculAgeElementsOrbitaux();
+
     /* Retour */
     return;
 }
@@ -177,6 +180,89 @@ void CalculsFlashs::changeEvent(QEvent *evt)
 /*
  * Methodes privees
  */
+/*
+ * Calcul de l'age des elements orbitaux
+ */
+void CalculsFlashs::CalculAgeElementsOrbitaux()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(Configuration::instance()->dirElem() + QDir::separator() +
+                                                                             "flares-spctrk.xml", Configuration::instance()->donneesSatellites(),
+                                                                             Configuration::instance()->lgRec());
+
+    if (mapElem.isEmpty()) {
+
+        _ui->gridLayoutWidget->setVisible(false);
+
+    } else {
+
+        double elemMin = -DATE::DATE_INFINIE;
+        double elemMax = DATE::DATE_INFINIE;
+
+        // Ecart heure locale - UTC
+        const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialeMetOp->dateTime());
+
+        // Date et heure initiales
+        const Date date1(_ui->dateInitialeMetOp->date().year(), _ui->dateInitialeMetOp->date().month(), _ui->dateInitialeMetOp->date().day(),
+                         _ui->dateInitialeMetOp->time().hour(), _ui->dateInitialeMetOp->time().minute(), _ui->dateInitialeMetOp->time().second(), 0.);
+
+        // Jour julien initial
+        const double jj1 = date1.jourJulien() - offset1;
+
+        // Determination de l'age maximal des elements orbitaux
+        QMapIterator it(mapElem);
+        while (it.hasNext()) {
+            it.next();
+
+            const ElementsOrbitaux elem = it.value();
+            const double epok = elem.epoque.jourJulienUTC();
+
+            if (epok > elemMin) {
+                elemMin = epok;
+            }
+
+            if (epok < elemMax) {
+                elemMax = epok;
+            }
+        }
+
+        QBrush couleur;
+        const std::array<double, 2> age = { fabs(jj1 - elemMin), fabs(jj1 - elemMax) };
+        std::array<QPalette, 2> palette;
+
+        for(int i=0; i<2; i++) {
+
+            if (age[i] <= 5.) {
+                couleur.setColor(QColor("forestgreen"));
+            } else if (age[i] <= 10.) {
+                couleur.setColor(Qt::darkYellow);
+            } else if (age[i] <= 15.) {
+                couleur.setColor(QColor("orange"));
+            } else {
+                couleur.setColor(Qt::red);
+            }
+
+            couleur.setStyle(Qt::SolidPattern);
+            palette[i].setBrush(QPalette::WindowText, couleur);
+        }
+
+        _ui->ageElementsOrbitaux1->setPalette(palette[0]);
+        _ui->ageElementsOrbitaux1->setText(QString("%1").arg(age[0], 0, 'f', 2));
+
+        _ui->ageElementsOrbitaux2->setPalette(palette[1]);
+        _ui->ageElementsOrbitaux2->setText(QString("%1").arg(age[1], 0, 'f', 2));
+
+        _ui->gridLayoutWidget->setVisible(true);
+    }
+
+    /* Retour */
+    return;
+}
+
 /*
  * Initialisation de la classe CalculsFlashs
  */
@@ -275,7 +361,7 @@ void CalculsFlashs::on_calculsFlashs_clicked()
 
         // Hauteur minimale du satellite
         conditions.hauteur = MATHS::DEG2RAD * ((_ui->hauteurSatMetOp->currentIndex() == 5) ?
-                                            abs(_ui->valHauteurSatMetOp->text().toInt()) : 5 * _ui->hauteurSatMetOp->currentIndex());
+                                                   abs(_ui->valHauteurSatMetOp->text().toInt()) : 5 * _ui->hauteurSatMetOp->currentIndex());
 
         // Hauteur maximale du Soleil
         if (_ui->hauteurSoleilMetOp->currentIndex() <= 3) {
@@ -304,7 +390,7 @@ void CalculsFlashs::on_calculsFlashs_clicked()
 
         // Lecture du fichier TLE
         QMap<QString, ElementsOrbitaux> tabElem = GPFormat::LectureFichier(fichier, Configuration::instance()->donneesSatellites(),
-                                                        Configuration::instance()->lgRec(), listeSatellites);
+                                                                           Configuration::instance()->lgRec(), listeSatellites);
 
         // Mise a jour de la liste de satellites et creation du tableau de satellites
         QMutableStringListIterator it(listeSatellites);
@@ -478,6 +564,41 @@ void CalculsFlashs::on_hauteurSoleilMetOp_currentIndexChanged(int index)
         _ui->valHauteurSoleilMetOp->setFocus();
     } else {
         _ui->valHauteurSoleilMetOp->setVisible(false);
+    }
+
+    /* Retour */
+    return;
+}
+
+void CalculsFlashs::on_majElementsOrbitaux_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        qInfo() << "Mise a jour du fichier flares-spctrk.xml";
+
+        const QFileInfo ff("flares-spctrk.xml");
+
+        Telechargement tel(Configuration::instance()->dirElem());
+        emit AfficherMessageStatut(tr("Mise à jour du fichier GP %1 en cours...").arg(ff.fileName()), 0);
+
+        const QString ficMaj = QString("%1elem/%2").arg(DOMAIN_NAME).arg(ff.fileName());
+
+        tel.TelechargementFichier(QUrl(ficMaj));
+        AfficherMessageStatut(tr("Téléchargement terminé"), 10);
+
+        if (Configuration::instance()->nomfic() == ff.fileName()) {
+            emit ChargementGP();
+            emit DemarrageApplication();
+        }
+
+        CalculAgeElementsOrbitaux();
+
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */

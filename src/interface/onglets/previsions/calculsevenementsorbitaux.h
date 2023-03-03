@@ -123,6 +123,7 @@ public slots:
 signals:
 
     void AfficherMessageStatut(const QString &, const int );
+    void MajFichierGP();
 
 
 protected:
@@ -152,6 +153,11 @@ private:
      * Methodes privees
      */
     /**
+     * @brief CalculAgeElementsOrbitaux Calcul de l'age des elements orbitaux
+     */
+    void CalculAgeElementsOrbitaux();
+
+    /**
      * @brief Initialisation Initialisation de la classe CalculsEvenementsOrbitaux
      */
     void Initialisation();
@@ -169,6 +175,7 @@ private slots:
     void on_parametrageDefautEvt_clicked();
     void on_effacerHeuresEvt_clicked();
     void on_listeEvenements_customContextMenuRequested(const QPoint &pos);
+    void on_majElementsOrbitaux_clicked();
 
 };
 
