@@ -127,6 +127,8 @@ void CalculsEvenementsOrbitaux::show(const Date &date)
     _ui->dateInitialeEvt->setDateTime(date.ToQDateTime(0));
     _ui->dateFinaleEvt->setDateTime(_ui->dateInitialeEvt->dateTime().addDays(7));
 
+    CalculAgeElementsOrbitaux();
+
     /* Retour */
     return;
 }
@@ -198,6 +200,85 @@ void CalculsEvenementsOrbitaux::changeEvent(QEvent *evt)
 /*
  * Methodes privees
  */
+/*
+ * Calcul de l'age des elements orbitaux
+ */
+void CalculsEvenementsOrbitaux::CalculAgeElementsOrbitaux()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (Configuration::instance()->mapElementsOrbitaux().isEmpty()) {
+
+        _ui->gridLayoutWidget->setVisible(false);
+
+    } else {
+
+        double elemMin = -DATE::DATE_INFINIE;
+        double elemMax = DATE::DATE_INFINIE;
+
+        // Ecart heure locale - UTC
+        const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialeEvt->dateTime());
+
+        // Date et heure initiales
+        const Date date1(_ui->dateInitialeEvt->date().year(), _ui->dateInitialeEvt->date().month(), _ui->dateInitialeEvt->date().day(),
+                         _ui->dateInitialeEvt->time().hour(), _ui->dateInitialeEvt->time().minute(), _ui->dateInitialeEvt->time().second(), 0.);
+
+        // Jour julien initial
+        const double jj1 = date1.jourJulien() - offset1;
+
+        // Determination de l'age maximal des elements orbitaux
+        QMapIterator it(Configuration::instance()->mapElementsOrbitaux());
+        while (it.hasNext()) {
+            it.next();
+
+            const ElementsOrbitaux elem = it.value();
+            const double epok = elem.epoque.jourJulienUTC();
+
+            if (epok > elemMin) {
+                elemMin = epok;
+            }
+
+            if (epok < elemMax) {
+                elemMax = epok;
+            }
+        }
+
+        QBrush couleur;
+        const std::array<double, 2> age = { fabs(jj1 - elemMin), fabs(jj1 - elemMax) };
+        std::array<QPalette, 2> palette;
+
+        for(int i=0; i<2; i++) {
+
+            if (age[i] <= 5.) {
+                couleur.setColor(QColor("forestgreen"));
+            } else if (age[i] <= 10.) {
+                couleur.setColor(Qt::darkYellow);
+            } else if (age[i] <= 15.) {
+                couleur.setColor(QColor("orange"));
+            } else {
+                couleur.setColor(Qt::red);
+            }
+
+            couleur.setStyle(Qt::SolidPattern);
+            palette[i].setBrush(QPalette::WindowText, couleur);
+        }
+
+        _ui->ageElementsOrbitaux1->setPalette(palette[0]);
+        _ui->ageElementsOrbitaux1->setText(QString("%1").arg(age[0], 0, 'f', 2));
+
+        _ui->ageElementsOrbitaux2->setPalette(palette[1]);
+        _ui->ageElementsOrbitaux2->setText(QString("%1").arg(age[1], 0, 'f', 2));
+
+        _ui->gridLayoutWidget->setVisible(true);
+    }
+
+    /* Retour */
+    return;
+}
+
 /*
  * Initialisation de la classe CalculsEvenementsOrbitaux
  */
@@ -467,3 +548,10 @@ void CalculsEvenementsOrbitaux::on_listeEvenements_customContextMenuRequested(co
     /* Retour */
     return;
 }
+
+void CalculsEvenementsOrbitaux::on_majElementsOrbitaux_clicked()
+{
+    emit MajFichierGP();
+    CalculAgeElementsOrbitaux();
+}
+

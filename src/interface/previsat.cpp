@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 fevrier 2023
+ * >    3 mars 2023
  *
  */
 
@@ -250,6 +250,87 @@ void PreviSat::MajGP()
 }
 
 /*
+ * Chargement du fichier d'elements orbitaux par defaut
+ */
+void PreviSat::ChargementGP()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        qInfo() << "Début Fonction" << __FUNCTION__;
+
+        QString nomfic = Configuration::instance()->dirElem() + QDir::separator() + Configuration::instance()->nomfic();
+        QFileInfo ff(nomfic);
+
+        if (!Configuration::instance()->listeFichiersElem().isEmpty() && !Configuration::instance()->listeFichiersElem().contains(ff.fileName())) {
+            nomfic = Configuration::instance()->listeFichiersElem().first();
+            ff = QFileInfo(nomfic);
+        }
+
+        if (ff.exists() && (ff.size() != 0)) {
+
+            if (ff.suffix() == "xml") {
+
+                // Cas d'un fichier au format GP
+                Configuration::instance()->setMapElementsOrbitaux(GPFormat::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
+                                                                                           Configuration::instance()->lgRec()));
+                qInfo() << "Lecture du fichier GP" << ff.fileName() << "OK";
+
+            } else {
+
+                // Cas d'un fichier au format TLE
+                qInfo() << "Vérification du fichier TLE" << ff.fileName();
+                AfficherMessageStatut(tr("Vérification du fichier TLE %1 ...").arg(ff.fileName()));
+
+                if (TLE::VerifieFichier(nomfic, true) > 0) {
+                    qInfo() << QString("Fichier TLE %1 OK").arg(ff.fileName());
+                    AfficherMessageStatut(tr("Fichier TLE %1 OK").arg(ff.fileName()));
+                } else {
+                    qWarning() << QString("Fichier TLE %1 KO").arg(ff.fileName());
+                }
+
+                // Lecture du fichier TLE en entier
+                Configuration::instance()->setMapElementsOrbitaux(TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
+                                                                                      Configuration::instance()->lgRec()));
+                qInfo() << "Lecture du fichier TLE" << ff.fileName() << "OK";
+            }
+
+            // Mise a jour de la liste de satellites
+            QStringList listeSatellites = Configuration::instance()->mapSatellitesFichierElem()[ff.fileName()];
+
+            QStringListIterator it(Configuration::instance()->mapSatellitesFichierElem()[ff.fileName()]);
+            while (it.hasNext()) {
+
+                const QString norad = it.next();
+                if (!Configuration::instance()->mapElementsOrbitaux().keys().contains(norad)) {
+                    listeSatellites.removeOne(norad);
+                }
+            }
+
+            Configuration::instance()->mapSatellitesFichierElem()[ff.fileName()] = listeSatellites;
+
+            if (!listeSatellites.isEmpty()) {
+                GestionnaireXml::EcritureConfiguration();
+            }
+
+            // Affichage de la liste de satellites
+            AfficherListeSatellites(ff.fileName());
+        }
+
+    } catch (PreviSatException const &e) {
+    }
+
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
+
+    /* Retour */
+    return;
+}
+
+/*
  * Demarrage de l'application apres le chargement de la configuration
  */
 void PreviSat::DemarrageApplication()
@@ -365,87 +446,6 @@ void PreviSat::DemarrageApplication()
     return;
 }
 
-/*
- * Chargement du fichier d'elements orbitaux par defaut
- */
-void PreviSat::ChargementGP()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    try {
-
-        qInfo() << "Début Fonction" << __FUNCTION__;
-
-        QString nomfic = Configuration::instance()->dirElem() + QDir::separator() + Configuration::instance()->nomfic();
-        QFileInfo ff(nomfic);
-
-        if (!Configuration::instance()->listeFichiersElem().isEmpty() && !Configuration::instance()->listeFichiersElem().contains(ff.fileName())) {
-            nomfic = Configuration::instance()->listeFichiersElem().first();
-            ff = QFileInfo(nomfic);
-        }
-
-        if (ff.exists() && (ff.size() != 0)) {
-
-            if (ff.suffix() == "xml") {
-
-                // Cas d'un fichier au format GP
-                Configuration::instance()->setMapElementsOrbitaux(GPFormat::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
-                                                                                           Configuration::instance()->lgRec()));
-                qInfo() << "Lecture du fichier GP" << ff.fileName() << "OK";
-
-            } else {
-
-                // Cas d'un fichier au format TLE
-                qInfo() << "Vérification du fichier TLE" << ff.fileName();
-                AfficherMessageStatut(tr("Vérification du fichier TLE %1 ...").arg(ff.fileName()));
-
-                if (TLE::VerifieFichier(nomfic, true) > 0) {
-                    qInfo() << QString("Fichier TLE %1 OK").arg(ff.fileName());
-                    AfficherMessageStatut(tr("Fichier TLE %1 OK").arg(ff.fileName()));
-                } else {
-                    qWarning() << QString("Fichier TLE %1 KO").arg(ff.fileName());
-                }
-
-                // Lecture du fichier TLE en entier
-                Configuration::instance()->setMapElementsOrbitaux(TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
-                                                                                      Configuration::instance()->lgRec()));
-                qInfo() << "Lecture du fichier TLE" << ff.fileName() << "OK";
-            }
-
-            // Mise a jour de la liste de satellites
-            QStringList listeSatellites = Configuration::instance()->mapSatellitesFichierElem()[ff.fileName()];
-
-            QStringListIterator it(Configuration::instance()->mapSatellitesFichierElem()[ff.fileName()]);
-            while (it.hasNext()) {
-
-                const QString norad = it.next();
-                if (!Configuration::instance()->mapElementsOrbitaux().keys().contains(norad)) {
-                    listeSatellites.removeOne(norad);
-                }
-            }
-
-            Configuration::instance()->mapSatellitesFichierElem()[ff.fileName()] = listeSatellites;
-
-            if (!listeSatellites.isEmpty()) {
-                GestionnaireXml::EcritureConfiguration();
-            }
-
-            // Affichage de la liste de satellites
-            AfficherListeSatellites(ff.fileName());
-        }
-
-    } catch (PreviSatException const &e) {
-    }
-
-    qInfo() << "Fin   Fonction" << __FUNCTION__;
-
-    /* Retour */
-    return;
-}
-
 
 /*************
  * PROTECTED *
@@ -544,6 +544,12 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_onglets->evenements(), &CalculsEvenementsOrbitaux::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->suiviTelescope(), &SuiviTelescope::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->general(), &General::ModeManuel, this, &PreviSat::on_modeManuel_toggled);
+
+    connect(_onglets->previsions(), &CalculsPrevisions::MajFichierGP, this, &PreviSat::MajFichierGP);
+    connect(_onglets->evenements(), &CalculsEvenementsOrbitaux::MajFichierGP, this, &PreviSat::MajFichierGP);
+    connect(_onglets->flashs(), &CalculsFlashs::ChargementGP, this, &PreviSat::ChargementGP);
+    connect(_onglets->flashs(), &CalculsFlashs::DemarrageApplication, this, &PreviSat::DemarrageApplication);
+    connect(_onglets->transits(), &CalculsTransits::MajFichierGP, this, &PreviSat::MajFichierGP);
 
     connect(this, &PreviSat::SauveOngletGeneral, _onglets->general(), &General::SauveOngletGeneral);
     connect(this, &PreviSat::SauveOngletElementsOsculateurs, _onglets->osculateurs(), &Osculateurs::SauveOngletElementsOsculateurs);
@@ -1125,42 +1131,6 @@ void PreviSat::InstallationTraduction(const QString &langue, QTranslator &traduc
         qApp->installTranslator(&traduction);
     } else {
         qWarning() << "Impossible de charger le fichier de traduction" << langue;
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Mise a jour du fichier GP courant
- */
-void PreviSat::MajFichierGP()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    try {
-
-        qInfo() << "Mise a jour du fichier GP courant";
-
-        const QFileInfo ff(Configuration::instance()->nomfic());
-
-        Telechargement tel(Configuration::instance()->dirElem());
-        _messageStatut->setText(tr("Mise à jour du fichier GP %1 en cours...").arg(ff.fileName()));
-
-        const QString ficMaj = (ff.fileName().contains("spctrk")) ?
-                    QString("%1elem/%2").arg(DOMAIN_NAME).arg(ff.fileName()) : Configuration::instance()->adresseCelestrakNorad().arg(ff.baseName());
-
-        tel.TelechargementFichier(QUrl(ficMaj));
-        AfficherMessageStatut(tr("Téléchargement terminé"), 10);
-        settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
-
-        ChargementGP();
-        DemarrageApplication();
-
-    } catch (PreviSatException const &e) {
     }
 
     /* Retour */
@@ -1854,6 +1824,42 @@ void PreviSat::InitFicGP()
     }
 
     qInfo() << "Début Fonction" << __FUNCTION__;
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Mise a jour du fichier GP courant
+ */
+void PreviSat::MajFichierGP()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        qInfo() << "Mise a jour du fichier GP courant";
+
+        const QFileInfo ff(Configuration::instance()->nomfic());
+
+        Telechargement tel(Configuration::instance()->dirElem());
+        _messageStatut->setText(tr("Mise à jour du fichier GP %1 en cours...").arg(ff.fileName()));
+
+        const QString ficMaj = (ff.fileName().contains("spctrk")) ?
+                    QString("%1elem/%2").arg(DOMAIN_NAME).arg(ff.fileName()) : Configuration::instance()->adresseCelestrakNorad().arg(ff.baseName());
+
+        tel.TelechargementFichier(QUrl(ficMaj));
+        AfficherMessageStatut(tr("Téléchargement terminé"), 10);
+        settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
+
+        ChargementGP();
+        DemarrageApplication();
+
+    } catch (PreviSatException const &e) {
+    }
 
     /* Retour */
     return;

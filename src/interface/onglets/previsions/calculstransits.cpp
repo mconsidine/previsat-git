@@ -233,111 +233,120 @@ void CalculsTransits::CalculAgeElementsOrbitaux()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QPalette pal = _paletteBouton;
-    _ui->majElementsOrbitauxIss->setToolTip("");
-    double elemMin = -DATE::DATE_INFINIE;
-    double elemMax = DATE::DATE_INFINIE;
-
-    // Ecart heure locale - UTC
-    const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialeTransit->dateTime());
-    const double offset2 = Date::CalculOffsetUTC(_ui->dateFinaleTransit->dateTime());
-
-    // Date et heure initiales
-    const Date date1(_ui->dateInitialeTransit->date().year(), _ui->dateInitialeTransit->date().month(), _ui->dateInitialeTransit->date().day(),
-                     _ui->dateInitialeTransit->time().hour(), _ui->dateInitialeTransit->time().minute(),
-                     _ui->dateInitialeTransit->time().second(), 0.);
-
-    // Jour julien initial
-    const double jj1 = date1.jourJulien() - offset1;
-
-    // Date et heure finales
-    const Date date2(_ui->dateFinaleTransit->date().year(), _ui->dateFinaleTransit->date().month(), _ui->dateFinaleTransit->date().day(),
-                     _ui->dateFinaleTransit->time().hour(), _ui->dateFinaleTransit->time().minute(), _ui->dateFinaleTransit->time().second(), 0.);
-
-    // Jour julien final
-    const double jj2 = date2.jourJulien() - offset2;
 
     /* Corps de la methode */
-    // Determination de l'age maximal des elements orbitaux
-    QMapIterator it(Configuration::instance()->mapElementsOrbitaux());
-    while (it.hasNext()) {
-        it.next();
+    if (Configuration::instance()->mapElementsOrbitaux().isEmpty()) {
 
-        const ElementsOrbitaux elem = it.value();
-        const double epok = elem.epoque.jourJulienUTC();
+        _ui->gridLayoutWidget->setVisible(false);
 
-        if (epok > elemMin) {
-            elemMin = epok;
+    } else {
+
+        QPalette pal = _paletteBouton;
+        _ui->majElementsOrbitauxIss->setToolTip("");
+        double elemMin = -DATE::DATE_INFINIE;
+        double elemMax = DATE::DATE_INFINIE;
+
+        // Ecart heure locale - UTC
+        const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialeTransit->dateTime());
+        const double offset2 = Date::CalculOffsetUTC(_ui->dateFinaleTransit->dateTime());
+
+        // Date et heure initiales
+        const Date date1(_ui->dateInitialeTransit->date().year(), _ui->dateInitialeTransit->date().month(), _ui->dateInitialeTransit->date().day(),
+                         _ui->dateInitialeTransit->time().hour(), _ui->dateInitialeTransit->time().minute(),
+                         _ui->dateInitialeTransit->time().second(), 0.);
+
+        // Jour julien initial
+        const double jj1 = date1.jourJulien() - offset1;
+
+        // Date et heure finales
+        const Date date2(_ui->dateFinaleTransit->date().year(), _ui->dateFinaleTransit->date().month(), _ui->dateFinaleTransit->date().day(),
+                         _ui->dateFinaleTransit->time().hour(), _ui->dateFinaleTransit->time().minute(), _ui->dateFinaleTransit->time().second(), 0.);
+
+        // Jour julien final
+        const double jj2 = date2.jourJulien() - offset2;
+
+        // Determination de l'age maximal des elements orbitaux
+        QMapIterator it(Configuration::instance()->mapElementsOrbitaux());
+        while (it.hasNext()) {
+            it.next();
+
+            const ElementsOrbitaux elem = it.value();
+            const double epok = elem.epoque.jourJulienUTC();
+
+            if (epok > elemMin) {
+                elemMin = epok;
+            }
+
+            if (epok < elemMax) {
+                elemMax = epok;
+            }
         }
 
-        if (epok < elemMax) {
-            elemMax = epok;
-        }
-    }
+        QBrush couleur;
+        const std::array<double, 2> age = { fabs(jj1 - elemMin), fabs(jj1 - elemMax) };
+        std::array<QPalette, 2> palette;
 
-    QBrush couleur;
-    const std::array<double, 2> age = { fabs(jj1 - elemMin), fabs(jj1 - elemMax) };
-    std::array<QPalette, 2> palette;
+        for(int i=0; i<2; i++) {
 
-    for(int i=0; i<2; i++) {
+            if (age[i] <= 5.) {
+                couleur.setColor(QColor("forestgreen"));
+            } else if (age[i] <= 10.) {
+                couleur.setColor(Qt::darkYellow);
+            } else if (age[i] <= 15.) {
+                couleur.setColor(QColor("orange"));
+            } else {
+                couleur.setColor(Qt::red);
+            }
 
-        if (age[i] <= 5.) {
-            couleur.setColor(QColor("forestgreen"));
-        } else if (age[i] <= 10.) {
-            couleur.setColor(Qt::darkYellow);
-        } else if (age[i] <= 15.) {
-            couleur.setColor(QColor("orange"));
-        } else {
-            couleur.setColor(Qt::red);
-        }
-
-        couleur.setStyle(Qt::SolidPattern);
-        palette[i].setBrush(QPalette::WindowText, couleur);
-    }
-
-    _ui->ageElementsOrbitauxTransit1->setPalette(palette[0]);
-    _ui->ageElementsOrbitauxTransit1->setText(QString("%1").arg(age[0], 0, 'f', 2));
-
-    _ui->ageElementsOrbitauxTransit2->setPalette(palette[1]);
-    _ui->ageElementsOrbitauxTransit2->setText(QString("%1").arg(age[1], 0, 'f', 2));
-
-    // Lecture du fichier d'elements orbitaux de l'ISS
-    const QString fichier = Configuration::instance()->dirElem() + QDir::separator() + "iss.gp";
-    _listeElemIss = GPFormat::LectureFichierListeGP(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
-
-    if (!_listeElemIss.isEmpty()) {
-
-        // Dates des premier et dernier elements orbitaux
-        const double datePremierElem = _listeElemIss.first().epoque.jourJulienUTC();
-        const double dateDernierElem = _listeElemIss.last().epoque.jourJulienUTC();
-
-        double age1 = 0.;
-        if (jj1 < datePremierElem) {
-            age1 = datePremierElem - jj1;
+            couleur.setStyle(Qt::SolidPattern);
+            palette[i].setBrush(QPalette::WindowText, couleur);
         }
 
-        if (jj1 > dateDernierElem) {
-            age1 = jj1 - dateDernierElem;
+        _ui->ageElementsOrbitauxTransit1->setPalette(palette[0]);
+        _ui->ageElementsOrbitauxTransit1->setText(QString("%1").arg(age[0], 0, 'f', 2));
+
+        _ui->ageElementsOrbitauxTransit2->setPalette(palette[1]);
+        _ui->ageElementsOrbitauxTransit2->setText(QString("%1").arg(age[1], 0, 'f', 2));
+
+        // Lecture du fichier d'elements orbitaux de l'ISS
+        const QString fichier = Configuration::instance()->dirElem() + QDir::separator() + "iss.gp";
+        _listeElemIss = GPFormat::LectureFichierListeGP(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+
+        if (!_listeElemIss.isEmpty()) {
+
+            // Dates des premier et dernier elements orbitaux
+            const double datePremierElem = _listeElemIss.first().epoque.jourJulienUTC();
+            const double dateDernierElem = _listeElemIss.last().epoque.jourJulienUTC();
+
+            double age1 = 0.;
+            if (jj1 < datePremierElem) {
+                age1 = datePremierElem - jj1;
+            }
+
+            if (jj1 > dateDernierElem) {
+                age1 = jj1 - dateDernierElem;
+            }
+
+            double age2 = 0.;
+            if (jj2 < datePremierElem) {
+                age2 = datePremierElem - jj2;
+            }
+
+            if (jj2 > dateDernierElem) {
+                age2 = jj2 - dateDernierElem;
+            }
+
+            if ((age1 > (2.05)) || (age2 > (2.05))) {
+
+                // Affichage du contour du bouton en rouge
+                pal.setColor(QPalette::Button, QColor(Qt::red));
+                _ui->majElementsOrbitauxIss->setToolTip(tr("Les éléments orbitaux de l'ISS sont vieux, il est conseillé de les mettre à jour"));
+            }
+
+            _ui->majElementsOrbitauxIss->setPalette(pal);
+            _ui->majElementsOrbitauxIss->update();
+            _ui->gridLayoutWidget->setVisible(true);
         }
-
-        double age2 = 0.;
-        if (jj2 < datePremierElem) {
-            age2 = datePremierElem - jj2;
-        }
-
-        if (jj2 > dateDernierElem) {
-            age2 = jj2 - dateDernierElem;
-        }
-
-        if ((age1 > (2.05)) || (age2 > (2.05))) {
-
-            // Affichage du contour du bouton en rouge
-            pal.setColor(QPalette::Button, QColor(Qt::red));
-            _ui->majElementsOrbitauxIss->setToolTip(tr("Les éléments orbitaux de l'ISS sont vieux, il est conseillé de les mettre à jour"));
-        }
-
-        _ui->majElementsOrbitauxIss->setPalette(pal);
-        _ui->majElementsOrbitauxIss->update();
     }
 
     /* Retour */
@@ -695,4 +704,10 @@ void CalculsTransits::on_listeTransits_customContextMenuRequested(const QPoint &
 
     /* Retour */
     return;
+}
+
+void CalculsTransits::on_majElementsOrbitaux_clicked()
+{
+    emit MajFichierGP();
+    CalculAgeElementsOrbitaux();
 }

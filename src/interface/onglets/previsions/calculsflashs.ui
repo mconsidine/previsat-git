@@ -486,7 +486,7 @@
   <widget class="QPushButton" name="calculsFlashs">
    <property name="geometry">
     <rect>
-     <x>430</x>
+     <x>460</x>
      <y>185</y>
      <width>101</width>
      <height>23</height>
@@ -500,6 +500,83 @@
    </property>
    <property name="default">
     <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>130</y>
+     <width>278</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_ageElem">
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <item row="0" column="1">
+     <widget class="QLabel" name="ageElementsOrbitaux1">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string notr="true">-360.3 </string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_ageElementsOrbitaux">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="text">
+       <string>Ages des éléments orbitaux : [</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="ageElementsOrbitaux2">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string notr="true">-360.3</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="lbl_jours">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>] jours</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="majElementsOrbitaux">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>185</y>
+     <width>261</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Mettre à jour flares-spctrk.xml...</string>
    </property>
   </widget>
  </widget>
