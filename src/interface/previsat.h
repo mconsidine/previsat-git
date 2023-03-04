@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 mars 2023
+ * >    4 mars 2023
  *
  */
 
@@ -63,7 +63,6 @@ class Carte;
 class Ciel;
 class Date;
 class Informations;
-class Logging;
 class Onglets;
 class Options;
 class Outils;
@@ -163,7 +162,6 @@ private:
     Informations *_informations;
     Options *_options;
     Outils *_outils;
-    Logging *_logging;
 
     QAction *_previsions;
     QAction *_flashs;

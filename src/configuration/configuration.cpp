@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    4 mars 2023
  *
  */
 
@@ -846,12 +846,15 @@ void Configuration::LectureDonneesSatellites()
     }
     fi.close();
 
-    _lgRec = static_cast<int> ((_donneesSatellites.isEmpty()) ? -1 : _donneesSatellites.size() / _donneesSatellites.count('\n'));
-
     if (_donneesSatellites.isEmpty()) {
+
+        _lgRec = -1;
         qCritical() <<  QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
         throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
                                 .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+
+    } else {
+        _lgRec = static_cast<int> (_donneesSatellites.size() / _donneesSatellites.count('\n'));
     }
 
 #if (BUILD_TEST == false)

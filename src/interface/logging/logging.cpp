@@ -56,20 +56,12 @@
 /*
  * Constructeurs
  */
-Logging::Logging(QWidget *parent) :
-    QMainWindow(parent),
+Logging::Logging(QWidget *fenetreParent) :
+    QMainWindow(fenetreParent),
     _ui(new Ui::Logging)
 {
     _ui->setupUi(this);
-
-    try {
-
-        Initialisation();
-
-    } catch (PreviSatException &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
-    }
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), fenetreParent->geometry()));
 }
 
 
@@ -89,36 +81,18 @@ Logging::~Logging()
 /*
  * Methodes publiques
  */
+void Logging::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
+}
 
-
-/*************
- * PROTECTED *
- *************/
-
-/*
- * Methodes protegees
- */
-
-
-/***********
- * PRIVATE *
- ***********/
-
-/*
- * Methodes privees
- */
-/*
- * Initialisation de la classe Logging
- */
-void Logging::Initialisation()
+void Logging::show()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-
-    /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
-
     _ui->fichiersLog->setStyleSheet("QHeaderView::section {" \
                                     "background-color:rgb(235, 235, 235);" \
                                     "border-top: 0px solid grey;" \
@@ -127,6 +101,7 @@ void Logging::Initialisation()
                                     "font-size: 12px;" \
                                     "font-weight: 600 }");
 
+    /* Corps de la methode */
     _ui->fichiersLog->resizeColumnsToContents();
 
     QBrush couleur;
@@ -238,14 +213,29 @@ void Logging::Initialisation()
     _ui->listeBoutonsExporterLog->button(QDialogButtonBox::Save)->setVisible(_ui->fichiersLog->rowCount() > 0);
     _ui->listeBoutonsExporterLog->button(QDialogButtonBox::Save)->setText(tr("Exporter ..."));
 
-    setWindowFlags(Qt::WindowCloseButtonHint);
-
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    setWindowFlags(windowFlags() & ~Qt::WindowMinMaxButtonsHint);
 
     /* Retour */
     return;
 }
 
+
+/*************
+ * PROTECTED *
+ *************/
+
+/*
+ * Methodes protegees
+ */
+
+
+/***********
+ * PRIVATE *
+ ***********/
+
+/*
+ * Methodes privees
+ */
 /*
  * Ouverture du fichier log selectionne
  */

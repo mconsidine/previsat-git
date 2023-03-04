@@ -30,7 +30,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    11 novembre 2022
+ * >    4 mars 2023
  *
  */
 
@@ -108,6 +108,7 @@ void Apropos::show()
     setFont(Configuration::instance()->police());
     const QString titre = tr("À propos de %1 %2");
     setWindowTitle(titre.arg(APP_NAME).arg(QString(APP_VER_MAJ)));
+    setWindowFlags(windowFlags() & ~Qt::WindowMinMaxButtonsHint);
 
     QGraphicsScene * const scene = new QGraphicsScene;
     scene->setSceneRect(_ui->imagePreviSat->rect());

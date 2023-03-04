@@ -36,7 +36,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    30 octobre 2022
+ * >    4 mars 2023
  *
  */
 
@@ -108,7 +108,6 @@ private:
      * Variables privees
      */
     Ui::Apropos *_ui;
-    QWidget *_fenetreParent;
 
 
     /*
