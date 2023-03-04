@@ -66,7 +66,7 @@ public:
     /*
      *  Constructeurs
      */
-    explicit Logging(QWidget *parent = nullptr);
+    explicit Logging(QWidget *fenetreParent = nullptr);
 
 
     /*
@@ -78,6 +78,14 @@ public:
     /*
      * Methodes publiques
      */
+
+
+public slots:
+
+    void changeEvent(QEvent *evt);
+
+    void show();
+
 
     /*
      * Accesseurs
@@ -106,10 +114,6 @@ private:
     /*
      * Methodes privees
      */
-    /**
-     * @brief Initialisation Initialisation de la classe Logging
-     */
-    void Initialisation();
 
 
 private slots:

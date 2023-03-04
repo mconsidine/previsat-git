@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>Logging</class>
  <widget class="QMainWindow" name="Logging">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -24,6 +27,9 @@
   </property>
   <property name="windowTitle">
    <string>Gestion des fichiers de log</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QDialogButtonBox" name="listeBoutonsExporterLog">

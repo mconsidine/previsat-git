@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 mars 2023
+ * >    4 mars 2023
  *
  */
 
@@ -119,7 +119,6 @@ PreviSat::PreviSat(QWidget *parent)
         _options = nullptr;
         _outils = nullptr;
         _radar = nullptr;
-        _logging = nullptr;
 
         _previsions = nullptr;
         _flashs = nullptr;
@@ -162,7 +161,6 @@ PreviSat::~PreviSat()
     EFFACE_OBJET(_options);
     EFFACE_OBJET(_outils);
     EFFACE_OBJET(_radar);
-    EFFACE_OBJET(_logging);
 
     EFFACE_OBJET(_previsions);
     EFFACE_OBJET(_flashs);
@@ -287,16 +285,18 @@ void PreviSat::ChargementGP()
                 AfficherMessageStatut(tr("Vérification du fichier TLE %1 ...").arg(ff.fileName()));
 
                 if (TLE::VerifieFichier(nomfic, true) > 0) {
+
                     qInfo() << QString("Fichier TLE %1 OK").arg(ff.fileName());
                     AfficherMessageStatut(tr("Fichier TLE %1 OK").arg(ff.fileName()));
+
+                    // Lecture du fichier TLE en entier
+                    Configuration::instance()->setMapElementsOrbitaux(TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
+                                                                                          Configuration::instance()->lgRec()));
+                    qInfo() << "Lecture du fichier TLE" << ff.fileName() << "OK";
+
                 } else {
                     qWarning() << QString("Fichier TLE %1 KO").arg(ff.fileName());
                 }
-
-                // Lecture du fichier TLE en entier
-                Configuration::instance()->setMapElementsOrbitaux(TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
-                                                                                      Configuration::instance()->lgRec()));
-                qInfo() << "Lecture du fichier TLE" << ff.fileName() << "OK";
             }
 
             // Mise a jour de la liste de satellites
@@ -907,8 +907,6 @@ void PreviSat::Initialisation()
         _ui->layoutCarte->addWidget(_carte);
 
         _ciel = new Ciel();
-
-        _logging = new Logging();
 
         CreationMenus();
         CreationRaccourcis();
@@ -2472,8 +2470,23 @@ void PreviSat::on_actionMettre_a_jour_les_fichiers_de_donnees_triggered()
 
 void PreviSat::on_actionExporter_fichier_log_triggered()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     qInfo() << "Ouverture de la fenêtre d'export de fichier log";
-    _logging->show();
+
+    Logging * const logging = new Logging(this);
+    QEvent evt(QEvent::LanguageChange);
+
+    logging->changeEvent(&evt);
+    logging->setWindowModality(Qt::ApplicationModal);
+    logging->show();
+    logging->setVisible(true);
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_actionPayPal_triggered()
