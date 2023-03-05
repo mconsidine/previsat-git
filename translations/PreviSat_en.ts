@@ -550,6 +550,30 @@ Age of the oldestelementE      : %3 days</translation>
     </message>
 </context>
 <context>
+    <name>AjustementDates</name>
+    <message>
+        <location filename="../src/interface/onglets/telescope/ajustementdates.ui" line="17"/>
+        <source>Ajuster les dates...</source>
+        <translation>Adjust the dates...</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/telescope/ajustementdates.ui" line="63"/>
+        <location filename="../src/interface/onglets/telescope/ajustementdates.ui" line="103"/>
+        <source>dd/MM/yyyy HH:mm:ss</source>
+        <translation>dd/MM/yyyy hh:mm:ss</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/telescope/ajustementdates.ui" line="80"/>
+        <source>Date initiale :</source>
+        <translation>Start date :</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/telescope/ajustementdates.ui" line="87"/>
+        <source>Date finale :</source>
+        <translation>End date :</translation>
+    </message>
+</context>
+<context>
     <name>Antenne</name>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="35"/>
@@ -5838,7 +5862,7 @@ Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="480"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="876"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="922"/>
         <source>Ouvrir Satellite Tracker</source>
         <translation>Open Satellite Tracker</translation>
     </message>
@@ -5869,99 +5893,109 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="571"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="570"/>
+        <source>Ajuster les dates...</source>
+        <translation>Adjust the dates...</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="584"/>
         <source>Le satellite n&apos;est pas visible depuis le lieu d&apos;observation</source>
         <translation>The satellite is not visible from the location</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="602"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="615"/>
         <source>Nom :</source>
         <translation>Name :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="721"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="734"/>
         <source>Filtre</source>
         <translation>Filter</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="291"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="314"/>
         <source>Satellite en éclipse</source>
         <translation>Satellite in eclipse</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="291"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="314"/>
         <source>Satellite éclairé</source>
         <translation>Satellite illuminated</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="302"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="326"/>
         <source>%1 (dans %2). Azimut : %3</source>
         <comment>Delay in hour, minutes, seconds</comment>
         <translation>%1 (in %2). Azimuth : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="304"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="610"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="328"/>
         <source>AOS</source>
         <comment>Acquisition of signal</comment>
         <translation>AOS</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="322"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="347"/>
         <source>%1%2. Azimut : %3</source>
         <translation>%1%2. Azimuth : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="327"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="384"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="352"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="409"/>
         <source>h</source>
         <comment>hour</comment>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="327"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="332"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="384"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="388"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="352"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="357"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="409"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="413"/>
         <source>min</source>
         <comment>minute</comment>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="332"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="388"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="357"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="413"/>
         <source>s</source>
         <comment>second</comment>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="360"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="435"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="385"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="461"/>
         <source>Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3</source>
         <translation>Satellite in the sky. Current elevation : %1. Azimuth : %2. %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="577"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="608"/>
         <source>Aucun satellite n&apos;est sélectionné dans la liste</source>
         <translation>None satellite selected in the list</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="678"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="639"/>
+        <source>LOS</source>
+        <comment>Loss of signal</comment>
+        <translation>LOS</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="701"/>
         <source>Calculs en cours...</source>
         <translation>Calculating...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="679"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="702"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="708"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="731"/>
         <source>Calculs terminés</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="877"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="923"/>
         <source>Fichiers exécutables (*.exe)</source>
         <translation>Executable files (*.exe)</translation>
     </message>
