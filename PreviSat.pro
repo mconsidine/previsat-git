@@ -110,6 +110,7 @@ SOURCES += \
     src/interface/onglets/previsions/calculsflashs.cpp             \
     src/interface/onglets/previsions/calculsprevisions.cpp         \
     src/interface/onglets/previsions/calculstransits.cpp           \
+    src/interface/onglets/telescope/ajustementdates.cpp \
     src/interface/options/options.cpp                              \
     src/interface/outils/outils.cpp                                \
     src/interface/previsat.cpp                                     \
@@ -178,6 +179,7 @@ HEADERS += \
     src/interface/onglets/previsions/calculsflashs.h             \
     src/interface/onglets/previsions/calculsprevisions.h         \
     src/interface/onglets/previsions/calculstransits.h           \
+    src/interface/onglets/telescope/ajustementdates.h \
     src/interface/options/options.h                              \
     src/interface/outils/outils.h                                \
     src/interface/previsat.h                                     \
@@ -248,6 +250,7 @@ FORMS += \
     src/interface/onglets/previsions/calculsflashs.ui             \
     src/interface/onglets/previsions/calculsprevisions.ui         \
     src/interface/onglets/previsions/calculstransits.ui           \
+    src/interface/onglets/telescope/ajustementdates.ui \
     src/interface/options/options.ui                              \
     src/interface/outils/outils.ui                                \
     src/interface/previsat.ui                                     \

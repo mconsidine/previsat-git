@@ -531,9 +531,9 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>150</x>
+       <x>190</x>
        <y>104</y>
-       <width>141</width>
+       <width>131</width>
        <height>23</height>
       </rect>
      </property>
@@ -555,6 +555,19 @@
      </property>
      <property name="text">
       <string>Démarrer</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="ajusterDates">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>80</y>
+       <width>131</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Ajuster les dates...</string>
      </property>
     </widget>
    </widget>

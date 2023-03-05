@@ -162,6 +162,9 @@ private:
     Date *_date;
     QString _ficSuivi;
 
+    Date *_dateAosSuivi;
+    Date *_dateLosSuivi;
+
 
     /*
      * Methodes privees
@@ -169,7 +172,7 @@ private:
     /**
      * @brief CalculAos Calcul des informations AOS/LOS
      */
-    void CalculAos() const;
+    void CalculAos();
 
     /**
      * @brief CalculHauteurMax Calcul de la hauteur maximale d'un satellite dans le ciel
@@ -188,6 +191,13 @@ private:
 
 private slots:
 
+    /**
+     * @brief AjusterDates Ajuster les dates initiale et finale
+     * @param date1 date initiale
+     * @param date2 date finale
+     */
+    void AjusterDates(const QDateTime &date1, const QDateTime &date2);
+
     void closeEvent(QCloseEvent *evt);
     void on_genererPositions_clicked();
     void on_filtreSatellites_textChanged(const QString &arg1);
@@ -198,6 +208,7 @@ private slots:
     void on_listeTelescope_currentRowChanged(int currentRow);
     void on_lieuxObservation_currentIndexChanged(int index);
     void on_hauteurSatSuivi_currentIndexChanged(int index);
+    void on_ajusterDates_clicked();
     void on_skywatcher_clicked();
     void on_ouvrirSatelliteTracker_clicked();
     void on_pecDelai_toggled(bool checked);
