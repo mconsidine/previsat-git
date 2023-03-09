@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    9 mars 2023
  *
  */
 
@@ -114,6 +114,7 @@ public:
     static Configuration *instance();
 
     // Repertoires
+    const QString dirBnd() const;
     const QString &dirCfg() const;
     const QString &dirCommonData() const;
     const QString &dirCoord() const;
@@ -267,6 +268,7 @@ private:
 
     // Configuration logicielle
     // Repertoires
+    QString _dirBnd;
     QString _dirCfg;
     QString _dirCommonData;
     QString _dirCoord;

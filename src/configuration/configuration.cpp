@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    4 mars 2023
+ * >    9 mars 2023
  *
  */
 
@@ -235,6 +235,11 @@ Configuration *Configuration::instance()
 }
 
 // Repertoires
+const QString Configuration::dirBnd() const
+{
+    return _dirBnd;
+}
+
 const QString &Configuration::dirCfg() const
 {
     return _dirCfg;
@@ -652,6 +657,7 @@ void Configuration::DefinitionArborescences()
 
     // Autres repertoires
     _dirCommonData = dirCommon + QDir::separator() + "data";
+    _dirBnd = _dirCommonData + QDir::separator() + "boundaries";
     _dirDox = _dirExe + QDir::separator() + "dox";
     _dirCfg = _dirLocalData + QDir::separator() + "config";
     _dirCoord = _dirLocalData + QDir::separator() + "coordinates";

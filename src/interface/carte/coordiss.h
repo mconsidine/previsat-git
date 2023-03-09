@@ -21,7 +21,7 @@
  * >    coordiss.h
  *
  * Localisation
- * >    interface
+ * >    interface.carte
  *
  * Heritage
  * >    QFrame

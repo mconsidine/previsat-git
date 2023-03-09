@@ -21,7 +21,7 @@
  * >    carte.cpp
  *
  * Localisation
- * >    interface
+ * >    interface.carte
  *
  * Auteur
  * >    Astropedia
@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    9 mars 2023
  *
  */
 
@@ -40,17 +40,23 @@
 #include <QGraphicsSimpleTextItem>
 #include <QMouseEvent>
 #include <QSettings>
+#include <QXmlStreamReader>
 #include "ui_options.h"
 #include "ui_carte.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "carte.h"
 #include "coordiss.h"
+#include "itemgroup.h"
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
 #include "interface/ciel/ciel.h"
 #include "interface/options/options.h"
 #include "librairies/exceptions/previsatexception.h"
+
+#define DEG2PX(x) (_largeurCarte * (x) / MATHS::T360)
+#define ECHELLE_MAX (2.)
+#define FACTEUR_ECHELLE (1.05)
 
 
 // Registre
@@ -126,6 +132,9 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    _ui->carte->setCursor(Qt::ArrowCursor);
+    _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
+
     const int xCur = static_cast<int> (evt->position().x() + 1);
     const int yCur = static_cast<int> (evt->position().y() + 1);
 
@@ -133,11 +142,11 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
     if (settings.value("affichage/affcoord").toBool()) {
 
         // Longitude
-        const double lo0 = 180. - xCur / DEG2PXHZ;
+        const double lo0 = 180. - xCur * MATHS::T360 / _largeurCarte;
         const QString ew = (lo0 < 0.) ? tr("Est") : tr("Ouest");
 
         // Latitude
-        const double la0 = 90. - yCur / DEG2PXVT;
+        const double la0 = 90. - yCur * MATHS::T360 / _largeurCarte;
         const QString ns = (la0 < 0.) ? tr("Sud") : tr("Nord");
 
         // Affichage des coordonnees dans la barre de statut
@@ -151,8 +160,8 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
     while (it.hasNext() && !atrouve) {
 
         const Satellite sat = it.next();
-        const int lsat = qRound((180. - sat.longitude() * MATHS::RAD2DEG) * DEG2PXHZ) + 2;
-        const int bsat = qRound((90. - sat.latitude() * MATHS::RAD2DEG) * DEG2PXVT) + 2;
+        const int lsat = qRound(DEG2PX(180. - sat.longitude() * MATHS::RAD2DEG)) + 2;
+        const int bsat = qRound(DEG2PX(90. - sat.latitude() * MATHS::RAD2DEG)) + 2;
 
         // Distance au carre du curseur au satellite
         const int dt = (xCur - lsat) * (xCur - lsat) + (yCur - bsat) * (yCur - bsat);
@@ -179,8 +188,8 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
     if (settings.value("affichage/affsoleil").toBool()) {
 
         static bool asoleil = false;
-        const int lsol = qRound((180. - Configuration::instance()->soleil().longitude() * MATHS::RAD2DEG) * DEG2PXHZ) + 2;
-        const int bsol = qRound((90. - Configuration::instance()->soleil().latitude() * MATHS::RAD2DEG) * DEG2PXVT) + 2;
+        const int lsol = qRound(DEG2PX(180. - Configuration::instance()->soleil().longitude() * MATHS::RAD2DEG)) + 2;
+        const int bsol = qRound(DEG2PX(90. - Configuration::instance()->soleil().latitude() * MATHS::RAD2DEG)) + 2;
 
         // Distance au carre du curseur au Soleil
         const int dt = (xCur - lsol) * (xCur - lsol) + (yCur - bsol) * (yCur - bsol);
@@ -205,8 +214,8 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
     if (settings.value("affichage/afflune").toBool()) {
 
         static bool alune = false;
-        const int llun = qRound((180. - Configuration::instance()->lune().longitude() * MATHS::RAD2DEG) * DEG2PXHZ) + 2;
-        const int blun = qRound((90. - Configuration::instance()->lune().latitude() * MATHS::RAD2DEG) * DEG2PXVT) + 2;
+        const int llun = qRound(DEG2PX(180. - Configuration::instance()->lune().longitude() * MATHS::RAD2DEG)) + 2;
+        const int blun = qRound(DEG2PX(90. - Configuration::instance()->lune().latitude() * MATHS::RAD2DEG)) + 2;
 
         // Distance au carre du curseur a la Lune
         const int dt = (xCur - llun) * (xCur - llun) + (yCur - blun) * (yCur - blun);
@@ -250,8 +259,8 @@ void Carte::mousePressEvent(QMouseEvent *evt)
         while (it.hasNext() && !atrouve) {
 
             const Satellite sat = it.next();
-            const int lsat = qRound((180. - sat.longitude() * MATHS::RAD2DEG) * DEG2PXHZ) + 2;
-            const int bsat = qRound((90. - sat.latitude() * MATHS::RAD2DEG) * DEG2PXVT) + 2;
+            const int lsat = qRound(DEG2PX(180. - sat.longitude() * MATHS::RAD2DEG)) + 2;
+            const int bsat = qRound(DEG2PX(90. - sat.latitude() * MATHS::RAD2DEG)) + 2;
 
             // Distance au carre du curseur au satellite
             const int dt = (xCur - lsat) * (xCur - lsat) + (yCur - bsat) * (yCur - bsat);
@@ -276,8 +285,63 @@ void Carte::mousePressEvent(QMouseEvent *evt)
 
                 GestionnaireXml::EcritureConfiguration();
             }
+
             idx++;
         }
+    }
+
+    /* Retour */
+    return;
+}
+
+void Carte::resizeEvent(QResizeEvent *evt)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(evt)
+
+    /* Corps de la methode */
+    const int href = 2 * height() - 1;
+    const int lref = width();
+    const int lc = qMin(href, lref);
+    const int hc = (lc + 1) / 2;
+    _ui->carte->setGeometry((width() - lc) / 2, 0, lc, hc);
+
+    ChargementCarteDuMonde();
+    show();
+
+    /* Retour */
+    return;
+}
+
+void Carte::wheelEvent(QWheelEvent *evt)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->carte->underMouse()) {
+
+        static double echelle = 1.;
+
+        if (evt->angleDelta().y() < 0) {
+
+            if (echelle > 1.) {
+
+                _ui->carte->scale(1. / FACTEUR_ECHELLE, 1. / FACTEUR_ECHELLE);
+                echelle /= FACTEUR_ECHELLE;
+            }
+
+        } else if (echelle < ECHELLE_MAX) {
+            _ui->carte->scale(FACTEUR_ECHELLE, FACTEUR_ECHELLE);
+            echelle *= FACTEUR_ECHELLE;
+        }
+
+        emit SendCurrentScale(echelle);
+        _ui->carte->update();
+        _ui->carte->viewport()->update();
     }
 
     /* Retour */
@@ -297,91 +361,49 @@ void Carte::show()
 
     /* Initialisations */
     _mcc = (Configuration::instance()->issLive() && settings.value("affichage/styleWCC").toBool());
-
-    if (scene != nullptr) {
-        scene->deleteLater();
-    }
-
-    scene = new QGraphicsScene;
-    scene->setSceneRect(rect());
+    scene->clear();
+    _groupes.clear();
 
     /* Corps de la methode */
-    // Chargement de la carte
+    scene->addPixmap(_pixMap);
+
+    // Affichage du filtre de la carte en mode vision nocturne
     // TODO
-    const QString nomMap = //(_options->ui()->listeMap->currentIndex() == 0) ?
-            ":/resources/interface/map.png";/* :
-                Configuration::instance()->dirMap() + QDir::separator() +
-                Configuration::instance()->listeFicMap().at(_options->ui()->listeMap->currentIndex() - 1);*/
 
-    QPixmap pixMap;
-    pixMap.load(nomMap);
-    pixMap = pixMap.scaled(_ui->carte->size());
-    scene->addPixmap(pixMap);
+    // Affichage des frontieres
+    AffichageFrontieres();
 
-    if (!_ui->carte->isHidden()) {
+    // Affichage de la grille de coordonnees
+    AffichageGrille();
 
-        // Affichage du filtre de la carte en mode vision nocturne
-        // TODO
+    // Affichage du Soleil
+    AffichageSoleil();
 
+    // Zone d'ombre
+    AffichageZoneOmbre();
 
-        // Affichage de la grille de coordonnees
-        AffichageGrille();
+    // Affichage de la ZOE et de la SAA pour le Wall Command Center
+    AffichageSAA_ZOE();
 
-        // Affichage du Soleil
-        AffichageSoleil();
+    // Affichage des lieux d'observation
+    AffichageLieuxObservation();
 
-        // Zone d'ombre
-        AffichageZoneOmbre();
+    // Affichage des stations
+    AffichageStations();
 
-        // Affichage des stations
-        //AffichageStations();
+    // Affichage de la Lune
+    AffichageLune();
 
-        // Affichage de la Lune
-        AffichageLune();
+    // Affichage de la trace au sol du satellite par defaut
+    AffichageTraceAuSol();
 
-        // Affichage de la trace au sol du satellite par defaut
-        AffichageTraceAuSol();
+    // Affichage de la zone de visibilite des satellites
+    AffichageZoneVisibilite();
 
-        // Affichage de la zone de visibilite des satellites
-        AffichageZoneVisibilite();
-
-        // Affichage des satellites
-        AffichageSatellites();
-    }
+    // Affichage des satellites
+    AffichageSatellites();
 
     _ui->carte->setScene(scene);
-
-    /* Retour */
-    return;
-}
-
-void Carte::resizeEvent(QResizeEvent *evt)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    Q_UNUSED(evt)
-
-    /* Corps de la methode */
-    if (settings.value("affichage/proportionsCarte").toBool()) {
-
-        const int href = 2 * height() - 1;
-        const int lref = width();
-        const int lc = qMin(href, lref);
-        const int hc = (lc + 1) / 2;
-        _ui->carte->setGeometry((width() - lc) / 2, 0, lc, hc);
-
-    } else {
-        _ui->carte->setGeometry(geometry());
-    }
-
-    const int hcarte = _ui->carte->height() - 1;
-    const int lcarte = _ui->carte->width() - 1;
-
-    DEG2PXHZ = lcarte * (1. / MATHS::T360);
-    DEG2PXVT = hcarte * (2. / MATHS::T360);
-
-    show();
 
     /* Retour */
     return;
@@ -403,16 +425,16 @@ void Carte::AffichageSiteLancement(const QString &acronyme, const Observateur &s
 
     if (!acronyme.isEmpty()) {
 
-        const int lobs = qRound((180. - siteLancement.longitude() * MATHS::RAD2DEG) * DEG2PXHZ)+1;
-        const int bobs = qRound((90. - siteLancement.latitude() * MATHS::RAD2DEG) * DEG2PXVT)+1;
+        const int lobs = qRound(DEG2PX(180. - siteLancement.longitude() * MATHS::RAD2DEG))+1;
+        const int bobs = qRound(DEG2PX(90. - siteLancement.latitude() * MATHS::RAD2DEG))+1;
 
         scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
         scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
 
         QGraphicsSimpleTextItem * const txtObs = new QGraphicsSimpleTextItem(acronyme);
         const int lng = static_cast<int> (txtObs->boundingRect().width());
-        const int xnobs = ((lobs + 7 + lng) > _ui->carte->width()) ? lobs - lng - 1 : lobs + 4;
-        const int ynobs = ((bobs + 12) > _ui->carte->height()) ? bobs - 12 : bobs;
+        const int xnobs = ((lobs + 7 + lng) > _largeurCarte) ? lobs - lng - 1 : lobs + 4;
+        const int ynobs = ((bobs + 12) > _hauteurCarte) ? bobs - 12 : bobs;
 
         txtObs->setBrush(Qt::white);
         txtObs->setPos(xnobs, ynobs);
@@ -441,6 +463,36 @@ void Carte::AffichageSiteLancement(const QString &acronyme, const Observateur &s
  * Methodes privees
  */
 /*
+ * Affichage des frontieres
+ */
+void Carte::AffichageFrontieres()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (settings.value("affichage/affichageFrontieres").toBool()) {
+
+        try {
+
+            // Lecture des fichiers de frontieres
+            LectureFichierKml(Configuration::instance()->dirBnd() + QDir::separator() + "countries.kml");
+
+            for(unsigned int i=0; i<_groupes.size(); i++) {
+                scene->addItem(_groupes.at(i));
+            }
+
+        } catch (PreviSatException const &e) {
+            throw PreviSatException();
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Affichage de la grille de coordonnees
  */
 void Carte::AffichageGrille()
@@ -448,10 +500,8 @@ void Carte::AffichageGrille()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    _largeur = _ui->carte->width();
-    _hauteur = _ui->carte->height();
-    _largeurParalleles = _largeur - 24.;
-    _hauteurMeridiens = _hauteur - 24.;
+    _largeurParalleles = _largeurCarte - 24.;
+    _hauteurMeridiens = _hauteurCarte - 24.;
 
     _maxMeridiens = 12;
     _maxParalleles = 6;
@@ -482,11 +532,10 @@ void Carte::AffichageGrille()
         double ht = _hauteurMeridiens;
         for(unsigned int i=1; i<_maxMeridiens; i++) {
 
-            const double lon = _stepMeridiens * i;
-            const double x = DEG2PXHZ * lon;
+            const double x = DEG2PX(_stepMeridiens * i);
 
             if (Configuration::instance()->issLive()) {
-                ht = (((i % 2) == 0) || (i == 11) || (i == 13)) ? _hauteurMeridiens : _hauteur;
+                ht = (((i % 2) == 0) || (i == 11) || (i == 13)) ? _hauteurMeridiens : _hauteurCarte;
             }
 
             scene->addLine(x, 0., x, ht, (i == (_maxMeridiens / 2)) ? pen : pen2);
@@ -496,11 +545,10 @@ void Carte::AffichageGrille()
         double lg = _largeurParalleles;
         for(unsigned int i=1; i<_maxParalleles; i++) {
 
-            const double lat = _stepParalleles * i;
-            const double y = DEG2PXVT * lat;
+            const double y = DEG2PX(_stepParalleles * i);
 
             if (Configuration::instance()->issLive()) {
-                lg = (((i % 2) == 0) || (i == 5) || (i == 7)) ? _largeurParalleles : _largeur;
+                lg = (((i % 2) == 0) || (i == 5) || (i == 7)) ? _largeurParalleles : _largeurCarte;
             }
 
             scene->addLine(0., y, lg, y, (i == (_maxParalleles / 2)) ? pen : pen2);
@@ -508,12 +556,12 @@ void Carte::AffichageGrille()
 
         // Tropiques
         pen2.setStyle(Qt::DashDotLine);
-        scene->addLine(0, 66.55 * DEG2PXVT, _largeur, 66.55 * DEG2PXVT, pen2);
-        scene->addLine(0, 113.45 * DEG2PXVT, _largeur, 113.45 * DEG2PXVT, pen2);
+        scene->addLine(0, DEG2PX(66.55), _largeurCarte, DEG2PX(66.55), pen2);
+        scene->addLine(0, DEG2PX(113.45), _largeurCarte, DEG2PX(113.45), pen2);
 
         // Cercles polaires
-        scene->addLine(0, 23.45 * DEG2PXVT, _largeur, 23.45 * DEG2PXVT, pen2);
-        scene->addLine(0, 156.55 * DEG2PXVT, _largeur, 156.55 * DEG2PXVT, pen2);
+        scene->addLine(0, DEG2PX(23.45), _largeurCarte, DEG2PX(23.45), pen2);
+        scene->addLine(0, DEG2PX(156.55), _largeurCarte, DEG2PX(156.55), pen2);
     }
 
     // Affichage de la SAA
@@ -522,11 +570,51 @@ void Carte::AffichageGrille()
         const QBrush alpha = QBrush(QColor::fromRgb(255, 0, 0, 50));
         QVector<QPointF> zoneSAA;
         for(int i=0; i<59; i++) {
-            zoneSAA.append(QPointF((180. + tabSAA[i][0]) * DEG2PXHZ, (90. - tabSAA[i][1]) * DEG2PXVT));
+            zoneSAA.append(QPointF(DEG2PX(180. + tabSAA[i][0]), DEG2PX(90. - tabSAA[i][1])));
         }
 
         const QPolygonF poly(zoneSAA);
         scene->addPolygon(poly, QPen(Qt::NoBrush, 0), alpha);
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Affichage des lieux d'observation
+ */
+void Carte::AffichageLieuxObservation()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QPen crayon(Qt::white);
+    crayon.setCosmetic(true);
+
+    /* Corps de la methode */
+    QGraphicsSimpleTextItem * txtObs;
+    const int nbMax = static_cast<int> ((settings.value("affichage/affnomlieu") == QVariant(Qt::Unchecked)) ?
+                                            0 : Configuration::instance()->observateurs().size() - 1);
+    for(int j=nbMax; j>=0; j--) {
+
+        const int lobs = qRound(DEG2PX(180. - Configuration::instance()->observateurs().at(j).longitude() * MATHS::RAD2DEG))+1;
+        const int bobs = qRound(DEG2PX(90. - Configuration::instance()->observateurs().at(j).latitude() * MATHS::RAD2DEG))+1;
+
+        scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
+        scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
+
+        if ((j == 0) || (settings.value("affichage/affnomlieu") == QVariant(Qt::Checked))) {
+
+            txtObs = new QGraphicsSimpleTextItem(Configuration::instance()->observateurs().at(j).nomlieu());
+            const int lng = static_cast<int> (txtObs->boundingRect().width());
+            const int xnobs = ((lobs + 7 + lng) > _largeurCarte) ? lobs - lng - 1 : lobs + 4;
+            const int ynobs = ((bobs + 12) > _hauteurCarte) ? bobs - 12 : bobs;
+
+            txtObs->setBrush(Qt::white);
+            txtObs->setPos(xnobs, ynobs);
+            scene->addItem(txtObs);
+        }
     }
 
     /* Retour */
@@ -549,8 +637,8 @@ void Carte::AffichageLune()
         pixlun.load(":/resources/interface/lune.png");
         pixlun = pixlun.scaled(17, 17);
 
-        const int llun = qRound((180. - Configuration::instance()->lune().longitude() * MATHS::RAD2DEG) * DEG2PXHZ);
-        const int blun = qRound((90. - Configuration::instance()->lune().latitude() * MATHS::RAD2DEG) * DEG2PXVT);
+        const int llun = qRound(DEG2PX(180. - Configuration::instance()->lune().longitude() * MATHS::RAD2DEG));
+        const int blun = qRound(DEG2PX(90. - Configuration::instance()->lune().latitude() * MATHS::RAD2DEG));
 
         QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
         QTransform transform;
@@ -563,21 +651,22 @@ void Carte::AffichageLune()
         transform.translate(-7, -7);
         lun->setTransform(transform);
 
-        if (((llun + 7) > _ui->carte->width()) || ((llun - 7) < 0)) {
+        if (((llun + 7) > _largeurCarte) || ((llun - 7) < 0)) {
 
             QGraphicsPixmapItem * const lun2 = scene->addPixmap(pixlun);
 
-            if ((llun + 7) > _ui->carte->width()) {
-                transform2.translate(llun - _ui->carte->width(), blun);
+            if ((llun + 7) > _largeurCarte) {
+                transform2.translate(llun - _largeurCarte, blun);
             }
 
             if ((llun - 7) < 0) {
-                transform2.translate(llun + _ui->carte->width(), blun);
+                transform2.translate(llun + _largeurCarte, blun);
             }
 
             if (settings.value("affichage/rotationLune").toBool() && (Configuration::instance()->observateur().latitude() < 0.)) {
                 transform2.rotate(180.);
             }
+
             transform2.translate(-7, -7);
             lun2->setTransform(transform2);
         }
@@ -606,7 +695,7 @@ void Carte::AffichageLune()
 /*
  * Affichage par defaut d'un satellite (sans icone)
  */
-void Carte::AffichageSatelliteDefaut(const Satellite &satellite, const int lsat, const int bsat, const int lcarte, const int hcarte) const
+void Carte::AffichageSatelliteDefaut(const Satellite &satellite, const int lsat, const int bsat) const
 {
     /* Declarations des variables locales */
     QColor couleur;
@@ -639,8 +728,8 @@ void Carte::AffichageSatelliteDefaut(const Satellite &satellite, const int lsat,
 
             QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(satellite.elementsOrbitaux().nom);
             const int lng = static_cast<int> (txtSat->boundingRect().width());
-            const int xnsat = (lsat + 4 + lng > lcarte) ? lsat - lng - 1 : lsat + 4;
-            const int ynsat = (bsat + 9 > hcarte) ? bsat - 12 : bsat;
+            const int xnsat = (lsat + 4 + lng > _largeurCarte) ? lsat - lng - 1 : lsat + 4;
+            const int ynsat = (bsat + 9 > _hauteurCarte) ? bsat - 12 : bsat;
 
             txtSat->setBrush(Qt::white);
             txtSat->setPos(xnsat, ynsat);
@@ -673,8 +762,8 @@ void Carte::AffichageSatellites()
 
         if (satellites.at(isat).altitude() >= 0.) {
 
-            const int lsat = qRound((180. - satellites.at(isat).longitude() * MATHS::RAD2DEG) * DEG2PXHZ)+1;
-            const int bsat = qRound((90. - satellites.at(isat).latitude() * MATHS::RAD2DEG) * DEG2PXVT)+1;
+            const int lsat = qRound(DEG2PX(180. - satellites.at(isat).longitude() * MATHS::RAD2DEG))+1;
+            const int bsat = qRound(DEG2PX(90. - satellites.at(isat).latitude() * MATHS::RAD2DEG))+1;
 
             if (_mcc || settings.value("affichage/afficone").toBool()) {
 
@@ -697,13 +786,13 @@ void Carte::AffichageSatellites()
                 if (listeIcones.isEmpty()) {
 
                     // L'icone du satellite n'a pas ete trouvee, affichage par defaut
-                    AffichageSatelliteDefaut(satellites.at(isat), lsat, bsat, _ui->carte->width(), _ui->carte->height());
+                    AffichageSatelliteDefaut(satellites.at(isat), lsat, bsat);
 
                 } else {
 
                     // Affichage de l'icone satellite
                     img = QPixmap(listeIcones.first());
-                    img = img.scaled(qMin(_ui->carte->width() / 12, img.width()), qMin(_ui->carte->height() / 6, img.height()));
+                    img = img.scaled(qMin(_largeurCarte / 12, img.width()), qMin(_hauteurCarte / 6, img.height()));
 
                     pm = scene->addPixmap(img);
 
@@ -731,10 +820,10 @@ void Carte::AffichageSatellites()
                         pm2 = scene->addPixmap(img);
                         transform.reset();
 
-                        if (lsat > _ui->carte->width() / 2) {
-                            transform.translate(lsat - _ui->carte->width(), bsat);
+                        if (lsat > _largeurCarte / 2) {
+                            transform.translate(lsat - _largeurCarte, bsat);
                         } else {
-                            transform.translate(lsat + _ui->carte->width(), bsat);
+                            transform.translate(lsat + _largeurCarte, bsat);
                         }
 
                         transform.rotate(angle);
@@ -743,7 +832,7 @@ void Carte::AffichageSatellites()
                     }
                 }
             } else {
-                AffichageSatelliteDefaut(satellites.at(isat), lsat, bsat, _ui->carte->width(), _ui->carte->height());
+                AffichageSatelliteDefaut(satellites.at(isat), lsat, bsat);
             }
         }
     }
@@ -763,8 +852,8 @@ void Carte::AffichageSoleil()
 
     /* Corps de la methode */
     const Soleil &soleil = Configuration::instance()->soleil();
-    _lsol = qRound((180. - soleil.longitude() * MATHS::RAD2DEG) * DEG2PXHZ);
-    _bsol = qRound((90. - soleil.latitude() * MATHS::RAD2DEG) * DEG2PXVT);
+    _lsol = qRound(DEG2PX(180. - soleil.longitude() * MATHS::RAD2DEG));
+    const int bsol = qRound(DEG2PX(90. - soleil.latitude() * MATHS::RAD2DEG));
 
     if (settings.value("affichage/affsoleil").toBool()) {
 
@@ -774,7 +863,7 @@ void Carte::AffichageSoleil()
         pixsol.load(iconeSoleil);
 
         QTransform transform;
-        transform.translate(_lsol, _bsol);
+        transform.translate(_lsol, bsol);
 
         if (_mcc) {
             transform.translate(-15, -10);
@@ -786,17 +875,17 @@ void Carte::AffichageSoleil()
         QGraphicsPixmapItem * const sol = scene->addPixmap(pixsol);
         sol->setTransform(transform);
 
-        if (((_lsol + 7) > _ui->carte->width()) || ((_lsol - 7) < 0)) {
+        if (((_lsol + 7) > _largeurCarte) || ((_lsol - 7) < 0)) {
 
             QGraphicsPixmapItem * const sol2 = scene->addPixmap(pixsol);
             transform.reset();
 
-            if ((_lsol + 7) > _ui->carte->width()) {
-                transform.translate(_lsol - _ui->carte->width(), _bsol);
+            if ((_lsol + 7) > _largeurCarte) {
+                transform.translate(_lsol - _largeurCarte, bsol);
             }
 
             if ((_lsol - 7) < 0) {
-                transform.translate(_lsol + _ui->carte->width(), _bsol);
+                transform.translate(_lsol + _largeurCarte, bsol);
             }
 
             transform.translate(-7, -7);
@@ -842,8 +931,8 @@ void Carte::AffichageStations()
 
                 const Observateur station = Configuration::instance()->mapStations()[acronyme];
 
-                const int lsta = qRound((180. - station.longitude() * MATHS::RAD2DEG) * DEG2PXHZ);
-                const int bsta = qRound((90. - station.latitude() * MATHS::RAD2DEG) * DEG2PXVT);
+                const int lsta = qRound(DEG2PX(180. - station.longitude() * MATHS::RAD2DEG));
+                const int bsta = qRound(DEG2PX(90. - station.latitude() * MATHS::RAD2DEG));
 
                 scene->addLine(lsta-4, bsta, lsta+4, bsta, crayon);
                 scene->addLine(lsta, bsta-4, lsta, bsta+4, crayon);
@@ -868,20 +957,20 @@ void Carte::AffichageStations()
                     Satellite sat = Configuration::instance()->listeSatellites().first();
                     sat.CalculCercleAcquisition(station);
 
-                    lsat1 = sat.zone().at(0).x() * DEG2PXHZ;
-                    bsat1 = sat.zone().at(0).y() * DEG2PXVT + 1;
+                    lsat1 = DEG2PX(sat.zone().at(0).x());
+                    bsat1 = DEG2PX(sat.zone().at(0).y()) + 1;
 
                     ils = 99999;
                     for(int k=1; k<361; k++) {
 
-                        lsat2 = sat.zone().at(k).x() * DEG2PXHZ;
-                        bsat2 = sat.zone().at(k).y() * DEG2PXVT + 1;
+                        lsat2 = DEG2PX(sat.zone().at(k).x());
+                        bsat2 = DEG2PX(sat.zone().at(k).y()) + 1;
 
-                        if (fabs(lsat2 - lsat1) > (_ui->carte->width() / 2)) {
+                        if (fabs(lsat2 - lsat1) > (_largeurCarte / 2)) {
                             if (lsat2 < lsat1) {
-                                lsat2 += _ui->carte->width();
+                                lsat2 += _largeurCarte;
                             } else {
-                                lsat1 += _ui->carte->width();
+                                lsat1 += _largeurCarte;
                             }
                             ils = k;
                         }
@@ -889,13 +978,14 @@ void Carte::AffichageStations()
                         scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon2);
 
                         if (ils == k) {
-                            lsat1 -= _ui->carte->width() + 1;
-                            lsat2 -= _ui->carte->width() + 1;
+                            lsat1 -= _largeurCarte + 1;
+                            lsat2 -= _largeurCarte + 1;
                             scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon2);
                             ils = 0;
                         }
-                        lsat1 = sat.zone().at(k).x() * DEG2PXHZ;
-                        bsat1 = sat.zone().at(k).y() * DEG2PXVT + 1;
+
+                        lsat1 = DEG2PX(sat.zone().at(k).x());
+                        bsat1 = DEG2PX(sat.zone().at(k).y()) + 1;
                     }
                 }
             }
@@ -935,19 +1025,19 @@ void Carte::AffichageTraceAuSol()
                 const QColor crimson(220, 20, 60);
                 const QColor bleuClair(173, 216, 230);
 
-                double lsat1 = traceAuSol.first().longitude * DEG2PXHZ;
-                double bsat1 = traceAuSol.first().latitude * DEG2PXVT;
+                double lsat1 = DEG2PX(traceAuSol.first().longitude);
+                double bsat1 = DEG2PX(traceAuSol.first().latitude);
 
                 for(int j=1; j<traceAuSol.size()-1; j++) {
 
-                    lsat2 = traceAuSol.at(j).longitude * DEG2PXHZ;
-                    bsat2 = traceAuSol.at(j).latitude * DEG2PXVT;
+                    lsat2 = DEG2PX(traceAuSol.at(j).longitude);
+                    bsat2 = DEG2PX(traceAuSol.at(j).latitude);
 
-                    if (fabs(lsat2 - lsat1) > _ui->carte->width() / 2) {
+                    if (fabs(lsat2 - lsat1) > _largeurCarte / 2) {
                         if (lsat2 < lsat1) {
-                            lsat2 += _ui->carte->width();
+                            lsat2 += _largeurCarte;
                         } else {
-                            lsat1 += _ui->carte->width();
+                            lsat1 += _largeurCarte;
                         }
                         ils = j;
                     }
@@ -983,8 +1073,8 @@ void Carte::AffichageTraceAuSol()
                                 txtOrb->setBrush(Qt::white);
 
                                 const int lng = static_cast<int> (txtOrb->boundingRect().width());
-                                const double xnorb = (lsat2 - lng < 0) ? lsat2 + _ui->carte->width() - lng - 8 : lsat2 - lng;
-                                txtOrb->setPos(xnorb, _ui->carte->height() / 2 - 18);
+                                const double xnorb = (lsat2 - lng < 0) ? lsat2 + _largeurCarte - lng - 8 : lsat2 - lng;
+                                txtOrb->setPos(xnorb, _largeurCarte / 2 - 18);
                                 scene->addItem(txtOrb);
                             }
 
@@ -1036,12 +1126,12 @@ void Carte::AffichageTraceAuSol()
                     scene->addLine(lig, crayon);
 
                     if (ils == j) {
-                        lsat2 -= _ui->carte->width();
+                        lsat2 -= _largeurCarte;
                         scene->addLine(lig, crayon);
                         ils = 0;
                     }
-                    lsat1 = traceAuSol.at(j).longitude * DEG2PXHZ;
-                    bsat1 = traceAuSol.at(j).latitude * DEG2PXVT;
+                    lsat1 = DEG2PX(traceAuSol.at(j).longitude);
+                    bsat1 = DEG2PX(traceAuSol.at(j).latitude);
                 }
             }
         }
@@ -1098,13 +1188,13 @@ void Carte::AffichageZoneOmbre()
             // Coordonnees de la zone d'ombre, en pixels
             zone.clear();
             idxIntersection.clear();
-            zone.append(QPointF(soleil.zone().at(0).x() * DEG2PXHZ, soleil.zone().at(0).y() * DEG2PXVT));
+            zone.append(QPointF(DEG2PX(soleil.zone().at(0).x()), DEG2PX(soleil.zone().at(0).y())));
 
             for(unsigned int j=1; j<soleil.zone().size(); j++) {
 
-                zone.append(QPointF(soleil.zone().at(j).x() * DEG2PXHZ, soleil.zone().at(j).y() * DEG2PXVT));
+                zone.append(QPointF(DEG2PX(soleil.zone().at(j).x()), DEG2PX(soleil.zone().at(j).y())));
 
-                if (fabs(zone.at(j).x() - zone.at(j-1).x()) > (_ui->carte->width() / 2)) {
+                if (fabs(zone.at(j).x() - zone.at(j-1).x()) > (_largeurCarte / 2)) {
                     idxIntersection.append(j);
                 }
             }
@@ -1133,31 +1223,31 @@ void Carte::AffichageZoneOmbre()
                     // Ajout de points pour completer la zone d'ombre sur les bords de la carte
                     if (zone.first().x() < zone.last().x()) {
 
-                        zone.insert(0, QPointF(zone.last().x() - _ui->carte->width(), zone.last().y()));
+                        zone.insert(0, QPointF(zone.last().x() - _largeurCarte, zone.last().y()));
 
                         if (soleil.latitude() > 0.) {
-                            zone.insert(0, QPointF(zone.last().x() - _ui->carte->width(), _ui->carte->height()));
-                            zone.insert(0, QPointF(zone.at(2).x() + _ui->carte->width(), _ui->carte->height()));
+                            zone.insert(0, QPointF(zone.last().x() - _largeurCarte, _hauteurCarte));
+                            zone.insert(0, QPointF(zone.at(2).x() + _largeurCarte, _hauteurCarte));
 
                         } else {
-                            zone.insert(0, QPointF(zone.last().x() - _ui->carte->width(), -1.));
-                            zone.insert(0, QPointF(zone.at(2).x() + _ui->carte->width(), -1.));
+                            zone.insert(0, QPointF(zone.last().x() - _largeurCarte, -1.));
+                            zone.insert(0, QPointF(zone.at(2).x() + _largeurCarte, -1.));
                         }
-                        zone.insert(0, QPointF(zone.at(3).x() + _ui->carte->width(), zone.at(3).y()));
+                        zone.insert(0, QPointF(zone.at(3).x() + _largeurCarte, zone.at(3).y()));
 
                     } else {
 
-                        zone.insert(0, QPointF(zone.last().x() + _ui->carte->width(), zone.last().y()));
+                        zone.insert(0, QPointF(zone.last().x() + _largeurCarte, zone.last().y()));
 
                         if (soleil.latitude() > 0.) {
-                            zone.insert(0, QPointF(zone.last().x() + _ui->carte->width(), _ui->carte->height()));
-                            zone.insert(0, QPointF(zone.at(2).x() - _ui->carte->width(), _ui->carte->height()));
+                            zone.insert(0, QPointF(zone.last().x() + _largeurCarte, _hauteurCarte));
+                            zone.insert(0, QPointF(zone.at(2).x() - _largeurCarte, _hauteurCarte));
 
                         } else {
-                            zone.insert(0, QPointF(zone.last().x() + _ui->carte->width(), -1.));
-                            zone.insert(0, QPointF(zone.at(2).x() - _ui->carte->width(), -1.));
+                            zone.insert(0, QPointF(zone.last().x() + _largeurCarte, -1.));
+                            zone.insert(0, QPointF(zone.at(2).x() - _largeurCarte, -1.));
                         }
-                        zone.insert(0, QPointF(zone.at(3).x() - _ui->carte->width(), zone.at(3).y()));
+                        zone.insert(0, QPointF(zone.at(3).x() - _largeurCarte, zone.at(3).y()));
                     }
 
                     const QPolygonF poly(zone);
@@ -1185,30 +1275,30 @@ void Carte::AffichageZoneOmbre()
                     if (zone1.at(jmed-1).x() > zone2.first().x()) {
 
                         if (zone1.size() > jmed) {
-                            zone1.insert(jmed, QPointF(zone2.last().x() + _ui->carte->width(), zone2.last().y()));
-                            zone1.insert(jmed, QPointF(zone2.first().x() + _ui->carte->width(), zone2.first().y()));
+                            zone1.insert(jmed, QPointF(zone2.last().x() + _largeurCarte, zone2.last().y()));
+                            zone1.insert(jmed, QPointF(zone2.first().x() + _largeurCarte, zone2.first().y()));
 
                         } else {
-                            zone1.append(QPointF(zone2.last().x() + _ui->carte->width(), zone2.last().y()));
-                            zone1.append(QPointF(zone2.first().x() + _ui->carte->width(), zone2.first().y()));
+                            zone1.append(QPointF(zone2.last().x() + _largeurCarte, zone2.last().y()));
+                            zone1.append(QPointF(zone2.first().x() + _largeurCarte, zone2.first().y()));
                         }
 
-                        zone2.insert(0, QPointF(zone1.at(jmed-1).x() - _ui->carte->width(), zone1.at(jmed-1).y()));
-                        zone2.insert(0, QPointF(zone1.at(jmed+2).x() - _ui->carte->width(), zone1.at(jmed+2).y()));
+                        zone2.insert(0, QPointF(zone1.at(jmed-1).x() - _largeurCarte, zone1.at(jmed-1).y()));
+                        zone2.insert(0, QPointF(zone1.at(jmed+2).x() - _largeurCarte, zone1.at(jmed+2).y()));
 
                     } else {
 
                         if (zone1.size() > jmed) {
-                            zone1.insert(jmed, QPointF(zone2.last().x() - _ui->carte->width(), zone2.last().y()));
-                            zone1.insert(jmed, QPointF(zone2.first().x() - _ui->carte->width(), zone2.first().y()));
+                            zone1.insert(jmed, QPointF(zone2.last().x() - _largeurCarte, zone2.last().y()));
+                            zone1.insert(jmed, QPointF(zone2.first().x() - _largeurCarte, zone2.first().y()));
 
                         } else {
-                            zone1.append(QPointF(zone2.last().x() - _ui->carte->width(), zone2.last().y()));
-                            zone1.append(QPointF(zone2.first().x() - _ui->carte->width(), zone2.first().y()));
+                            zone1.append(QPointF(zone2.last().x() - _largeurCarte, zone2.last().y()));
+                            zone1.append(QPointF(zone2.first().x() - _largeurCarte, zone2.first().y()));
                         }
 
-                        zone2.insert(0, QPointF(zone1.at(jmed-1).x() + _ui->carte->width(), zone1.at(jmed-1).y()));
-                        zone2.insert(0, QPointF(zone1.at(jmed+2).x() + _ui->carte->width(), zone1.at(jmed+2).y()));
+                        zone2.insert(0, QPointF(zone1.at(jmed-1).x() + _largeurCarte, zone1.at(jmed-1).y()));
+                        zone2.insert(0, QPointF(zone1.at(jmed+2).x() + _largeurCarte, zone1.at(jmed+2).y()));
                     }
 
                     const QPolygonF poly1(zone1);
@@ -1223,22 +1313,22 @@ void Carte::AffichageZoneOmbre()
             } else {
 
                 // Cas des equinoxes (on trace un terminateur vertical)
-                const double x1 = qMin(soleil.zone().at(90).x(), soleil.zone().at(270).x()) * DEG2PXHZ;
-                const double x2 = qMax(soleil.zone().at(90).x(), soleil.zone().at(270).x()) * DEG2PXHZ;
+                const double x1 = DEG2PX(qMin(soleil.zone().at(90).x(), soleil.zone().at(270).x()));
+                const double x2 = DEG2PX(qMax(soleil.zone().at(90).x(), soleil.zone().at(270).x()));
 
-                if ((_lsol > (_ui->carte->width() / 4)) && (_lsol < (3 * _ui->carte->width()) / 4)) {
+                if ((_lsol > (_largeurCarte / 4)) && (_lsol < (3 * _largeurCarte) / 4)) {
 
                     zone1.clear();
                     zone1.append(QPointF(-1., -1.));
                     zone1.append(QPointF(x1, -1.));
-                    zone1.append(QPointF(x1, _ui->carte->height()));
-                    zone1.append(QPointF(-1., _ui->carte->height()));
+                    zone1.append(QPointF(x1, _hauteurCarte));
+                    zone1.append(QPointF(-1., _hauteurCarte));
 
                     zone2.clear();
-                    zone2.append(QPointF(_ui->carte->width(), -1.));
+                    zone2.append(QPointF(_largeurCarte, -1.));
                     zone2.append(QPointF(x2, -1.));
-                    zone2.append(QPointF(x2, _ui->carte->height()));
-                    zone2.append(QPointF(_ui->carte->width(), _ui->carte->height()));
+                    zone2.append(QPointF(x2, _hauteurCarte));
+                    zone2.append(QPointF(_largeurCarte, _hauteurCarte));
 
                     const QPolygonF poly1(zone1);
                     const QPolygonF poly2(zone2);
@@ -1249,8 +1339,8 @@ void Carte::AffichageZoneOmbre()
 
                     zone1.clear();
                     zone1.append(QPointF(x1, -1.));
-                    zone1.append(QPointF(x1, _ui->carte->height()));
-                    zone1.append(QPointF(x2, _ui->carte->height()));
+                    zone1.append(QPointF(x1, _hauteurCarte));
+                    zone1.append(QPointF(x2, _hauteurCarte));
                     zone1.append(QPointF(x2, -1.));
 
                     const QPolygonF poly1(zone1);
@@ -1271,7 +1361,7 @@ void Carte::AffichageZoneOmbre()
             if (((i % 2) == 0) || !_mcc) {
 
                 const double lon = _stepMeridiens * i;
-                const double x = DEG2PXHZ * lon;
+                const double x = DEG2PX(lon);
 
                 QGraphicsSimpleTextItem * const txt = new QGraphicsSimpleTextItem(QString("%1").arg(fabs(lon - 180.)));
                 txt->setBrush(couleur);
@@ -1286,13 +1376,13 @@ void Carte::AffichageZoneOmbre()
         QGraphicsSimpleTextItem * txtl = new QGraphicsSimpleTextItem(tr("W", "Symbol for West"));
         txtl->setBrush(couleur);
         txtl->setFont(police);
-        txtl->setPos(DEG2PXHZ * 165. - txtl->boundingRect().width() * 0.5, _hauteurMeridiens + 4.);
+        txtl->setPos(DEG2PX(165.) - txtl->boundingRect().width() * 0.5, _hauteurMeridiens + 4.);
         scene->addItem(txtl);
 
         txtl = new QGraphicsSimpleTextItem(tr("E", "Symbol for East"));
         txtl->setBrush(couleur);
         txtl->setFont(police);
-        txtl->setPos(DEG2PXHZ * 195. - txtl->boundingRect().width() * 0.5, _hauteurMeridiens + 4.);
+        txtl->setPos(DEG2PX(195.) - txtl->boundingRect().width() * 0.5, _hauteurMeridiens + 4.);
         scene->addItem(txtl);
 
         // Etiquettes de latitude
@@ -1301,14 +1391,14 @@ void Carte::AffichageZoneOmbre()
             if (((i % 2) == 0) || !_mcc) {
 
                 const double lat = _stepParalleles * i;
-                const double y = DEG2PXVT * lat;
+                const double y = DEG2PX(lat);
 
                 QGraphicsSimpleTextItem * const txt = new QGraphicsSimpleTextItem(QString("%1").arg(fabs(lat - 90.)));
                 txt->setBrush(Qt::lightGray);
                 txt->setFont(police);
 
                 const double dy = txt->boundingRect().height() * 0.5 - 0.5;
-                txt->setPos(_largeur - 7. - txt->boundingRect().width(), y - dy);
+                txt->setPos(_largeurCarte - 7. - txt->boundingRect().width(), y - dy);
                 scene->addItem(txt);
             }
         }
@@ -1316,24 +1406,38 @@ void Carte::AffichageZoneOmbre()
         txtl = new QGraphicsSimpleTextItem(tr("N", "Symbol for North"));
         txtl->setFont(police);
         txtl->setBrush(Qt::lightGray);
-        txtl->setPos(_largeur - 7. - txtl->boundingRect().width(), DEG2PXVT * 75. - txtl->boundingRect().height() * 0.5);
+        txtl->setPos(_largeurCarte - 7. - txtl->boundingRect().width(), DEG2PX(75.) - txtl->boundingRect().height() * 0.5);
         scene->addItem(txtl);
 
         txtl = new QGraphicsSimpleTextItem(tr("S", "Symbol for South"));
         txtl->setFont(police);
         txtl->setBrush(Qt::lightGray);
-        txtl->setPos(_largeur - 7. - txtl->boundingRect().width(), DEG2PXVT * 105. - txtl->boundingRect().height() * 0.5);
+        txtl->setPos(_largeurCarte - 7. - txtl->boundingRect().width(), DEG2PX(105.) - txtl->boundingRect().height() * 0.5);
         scene->addItem(txtl);
     }
 
-    // Affichage de la ZOE et de la SAA pour le Wall Command Center
-    if (settings.value("affichage/affSAA_ZOE").toBool() && Configuration::instance()->issLive() && !Configuration::instance()->listeSatellites().isEmpty()
+    /* Retour */
+    return;
+}
+
+/*
+ * Affichage de la ZOE et de la SAA pour le Wall Command Center
+ */
+void Carte::AffichageSAA_ZOE()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (settings.value("affichage/affSAA_ZOE").toBool() && Configuration::instance()->issLive()
+            && !Configuration::instance()->listeSatellites().isEmpty()
             && (Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale())) {
 
         // Zone Of Exclusion (ZOE)
         QGraphicsSimpleTextItem * const txtZOE = new QGraphicsSimpleTextItem("ZOE");
-        const double xnZOE = 252. * DEG2PXHZ;
-        const double ynZOE = 66. * DEG2PXVT;
+        const double xnZOE = DEG2PX(252.);
+        const double ynZOE = DEG2PX(66.);
 
         txtZOE->setBrush((settings.value("affichage/coulZOE").toUInt() == 0) ? Qt::black : Qt::white);
         const QFont policeZOE(settings.value("affichage/policeWCC").toString(), 14);
@@ -1345,8 +1449,8 @@ void Carte::AffichageZoneOmbre()
 
         // South Atlantic Anomaly (SAA)
         QGraphicsSimpleTextItem * const txtSAA = new QGraphicsSimpleTextItem("SAA");
-        const double xnSAA = 150. * DEG2PXHZ;
-        const double ynSAA = 125. * DEG2PXVT;
+        const double xnSAA = DEG2PX(150.);
+        const double ynSAA = DEG2PX(125.);
 
         txtSAA->setBrush(Qt::white);
         const QFont policeSAA(settings.value("affichage/policeWCC").toString(), 11);
@@ -1359,37 +1463,12 @@ void Carte::AffichageZoneOmbre()
         zoneSAA_ISS.resize(16);
 
         for(int i=0; i<zoneSAA_ISS.size(); i++) {
-            zoneSAA_ISS[i].setX(qRound((180. - tabSAA_ISS[i][0]) * DEG2PXHZ));
-            zoneSAA_ISS[i].setY(qRound((90. - tabSAA_ISS[i][1]) * DEG2PXVT));
+            zoneSAA_ISS[i].setX(qRound(DEG2PX(180. - tabSAA_ISS[i][0])));
+            zoneSAA_ISS[i].setY(qRound(DEG2PX(90. - tabSAA_ISS[i][1])));
         }
 
         const QPolygonF poly1(zoneSAA_ISS);
         scene->addPolygon(poly1, QPen(Qt::white, (settings.value("affichage/styleWCC").toBool()) ? 2 : 1));
-    }
-
-    // Lieux d'observation
-    QGraphicsSimpleTextItem * txtObs;
-    const int nbMax = static_cast<int> ((settings.value("affichage/affvisib") == QVariant(Qt::Unchecked)) ?
-                                            0 : Configuration::instance()->observateurs().size() - 1);
-    for(int j=nbMax; j>=0; j--) {
-
-        const int lobs = qRound((180. - Configuration::instance()->observateurs().at(j).longitude() * MATHS::RAD2DEG) * DEG2PXHZ)+1;
-        const int bobs = qRound((90. - Configuration::instance()->observateurs().at(j).latitude() * MATHS::RAD2DEG) * DEG2PXVT)+1;
-
-        scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
-        scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
-
-        if ((j == 0) || (settings.value("affichage/affvisib") == QVariant(Qt::Checked))) {
-
-            txtObs = new QGraphicsSimpleTextItem(Configuration::instance()->observateurs().at(j).nomlieu());
-            const int lng = static_cast<int> (txtObs->boundingRect().width());
-            const int xnobs = ((lobs + 7 + lng) > _ui->carte->width()) ? lobs - lng - 1 : lobs + 4;
-            const int ynobs = ((bobs + 12) > _ui->carte->height()) ? bobs - 12 : bobs;
-
-            txtObs->setBrush(Qt::white);
-            txtObs->setPos(xnobs, ynobs);
-            scene->addItem(txtObs);
-        }
     }
 
     /* Retour */
@@ -1449,8 +1528,9 @@ void Carte::AffichageZoneVisibilite()
                                 txtSat->setFont(policeSat);
 
                                 const int lsat =
-                                        qRound((180. - Configuration::instance()->listeSatellites().at(isat).longitude() * MATHS::RAD2DEG) * DEG2PXHZ);
-                                const int bsat = qRound((90. - Configuration::instance()->listeSatellites().at(isat).latitude() * MATHS::RAD2DEG) * DEG2PXVT);
+                                        qRound(DEG2PX(180. - Configuration::instance()->listeSatellites().at(isat).longitude() * MATHS::RAD2DEG));
+                                const int bsat =
+                                        qRound(DEG2PX(90. - Configuration::instance()->listeSatellites().at(isat).latitude() * MATHS::RAD2DEG));
 
                                 crayon = QPen(QColor(satTDRS.rouge, satTDRS.vert, satTDRS.bleu), 2);
                                 crayon.setCosmetic(true);
@@ -1471,19 +1551,19 @@ void Carte::AffichageZoneVisibilite()
 
                 if ((satellites.at(isat).altitude() >= 0.) && (!satellites.at(isat).zone().empty())) {
 
-                    lsat1 = satellites.at(isat).zone().at(0).x() * DEG2PXHZ + 1;
-                    bsat1 = satellites.at(isat).zone().at(0).y() * DEG2PXVT + 1;
+                    lsat1 = DEG2PX(satellites.at(isat).zone().at(0).x()) + 1;
+                    bsat1 = DEG2PX(satellites.at(isat).zone().at(0).y()) + 1;
 
                     for(int j=1; j<361; j++) {
 
-                        lsat2 = satellites.at(isat).zone().at(j).x() * DEG2PXHZ + 1;
-                        bsat2 = satellites.at(isat).zone().at(j).y() * DEG2PXVT + 1;
+                        lsat2 = DEG2PX(satellites.at(isat).zone().at(j).x()) + 1;
+                        bsat2 = DEG2PX(satellites.at(isat).zone().at(j).y()) + 1;
 
-                        if (fabs(lsat2 - lsat1) > _ui->carte->width() / 2) {
+                        if (fabs(lsat2 - lsat1) > _largeurCarte / 2) {
                             if (lsat2 < lsat1) {
-                                lsat2 += _ui->carte->width();
+                                lsat2 += _largeurCarte;
                             } else {
-                                lsat1 += _ui->carte->width();
+                                lsat1 += _largeurCarte;
                             }
                             ils = j;
                             _als[isat] = true;
@@ -1492,13 +1572,13 @@ void Carte::AffichageZoneVisibilite()
                         scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
 
                         if (ils == j) {
-                            lsat1 -= _ui->carte->width() + 1;
-                            lsat2 -= _ui->carte->width() + 1;
+                            lsat1 -= _largeurCarte + 1;
+                            lsat2 -= _largeurCarte + 1;
                             scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
                             ils = 0;
                         }
-                        lsat1 = satellites.at(isat).zone().at(j).x() * DEG2PXHZ + 1;
-                        bsat1 = satellites.at(isat).zone().at(j).y() * DEG2PXVT + 1;
+                        lsat1 = DEG2PX(satellites.at(isat).zone().at(j).x()) + 1;
+                        bsat1 = DEG2PX(satellites.at(isat).zone().at(j).y()) + 1;
                     }
                 }
             }
@@ -1510,14 +1590,174 @@ void Carte::AffichageZoneVisibilite()
 }
 
 /*
+ * Chargement de la carte du monde
+ */
+void Carte::ChargementCarteDuMonde()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString map = settings.value("fichier/listeMap").toString().trimmed();
+    const QString nomMap = (map.isEmpty()) ? ":/resources/interface/map.png" : map;
+
+    /* Corps de la methode */
+    _pixMap.fill(palette().window().color());
+    _pixMap.load(nomMap);
+    _pixMap = _pixMap.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+    _largeurCarte = width();
+    _hauteurCarte = height();
+
+    scene->setSceneRect(0, 0, _largeurCarte, _hauteurCarte);
+
+    /* Retour */
+    return;
+}
+
+/*
  * Initialisation de la classe Carte
  */
 void Carte::Initialisation()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     qInfo() << "Début Initialisation" << metaObject()->className();
 
-    DEG2PXHZ = (1. / 0.45);
-    DEG2PXVT = (1. / 0.45);
+    _ui->carte->setAttribute(Qt::WA_Hover);
+    _ui->carte->setAttribute(Qt::WA_MouseTracking);
+    _ui->carte->setMouseTracking(true);
+    _ui->carte->viewport()->setMouseTracking(true);
+
+    _ui->carte->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    _ui->carte->setDragMode(QGraphicsView::ScrollHandDrag);
+
+    _ui->carte->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    _ui->carte->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    _ui->carte->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    _ui->carte->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+
+    _ui->carte->setCursor(Qt::ArrowCursor);
+    _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
+
+    // Chargement de la carte du monde
+    scene = new QGraphicsScene;
+    ChargementCarteDuMonde();
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Lecture des coordonnees dans le fichier de coordonnees geographiques
+ */
+QPainterPath Carte::LectureCoordonnees(const QString &coordonnees)
+{
+    /* Declarations des variables locales */
+    QPainterPath res;
+    QPolygonF poly;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (!coordonnees.isEmpty()) {
+
+        const QStringList latlng = coordonnees.split(QRegularExpression("[,\\s]"), Qt::SkipEmptyParts);
+
+        for (int i = 0; i < latlng.size(); i+=2) {
+            poly.append(QPointF(DEG2PX(latlng[i].toFloat() + 180.), DEG2PX(-latlng[i+1].toFloat() + 90.)));
+        }
+    }
+
+    res.addPolygon(poly);
+
+    /* Retour */
+    return res;
+}
+
+/*
+ * Lecture d'un fichier de coordonnees geographiques au format kml
+ */
+void Carte::LectureFichierKml(const QString &fichier, const bool visible, const double echelleMin)
+{
+    /* Declarations des variables locales */
+    static QStringList frontieres;
+
+    /* Initialisations */
+    ItemGroup *grp = new ItemGroup;
+
+    /* Corps de la methode */
+    if (frontieres.isEmpty()) {
+
+        QFileInfo ff(fichier);
+        if (!ff.exists()) {
+            qWarning() << "Le fichier de frontières" << ff.fileName() << "n'existe pas";
+            throw PreviSatException(tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME), MessageType::WARNING);
+        }
+
+        QFile fi(fichier);
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+            QXmlStreamReader kml(&fi);
+
+            while (!kml.atEnd() && !kml.hasError()) {
+
+                QXmlStreamReader::TokenType token = kml.readNext();
+
+                if (token == QXmlStreamReader::StartDocument) {
+                    continue;
+                }
+
+                if (token == QXmlStreamReader::StartElement) {
+
+                    if (kml.name().toString() == "name") {
+                        continue;
+                    }
+
+                    if (kml.name().toString() == "color") {
+                        continue;
+                    }
+
+                    if (kml.name().toString() == "coordinates") {
+
+                        frontieres.append(kml.readElementText());
+                        continue;
+                    }
+                }
+            }
+        }
+
+        fi.close();
+    }
+
+    QPen pen;
+    pen.setWidthF(1.);
+    pen.setColor((echelleMin > 0.) ? QColor("#999999") :  QColor("#CCCCCC"));
+    pen.setCosmetic(true);
+
+    QStringListIterator it(frontieres);
+    while (it.hasNext()) {
+
+        const QString frontiere = it.next();
+
+        QGraphicsPathItem * const path = new QGraphicsPathItem(LectureCoordonnees(frontiere));
+        path->setPen(pen);
+        grp->addToGroup(path);
+    }
+
+    if (echelleMin >= 0.) {
+        grp->setVisible(visible);
+        grp->setVisibleMin(echelleMin);
+        connect(this, &Carte::SendCurrentScale, grp, &ItemGroup::CheckVisibleMin);
+    }
+
+    _groupes.append(grp);
+
+    /* Retour */
+    return;
 }

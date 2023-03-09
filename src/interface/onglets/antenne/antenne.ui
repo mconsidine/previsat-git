@@ -262,7 +262,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="lbl_dopplerMontant">
        <property name="text">
-        <string>Doppler :</string>
+        <string extracomment="Doppler effect">Doppler :</string>
        </property>
       </widget>
      </item>
@@ -296,7 +296,7 @@
      <item row="6" column="0">
       <widget class="QLabel" name="lbl_modeMontant">
        <property name="text">
-        <string>Mode :</string>
+        <string extracomment="Beacon mode">Mode :</string>
        </property>
       </widget>
      </item>
@@ -313,7 +313,7 @@
      <item row="7" column="0">
       <widget class="QLabel" name="lbl_signalAppelMontant">
        <property name="text">
-        <string>Signal d'appel :</string>
+        <string extracomment="Callsign">Signal d'appel :</string>
        </property>
       </widget>
      </item>
@@ -330,7 +330,7 @@
      <item row="3" column="0">
       <widget class="QLabel" name="lbl_attenuationMontant">
        <property name="text">
-        <string>Atténuation :</string>
+        <string extracomment="Free space path loss">Atténuation :</string>
        </property>
       </widget>
      </item>
@@ -409,7 +409,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="lbl_dopplerDescendant">
        <property name="text">
-        <string>Doppler :</string>
+        <string extracomment="Doppler effect">Doppler :</string>
        </property>
       </widget>
      </item>
@@ -426,7 +426,7 @@
      <item row="3" column="0">
       <widget class="QLabel" name="lbl_attenuationDescendant">
        <property name="text">
-        <string>Atténuation :</string>
+        <string extracomment="Free space path loss">Atténuation :</string>
        </property>
       </widget>
      </item>
@@ -477,7 +477,7 @@
      <item row="6" column="0">
       <widget class="QLabel" name="lbl_modeDescendant">
        <property name="text">
-        <string>Mode :</string>
+        <string extracomment="Beacon mode">Mode :</string>
        </property>
       </widget>
      </item>
@@ -494,7 +494,7 @@
      <item row="7" column="0">
       <widget class="QLabel" name="lbl_signalAppelDescendant">
        <property name="text">
-        <string>Signal d'appel :</string>
+        <string extracomment="Callsign">Signal d'appel :</string>
        </property>
       </widget>
      </item>

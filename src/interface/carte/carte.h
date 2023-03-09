@@ -21,7 +21,7 @@
  * >    carte.h
  *
  * Localisation
- * >    interface
+ * >    interface.carte
  *
  * Heritage
  * >    QFrame
@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    18 octobre 2022
+ * >    9 mars 2023
  *
  */
 
@@ -50,10 +50,11 @@
 #pragma GCC diagnostic warning "-Wconversion"
 
 
+class QGraphicsScene;
 class Date;
+class ItemGroup;
 class Observateur;
 class Satellite;
-class QGraphicsScene;
 
 namespace Ui {
 class Carte;
@@ -94,13 +95,14 @@ public slots:
 
     void mouseMoveEvent(QMouseEvent *evt);
     void mousePressEvent(QMouseEvent *evt);
+    void resizeEvent(QResizeEvent *evt);
+    void wheelEvent(QWheelEvent *evt);
 
     /**
      * @brief show Affichage des courbes sur la carte du monde
      */
     void show();
 
-    void resizeEvent(QResizeEvent *evt);
 
     /**
      * @brief AffichageSiteLancement Affichage de l'info bulle du site de lancement
@@ -118,6 +120,7 @@ signals:
     void EffacerMessageStatut();
     void RecalculerPositions();
     void ReinitFlags();
+    void SendCurrentScale(const double echelle);
 
 
 protected:
@@ -136,18 +139,15 @@ private:
     /*
      * Variables privees
      */
-    double DEG2PXHZ;
-    double DEG2PXVT;
-
     Ui::Carte *_ui;
     QGraphicsScene *scene;
 
     bool _mcc;
+    int _largeurCarte;
+    int _hauteurCarte;
+    QPixmap _pixMap;
     int _lsol;
-    int _bsol;
 
-    double _largeur;
-    double _hauteur;
     double _largeurParalleles;
     double _hauteurMeridiens;
 
@@ -158,14 +158,26 @@ private:
 
     QList<bool> _als;
 
+    QList<ItemGroup *> _groupes;
+
 
     /*
      * Methodes privees
      */
     /**
+     * @brief AffichageFrontieres Affichage des frontieres
+     */
+    void AffichageFrontieres();
+
+    /**
      * @brief AffichageGrille Affichage de la grille de coordonnees
      */
     void AffichageGrille();
+
+    /**
+     * @brief AffichageLieuxObservation Affichage des lieux d'observation
+     */
+    void AffichageLieuxObservation();
 
     /**
      * @brief AffichageLune Affichage de la Lune
@@ -177,10 +189,13 @@ private:
      * @param satellite satellite
      * @param lsat longitude du satellite, en pixels
      * @param bsat latitude du satellite, en pixels
-     * @param lcarte largeur de la carte du monde, en pixels
-     * @param hcarte hauteur de la carte du monde, en pixels
      */
-    void AffichageSatelliteDefaut(const Satellite &satellite, const int lsat, const int bsat, const int lcarte, const int hcarte) const;
+    void AffichageSatelliteDefaut(const Satellite &satellite, const int lsat, const int bsat) const;
+
+    /**
+     * @brief AffichageSAA_ZOE Affichage de la ZOE et de la SAA pour le Wall Command Center
+     */
+    void AffichageSAA_ZOE();
 
     /**
      * @brief AffichageSatellites Affichage des satellites
@@ -213,9 +228,29 @@ private:
     void AffichageZoneVisibilite();
 
     /**
+     * @brief ChargementCarteDuMonde Chargement de la carte du monde
+     */
+    void ChargementCarteDuMonde();
+
+    /**
      * @brief Initialisation Initialisation de la classe Carte
      */
     void Initialisation();
+
+    /**
+     * @brief LectureCoordonnees Lecture des coordonnees dans le fichier de coordonnees geographiques
+     * @param coordonnees coordonnees
+     * @return Lignes de coordonnees
+     */
+    QPainterPath LectureCoordonnees(const QString &coordonnees);
+
+    /**
+     * @brief LectureFichierKml Lecture d'un fichier de coordonnees geographiques au format kml
+     * @param fichier nom du fichier
+     * @param visible visibilite des frontieres
+     * @param echelleMin echelle minimale ou la frontiere doit etre visible
+     */
+    void LectureFichierKml(const QString &fichier, const bool visible = true, const double echelleMin = 0.);
 
 };
 

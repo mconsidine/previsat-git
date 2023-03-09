@@ -161,6 +161,7 @@ void Options::Initialisation()
     _ui->ajoutLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowRight));
     _ui->supprLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowLeft));
     _ui->listeOptions->setFocus();
+    _ui->configuration->setCurrentIndex(0);
 
     const QIcon ajout(":/resources/interface/ajout.png");
     _ui->creationCategorie->setIcon(ajout);
@@ -360,7 +361,7 @@ void Options::ChargementPref()
         _ui->affnomlieu->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affnomlieu", Qt::Checked).toUInt()));
         _ui->affnomsat->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affnomsat", Qt::Checked).toUInt()));
         _ui->affnotif->setChecked(settings.value("affichage/affnotif", true).toBool());
-        _ui->affnuit->setChecked(settings.value("affichage/affnuit", true).toBool());
+        _ui->affnuit->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affnuit", Qt::Checked).toUInt()));
         _ui->affphaselune->setChecked(settings.value("affichage/affphaselune", true).toBool());
         _ui->affplanetes->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affplanetes", Qt::Checked).toUInt()));
         _ui->affradar->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affradar", Qt::Checked).toUInt()));
@@ -380,7 +381,7 @@ void Options::ChargementPref()
                                                        .indexOf(settings.value("affichage/langue", "en").toString())));
         _ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
         _ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toInt());
-        _ui->proportionsCarte->setChecked(settings.value("affichage/proportionsCarte", true).toBool());
+        _ui->affichageFrontieres->setChecked(settings.value("affichage/affichageFrontieres", true).toBool());
         _ui->rotationIconeISS->setChecked(settings.value("affichage/rotationIconeISS", true).toBool());
         _ui->affNoradListes->setChecked(settings.value("affichage/affNoradListes", 0).toInt());
         _ui->rotationLune->setChecked(settings.value("affichage/rotationLune", false).toBool());
@@ -743,7 +744,7 @@ void Options::SauvePreferences(const QString &fichierPref)
                  << "affichage/affnomsat " << _ui->affnomsat->checkState() << Qt::endl
                  << "affichage/affNoradListes " << _ui->affNoradListes->checkState() << Qt::endl
                  << "affichage/affnotif " << QVariant(_ui->affnotif->isChecked()).toString() << Qt::endl
-                 << "affichage/affnuit " << QVariant(_ui->affnuit->isChecked()).toString() << Qt::endl
+                 << "affichage/affnuit " << _ui->affnuit->checkState() << Qt::endl
                  << "affichage/affphaselune " << QVariant(_ui->affphaselune->isChecked()).toString() << Qt::endl
                  << "affichage/affplanetes " << _ui->affplanetes->checkState() << Qt::endl
                  << "affichage/affradar " << _ui->affradar->checkState() << Qt::endl
@@ -760,7 +761,7 @@ void Options::SauvePreferences(const QString &fichierPref)
                  << "affichage/langue " << Configuration::instance()->locale() << Qt::endl
                  << "affichage/magnitudeEtoiles " << _ui->magnitudeEtoiles->value() << Qt::endl
                  << "affichage/nombreTrajectoires " << _ui->nombreTrajectoires->value() << Qt::endl
-                 << "affichage/proportionsCarte " << QVariant(_ui->proportionsCarte->isChecked()).toString() << Qt::endl
+                 << "affichage/affichageFrontieres " << QVariant(_ui->affichageFrontieres->isChecked()).toString() << Qt::endl
                  << "affichage/refractionAtmospherique " << QVariant(_ui->refractionAtmospherique->isChecked()).toString() << Qt::endl
                  << "affichage/rotationIconeISS " << QVariant(_ui->rotationIconeISS->isChecked()).toString() << Qt::endl
                  << "affichage/rotationLune " << QVariant(_ui->rotationLune->isChecked()).toString() << Qt::endl
@@ -819,7 +820,7 @@ void Options::AppliquerPreferences()
     settings.setValue("affichage/affnomlieu", _ui->affnomlieu->checkState());
     settings.setValue("affichage/affnomsat", _ui->affnomsat->checkState());
     settings.setValue("affichage/affnotif", _ui->affnotif->isChecked());
-    settings.setValue("affichage/affnuit", _ui->affnuit->isChecked());
+    settings.setValue("affichage/affnuit", _ui->affnuit->checkState());
     settings.setValue("affichage/affphaselune", _ui->affphaselune->isChecked());
     settings.setValue("affichage/affplanetes", _ui->affplanetes->checkState());
     settings.setValue("affichage/affradar", _ui->affradar->checkState());
@@ -835,7 +836,7 @@ void Options::AppliquerPreferences()
     settings.setValue("affichage/intensiteVision", _ui->intensiteVision->value());
     settings.setValue("affichage/magnitudeEtoiles", _ui->magnitudeEtoiles->value());
     settings.setValue("affichage/nombreTrajectoires", _ui->nombreTrajectoires->value());
-    settings.setValue("affichage/proportionsCarte", _ui->proportionsCarte->isChecked());
+    settings.setValue("affichage/affichageFrontieres", _ui->affichageFrontieres->isChecked());
     settings.setValue("affichage/refractionAtmospherique", _ui->refractionAtmospherique->isChecked());
     settings.setValue("affichage/rotationIconeISS", _ui->rotationIconeISS->isChecked());
     settings.setValue("affichage/affNoradListes", _ui->affNoradListes->isChecked());
