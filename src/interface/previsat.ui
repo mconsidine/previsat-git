@@ -953,7 +953,7 @@ le flux vidéo</string>
   </widget>
   <action name="actionImporter_fichier_TLE_GP">
    <property name="text">
-    <string>Importer fichier GP / TLE</string>
+    <string>Importer fichier GP / TLE...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>

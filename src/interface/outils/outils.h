@@ -226,6 +226,7 @@ private slots:
     void on_compteRenduMajManuel_customContextMenuRequested(const QPoint &pos);
 
     void on_listeTLE_itemClicked(QListWidgetItem *item);
+    void on_importerTLE_clicked();
     void on_supprimerTLE_clicked();
 
 };

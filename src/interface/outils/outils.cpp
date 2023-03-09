@@ -45,6 +45,7 @@
 #include <QPlainTextEdit>
 #include <QScrollBar>
 #include <QSettings>
+#include <QStandardPaths>
 #include "ui_outils.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
@@ -812,10 +813,10 @@ void Outils::on_listeFichiersElem_currentRowChanged(int currentRow)
 
 void Outils::on_listeFichiersElem_itemSelectionChanged()
 {
-   if (_ui->listeFichiersElem->selectedItems().isEmpty()) {
-       setFixedHeight(360);
-       _ui->listeBoutonsOutils->setGeometry(_ui->listeBoutonsOutils->x(), 320, _ui->listeBoutonsOutils->width(), _ui->listeBoutonsOutils->height());
-   }
+    if (_ui->listeFichiersElem->selectedItems().isEmpty()) {
+        setFixedHeight(360);
+        _ui->listeBoutonsOutils->setGeometry(_ui->listeBoutonsOutils->x(), 320, _ui->listeBoutonsOutils->width(), _ui->listeBoutonsOutils->height());
+    }
 }
 
 void Outils::on_listeSatellites_currentRowChanged(int currentRow)
@@ -1039,6 +1040,70 @@ void Outils::on_listeTLE_itemClicked(QListWidgetItem *item)
             _ui->supprimerTLE->setEnabled(true);
         }
     }
+
+    /* Retour */
+    return;
+}
+
+void Outils::on_importerTLE_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        // Ouverture d'un fichier TLE
+        const QString fichier = QFileDialog::getOpenFileName(this, tr("Importe TLE..."),
+                                                             QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
+                                                             tr("Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)"));
+
+        // Ouverture du fichier d'elements orbitaux
+        if (!fichier.isEmpty()) {
+
+            qInfo() << "Ouverture du fichier" << fichier;
+
+            QFileInfo ff(fichier);
+            const int nbElem = TLE::VerifieFichier(fichier);
+
+            if (nbElem > 0) {
+
+                QFile fo(Configuration::instance()->instance()->dirElem() + QDir::separator() + ff.fileName());
+
+                if (fo.exists()) {
+
+                    qWarning() << "Le fichier TLE existe déjà";
+                    throw PreviSatException(tr("Le fichier %1 existe déjà").arg(ff.fileName()), MessageType::WARNING);
+
+                } else {
+
+                    QFile fi(fichier);
+
+                    // Le fichier contient des elements orbitaux, on le copie dans le repertoire d'elements orbitaux
+                    if (fi.copy(fo.fileName())) {
+
+                        qInfo() << "Import du fichier TLE" << ff.fileName() << "OK";
+
+                        const QDir di(Configuration::instance()->dirElem());
+                        const QStringList filtres(QStringList () << "*.txt" << "*.tle");
+                        InitGestionnaireTLE(di.entryList(filtres, QDir::Files));
+
+                    } else {
+                        qWarning() << "Import du fichier TLE" << ff.fileName() << "KO";
+                    }
+                }
+
+            } else {
+                qWarning() << QString("Le fichier TLE %1 ne contient pas d'éléments orbitaux").arg(ff.fileName());
+                throw PreviSatException(tr("Le fichier %1 ne contient pas d'éléments orbitaux").arg(ff.fileName()), MessageType::WARNING);
+            }
+        }
+
+    } catch (PreviSatException const &e) {
+    }
+
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
     return;

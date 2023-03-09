@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 mars 2023
+ * >    9 mars 2023
  *
  */
 
@@ -111,34 +111,6 @@ PreviSat::PreviSat(QWidget *parent)
     _ui->setupUi(this);
 
     try {
-
-        _informations = nullptr;
-        _carte = nullptr;
-        _ciel = nullptr;
-        _onglets = nullptr;
-        _options = nullptr;
-        _outils = nullptr;
-        _radar = nullptr;
-
-        _previsions = nullptr;
-        _flashs = nullptr;
-        _transits = nullptr;
-        _evenements = nullptr;
-        _informationsSatellite = nullptr;
-        _recherche = nullptr;
-        _station = nullptr;
-
-        _messageStatut = nullptr;
-        _messageStatut2 = nullptr;
-        _messageStatut3 = nullptr;
-        _modeFonctionnement = nullptr;
-        _stsDate = nullptr;
-        _stsHeure = nullptr;
-        _timerStatut = nullptr;
-
-        _dateCourante = nullptr;
-        _chronometre = nullptr;
-        _chronometreMs = nullptr;
 
         Initialisation();
 
@@ -872,6 +844,33 @@ void PreviSat::Initialisation()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    _informations = nullptr;
+    _carte = nullptr;
+    _ciel = nullptr;
+    _onglets = nullptr;
+    _options = nullptr;
+    _outils = nullptr;
+    _radar = nullptr;
+
+    _previsions = nullptr;
+    _flashs = nullptr;
+    _transits = nullptr;
+    _evenements = nullptr;
+    _informationsSatellite = nullptr;
+    _recherche = nullptr;
+    _station = nullptr;
+
+    _messageStatut = nullptr;
+    _messageStatut2 = nullptr;
+    _messageStatut3 = nullptr;
+    _modeFonctionnement = nullptr;
+    _stsDate = nullptr;
+    _stsHeure = nullptr;
+    _timerStatut = nullptr;
+
+    _dateCourante = nullptr;
+    _chronometre = nullptr;
+    _chronometreMs = nullptr;
 
     /* Corps de la methode */
     try {
@@ -2186,12 +2185,10 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
 
         qInfo() << "Début Fonction" << __FUNCTION__;
 
-        // Ouverture d'un fichier TLE
-        const QString fichier = QFileDialog::getOpenFileName(this, tr("Importer fichier GP / TLE"),
+        // Ouverture d'un fichier GP / TLE
+        const QString fichier = QFileDialog::getOpenFileName(this, tr("Importer fichier GP / TLE..."),
                                                              QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
-                                                             tr("Fichiers GP (*.xml);;" \
-                                                                "Fichiers TLE (*.txt *.tle);;" \
-                                                                "Tous les fichiers (*.*)"));
+                                                             tr("Fichiers GP (*.xml);;Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)"));
 
         // Ouverture du fichier d'elements orbitaux
         if (!fichier.isEmpty()) {
@@ -2213,15 +2210,24 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
 
                 } else {
 
-                    // Le fichier contient des elements orbitaux, on le copie dans le repertoire d'elements orbitaux
                     QFile fi(fichier);
-                    if (fi.copy(Configuration::instance()->instance()->dirElem() + QDir::separator() + ff.fileName())) {
 
-                        qInfo() << "Import du fichier GP" << ff.fileName() << "OK";
-                        // TODO mettre a jour la liste de fichiers (et eventuellement ouvrir le fichier importe)
+                    if (fi.exists()) {
+
+                        qWarning() << "Le fichier GP existe déjà";
+                        throw PreviSatException(tr("Le fichier %1 existe déjà").arg(ff.fileName()), MessageType::WARNING);
 
                     } else {
-                        qWarning() << "Import du fichier GP" << ff.fileName() << "KO";
+
+                        // Le fichier contient des elements orbitaux, on le copie dans le repertoire d'elements orbitaux
+                        if (fi.copy(Configuration::instance()->instance()->dirElem() + QDir::separator() + ff.fileName())) {
+
+                            qInfo() << "Import du fichier GP" << ff.fileName() << "OK";
+                            // TODO mettre a jour la liste de fichiers (et eventuellement ouvrir le fichier importe)
+
+                        } else {
+                            qWarning() << "Import du fichier GP" << ff.fileName() << "KO";
+                        }
                     }
                 }
 
@@ -2232,15 +2238,26 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
 
                 if (nbElem > 0) {
 
-                    // Le fichier contient des elements orbitaux, on le copie dans le repertoire d'elements orbitaux
-                    QFile fi(fichier);
-                    if (fi.copy(Configuration::instance()->instance()->dirElem() + QDir::separator() + ff.fileName())) {
+                    QFile fo(Configuration::instance()->instance()->dirElem() + QDir::separator() + ff.fileName());
 
-                        qInfo() << "Import du fichier TLE" << ff.fileName() << "OK";
-                        // TODO mettre a jour la liste de fichiers (et eventuellement ouvrir le fichier importe)
+                    if (fo.exists()) {
+
+                        qWarning() << "Le fichier TLE existe déjà";
+                        throw PreviSatException(tr("Le fichier %1 existe déjà").arg(ff.fileName()), MessageType::WARNING);
 
                     } else {
-                        qWarning() << "Import du fichier TLE" << ff.fileName() << "KO";
+
+                        QFile fi(fichier);
+
+                        // Le fichier contient des elements orbitaux, on le copie dans le repertoire d'elements orbitaux
+                        if (fi.copy(fo.fileName())) {
+
+                            qInfo() << "Import du fichier TLE" << ff.fileName() << "OK";
+                            // TODO mettre a jour la liste de fichiers (et eventuellement ouvrir le fichier importe)
+
+                        } else {
+                            qWarning() << "Import du fichier TLE" << ff.fileName() << "KO";
+                        }
                     }
 
                 } else {
@@ -2660,7 +2677,7 @@ void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
             QList<Satellite> &listeSatellites = Configuration::instance()->listeSatellites();
             const auto sat = std::find_if(listeSatellites.begin(), listeSatellites.end(), [norad](Satellite s) {
                     return (s.elementsOrbitaux().norad == norad);
-            });
+        });
 
             if (sat != listeSatellites.end()) {
                 listeSatellites.erase(sat);
@@ -2791,7 +2808,7 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
         QList<Satellite> &listeSatellites = Configuration::instance()->listeSatellites();
         const auto sat = std::find_if(listeSatellites.begin(), listeSatellites.end(), [norad](Satellite s) {
                 return (s.elementsOrbitaux().norad == norad);
-        });
+    });
 
         if (sat != listeSatellites.end()) {
             const int idx = static_cast<int> (std::distance(listeSatellites.begin(), sat));
