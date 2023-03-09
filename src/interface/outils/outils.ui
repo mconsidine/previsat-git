@@ -892,7 +892,7 @@
      <property name="geometry">
       <rect>
        <x>250</x>
-       <y>20</y>
+       <y>50</y>
        <width>141</width>
        <height>24</height>
       </rect>
@@ -912,6 +912,19 @@
      </property>
      <property name="text">
       <string>Liste de fichiers TLE :</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="importerTLE">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>20</y>
+       <width>141</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Importer TLE...</string>
      </property>
     </widget>
    </widget>
