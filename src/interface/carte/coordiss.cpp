@@ -21,7 +21,7 @@
  * >    coordiss.cpp
  *
  * Localisation
- * >    interface
+ * >    interface.carte
  *
  * Auteur
  * >    Astropedia

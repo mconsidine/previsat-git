@@ -1536,7 +1536,7 @@
         <string>Prise en compte de l'extinction atmosphérique</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="proportionsCarte">
+      <widget class="QCheckBox" name="affichageFrontieres">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -1549,7 +1549,7 @@
         <font/>
        </property>
        <property name="text">
-        <string>Garder les proportions de la carte du monde</string>
+        <string>Affichage des frontières</string>
        </property>
       </widget>
       <widget class="QCheckBox" name="affinvew">
