@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    2 mars 2023
+ * >    11 mars 2023
  *
  */
 
@@ -283,23 +283,16 @@ void Onglets::show(const Date &date)
 
     AffichageOngletInformations();
 
-    if (_prev) {
-
-        _previsions->show(date);
-        _flashs->show(date);
-        _transits->show(date);
-        _evenements->show(date);
-
-        _prev = false;
-    }
-
+    _previsions->show(date);
+    _flashs->show(date);
+    _transits->show(date);
+    _evenements->show(date);
 
 #if defined (Q_OS_WIN)
     if (_ui->telescope->isVisible() && (_suiviTelescope->getListItemChecked(_suiviTelescope->ui()->listeTelescope) > 0)) {
         _suiviTelescope->CalculAosSatSuivi(date);
     }
 #endif
-
 
     /* Retour */
     return;
@@ -444,7 +437,6 @@ void Onglets::Initialisation()
     /* Corps de la methode */
     qInfo() << "Début Initialisation" << metaObject()->className();
 
-    _prev = true;
     _indexInformations = settings.value("affichage/indexInformations", 0).toUInt();
     _indexPrevisions = settings.value("affichage/indexPrevisions", 0).toUInt();
 
@@ -531,7 +523,6 @@ void Onglets::on_infoSuiv_clicked()
 
 void Onglets::on_previsionPrec_clicked()
 {
-    _prev = true;
     _indexPrevisions = (_ui->stackedWidget_previsions->currentIndex() + _ui->stackedWidget_previsions->count() - 1)
             % _ui->stackedWidget_previsions->count();
     _ui->stackedWidget_previsions->setCurrentIndex(_indexPrevisions);
@@ -540,7 +531,6 @@ void Onglets::on_previsionPrec_clicked()
 
 void Onglets::on_previsionSuiv_clicked()
 {
-    _prev = true;
     _indexPrevisions = (_ui->stackedWidget_previsions->currentIndex() + 1) % _ui->stackedWidget_previsions->count();
     _ui->stackedWidget_previsions->setCurrentIndex(_indexPrevisions);
     setTabText(indexOf(_ui->previsions), QCoreApplication::translate("Onglets", _titresPrevisions[_indexPrevisions]));
@@ -550,7 +540,6 @@ void Onglets::on_stackedWidget_previsions_currentChanged(int arg1)
 {
     Q_UNUSED(arg1)
 
-    _prev = true;
     _ui->previsionPrec->setToolTip(
                 QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)
                 % _ui->stackedWidget_previsions->count()]));

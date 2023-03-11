@@ -883,7 +883,7 @@ le flux vidéo</string>
       <x>339</x>
       <y>102</y>
       <width>259</width>
-      <height>527</height>
+      <height>558</height>
      </rect>
     </property>
     <property name="title">
@@ -897,6 +897,8 @@ le flux vidéo</string>
     <addaction name="actionInformations"/>
     <addaction name="actionOptions"/>
     <addaction name="actionOutils"/>
+    <addaction name="separator"/>
+    <addaction name="actionMode_sombre"/>
     <addaction name="separator"/>
     <addaction name="actionMettre_a_jour_GP_courant"/>
     <addaction name="actionMettre_a_jour_GP_communs"/>
@@ -1141,6 +1143,17 @@ le flux vidéo</string>
   <action name="actionTelecharger_la_mise_a_jour">
    <property name="text">
     <string>Télécharger la mise à jour</string>
+   </property>
+  </action>
+  <action name="actionMode_sombre">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Mode sombre</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
  </widget>

@@ -24,7 +24,7 @@ affichage/eclipsesLune true
 affichage/effetEclipsesMagnitude true
 affichage/extinction true
 affichage/intensiteOmbre 30
-affichage/intensiteVision 50
+affichage/modeSombre false
 affichage/langue en
 affichage/magnitudeEtoiles 4
 affichage/nombreTrajectoires 2

@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    11 mars 2023
  *
  */
 
@@ -89,7 +89,7 @@ Ciel::Ciel(QWidget *parent) :
 {
     _ui->setupUi(this);
 
-    scene = nullptr;
+    scene = new QGraphicsScene;
 
     try {
 
@@ -166,11 +166,7 @@ void Ciel::show(const Observateur &observateur,
     const double hts = soleil.hauteur() * MATHS::RAD2DEG;
     const QBrush couleurCiel = CalculCouleurCiel(hts);
 
-    if (scene != nullptr) {
-        scene->deleteLater();
-    }
-
-    scene = new QGraphicsScene;
+    scene->clear();
     scene->setBackgroundBrush(QBrush(palette().window().color()));
 
     /* Corps de la methode */

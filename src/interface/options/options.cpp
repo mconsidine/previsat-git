@@ -192,6 +192,7 @@ void Options::Initialisation()
     _ui->nvAltitude->setToolTip(fmt.arg(valAlt->bottom()).arg(unite).arg(valAlt->top()));
 
     _ui->outilsLieuxObservation->setVisible(false);
+    _ui->modeSombre->setVisible(false);
 
     // Affichage de la liste des fichiers sons
     InitFicSon();
@@ -220,6 +221,90 @@ void Options::Initialisation()
     AffichageLieuObs();
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Appliquer les preferences d'affichage et enregistrer le fichier de preferences
+ */
+void Options::AppliquerPreferences()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    settings.setValue("affichage/affSAA", _ui->affSAA->isChecked());
+    settings.setValue("affichage/affconst", _ui->affconst->checkState());
+    settings.setValue("affichage/affcoord", _ui->affcoord->isChecked());
+    settings.setValue("affichage/affetoiles", _ui->affetoiles->isChecked());
+    settings.setValue("affichage/affgrille", _ui->affgrille->isChecked());
+    settings.setValue("affichage/afficone", _ui->afficone->isChecked());
+    settings.setValue("affichage/affinvew", _ui->affinvew->isChecked());
+    settings.setValue("affichage/affinvns", _ui->affinvns->isChecked());
+    settings.setValue("affichage/afflune", _ui->afflune->isChecked());
+    settings.setValue("affichage/affnomlieu", _ui->affnomlieu->checkState());
+    settings.setValue("affichage/affnomsat", _ui->affnomsat->checkState());
+    settings.setValue("affichage/affnotif", _ui->affnotif->isChecked());
+    settings.setValue("affichage/affnuit", _ui->affnuit->checkState());
+    settings.setValue("affichage/affphaselune", _ui->affphaselune->isChecked());
+    settings.setValue("affichage/affplanetes", _ui->affplanetes->checkState());
+    settings.setValue("affichage/affradar", _ui->affradar->checkState());
+    settings.setValue("affichage/affsoleil", _ui->affsoleil->isChecked());
+    settings.setValue("affichage/afftraceCiel", _ui->afftraceCiel->isChecked());
+    settings.setValue("affichage/afftraj", _ui->afftraj->isChecked());
+    settings.setValue("affichage/affvisib", _ui->affvisib->checkState());
+    settings.setValue("affichage/calJulien", _ui->calJulien->isChecked());
+    settings.setValue("affichage/eclipsesLune", _ui->eclipsesLune->isChecked());
+    settings.setValue("affichage/effetEclipsesMagnitude", _ui->effetEclipsesMagnitude->isChecked());
+    settings.setValue("affichage/extinction", _ui->extinctionAtmospherique->isChecked());
+    settings.setValue("affichage/intensiteOmbre", _ui->intensiteOmbre->value());
+    settings.setValue("affichage/modeSombre", _ui->modeSombre->isChecked());
+    settings.setValue("affichage/magnitudeEtoiles", _ui->magnitudeEtoiles->value());
+    settings.setValue("affichage/nombreTrajectoires", _ui->nombreTrajectoires->value());
+    settings.setValue("affichage/affichageFrontieres", _ui->affichageFrontieres->isChecked());
+    settings.setValue("affichage/refractionAtmospherique", _ui->refractionAtmospherique->isChecked());
+    settings.setValue("affichage/rotationIconeISS", _ui->rotationIconeISS->isChecked());
+    settings.setValue("affichage/affNoradListes", _ui->affNoradListes->isChecked());
+    settings.setValue("affichage/rotationLune", _ui->rotationLune->isChecked());
+    settings.setValue("affichage/systemeHoraire", _ui->syst24h->isChecked());
+    settings.setValue("affichage/unite", _ui->unitesKm->isChecked());
+    settings.setValue("affichage/utc", _ui->utc->isChecked());
+    settings.setValue("affichage/utcAuto", _ui->utcAuto->isChecked());
+    settings.setValue("affichage/valeurZoomMap", _ui->valeurZoomMap->value());
+    settings.setValue("affichage/verifMAJ", _ui->verifMAJ->isChecked());
+
+    settings.setValue("affichage/affBetaWCC", _ui->affBetaWCC->isChecked());
+    settings.setValue("affichage/affCerclesAcq", _ui->affCerclesAcq->isChecked());
+    settings.setValue("affichage/affNbOrbWCC", _ui->affNbOrbWCC->isChecked());
+    settings.setValue("affichage/affSAA_ZOE", _ui->affSAA_ZOE->isChecked());
+    settings.setValue("affichage/styleWCC", _ui->styleWCC->isChecked());
+    settings.setValue("affichage/coulGMT", _ui->coulGMT->currentIndex());
+    settings.setValue("affichage/coulZOE", _ui->coulZOE->currentIndex());
+    settings.setValue("affichage/coulCercleVisibilite", _ui->coulCercleVisibilite->currentIndex());
+    settings.setValue("affichage/coulEquateur", _ui->coulEquateur->currentIndex());
+    settings.setValue("affichage/coulTerminateur", _ui->coulTerminateur->currentIndex());
+    settings.setValue("affichage/policeWCC", _ui->policeWCC->currentIndex());
+
+    for(int i=0; i<_ui->listeStations->count(); i++) {
+        settings.setValue("affichage/station" + _ui->listeStations->item(i)->data(Qt::UserRole).toString(),
+                          _ui->listeStations->item(i)->checkState());
+    }
+
+    settings.setValue("fichier/nbFichiersLog", _ui->nbFichiersLog->value());
+
+    // Ecriture du fichier de preferences
+    if (_ui->preferences->currentIndex() < _ui->preferences->count() - 2) {
+
+        const QString fichierPref = Configuration::instance()->dirPref() + QDir::separator() +
+                Configuration::instance()->listeFicPref().at(_ui->preferences->currentIndex());
+
+        SauvePreferences(fichierPref);
+    }
+
+    emit RecalculerPositions();
 
     /* Retour */
     return;
@@ -376,7 +461,7 @@ void Options::ChargementPref()
         _ui->effetEclipsesMagnitude->setChecked(settings.value("affichage/effetEclipsesMagnitude", true).toBool());
         _ui->eclipsesLune->setChecked(settings.value("affichage/eclipsesLune", true).toBool());
         _ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 30).toInt());
-        _ui->intensiteVision->setValue(settings.value("affichage/intensiteVision", 50).toInt());
+        _ui->modeSombre->setChecked(settings.value("affichage/intensiteVision", false).toBool());
         _ui->langue->setCurrentIndex(static_cast<int> (Configuration::instance()->listeFicLang()
                                                        .indexOf(settings.value("affichage/langue", "en").toString())));
         _ui->magnitudeEtoiles->setValue(settings.value("affichage/magnitudeEtoiles", 4.0).toDouble());
@@ -757,7 +842,7 @@ void Options::SauvePreferences(const QString &fichierPref)
                  << "affichage/effetEclipsesMagnitude " << QVariant(_ui->effetEclipsesMagnitude->isChecked()).toString() << Qt::endl
                  << "affichage/extinction " << QVariant(_ui->extinctionAtmospherique->isChecked()).toString() << Qt::endl
                  << "affichage/intensiteOmbre " << _ui->intensiteOmbre->value() << Qt::endl
-                 << "affichage/intensiteVision " << _ui->intensiteVision->value() << Qt::endl
+                 << "affichage/modeSombre " << QVariant(_ui->modeSombre->isChecked()).toString() << Qt::endl
                  << "affichage/langue " << Configuration::instance()->locale() << Qt::endl
                  << "affichage/magnitudeEtoiles " << _ui->magnitudeEtoiles->value() << Qt::endl
                  << "affichage/nombreTrajectoires " << _ui->nombreTrajectoires->value() << Qt::endl
@@ -793,90 +878,6 @@ void Options::SauvePreferences(const QString &fichierPref)
 
     } catch (PreviSatException const &e) {
     }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Appliquer les preferences d'affichage et enregistrer le fichier de preferences
- */
-void Options::AppliquerPreferences()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    settings.setValue("affichage/affSAA", _ui->affSAA->isChecked());
-    settings.setValue("affichage/affconst", _ui->affconst->checkState());
-    settings.setValue("affichage/affcoord", _ui->affcoord->isChecked());
-    settings.setValue("affichage/affetoiles", _ui->affetoiles->isChecked());
-    settings.setValue("affichage/affgrille", _ui->affgrille->isChecked());
-    settings.setValue("affichage/afficone", _ui->afficone->isChecked());
-    settings.setValue("affichage/affinvew", _ui->affinvew->isChecked());
-    settings.setValue("affichage/affinvns", _ui->affinvns->isChecked());
-    settings.setValue("affichage/afflune", _ui->afflune->isChecked());
-    settings.setValue("affichage/affnomlieu", _ui->affnomlieu->checkState());
-    settings.setValue("affichage/affnomsat", _ui->affnomsat->checkState());
-    settings.setValue("affichage/affnotif", _ui->affnotif->isChecked());
-    settings.setValue("affichage/affnuit", _ui->affnuit->checkState());
-    settings.setValue("affichage/affphaselune", _ui->affphaselune->isChecked());
-    settings.setValue("affichage/affplanetes", _ui->affplanetes->checkState());
-    settings.setValue("affichage/affradar", _ui->affradar->checkState());
-    settings.setValue("affichage/affsoleil", _ui->affsoleil->isChecked());
-    settings.setValue("affichage/afftraceCiel", _ui->afftraceCiel->isChecked());
-    settings.setValue("affichage/afftraj", _ui->afftraj->isChecked());
-    settings.setValue("affichage/affvisib", _ui->affvisib->checkState());
-    settings.setValue("affichage/calJulien", _ui->calJulien->isChecked());
-    settings.setValue("affichage/eclipsesLune", _ui->eclipsesLune->isChecked());
-    settings.setValue("affichage/effetEclipsesMagnitude", _ui->effetEclipsesMagnitude->isChecked());
-    settings.setValue("affichage/extinction", _ui->extinctionAtmospherique->isChecked());
-    settings.setValue("affichage/intensiteOmbre", _ui->intensiteOmbre->value());
-    settings.setValue("affichage/intensiteVision", _ui->intensiteVision->value());
-    settings.setValue("affichage/magnitudeEtoiles", _ui->magnitudeEtoiles->value());
-    settings.setValue("affichage/nombreTrajectoires", _ui->nombreTrajectoires->value());
-    settings.setValue("affichage/affichageFrontieres", _ui->affichageFrontieres->isChecked());
-    settings.setValue("affichage/refractionAtmospherique", _ui->refractionAtmospherique->isChecked());
-    settings.setValue("affichage/rotationIconeISS", _ui->rotationIconeISS->isChecked());
-    settings.setValue("affichage/affNoradListes", _ui->affNoradListes->isChecked());
-    settings.setValue("affichage/rotationLune", _ui->rotationLune->isChecked());
-    settings.setValue("affichage/systemeHoraire", _ui->syst24h->isChecked());
-    settings.setValue("affichage/unite", _ui->unitesKm->isChecked());
-    settings.setValue("affichage/utc", _ui->utc->isChecked());
-    settings.setValue("affichage/utcAuto", _ui->utcAuto->isChecked());
-    settings.setValue("affichage/valeurZoomMap", _ui->valeurZoomMap->value());
-    settings.setValue("affichage/verifMAJ", _ui->verifMAJ->isChecked());
-
-    settings.setValue("affichage/affBetaWCC", _ui->affBetaWCC->isChecked());
-    settings.setValue("affichage/affCerclesAcq", _ui->affCerclesAcq->isChecked());
-    settings.setValue("affichage/affNbOrbWCC", _ui->affNbOrbWCC->isChecked());
-    settings.setValue("affichage/affSAA_ZOE", _ui->affSAA_ZOE->isChecked());
-    settings.setValue("affichage/styleWCC", _ui->styleWCC->isChecked());
-    settings.setValue("affichage/coulGMT", _ui->coulGMT->currentIndex());
-    settings.setValue("affichage/coulZOE", _ui->coulZOE->currentIndex());
-    settings.setValue("affichage/coulCercleVisibilite", _ui->coulCercleVisibilite->currentIndex());
-    settings.setValue("affichage/coulEquateur", _ui->coulEquateur->currentIndex());
-    settings.setValue("affichage/coulTerminateur", _ui->coulTerminateur->currentIndex());
-    settings.setValue("affichage/policeWCC", _ui->policeWCC->currentIndex());
-
-    for(int i=0; i<_ui->listeStations->count(); i++) {
-        settings.setValue("affichage/station" + _ui->listeStations->item(i)->data(Qt::UserRole).toString(),
-                          _ui->listeStations->item(i)->checkState());
-    }
-
-    settings.setValue("fichier/nbFichiersLog", _ui->nbFichiersLog->value());
-
-    // Ecriture du fichier de preferences
-    if (_ui->preferences->currentIndex() < _ui->preferences->count() - 2) {
-
-        const QString fichierPref = Configuration::instance()->dirPref() + QDir::separator() +
-                Configuration::instance()->listeFicPref().at(_ui->preferences->currentIndex());
-
-        SauvePreferences(fichierPref);
-    }
-
-    emit RecalculerPositions();
 
     /* Retour */
     return;
@@ -1455,4 +1456,3 @@ void Options::on_annulerObs_clicked()
 {
     _ui->outilsLieuxObservation->setVisible(false);
 }
-

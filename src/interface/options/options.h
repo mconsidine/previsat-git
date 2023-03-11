@@ -99,6 +99,11 @@ public:
 
 public slots:
 
+    /**
+     * @brief AppliquerPreferences Appliquer les preferences d'affichage et enregistrer le fichier de preferences
+     */
+    void AppliquerPreferences();
+
     void changeEvent(QEvent *evt);
 
 
@@ -213,11 +218,6 @@ private:
 
 
 private slots:
-
-    /**
-     * @brief AppliquerPreferences Appliquer les preferences d'affichage et enregistrer le fichier de preferences
-     */
-    void AppliquerPreferences();
 
     // Gestion des categories
     void CreerCategorie();

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 mars 2023
+ * >    11 mars 2023
  *
  */
 
@@ -123,6 +123,7 @@ public slots:
 signals:
 
     void AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool);
+    void AppliquerPreferences();
     void DeconnecterUdp();
     void InitAffichageListeSatellites();
     void SauveOngletGeneral(const QString &);
@@ -370,6 +371,8 @@ private slots:
     void on_actionInformations_triggered();
     void on_actionOptions_triggered();
     void on_actionOutils_triggered();
+
+    void on_actionMode_sombre_triggered();
 
     void on_actionMettre_a_jour_GP_courant_triggered();
     void on_actionMettre_a_jour_GP_communs_triggered();

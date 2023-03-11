@@ -100,7 +100,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="lieuObservation">
     <widget class="QListWidget" name="selecLieux">
@@ -836,7 +836,10 @@
       <enum>QTabWidget::Triangular</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
+     </property>
+     <property name="documentMode">
+      <bool>true</bool>
      </property>
      <widget class="QWidget" name="satellites">
       <property name="autoFillBackground">
@@ -1631,61 +1634,21 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="formLayoutWidget_70">
+      <widget class="QCheckBox" name="modeSombre">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>170</y>
-         <width>191</width>
-         <height>24</height>
+         <width>281</width>
+         <height>20</height>
         </rect>
        </property>
-       <layout class="QFormLayout" name="formLayout_vision">
-        <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-        <property name="horizontalSpacing">
-         <number>3</number>
-        </property>
-        <property name="verticalSpacing">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="lbl_intensiteVision">
-          <property name="font">
-           <font/>
-          </property>
-          <property name="text">
-           <string>Vision nocturne :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QSlider" name="intensiteVision">
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="font">
-           <font/>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="pageStep">
-           <number>5</number>
-          </property>
-          <property name="value">
-           <number>50</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string>Mode sombre</string>
+       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="systeme">

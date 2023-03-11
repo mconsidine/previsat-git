@@ -36,7 +36,7 @@
  * >    25 fevrier 2023
  *
  * Date de revision
- * >    4 fevrier 2023
+ * >    11 mars 2023
  *
  */
 
@@ -122,6 +122,7 @@ public:
     void setIndexPrevisions(const unsigned int newIndexPrevisions);
     void setInfo(const bool info);
 
+
     /*
      * Methodes publiques
      */
@@ -184,7 +185,6 @@ private:
     bool _acalcAOS;
     bool _acalcDN;
     bool _info;
-    bool _prev;
 
 
     /*
