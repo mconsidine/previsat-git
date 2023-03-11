@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 mars 2023
+ * >    11 mars 2023
  *
  */
 
@@ -323,6 +323,7 @@ void PreviSat::DemarrageApplication()
         LigneConstellation::Initialisation(Configuration::instance()->dirCommonData());
     }
 
+    // Construction de la liste de satellites
     const QString noradDefaut = Configuration::instance()->noradDefaut();
     QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
     const QFileInfo ff(Configuration::instance()->dirElem() + QDir::separator() + Configuration::instance()->nomfic());
@@ -411,6 +412,9 @@ void PreviSat::DemarrageApplication()
         connect(_chronometreMs, SIGNAL(timeout()), this, SLOT(TempsReel()));
         _chronometreMs->start();
     }
+
+    _ui->actionMode_sombre->setChecked(settings.value("affichage/modeSombre", false).toBool());
+    on_actionMode_sombre_triggered();
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
 
@@ -554,6 +558,8 @@ void PreviSat::ConnexionsSignauxSlots()
 
     // Connexions avec la fenetre Options
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::GestionTempsReel);
+    connect(_options, &Options::RecalculerPositions, this, &PreviSat::on_actionMode_sombre_triggered);
+    connect(this, &PreviSat::AppliquerPreferences, _options, &Options::AppliquerPreferences);
 
     // Connexions avec la fenetre Outils
     connect(_outils, &Outils::ChargementGP, this, &PreviSat::ChargementGP);
@@ -1676,6 +1682,7 @@ void PreviSat::GestionTempsReel()
         const bool radarVisible = ((_options->ui()->affradar->checkState() == Qt::Checked) ||
                                    ((_options->ui()->affradar->checkState() == Qt::PartiallyChecked)
                                     && Configuration::instance()->listeSatellites().first().isVisible()));
+
         if (radarVisible) {
             _radar->show();
         }
@@ -2045,6 +2052,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/etat", saveState());
     settings.setValue("affichage/issLive", _ui->issLive->isChecked());
 
+    emit AppliquerPreferences();
     GestionnaireXml::EcritureConfiguration();
 
     /* Retour */
@@ -2429,6 +2437,83 @@ void PreviSat::on_actionOutils_triggered()
     on_outils_clicked();
 }
 
+void PreviSat::on_actionMode_sombre_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    settings.setValue("affichage/modeSombre", _ui->actionMode_sombre->isChecked());
+    _options->ui()->modeSombre->setChecked(_ui->actionMode_sombre->isChecked());
+
+#if defined (Q_OS_WIN)
+    qApp->setStyle("windowsvista");
+#elif defined (Q_OS_LINUX)
+    // TODO
+#elif defined (Q_OS_MAC)
+    qApp->setStyle("macos");
+#endif
+
+    /* Corps de la methode */
+    if (settings.value("affichage/modeSombre", false).toBool()) {
+
+        // Pour l'affichage avec Qt6
+        QFile fi(":/resources/interface/darkstyle.qss");
+        if (fi.exists() && (fi.size() != 0)) {
+
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+                // Activation du mode sombre
+                QPalette palette;
+                palette.setColor(QPalette::Window, QColor(53, 53, 53));
+                palette.setColor(QPalette::WindowText, Qt::white);
+                palette.setColor(QPalette::Disabled, QPalette::WindowText, QColor(127, 127, 127));
+
+                palette.setColor(QPalette::Base, QColor(42, 42, 42));
+                palette.setColor(QPalette::AlternateBase, QColor(66, 66, 66));
+
+                palette.setColor(QPalette::ToolTipBase, Qt::white);
+                palette.setColor(QPalette::ToolTipText, QColor(53, 53, 53));
+
+                palette.setColor(QPalette::Text, Qt::white);
+                palette.setColor(QPalette::Disabled, QPalette::Text, QColor(127, 127, 127));
+
+                palette.setColor(QPalette::Dark, QColor(35, 35, 35));
+                palette.setColor(QPalette::Shadow, QColor(20, 20, 20));
+
+                palette.setColor(QPalette::Button, QColor(53, 53, 53));
+                palette.setColor(QPalette::ButtonText, Qt::white);
+                palette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor(53, 53, 53));
+
+                palette.setColor(QPalette::BrightText, Qt::red);
+
+                palette.setColor(QPalette::Link, QColor(42, 130, 218));
+                palette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+                palette.setColor(QPalette::Disabled, QPalette::Highlight, QColor(80, 80, 80));
+
+                palette.setColor(QPalette::HighlightedText, Qt::white);
+                palette.setColor(QPalette::Disabled, QPalette::HighlightedText, QColor(127, 127, 127));
+
+                qApp->setPalette(palette);
+
+                qApp->setStyleSheet(QString(fi.readAll()));
+            }
+        }
+
+        fi.close();
+
+    } else {
+
+        // Palette par defaut
+        qApp->setPalette(qApp->style()->standardPalette());
+        qApp->setStyleSheet("");
+    }
+
+    GestionTempsReel();
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::on_actionMettre_a_jour_GP_courant_triggered()
 {
     MajFichierGP();
@@ -2704,9 +2789,7 @@ void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
             Configuration::instance()->AjoutSatelliteFichierElem(norad);
         }
 
-        _onglets->setAcalcAOS(true);
-        _onglets->setAcalcDN(true);
-        _onglets->setInfo(true);
+        _onglets->ReinitFlags();
         emit DeconnecterUdp();
 
         // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
@@ -2831,9 +2914,7 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
     }
 
     _ui->listeSatellites->currentItem()->setData(Qt::BackgroundRole, QColor(160, 220, 240));
-    _onglets->setAcalcAOS(true);
-    _onglets->setAcalcDN(true);
-    _onglets->setInfo(true);
+    _onglets->ReinitFlags();
     emit DeconnecterUdp();
     Configuration::instance()->notifAOS() = NotificationSonore::ATTENTE_LOS;
 

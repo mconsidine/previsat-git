@@ -37,6 +37,9 @@
   <property name="currentIndex">
    <number>0</number>
   </property>
+  <property name="documentMode">
+   <bool>true</bool>
+  </property>
   <widget class="QWidget" name="general">
    <property name="autoFillBackground">
     <bool>true</bool>
@@ -46,11 +49,17 @@
    </attribute>
   </widget>
   <widget class="QWidget" name="elementsOsculateurs">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
    <attribute name="title">
     <string>Éléments osculateurs</string>
    </attribute>
   </widget>
   <widget class="QWidget" name="informations">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
    <attribute name="title">
     <string>Informations satellite</string>
    </attribute>
@@ -63,12 +72,27 @@
       <height>211</height>
      </rect>
     </property>
-    <property name="currentIndex">
-     <number>0</number>
+    <property name="autoFillBackground">
+     <bool>true</bool>
     </property>
-    <widget class="QWidget" name="informationsSat"/>
-    <widget class="QWidget" name="rechercheSat"/>
-    <widget class="QWidget" name="informationsStationSpatiale"/>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="informationsSat">
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QWidget" name="rechercheSat">
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QWidget" name="informationsStationSpatiale">
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+    </widget>
    </widget>
    <widget class="QToolButton" name="infoSuiv">
     <property name="geometry">
@@ -85,6 +109,9 @@
      </font>
     </property>
     <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="autoFillBackground">
      <bool>true</bool>
     </property>
     <property name="autoRaise">
@@ -111,6 +138,9 @@
     <property name="mouseTracking">
      <bool>true</bool>
     </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
     <property name="autoRaise">
      <bool>true</bool>
     </property>
@@ -120,6 +150,9 @@
    </widget>
   </widget>
   <widget class="QWidget" name="previsions">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
    <attribute name="title">
     <string>Prévisions</string>
    </attribute>
@@ -138,6 +171,9 @@
      </font>
     </property>
     <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="autoFillBackground">
      <bool>true</bool>
     </property>
     <property name="autoRaise">
@@ -164,6 +200,9 @@
     <property name="mouseTracking">
      <bool>true</bool>
     </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
     <property name="autoRaise">
      <bool>true</bool>
     </property>
@@ -180,24 +219,49 @@
       <height>211</height>
      </rect>
     </property>
-    <property name="currentIndex">
-     <number>0</number>
+    <property name="autoFillBackground">
+     <bool>true</bool>
     </property>
-    <widget class="QWidget" name="prevision"/>
-    <widget class="QWidget" name="flashs"/>
-    <widget class="QWidget" name="transits"/>
-    <widget class="QWidget" name="evenementsOrbitaux"/>
+    <property name="currentIndex">
+     <number>2</number>
+    </property>
+    <widget class="QWidget" name="prevision">
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QWidget" name="flashs">
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QWidget" name="transits">
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QWidget" name="evenementsOrbitaux">
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+    </widget>
    </widget>
    <zorder>stackedWidget_previsions</zorder>
    <zorder>previsionSuiv</zorder>
    <zorder>previsionPrec</zorder>
   </widget>
   <widget class="QWidget" name="telescope">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
    <attribute name="title">
     <string>Télescope</string>
    </attribute>
   </widget>
   <widget class="QWidget" name="antenne">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
    <attribute name="title">
     <string>Antenne</string>
    </attribute>

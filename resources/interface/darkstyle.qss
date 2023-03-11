@@ -1,0 +1,71 @@
+QComboBox
+{
+  background-color: transparent;
+}
+
+QDateTimeEdit, QDoubleSpinBox, QLineEdit, QPushButton, QSpinBox
+{
+  color: #000000;
+}
+
+QGroupBox
+{
+  color: #ffffff;
+  border-radius: 0px;
+}
+
+QMenu
+{
+  border: 0px;
+}
+
+QMessageBox
+{
+  background: palette(base);
+}
+
+QScrollBar:vertical
+{
+  background: palette(base);
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  width: 16px;
+  margin: 0px;
+}
+
+QScrollBar::handle:vertical
+{
+  background-color: palette(alternate-base);
+}
+
+QScrollBar::handle:vertical:hover
+{
+  background-color: palette(highlight);
+}
+
+QScrollBar::add-line:vertical
+{
+  background: none;
+  height: 0px;
+  subcontrol-position: right;
+  subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical
+{
+  background: none;
+  height: 0px;
+  subcontrol-position: left;
+  subcontrol-origin: margin;
+}
+
+QStackedWidget
+{
+  color: #ffffff;
+}
+
+QTabBar
+{
+  background-color: transparent;
+  qproperty-drawBase: 0;
+}

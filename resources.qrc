@@ -16,6 +16,7 @@
         <file>resources/icones/otv.png</file>
         <file>resources/icones/noaa.png</file>
         <file>resources/icones/cygnus.png</file>
+        <file>resources/interface/darkstyle.qss</file>
         <file>resources/interface/affichage.png</file>
         <file>resources/interface/configuration.png</file>
         <file>resources/interface/help.png</file>

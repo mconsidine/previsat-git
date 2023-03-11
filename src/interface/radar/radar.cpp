@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    11 mars 2023
  *
  */
 
@@ -75,7 +75,7 @@ Radar::Radar(QWidget *parent) :
 
         qInfo() << "Début Initialisation" << metaObject()->className();
 
-        scene = nullptr;
+        scene = new QGraphicsScene;
 
         qInfo() << "Fin   Initialisation" << metaObject()->className();
 
@@ -317,11 +317,7 @@ void Radar::show()
     const double hts = Configuration::instance()->soleil().hauteur() * MATHS::RAD2DEG;
     const QBrush couleurCiel = Ciel::CalculCouleurCiel(hts);
 
-    if (scene != nullptr) {
-        scene->deleteLater();
-    }
-
-    scene = new QGraphicsScene;
+    scene->clear();
     scene->setBackgroundBrush(QBrush(palette().window().color()));
     scene->setSceneRect(_ui->vueRadar->rect());
 

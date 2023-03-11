@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string notr="true"/>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <widget class="QWidget" name="formLayoutWidget_48">
    <property name="geometry">
     <rect>

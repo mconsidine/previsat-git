@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    9 mars 2023
+ * >    11 mars 2023
  *
  */
 
@@ -472,7 +472,7 @@ void Carte::AffichageFrontieres()
     /* Initialisations */
 
     /* Corps de la methode */
-    if (settings.value("affichage/affichageFrontieres").toBool()) {
+    if (settings.value("affichage/affichageFrontieres").toBool() && !_mcc) {
 
         try {
 
@@ -1605,8 +1605,8 @@ void Carte::ChargementCarteDuMonde()
     _pixMap.load(nomMap);
     _pixMap = _pixMap.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-    _largeurCarte = width();
-    _hauteurCarte = height();
+    _largeurCarte = _ui->carte->width() - 2;
+    _hauteurCarte = _ui->carte->height() - 2;
 
     scene->setSceneRect(0, 0, _largeurCarte, _hauteurCarte);
 

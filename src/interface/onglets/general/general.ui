@@ -38,6 +38,9 @@
     <number>0</number>
    </property>
    <widget class="QWidget" name="page_dateHeure1">
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
     <widget class="QWidget" name="formLayoutWidget">
      <property name="geometry">
       <rect>
@@ -83,6 +86,9 @@
         </property>
         <property name="mouseTracking">
          <bool>true</bool>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
         </property>
         <property name="text">
          <string notr="true">Mercredi 31 décembre 2022  00:00:00   UTC + 01:00</string>
@@ -324,37 +330,13 @@
     <enum>QFrame::StyledPanel</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
-   <widget class="QWidget" name="coordonneesSoleil">
-    <widget class="QLabel" name="lbl_coordonneesSoleil">
-     <property name="geometry">
-      <rect>
-       <x>2</x>
-       <y>0</y>
-       <width>211</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="mouseTracking">
-      <bool>true</bool>
-     </property>
-     <property name="autoFillBackground">
-      <bool>true</bool>
-     </property>
-     <property name="text">
-      <string>Coordonnées du Soleil :</string>
-     </property>
-    </widget>
+   <widget class="QWidget" name="page">
     <widget class="QWidget" name="formLayoutWidget_7">
      <property name="geometry">
       <rect>
-       <x>2</x>
+       <x>0</x>
        <y>72</y>
        <width>182</width>
        <height>52</height>
@@ -468,10 +450,142 @@
       </item>
      </layout>
     </widget>
+    <widget class="QLabel" name="lbl_coordonneesSoleil">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>211</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="mouseTracking">
+      <bool>true</bool>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>Coordonnées du Soleil :</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_19">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>126</y>
+       <width>204</width>
+       <height>52</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_lontlatSol">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="labelAlignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="horizontalSpacing">
+       <number>3</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_longitudeSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Longitude :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="longitudeSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">000° 00' 00&quot; Ouest</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_latitudeSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Latitude :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="latitudeSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">00° 00' 00&quot; Nord</string>
+        </property>
+        <property name="indent">
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_diametreApparentSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Diamètre apparent :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="diametreApparentSol">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string notr="true">32' 00&quot;</string>
+        </property>
+        <property name="indent">
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
     <widget class="QWidget" name="formLayoutWidget_8">
      <property name="geometry">
       <rect>
-       <x>2</x>
+       <x>0</x>
        <y>18</y>
        <width>142</width>
        <height>52</height>
@@ -571,114 +685,6 @@
         </property>
         <property name="text">
          <string notr="true">1.017 UA</string>
-        </property>
-        <property name="indent">
-         <number>6</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QWidget" name="formLayoutWidget_19">
-     <property name="geometry">
-      <rect>
-       <x>2</x>
-       <y>126</y>
-       <width>204</width>
-       <height>52</height>
-      </rect>
-     </property>
-     <layout class="QFormLayout" name="formLayout_lontlatSol">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetFixedSize</enum>
-      </property>
-      <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-      <property name="horizontalSpacing">
-       <number>3</number>
-      </property>
-      <property name="verticalSpacing">
-       <number>1</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="lbl_longitudeSol">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Longitude :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="longitudeSol">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string notr="true">000° 00' 00&quot; Ouest</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="lbl_latitudeSol">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Latitude :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="latitudeSol">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string notr="true">00° 00' 00&quot; Nord</string>
-        </property>
-        <property name="indent">
-         <number>6</number>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="lbl_diametreApparentSol">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Diamètre apparent :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="diametreApparentSol">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string notr="true">32' 00&quot;</string>
         </property>
         <property name="indent">
          <number>6</number>
