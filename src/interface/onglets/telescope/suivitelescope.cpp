@@ -201,7 +201,7 @@ void SuiviTelescope::AfficherListeSatellites(const QString &nomsat, const QStrin
     /* Corps de la methode */
     ListWidgetItem *elem = new ListWidgetItem(nomsat, _ui->listeTelescope);
     elem->setData(Qt::UserRole, norad);
-    elem->setData(Qt::CheckStateRole, (check) ? Qt::Checked : Qt::Unchecked);
+    elem->setData(Qt::CheckStateRole, (check && (norad == noradDefaut)) ? Qt::Checked : Qt::Unchecked);
     elem->setToolTip(tooltip);
     elem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
 
@@ -285,10 +285,9 @@ void SuiviTelescope::CalculAos()
             throw PreviSatException();
         }
 
-        QString norad;
         for (int i=0; i<_ui->listeTelescope->count(); i++) {
             if (_ui->listeTelescope->item(i)->checkState() == Qt::Checked) {
-                norad = _ui->listeTelescope->item(i)->data(Qt::UserRole).toString();
+                _norad = _ui->listeTelescope->item(i)->data(Qt::UserRole).toString();
             }
         }
 
@@ -296,7 +295,7 @@ void SuiviTelescope::CalculAos()
         obs.CalculPosVit(dateCalcul);
 
         // Position du satellite
-        const ElementsOrbitaux elements = Configuration::instance()->mapElementsOrbitaux()[norad];
+        const ElementsOrbitaux elements = Configuration::instance()->mapElementsOrbitaux()[_norad];
         _ui->nomsatSuivi->setText(elements.nom);
 
         Satellite satSuivi(elements);
@@ -884,10 +883,13 @@ void SuiviTelescope::on_ajusterDates_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const Observateur observateur = Configuration::instance()->observateurs().at(_ui->lieuxObservation->currentIndex());
+    const ElementsOrbitaux elements = Configuration::instance()->mapElementsOrbitaux()[_norad];
+
 
     /* Corps de la methode */
-    AjustementDates * const ajustementDates = new AjustementDates(_dateAosSuivi->ToQDateTime(1), _dateLosSuivi->ToQDateTime(1),
-                                                                  _ui->pasSuivi->value(), this);
+    AjustementDates * const ajustementDates = new AjustementDates(_dateAosSuivi->ToQDateTime(1), _dateLosSuivi->ToQDateTime(1), _ui->pasSuivi->value(),
+                                                                  observateur, elements, this);
 
     QEvent evt(QEvent::LanguageChange);
 

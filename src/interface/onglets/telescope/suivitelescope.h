@@ -161,6 +161,7 @@ private:
     AfficherResultats *_afficherResultats;
     Date *_date;
     QString _ficSuivi;
+    QString _norad;
 
     Date *_dateAosSuivi;
     Date *_dateLosSuivi;
