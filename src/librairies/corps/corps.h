@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 octobre 2022
+ * >    12 mars 2023
  *
  */
 
@@ -177,7 +177,7 @@ public:
     double rangeRate() const;
     bool isVisible() const;
     const Vecteur3D &vitesse() const;
-    const std::array<QPointF, 361> &zone() const;
+    const std::array<QPointF, 360> &zone() const;
     const QString &dateLever() const;
     const QString &dateMeridien() const;
     const QString &dateCoucher() const;
@@ -217,7 +217,7 @@ protected:
     Vecteur3D _dist;
 
     // Zone de visibilite
-    std::array<QPointF, 361> _zone;
+    std::array<QPointF, 360> _zone;
 
     // Dates de lever, passage au meridien et coucher
     QList<Ephemerides> _ephem;

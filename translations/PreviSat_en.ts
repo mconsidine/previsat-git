@@ -1533,83 +1533,83 @@ PreviSat is free !</translation>
 <context>
     <name>Carte</name>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="146"/>
+        <location filename="../src/interface/carte/carte.cpp" line="150"/>
         <source>Est</source>
         <translation>East</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="146"/>
+        <location filename="../src/interface/carte/carte.cpp" line="150"/>
         <source>Ouest</source>
         <translation>West</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="150"/>
+        <location filename="../src/interface/carte/carte.cpp" line="154"/>
         <source>Sud</source>
         <translation>South</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="150"/>
+        <location filename="../src/interface/carte/carte.cpp" line="154"/>
         <source>Nord</source>
         <translation>North</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="153"/>
+        <location filename="../src/interface/carte/carte.cpp" line="157"/>
         <source>Longitude : %1° %2</source>
         <translation>Longitude : %1° %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="154"/>
+        <location filename="../src/interface/carte/carte.cpp" line="158"/>
         <source>Latitude : %1° %2</source>
         <translation>Latitude : %1° %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="173"/>
+        <location filename="../src/interface/carte/carte.cpp" line="177"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="176"/>
+        <location filename="../src/interface/carte/carte.cpp" line="180"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD number : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="199"/>
-        <location filename="../src/interface/carte/carte.cpp" line="200"/>
+        <location filename="../src/interface/carte/carte.cpp" line="203"/>
+        <location filename="../src/interface/carte/carte.cpp" line="204"/>
         <source>Soleil</source>
         <translation>Sun</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="225"/>
-        <location filename="../src/interface/carte/carte.cpp" line="226"/>
+        <location filename="../src/interface/carte/carte.cpp" line="229"/>
+        <location filename="../src/interface/carte/carte.cpp" line="230"/>
         <source>Lune</source>
         <translation>Moon</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1376"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1381"/>
         <source>W</source>
         <comment>Symbol for West</comment>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1382"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1387"/>
         <source>E</source>
         <comment>Symbol for East</comment>
         <translation>E</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1406"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1411"/>
         <source>N</source>
         <comment>Symbol for North</comment>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1412"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1417"/>
         <source>S</source>
         <comment>Symbol for South</comment>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1700"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1732"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>The file %1 does not exist, please re-install %2</translation>
     </message>
@@ -4933,7 +4933,7 @@ the video stream</translation>
         <location filename="../src/configuration/gestionnairexml.cpp" line="993"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1082"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1175"/>
-        <location filename="../src/librairies/corps/corps.cpp" line="682"/>
+        <location filename="../src/librairies/corps/corps.cpp" line="681"/>
         <source>Le fichier %1 n&apos;existe pas ou est vide, veuillez réinstaller %2</source>
         <translation>The file %1 does not exist or is empty, please re-install %2</translation>
     </message>
@@ -4949,7 +4949,7 @@ the video stream</translation>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1045"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1138"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1240"/>
-        <location filename="../src/librairies/corps/corps.cpp" line="672"/>
+        <location filename="../src/librairies/corps/corps.cpp" line="671"/>
         <location filename="../src/librairies/dates/date.cpp" line="413"/>
         <source>Erreur lors de la lecture du fichier %1, veuillez réinstaller %2</source>
         <translation>Error while reading file %1, please re-install %2</translation>

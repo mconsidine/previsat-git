@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    12 mars 2023
  *
  */
 
@@ -610,7 +610,6 @@ void Corps::CalculZoneVisibilite(const double beta)
         const QPointF pt(fmod(MATHS::PI - lo1, MATHS::DEUX_PI) * MATHS::RAD2DEG, (MATHS::PI_SUR_DEUX - la1) * MATHS::RAD2DEG);
         _zone[i] = pt;
     }
-    _zone[360] = _zone[0];
 
     /* Retour */
     return;
@@ -793,7 +792,7 @@ const Vecteur3D &Corps::vitesse() const
     return _vitesse;
 }
 
-const std::array<QPointF, 361> &Corps::zone() const
+const std::array<QPointF, 360> &Corps::zone() const
 {
     return _zone;
 }

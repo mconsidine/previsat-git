@@ -107,7 +107,7 @@ void SatelliteTest::testCalculCercleAcquisition()
     const Observateur station("Paris", -2.348640000, +48.853390000, 30);
     sat.CalculCercleAcquisition(station);
 
-    QCOMPARE(sat.zone().size(), 361u);
+    QCOMPARE(sat.zone().size(), 360u);
 }
 
 void SatelliteTest::testCalculCoordHoriz2()

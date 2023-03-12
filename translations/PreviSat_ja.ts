@@ -959,7 +959,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsflashs.ui" line="112"/>
         <source>Indifférent</source>
-        <translation>太陽の角は関係ありません</translation>
+        <translation>すべての仰角</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsflashs.ui" line="117"/>
@@ -1002,7 +1002,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsflashs.ui" line="344"/>
         <source>Hauteur minimale du satellite :</source>
-        <translation>最低衛星仰角 :</translation>
+        <translation>最小衛星仰角 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsflashs.ui" line="367"/>
@@ -1069,7 +1069,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="407"/>
         <source>Aucun satellite produisant des flashs n&apos;a été trouvé dans le fichier d&apos;éléments orbitaux</source>
-        <translation type="unfinished">TLEファイルにはフレアを生成する衛星が見つかりませんでした</translation>
+        <translation>TLEファイルにはフレアを生成する衛星が見つかりませんでした</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="441"/>
@@ -1533,83 +1533,83 @@ PreviSatは、完全無料です!</translation>
 <context>
     <name>Carte</name>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="146"/>
+        <location filename="../src/interface/carte/carte.cpp" line="150"/>
         <source>Est</source>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="146"/>
+        <location filename="../src/interface/carte/carte.cpp" line="150"/>
         <source>Ouest</source>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="150"/>
+        <location filename="../src/interface/carte/carte.cpp" line="154"/>
         <source>Sud</source>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="150"/>
+        <location filename="../src/interface/carte/carte.cpp" line="154"/>
         <source>Nord</source>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="153"/>
+        <location filename="../src/interface/carte/carte.cpp" line="157"/>
         <source>Longitude : %1° %2</source>
         <translation>経度 : %1° %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="154"/>
+        <location filename="../src/interface/carte/carte.cpp" line="158"/>
         <source>Latitude : %1° %2</source>
         <translation>緯度 : %1° %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="173"/>
+        <location filename="../src/interface/carte/carte.cpp" line="177"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="176"/>
+        <location filename="../src/interface/carte/carte.cpp" line="180"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="199"/>
-        <location filename="../src/interface/carte/carte.cpp" line="200"/>
+        <location filename="../src/interface/carte/carte.cpp" line="203"/>
+        <location filename="../src/interface/carte/carte.cpp" line="204"/>
         <source>Soleil</source>
         <translation>太陽</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="225"/>
-        <location filename="../src/interface/carte/carte.cpp" line="226"/>
+        <location filename="../src/interface/carte/carte.cpp" line="229"/>
+        <location filename="../src/interface/carte/carte.cpp" line="230"/>
         <source>Lune</source>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1376"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1381"/>
         <source>W</source>
         <comment>Symbol for West</comment>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1382"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1387"/>
         <source>E</source>
         <comment>Symbol for East</comment>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1406"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1411"/>
         <source>N</source>
         <comment>Symbol for North</comment>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1412"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1417"/>
         <source>S</source>
         <comment>Symbol for South</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1700"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1732"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
@@ -3072,7 +3072,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="914"/>
         <source>Trace dans le ciel</source>
-        <translation>飛行経路を星図に表示する</translation>
+        <translation>星図上に飛行経路を表示する</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="927"/>
@@ -3142,7 +3142,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="1258"/>
         <source>Magnitude limite des étoiles :</source>
-        <translation>星の最低等級 :</translation>
+        <translation>星の最小等級 :</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="1302"/>
@@ -3351,7 +3351,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="2166"/>
         <source>Angle entre le plan de l&apos;orbite et la direction du Soleil</source>
-        <translation>軌道面と太陽の方向との間の角度</translation>
+        <translation>軌道面と太陽方向がなす角</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="2169"/>
@@ -4182,7 +4182,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="830"/>
         <source>Fichier TLE à lire :</source>
-        <translation>読み込むTLEファイル :</translation>
+        <translation>読むTLEファイル :</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="846"/>
@@ -4259,7 +4259,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="288"/>
         <source>%1 TLE(s) sur %2 mis à jour</source>
-        <translation>%1つのTLEに%2つが更新されました</translation>
+        <translation>%1つのTLEのうち%2つが更新されました</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="293"/>
@@ -4337,7 +4337,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="977"/>
         <source>Le nom du fichier à lire n&apos;est pas spécifié</source>
-        <translation>読み取るファイルの名前が指定されていません</translation>
+        <translation>読むファイルの名前が指定されていません</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="987"/>
@@ -4700,7 +4700,7 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/previsat.cpp" line="257"/>
         <source>Vérification du fichier TLE %1 ...</source>
-        <translation>TLEファイル「%1」は確認中です...</translation>
+        <translation>TLEファイル「%1」をチェックしています...</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="262"/>
@@ -4932,7 +4932,7 @@ le flux vidéo</source>
         <location filename="../src/configuration/gestionnairexml.cpp" line="993"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1082"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1175"/>
-        <location filename="../src/librairies/corps/corps.cpp" line="682"/>
+        <location filename="../src/librairies/corps/corps.cpp" line="681"/>
         <source>Le fichier %1 n&apos;existe pas ou est vide, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
@@ -4948,7 +4948,7 @@ le flux vidéo</source>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1045"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1138"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1240"/>
-        <location filename="../src/librairies/corps/corps.cpp" line="672"/>
+        <location filename="../src/librairies/corps/corps.cpp" line="671"/>
         <location filename="../src/librairies/dates/date.cpp" line="413"/>
         <source>Erreur lors de la lecture du fichier %1, veuillez réinstaller %2</source>
         <translation type="unfinished"></translation>
@@ -4956,7 +4956,7 @@ le flux vidéo</source>
     <message>
         <location filename="../src/configuration/configuration.cpp" line="924"/>
         <source>Le répertoire %1 n&apos;existe pas, veuillez réinstaller %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">フォルダ「%1」が存在しません</translation>
     </message>
     <message>
         <location filename="../src/configuration/configuration.cpp" line="985"/>
@@ -5032,7 +5032,7 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1050"/>
         <source>Hauteur minimale du satellite = %1°</source>
-        <translation>最低衛星仰角 = %1°</translation>
+        <translation>最小衛星仰角 = %1°</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1056"/>
@@ -5086,7 +5086,7 @@ le flux vidéo</source>
     <message>
         <location filename="../src/librairies/corps/etoiles/ligneconstellation.cpp" line="88"/>
         <source>Le tableau de lignes de constellation n&apos;est pas initialisé</source>
-        <translation>星座行の表が初期化されていません</translation>
+        <translation>星座線の表が初期化されていません</translation>
     </message>
     <message>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="479"/>
@@ -5132,7 +5132,8 @@ Voulez-vous ajouter ce TLE dans le fichier à mettre à jour ?</source>
         <location filename="../src/configuration/gestionnairexml.cpp" line="364"/>
         <source>Le fichier de configuration de %1 a évolué.
 Souhaitez-vous tenter de récupérer les lieux d&apos;observation ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">設定ファイル「%1」の形式が変更されました。
+選択した観測地など一部の設定情報が失われます。</translation>
     </message>
     <message>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1330"/>
@@ -5197,14 +5198,14 @@ Voulez-vous supprimer ce TLE du fichier à mettre à jour ?</source>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="606"/>
         <source>Erreur position des espaces du TLE :
 Satellite %1 - numéro NORAD : %2</source>
-        <translation>TLEスペース位置エラー :
+        <translation>TLEの空白文字の位置によるエラー :
 衛星「%1」 - NORAD番号 : %2</translation>
     </message>
     <message>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="614"/>
         <source>Erreur Ponctuation du TLE :
 Satellite %1 - numéro NORAD : %2</source>
-        <translation>TLE約物エラー :
+        <translation>TLEの約物によるエラー :
 衛星「%1」 - NORAD番号 : %2</translation>
     </message>
     <message>
@@ -5216,14 +5217,14 @@ Satellite %1 - numéro NORAD : %2</source>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="627"/>
         <source>Erreur CheckSum ligne 1 :
 Satellite %1 - numéro NORAD : %2</source>
-        <translation>チェックサムエラー行1 :
+        <translation>1行目のチェックサムが正しくありません :
 衛星「%1」 - NORAD番号 : %2</translation>
     </message>
     <message>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="632"/>
         <source>Erreur CheckSum ligne 2 :
 Satellite %1 - numéro NORAD : %2</source>
-        <translation>チェックサムエラー行2 :
+        <translation>2行目のチェックサムが正しくありません :
 衛星「%1」 - NORAD番号 : %2</translation>
     </message>
     <message>
@@ -5836,7 +5837,7 @@ Satellite %1 - numéro NORAD : %2</source>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="215"/>
         <source>Lever du satellite :</source>
-        <translation>衛星が地平線から現れる :</translation>
+        <translation>衛星が地平線から出る日時 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="229"/>
@@ -5846,7 +5847,7 @@ Satellite %1 - numéro NORAD : %2</source>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="243"/>
         <source>Coucher du satellite :</source>
-        <translation>衛星が地平線の下に沈む :</translation>
+        <translation>衛星が地平線に沈む日時 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="289"/>
@@ -5934,7 +5935,7 @@ Satellite %1 - numéro NORAD : %2</source>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="584"/>
         <source>Le satellite n&apos;est pas visible depuis le lieu d&apos;observation</source>
-        <translation>衛星がその観測地から見えられません</translation>
+        <translation>衛星はこの観測地から見えません</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="615"/>
@@ -6039,7 +6040,7 @@ Satellite %1 - numéro NORAD : %2</source>
     <message>
         <location filename="../src/librairies/systeme/telechargement.cpp" line="93"/>
         <source>Erreur lors du téléchargement du fichier %1</source>
-        <translation>ファイル「%1」ダウンロードのときはエラーが発生しました</translation>
+        <translation>ファイル「%1」のダウンロード中にエラーが発生しました</translation>
     </message>
     <message>
         <location filename="../src/librairies/systeme/telechargement.cpp" line="113"/>
