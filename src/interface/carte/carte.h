@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    9 mars 2023
+ * >    12 mars 2023
  *
  */
 
@@ -48,13 +48,13 @@
 #include <QFrame>
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "librairies/corps/satellite/satellite.h"
 
 
 class QGraphicsScene;
 class Date;
 class ItemGroup;
 class Observateur;
-class Satellite;
 
 namespace Ui {
 class Carte;
@@ -156,8 +156,6 @@ private:
     double _stepMeridiens;
     double _stepParalleles;
 
-    QList<bool> _als;
-
     QList<ItemGroup *> _groupes;
 
 
@@ -231,6 +229,13 @@ private:
      * @brief ChargementCarteDuMonde Chargement de la carte du monde
      */
     void ChargementCarteDuMonde();
+
+    /**
+     * @brief CouleurTraceAuSol Determination de la couleur du point de la trace au sol
+     * @param trace point de la trace au sol
+     * @return couleur du point
+     */
+    QColor CouleurTraceAuSol(const ElementsTraceSol &trace) const;
 
     /**
      * @brief Initialisation Initialisation de la classe Carte
