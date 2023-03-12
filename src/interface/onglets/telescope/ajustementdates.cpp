@@ -35,7 +35,9 @@
  */
 
 #include "ajustementdates.h"
+#include "librairies/corps/satellite/satellite.h"
 #include "librairies/exceptions/previsatexception.h"
+#include "librairies/maths/maths.h"
 #include "ui_ajustementdates.h"
 
 
@@ -49,12 +51,15 @@
 /*
  * Constructeur par defaut
  */
-AjustementDates::AjustementDates(const QDateTime &dateInitiale, const QDateTime &dateFinale, const int pas, QWidget *parent) :
+AjustementDates::AjustementDates(const QDateTime &dateInitiale, const QDateTime &dateFinale, const int pas, const Observateur &observateur,
+                                 const ElementsOrbitaux &elements, QWidget *parent) :
     QDialog(parent),
     _ui(new Ui::AjustementDates),
     _date1(dateInitiale),
     _date2(dateFinale),
-    _pas(pas)
+    _pas(pas),
+    _observateur(observateur),
+    _elements(elements)
 {
     _ui->setupUi(this);
 
@@ -89,6 +94,12 @@ AjustementDates::~AjustementDates()
 /*
  * Methodes publiques
  */
+void AjustementDates::show()
+{
+    MajCoordHorizDebut();
+    MajCoordHorizFin();
+}
+
 void AjustementDates::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
@@ -113,6 +124,35 @@ void AjustementDates::changeEvent(QEvent *evt)
 /*
  * Methodes privees
  */
+void AjustementDates::on_ajustementDateInitiale_valueChanged(int value)
+{
+    if (value < _ui->ajustementDateFinale->value()) {
+
+        _ui->dateInitiale->setDateTime(_date1.addSecs(value));
+        MajCoordHorizDebut();
+
+    } else {
+        _ui->ajustementDateInitiale->setValue(_ui->ajustementDateFinale->value());
+    }
+}
+
+void AjustementDates::on_ajustementDateFinale_valueChanged(int value)
+{
+    if (value > _ui->ajustementDateInitiale->value()) {
+
+        _ui->dateFinale->setDateTime(_date1.addSecs(value));
+        MajCoordHorizFin();
+
+    } else {
+        _ui->ajustementDateFinale->setValue(_ui->ajustementDateInitiale->value());
+    }
+}
+
+void AjustementDates::on_buttonBox_accepted()
+{
+    emit AjusterDates(_ui->dateInitiale->dateTime(), _ui->dateFinale->dateTime());
+}
+
 /*
  * Initialisation de la classe AjustementDates
  */
@@ -155,25 +195,60 @@ void AjustementDates::Initialisation()
     return;
 }
 
-void AjustementDates::on_ajustementDateInitiale_valueChanged(int value)
+/*
+ * Mise a jour des coordonnees horizontales pour la date de debut
+ */
+void AjustementDates::MajCoordHorizDebut()
 {
-    if (value < _ui->ajustementDateFinale->value()) {
-        _ui->dateInitiale->setDateTime(_date1.addSecs(value));
-    } else {
-        _ui->ajustementDateInitiale->setValue(_ui->ajustementDateFinale->value());
-    }
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QDateTime qdate = _ui->dateInitiale->dateTime();
+    const double jj = Date(qdate.date().year(), qdate.date().month(), qdate.date().day(), qdate.time().hour(), qdate.time().minute(),
+                           qdate.time().second(), 0.).jourJulienUTC();
+
+    const double offset = Date::CalculOffsetUTC(qdate);
+    const Date date(jj - offset, 0.);
+
+    /* Corps de la methode */
+    _observateur.CalculPosVit(date);
+
+    Satellite sat(_elements);
+    sat.CalculPosVit(date);
+    sat.CalculCoordHoriz(_observateur);
+
+    _ui->hauteurDebut->setText(Maths::ToSexagesimal(sat.hauteur(), AngleFormatType::DEGRE, 2, 0, true, true));
+    _ui->azimutDebut->setText(Maths::ToSexagesimal(sat.azimut(), AngleFormatType::DEGRE, 3, 0, false, true));
+
+    /* Retour */
+    return;
 }
 
-void AjustementDates::on_ajustementDateFinale_valueChanged(int value)
+/*
+ * Mise a jour des coordonnees horizontales pour la date de debut
+ */
+void AjustementDates::MajCoordHorizFin()
 {
-    if (value > _ui->ajustementDateInitiale->value()) {
-        _ui->dateFinale->setDateTime(_date1.addSecs(value));
-    } else {
-        _ui->ajustementDateFinale->setValue(_ui->ajustementDateInitiale->value());
-    }
-}
+    /* Declarations des variables locales */
 
-void AjustementDates::on_buttonBox_accepted()
-{
-    emit AjusterDates(_ui->dateInitiale->dateTime(), _ui->dateFinale->dateTime());
+    /* Initialisations */
+    const QDateTime qdate = _ui->dateFinale->dateTime();
+    const double jj = Date(qdate.date().year(), qdate.date().month(), qdate.date().day(), qdate.time().hour(), qdate.time().minute(),
+                           qdate.time().second(), 0.).jourJulienUTC();
+
+    const double offset = Date::CalculOffsetUTC(qdate);
+    const Date date(jj - offset, 0.);
+
+    /* Corps de la methode */
+    _observateur.CalculPosVit(date);
+
+    Satellite sat(_elements);
+    sat.CalculPosVit(date);
+    sat.CalculCoordHoriz(_observateur);
+
+    _ui->hauteurFin->setText(Maths::ToSexagesimal(sat.hauteur(), AngleFormatType::DEGRE, 2, 0, true, true));
+    _ui->azimutFin->setText(Maths::ToSexagesimal(sat.azimut(), AngleFormatType::DEGRE, 3, 0, false, true));
+
+    /* Retour */
+    return;
 }

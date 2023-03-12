@@ -49,6 +49,8 @@
 #include <QDialog>
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "librairies/corps/satellite/elementsorbitaux.h"
+#include "librairies/observateur/observateur.h"
 
 
 namespace Ui {
@@ -64,7 +66,8 @@ public:
     /*
      *  Constructeurs
      */
-    explicit AjustementDates(const QDateTime &dateInitiale, const QDateTime &dateFinale, const int pas, QWidget *parent = nullptr);
+    explicit AjustementDates(const QDateTime &dateInitiale, const QDateTime &dateFinale, const int pas, const Observateur &observateur,
+                             const ElementsOrbitaux &elements, QWidget *parent = nullptr);
 
 
     /*
@@ -84,6 +87,8 @@ public:
     /*
      * Methodes publiques
      */
+    void show();
+
 
 public slots:
 
@@ -123,6 +128,8 @@ private:
     QDateTime _date1;
     QDateTime _date2;
     int _pas;
+    Observateur _observateur;
+    ElementsOrbitaux _elements;
 
 
     /*
@@ -133,6 +140,15 @@ private:
      */
     void Initialisation();
 
+    /**
+     * @brief MajCoordHorizDebut Mise a jour des coordonnees horizontales pour la date de debut
+     */
+    void MajCoordHorizDebut();
+
+    /**
+     * @brief MajCoordHorizFin Mise a jour des coordonnees horizontales pour la date de fin
+     */
+    void MajCoordHorizFin();
 
 };
 
