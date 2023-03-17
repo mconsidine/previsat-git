@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    11 novembre 2022
+# >    17 mars 2023
 
 #-------------------------------------------------
 VER_MAJ      = 6.0
@@ -49,7 +49,7 @@ TARGET = PreviSat
 TEMPLATE = app
 
 !equals(QT_MAJOR_VERSION, 6) {
-    error("Qt $${QT_VERSION} is not suited to compile $${TARGET}. Use Qt 6.4.2 in preference")
+    error("Qt $${QT_VERSION} is not suited to compile $${TARGET}. Use Qt 6.4.3 in preference")
 }
 
 QT += concurrent multimedia printsupport widgets xml
