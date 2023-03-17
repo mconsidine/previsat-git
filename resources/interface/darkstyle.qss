@@ -3,7 +3,7 @@ QComboBox
   background-color: transparent;
 }
 
-QDateTimeEdit, QDoubleSpinBox, QLineEdit, QPushButton, QSpinBox
+QDateTimeEdit, QDoubleSpinBox, QHeaderView, QLineEdit, QPushButton, QSpinBox
 {
   color: #000000;
 }
