@@ -1706,14 +1706,14 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="205"/>
         <location filename="../src/interface/onglets/general/general.ui" line="508"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1797"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1803"/>
         <source>Longitude :</source>
         <translation>経度 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="237"/>
         <location filename="../src/interface/onglets/general/general.ui" line="534"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1823"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1829"/>
         <source>Latitude :</source>
         <translation>緯度 :</translation>
     </message>
@@ -1743,35 +1743,35 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="367"/>
         <location filename="../src/interface/onglets/general/general.ui" line="753"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1905"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1911"/>
         <source>Ascension droite :</source>
         <translation>赤経 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="380"/>
         <location filename="../src/interface/onglets/general/general.ui" line="766"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1918"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1924"/>
         <source>Déclinaison :</source>
         <translation>赤緯 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="393"/>
         <location filename="../src/interface/onglets/general/general.ui" line="779"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1931"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1937"/>
         <source>Constellation :</source>
         <translation>星座 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="616"/>
         <location filename="../src/interface/onglets/general/general.ui" line="861"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1686"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1692"/>
         <source>Hauteur :</source>
         <translation>仰角 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="629"/>
         <location filename="../src/interface/onglets/general/general.ui" line="874"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1699"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1705"/>
         <source>Azimut (N) :</source>
         <extracomment>Azimuth (from the North)</extracomment>
         <translation>方位角 (北) :</translation>
@@ -1779,7 +1779,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="642"/>
         <location filename="../src/interface/onglets/general/general.ui" line="887"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1712"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1718"/>
         <source>Distance :</source>
         <translation>距離 :</translation>
     </message>
@@ -1801,155 +1801,165 @@ PreviSatは、完全無料です!</translation>
         <translation>月相 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="985"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="988"/>
         <source>Magn. (Illum.) :</source>
         <extracomment>Magnitude, illumination</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="998"/>
-        <source>Diam. apparent :</source>
-        <extracomment>Angular diameter</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1076"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1082"/>
         <source>Aube astronomique :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1089"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1095"/>
         <source>Aube nautique :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1102"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1108"/>
         <source>Aube civile :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1276"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1282"/>
         <location filename="../src/interface/onglets/general/general.cpp" line="840"/>
         <source>Évènements Soleil :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1310"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1316"/>
         <source>Lever :</source>
         <comment>Sun</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1323"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1329"/>
         <source>Méridien :</source>
         <comment>Sun</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1336"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1342"/>
         <source>Coucher :</source>
         <comment>Sun</comment>
         <translation type="unfinished"> </translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1175"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1181"/>
         <source>Crépuscule civil :</source>
         <translation>市民薄明 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1204"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="985"/>
+        <source>Magnitude (Illumination)</source>
+        <translation>等級 (照射)</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.ui" line="1001"/>
+        <source>Diamètre apparent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.ui" line="1004"/>
+        <source>Diam. app. :</source>
+        <extracomment>Angular diameter</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.ui" line="1210"/>
         <source>Crépuscule nautique :</source>
         <translation>航海薄明 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1233"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1239"/>
         <source>Crépuscule astronomique :</source>
         <translation>天文薄明 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1410"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1416"/>
         <location filename="../src/interface/onglets/general/general.cpp" line="862"/>
         <source>Évènements Lune :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1444"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1450"/>
         <source>Lever :</source>
         <comment>Moon</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1457"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1463"/>
         <source>Méridien :</source>
         <comment>Moon</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1470"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1476"/>
         <source>Coucher :</source>
         <comment>Moon</comment>
         <translation type="unfinished"> </translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1540"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1546"/>
         <source>Nouvelle Lune :</source>
         <translation>ニュームーン :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1554"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1560"/>
         <source>Premier quartier :</source>
         <translation>ファーストクォーター :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1568"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1574"/>
         <source>Pleine Lune :</source>
         <translation>フルムーン :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1582"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1588"/>
         <source>Dernier quartier :</source>
         <translation>サードクォーター :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1852"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1858"/>
         <source>Altitude :</source>
         <comment>Altitude of satellite</comment>
         <translation>高度</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="2022"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2028"/>
         <source>Direction :</source>
         <translation>方向 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="2035"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2041"/>
         <source>Vitesse orbitale :</source>
         <translation>軌道速度 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="2048"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2054"/>
         <source>Variation distance :</source>
         <translation>レンジレート :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="2080"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="2102"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2086"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2108"/>
         <source>Double-cliquer pour changer d&apos;unités</source>
         <translation>ダブルクリックして単位を変更します</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="2155"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="2294"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2161"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2300"/>
         <source>Orbite n°</source>
         <translation>軌道 #</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="2392"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2398"/>
         <source>Temps écoulé depuis l&apos;époque :</source>
         <translation>元期からの経過時間 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="2424"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2430"/>
         <source>Nom :</source>
         <translation>名称 :</translation>
     </message>

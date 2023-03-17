@@ -336,7 +336,7 @@
     <widget class="QWidget" name="formLayoutWidget_7">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>3</x>
        <y>72</y>
        <width>182</width>
        <height>52</height>
@@ -453,7 +453,7 @@
     <widget class="QLabel" name="lbl_coordonneesSoleil">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>2</x>
        <y>0</y>
        <width>211</width>
        <height>16</height>
@@ -477,7 +477,7 @@
     <widget class="QWidget" name="formLayoutWidget_19">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>3</x>
        <y>126</y>
        <width>204</width>
        <height>52</height>
@@ -585,7 +585,7 @@
     <widget class="QWidget" name="formLayoutWidget_8">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>3</x>
        <y>18</y>
        <width>142</width>
        <height>52</height>
@@ -698,7 +698,7 @@
     <widget class="QLabel" name="lbl_coordonneesLune">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>2</x>
        <y>0</y>
        <width>221</width>
        <height>16</height>
@@ -722,7 +722,7 @@
     <widget class="QWidget" name="formLayoutWidget_9">
      <property name="geometry">
       <rect>
-       <x>2</x>
+       <x>3</x>
        <y>72</y>
        <width>180</width>
        <height>52</height>
@@ -830,7 +830,7 @@
     <widget class="QWidget" name="formLayoutWidget_10">
      <property name="geometry">
       <rect>
-       <x>2</x>
+       <x>3</x>
        <y>18</y>
        <width>142</width>
        <height>52</height>
@@ -941,7 +941,7 @@
     <widget class="QWidget" name="formLayoutWidget_11">
      <property name="geometry">
       <rect>
-       <x>2</x>
+       <x>3</x>
        <y>126</y>
        <width>258</width>
        <height>52</height>
@@ -981,6 +981,9 @@
         <property name="mouseTracking">
          <bool>true</bool>
         </property>
+        <property name="toolTip">
+         <string>Magnitude (Illumination)</string>
+        </property>
         <property name="text">
          <string extracomment="Magnitude, illumination">Magn. (Illum.) :</string>
         </property>
@@ -994,8 +997,11 @@
         <property name="mouseTracking">
          <bool>true</bool>
         </property>
+        <property name="toolTip">
+         <string>Diamètre apparent</string>
+        </property>
         <property name="text">
-         <string extracomment="Angular diameter">Diam. apparent :</string>
+         <string extracomment="Angular diameter">Diam. app. :</string>
         </property>
        </widget>
       </item>
@@ -1045,9 +1051,9 @@
     <widget class="QWidget" name="formLayoutWidget_12">
      <property name="geometry">
       <rect>
-       <x>2</x>
+       <x>3</x>
        <y>72</y>
-       <width>174</width>
+       <width>181</width>
        <height>103</height>
       </rect>
      </property>
@@ -1279,7 +1285,7 @@
     <widget class="QWidget" name="formLayoutWidget_13">
      <property name="geometry">
       <rect>
-       <x>2</x>
+       <x>3</x>
        <y>18</y>
        <width>121</width>
        <height>52</height>
@@ -1413,7 +1419,7 @@
     <widget class="QWidget" name="formLayoutWidget_15">
      <property name="geometry">
       <rect>
-       <x>2</x>
+       <x>3</x>
        <y>18</y>
        <width>121</width>
        <height>52</height>
@@ -1521,7 +1527,7 @@
     <widget class="QWidget" name="formLayoutWidget_18">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>3</x>
        <y>72</y>
        <width>201</width>
        <height>71</height>
