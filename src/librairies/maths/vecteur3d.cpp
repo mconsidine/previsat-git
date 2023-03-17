@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 fevrier 2023
+ * >    17 mars 2023
  *
  */
 
@@ -136,7 +136,7 @@ double Vecteur3D::Norme() const
     /* Corps de la methode */
 
     /* Retour */
-    return sqrt(_x * _x + _y * _y + _z * _z);
+    return std::hypot(_x, _y, _z);
 }
 
 /*
