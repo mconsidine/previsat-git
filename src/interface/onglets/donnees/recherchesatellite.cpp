@@ -482,9 +482,10 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
             _ui->perigeeDonneesSat->setText(fmt.arg(per, 0, 'f', 0).arg(unite2).arg(perigee, 0, 'f', 0));
         }
 
-        const QString period = (periode.isEmpty()) ?
-                    tr("Inconnue") :
-                    Maths::ToSexagesimal(periode.toDouble() * DATE::NB_HEUR_PAR_MIN * MATHS::HEUR2RAD, AngleFormatType::HEURE1, 1, 0, false, true).trimmed();
+        const QString period =
+                (periode.isEmpty()) ?
+                    tr("Inconnue") : Maths::ToSexagesimal(periode.toDouble() * DATE::NB_HEUR_PAR_MIN * MATHS::HEUR2RAD,
+                                                          AngleFormatType::HEURE1, 1, 0, false, true).trimmed();
         _ui->periodeDonneesSat->setText(period);
 
         // Inclinaison
@@ -553,22 +554,26 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
             mapElem.clear();
 
             QFileInfo ff(Configuration::instance()->dirElem() + QDir::separator() + fic);
-            if (ff.suffix() == "xml") {
 
-                mapElem = GPFormat::LectureFichier(ff.filePath(), Configuration::instance()->donneesSatellites(),
-                                                   Configuration::instance()->lgRec(), QStringList(), false);
+            if (ff.exists()) {
 
-                if (mapElem.contains(norad)) {
-                    fichier = ff.baseName();
-                }
+                if (ff.suffix() == "xml") {
 
-            } else {
+                    mapElem = GPFormat::LectureFichier(ff.filePath(), Configuration::instance()->donneesSatellites(),
+                                                       Configuration::instance()->lgRec(), QStringList(), false);
 
-                mapElem = TLE::LectureFichier(ff.filePath(), Configuration::instance()->donneesSatellites(),
-                                              Configuration::instance()->lgRec(), QStringList(), false);
+                    if (mapElem.contains(norad)) {
+                        fichier = ff.baseName();
+                    }
 
-                if (mapElem.contains(norad)) {
-                    fichier = ff.baseName() + " (TLE)";
+                } else {
+
+                    mapElem = TLE::LectureFichier(ff.filePath(), Configuration::instance()->donneesSatellites(),
+                                                  Configuration::instance()->lgRec(), QStringList(), false);
+
+                    if (mapElem.contains(norad)) {
+                        fichier = ff.baseName() + " (TLE)";
+                    }
                 }
             }
 

@@ -559,8 +559,11 @@
         <property name="mouseTracking">
          <bool>true</bool>
         </property>
+        <property name="toolTip">
+         <string>Diamètre apparent</string>
+        </property>
         <property name="text">
-         <string>Diamètre apparent :</string>
+         <string extracomment="Angular diameter">Diam. apparent :</string>
         </property>
        </widget>
       </item>
