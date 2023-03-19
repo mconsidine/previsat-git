@@ -339,7 +339,7 @@ double Corps::CalculLatitude(const Vecteur3D &pos)
     _latitude = MATHS::PI;
 
     /* Corps de la methode */
-    _r0 = sqrt(pos.x() * pos.x() + pos.y() * pos.y());
+    _r0 = std::hypot(pos.x(), pos.y());
     _latitude = atan2(pos.z(), _r0);
 
     do {

@@ -807,7 +807,7 @@ void Carte::AffichageSatellites()
                         const double vysat = satellites.at(isat).vitesse().y();
                         const double vzsat = satellites.at(isat).vitesse().z();
 
-                        angle = MATHS::RAD2DEG * (-atan(vzsat / sqrt(vxsat * vxsat + vysat * vysat)));
+                        angle = MATHS::RAD2DEG * (-atan(vzsat / std::hypot(vxsat, vysat)));
                         transform.rotate(angle);
                     }
 
