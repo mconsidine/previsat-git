@@ -299,7 +299,7 @@ void Ciel::mouseMoveEvent(QMouseEvent *evt)
                 const double x2 = -x1 / (double) lciel;
                 const double y2 = -y1 / (double) hciel;
 
-                const double ht = MATHS::PI_SUR_DEUX * (1. - sqrt(x2 * x2 + y2 * y2));
+                const double ht = MATHS::PI_SUR_DEUX * (1. - std::hypot(x2, y2));
                 double az = atan2(x2, y2);
                 if (az < 0.) {
                     az += MATHS::DEUX_PI;
@@ -610,7 +610,7 @@ void Ciel::AffichageConstellations(const QList<LigneConstellation> &lignesCst, c
                         QGraphicsSimpleTextItem * const txtCst = new QGraphicsSimpleTextItem(cst.nom());
                         const int lng = static_cast<int> (txtCst->boundingRect().width());
 
-                        const int xncst = (sqrt((lst + lng) * (lst + lng) + bst * bst) > _lciel) ? lcst - lng - 1 : lcst + 1;
+                        const int xncst = (std::hypot(lst + lng, bst) > _lciel) ? lcst - lng - 1 : lcst + 1;
                         const int yncst = (bcst + 9 > _ui->vueCiel->height()) ? bcst - 10 : bcst + 1;
 
                         txtCst->setBrush(QBrush(Qt::darkYellow));
@@ -671,7 +671,7 @@ void Ciel::AffichageEtoiles(const QList<Etoile> &etoiles)
                             txtStr = new QGraphicsSimpleTextItem(nomstr);
                             const int lng = static_cast<int> (txtStr->boundingRect().width());
 
-                            const int xnstr = (sqrt((lst + lng) * (lst + lng) + bst * bst) > _lciel) ? lstr - lng - 1 : lstr + 1;
+                            const int xnstr = (std::hypot(lst + lng, bst) > _lciel) ? lstr - lng - 1 : lstr + 1;
                             const int ynstr = (bstr + 9 > _ui->vueCiel->height()) ? bstr - 10 : bstr + 1;
 
                             txtStr->setBrush(couleurEtoiles);
@@ -778,7 +778,7 @@ void Ciel::AffichagePlanetes1()
                         txtPla = new QGraphicsSimpleTextItem(nompla);
                         const int lng = static_cast<int> (txtPla->boundingRect().width());
 
-                        const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > _lciel) ? lpla - lng - 1 : lpla + 3;
+                        const int xnpla = (std::hypot(lpl + lng, bpl) > _lciel) ? lpla - lng - 1 : lpla + 3;
                         const int ynpla = (bpla + 9 > _ui->vueCiel->height()) ? bpla - 10 : bpla + 2;
 
                         txtPla->setBrush(coulPlanete);
@@ -832,7 +832,7 @@ void Ciel::AffichagePlanetes2()
                         txtPla = new QGraphicsSimpleTextItem(nompla);
                         const int lng = static_cast<int> (txtPla->boundingRect().width());
 
-                        const int xnpla = (sqrt((lpl + lng) * (lpl + lng) + bpl * bpl) > _lciel) ? lpla - lng - 1 : lpla + 3;
+                        const int xnpla = (std::hypot(lpl + lng, bpl) > _lciel) ? lpla - lng - 1 : lpla + 3;
                         const int ynpla = (bpla + 9 > _ui->vueCiel->height()) ? bpla - 10 : bpla + 2;
 
                         txtPla->setBrush(coulPlanete);
@@ -937,7 +937,7 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
 
                         // Determination des dates a afficher sur la carte du ciel
                         const Date dateTrace(trace.at(i-1).jourJulienUTC, dateDeb.offsetUTC());
-                        const double norm = sqrt((lsat1 - lsat0) * (lsat1 - lsat0) + (bsat1 - bsat0) * (bsat1 - bsat0));
+                        const double norm = std::hypot(lsat1 - lsat0, bsat1 - bsat0);
 
                         if ((dateTrace.minutes() != min) && (norm > 12.)) {
                             aecr = true;
