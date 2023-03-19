@@ -1583,43 +1583,43 @@ PreviSat is free !</translation>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD number : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="203"/>
-        <location filename="../src/interface/carte/carte.cpp" line="204"/>
+        <location filename="../src/interface/carte/carte.cpp" line="205"/>
+        <location filename="../src/interface/carte/carte.cpp" line="206"/>
         <source>Soleil</source>
         <translation>Sun</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="229"/>
-        <location filename="../src/interface/carte/carte.cpp" line="230"/>
+        <location filename="../src/interface/carte/carte.cpp" line="233"/>
+        <location filename="../src/interface/carte/carte.cpp" line="234"/>
         <source>Lune</source>
         <translation>Moon</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1381"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1394"/>
         <source>W</source>
         <comment>Symbol for West</comment>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1387"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1400"/>
         <source>E</source>
         <comment>Symbol for East</comment>
         <translation>E</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1411"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1424"/>
         <source>N</source>
         <comment>Symbol for North</comment>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1417"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1430"/>
         <source>S</source>
         <comment>Symbol for South</comment>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1732"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1747"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>The file %1 does not exist, please re-install %2</translation>
     </message>
@@ -1706,14 +1706,14 @@ PreviSat is free !</translation>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="205"/>
         <location filename="../src/interface/onglets/general/general.ui" line="508"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1803"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1806"/>
         <source>Longitude :</source>
         <translation>Longitude :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="237"/>
         <location filename="../src/interface/onglets/general/general.ui" line="534"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1829"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1832"/>
         <source>Latitude :</source>
         <translation>Latitude :</translation>
     </message>
@@ -1742,224 +1742,226 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="367"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="753"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1911"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="756"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1914"/>
         <source>Ascension droite :</source>
         <translation>Right ascension :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="380"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="766"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1924"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="769"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1927"/>
         <source>Déclinaison :</source>
         <translation>Declination :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="393"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="779"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1937"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="782"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1940"/>
         <source>Constellation :</source>
         <translation>Constellation :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="616"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="861"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1692"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="619"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="864"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1695"/>
         <source>Hauteur :</source>
         <translation>Elevation :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="629"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="874"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1705"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="632"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="877"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1708"/>
         <source>Azimut (N) :</source>
         <extracomment>Azimuth (from the North)</extracomment>
         <translation>Azimuth (N) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="642"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="887"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="1718"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="645"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="890"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1721"/>
         <source>Distance :</source>
         <translation>Range :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="563"/>
-        <source>Diamètre apparent :</source>
-        <translation>Apparent diameter :</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="719"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="722"/>
         <location filename="../src/interface/onglets/general/general.cpp" line="851"/>
         <source>Coordonnées de la Lune :</source>
         <translation>Moon coordinates :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="972"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="975"/>
         <source>Phase :</source>
         <extracomment>Moon phase</extracomment>
         <translation>Phase :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="988"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="991"/>
         <source>Magn. (Illum.) :</source>
         <extracomment>Magnitude, illumination</extracomment>
         <translation>Magn. (Illum.) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1082"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1085"/>
         <source>Aube astronomique :</source>
         <translation>Astronomical dawn :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1095"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1098"/>
         <source>Aube nautique :</source>
         <translation>Nautical dawn :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1108"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1111"/>
         <source>Aube civile :</source>
         <translation>Civil dawn :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1282"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1285"/>
         <location filename="../src/interface/onglets/general/general.cpp" line="840"/>
         <source>Évènements Soleil :</source>
         <translation>Solar events :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1316"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1319"/>
         <source>Lever :</source>
         <comment>Sun</comment>
         <translation>Sunrise :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1329"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1332"/>
         <source>Méridien :</source>
         <comment>Sun</comment>
         <translation>Meridian :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1342"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1345"/>
         <source>Coucher :</source>
         <comment>Sun</comment>
         <translation>Sunset :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1181"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1184"/>
         <source>Crépuscule civil :</source>
         <translation>Civil twilight :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="985"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="566"/>
+        <source>Diam. apparent :</source>
+        <extracomment>Angular diameter</extracomment>
+        <translation>Apparent diam :</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.ui" line="988"/>
         <source>Magnitude (Illumination)</source>
         <translation>Magnitude (Illumination)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1001"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="563"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1004"/>
         <source>Diamètre apparent</source>
         <translation>Apparent diameter</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1004"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1007"/>
         <source>Diam. app. :</source>
         <extracomment>Angular diameter</extracomment>
         <translation>App. diam. :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1210"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1213"/>
         <source>Crépuscule nautique :</source>
         <translation>Nautical twilight :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1239"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1242"/>
         <source>Crépuscule astronomique :</source>
         <translation>Astronomical twilight :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1416"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1419"/>
         <location filename="../src/interface/onglets/general/general.cpp" line="862"/>
         <source>Évènements Lune :</source>
         <translation>Lunar events :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1450"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1453"/>
         <source>Lever :</source>
         <comment>Moon</comment>
         <translation>Moonrise :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1463"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1466"/>
         <source>Méridien :</source>
         <comment>Moon</comment>
         <translation>Meridian :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1476"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1479"/>
         <source>Coucher :</source>
         <comment>Moon</comment>
         <translation>Moonset :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1546"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1549"/>
         <source>Nouvelle Lune :</source>
         <translation>New Moon :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1560"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1563"/>
         <source>Premier quartier :</source>
         <translation>First quarter :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1574"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1577"/>
         <source>Pleine Lune :</source>
         <translation>Full Moon :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1588"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1591"/>
         <source>Dernier quartier :</source>
         <translation>Last quarter :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="1858"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="1861"/>
         <source>Altitude :</source>
         <comment>Altitude of satellite</comment>
         <translation>Altitude :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="2028"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2031"/>
         <source>Direction :</source>
         <translation>Direction :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="2041"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2044"/>
         <source>Vitesse orbitale :</source>
         <translation>Orbital velocity :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="2054"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2057"/>
         <source>Variation distance :</source>
         <translation>Range rate :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="2086"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="2108"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2089"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2111"/>
         <source>Double-cliquer pour changer d&apos;unités</source>
         <translation>Double clic to change units</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="2161"/>
-        <location filename="../src/interface/onglets/general/general.ui" line="2300"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2164"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2303"/>
         <source>Orbite n°</source>
         <translation>Orbit #</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="2398"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2401"/>
         <source>Temps écoulé depuis l&apos;époque :</source>
         <translation>Time elapsed since epoch :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.ui" line="2430"/>
+        <location filename="../src/interface/onglets/general/general.ui" line="2433"/>
         <source>Nom :</source>
         <translation>Name :</translation>
     </message>
@@ -5765,17 +5767,17 @@ Satellite %1 - NORAD number : %2</translation>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="380"/>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="474"/>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="480"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="534"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="538"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="535"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="539"/>
         <source>Inconnu</source>
         <translation>Unknown</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="388"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="486"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="492"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="496"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="530"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="487"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="493"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="497"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="531"/>
         <source>Inconnue</source>
         <translation>Unknown</translation>
     </message>

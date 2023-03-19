@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    12 mars 2023
+ * >    19 mars 2023
  *
  */
 
@@ -180,11 +180,13 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
             emit AfficherMessageStatut(tr("<b>%1</b> (numéro NORAD : <b>%2</b>  -  COSPAR : <b>%3</b>)")
                                        .arg(sat.elementsOrbitaux().nom).arg(sat.elementsOrbitaux().norad).arg(sat.elementsOrbitaux().cospar));
             setCursor(Qt::CrossCursor);
+            _ui->carte->viewport()->setCursor(Qt::CrossCursor);
         } else {
 
             emit EffacerMessageStatut();
             setToolTip("");
             setCursor(Qt::ArrowCursor);
+            _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
         }
     }
 
@@ -203,12 +205,14 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
             emit AfficherMessageStatut(tr("Soleil"));
             setToolTip(tr("Soleil"));
             setCursor(Qt::CrossCursor);
+            _ui->carte->viewport()->setCursor(Qt::CrossCursor);
             asoleil = true;
         } else {
             if (asoleil) {
                 emit EffacerMessageStatut();
                 setToolTip("");
                 setCursor(Qt::ArrowCursor);
+                _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
                 asoleil = false;
             }
         }
@@ -229,12 +233,14 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
             emit AfficherMessageStatut(tr("Lune"));
             setToolTip(tr("Lune"));
             setCursor(Qt::CrossCursor);
+            _ui->carte->viewport()->setCursor(Qt::CrossCursor);
             alune = true;
         } else {
             if (alune) {
                 emit EffacerMessageStatut();
                 setToolTip("");
                 setCursor(Qt::ArrowCursor);
+                _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
                 alune = false;
             }
         }
@@ -633,7 +639,7 @@ void Carte::AffichageLune()
 
         QPixmap pixlun;
         pixlun.load(":/resources/interface/lune.png");
-        pixlun = pixlun.scaled(17, 17);
+        pixlun = pixlun.scaled(17, 17, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
         const int llun = qRound(DEG2PX(180. - Configuration::instance()->lune().longitude() * MATHS::RAD2DEG));
         const int blun = qRound(DEG2PX(90. - Configuration::instance()->lune().latitude() * MATHS::RAD2DEG));
@@ -791,7 +797,8 @@ void Carte::AffichageSatellites()
 
                     // Affichage de l'icone satellite
                     img = QPixmap(listeIcones.first());
-                    img = img.scaled(qMin(_largeurCarte / 12, img.width()), qMin(_hauteurCarte / 6, img.height()));
+                    img = img.scaled(qMin(_largeurCarte / 12, img.width()), qMin(_hauteurCarte / 6, img.height()), Qt::KeepAspectRatio,
+                                     Qt::SmoothTransformation);
 
                     pm = scene->addPixmap(img);
 
@@ -865,7 +872,7 @@ void Carte::AffichageSoleil()
         if (_mcc) {
             transform.translate(-15, -10);
         } else {
-            pixsol = pixsol.scaled(17, 17);
+            pixsol = pixsol.scaled(17, 17, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             transform.translate(-7, -7);
         }
 
@@ -1054,6 +1061,12 @@ void Carte::AffichageTraceAuSol()
                         traces.append(poly);
                         couleurs.append(couleurActuel);
                         poly.clear();
+
+                        if (fabs(ptActuel.x() - ptPrec.x()) < (_largeurCarte / 2)) {
+                            poly.append(ptPrec);
+                        }
+
+                        poly.append(ptActuel);
                     }
 
                     if (Configuration::instance()->issLive()
@@ -1490,6 +1503,7 @@ void Carte::AffichageZoneVisibilite()
     /* Corps de la methode */
     if (!satellites.isEmpty() && ((settings.value("affichage/affvisib") != QVariant(Qt::Unchecked)) || _mcc)) {
 
+        QPen pen;
         QPainterPath res;
         const unsigned int nbMax = static_cast<int> (settings.value("affichage/affvisib") == QVariant(Qt::PartiallyChecked) ? 1 : satellites.size());
 
@@ -1524,10 +1538,11 @@ void Carte::AffichageZoneVisibilite()
                     poly.append(ptActuel);
                 }
 
-                poly.append(pt0);
-                zones.append(poly);
+                if (zones.isEmpty()) {
+                    poly.append(pt0);
+                }
 
-                QPen pen;
+                zones.append(poly);
 
                 if (_mcc) {
 
