@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    11 mars 2023
+ * >    20 mars 2023
  *
  */
 
@@ -306,12 +306,11 @@ void Radar::mousePressEvent(QMouseEvent *evt)
 void Radar::show()
 {
     /* Declarations des variables locales */
+    QColor couleur;
 
     /* Initialisations */
     const QColor crimson(220, 20, 60);
-    const QColor bleuClair(173, 216, 230);
     const QPen noir(Qt::black);
-    QPen crayon(Qt::white);
 
     // Determination de la couleur du ciel
     const double hts = Configuration::instance()->soleil().hauteur() * MATHS::RAD2DEG;
@@ -324,8 +323,8 @@ void Radar::show()
     /* Corps de la methode */
     // Affichage de la couleur du ciel
     QRect rectangle(2, 2, 196, 196);
-    const QPen pen(couleurCiel, Qt::SolidPattern);
-    scene->addEllipse(rectangle, pen, couleurCiel);
+    const QPen coulCiel(couleurCiel, Qt::SolidPattern);
+    scene->addEllipse(rectangle, coulCiel, couleurCiel);
 
     // Dessin des cercles concentriques
     scene->addEllipse(33, 33, 133, 133, QPen(Qt::gray));
@@ -350,6 +349,7 @@ void Radar::show()
         _ui->coordGeo2->setText(tr("Sud"));
         yf = 1;
     }
+
     if (settings.value("affichage/affinvew").toBool()) {
         _ui->coordGeo3->setText(tr("Est"));
         _ui->coordGeo4->setText(tr("Ouest"));
@@ -370,7 +370,7 @@ void Radar::show()
 
         QPixmap pixsol;
         pixsol.load(":/resources/interface/soleil.png");
-        pixsol = pixsol.scaled(17, 17);
+        pixsol = pixsol.scaled(17, 17, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
         QGraphicsPixmapItem * const sol = scene->addPixmap(pixsol);
         QTransform transform;
@@ -392,7 +392,7 @@ void Radar::show()
 
         QPixmap pixlun;
         pixlun.load(":/resources/interface/lune.png");
-        pixlun = pixlun.scaled(17, 17);
+        pixlun = pixlun.scaled(17, 17, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
         QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
         QTransform transform;
@@ -416,75 +416,89 @@ void Radar::show()
     }
 
     // Affichage des satellites
-    int lsat1;
-    int bsat1;
-    QColor couleur;
-    const QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
+    QPainterPath res;
+    QPolygonF poly;
+    QVector<QPolygonF> traces;
+    QVector<QColor> couleurs;
 
-    for(int isat=static_cast<int> (satellites.size()-1); isat>=0; isat--) {
+    QPen pen;
+    pen.setWidthF(1.2);
 
-        if (satellites.at(isat).isVisible() && (satellites.at(isat).altitude() >= 0.)) {
+    QListIterator it1(Configuration::instance()->listeSatellites());
+    it1.toBack();
 
-            // Affichage de la trace dans le radar
-            const QList<ElementsTraceCiel> &trace = satellites.at(isat).traceCiel();
-            if (settings.value("affichage/afftraceCiel").toBool() && (trace.size() > 0)) {
+    while (it1.hasPrevious()) {
 
-                const double ht1 = trace.first().hauteur;
-                const double az1 = trace.first().azimut;
-                lsat1 = qRound(100. - 100. * xf * (1. - ht1 * MATHS::DEUX_SUR_PI) * sin(az1));
-                bsat1 = qRound(100. - 100. * yf * (1. - ht1 * MATHS::DEUX_SUR_PI) * cos(az1));
+        poly.clear();
+        couleurs.clear();
+        traces.clear();
 
-                for(int i=1; i<trace.size(); i++) {
+        const Satellite sat = it1.previous();
 
-                    const double ht2 = trace.at(i).hauteur;
-                    const double az2 = trace.at(i).azimut;
+        if (sat.isVisible() && (sat.altitude() >= 0.) && settings.value("affichage/afftraceCiel").toBool() && !sat.traceCiel().isEmpty()) {
 
-                    if (trace.at(i).eclipseTotale) {
-                        crayon = crimson;
+            const ElementsTraceCiel trace0 = sat.traceCiel().first();
+            const QPointF coord0(trace0.hauteur, trace0.azimut);
+            const QPointF pt0(100. - 100. * xf * (1. - coord0.x() * MATHS::DEUX_SUR_PI) * sin(coord0.y()),
+                              100. - 100. * yf * (1. - coord0.x() * MATHS::DEUX_SUR_PI) * cos(coord0.y()));
+            poly.append(pt0);
+            couleurs.append(Ciel::CouleurTraceCiel(trace0));
 
-                    } else if (trace.at(i).eclipsePartielle) {
-                        crayon = QPen(Qt::green);
+            QListIterator it2(sat.traceCiel());
+            it2.next();
+            while (it2.hasNext()) {
 
-                    } else {
+                const ElementsTraceCiel trace = it2.next();
 
-                        const double hauteurSoleil = Configuration::instance()->soleil().hauteur();
-                        if (hauteurSoleil > -0.08) {
-                            crayon = bleuClair;
+                const QPointF coord(trace.hauteur, trace.azimut);
+                const QPointF ptActuel(100. - 100. * xf * (1. - coord.x() * MATHS::DEUX_SUR_PI) * sin(coord.y()),
+                                       100. - 100. * yf * (1. - coord.x() * MATHS::DEUX_SUR_PI) * cos(coord.y()));
 
-                        } else if (hauteurSoleil > -0.12) {
-                            crayon = QPen(QColor("deepskyblue"));
+                const QColor couleurActuel = Ciel::CouleurTraceCiel(trace);
+                const QColor couleurPrec = couleurs.last();
 
-                        } else {
-                            crayon = QPen(QColor("cyan"));
-                        }
-                    }
+                // Gestion de la couleur de la trace dans le ciel
+                if (couleurActuel != couleurPrec) {
 
-                    const int lsat2 = qRound(100. - 100. * xf * (1. - ht2 * MATHS::DEUX_SUR_PI) * sin(az2));
-                    const int bsat2 = qRound(100. - 100. * yf * (1. - ht2 * MATHS::DEUX_SUR_PI) * cos(az2));
-
-                    scene->addLine(lsat1, bsat1, lsat2, bsat2, crayon);
-
-                    lsat1 = lsat2;
-                    bsat1 = bsat2;
+                    traces.append(poly);
+                    couleurs.append(couleurActuel);
+                    poly.clear();
                 }
+
+                poly.append(ptActuel);
             }
 
-            // Calcul des coordonnees radar du satellite
-            const int lsat = qRound(100. - 100. * xf * (1. - satellites.at(isat).hauteur() * MATHS::DEUX_SUR_PI) * sin(satellites.at(isat).azimut()));
-            const int bsat = qRound(100. - 100. * yf * (1. - satellites.at(isat).hauteur() * MATHS::DEUX_SUR_PI) * cos(satellites.at(isat).azimut()));
+            traces.append(poly);
 
-            rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
+            // Dessin de la trace dans le ciel
+            for(unsigned int i=0; i<traces.size(); i++) {
 
-            if (satellites.at(isat).conditionEclipse().eclipseTotale()) {
-                couleur = crimson;
-            } else if (satellites.at(isat).conditionEclipse().eclipsePartielle() || satellites.at(isat).conditionEclipse().eclipseAnnulaire()) {
-                couleur = Qt::green;
-            } else {
-                couleur = Qt::yellow;
+                res.clear();
+                res.addPolygon(traces[i]);
+                QGraphicsPathItem * const path = new QGraphicsPathItem(res);
+
+                pen.setColor(couleurs[i]);
+                pen.setCosmetic(true);
+                path->setPen(pen);
+                scene->addItem(path);
             }
-
-            scene->addEllipse(rectangle, noir, QBrush(couleur, Qt::SolidPattern));
         }
+
+        // Calcul des coordonnees radar du satellite
+        const int lsat = qRound(100. - 100. * xf * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * sin(sat.azimut()));
+        const int bsat = qRound(100. - 100. * yf * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * cos(sat.azimut()));
+
+        rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
+
+        if (sat.conditionEclipse().eclipseTotale()) {
+            couleur = crimson;
+        } else if (sat.conditionEclipse().eclipsePartielle() || sat.conditionEclipse().eclipseAnnulaire()) {
+            couleur = Qt::green;
+        } else {
+            couleur = Qt::yellow;
+        }
+
+        scene->addEllipse(rectangle, noir, QBrush(couleur, Qt::SolidPattern));
     }
 
     scene->addEllipse(-26, -26, 251, 251, QPen(QBrush(palette().window().color()), 56));
