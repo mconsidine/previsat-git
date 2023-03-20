@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    11 mars 2023
+ * >    20 mars 2023
  *
  */
 
@@ -275,6 +275,41 @@ QBrush Ciel::CalculCouleurCiel(const double hauteurSoleil)
 
     /* Retour */
     return couleurCiel;
+}
+
+/*
+ * Determination de la couleur de la trace dans le ciel
+ */
+QColor Ciel::CouleurTraceCiel(const ElementsTraceCiel &trace)
+{
+    /* Declarations des variables locales */
+    QColor res;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (trace.eclipseTotale) {
+        res = QColor(220, 20, 60);
+
+    } else if (trace.eclipsePartielle) {
+        res = QColor(Qt::green);
+
+    } else {
+
+        const double hauteurSoleil = Configuration::instance()->soleil().hauteur();
+        if (hauteurSoleil > -0.08) {
+            res = QColor(173, 216, 230);
+
+        } else if (hauteurSoleil > -0.12) {
+            res = QColor("deepskyblue");
+
+        } else {
+            res = QColor("cyan");
+        }
+    }
+
+    /* Retour */
+    return res;
 }
 
 void Ciel::mouseMoveEvent(QMouseEvent *evt)

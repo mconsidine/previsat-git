@@ -33,16 +33,16 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    17 mars 2023
+# >    20 mars 2023
 
 #-------------------------------------------------
 VER_MAJ      = 6.0
 VERSION      = 6.0.0.0
 ANNEES_DEV   = 2005-2023
 TRANSLATIONS = translations/PreviSat_en.ts
-BUILD_TEST   = false
-CLEANUP_TEST = true
-COV_TEST     = false
+!defined(BUILD_TEST,   var):BUILD_TEST   = false
+!defined(CLEANUP_TEST, var):CLEANUP_TEST = true
+!defined(COV_TEST,     var):COV_TEST     = false
 #-------------------------------------------------
 
 TARGET = PreviSat

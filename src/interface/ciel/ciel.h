@@ -36,7 +36,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    20 mars 2023
  *
  */
 
@@ -134,6 +134,13 @@ public:
      * @return
      */
     static QBrush CalculCouleurCiel(const double hauteurSoleil);
+
+    /**
+     * @brief CouleurTraceCiel Determination de la couleur de la trace dans le ciel
+     * @param trace element de la trace dans le ciel
+     * @return couleur de l'element de la trace dans le ciel
+     */
+    static QColor CouleurTraceCiel(const ElementsTraceCiel &trace);
 
 
 public slots:
