@@ -1913,6 +1913,8 @@ void PreviSat::MettreAjourGroupeElem(const QString &groupe)
         }
     }
 
+    Configuration::instance()->InitListeFichiersElem();
+    InitFicGP();
     AfficherMessageStatut(tr("Mise à jour du groupe d'éléments orbitaux \"%1\" terminée").arg(groupe), 5);
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
