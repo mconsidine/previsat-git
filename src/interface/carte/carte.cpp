@@ -54,7 +54,7 @@
 #include "interface/options/options.h"
 #include "librairies/exceptions/previsatexception.h"
 
-#define DEG2PX(x) (_largeurCarte * (x) / MATHS::T360)
+#define DEG2PX(x) (_ui->carte->width() * (x) / MATHS::T360)
 #define ECHELLE_MAX (2.)
 #define FACTEUR_ECHELLE (1.05)
 
@@ -1212,7 +1212,7 @@ void Carte::AffichageZoneOmbre()
 
                 zone.append(QPointF(DEG2PX(soleil.zone().at(j).x()), DEG2PX(soleil.zone().at(j).y())));
 
-                if (fabs(zone.at(j).x() - zone.at(j-1).x()) > (_largeurCarte / 2)) {
+                if (fabs(zone.at(j).x() - zone.at(j-1).x()) > (_ui->carte->width() / 2)) {
                     idxIntersection.append(j);
                 }
             }
