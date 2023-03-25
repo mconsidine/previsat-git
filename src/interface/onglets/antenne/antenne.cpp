@@ -249,6 +249,7 @@ void Antenne::show(const Date &date)
 
     // Nom du satellite
     _ui->nomsatRadio->setText(nomsat);
+    _ui->frameSatellite->setVisible(true);
 
     // Affichage du prochain AOS/LOS
     if (elementsAOS.aos) {
@@ -273,7 +274,7 @@ void Antenne::show(const Date &date)
                     .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
         }
 
-        const QString chaine = tr("Prochain %1 %2").arg(elementsAOS.typeAOS).arg(cDelaiAOS);
+        const QString chaine = tr("Prochain %1 dans %2", "Next AOS or LOS, and delay").arg(elementsAOS.typeAOS).arg(cDelaiAOS);
         _ui->prochainAOS->setText(chaine);
         _ui->prochainAOS->setToolTip((chaine.contains(tr("AOS"))) ? tr("Acquisition du signal") : tr("Perte du signal"));
         _ui->prochainAOS->setVisible(true);

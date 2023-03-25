@@ -637,7 +637,7 @@ Age of the oldestelementE      : %3 days</translation>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="412"/>
         <source>Doppler :</source>
         <extracomment>Doppler effect</extracomment>
-        <translation></translation>
+        <translation>Doppler :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="282"/>
@@ -679,7 +679,7 @@ Age of the oldestelementE      : %3 days</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="524"/>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="455"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="456"/>
         <source>Connecter</source>
         <translation></translation>
     </message>
@@ -690,7 +690,7 @@ Age of the oldestelementE      : %3 days</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="559"/>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="490"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="491"/>
         <source>Ouvrir CatRotator</source>
         <translation>Open CatRotator</translation>
     </message>
@@ -700,56 +700,57 @@ Age of the oldestelementE      : %3 days</translation>
         <translation>Name :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="269"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="270"/>
         <source>h</source>
         <comment>hour</comment>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="269"/>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="273"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="270"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="274"/>
         <source>min</source>
         <comment>minute</comment>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="273"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="274"/>
         <source>s</source>
         <comment>second</comment>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="276"/>
-        <source>Prochain %1 %2</source>
-        <translation>Next %1 %2</translation>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="277"/>
+        <source>Prochain %1 dans %2</source>
+        <comment>Next AOS or LOS, and delay</comment>
+        <translation>Next %1 in %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="278"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="279"/>
         <source>AOS</source>
         <translation>AOS</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="278"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="279"/>
         <source>Acquisition du signal</source>
         <translation>Acquisition of signal</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="278"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="279"/>
         <source>Perte du signal</source>
         <translation>Loss of signal</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="403"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="404"/>
         <source>Déconnecter</source>
         <translation>Disconnect</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="441"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="442"/>
         <source>Connexion en cours...</source>
         <translation>Connecting...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="490"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="491"/>
         <source>Fichiers exécutables (*.exe)</source>
         <translation>Executable files (*.exe)</translation>
     </message>
