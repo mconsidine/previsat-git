@@ -679,7 +679,7 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="524"/>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="455"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="456"/>
         <source>Connecter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -690,7 +690,7 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="559"/>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="490"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="491"/>
         <source>Ouvrir CatRotator</source>
         <translation type="unfinished">Satellite Trackerを開く</translation>
     </message>
@@ -700,56 +700,57 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
         <translation>名称 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="269"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="270"/>
         <source>h</source>
         <comment>hour</comment>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="269"/>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="273"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="270"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="274"/>
         <source>min</source>
         <comment>minute</comment>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="273"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="274"/>
         <source>s</source>
         <comment>second</comment>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="276"/>
-        <source>Prochain %1 %2</source>
-        <translation>次の%1 %2</translation>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="277"/>
+        <source>Prochain %1 dans %2</source>
+        <comment>Next AOS or LOS, and delay</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="278"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="279"/>
         <source>AOS</source>
         <translation>AOS</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="278"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="279"/>
         <source>Acquisition du signal</source>
         <translation>信号受信開始</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="278"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="279"/>
         <source>Perte du signal</source>
         <translation>信号受信終了</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="403"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="404"/>
         <source>Déconnecter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="441"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="442"/>
         <source>Connexion en cours...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="490"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="491"/>
         <source>Fichiers exécutables (*.exe)</source>
         <translation>実行ファイル (*.exe)</translation>
     </message>
