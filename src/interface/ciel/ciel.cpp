@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    20 mars 2023
+ * >    27 mars 2023
  *
  */
 
@@ -206,6 +206,7 @@ void Ciel::show(const Observateur &observateur,
     scene->addEllipse(1, 1, _ui->vueCiel->width() - 3, _ui->vueCiel->height() - 3, QPen(QBrush(Qt::gray), 3));
 
     _ui->vueCiel->setScene(scene);
+    _ui->vueCiel->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     /* Retour */
     return;

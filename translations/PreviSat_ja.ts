@@ -1596,31 +1596,31 @@ PreviSatは、完全無料です!</translation>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1394"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1400"/>
         <source>W</source>
         <comment>Symbol for West</comment>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1400"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1406"/>
         <source>E</source>
         <comment>Symbol for East</comment>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1424"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1430"/>
         <source>N</source>
         <comment>Symbol for North</comment>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1430"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1436"/>
         <source>S</source>
         <comment>Symbol for South</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1747"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1753"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
@@ -1648,39 +1648,39 @@ PreviSatは、完全無料です!</translation>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="1019"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="1020"/>
         <source>Flash %1</source>
         <translation>フレア %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="357"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="358"/>
         <source>Ascension droite : %1</source>
         <translation>赤経 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="359"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="360"/>
         <source>Déclinaison : %1</source>
         <translation>赤緯 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="376"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="377"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="379"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="380"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="436"/>
         <location filename="../src/interface/ciel/ciel.cpp" line="437"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="438"/>
         <source>Soleil</source>
         <translation>太陽</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="462"/>
         <location filename="../src/interface/ciel/ciel.cpp" line="463"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="464"/>
         <source>Lune</source>
         <translation>月</translation>
     </message>

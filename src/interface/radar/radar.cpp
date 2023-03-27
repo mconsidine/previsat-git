@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    20 mars 2023
+ * >    27 mars 2023
  *
  */
 
@@ -505,6 +505,7 @@ void Radar::show()
     scene->addEllipse(1, 1, 197, 197, QPen(QBrush(Qt::gray), 3));
 
     _ui->vueRadar->setScene(scene);
+    _ui->vueRadar->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     /* Retour */
     return;

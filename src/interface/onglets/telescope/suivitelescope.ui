@@ -258,7 +258,7 @@
       <rect>
        <x>0</x>
        <y>48</y>
-       <width>359</width>
+       <width>371</width>
        <height>26</height>
       </rect>
      </property>
@@ -294,7 +294,7 @@
          <widget class="QComboBox" name="hauteurSatSuivi">
           <property name="minimumSize">
            <size>
-            <width>141</width>
+            <width>155</width>
             <height>0</height>
            </size>
           </property>
@@ -342,7 +342,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QFrame" name="frame_10">
+       <widget class="QFrame" name="frameHauteurSatSuivi">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -443,7 +443,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QFrame" name="frame_11">
+       <widget class="QFrame" name="frame_ms">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
