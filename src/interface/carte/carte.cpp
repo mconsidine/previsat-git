@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    19 mars 2023
+ * >    25 mars 2023
  *
  */
 
@@ -408,6 +408,7 @@ void Carte::show()
     AffichageSatellites();
 
     _ui->carte->setScene(scene);
+    _ui->carte->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     /* Retour */
     return;
@@ -1217,6 +1218,11 @@ void Carte::AffichageZoneOmbre()
                 }
             }
 
+            zone.append(zone[0]);
+            if (fabs(zone.at(soleil.zone().size()).x() - zone.at(soleil.zone().size()-1).x()) > (_ui->carte->width() / 2)) {
+                idxIntersection.append(static_cast<unsigned int> (soleil.zone().size()));
+            }
+
             if ((fabs(soleil.latitude()) > 0.002449 * MATHS::DEG2RAD) || (i > 0)) {
 
                 // Cas en dehors des equinoxes (ou pour les crepuscules)
@@ -1538,7 +1544,7 @@ void Carte::AffichageZoneVisibilite()
                     poly.append(ptActuel);
                 }
 
-                if (zones.isEmpty()) {
+                if (fabs(poly.last().x() - pt0.x()) < (_largeurCarte / 2)) {
                     poly.append(pt0);
                 }
 
