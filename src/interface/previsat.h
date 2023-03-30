@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 mars 2023
+ * >    30 mars 2023
  *
  */
 
@@ -101,6 +101,11 @@ public:
     /*
      * Methodes publiques
      */
+    /**
+     * @brief ChargementConfiguration Chargement de la fenetre principale
+     */
+    void ChargementConfiguration();
+
     /**
      * @brief MajGP Mise a jour des elements orbitaux lors du demarrage
      */

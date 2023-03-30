@@ -170,6 +170,66 @@ PreviSat::~PreviSat()
  * Methodes publiques
  */
 /*
+ * Chargement de la fenetre principale
+ */
+void PreviSat::ChargementConfiguration()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    qInfo() << "Début Fonction" << __FUNCTION__;
+
+    _informations = new Informations(this);
+    _onglets = new Onglets();
+    _ui->layoutOnglets->addWidget(_onglets);
+
+    _outils = new Outils(this);
+    _radar = new Radar(_ui->frameRadar);
+
+    _carte = new Carte(_ui->frameCarte);
+    _ui->layoutCarte->addWidget(_carte);
+
+    _ciel = new Ciel();
+
+    CreationMenus();
+    CreationRaccourcis();
+
+    // Connexions signaux-slots
+    ConnexionsSignauxSlots();
+
+    // Gestion de la police
+    GestionPolice();
+
+    _isCarteMonde = true;
+    Configuration::instance()->issLive() = settings.value("affichage/issLive").toBool();
+
+    //on_pasReel_currentIndexChanged(0);
+    _ui->pasReel->setCurrentIndex(settings.value("temps/pasreel", 1).toInt());
+
+    //on_pasManuel_currentIndexChanged(0);
+    _ui->pasManuel->setCurrentIndex(settings.value("temps/pasmanuel", 1).toInt());
+    _ui->valManuel->setCurrentIndex(settings.value("temps/valmanuel", 0).toInt());
+    on_tempsReel_toggled(true);
+    _ui->frameVideo->setVisible(_ui->issLive->isChecked());
+    _radar->setVisible(!_ui->issLive->isChecked());
+
+    // Barre de statut
+    InitBarreStatut();
+
+    // Liste des fichiers d'elements orbitaux
+    InitFicGP();
+
+    QCoreApplication::instance()->installEventFilter(this);
+
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
+
+    /* Retour */
+    return;
+}
+
+/*
  * Mise a jour des elements orbitaux lors du demarrage
  */
 void PreviSat::MajGP()
@@ -892,48 +952,6 @@ void PreviSat::Initialisation()
 
         // Verification des mises a jour au demarrage
         InitVerificationsMAJ();
-
-        _informations = new Informations(this);
-        _onglets = new Onglets();
-        _ui->layoutOnglets->addWidget(_onglets);
-
-        _outils = new Outils(this);
-        _radar = new Radar(_ui->frameRadar);
-
-        _carte = new Carte(_ui->frameCarte);
-        _ui->layoutCarte->addWidget(_carte);
-
-        _ciel = new Ciel();
-
-        CreationMenus();
-        CreationRaccourcis();
-
-        // Connexions signaux-slots
-        ConnexionsSignauxSlots();
-
-        // Gestion de la police
-        GestionPolice();
-
-        _isCarteMonde = true;
-        Configuration::instance()->issLive() = settings.value("affichage/issLive").toBool();
-
-        //on_pasReel_currentIndexChanged(0);
-        _ui->pasReel->setCurrentIndex(settings.value("temps/pasreel", 1).toInt());
-
-        //on_pasManuel_currentIndexChanged(0);
-        _ui->pasManuel->setCurrentIndex(settings.value("temps/pasmanuel", 1).toInt());
-        _ui->valManuel->setCurrentIndex(settings.value("temps/valmanuel", 0).toInt());
-        on_tempsReel_toggled(true);
-        _ui->frameVideo->setVisible(_ui->issLive->isChecked());
-        _radar->setVisible(!_ui->issLive->isChecked());
-
-        // Barre de statut
-        InitBarreStatut();
-
-        // Liste des fichiers d'elements orbitaux
-        InitFicGP();
-
-        QCoreApplication::instance()->installEventFilter(this);
 
         qInfo() << "Fin   Initialisation" << metaObject()->className();
 
