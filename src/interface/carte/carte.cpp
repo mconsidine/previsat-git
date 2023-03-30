@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    25 mars 2023
+ * >    30 mars 2023
  *
  */
 
@@ -1247,31 +1247,31 @@ void Carte::AffichageZoneOmbre()
                     // Ajout de points pour completer la zone d'ombre sur les bords de la carte
                     if (zone.first().x() < zone.last().x()) {
 
-                        zone.insert(0, QPointF(zone.last().x() - _largeurCarte, zone.last().y()));
+                        zone.insert(0, QPointF(zone.last().x() - _ui->carte->width(), zone.last().y()));
 
                         if (soleil.latitude() > 0.) {
-                            zone.insert(0, QPointF(zone.last().x() - _largeurCarte, _hauteurCarte));
-                            zone.insert(0, QPointF(zone.at(2).x() + _largeurCarte, _hauteurCarte));
+                            zone.insert(0, QPointF(zone.last().x() - _ui->carte->width(), _hauteurCarte));
+                            zone.insert(0, QPointF(zone.at(2).x() + _ui->carte->width(), _hauteurCarte));
 
                         } else {
-                            zone.insert(0, QPointF(zone.last().x() - _largeurCarte, -1.));
-                            zone.insert(0, QPointF(zone.at(2).x() + _largeurCarte, -1.));
+                            zone.insert(0, QPointF(zone.last().x() - _ui->carte->width(), -1.));
+                            zone.insert(0, QPointF(zone.at(2).x() + _ui->carte->width(), -1.));
                         }
-                        zone.insert(0, QPointF(zone.at(3).x() + _largeurCarte, zone.at(3).y()));
+                        zone.insert(0, QPointF(zone.at(3).x() + _ui->carte->width(), zone.at(3).y()));
 
                     } else {
 
-                        zone.insert(0, QPointF(zone.last().x() + _largeurCarte, zone.last().y()));
+                        zone.insert(0, QPointF(zone.last().x() + _ui->carte->width(), zone.last().y()));
 
                         if (soleil.latitude() > 0.) {
-                            zone.insert(0, QPointF(zone.last().x() + _largeurCarte, _hauteurCarte));
-                            zone.insert(0, QPointF(zone.at(2).x() - _largeurCarte, _hauteurCarte));
+                            zone.insert(0, QPointF(zone.last().x() + _ui->carte->width(), _hauteurCarte));
+                            zone.insert(0, QPointF(zone.at(2).x() - _ui->carte->width(), _hauteurCarte));
 
                         } else {
-                            zone.insert(0, QPointF(zone.last().x() + _largeurCarte, -1.));
-                            zone.insert(0, QPointF(zone.at(2).x() - _largeurCarte, -1.));
+                            zone.insert(0, QPointF(zone.last().x() + _ui->carte->width(), -1.));
+                            zone.insert(0, QPointF(zone.at(2).x() - _ui->carte->width(), -1.));
                         }
-                        zone.insert(0, QPointF(zone.at(3).x() - _largeurCarte, zone.at(3).y()));
+                        zone.insert(0, QPointF(zone.at(3).x() - _ui->carte->width(), zone.at(3).y()));
                     }
 
                     const QPolygonF poly(zone);
@@ -1299,30 +1299,30 @@ void Carte::AffichageZoneOmbre()
                     if (zone1.at(jmed-1).x() > zone2.first().x()) {
 
                         if (zone1.size() > jmed) {
-                            zone1.insert(jmed, QPointF(zone2.last().x() + _largeurCarte, zone2.last().y()));
-                            zone1.insert(jmed, QPointF(zone2.first().x() + _largeurCarte, zone2.first().y()));
+                            zone1.insert(jmed, QPointF(zone2.last().x() + _ui->carte->width(), zone2.last().y()));
+                            zone1.insert(jmed, QPointF(zone2.first().x() + _ui->carte->width(), zone2.first().y()));
 
                         } else {
-                            zone1.append(QPointF(zone2.last().x() + _largeurCarte, zone2.last().y()));
-                            zone1.append(QPointF(zone2.first().x() + _largeurCarte, zone2.first().y()));
+                            zone1.append(QPointF(zone2.last().x() + _ui->carte->width(), zone2.last().y()));
+                            zone1.append(QPointF(zone2.first().x() + _ui->carte->width(), zone2.first().y()));
                         }
 
-                        zone2.insert(0, QPointF(zone1.at(jmed-1).x() - _largeurCarte, zone1.at(jmed-1).y()));
-                        zone2.insert(0, QPointF(zone1.at(jmed+2).x() - _largeurCarte, zone1.at(jmed+2).y()));
+                        zone2.insert(0, QPointF(zone1.at(jmed-1).x() - _ui->carte->width(), zone1.at(jmed-1).y()));
+                        zone2.insert(0, QPointF(zone1.at(jmed+2).x() - _ui->carte->width(), zone1.at(jmed+2).y()));
 
                     } else {
 
                         if (zone1.size() > jmed) {
-                            zone1.insert(jmed, QPointF(zone2.last().x() - _largeurCarte, zone2.last().y()));
-                            zone1.insert(jmed, QPointF(zone2.first().x() - _largeurCarte, zone2.first().y()));
+                            zone1.insert(jmed, QPointF(zone2.last().x() - _ui->carte->width(), zone2.last().y()));
+                            zone1.insert(jmed, QPointF(zone2.first().x() - _ui->carte->width(), zone2.first().y()));
 
                         } else {
-                            zone1.append(QPointF(zone2.last().x() - _largeurCarte, zone2.last().y()));
-                            zone1.append(QPointF(zone2.first().x() - _largeurCarte, zone2.first().y()));
+                            zone1.append(QPointF(zone2.last().x() - _ui->carte->width(), zone2.last().y()));
+                            zone1.append(QPointF(zone2.first().x() - _ui->carte->width(), zone2.first().y()));
                         }
 
-                        zone2.insert(0, QPointF(zone1.at(jmed-1).x() + _largeurCarte, zone1.at(jmed-1).y()));
-                        zone2.insert(0, QPointF(zone1.at(jmed+2).x() + _largeurCarte, zone1.at(jmed+2).y()));
+                        zone2.insert(0, QPointF(zone1.at(jmed-1).x() + _ui->carte->width(), zone1.at(jmed-1).y()));
+                        zone2.insert(0, QPointF(zone1.at(jmed+2).x() + _ui->carte->width(), zone1.at(jmed+2).y()));
                     }
 
                     const QPolygonF poly1(zone1);
@@ -1345,14 +1345,14 @@ void Carte::AffichageZoneOmbre()
                     zone1.clear();
                     zone1.append(QPointF(-1., -1.));
                     zone1.append(QPointF(x1, -1.));
-                    zone1.append(QPointF(x1, _hauteurCarte));
-                    zone1.append(QPointF(-1., _hauteurCarte));
+                    zone1.append(QPointF(x1, _ui->carte->width()));
+                    zone1.append(QPointF(-1., _ui->carte->width()));
 
                     zone2.clear();
                     zone2.append(QPointF(_largeurCarte, -1.));
                     zone2.append(QPointF(x2, -1.));
-                    zone2.append(QPointF(x2, _hauteurCarte));
-                    zone2.append(QPointF(_largeurCarte, _hauteurCarte));
+                    zone2.append(QPointF(x2, _ui->carte->width()));
+                    zone2.append(QPointF(_largeurCarte, _ui->carte->width()));
 
                     const QPolygonF poly1(zone1);
                     const QPolygonF poly2(zone2);
@@ -1363,8 +1363,8 @@ void Carte::AffichageZoneOmbre()
 
                     zone1.clear();
                     zone1.append(QPointF(x1, -1.));
-                    zone1.append(QPointF(x1, _hauteurCarte));
-                    zone1.append(QPointF(x2, _hauteurCarte));
+                    zone1.append(QPointF(x1, _ui->carte->width()));
+                    zone1.append(QPointF(x2, _ui->carte->width()));
                     zone1.append(QPointF(x2, -1.));
 
                     const QPolygonF poly1(zone1);
