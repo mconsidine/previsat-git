@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    30 mars 2023
  *
  */
 
@@ -97,17 +97,19 @@ int main(int argc, char *argv[])
             }
         }
 
+        // Creation de la fenetre principale
+        PreviSat w;
+
         // Lancement du splash screen
         QSplashScreen * const splash = new QSplashScreen;
         splash->setPixmap(QPixmap(":/resources/interface/splashscreen.png"));
         splash->show();
 
+        // Initialisation de la configuration
         const Qt::Alignment alignement = Qt::AlignRight | Qt::AlignVCenter;
         splash->showMessage(QObject::tr("Initialisation de la configuration...") + "     ", alignement, Qt::white);
         a.processEvents();
-
-        // Creation de la fenetre principale
-        PreviSat w;
+        w.ChargementConfiguration();
 
         // Ouverture du fichier d'elements orbitaux par defaut
         splash->showMessage(QObject::tr("Ouverture du fichier GP...") + "     ", alignement, Qt::white);
