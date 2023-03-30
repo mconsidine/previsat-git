@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 mars 2023
+ * >    30 mars 2023
  *
  */
 
@@ -128,7 +128,7 @@ PreviSat::~PreviSat()
 {
     EFFACE_OBJET(_carte);
     EFFACE_OBJET(_ciel);
-    EFFACE_OBJET(_informations);
+//    EFFACE_OBJET(_informations);
     EFFACE_OBJET(_onglets);
     EFFACE_OBJET(_options);
     EFFACE_OBJET(_outils);
@@ -148,14 +148,6 @@ PreviSat::~PreviSat()
     EFFACE_OBJET(_modeFonctionnement);
     EFFACE_OBJET(_stsDate);
     EFFACE_OBJET(_stsHeure);
-
-    EFFACE_OBJET(_previsions);
-    EFFACE_OBJET(_flashs);
-    EFFACE_OBJET(_transits);
-    EFFACE_OBJET(_evenements);
-    EFFACE_OBJET(_informationsSatellite);
-    EFFACE_OBJET(_recherche);
-    EFFACE_OBJET(_station);
 
     EFFACE_OBJET(_dateCourante);
     EFFACE_OBJET(_chronometre);
@@ -1860,6 +1852,7 @@ void PreviSat::MajFichierGP()
         settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
 
         ChargementGP();
+        _onglets->ReinitFlags();
         DemarrageApplication();
 
     } catch (PreviSatException const &e) {
@@ -2689,18 +2682,17 @@ void PreviSat::on_listeFichiersElem_currentIndexChanged(int index)
     _ui->listeFichiersElem->setItemData(idx, QColor(Qt::white), Qt::BackgroundRole);
 
     /* Corps de la methode */
-    Configuration::instance()->nomfic() = Configuration::instance()->dirElem() + QDir::separator() +
-            Configuration::instance()->listeFichiersElem().at(index);
+    Configuration::instance()->nomfic() = Configuration::instance()->listeFichiersElem().at(index);
+    const QFileInfo ff(Configuration::instance()->nomfic());
     Configuration::instance()->listeSatellites().clear();
     _ui->listeFichiersElem->setItemData(index, QColor(Qt::gray), Qt::BackgroundRole);
 
-    AfficherMessageStatut(tr("Ouverture du fichier d'éléments orbitaux %1 ...").arg(fi.fileName()));
+    AfficherMessageStatut(tr("Ouverture du fichier d'éléments orbitaux %1 ...").arg(ff.fileName()));
     ChargementGP();
     AfficherMessageStatut(tr("Fichier d'éléments orbitaux de %1 satellites").arg(Configuration::instance()->mapElementsOrbitaux().size()), 5);
 
     const QString noradDefaut = Configuration::instance()->noradDefaut();
     QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
-    const QFileInfo ff(Configuration::instance()->nomfic());
 
     if (!Configuration::instance()->mapElementsOrbitaux().isEmpty()) {
 
