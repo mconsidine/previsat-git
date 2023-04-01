@@ -55,7 +55,8 @@ private:
     static void testCalculBeta();
     static void testCalculCercleAcquisition();
     static void testCalculCoordHoriz2();
-    static void testCalculPosVit();
+    static void testCalculPosVit1();
+    static void testCalculPosVit2();
     static void testCalculPosVitECEF();
     static void testCalculElementsOsculateurs();
     static void testCalculTraceCiel();

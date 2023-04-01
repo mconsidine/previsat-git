@@ -68,7 +68,7 @@ Satellite::Satellite()
 }
 
 /*
- * Constructeur a partir d'un tableau de TLE
+ * Constructeur a partir d'un tableau d'elements orbitaux
  */
 Satellite::Satellite(const QList<ElementsOrbitaux> &elem) :
     _listElements(elem)

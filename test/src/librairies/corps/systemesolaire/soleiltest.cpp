@@ -61,8 +61,18 @@ void SoleilTest::testAll()
     Corps::Initialisation(dirCommonData);
     Date::Initialisation(dirCommonData);
 
+    testSoleil();
     testCalculPosition();
     testCalculLeverMeridienCoucher();
+}
+
+void SoleilTest::testSoleil()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const Soleil soleil(Vecteur3D(-140328287.9615894, -46628772.91250957, -20216954.727520175));
+    const Vecteur3D pos(-140328287.9615894, -46628772.91250957, -20216954.727520175);
+    CompareVecteurs3D(soleil.position(), pos);
 }
 
 void SoleilTest::testCalculPosition()

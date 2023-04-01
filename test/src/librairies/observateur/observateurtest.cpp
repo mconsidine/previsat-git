@@ -71,6 +71,13 @@ void ObservateurTest::testObservateur()
     QCOMPARE(obs.longitude(), -2.34864 * MATHS::DEG2RAD);
     QCOMPARE(obs.latitude(), 48.85339 * MATHS::DEG2RAD);
     QCOMPARE(obs.altitude(), 30. * 1.e-3);
+
+    const Observateur obs2(obs.position(), obs.vitesse(), obs.rotHz(), obs.aaer(), obs.aray());
+    QCOMPARE(obs2.aaer(), obs.aaer());
+    QCOMPARE(obs2.aray(), obs.aray());
+    CompareVecteurs3D(obs2.position(), obs.position());
+    CompareVecteurs3D(obs2.vitesse(), obs.vitesse());
+    CompareMatrices3D(obs2.rotHz(), obs.rotHz());
 }
 
 void ObservateurTest::testCalculPosVit()
