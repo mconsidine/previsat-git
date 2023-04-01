@@ -42,6 +42,7 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
 #include "configuration/configuration.h"
+#include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/maths/maths.h"
@@ -57,7 +58,8 @@ void SatelliteTest::testAll()
     testCalculBeta();
     testCalculCercleAcquisition();
     testCalculCoordHoriz2();
-    testCalculPosVit();
+    testCalculPosVit1();
+    testCalculPosVit2();
     testCalculPosVitECEF();
     testCalculElementsOsculateurs();
     testCalculTraceCiel();
@@ -132,7 +134,7 @@ void SatelliteTest::testCalculCoordHoriz2()
     QCOMPARE(sat.azimut(), 4.48887816827556);
 }
 
-void SatelliteTest::testCalculPosVit()
+void SatelliteTest::testCalculPosVit1()
 {
     qInfo(Q_FUNC_INFO);
 
@@ -200,6 +202,35 @@ void SatelliteTest::testCalculPosVit()
     CompareFichiers(ficRes, ficRef);
 }
 
+void SatelliteTest::testCalculPosVit2()
+{
+    qInfo(Q_FUNC_INFO);
+
+    QDir dir = QDir::current();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cd(qApp->applicationName());
+
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->LectureDonneesSatellites();
+
+    const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "iss.gp";
+    const QList<ElementsOrbitaux> listeElem = GPFormat::LectureFichierListeGP(fic, Configuration::instance()->donneesSatellites(),
+                                                                              Configuration::instance()->lgRec());
+
+    Satellite sat(listeElem);
+    QCOMPARE(sat._listElements.size(), listeElem.size());
+
+    const Date date(2023, 2, 2, 0, 0, 0., 0.);
+    sat.CalculPosVit(date);
+    const Vecteur3D pos(-73.24427091902145, 6704.632372584346, 1106.632182287279);
+    const Vecteur3D vit(-4.827118447150993, 0.9222014946152153, -5.8768841331293284);
+    CompareVecteurs3D(sat.position(), pos);
+    CompareVecteurs3D(sat.vitesse(), vit);
+}
+
 void SatelliteTest::testCalculPosVitECEF()
 {
     qInfo(Q_FUNC_INFO);
@@ -250,6 +281,7 @@ void SatelliteTest::testCalculElementsOsculateurs()
     QCOMPARE(sat.ageElementsOrbitaux(), 0.6277587499998845);
     QCOMPARE(sat.nbOrbites(), 124128u);
     QCOMPARE(sat.method(), 'n');
+    QCOMPARE(sat.elementsOsculateurs().demiGrandAxe(), 6800.37693729);
 }
 
 void SatelliteTest::testCalculTraceCiel()
@@ -310,6 +342,12 @@ void SatelliteTest::testCalculPosVitListeSatellites()
     QCOMPARE(satellites.first().signal().attenuation(), 152.042308095);
     QCOMPARE(satellites.first().altitude(), 426.06419024535444);
     QCOMPARE(satellites.first().rangeRate(), -1.1111004734472358);
+    QCOMPARE(satellites.first().magnitude().magnitude(), 99.);
+    QCOMPARE(satellites.first().ascensionDroite(), 1.2595999417338162);
+    QCOMPARE(satellites.first().declinaison(), -0.9256418548152789);
+    QCOMPARE(satellites.first().constellation(), "Pic");
+    QCOMPARE(satellites.first().longitude(), -1.1553724672481591);
+    CompareVecteurs3D(satellites.first().dist(), Vecteur3D(1757.256968436037, 5463.306386934935, -7625.64823073472));
 }
 
 void SatelliteTest::testHasAos1()

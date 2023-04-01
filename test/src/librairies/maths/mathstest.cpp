@@ -99,6 +99,7 @@ void MathsTest::testMaths()
     QCOMPARE(Maths::ToSexagesimal(12.3456789, AngleFormatType::NO_TYPE, 2, 4, true, true), "+12° 20' 44.4440\"");
     QCOMPARE(Maths::ToSexagesimal(-0.123456789, AngleFormatType::DEGRE, 2, 4, false, false), "-07°04'24.7907\"");
     QCOMPARE(Maths::ToSexagesimal(1.23456789, AngleFormatType::HEURE1, 2, 0, false, false), " 04h42m57s");
+    QCOMPARE(Maths::ToSexagesimal(0.26179211559393, AngleFormatType::HEURE1, 2, 0, false, false), " 01h00m00s");
 }
 
 void MathsTest::testMatrice3D()
@@ -124,20 +125,34 @@ void MathsTest::testMatrice3D()
     const Matrice3D mat5(vec4, vec5, vec6);
     CompareMatrices3D(mat4, mat5);
 
-    const Vecteur3D vec7(1., 4., 7.);
-    const Vecteur3D vec8(2., 5., 8.);
-    const Vecteur3D vec9(3., 6., 9.);
-    const Matrice3D mat6(vec7, vec8, vec9);
-    CompareMatrices3D(mat2.Transposee(), mat6);
+    const Matrice3D mat6(AxeType::AXE_Y, MATHS::PI / 6.);
+    const Vecteur3D vec7(sqrt(3.) / 2., 0., 0.5);
+    const Vecteur3D vec8(0., 1., 0.);
+    const Vecteur3D vec9(-0.5, 0., sqrt(3.) / 2.);
+    const Matrice3D mat7(vec7, vec8, vec9);
+    CompareMatrices3D(mat6, mat7);
 
-    const Vecteur3D vec10(14., 32., 50.);
-    CompareVecteurs3D(mat6 * vec1, vec10);
+    const Matrice3D mat8(AxeType::AXE_Z, MATHS::PI / 6.);
+    const Vecteur3D vec10(sqrt(3.) / 2., -0.5, 0.);
+    const Vecteur3D vec11(0.5, sqrt(3.) / 2., 0.);
+    const Vecteur3D vec12(0., 0., 1.);
+    const Matrice3D mat9(vec10, vec11, vec12);
+    CompareMatrices3D(mat8, mat9);
 
-    const Vecteur3D vec11(14., 32, 50.);
-    const Vecteur3D vec12(32., 77., 122.);
-    const Vecteur3D vec13(50., 122., 194.);
-    const Matrice3D mat7(vec11, vec12, vec13);
-    CompareMatrices3D(mat6 * mat2, mat7);
+    const Vecteur3D vec13(1., 4., 7.);
+    const Vecteur3D vec14(2., 5., 8.);
+    const Vecteur3D vec15(3., 6., 9.);
+    const Matrice3D mat10(vec13, vec14, vec15);
+    CompareMatrices3D(mat2.Transposee(), mat10);
+
+    const Vecteur3D vec16(14., 32., 50.);
+    CompareVecteurs3D(mat10 * vec1, vec16);
+
+    const Vecteur3D vec17(14., 32, 50.);
+    const Vecteur3D vec18(32., 77., 122.);
+    const Vecteur3D vec19(50., 122., 194.);
+    const Matrice3D mat11(vec17, vec18, vec19);
+    CompareMatrices3D(mat10 * mat2, mat11);
 }
 
 void MathsTest::testVecteur3D()
