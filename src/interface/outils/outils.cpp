@@ -839,6 +839,15 @@ void Outils::on_listeSatellites_currentRowChanged(int currentRow)
     return;
 }
 
+void Outils::on_filtreSatellites_textChanged(const QString &arg1)
+{
+    for(int i=0; i<_ui->listeSatellites->count(); i++) {
+        const QString elem = _ui->listeSatellites->item(i)->text();
+        _ui->listeSatellites->item(i)->setHidden(!elem.contains(arg1, Qt::CaseInsensitive));
+    }
+}
+
+
 void Outils::on_majMaintenant_clicked()
 {
     /* Declarations des variables locales */

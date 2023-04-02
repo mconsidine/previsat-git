@@ -1320,6 +1320,14 @@ void Options::on_annulerCategorie_clicked()
 }
 
 
+void Options::on_filtreLieuxObs_textChanged(const QString &arg1)
+{
+    for(int i=0; i<_ui->lieuxObs->count(); i++) {
+        const QString elem = _ui->lieuxObs->item(i)->text();
+        _ui->lieuxObs->item(i)->setHidden(!elem.contains(arg1, Qt::CaseInsensitive));
+    }
+}
+
 void Options::on_lieuxObs_currentRowChanged(int currentRow)
 {
     /* Declarations des variables locales */
@@ -1363,6 +1371,14 @@ void Options::on_lieuxObs_customContextMenuRequested(const QPoint &pos)
 
     /* Retour */
     return;
+}
+
+void Options::on_filtreSelecLieux_textChanged(const QString &arg1)
+{
+    for(int i=0; i<_ui->selecLieux->count(); i++) {
+        const QString elem = _ui->selecLieux->item(i)->text();
+        _ui->selecLieux->item(i)->setHidden(!elem.contains(arg1, Qt::CaseInsensitive));
+    }
 }
 
 void Options::on_selecLieux_currentRowChanged(int currentRow)

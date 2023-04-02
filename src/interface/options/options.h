@@ -243,8 +243,10 @@ private slots:
     void on_validerCategorie_clicked();
     void on_annulerCategorie_clicked();
 
+    void on_filtreLieuxObs_textChanged(const QString &arg1);
     void on_lieuxObs_currentRowChanged(int currentRow);
     void on_lieuxObs_customContextMenuRequested(const QPoint &pos);
+    void on_filtreSelecLieux_textChanged(const QString &arg1);
     void on_selecLieux_currentRowChanged(int currentRow);
     void on_creationLieu_clicked();
     void on_validerObs_clicked();

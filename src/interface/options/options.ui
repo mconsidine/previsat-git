@@ -107,9 +107,9 @@
      <property name="geometry">
       <rect>
        <x>367</x>
-       <y>20</y>
+       <y>44</y>
        <width>171</width>
-       <height>281</height>
+       <height>257</height>
       </rect>
      </property>
      <property name="font">
@@ -725,9 +725,9 @@
      <property name="geometry">
       <rect>
        <x>177</x>
-       <y>20</y>
+       <y>44</y>
        <width>171</width>
-       <height>281</height>
+       <height>257</height>
       </rect>
      </property>
      <property name="font">
@@ -818,6 +818,50 @@
       <bool>true</bool>
      </property>
      <property name="autoRaise">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="filtreLieuxObs">
+     <property name="geometry">
+      <rect>
+       <x>177</x>
+       <y>20</y>
+       <width>171</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="inputMask">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string notr="true"/>
+     </property>
+     <property name="placeholderText">
+      <string>Filtre</string>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="filtreSelecLieux">
+     <property name="geometry">
+      <rect>
+       <x>367</x>
+       <y>20</y>
+       <width>171</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="inputMask">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string notr="true"/>
+     </property>
+     <property name="placeholderText">
+      <string>Filtre</string>
+     </property>
+     <property name="clearButtonEnabled">
       <bool>true</bool>
      </property>
     </widget>
