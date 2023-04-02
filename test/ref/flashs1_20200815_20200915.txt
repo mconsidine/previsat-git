@@ -7,7 +7,7 @@ Age de l'élément le plus récent : 0.43 jours (au 15/08/2020 00:00:00)
 Age de l'élément le plus ancien : 0.60 jours
 
 
-Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance
+Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang   Mir Magn       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance
 MetOp-A    2020/08/15 22:13:29.9   320°38'34"  36°09'31"  11h25m20s +58°46'03"  UMa  9.14   C  +2.0     828.4    1278.6  305°34'43" -10°39'54"
 MetOp-A    2020/08/15 22:14:19.1   328°21'06"  27°11'50"  10h02m30s +57°23'33"  UMa  2.67   C  -0.3     828.9    1531.1  305°44'52" -10°46'29"   001.0480 E  49.5634 N     -3.1    123.4 (WNW)
 MetOp-A    2020/08/15 22:15:17.4   333°46'18"  19°06'05"  09h02m00s +53°31'47"  UMa  7.53   C  +2.0     829.6    1868.4  305°56'55" -10°54'16"
@@ -52,27 +52,22 @@ MetOp-A    2020/09/14 21:52:12.5   332°56'49"  53°49'24"  15h25m34s +72°30'19"  
 MetOp-A    2020/09/14 21:52:51.0   337°21'56"  41°41'50"  12h36m05s +72°37'30"  Dra  1.09   C  -2.2     828.6    1166.5  296°51'26" -17°50'33"   002.0257 E  48.8910 N     -3.2     24.1 (W)
 MetOp-A    2020/09/14 21:53:44.0   340°17'50"  29°38'58"  10h41m04s +65°37'35"  UMa  8.73   C  +2.0     829.3    1452.4  297°02'41" -17°58'21"
 
-Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance
 SkyMed1    2020/09/14 06:41:35.0   100°15'17"  57°01'30"  07h07m52s +34°36'30"  Gem 13.96   S  +2.0     629.5     736.7  075°36'47" -08°02'48"
 SkyMed1    2020/09/14 06:41:53.5   079°55'14"  60°06'11"  07h22m34s +45°15'09"  Lyn  9.98   S  +0.8     629.7     716.0  075°40'22" -07°59'52"   004.0815 E  49.1637 N     -2.3    131.4 (ENE)
 SkyMed1    2020/09/14 06:42:11.6   057°54'57"  59°32'54"  07h44m47s +55°43'08"  Lyn 13.99   S  +2.0     630.0     719.8  075°43'53" -07°56'59"
 
-Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance
 SkyMed2    2020/09/06 06:42:02.0   099°29'38"  57°50'57"  06h34m49s +35°26'11"  Gem 13.97   S  +2.0     629.2     730.5  073°12'52" -06°04'41"
 SkyMed2    2020/09/06 06:42:23.7   074°17'12"  60°54'00"  06h52m55s +48°07'41"  Lyn  7.58   S  +0.0     629.6     710.8  073°17'04" -06°01'16"   003.6619 E  49.1172 N     -2.3    100.5 (ENE)
 SkyMed2    2020/09/06 06:42:45.3   048°26'44"  58°38'39"  07h23m57s +60°28'40"  Cam 13.98   S  +2.0     629.9     725.7  073°21'15" -05°57'52"
 
-Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance
 SkyMed3    2020/09/13 06:47:38.8   117°39'42"  62°14'31"  06h23m30s +31°36'28"  Aur 14.02   S  +2.0     629.4     702.6  076°28'15" -06°50'31"
 SkyMed3    2020/09/13 06:48:03.5   083°08'16"  69°14'14"  06h32m27s +47°03'14"  Aur  1.55   S  -1.8     629.7     669.2  076°33'01" -06°46'34"   002.6012 E  48.8971 N     -2.3     19.2 (ENE)
 SkyMed3    2020/09/13 06:48:27.6   041°52'20"  66°18'50"  06h50m02s +62°25'38"  Cam 14.05   S  +2.0     630.1     682.2  076°37'40" -06°42'43"
 
-Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance
 SkyMed4    2020/09/05 06:41:54.7   098°50'25"  57°48'57"  06h31m54s +35°41'39"  Aur 13.97   S  +2.0     629.2     730.7  072°53'18" -05°51'44"
 SkyMed4    2020/09/05 06:42:16.5   073°32'51"  60°44'14"  06h50m27s +48°25'10"  Lyn  7.50   S  +0.0     629.5     711.7  072°57'32" -05°48'19"   003.6503 E  49.1185 N     -2.3     99.7 (ENE)
 SkyMed4    2020/09/05 06:42:38.2   047°50'20"  58°20'34"  07h22m26s +60°46'58"  Cam 13.98   S  +2.0     629.8     727.7  073°01'44" -05°44'54"
 
-Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance
 MetOp-B    2020/08/17 22:47:31.4   341°19'05"  32°13'22"  09h51m42s +68°15'17"  UMa  8.91   C  +2.0     829.7    1378.7  312°33'24" -15°36'58"
 MetOp-B    2020/08/17 22:48:26.5   342°37'30"  22°42'32"  09h00m27s +60°27'26"  UMa  5.70   C  +1.3     830.3    1703.9  312°45'28" -15°43'38"   005.6952 E  46.1948 N     -2.6    388.4 (SE)
 MetOp-B    2020/08/17 22:49:14.2   343°23'02"  16°35'32"  08h39m36s +55°00'50"  UMa  7.07   C  +2.0     830.8    2003.4  312°55'58" -15°49'24"
@@ -133,7 +128,6 @@ MetOp-B    2020/09/11 22:29:52.4   355°27'33"  33°04'05"  08h59m45s +73°51'15"  
 MetOp-B    2020/09/11 22:30:32.8   352°46'26"  25°40'38"  09h10m20s +66°08'51"  UMa  7.51   C  +1.8     829.5    1585.7  305°34'41" -22°03'11"   005.1859 E  49.0635 N     -2.9    209.1 (ENE)
 MetOp-B    2020/09/11 22:31:00.5   351°31'24"  21°33'29"  09h13m19s +61°52'51"  UMa  7.90   C  +2.0     829.8    1752.8  305°40'58" -22°06'54"
 
-Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance
 MetOp-C    2020/08/19 22:59:39.0   334°41'40"  27°55'39"  10h32m23s +61°25'58"  UMa  8.59   C  +2.0     829.6    1507.7  315°01'20" -17°41'03"
 MetOp-C    2020/08/19 23:01:02.2   339°10'10"  16°25'35"  09h24m42s +53°24'02"  UMa  0.94   C  -1.9     830.5    2012.2  315°20'07" -17°50'43"   003.0899 E  47.9311 N     -2.5    116.3 (SE)
 MetOp-C    2020/08/19 23:02:13.2   341°22'49"  09°36'49"  08h58m02s +47°46'41"  UMa  5.04   C  +2.0     831.1    2467.4  315°36'09" -17°58'55"
