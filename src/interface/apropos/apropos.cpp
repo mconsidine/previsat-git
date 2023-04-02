@@ -30,7 +30,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    4 mars 2023
+ * >    2 avril 2023
  *
  */
 
@@ -117,21 +117,7 @@ void Apropos::show()
 
     _ui->imagePreviSat->setScene(scene);
     QGraphicsView view(scene);
-    view.setRenderHints(QPainter::Antialiasing);
-
-    if (settings.value("affichage/flagIntensiteVision", false).toBool()) {
-
-        QPalette paletteWin, palList;
-        const int red = settings.value("affichage/valIntensiteVision", 0).toInt();
-        const QBrush alpha = QBrush(QColor::fromRgb(red, 0, 0, 255));
-        const QColor coulList = QColor(red + 27, 0, 0);
-
-        paletteWin.setBrush(this->backgroundRole(), alpha);
-        palList.setColor(QPalette::Base, coulList);
-
-        this->setPalette(paletteWin);
-        _ui->imagePreviSat->setBackgroundBrush(alpha);
-    }
+    view.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     const QString informations = "Copyright © %1 %2";
     _ui->informationsCopyright->setText(informations.arg(ORG_NAME).arg(QString(APP_ANNEES_DEV)));
