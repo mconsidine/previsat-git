@@ -297,9 +297,9 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>18</y>
+         <y>42</y>
          <width>221</width>
-         <height>237</height>
+         <height>213</height>
         </rect>
        </property>
       </widget>
@@ -314,6 +314,28 @@
        </property>
        <property name="text">
         <string>Liste des satellites :</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="filtreSatellites">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>18</y>
+         <width>221</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="inputMask">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string notr="true"/>
+       </property>
+       <property name="placeholderText">
+        <string>Filtre</string>
+       </property>
+       <property name="clearButtonEnabled">
+        <bool>true</bool>
        </property>
       </widget>
      </widget>

@@ -216,6 +216,7 @@ private slots:
     void on_listeFichiersElem_currentRowChanged(int currentRow);
     void on_listeFichiersElem_itemSelectionChanged();
     void on_listeSatellites_currentRowChanged(int currentRow);
+    void on_filtreSatellites_textChanged(const QString &arg1);
 
     void on_majMaintenant_clicked();
     void on_listeBoutonsOutils_rejected();
