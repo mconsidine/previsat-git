@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 fevrier 2023
+ * >    2 avril 2023
  *
  */
 
@@ -145,7 +145,7 @@ private:
      * Methodes privees
      */
     /**
-     * @brief AffichageDetailTransit Affichage du détail d'un transit
+     * @brief AffichageDetailTransit Affichage du detail d'un transit
      * @param observateur observateur
      * @param lune lune
      * @param list informations sur le transit
@@ -230,9 +230,10 @@ private:
 private slots:
 
     void on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item);
+    void on_actionEnregistrer_triggered();
     void on_actionEnregistrerTxt_triggered();
     void on_resultatsPrevisions_itemSelectionChanged();
-    void on_afficherCarte_clicked();
+    void on_afficherCarte_clicked();    
 
 };
 

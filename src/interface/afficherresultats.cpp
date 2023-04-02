@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    2 avril 2023
  *
  */
 
@@ -41,7 +41,9 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QGraphicsPixmapItem>
+#include <QScreen>
 #include <QSettings>
+#include <QStringDecoder>
 #include <QtGlobal>
 #include "ui_afficherresultats.h"
 #pragma GCC diagnostic warning "-Wswitch-default"
@@ -141,8 +143,8 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const Conditi
     case TypeCalcul::TRANSITS:
         setWindowTitle(tr("Transits"));
         _ui->afficherCarte->setVisible(true);
-        titres << tr("Satellite") << tr("Date de début", "Date and hour") << tr("Date de fin", "Date and hour") << tr("Cst", "Constellation")
-               << tr("Angle") << tr("Type", "Transit or conjunction") << tr("Corps") << tr("Ill", "Illumination") << tr("Durée") << tr("Hauteur Soleil");
+        titres << tr("Satellite") << tr("Date du maximum", "Date and hour") << tr("Cst", "Constellation") << tr("Angle")
+               << tr("Type", "Transit or conjunction") << tr("Corps") << tr("Illum", "Illumination") << tr("Durée") << tr("Hauteur Soleil");
 
         if (_resultats.size() > 0) {
             _ui->detailsTransit->setVisible(true);
@@ -161,9 +163,10 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const Conditi
         QFile fi(_conditions.ficRes);
 
         if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            const QString contenuFic = fi.readAll();
+            const QByteArray contenuFic = fi.readAll();
+            auto syst = QStringDecoder(QStringDecoder::System);
             _ui->fichierTexte->setReadOnly(true);
-            _ui->fichierTexte->setText(contenuFic);
+            _ui->fichierTexte->setText(syst(contenuFic));
         }
         fi.close();
 
@@ -176,17 +179,18 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const Conditi
         switch (_typeCalcul) {
 
         case TypeCalcul::FLASHS:
+
             _ui->resultatsPrevisions->horizontalHeaderItem(3)->setToolTip(tr("Hauteur maximale"));
             _ui->resultatsPrevisions->horizontalHeaderItem(4)->setToolTip(tr("Magnitude"));
             _ui->resultatsPrevisions->horizontalHeaderItem(5)->setToolTip(tr("Miroir"));
             _ui->resultatsPrevisions->horizontalHeaderItem(6)->setToolTip(tr("Hauteur Soleil"));
-
             break;
 
         case TypeCalcul::TRANSITS:
-            _ui->resultatsPrevisions->horizontalHeaderItem(3)->setToolTip(tr("Constellation"));
-            _ui->resultatsPrevisions->horizontalHeaderItem(7)->setToolTip(tr("Illumination"));
-            _ui->resultatsPrevisions->horizontalHeaderItem(8)->setToolTip(tr("secondes"));
+
+            _ui->resultatsPrevisions->horizontalHeaderItem(2)->setToolTip(tr("Constellation"));
+            _ui->resultatsPrevisions->horizontalHeaderItem(6)->setToolTip(tr("Illumination"));
+            _ui->resultatsPrevisions->horizontalHeaderItem(7)->setToolTip(tr("secondes"));
             break;
 
         case TypeCalcul::PREVISIONS:
@@ -248,442 +252,13 @@ AfficherResultats::~AfficherResultats()
 /*
  * Methodes privees
  */
-void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (_typeCalcul != TypeCalcul::EVENEMENTS) {
-
-        int j = 0;
-        int m = 0;
-        const QList<ResultatPrevisions> list = _ui->resultatsPrevisions->item(item->row(), 0)->data(Qt::UserRole).value<QList<ResultatPrevisions> > ();
-
-        if (_tableDetail != nullptr) {
-            delete _tableDetail;
-            _tableDetail = nullptr;
-        }
-
-        _tableDetail = new QTableWidget;
-
-        switch (_typeCalcul) {
-
-        case TypeCalcul::PREVISIONS:
-            _tableDetail->setColumnCount(12);
-            _tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date", "Date and hour")
-                                                    << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
-                                                    << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
-                                                    << tr("Const", "Constellation") << tr("Magn", "Magnitude")
-                                                    << tr("Altitude", "Altitude of satellite") << tr("Distance") << tr("Az Soleil", "Solar azimuth")
-                                                    << tr("Haut Soleil", "Solar elevation"));
-            break;
-
-        case TypeCalcul::FLASHS:
-            _tableDetail->setColumnCount(18);
-            _tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date", "Date and hour")
-                                                    << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
-                                                    << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
-                                                    << tr("Const", "Constellation") << tr("Ang", "Angle") << tr("Mir", "Mirror")
-                                                    << tr("Magn", "Magnitude") << tr("Altitude", "Altitude of satellite") << tr("Dist", "Range")
-                                                    << tr("Az Soleil", "Solar azimuth") << tr("Haut Soleil", "Solar elevation")
-                                                    << tr("Long Max", "Longitude of the maximum") << tr("Lat Max", "Latitude of the maximum")
-                                                    << tr("Magn Max", "Magnitude at the maximum") << tr("Distance"));
-            break;
-
-        case TypeCalcul::TRANSITS:
-            _tableDetail->setColumnCount(19);
-            _tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date", "Date and hour")
-                                                    << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
-                                                    << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
-                                                    << tr("Cst", "Constellation") << tr("Ang", "Angle") << tr("Type", "Transit or conjunction")
-                                                    << tr("Corps") << tr("Ill", "Illumination") << tr("Durée") << tr("Alt", "Altitude of satellite")
-                                                    << tr("Dist", "Range") << tr("Az Soleil", "Solar azimuth") << tr("Haut Soleil", "Solar elevation")
-                                                    << tr("Long Max", "Longitude of the maximum") << tr("Lat Max", "Latitude of the maximum")
-                                                    << tr("Distance"));
-            break;
-
-        case TypeCalcul::TELESCOPE:
-        case TypeCalcul::EVENEMENTS:
-        default:
-            break;
-        }
-
-        _tableDetail->setSelectionMode(QTableWidget::NoSelection);
-        _tableDetail->setCornerButtonEnabled(false);
-        _tableDetail->verticalHeader()->setVisible(false);
-
-        _tableDetail->horizontalHeader()->setToolTip("");
-        _tableDetail->horizontalHeaderItem(2)->setToolTip(tr("Azimut satellite"));
-        _tableDetail->horizontalHeaderItem(3)->setToolTip(tr("Hauteur satellite"));
-        _tableDetail->horizontalHeaderItem(4)->setToolTip(tr("Ascension droite satellite"));
-        _tableDetail->horizontalHeaderItem(5)->setToolTip(tr("Déclinaison satellite"));
-        _tableDetail->horizontalHeaderItem(6)->setToolTip(tr("Constellation"));
-
-        switch (_typeCalcul) {
-
-        case TypeCalcul::PREVISIONS:
-            _tableDetail->horizontalHeaderItem(7)->setToolTip(tr("Magnitude"));
-            _tableDetail->horizontalHeaderItem(10)->setToolTip(tr("Azimut Soleil"));
-            _tableDetail->horizontalHeaderItem(11)->setToolTip(tr("Hauteur Soleil"));
-            break;
-
-        case TypeCalcul::FLASHS:
-            _tableDetail->horizontalHeaderItem(7)->setToolTip(tr("Angle"));
-            _tableDetail->horizontalHeaderItem(8)->setToolTip(tr("Miroir"));
-            _tableDetail->horizontalHeaderItem(9)->setToolTip(tr("Magnitude"));
-            _tableDetail->horizontalHeaderItem(11)->setToolTip(tr("Distance"));
-            _tableDetail->horizontalHeaderItem(12)->setToolTip(tr("Azimut Soleil"));
-            _tableDetail->horizontalHeaderItem(13)->setToolTip(tr("Hauteur Soleil"));
-            _tableDetail->horizontalHeaderItem(14)->setToolTip(tr("Longitude du maximum"));
-            _tableDetail->horizontalHeaderItem(15)->setToolTip(tr("Latitude du maximum"));
-            _tableDetail->horizontalHeaderItem(16)->setToolTip(tr("Magnitude au maximum"));
-            _tableDetail->horizontalHeaderItem(17)->setToolTip(tr("Distance au maximum"));
-            break;
-
-        case TypeCalcul::TRANSITS:
-            _tableDetail->horizontalHeaderItem(7)->setToolTip(tr("Angle"));
-            _tableDetail->horizontalHeaderItem(10)->setToolTip(tr("Illumination"));
-            _tableDetail->horizontalHeaderItem(11)->setToolTip(tr("secondes"));
-            _tableDetail->horizontalHeaderItem(12)->setToolTip(tr("Altitude", "Altitude of satellite"));
-            _tableDetail->horizontalHeaderItem(13)->setToolTip(tr("Distance"));
-            _tableDetail->horizontalHeaderItem(14)->setToolTip(tr("Azimut Soleil"));
-            _tableDetail->horizontalHeaderItem(15)->setToolTip(tr("Hauteur Soleil"));
-            _tableDetail->horizontalHeaderItem(16)->setToolTip(tr("Longitude du maximum"));
-            _tableDetail->horizontalHeaderItem(17)->setToolTip(tr("Latitude du maximum"));
-            _tableDetail->horizontalHeaderItem(18)->setToolTip(tr("Distance au maximum"));
-            break;
-
-        case TypeCalcul::EVENEMENTS:
-        case TypeCalcul::TELESCOPE:
-        default:
-            break;
-        }
-
-        int kmax;
-        QStringList elems;
-        QTableWidgetItem * itm;
-        QListIterator<ResultatPrevisions> it(list);
-        while (it.hasNext()) {
-
-            elems.clear();
-            const ResultatPrevisions res = it.next();
-
-            switch (_typeCalcul) {
-            case TypeCalcul::PREVISIONS:
-                elems = ElementsDetailsPrevisions(res);
-                break;
-
-            case TypeCalcul::FLASHS:
-                elems = ElementsDetailsFlashs(res);
-                break;
-
-            case TypeCalcul::TRANSITS:
-                if ((j > 0) && (j < 4)) {
-                    elems = ElementsDetailsTransits(res);
-                }
-                break;
-
-            case TypeCalcul::TELESCOPE:
-            case TypeCalcul::EVENEMENTS:
-            default:
-                break;
-            }
-
-            // Ajout d'une ligne dans le tableau de resultats
-            if (!elems.isEmpty()) {
-
-                _tableDetail->insertRow(m);
-                _tableDetail->setRowHeight(m, 16);
-
-                kmax = static_cast<int> (elems.count());
-                if ((_typeCalcul == TypeCalcul::FLASHS) && (j != 1)) {
-                    kmax = static_cast<int> (elems.count() - 4);
-                }
-
-                for(int k=0; k<kmax; k++) {
-
-                    // Remplissage des elements d'une ligne
-                    itm = new QTableWidgetItem(elems.at(k).trimmed());
-                    itm->setTextAlignment(Qt::AlignCenter);
-                    itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
-
-                    if ((k == 0) && (_typeCalcul != TypeCalcul::TRANSITS)) {
-                        itm->setToolTip(elems.at(0));
-                    }
-
-                    _tableDetail->setItem(m, k, itm);
-                    _tableDetail->resizeColumnToContents(k);
-                }
-                m++;
-            }
-
-            j++;
-        }
-
-        _tableDetail->setSelectionMode(QTableWidget::SingleSelection);
-        _tableDetail->setSelectionBehavior(QTableWidget::SelectRows);
-        _tableDetail->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-
-        if (_afficherDetail != nullptr) {
-            delete _afficherDetail;
-            _afficherDetail = nullptr;
-        }
-
-        _afficherDetail = new QMainWindow;
-        _afficherDetail->setStyleSheet("QHeaderView::section {" \
-                                       "background-color:rgb(235, 235, 235);" \
-                                       "border-top: 0px solid grey;" \
-                                       "border-bottom: 1px solid grey;" \
-                                       "border-right: 1px solid grey;" \
-                                       "font-size: 12px;" \
-                                       "font-weight: 600 }");
-
-        switch (_typeCalcul) {
-
-        case TypeCalcul::PREVISIONS:
-            _afficherDetail->setWindowTitle(tr("Détail du passage"));
-            break;
-
-        case TypeCalcul::FLASHS:
-            _afficherDetail->setWindowTitle(tr("Détail du flash"));
-            break;
-
-        case TypeCalcul::TRANSITS:
-            _afficherDetail->setWindowTitle(tr("Détail du transit ou conjonction"));
-            break;
-
-        case TypeCalcul::TELESCOPE:
-        case TypeCalcul::EVENEMENTS:
-        default:
-            break;
-        }
-
-        _afficherDetail->setCentralWidget(_tableDetail);
-#if defined (Q_OS_LINUX)
-        int lrg = 5;
-#else
-        int lrg = 2;
-#endif
-        if (_tableDetail->rowCount() > 10) {
-            lrg += 17;
-        }
-        for(int i=0; i<_tableDetail->columnCount(); i++) {
-            lrg += _tableDetail->columnWidth(i);
-        }
-
-        const int ind = (_tableDetail->rowCount() == 1) ? 0 : 1;
-        _afficherDetail->setFixedSize(lrg, _tableDetail->horizontalHeader()->height() + _tableDetail->rowHeight(ind) *
-                                      qMin(10, _tableDetail->rowCount()));
-        _afficherDetail->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, _afficherDetail->size(), geometry()));
-        _afficherDetail->show();
-    }
-
-    /* Retour */
-    return;
-}
-
-void AfficherResultats::on_actionEnregistrerTxt_triggered()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-#if (BUILD_TEST == true)
-    const QString fic = _conditions.ficRes;
-#else
-    QString fic;
-    if (_afficherEvt) {
-        fic = _conditions.ficRes;
-        _afficherEvt = false;
-    } else {
-        const QString nomFicDefaut = _conditions.ficRes.split(QDir::separator()).last();
-        fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), Configuration::instance()->dirOut() + QDir::separator() +
-                                           nomFicDefaut, tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
-    }
-#endif
-
-    if (!fic.isEmpty()) {
-
-        QFile fichier(_conditions.ficRes);
-        if (fichier.exists()) {
-            fichier.remove();
-        }
-
-        // Ecriture de l'entete du fichier de resultat
-        EcrireEntete();
-
-        // Ouverture du fichier de resultat
-        if (fichier.open(QIODevice::Append | QIODevice::Text)) {
-
-            QTextStream flux(&fichier);
-            flux.setEncoding(QStringConverter::System);
-
-            int i;
-            int kmin;
-            int kmax;
-            QString ligne;
-            QString nomsat;
-            QStringList evts;
-            QStringList elems;
-
-            QMapIterator<QString, QList<QList<ResultatPrevisions> > > it1(_resultats);
-            while (it1.hasNext()) {
-                it1.next();
-
-                // Nom du satellite
-                nomsat = it1.value().at(0).at(0).nom;
-                if (nomsat.contains("R/B") || nomsat.contains(" DEB")) {
-                    nomsat += "  " + tr("(numéro NORAD : %1)").arg(it1.key().split(" ").last());
-                }
-
-                // Description des colonnes
-                switch (_typeCalcul) {
-
-                case TypeCalcul::PREVISIONS:
-                    flux << nomsat << Qt::endl;
-                    flux << tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  " \
-                               "Haut Soleil",
-                               "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
-                               "Constellation, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation")
-                         << Qt::endl;
-                    break;
-
-                case TypeCalcul::FLASHS:
-                    flux << tr("Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Mir Magn       " \
-                               "Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance",
-                               "Satellite, Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
-                               "Constellation, Angle, Mirror, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation, " \
-                               "Longitude of the maximum, Latitude of the maximum, Magnitude at the maximum, Range from the maximum")
-                         << Qt::endl;
-                    break;
-
-                case TypeCalcul::TRANSITS:
-                    flux << nomsat << Qt::endl;
-                    flux << tr("   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps " \
-                               "Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance",
-                               "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
-                               "Constellation, Angle, Type, Body, Illumination, Duration, Altitude of satellite, Range, Solar azimuth, " \
-                               "Solar elevation, Longitude of the maximum, Latitude of the maximum, Range from the maximum")
-                         << Qt::endl;
-                    break;
-
-                case TypeCalcul::EVENEMENTS:
-                    flux << nomsat << Qt::endl;
-                    flux << tr("   Date      Heure     PSO    Longitude  Latitude  Évènements",
-                               "Date, Hour, In orbit position, Longitude, Latitude, Events") << Qt::endl;
-                    break;
-
-                case TypeCalcul::TELESCOPE:
-                default:
-                    break;
-                }
-
-                QListIterator<QList<ResultatPrevisions> > it2(it1.value());
-                while (it2.hasNext()) {
-
-                    i = 0;
-                    evts.clear();
-                    QListIterator<ResultatPrevisions> it3(it2.next());
-                    while (it3.hasNext()) {
-
-                        kmin = 1;
-                        elems.clear();
-                        const ResultatPrevisions res = it3.next();
-
-                        switch (_typeCalcul) {
-                        case TypeCalcul::PREVISIONS:
-                            elems = ElementsDetailsPrevisions(res);
-                            break;
-
-                        case TypeCalcul::FLASHS:
-                            kmin = 0;
-                            elems = ElementsDetailsFlashs(res);
-                            break;
-
-                        case TypeCalcul::TRANSITS:
-                            if ((i > 0) && (i < 4)) {
-                                elems = ElementsDetailsTransits(res);
-                            }
-                            break;
-
-                        case TypeCalcul::EVENEMENTS:
-                            elems = ElementsDetailsEvenements(res);
-                            break;
-
-                        case TypeCalcul::TELESCOPE:
-                        default:
-                            break;
-                        }
-
-                        if (!elems.isEmpty()) {
-
-                            kmax = static_cast<int> (elems.count());
-                            if ((_typeCalcul == TypeCalcul::FLASHS) && (i != 1)) {
-                                kmax = static_cast<int> (elems.count() - 4);
-                            }
-
-                            ligne = "";
-                            for(int k=kmin; k<kmax; k++) {
-                                if (_typeCalcul == TypeCalcul::EVENEMENTS) {
-                                    ligne += elems.at(k).trimmed() + "  ";
-                                } else {
-                                    if (elems.at(k).isEmpty()) {
-                                        ligne += "      ";
-                                    } else {
-                                        ligne += elems.at(k) + " ";
-                                    }
-                                }
-                            }
-
-                            if (_typeCalcul == TypeCalcul::EVENEMENTS) {
-                                evts.append(ligne);
-                            } else {
-                                flux << ligne.trimmed() << Qt::endl;
-                            }
-                        }
-                        i++;
-                    }
-
-                    if (_typeCalcul == TypeCalcul::EVENEMENTS) {
-
-                        evts.sort();
-                        QStringListIterator it4(evts);
-                        while (it4.hasNext()) {
-                            flux << it4.next().trimmed() << Qt::endl;
-                        }
-                    }
-                    flux << Qt::endl;
-                }
-            }
-
-#if (BUILD_TEST == false)
-            flux << Qt::endl << tr("Temps écoulé : %1s").arg(1.e-3 * static_cast<double> (_donnees.tempsEcoule), 0, 'f', 2) << Qt::endl;
-#endif
-        }
-        fichier.close();
-
-#if (BUILD_TEST == false)
-        QFile fi2(fic);
-        if (fi2.exists() && (fic != _conditions.ficRes)) {
-            fi2.remove();
-        }
-        fichier.copy(fi2.fileName());
-#endif
-    }
-
-    /* Retour */
-    return;
-}
-
 /*
- * Affichage du détail d'un transit
+ * Affichage du detail d'un transit
  */
 void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, const Lune &lune, const QList<ResultatPrevisions> &list)
 {
     /* Declarations des variables locales */
+    QPen couleur(Qt::black);
 
     /* Initialisations */
     const int lciel = qRound(0.5 * _ui->detailsTransit->width());
@@ -706,7 +281,7 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
     if (list.at(0).typeCorps == CorpsTransit::CORPS_SOLEIL) {
 
         QPixmap pixsol;
-        pixsol.load(":/resources/soleil.png");
+        pixsol.load(":/resources/interface/soleil.png");
         pixsol = pixsol.scaled(100, 100);
 
         QGraphicsPixmapItem * const sol = scene->addPixmap(pixsol);
@@ -723,7 +298,7 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
                 atan(sin(angleHoraire) / (tan(observateur.latitude()) * cos(lune.declinaison()) - sin(lune.declinaison()) * cos(angleHoraire)));
 
         QPixmap pixlun;
-        pixlun.load(":/resources/lune.png");
+        pixlun.load(":/resources/interface/lune.png");
         pixlun = pixlun.scaled(100, 100);
 
         // Dessin de la Lune et rotations
@@ -751,12 +326,14 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
             omb->setTransformOriginPoint(49, 8);
             omb->setRotation(angle);
         }
+
+        couleur = QPen((lune.fractionIlluminee() < 0.5) ? Qt::lightGray : Qt::black);
     }
 
     double deltaAzimut;
     double deltaHauteur;
     QList<QPair<double, double> > coord;
-    QListIterator<ResultatPrevisions> it(list);
+    QListIterator it(list);
     while (it.hasNext()) {
 
         const ResultatPrevisions res = it.next();
@@ -781,12 +358,10 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
     double lsat1 = coord.at(0).first;
     double hsat1 = coord.at(0).second;
 
-    const QPen couleur((list.at(0).typeCorps == CorpsTransit::CORPS_SOLEIL) ? Qt::black : Qt::lightGray);
-
     QLineF lig1;
     QLineF lig2;
 
-    QListIterator<QPair<double, double> > it2(coord);
+    QListIterator it2(coord);
     it2.next();
     while (it2.hasNext()) {
 
@@ -891,11 +466,11 @@ void AfficherResultats::ChargementResultats()
 
     /* Corps de la methode */
     QTableWidgetItem * item;
-    QMapIterator<QString, QList<QList<ResultatPrevisions> > > it1(_resultats);
+    QMapIterator it1(_resultats);
     while (it1.hasNext()) {
         it1.next();
 
-        QListIterator<QList<ResultatPrevisions> > it2(it1.value());
+        QListIterator it2(it1.value());
         while (it2.hasNext()) {
 
             const QList<ResultatPrevisions> list = it2.next();
@@ -964,6 +539,7 @@ void AfficherResultats::ChargementResultats()
                                             "font-size: 12px;" \
                                             "font-weight: 600 }");
 
+    _ui->resultatsPrevisions->setColumnWidth(0, 140);
     _ui->resultatsPrevisions->horizontalHeader()->setStretchLastSection(true);
     if (_typeCalcul != TypeCalcul::EVENEMENTS) {
         _ui->resultatsPrevisions->setToolTip(tr("Double-cliquez sur une ligne pour afficher plus de détails"));
@@ -971,9 +547,10 @@ void AfficherResultats::ChargementResultats()
 
     _ui->resultatsPrevisions->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     _ui->resultatsPrevisions->setAlternatingRowColors(true);
-    if (settings.value("affichage/ordreChronologiqueMetOp").toBool() && (_typeCalcul == TypeCalcul::FLASHS)) {
+    if (_conditions.chrono && (_typeCalcul == TypeCalcul::FLASHS)) {
         _ui->resultatsPrevisions->sortItems(1);
     }
+
     _ui->resultatsPrevisions->blockSignals(etat);
     _ui->resultatsPrevisions->selectRow(0);
 
@@ -1122,11 +699,9 @@ QStringList AfficherResultats::ElementsDetailsEvenements(const ResultatPrevision
 
     // Longitude, latitude
     elems.append(QString("  %1° %2")
-                 .arg(fabs(res.longitude * MATHS::RAD2DEG), 6, 'f', 2, QChar('0')).arg((res.longitude >= 0.) ?
-                                                                                    tr("W", "West") : tr("E", "East")));
+                 .arg(fabs(res.longitude * MATHS::RAD2DEG), 6, 'f', 2, QChar('0')).arg((res.longitude >= 0.) ? tr("W", "West") : tr("E", "East")));
     elems.append(QString(" %1° %2 ")
-                 .arg(fabs(res.latitude * MATHS::RAD2DEG), 5, 'f', 2, QChar('0')).arg((res.latitude >= 0.) ?
-                                                                                   tr("N", "North") : tr("S", "South")));
+                 .arg(fabs(res.latitude * MATHS::RAD2DEG), 5, 'f', 2, QChar('0')).arg((res.latitude >= 0.) ? tr("N", "North") : tr("S", "South")));
 
     // Type d'evenement
     elems.append(res.typeEvenement);
@@ -1165,7 +740,7 @@ QStringList AfficherResultats::ElementsFlashs(const QList<ResultatPrevisions> &l
     bool penombre = false;
     QString miroir;
 
-    QListIterator<ResultatPrevisions> it(liste);
+    QListIterator it(liste);
     while (it.hasNext()) {
 
         const ResultatPrevisions res = it.next();
@@ -1309,7 +884,7 @@ QStringList AfficherResultats::ElementsPrevisions(const QList<ResultatPrevisions
     double htSolMax = 0.;
     bool penombre = false;
 
-    QListIterator<ResultatPrevisions> it(liste);
+    QListIterator it(liste);
     while (it.hasNext()) {
 
         const ResultatPrevisions res = it.next();
@@ -1414,75 +989,44 @@ QStringList AfficherResultats::ElementsTransits(const QList<ResultatPrevisions> 
     QStringList elems;
 
     /* Initialisations */
+    const ResultatPrevisions elem = liste.at(2);
 
     /* Corps de la methode */
     // Nom du satellite
-    elems.append(liste.first().nom);
+    elems.append(elem.nom);
 
-    // Date de debut
-    const double offset1 = Date::CalculOffsetUTC(liste.first().date.ToQDateTime(1));
-    const Date dateDeb(liste.first().date, offset1);
-    elems.append(dateDeb.ToShortDateAMJ(DateFormat::FORMAT_LONG, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
-
-    // Date de fin
-    const double offset2 = Date::CalculOffsetUTC(liste.last().date.ToQDateTime(1));
-    const Date dateFin(liste.last().date, offset2);
-    elems.append(dateFin.ToShortDateAMJ(DateFormat::FORMAT_LONG, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
-
-    bool eclipse = false;
-    bool penombre = false;
-    double angMin = MATHS::PI;
-    double duree = 0.;
-    QString cst;
-    QString type;
-    QString corps;
-    double htSolMax = 0.;
-
-    QListIterator<ResultatPrevisions> it(liste);
-    while (it.hasNext()) {
-
-        const ResultatPrevisions res = it.next();
-
-        // Hauteur max
-        if (res.angle <= angMin) {
-            angMin = res.angle;
-            htSolMax = res.hauteurSoleil;
-            cst = res.constellation;
-            eclipse = res.eclipse;
-            penombre = res.penombre;
-            type = (res.transit) ? tr("T", "transit") : tr("C", "conjunction");
-            corps = (res.typeCorps == CorpsTransit::CORPS_SOLEIL) ? tr("S", "Sun") : tr("L", "Moon");
-            duree = res.duree;
-        }
-    }
+    // Date du maximum
+    const double offset1 = Date::CalculOffsetUTC(liste.at(2).date.ToQDateTime(1));
+    const Date dateMax(elem.date, offset1);
+    elems.append(dateMax.ToShortDateAMJ(DateFormat::FORMAT_LONG, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
     // Constellation
-    elems.append(cst);
+    elems.append(elem.constellation);
 
     // Angle minimal
-    elems.append(QString("%1").arg(angMin * MATHS::RAD2DEG, 5, 'f', 2));
+    elems.append(QString("%1").arg(elem.angle * MATHS::RAD2DEG, 5, 'f', 2));
 
     // Type, corps
-    elems.append(type);
-    elems.append(corps);
+    elems.append((elem.transit) ? tr("T", "transit") : tr("C", "conjunction"));
+    elems.append((elem.typeCorps == CorpsTransit::CORPS_SOLEIL) ? tr("S", "Sun") : tr("L", "Moon"));
 
     // Illumination
     QString illumination = tr("Lum", "Lit");
-    if (eclipse) {
+    if (elem.eclipse) {
         illumination = tr("Omb", "Shadow");
     }
 
-    if (penombre) {
+    if (elem.penombre) {
         illumination = tr("Pen", "Penumbra");
     }
 
     elems.append(illumination);
 
     // Duree du transit ou de la conjonction
-    elems.append(QString("%1").arg(duree, 4, 'f', 1));
+    elems.append(QString("%1").arg(elem.duree, 4, 'f', 1));
 
     // Hauteur maximale du Soleil
-    elems.append(Maths::ToSexagesimal(htSolMax, AngleFormatType::DEGRE, 2, 0, true, false));
+    elems.append(Maths::ToSexagesimal(elem.hauteurSoleil, AngleFormatType::DEGRE, 2, 0, true, false));
 
     /* Retour */
     return elems;
@@ -1567,6 +1111,504 @@ QStringList AfficherResultats::ElementsDetailsTransits(const ResultatPrevisions 
 
     /* Retour */
     return elems;
+}
+
+void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_typeCalcul != TypeCalcul::EVENEMENTS) {
+
+        int j = 0;
+        int m = 0;
+        const QList<ResultatPrevisions> list = _ui->resultatsPrevisions->item(item->row(), 0)->data(Qt::UserRole).value<QList<ResultatPrevisions> > ();
+
+        if (_tableDetail != nullptr) {
+            delete _tableDetail;
+            _tableDetail = nullptr;
+        }
+
+        _tableDetail = new QTableWidget;
+
+        switch (_typeCalcul) {
+
+        case TypeCalcul::PREVISIONS:
+            _tableDetail->setColumnCount(12);
+            _tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date", "Date and hour")
+                                                    << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
+                                                    << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
+                                                    << tr("Const", "Constellation") << tr("Magn", "Magnitude")
+                                                    << tr("Altitude", "Altitude of satellite") << tr("Distance") << tr("Az Soleil", "Solar azimuth")
+                                                    << tr("Haut Soleil", "Solar elevation"));
+            break;
+
+        case TypeCalcul::FLASHS:
+            _tableDetail->setColumnCount(18);
+            _tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date", "Date and hour")
+                                                    << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
+                                                    << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
+                                                    << tr("Const", "Constellation") << tr("Ang", "Angle") << tr("Mir", "Mirror")
+                                                    << tr("Magn", "Magnitude") << tr("Altitude", "Altitude of satellite") << tr("Dist", "Range")
+                                                    << tr("Az Soleil", "Solar azimuth") << tr("Haut Soleil", "Solar elevation")
+                                                    << tr("Long Max", "Longitude of the maximum") << tr("Lat Max", "Latitude of the maximum")
+                                                    << tr("Magn Max", "Magnitude at the maximum") << tr("Distance"));
+            break;
+
+        case TypeCalcul::TRANSITS:
+            _tableDetail->setColumnCount(19);
+            _tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date", "Date and hour")
+                                                    << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
+                                                    << tr("AD Sat", "Satellite right ascension") << tr("Decl Sat", "Satellite declination")
+                                                    << tr("Cst", "Constellation") << tr("Ang", "Angle") << tr("Type", "Transit or conjunction")
+                                                    << tr("Corps") << tr("Ill", "Illumination") << tr("Durée") << tr("Alt", "Altitude of satellite")
+                                                    << tr("Dist", "Range") << tr("Az Soleil", "Solar azimuth") << tr("Haut Soleil", "Solar elevation")
+                                                    << tr("Long Max", "Longitude of the maximum") << tr("Lat Max", "Latitude of the maximum")
+                                                    << tr("Distance"));
+            break;
+
+        case TypeCalcul::TELESCOPE:
+        case TypeCalcul::EVENEMENTS:
+        default:
+            break;
+        }
+
+        _tableDetail->setSelectionMode(QTableWidget::NoSelection);
+        _tableDetail->setCornerButtonEnabled(false);
+        _tableDetail->verticalHeader()->setVisible(false);
+
+        _tableDetail->horizontalHeader()->setToolTip("");
+        _tableDetail->horizontalHeaderItem(2)->setToolTip(tr("Azimut satellite"));
+        _tableDetail->horizontalHeaderItem(3)->setToolTip(tr("Hauteur satellite"));
+        _tableDetail->horizontalHeaderItem(4)->setToolTip(tr("Ascension droite satellite"));
+        _tableDetail->horizontalHeaderItem(5)->setToolTip(tr("Déclinaison satellite"));
+        _tableDetail->horizontalHeaderItem(6)->setToolTip(tr("Constellation"));
+
+        switch (_typeCalcul) {
+
+        case TypeCalcul::PREVISIONS:
+            _tableDetail->horizontalHeaderItem(7)->setToolTip(tr("Magnitude"));
+            _tableDetail->horizontalHeaderItem(10)->setToolTip(tr("Azimut Soleil"));
+            _tableDetail->horizontalHeaderItem(11)->setToolTip(tr("Hauteur Soleil"));
+            break;
+
+        case TypeCalcul::FLASHS:
+            _tableDetail->horizontalHeaderItem(7)->setToolTip(tr("Angle"));
+            _tableDetail->horizontalHeaderItem(8)->setToolTip(tr("Miroir"));
+            _tableDetail->horizontalHeaderItem(9)->setToolTip(tr("Magnitude"));
+            _tableDetail->horizontalHeaderItem(11)->setToolTip(tr("Distance"));
+            _tableDetail->horizontalHeaderItem(12)->setToolTip(tr("Azimut Soleil"));
+            _tableDetail->horizontalHeaderItem(13)->setToolTip(tr("Hauteur Soleil"));
+            _tableDetail->horizontalHeaderItem(14)->setToolTip(tr("Longitude du maximum"));
+            _tableDetail->horizontalHeaderItem(15)->setToolTip(tr("Latitude du maximum"));
+            _tableDetail->horizontalHeaderItem(16)->setToolTip(tr("Magnitude au maximum"));
+            _tableDetail->horizontalHeaderItem(17)->setToolTip(tr("Distance au maximum"));
+            break;
+
+        case TypeCalcul::TRANSITS:
+            _tableDetail->horizontalHeaderItem(7)->setToolTip(tr("Angle"));
+            _tableDetail->horizontalHeaderItem(10)->setToolTip(tr("Illumination"));
+            _tableDetail->horizontalHeaderItem(11)->setToolTip(tr("secondes"));
+            _tableDetail->horizontalHeaderItem(12)->setToolTip(tr("Altitude", "Altitude of satellite"));
+            _tableDetail->horizontalHeaderItem(13)->setToolTip(tr("Distance"));
+            _tableDetail->horizontalHeaderItem(14)->setToolTip(tr("Azimut Soleil"));
+            _tableDetail->horizontalHeaderItem(15)->setToolTip(tr("Hauteur Soleil"));
+            _tableDetail->horizontalHeaderItem(16)->setToolTip(tr("Longitude du maximum"));
+            _tableDetail->horizontalHeaderItem(17)->setToolTip(tr("Latitude du maximum"));
+            _tableDetail->horizontalHeaderItem(18)->setToolTip(tr("Distance au maximum"));
+            break;
+
+        case TypeCalcul::EVENEMENTS:
+        case TypeCalcul::TELESCOPE:
+        default:
+            break;
+        }
+
+        int kmax;
+        QStringList elems;
+        QTableWidgetItem * itm;
+        QListIterator it(list);
+        while (it.hasNext()) {
+
+            elems.clear();
+            const ResultatPrevisions res = it.next();
+
+            switch (_typeCalcul) {
+            case TypeCalcul::PREVISIONS:
+                elems = ElementsDetailsPrevisions(res);
+                break;
+
+            case TypeCalcul::FLASHS:
+                elems = ElementsDetailsFlashs(res);
+                break;
+
+            case TypeCalcul::TRANSITS:
+                if ((j > 0) && (j < 4)) {
+                    elems = ElementsDetailsTransits(res);
+                }
+                break;
+
+            case TypeCalcul::TELESCOPE:
+            case TypeCalcul::EVENEMENTS:
+            default:
+                break;
+            }
+
+            // Ajout d'une ligne dans le tableau de resultats
+            if (!elems.isEmpty()) {
+
+                _tableDetail->insertRow(m);
+                _tableDetail->setRowHeight(m, 16);
+
+                kmax = static_cast<int> (elems.count());
+                if ((_typeCalcul == TypeCalcul::FLASHS) && (j != 1)) {
+                    kmax = static_cast<int> (elems.count() - 4);
+                }
+
+                for(int k=0; k<kmax; k++) {
+
+                    // Remplissage des elements d'une ligne
+                    itm = new QTableWidgetItem(elems.at(k).trimmed());
+                    itm->setTextAlignment(Qt::AlignCenter);
+                    itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
+
+                    if ((k == 0) && (_typeCalcul != TypeCalcul::TRANSITS)) {
+                        itm->setToolTip(elems.at(0));
+                    }
+
+                    _tableDetail->setItem(m, k, itm);
+                    _tableDetail->resizeColumnToContents(k);
+                }
+                m++;
+            }
+
+            j++;
+        }
+
+        _tableDetail->setSelectionMode(QTableWidget::SingleSelection);
+        _tableDetail->setSelectionBehavior(QTableWidget::SelectRows);
+        _tableDetail->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+
+        if (_afficherDetail != nullptr) {
+            delete _afficherDetail;
+            _afficherDetail = nullptr;
+        }
+
+        _afficherDetail = new QMainWindow;
+        _afficherDetail->setStyleSheet("QHeaderView::section {" \
+                                       "background-color:rgb(235, 235, 235);" \
+                                       "border-top: 0px solid grey;" \
+                                       "border-bottom: 1px solid grey;" \
+                                       "border-right: 1px solid grey;" \
+                                       "font-size: 12px;" \
+                                       "font-weight: 600 }");
+
+        switch (_typeCalcul) {
+
+        case TypeCalcul::PREVISIONS:
+            _afficherDetail->setWindowTitle(tr("Détail du passage"));
+            break;
+
+        case TypeCalcul::FLASHS:
+            _afficherDetail->setWindowTitle(tr("Détail du flash"));
+            break;
+
+        case TypeCalcul::TRANSITS:
+            _afficherDetail->setWindowTitle(tr("Détail du transit ou conjonction"));
+            break;
+
+        case TypeCalcul::TELESCOPE:
+        case TypeCalcul::EVENEMENTS:
+        default:
+            break;
+        }
+
+        _afficherDetail->setCentralWidget(_tableDetail);
+#if defined (Q_OS_LINUX)
+        const int lrg = 5;
+#else
+        const int lrg = 2;
+#endif
+
+        _tableDetail->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        _tableDetail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        _tableDetail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        _tableDetail->resizeColumnsToContents();
+
+        _tableDetail->setFixedSize(_tableDetail->horizontalHeader()->length() + _tableDetail->verticalHeader()->width() + lrg,
+                                   _tableDetail->verticalHeader()->length() + _tableDetail->horizontalHeader()->height() + lrg);
+
+        _afficherDetail->setFixedSize(_tableDetail->size());
+        _afficherDetail->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, _afficherDetail->size(), geometry()));
+        _afficherDetail->show();
+    }
+
+    /* Retour */
+    return;
+}
+
+void AfficherResultats::on_actionEnregistrer_triggered()
+{
+    /* Declarations des variables locales */
+    QScreen *fenetre = QGuiApplication::primaryScreen();
+
+    /* Initialisations */
+    const QPixmap image = fenetre->grabWindow(_ui->centralwidget->winId());
+    const QString nomFicDefaut = Configuration::instance()->dirOut() + QDir::separator() +
+                                 _conditions.ficRes.split(QDir::separator()).last().remove(".txt");
+
+    /* Corps de la methode */
+    const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), nomFicDefaut,
+                                                     tr("Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;" \
+                                                        "Tous les fichiers (*)"));
+
+    if (!fic.isEmpty()) {
+        image.save(fic);
+        const QFileInfo fi(fic);
+        settings.setValue("fichier/sauvegarde", fi.absolutePath());
+    }
+
+    /* Retour */
+    return;
+}
+
+void AfficherResultats::on_actionEnregistrerTxt_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+#if (BUILD_TEST == true)
+    const QString fic = _conditions.ficRes;
+#else
+    QString fic;
+    if (_afficherEvt) {
+        fic = _conditions.ficRes;
+        _afficherEvt = false;
+    } else {
+        const QString nomFicDefaut = _conditions.ficRes.split(QDir::separator()).last();
+        fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), Configuration::instance()->dirOut() + QDir::separator() +
+                                           nomFicDefaut, tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+    }
+#endif
+
+    if (!fic.isEmpty()) {
+
+        QFile fichier(_conditions.ficRes);
+        if (fichier.exists()) {
+            fichier.remove();
+        }
+
+        // Ecriture de l'entete du fichier de resultat
+        EcrireEntete();
+
+        // Ouverture du fichier de resultat
+        if (fichier.open(QIODevice::Append | QIODevice::Text)) {
+
+            QTextStream flux(&fichier);
+            flux.setEncoding(QStringConverter::System);
+
+            bool ecr = true;
+            int i;
+            int kmin;
+            int kmax;
+            QString ligne;
+            QString nomsat;
+            QStringList evts;
+            QStringList flashs;
+            QStringList elems;
+
+            QMapIterator it1(_resultats);
+            while (it1.hasNext()) {
+                it1.next();
+
+                // Nom du satellite
+                nomsat = it1.value().at(0).at(0).nom;
+                if (nomsat.contains("R/B") || nomsat.contains(" DEB")) {
+                    nomsat += "  " + tr("(numéro NORAD : %1)").arg(it1.key().split(" ").last());
+                }
+
+                // Description des colonnes
+                switch (_typeCalcul) {
+
+                case TypeCalcul::PREVISIONS:
+                    flux << nomsat << Qt::endl;
+                    flux << tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  " \
+                               "Haut Soleil",
+                               "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
+                               "Constellation, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation")
+                         << Qt::endl;
+                    break;
+
+                case TypeCalcul::FLASHS:
+                    if (ecr) {
+                        flux << tr("Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang   Mir Magn       " \
+                                   "Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance",
+                                   "Satellite, Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
+                                   "Constellation, Angle, Mirror, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation, " \
+                                   "Longitude of the maximum, Latitude of the maximum, Magnitude at the maximum, Range from the maximum")
+                             << Qt::endl;
+                        ecr = false;
+                    }
+                    break;
+
+                case TypeCalcul::TRANSITS:
+                    flux << nomsat << Qt::endl;
+                    flux << tr("   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps " \
+                               "Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance",
+                               "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
+                               "Constellation, Angle, Type, Body, Illumination, Duration, Altitude of satellite, Range, Solar azimuth, " \
+                               "Solar elevation, Longitude of the maximum, Latitude of the maximum, Range from the maximum")
+                         << Qt::endl;
+                    break;
+
+                case TypeCalcul::EVENEMENTS:
+                    flux << nomsat << Qt::endl;
+                    flux << tr("   Date      Heure     PSO    Longitude  Latitude  Évènements",
+                               "Date, Hour, In orbit position, Longitude, Latitude, Events") << Qt::endl;
+                    break;
+
+                case TypeCalcul::TELESCOPE:
+                default:
+                    break;
+                }
+
+                QListIterator it2(it1.value());
+                while (it2.hasNext()) {
+
+                    i = 0;
+                    evts.clear();
+                    QListIterator it3(it2.next());
+                    while (it3.hasNext()) {
+
+                        kmin = 1;
+                        elems.clear();
+                        const ResultatPrevisions res = it3.next();
+
+                        switch (_typeCalcul) {
+                        case TypeCalcul::PREVISIONS:
+                            elems = ElementsDetailsPrevisions(res);
+                            break;
+
+                        case TypeCalcul::FLASHS:
+                            kmin = 0;
+                            elems = ElementsDetailsFlashs(res);
+                            break;
+
+                        case TypeCalcul::TRANSITS:
+                            if ((i > 0) && (i < 4)) {
+                                elems = ElementsDetailsTransits(res);
+                            }
+                            break;
+
+                        case TypeCalcul::EVENEMENTS:
+                            elems = ElementsDetailsEvenements(res);
+                            break;
+
+                        case TypeCalcul::TELESCOPE:
+                        default:
+                            break;
+                        }
+
+                        if (!elems.isEmpty()) {
+
+                            kmax = static_cast<int> (elems.count());
+                            if ((_typeCalcul == TypeCalcul::FLASHS) && (i != 1)) {
+                                kmax = static_cast<int> (elems.count() - 4);
+                            }
+
+                            ligne = "";
+                            for(int k=kmin; k<kmax; k++) {
+                                if (_typeCalcul == TypeCalcul::EVENEMENTS) {
+                                    ligne += elems.at(k).trimmed() + "  ";
+                                } else if (_conditions.chrono && (_typeCalcul == TypeCalcul::FLASHS)) {
+
+                                    if (k < 2) {
+                                        ligne += elems.at(1 - k) + " ";
+                                    } else {
+                                        ligne += elems.at(k) + " ";
+                                    }
+
+                                } else {
+                                    if (elems.at(k).isEmpty()) {
+                                        ligne += "      ";
+                                    } else {
+                                        ligne += elems.at(k) + " ";
+                                    }
+                                }
+                            }
+
+                            if (_typeCalcul == TypeCalcul::EVENEMENTS) {
+                                evts.append(ligne);
+                            } else if (_typeCalcul == TypeCalcul::FLASHS) {
+                                flashs.append(ligne);
+                            } else {
+                                flux << ligne.trimmed() << Qt::endl;
+                            }
+                        }
+                        i++;
+                    }
+
+                    if (_typeCalcul == TypeCalcul::EVENEMENTS) {
+
+                        evts.sort();
+                        QStringListIterator it4(evts);
+                        while (it4.hasNext()) {
+                            flux << it4.next().trimmed() << Qt::endl;
+                        }
+                    }
+
+                    if (_typeCalcul != TypeCalcul::FLASHS) {
+                        flux << Qt::endl;
+                    }
+                }
+            }
+
+            if (_typeCalcul == TypeCalcul::FLASHS) {
+
+                if (_conditions.chrono) {
+                    flashs.sort();
+                }
+
+                unsigned int cr = 0;
+                QStringListIterator it4(flashs);
+                while (it4.hasNext()) {
+
+                    const QString lg = it4.next().trimmed();
+
+                    if (_conditions.chrono) {
+                        flux << lg.mid(23, 11) << lg.mid(0, 23) << lg.mid(34) << Qt::endl;
+                    } else {
+                        flux << lg << Qt::endl;
+                    }
+
+                    if ((cr % 3) == 2) {
+                        flux << Qt::endl;
+                    }
+                    cr++;
+                }
+            }
+
+#if (BUILD_TEST == false)
+            flux << Qt::endl << tr("Temps écoulé : %1s").arg(1.e-3 * static_cast<double> (_donnees.tempsEcoule), 0, 'f', 2) << Qt::endl;
+#endif
+        }
+        fichier.close();
+
+#if (BUILD_TEST == false)
+        QFile fi2(fic);
+        if (fi2.exists() && (fic != _conditions.ficRes)) {
+            fi2.remove();
+        }
+        fichier.copy(fi2.fileName());
+#endif
+    }
+
+    /* Retour */
+    return;
 }
 
 void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
@@ -1673,7 +1715,6 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
     /* Retour */
     return;
 }
-
 
 void AfficherResultats::on_afficherCarte_clicked()
 {

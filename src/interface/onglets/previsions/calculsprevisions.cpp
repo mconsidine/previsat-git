@@ -426,15 +426,13 @@ void CalculsPrevisions::on_calculsPrev_clicked()
 
         // Cas ou la date finale precede la date initiale : on intervertit les dates
         if (conditions.jj1 > conditions.jj2) {
-            const double tmp = conditions.jj2;
-            conditions.jj2 = conditions.jj1;
-            conditions.jj1 = tmp;
+            qSwap(conditions.jj1, conditions.jj2);
         }
 
         conditions.offset = offset1;
 
         // Systeme horaire
-        conditions.systeme = settings.value("affichage/syst24h").toBool();
+        conditions.systeme = settings.value("affichage/systemeHoraire").toBool();
 
         // Pas de generation
         conditions.pas = _ui->pasGeneration->currentText().split(QRegularExpression("[^0-9]+")).first().toDouble();

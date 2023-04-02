@@ -36,7 +36,7 @@
  * >    15 aout 2020
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    2 avril 2023
  *
  */
 
@@ -95,6 +95,7 @@ struct ConditionsPrevisions
 
 
     // Pour les flashs
+    bool chrono;
     double angleLimite;
 
     // Pour les transits

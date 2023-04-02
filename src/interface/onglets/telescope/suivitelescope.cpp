@@ -269,7 +269,7 @@ void SuiviTelescope::CalculAos()
     /* Corps de la methode */
     try {
 
-        const bool systeme = settings.value("affichage/syst24h").toBool();
+        const bool systeme = settings.value("affichage/systemeHoraire").toBool();
 
         Date dateCalcul(*_date, _date->offsetUTC());
         Observateur obs = Configuration::instance()->observateurs().at(_ui->lieuxObservation->currentIndex());
@@ -566,6 +566,9 @@ void SuiviTelescope::AjusterDates(const QDateTime &date1, const QDateTime &date2
     _dateLosSuivi = new Date(date2.date().year(), date2.date().month(), date2.date().day(), date2.time().hour(), date2.time().minute(),
                              date2.time().second(), 0.);
 
+    _ui->genererPositions->setDefault(true);
+    _ui->afficherSuivi->setEnabled(false);
+
     /* Retour */
     return;
 }
@@ -591,27 +594,22 @@ void SuiviTelescope::on_genererPositions_clicked()
     /* Corps de la methode */
     try {
 
-        // TODO
         if (_ui->listeTelescope->count() == 0) {
             throw PreviSatException();
         }
 
-        QStringList satelliteSelectionne;
+        // Elements orbitaux
+        QMap<QString, ElementsOrbitaux> mapElem;
         for(int i=0; i<_ui->listeTelescope->count(); i++) {
             if (_ui->listeTelescope->item(i)->checkState() == Qt::Checked) {
-                satelliteSelectionne.append(_ui->listeTelescope->item(i)->data(Qt::UserRole).toString());
+                const QString norad = _ui->listeTelescope->item(i)->data(Qt::UserRole).toString();
+                mapElem.insert(norad, Configuration::instance()->mapElementsOrbitaux()[norad]);
             }
         }
 
-        if (satelliteSelectionne.isEmpty()) {
+        if (mapElem.isEmpty()) {
             throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), MessageType::WARNING);
         }
-
-        // TODO
-        // Lecture du fichier d'elements orbitaux
-        const QMap<QString, ElementsOrbitaux> tabElem =
-                GPFormat::LectureFichier(Configuration::instance()->nomfic(), Configuration::instance()->donneesSatellites(),
-                                         Configuration::instance()->lgRec(), satelliteSelectionne);
 
         // Calcul de l'intervalle de temps lorsque le satellite est au-dessus de l'horizon
         const Date date(*_date, _date->offsetUTC());
@@ -619,7 +617,7 @@ void SuiviTelescope::on_genererPositions_clicked()
 
         obs.CalculPosVit(date);
 
-        Satellite satSuivi(tabElem[satelliteSelectionne.first()]);
+        Satellite satSuivi(mapElem.first());
         satSuivi.CalculPosVit(date);
         satSuivi.CalculCoordHoriz(obs);
         satSuivi.CalculElementsOsculateurs(date);
@@ -660,14 +658,13 @@ void SuiviTelescope::on_genererPositions_clicked()
             const QString ficOut = fmtFicOut.arg(date1.annee()).arg(date1.mois(), 2, 10, QChar('0')).arg(date1.jour(), 2, 10, QChar('0'))
                     .arg(date1.heure(), 2, 10, QChar('0')).arg(date1.minutes(), 2, 10, QChar('0'))
                     .arg(date2.annee()).arg(date2.mois(), 2, 10, QChar('0')).arg(date2.jour(), 2, 10, QChar('0'))
-                    .arg(date2.heure(), 2, 10, QChar('0')).arg(date2.minutes() + 1, 2, 10, QChar('0')).arg(satelliteSelectionne.first());
+                    .arg(date2.heure(), 2, 10, QChar('0')).arg(date2.minutes() + 1, 2, 10, QChar('0')).arg(mapElem.first().norad);
 
             ConditionsPrevisions conditions;
             conditions.observateur = obs;
-            conditions.listeSatellites = satelliteSelectionne;
             conditions.pas = _ui->pasSuivi->value();
             conditions.nbIter = nbIter;
-            conditions.fichier = Configuration::instance()->nomfic();
+            conditions.tabElem = mapElem;
             conditions.ficRes = Configuration::instance()->dirOut() + QDir::separator() + ficOut;
             conditions.jj1 = date1.jourJulienUTC();
 

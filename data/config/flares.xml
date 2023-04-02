@@ -2,7 +2,7 @@
 <PreviSatFlashs version="1.0">
     <Satellite>
         <Nom>MetOp-B</Nom>
-        <Norad>38771</Norad>
+        <Norad>038771</Norad>
         <Angles>
             <Yaw>315</Yaw>
             <Pitch>-47.6</Pitch>
@@ -18,7 +18,7 @@
     </Satellite>
     <Satellite>
         <Nom>MetOp-C</Nom>
-        <Norad>43689</Norad>
+        <Norad>043689</Norad>
         <Angles>
             <Yaw>315</Yaw>
             <Pitch>-47.6</Pitch>
@@ -34,7 +34,7 @@
     </Satellite>
     <Satellite>
         <Nom>SkyMed1</Nom>
-        <Norad>31598</Norad>
+        <Norad>031598</Norad>
         <Angles>
             <Yaw>90</Yaw>
             <Pitch>-55.935</Pitch>
@@ -42,7 +42,7 @@
     </Satellite>
     <Satellite>
         <Nom>SkyMed2</Nom>
-        <Norad>32376</Norad>
+        <Norad>032376</Norad>
         <Angles>
             <Yaw>90</Yaw>
             <Pitch>-55.935</Pitch>
@@ -50,7 +50,7 @@
     </Satellite>
     <Satellite>
         <Nom>SkyMed3</Nom>
-        <Norad>33412</Norad>
+        <Norad>033412</Norad>
         <Angles>
             <Yaw>90</Yaw>
             <Pitch>-55.935</Pitch>
@@ -58,7 +58,7 @@
     </Satellite>
     <Satellite>
         <Nom>SkyMed4</Nom>
-        <Norad>37216</Norad>
+        <Norad>037216</Norad>
         <Angles>
             <Yaw>90</Yaw>
             <Pitch>-55.935</Pitch>
@@ -66,7 +66,7 @@
     </Satellite>
     <Satellite>
         <Nom>TerraSAR-X</Nom>
-        <Norad>31698</Norad>
+        <Norad>031698</Norad>
         <Angles>
             <Yaw>-90</Yaw>
             <Pitch>-56.2</Pitch>
@@ -74,7 +74,7 @@
     </Satellite>
     <Satellite>
         <Nom>TanDEM-X</Nom>
-        <Norad>36605</Norad>
+        <Norad>036605</Norad>
         <Angles>
             <Yaw>-90</Yaw>
             <Pitch>-56.2</Pitch>
