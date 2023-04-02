@@ -90,11 +90,12 @@ void TelescopeTest::testCalculSuiviTelescope1()
 
     // Test des satellites potentiellement visibles
     int n = 0;
-    conditions.fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
+    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
 
     const int lgrec = Configuration::instance()->lgRec();
     const QStringList listeTLE(QStringList () << "25544");
-    QMap<QString, ElementsOrbitaux> mapTLE = TLE::LectureFichier(conditions.fichier, Configuration::instance()->donneesSatellites(), lgrec, listeTLE);
+    QMap<QString, ElementsOrbitaux> mapTLE = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), lgrec, listeTLE);
+    conditions.tabElem = mapTLE;
 
     Satellite sat(mapTLE.first());
 
