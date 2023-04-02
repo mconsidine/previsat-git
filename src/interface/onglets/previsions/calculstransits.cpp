@@ -450,15 +450,13 @@ void CalculsTransits::on_calculsTransit_clicked()
 
         // Cas ou la date finale precede la date initiale : on intervertit les dates
         if (conditions.jj1 > conditions.jj2) {
-            const double tmp = conditions.jj2;
-            conditions.jj2 = conditions.jj1;
-            conditions.jj1 = tmp;
+            qSwap(conditions.jj1, conditions.jj2);
         }
 
         conditions.offset = offset1;
 
         // Systeme horaire
-        conditions.systeme = settings.value("affichage/syst24h").toBool();
+        conditions.systeme = settings.value("affichage/systemeHoraire").toBool();
 
         // Hauteur minimale du satellite
         conditions.hauteur = MATHS::DEG2RAD * ((_ui->hauteurSatTransit->currentIndex() == 5) ?

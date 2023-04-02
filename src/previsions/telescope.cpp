@@ -30,7 +30,7 @@
  * >    4 octobre 2020
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    2 avril 2023
  *
  */
 
@@ -92,20 +92,12 @@ int Telescope::CalculSuiviTelescope(int &nombre)
 
         if (fi.isWritable()) {
 
-            QMap<QString, ElementsOrbitaux> tabElem;
             const QString fmt = "%1,%2,%3,%4";
             double jjmsec = floor(_conditions.jj1 * DATE::NB_MILLISEC_PAR_JOUR + _conditions.pas);
             Date date(jjmsec * DATE::NB_JOUR_PAR_MILLISEC, 0.);
 
-            // Creation de la liste d'elements orbitaux
-            const QFileInfo ff(_conditions.fichier);
-            if (ff.suffix() == "xml") {
-                tabElem = GPFormat::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(),
-                                                   Configuration::instance()->lgRec(), _conditions.listeSatellites);
-            } else {
-                tabElem = TLE::LectureFichier(_conditions.fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
-                                              _conditions.listeSatellites);
-            }
+            // Elements orbitaux
+            const QMap<QString, ElementsOrbitaux> tabElem = _conditions.tabElem;
 
             // Satellite
             Satellite sat(tabElem.first());

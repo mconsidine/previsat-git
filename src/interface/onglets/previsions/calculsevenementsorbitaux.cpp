@@ -390,15 +390,13 @@ void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
 
         // Cas ou la date finale precede la date initiale : on intervertit les dates
         if (conditions.jj1 > conditions.jj2) {
-            const double tmp = conditions.jj2;
-            conditions.jj2 = conditions.jj1;
-            conditions.jj1 = tmp;
+            qSwap(conditions.jj1, conditions.jj2);
         }
 
         conditions.offset = offset1;
 
         // Systeme horaire
-        conditions.systeme = settings.value("affichage/syst24h").toBool();
+        conditions.systeme = settings.value("affichage/systemeHoraire").toBool();
 
         // Unites de longueur
         conditions.unite = (settings.value("affichage/unite").toBool()) ? tr("km", "kilometer") : tr("nmi", "nautical mile");
@@ -414,6 +412,13 @@ void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
                 conditions.tabElem.insert(norad, Configuration::instance()->mapElementsOrbitaux()[norad]);
             }
         }
+
+        // Types d'evenements
+        conditions.passageNoeuds = _ui->passageNoeuds->isChecked();
+        conditions.passageOmbre = _ui->passageOmbre->isChecked();
+        conditions.passagePso = _ui->passageQuadrangles->isChecked();
+        conditions.passageApogee = _ui->passageApogee->isChecked();
+        conditions.transitionsJourNuit = _ui->transitionJourNuit->isChecked();
 
         qInfo() << "--";
         qInfo() << "Calcul des évènements orbitaux :";

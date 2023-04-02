@@ -545,7 +545,8 @@ QMap<QString, QList<EphemeridesEvenements> > EvenementsOrbitaux::CalculEphemerid
 /*
  * Calcul des elements de l'evenement orbital
  */
-ResultatPrevisions EvenementsOrbitaux::CalculEvt(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, const std::array<double, MATHS::DEGRE_INTERPOLATION> &evt,
+ResultatPrevisions EvenementsOrbitaux::CalculEvt(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm,
+                                                 const std::array<double, MATHS::DEGRE_INTERPOLATION> &evt,
                                                  const double yval, Satellite &sat)
 {
     /* Declarations des variables locales */

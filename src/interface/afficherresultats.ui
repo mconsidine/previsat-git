@@ -207,7 +207,7 @@
   <action name="actionEnregistrerTxt">
    <property name="icon">
     <iconset resource="../../resources.qrc">
-     <normaloff>:/resources/enregistrer_txt.png</normaloff>:/resources/enregistrer_txt.png</iconset>
+     <normaloff>:/resources/interface/enregistrer_txt.png</normaloff>:/resources/interface/enregistrer_txt.png</iconset>
    </property>
    <property name="text">
     <string>Enregistrer fichier texte</string>

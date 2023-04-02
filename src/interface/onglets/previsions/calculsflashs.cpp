@@ -337,15 +337,13 @@ void CalculsFlashs::on_calculsFlashs_clicked()
 
         // Cas ou la date finale precede la date initiale : on intervertit les dates
         if (conditions.jj1 > conditions.jj2) {
-            const double tmp = conditions.jj2;
-            conditions.jj2 = conditions.jj1;
-            conditions.jj1 = tmp;
+            qSwap(conditions.jj1, conditions.jj2);
         }
 
         conditions.offset = offset1;
 
         // Systeme horaire
-        conditions.systeme = settings.value("affichage/syst24h").toBool();
+        conditions.systeme = settings.value("affichage/systemeHoraire").toBool();
 
         // Lieu d'observation
         conditions.observateur = Configuration::instance()->observateurs().at(_ui->lieuxObservation->currentIndex());
@@ -373,6 +371,9 @@ void CalculsFlashs::on_calculsFlashs_clicked()
         } else {
         }
 
+        // Tri par ordre chronologique
+        conditions.chrono = _ui->ordreChronologiqueMetOp->isChecked();
+
         // Prise en compte de l'extinction atmospherique
         conditions.extinction = settings.value("affichage/extinctionAtmospherique").toBool();
 
@@ -388,7 +389,7 @@ void CalculsFlashs::on_calculsFlashs_clicked()
         // Liste des satellites pouvant produire des flashs
         QStringList listeSatellites = Configuration::instance()->mapFlashs().keys();
 
-        // Lecture du fichier TLE
+        // Lecture du fichier d'elements orbitaux
         QMap<QString, ElementsOrbitaux> tabElem = GPFormat::LectureFichier(fichier, Configuration::instance()->donneesSatellites(),
                                                                            Configuration::instance()->lgRec(), listeSatellites);
 
@@ -401,7 +402,7 @@ void CalculsFlashs::on_calculsFlashs_clicked()
             }
         }
 
-        // Il n'y a aucun satellite produisant des flashs dans le fichier TLE
+        // Il n'y a aucun satellite produisant des flashs dans le fichier d'elements orbitaux
         if (listeSatellites.size() == 0) {
             qWarning() << "Aucun satellite produisant des flashs n'a été trouvé dans le fichier d'éléments orbitaux";
             throw PreviSatException(tr("Aucun satellite produisant des flashs n'a été trouvé dans le fichier d'éléments orbitaux"), MessageType::WARNING);

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    2 avril 2023
  *
  */
 
@@ -165,8 +165,8 @@ int Prevision::CalculPrevisions(int &nombre)
         resultatSat.clear();
         sat = it2.next();
 
-        const double perigee = TERRE::RAYON_TERRESTRE * pow(TERRE::KE * DATE::NB_MIN_PAR_JOUR / (MATHS::DEUX_PI * sat.elementsOrbitaux().no), MATHS::DEUX_TIERS) *
-                (1. - sat.elementsOrbitaux().ecco);
+        const double perigee = TERRE::RAYON_TERRESTRE * pow(TERRE::KE * DATE::NB_MIN_PAR_JOUR / (MATHS::DEUX_PI * sat.elementsOrbitaux().no),
+                                                            MATHS::DEUX_TIERS) * (1. - sat.elementsOrbitaux().ecco);
         const double periode = DATE::NB_JOUR_PAR_MIN * (floor(TERRE::KE * pow(MATHS::DEUX_PI * perigee, MATHS::DEUX_TIERS)) - 16.);
 
         // Boucle sur le tableau d'ephemerides
@@ -208,8 +208,8 @@ int Prevision::CalculPrevisions(int &nombre)
 
                     // Toutes les conditions sont remplies
                     if (magnitude.magnitude() < _conditions.magnitudeLimite ||
-                            ((sat.elementsOrbitaux().donnees.magnitudeStandard() > 98.) && (_conditions.magnitudeLimite > 98.))
-                            || !_conditions.eclipse) {
+                        ((sat.elementsOrbitaux().donnees.magnitudeStandard() > 98.) && (_conditions.magnitudeLimite > 98.))
+                        || !_conditions.eclipse) {
 
                         sat.CalculCoordHoriz(obs);
                         soleil.CalculCoordHoriz(obs);
@@ -224,7 +224,7 @@ int Prevision::CalculPrevisions(int &nombre)
 
                             if ((!condEcl.eclipseTotale() ||
                                  !_conditions.eclipse) && ((magnitude.magnitude() < _conditions.magnitudeLimite) ||
-                                                           ((sat.elementsOrbitaux().donnees.magnitudeStandard() > 98.) || !_conditions.eclipse))) {
+                                    ((sat.elementsOrbitaux().donnees.magnitudeStandard() > 98.) || !_conditions.eclipse))) {
 
                                 // Nom du satellite
                                 res.nom = sat.elementsOrbitaux().nom;
