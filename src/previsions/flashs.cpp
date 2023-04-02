@@ -275,7 +275,7 @@ int Flashs::CalculFlashs(int &nombre)
 
                         } // fin if (angref <= angrefMax)
 
-                        jj0 += (2. * pas);
+                        jj0 += pas;
                         const Date date0(jj0, 0., false);
 
                         _conditions.observateur.CalculPosVit(date0);

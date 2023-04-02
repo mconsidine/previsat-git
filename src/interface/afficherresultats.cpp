@@ -526,6 +526,7 @@ void AfficherResultats::ChargementResultats()
                         _ui->resultatsPrevisions->resizeColumnToContents(k);
                     }
                 }
+
                 j++;
             }
         }
@@ -539,7 +540,10 @@ void AfficherResultats::ChargementResultats()
                                             "font-size: 12px;" \
                                             "font-weight: 600 }");
 
-    _ui->resultatsPrevisions->setColumnWidth(0, 140);
+    if (_typeCalcul == TypeCalcul::TRANSITS) {
+        _ui->resultatsPrevisions->setColumnWidth(0, 140);
+    }
+
     _ui->resultatsPrevisions->horizontalHeader()->setStretchLastSection(true);
     if (_typeCalcul != TypeCalcul::EVENEMENTS) {
         _ui->resultatsPrevisions->setToolTip(tr("Double-cliquez sur une ligne pour afficher plus de détails"));
@@ -547,8 +551,23 @@ void AfficherResultats::ChargementResultats()
 
     _ui->resultatsPrevisions->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     _ui->resultatsPrevisions->setAlternatingRowColors(true);
-    if (_conditions.chrono && (_typeCalcul == TypeCalcul::FLASHS)) {
-        _ui->resultatsPrevisions->sortItems(1);
+
+    if (_typeCalcul == TypeCalcul::FLASHS) {
+
+        if (_conditions.chrono) {
+            _ui->resultatsPrevisions->sortItems(1);
+        }
+
+        int i = 0;
+        while (i < _ui->resultatsPrevisions->rowCount()) {
+
+            const auto list = _ui->resultatsPrevisions->findItems(_ui->resultatsPrevisions->item(i, 1)->text(), Qt::MatchCaseSensitive);
+            if (list.size() > 1) {
+                _ui->resultatsPrevisions->removeRow(i);
+            } else {
+                i++;
+            }
+        }
     }
 
     _ui->resultatsPrevisions->blockSignals(etat);
