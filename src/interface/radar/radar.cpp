@@ -463,6 +463,7 @@ void Radar::show()
                     traces.append(poly);
                     couleurs.append(couleurActuel);
                     poly.clear();
+                    poly.append(traces.last().last());
                 }
 
                 poly.append(ptActuel);
