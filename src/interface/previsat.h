@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 mars 2023
+ * >    6 avril 2023
  *
  */
 
@@ -61,6 +61,7 @@ class QLabel;
 class QListWidgetItem;
 class Carte;
 class Ciel;
+class CoordISS;
 class Date;
 class Informations;
 class Onglets;
@@ -163,7 +164,9 @@ private:
 
     Carte *_carte;
     Ciel *_ciel;
+    CoordISS *_coordISS;
     Onglets *_onglets;
+    QLabel *_gmt;
     Radar *_radar;
     Informations *_informations;
     Options *_options;
@@ -290,6 +293,11 @@ private:
 private slots:
 
     /**
+     * @brief AfficherCoordIssGmt Afficher les coordonnees ISS et le label GMT
+     */
+    void AfficherCoordIssGmt();
+
+    /**
      * @brief AfficherListeSatellites Afficher les noms des satellites dans les listes
      * @param nomfic nom du fichier TLE
      * @param majListesOnglets mise a jour des listes dans les onglets
@@ -366,6 +374,13 @@ private slots:
 
     void on_tempsReel_toggled(bool checked);
     void on_modeManuel_toggled(bool checked);
+
+    void on_zoomCarte_clicked();
+    void on_changerCarte_clicked();
+
+    void on_issLive_toggled(bool checked);
+    void on_meteoBasesNasa_clicked();
+    void on_meteo_clicked();
 
     // Menu deroulant
     void on_actionImporter_fichier_TLE_GP_triggered();

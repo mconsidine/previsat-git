@@ -446,14 +446,17 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
             const QString fmt3 = tr("Sphérique. R=%1 %2", "R = radius");
             dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite1);
         }
+
         if ((fabs(t2) >= MATHS::EPSDBL100) && (fabs(t3) < MATHS::EPSDBL100)) {
             const QString fmt3 = tr("Cylindrique. L=%1 %2, R=%3 %2", "L = height, R = radius");
             dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite1).arg(t2, 0, 'f', 1);
         }
+
         if ((fabs(t2) >= MATHS::EPSDBL100) && (fabs(t3) >= MATHS::EPSDBL100)) {
             const QString fmt3 = tr("Boîte. %1 x %2 x %3 %4");
             dimensions = fmt3.arg(t1, 0, 'f', 1).arg(t2, 0, 'f', 1).arg(t3, 0, 'f', 1).arg(unite1);
         }
+
         if (fabs(t1) < MATHS::EPSDBL100) {
             dimensions = tr("Inconnues");
         }
@@ -462,6 +465,7 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
             dimensions.append(" / %1 %2");
             dimensions = dimensions.arg(section, 0, 'f', 2).arg(unite1);
             _ui->sqDonneesSat->setVisible(true);
+
         } else {
             _ui->sqDonneesSat->setVisible(false);
         }
@@ -542,46 +546,53 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
 
         // Recherche des fichiers d'elements orbitaux dans lesquels le satellite est present
         _ui->fichiersElementsOrbitaux->clear();
-        const QDir di(Configuration::instance()->dirElem());
-        const QStringList filtres(QStringList () << "*.xml" << "*.txt" << "*.tle");
-        const QStringList listeFicElem = di.entryList(filtres, QDir::Files);
-        QString fichier;
-        QMap<QString, ElementsOrbitaux> mapElem;
 
-        foreach(const QString fic, listeFicElem) {
+        for(const QString &fic : Configuration::instance()->mapFichierElemNorad().keys()) {
 
-            fichier.clear();
-            mapElem.clear();
-
-            QFileInfo ff(Configuration::instance()->dirElem() + QDir::separator() + fic);
-
-            if (ff.exists()) {
-
-                if (ff.suffix() == "xml") {
-
-                    mapElem = GPFormat::LectureFichier(ff.filePath(), Configuration::instance()->donneesSatellites(),
-                                                       Configuration::instance()->lgRec(), QStringList(), false);
-
-                    if (mapElem.contains(norad)) {
-                        fichier = ff.baseName();
-                    }
-
-                } else {
-
-                    mapElem = TLE::LectureFichier(ff.filePath(), Configuration::instance()->donneesSatellites(),
-                                                  Configuration::instance()->lgRec(), QStringList(), false);
-
-                    if (mapElem.contains(norad)) {
-                        fichier = ff.baseName() + " (TLE)";
-                    }
-                }
-            }
-
-            if (!fichier.isEmpty()) {
-                fichier[0] = fichier[0].toUpper();
-                _ui->fichiersElementsOrbitaux->addItem(fichier);
+            if (Configuration::instance()->mapFichierElemNorad()[fic].contains(norad)) {
+                _ui->fichiersElementsOrbitaux->addItem(fic);
             }
         }
+
+//        const QDir di(Configuration::instance()->dirElem());
+//        const QStringList filtres(QStringList () << "*.xml" << "*.txt" << "*.tle");
+//        const QStringList listeFicElem = di.entryList(filtres, QDir::Files);
+//        QMap<QString, ElementsOrbitaux> mapElem;
+
+//        foreach(const QString fic, listeFicElem) {
+
+//            fichier.clear();
+//            mapElem.clear();
+
+//            QFileInfo ff(Configuration::instance()->dirElem() + QDir::separator() + fic);
+
+//            if (ff.exists()) {
+
+//                if (ff.suffix() == "xml") {
+
+//                    mapElem = GPFormat::LectureFichier(ff.filePath(), Configuration::instance()->donneesSatellites(),
+//                                                       Configuration::instance()->lgRec(), QStringList(), false);
+
+//                    if (mapElem.contains(norad)) {
+//                        fichier = ff.baseName();
+//                    }
+
+//                } else {
+
+//                    mapElem = TLE::LectureFichier(ff.filePath(), Configuration::instance()->donneesSatellites(),
+//                                                  Configuration::instance()->lgRec(), QStringList(), false);
+
+//                    if (mapElem.contains(norad)) {
+//                        fichier = ff.baseName() + " (TLE)";
+//                    }
+//                }
+//            }
+
+//            if (!fichier.isEmpty()) {
+//                fichier[0] = fichier[0].toUpper();
+//                _ui->fichiersElementsOrbitaux->addItem(fichier);
+//            }
+//        }
 
         if (_ui->fichiersElementsOrbitaux->count() > 0) {
             _ui->lbl_fichiersElementsOrbitaux->setVisible(true);

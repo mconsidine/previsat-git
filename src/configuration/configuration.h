@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    9 mars 2023
+ * >    6 avril 2023
  *
  */
 
@@ -142,7 +142,7 @@ public:
     const QFont &police() const;
     const QFont &policeWcc() const;
 
-    bool isCarteMaximisee();
+    bool &isCarteMaximisee();
     bool &issLive();
 
 
@@ -199,6 +199,7 @@ public:
     const QStringList &listeFichiersElem() const;
     void AjoutSatelliteFichierElem(const QString &norad);
     void SuppressionSatelliteFichierElem(const QString &norad);
+    QMap<QString, QStringList> &mapFichierElemNorad();
 
     QList<Satellite> &listeSatellites();
 
@@ -364,6 +365,7 @@ private:
 
     // Map des satellites de tous les fichiers d'elements orbitaux
     QMap<QString, QStringList> _mapSatellitesFichierElem;
+    QMap<QString, QStringList> _mapFichierElemNorad;
 
 
     // Soleil, Lune, planetes

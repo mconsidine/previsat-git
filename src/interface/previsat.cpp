@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 mars 2023
+ * >    6 avril 2023
  *
  */
 
@@ -57,11 +57,13 @@
 #include "listwidgetitem.h"
 #include "previsat.h"
 #include "ui_carte.h"
+#include "ui_coordiss.h"
 #include "ui_general.h"
 #include "ui_onglets.h"
 #include "ui_osculateurs.h"
 #include "apropos/apropos.h"
 #include "carte/carte.h"
+#include "carte/coordiss.h"
 #include "ciel/ciel.h"
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
@@ -93,6 +95,9 @@
 // Registre
 static QSettings settings(ORG_NAME, APP_NAME);
 
+// Couleurs GMT
+static const std::array<QColor, 3> _coulGmt = { Qt::red, Qt::white, Qt::cyan };
+
 
 /**********
  * PUBLIC *
@@ -104,9 +109,9 @@ static QSettings settings(ORG_NAME, APP_NAME);
 /*
  * Constructeur par defaut
  */
-PreviSat::PreviSat(QWidget *parent)
-    : QMainWindow(parent)
-    , _ui(new Ui::PreviSat)
+PreviSat::PreviSat(QWidget *parent) :
+    QMainWindow(parent),
+    _ui(new Ui::PreviSat)
 {
     _ui->setupUi(this);
 
@@ -126,9 +131,11 @@ PreviSat::PreviSat(QWidget *parent)
  */
 PreviSat::~PreviSat()
 {
+    EFFACE_OBJET(_informations);
+    EFFACE_OBJET(_coordISS);
+    EFFACE_OBJET(_gmt);
     EFFACE_OBJET(_carte);
     EFFACE_OBJET(_ciel);
-//    EFFACE_OBJET(_informations);
     EFFACE_OBJET(_onglets);
     EFFACE_OBJET(_options);
     EFFACE_OBJET(_outils);
@@ -191,7 +198,15 @@ void PreviSat::ChargementConfiguration()
     _carte = new Carte(_ui->frameCarte);
     _ui->layoutCarte->addWidget(_carte);
 
-    _ciel = new Ciel();
+    _ciel = new Ciel(_ui->frameCarte);
+    _ui->layoutCarte->addWidget(_ciel, 0, Qt::AlignVCenter);
+    _ciel->setVisible(false);
+
+    // Coordonnees de l'ISS
+    _coordISS = new CoordISS(_carte->ui()->carte);
+    _coordISS->setVisible(false);
+    _gmt = new QLabel("", _carte->ui()->carte);
+    _gmt->setVisible(false);
 
     CreationMenus();
     CreationRaccourcis();
@@ -366,10 +381,12 @@ void PreviSat::DemarrageApplication()
     /* Corps de la methode */
     qInfo() << "Début Fonction" << __FUNCTION__;
 
+    // Initialisation du tableau d'etoiles
     if (Configuration::instance()->etoiles().isEmpty()) {
         Etoile::Initialisation(Configuration::instance()->dirCommonData(), Configuration::instance()->etoiles());
     }
 
+    // Initialisation des constellations
     if (Configuration::instance()->constellations().isEmpty()) {
         Constellation::Initialisation(Configuration::instance()->dirCommonData(), Configuration::instance()->constellations());
         LigneConstellation::Initialisation(Configuration::instance()->dirCommonData());
@@ -412,6 +429,10 @@ void PreviSat::DemarrageApplication()
 
         // Affichage de la carte du monde
         _carte->show();
+
+        if (Configuration::instance()->issLive()) {
+            AfficherCoordIssGmt();
+        }
 
     } else {
 
@@ -611,6 +632,7 @@ void PreviSat::ConnexionsSignauxSlots()
     // Connexions avec la fenetre Options
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::GestionTempsReel);
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::on_actionMode_sombre_triggered);
+    connect(_options, &Options::RecalculerPositions, _coordISS, &CoordISS::setPolice);
     connect(this, &PreviSat::AppliquerPreferences, _options, &Options::AppliquerPreferences);
 
     // Connexions avec la fenetre Outils
@@ -904,7 +926,9 @@ void PreviSat::Initialisation()
     /* Initialisations */
     _informations = nullptr;
     _carte = nullptr;
+    _coordISS = nullptr;
     _ciel = nullptr;
+    _gmt = nullptr;
     _onglets = nullptr;
     _options = nullptr;
     _outils = nullptr;
@@ -1426,6 +1450,87 @@ bool PreviSat::VerifMajVersion(const QString &fichier)
     return anew;
 }
 
+void PreviSat::AfficherCoordIssGmt()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (!Configuration::instance()->listeSatellites().isEmpty()
+        && (Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale())) {
+
+        // Coordonnees ISS
+        _coordISS->setPolice();
+        if (_options->ui()->affNbOrbWCC->isChecked() && _options->ui()->affBetaWCC->isChecked()) {
+
+            _coordISS->ui()->inclinaisonISS->move(5, 39);
+            _coordISS->ui()->nextTransitionISS->move(112, 0);
+            _coordISS->ui()->orbiteISS->move(112, 13);
+            _coordISS->ui()->orbiteISS->setVisible(true);
+            _coordISS->ui()->betaISS->move(112, 26);
+            _coordISS->ui()->betaISS->setVisible(true);
+            _coordISS->resize(223, 59);
+
+        } else {
+
+            _coordISS->ui()->inclinaisonISS->move(112, 0);
+            _coordISS->ui()->nextTransitionISS->move(112, 13);
+            _coordISS->ui()->orbiteISS->setVisible(false);
+            _coordISS->ui()->betaISS->setVisible(false);
+
+            if (_options->ui()->affNbOrbWCC->isChecked()) {
+
+                _coordISS->ui()->orbiteISS->move(112, 26);
+                _coordISS->ui()->orbiteISS->setVisible(true);
+                _coordISS->ui()->betaISS->setVisible(false);
+
+            } else if (_options->ui()->affBetaWCC->isChecked()) {
+
+                _coordISS->ui()->betaISS->move(112, 26);
+                _coordISS->ui()->betaISS->setVisible(true);
+                _coordISS->ui()->orbiteISS->setVisible(false);
+            }
+            _coordISS->resize(223, 46);
+        }
+
+        _coordISS->show(*_dateCourante, General::dateEclipse());
+        _coordISS->setVisible(true);
+
+        // GMT
+        const QString chaine = "GMT = %1/%2:%3:%4";
+        const Date date2 = Date(_dateCourante->annee(), 1, 1., 0.);
+        const double jourDsAnnee = _dateCourante->jourJulienUTC() - date2.jourJulienUTC() + 1.;
+        const int numJour = (int) jourDsAnnee;
+        const int heure = (int) floor(DATE::NB_HEUR_PAR_JOUR * (jourDsAnnee - numJour) + 0.00005);
+        const int min = _dateCourante->minutes();
+        const int sec = (int) floor(_dateCourante->secondes());
+        const QString texte =
+            chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')).arg(sec, 2, 10, QChar('0'));
+
+        QPalette coul;
+        coul.setColor(_gmt->foregroundRole(), _coulGmt[_options->ui()->coulGMT->currentIndex()]);
+
+        _gmt->setText(texte);
+        _gmt->setPalette(coul);
+
+        QFont police = Configuration::instance()->policeWcc();
+        police.setPointSize(12);
+        police.setBold(true);
+
+        _gmt->setFont(police);
+        _gmt->adjustSize();
+        _gmt->setGeometry((_carte->width() - _gmt->width()) / 2, 30, _gmt->width(), 16);
+        _gmt->show();
+
+    } else {
+        _coordISS->setVisible(false);
+    }
+
+    /* Retour */
+    return;
+}
+
 /*
  * Afficher les noms des satellites dans les listes
  */
@@ -1671,7 +1776,7 @@ void PreviSat::GestionTempsReel()
             _carte->show();
 
             if (Configuration::instance()->issLive()) {
-                //                AfficherCoordIssGmt();
+                AfficherCoordIssGmt();
             }
 
         } else {
@@ -1765,6 +1870,7 @@ void PreviSat::InitFicGP()
         qInfo() << "Début Fonction" << __FUNCTION__;
 
         QString nomfic;
+        QMap<QString, ElementsOrbitaux> mapElem;
         bool ajout = false;
         bool defaut = false;
         int idx = 0;
@@ -1783,8 +1889,7 @@ void PreviSat::InitFicGP()
             if (ff.suffix() == "xml") {
 
                 // Cas des fichiers GP
-                const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
-                                                                                         Configuration::instance()->lgRec());
+                mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
 
                 ajout = !mapElem.isEmpty();
                 nomfic = ff.baseName();
@@ -1793,6 +1898,7 @@ void PreviSat::InitFicGP()
 
                 // Cas des fichiers TLE
                 ajout = (TLE::VerifieFichier(fic) > 0);
+                mapElem = TLE::LectureFichier(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
                 nomfic = ff.baseName() + " (TLE)";
             }
 
@@ -1807,6 +1913,9 @@ void PreviSat::InitFicGP()
                     _ui->listeFichiersElem->setCurrentIndex(index);
                     _ui->listeFichiersElem->setItemData(index, QColor(Qt::gray), Qt::BackgroundRole);
                 }
+
+                Configuration::instance()->mapFichierElemNorad()[nom] = mapElem.keys();
+
             } else {
 
                 // Suppression dans la liste des fichiers qui ne sont pas des elements orbitaux
@@ -2135,6 +2244,7 @@ void PreviSat::mousePressEvent(QMouseEvent *evt)
     return;
 }
 
+
 /*
  * Boutons de l'interface graphique
  */
@@ -2191,6 +2301,142 @@ void PreviSat::on_modeManuel_toggled(bool checked)
     _ui->valManuel->setVisible(checked);
     _onglets->general()->ui()->frameSimu->setVisible(checked);
 }
+
+void PreviSat::on_zoomCarte_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (Configuration::instance()->isCarteMaximisee()) {
+
+        // Passage en affichage minimise
+        _ui->zoomCarte->setToolTip(tr("Agrandir"));
+        _ui->zoomCarte->setIcon(QIcon(":/resources/interface/maxi.png"));
+
+        _ui->frameModeListe->setVisible(true);
+        _ui->frameOngletsRadar->setVisible(true);
+
+    } else {
+
+        // Passage en affichage maximise
+        _ui->zoomCarte->setToolTip(tr("Réduire"));
+        _ui->zoomCarte->setIcon(QIcon(":/resources/interface/mini.png"));
+
+        _ui->frameModeListe->setVisible(false);
+        _ui->frameOngletsRadar->setVisible(false);
+    }
+
+    Configuration::instance()->isCarteMaximisee() = !Configuration::instance()->isCarteMaximisee();
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_changerCarte_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_isCarteMonde) {
+
+        // Passage en carte du ciel
+        _isCarteMonde = false;
+        _ui->changerCarte->setToolTip(tr("Carte du monde"));
+        _carte->setVisible(false);
+        _ciel->setVisible(true);
+
+    } else {
+
+        // Passage en carte du monde
+        _isCarteMonde = true;
+        _ui->changerCarte->setToolTip(tr("Carte du ciel"));
+        _carte->setVisible(true);
+        _ciel->setVisible(false);
+    }
+
+    DemarrageApplication();
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_issLive_toggled(bool checked)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    Configuration::instance()->issLive() = checked;
+    GestionTempsReel();
+
+    _ui->frameVideo->setVisible(checked);
+
+    _coordISS->setVisible(checked);
+    _gmt->setVisible(checked);
+
+    if (_ui->modeManuel->isChecked()) {
+        _radar->setVisible(!checked);
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_meteoBasesNasa_clicked()
+{
+    QDesktopServices::openUrl(QUrl("file:///" + Configuration::instance()->dirLocalData() + QDir::separator() + "html" +
+                                   QDir::separator() + "meteoNASA.html"));
+}
+
+void PreviSat::on_meteo_clicked()
+{
+    /* Declarations des variables locales */
+    static QString map0;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Chargemment du fichier
+    if (map0.isEmpty()) {
+
+        const QString fic = Configuration::instance()->dirLocalData() + QDir::separator() + "html" + QDir::separator() + "meteo.map";
+        QFile fi(fic);
+
+        if (fi.exists() && (fi.size() != 0)) {
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                map0 = fi.readAll();
+            }
+            fi.close();
+        }
+    }
+
+    // Remplacement des coordonnees
+    const QString lon(QString::number(-Configuration::instance()->observateur().longitude() * MATHS::RAD2DEG));
+    const QString lat(QString::number(Configuration::instance()->observateur().latitude() * MATHS::RAD2DEG));
+    const QString map = map0.replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat)
+                            .replace("UNITE_TEMP", (_options->ui()->unitesKm->isChecked()) ? "C" : "F")
+                            .replace("UNITE_VENT", (_options->ui()->unitesKm->isChecked()) ? "kmh" : "mph")
+                            .replace("VALEUR_ZOOM", QString::number(_options->ui()->valeurZoomMap->value()));
+
+    QFile fi2(Configuration::instance()->dirTmp() + QDir::separator() + "meteo.html");
+    if (fi2.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream flux(&fi2);
+        flux << map;
+    }
+    fi2.close();
+
+    // Chargement de la meteo
+    QDesktopServices::openUrl(QUrl("file:///" + fi2.fileName()));
+
+    /* Retour */
+    return;
+}
+
 
 /*
  * Menu deroulant
@@ -2475,7 +2721,7 @@ void PreviSat::on_actionMode_sombre_triggered()
 
             if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-                // Activation du mode sombre
+                // Activation du mode sombre (inspire de https://github.com/Jorgen-VikingGod/Qt-Frameless-Window-DarkStyle)
                 QPalette palette;
                 palette.setColor(QPalette::Window, QColor(53, 53, 53));
                 palette.setColor(QPalette::WindowText, Qt::white);
@@ -2518,7 +2764,7 @@ void PreviSat::on_actionMode_sombre_triggered()
 
         // Palette par defaut
         qApp->setPalette(qApp->style()->standardPalette());
-        qApp->setStyleSheet("");
+        qApp->setStyleSheet("QTabBar { qproperty-drawBase: 0; }");
     }
 
     GestionTempsReel();
@@ -2774,19 +3020,23 @@ void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
             QList<Satellite> &listeSatellites = Configuration::instance()->listeSatellites();
             const auto sat = std::find_if(listeSatellites.begin(), listeSatellites.end(), [norad](Satellite s) {
                     return (s.elementsOrbitaux().norad == norad);
-        });
+            });
 
             if (sat != listeSatellites.end()) {
                 listeSatellites.erase(sat);
                 Configuration::instance()->SuppressionSatelliteFichierElem(norad);
             }
 
-            bool atrouve = false;
-            const QString noradDefaut = listeSatellites.first().elementsOrbitaux().norad;
-            for(int j=0; j<_ui->listeSatellites->count() && !atrouve; j++) {
-                if (_ui->listeSatellites->item(j)->data(Qt::UserRole).toString() == noradDefaut) {
-                    _ui->listeSatellites->item(j)->setData(Qt::BackgroundRole, QColor(160, 220, 240));
-                    atrouve = true;
+            if (!listeSatellites.isEmpty()) {
+
+                bool atrouve = false;
+                const QString noradDefaut = listeSatellites.first().elementsOrbitaux().norad;
+
+                for(int j=0; j<_ui->listeSatellites->count() && !atrouve; j++) {
+                    if (_ui->listeSatellites->item(j)->data(Qt::UserRole).toString() == noradDefaut) {
+                        _ui->listeSatellites->item(j)->setData(Qt::BackgroundRole, QColor(160, 220, 240));
+                        atrouve = true;
+                    }
                 }
             }
 
@@ -2819,6 +3069,10 @@ void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
 
             // Affichage des courbes sur la carte du monde
             _carte->show();
+
+            if (Configuration::instance()->issLive()) {
+                AfficherCoordIssGmt();
+            }
 
         } else {
 
