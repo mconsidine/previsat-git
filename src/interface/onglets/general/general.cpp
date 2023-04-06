@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    2 mars 2023
+ * >    6 avril 2023
  *
  */
 
@@ -135,6 +135,11 @@ Ui::General *General::ui() const
 ElementsAOS *General::elementsAOS() const
 {
     return _elementsAOS;
+}
+
+Date General::dateEclipse()
+{
+    return *_dateEclipse;
 }
 
 

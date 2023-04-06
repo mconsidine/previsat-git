@@ -185,6 +185,11 @@ void CoordISS::show(const Date &dateCourante, const Date &dateEcl)
 
 void CoordISS::setPolice()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     _ui->altitudeISS->setFont(Configuration::instance()->policeWcc());
     _ui->betaISS->setFont(Configuration::instance()->policeWcc());
     _ui->inclinaisonISS->setFont(Configuration::instance()->policeWcc());
@@ -192,6 +197,9 @@ void CoordISS::setPolice()
     _ui->longitudeISS->setFont(Configuration::instance()->policeWcc());
     _ui->nextTransitionISS->setFont(Configuration::instance()->policeWcc());
     _ui->orbiteISS->setFont(Configuration::instance()->policeWcc());
+
+    /* Retour */
+    return;
 }
 
 

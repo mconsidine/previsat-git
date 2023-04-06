@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    9 mars 2023
+ * >    6 avril 2023
  *
  */
 
@@ -348,7 +348,7 @@ const QFont &Configuration::policeWcc() const
     return _policeWcc;
 }
 
-bool Configuration::isCarteMaximisee()
+bool &Configuration::isCarteMaximisee()
 {
     return _isCarteMaximisee;
 }
@@ -501,6 +501,11 @@ void Configuration::SuppressionSatelliteFichierElem(const QString &norad)
     if (_mapSatellitesFichierElem[_nomfic].contains(norad)) {
         _mapSatellitesFichierElem[_nomfic].removeOne(norad);
     }
+}
+
+QMap<QString, QStringList> &Configuration::mapFichierElemNorad()
+{
+    return _mapFichierElemNorad;
 }
 
 QList<Satellite> &Configuration::listeSatellites()

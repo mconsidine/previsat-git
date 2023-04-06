@@ -293,6 +293,8 @@ void Options::AppliquerPreferences()
                           _ui->listeStations->item(i)->checkState());
     }
 
+    Configuration::instance()->setPoliceWcc(_ui->policeWCC->currentText());
+
     settings.setValue("fichier/nbFichiersLog", _ui->nbFichiersLog->value());
 
     // Ecriture du fichier de preferences
@@ -762,6 +764,7 @@ void Options::InitPoliceWCC()
 
 #endif
 
+    _ui->policeWCC->setCurrentIndex(index);
     Configuration::instance()->setPoliceWcc(policeWcc);
 
     /* Retour */

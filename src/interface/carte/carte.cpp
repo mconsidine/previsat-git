@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    30 mars 2023
+ * >    6 avril 2023
  *
  */
 
@@ -984,6 +984,10 @@ void Carte::AffichageStations()
                         poly.append(ptActuel);
                     }
 
+                    if (fabs(poly.last().x() - pt0.x()) < (_largeurCarte / 2)) {
+                        poly.append(pt0);
+                    }
+
                     zones.append(poly);
 
                     QVectorIterator it2(zones);
@@ -1034,6 +1038,8 @@ void Carte::AffichageTraceAuSol()
                 poly.append(QPointF(DEG2PX(t.longitude), DEG2PX(t.latitude)));
                 couleurs.append(CouleurTraceAuSol(t));
 
+                ElementsTraceSol tracePrec = t;
+
                 while (it.hasNext()) {
 
                     const ElementsTraceSol trace = it.next();
@@ -1074,30 +1080,33 @@ void Carte::AffichageTraceAuSol()
                             && (satellite.elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale())) {
 
                         // Affichage du numero d'orbite (WCC)
-                        const Date dateISS(Date(trace.jourJulienUTC, 0., false));
-                        const int numOrb = CoordISS::CalculNumeroOrbiteISS(dateISS);
+                        if ((trace.latitude < 90.) && (tracePrec.latitude > 90.)) {
 
-                        QGraphicsSimpleTextItem * const txtOrb = new QGraphicsSimpleTextItem(QString::number(numOrb));
+                            const Date dateISS(Date(trace.jourJulienUTC, 0., false));
+                            const int numOrb = CoordISS::CalculNumeroOrbiteISS(dateISS);
 
-                        const QFont policeOrb(Configuration::instance()->police().family(), 10,
-                                              (settings.value("affichage/styleWCC").toBool()) ? QFont::Bold : QFont::Normal);
-                        txtOrb->setFont(policeOrb);
-                        txtOrb->setBrush(Qt::white);
+                            QGraphicsSimpleTextItem * const txtOrb = new QGraphicsSimpleTextItem(QString::number(numOrb));
 
-                        const int lng = static_cast<int> (txtOrb->boundingRect().width());
-                        const double xnorb = (ptActuel.x() - lng < 0) ? ptActuel.x() + _largeurCarte - lng - 8 : ptActuel.x() - lng;
-                        txtOrb->setPos(xnorb, _largeurCarte / 2 - 18);
-                        scene->addItem(txtOrb);
+                            const QFont policeOrb(Configuration::instance()->police().family(), 10,
+                                                  (settings.value("affichage/styleWCC").toBool()) ? QFont::Bold : QFont::Normal);
+                            txtOrb->setFont(policeOrb);
+                            txtOrb->setBrush(Qt::white);
+
+                            const int lng = static_cast<int> (txtOrb->boundingRect().width());
+                            const double xnorb = (ptActuel.x() - lng < 0) ? ptActuel.x() + _largeurCarte - lng - 8 : ptActuel.x() - lng;
+                            txtOrb->setPos(xnorb, _largeurCarte / 4 - 18);
+                            scene->addItem(txtOrb);
+                        }
 
                         // Affichage des crochets des transitions jour/nuit (WCC)
                         if (settings.value("affichage/styleWCC").toBool()) {
 
                             txt = "";
-                            if (trace.eclipseTotale && (couleurActuel != couleurPrec)) {
+                            if (trace.eclipseTotale && !tracePrec.eclipseTotale) {
                                 txt = "[";
                             }
 
-                            if (!trace.eclipseTotale && (couleurActuel != couleurPrec)) {
+                            if (!trace.eclipseTotale && tracePrec.eclipseTotale) {
                                 txt = "]";
                             }
 
@@ -1133,6 +1142,7 @@ void Carte::AffichageTraceAuSol()
                     }
 
                     poly.append(ptActuel);
+                    tracePrec = trace;
                 }
 
                 traces.append(poly);
