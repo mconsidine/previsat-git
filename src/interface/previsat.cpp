@@ -751,6 +751,7 @@ void PreviSat::CreationRaccourcis()
 void PreviSat::EnchainementCalculs()
 {
     /* Declarations des variables locales */
+    static int jour;
 
     /* Initialisations */
 
@@ -777,10 +778,6 @@ void PreviSat::EnchainementCalculs()
         // Coordonnees terrestres
         soleil.CalculCoordTerrestres(observateur);
 
-        // Heures de lever/passage au meridien/coucher/crepuscules
-        const DateSysteme syst = (_options->ui()->syst12h->isChecked()) ? DateSysteme::SYSTEME_12H : DateSysteme::SYSTEME_24H;
-        soleil.CalculLeverMeridienCoucher(*_dateCourante, observateur, syst);
-
         if (_isCarteMonde && !Configuration::instance()->isCarteMaximisee()) {
             // Coordonnees equatoriales
             soleil.CalculCoordEquat(observateur);
@@ -805,15 +802,25 @@ void PreviSat::EnchainementCalculs()
         // Calcul de la magnitude de la Lune
         lune.CalculMagnitude(soleil);
 
-        // Heures de lever/passage au meridien/coucher
-        lune.CalculLeverMeridienCoucher(*_dateCourante, observateur, syst);
-
-        // Calcul des phases de la Lune
-        lune.CalculDatesPhases(*_dateCourante, syst);
-
         if (_isCarteMonde && !Configuration::instance()->isCarteMaximisee()) {
             // Coordonnees equatoriales
             lune.CalculCoordEquat(observateur);
+        }
+
+        // Evenements Soleil et Lune
+        if (_dateCourante->jour() != jour) {
+
+            // Heures de lever/passage au meridien/coucher/crepuscules
+            const DateSysteme syst = (_options->ui()->syst12h->isChecked()) ? DateSysteme::SYSTEME_12H : DateSysteme::SYSTEME_24H;
+            soleil.CalculLeverMeridienCoucher(*_dateCourante, observateur, syst);
+
+            // Heures de lever/passage au meridien/coucher
+            lune.CalculLeverMeridienCoucher(*_dateCourante, observateur, syst);
+
+            // Calcul des phases de la Lune
+            lune.CalculDatesPhases(*_dateCourante, syst);
+
+            jour = _dateCourante->jour();
         }
 
 
