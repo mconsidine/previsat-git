@@ -70,6 +70,9 @@ RechercheSatellite::RechercheSatellite(QWidget *parent) :
     _ui(new Ui::RechercheSatellite)
 {
     _ui->setupUi(this);
+    _ui->siteLancementDonneesSat->installEventFilter(this);
+    _ui->paysDonneesSat->installEventFilter(this);
+    _ui->categorieOrbiteDonneesSat->installEventFilter(this);
 }
 
 
@@ -266,6 +269,42 @@ void RechercheSatellite::show()
 /*
  * Methodes privees
  */
+bool RechercheSatellite::eventFilter(QObject *watched, QEvent *event)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (event->type() == QEvent::MouseMove) {
+
+        if (_ui->siteLancementDonneesSat->underMouse()) {
+
+            const QString acronyme = _ui->siteLancementDonneesSat->text();
+            const Observateur site = Configuration::instance()->mapSitesLancement()[acronyme];
+
+            emit AffichageSiteLancement(acronyme, site);
+            emit AfficherMessageStatut(site.nomlieu(), 10);
+            _ui->siteLancementDonneesSat->setToolTip(site.nomlieu());
+
+        } else if (_ui->paysDonneesSat->underMouse()) {
+
+            const QString pays = Configuration::instance()->mapPays()[_ui->paysDonneesSat->text()];
+            _ui->paysDonneesSat->setToolTip(pays);
+            emit AfficherMessageStatut(pays, 10);
+
+        } else if (_ui->categorieOrbiteDonneesSat->underMouse()) {
+
+            const QString categorie = Configuration::instance()->mapCategoriesOrbite()[_ui->categorieOrbiteDonneesSat->text()];
+            _ui->categorieOrbiteDonneesSat->setToolTip(categorie);
+            emit AfficherMessageStatut(categorie, 10);
+        }
+    }
+
+    /* Retour */
+    return QFrame::eventFilter(watched, event);
+}
+
 void RechercheSatellite::on_nom_returnPressed()
 {
     /* Declarations des variables locales */

@@ -40,6 +40,7 @@
 #include <QSettings>
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
+#include "configuration/configuration.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "informationssatellite.h"
 #include "ui_informationssatellite.h"
@@ -66,6 +67,9 @@ InformationsSatellite::InformationsSatellite(QWidget *parent) :
     _ui(new Ui::InformationsSatellite)
 {
     _ui->setupUi(this);
+    _ui->siteLancement->installEventFilter(this);
+    _ui->pays->installEventFilter(this);
+    _ui->categorieOrbite->installEventFilter(this);
 }
 
 
@@ -321,4 +325,38 @@ void InformationsSatellite::changeEvent(QEvent *evt)
 /*
  * Methodes privees
  */
+bool InformationsSatellite::eventFilter(QObject *watched, QEvent *event)
+{
+    /* Declarations des variables locales */
 
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (event->type() == QEvent::MouseMove) {
+
+        if (_ui->siteLancement->underMouse()) {
+
+            const QString acronyme = _ui->siteLancement->text();
+            const Observateur site = Configuration::instance()->mapSitesLancement()[acronyme];
+
+            emit AffichageSiteLancement(acronyme, site);
+            emit AfficherMessageStatut(site.nomlieu(), 10);
+            _ui->siteLancement->setToolTip(site.nomlieu());
+
+        } else if (_ui->pays->underMouse()) {
+
+            const QString pays = Configuration::instance()->mapPays()[_ui->pays->text()];
+            _ui->pays->setToolTip(pays);
+            emit AfficherMessageStatut(pays, 10);
+
+        } else if (_ui->categorieOrbite->underMouse()) {
+
+            const QString categorie = Configuration::instance()->mapCategoriesOrbite()[_ui->categorieOrbite->text()];
+            _ui->categorieOrbite->setToolTip(categorie);
+            emit AfficherMessageStatut(categorie, 10);
+        }
+    }
+
+    /* Retour */
+    return QFrame::eventFilter(watched, event);
+}

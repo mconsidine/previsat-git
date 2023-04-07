@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    6 avril 2023
+ * >    7 avril 2023
  *
  */
 
@@ -155,6 +155,9 @@ public:
     const QString &adresseCelestrakNorad() const;
     const QString &adresseCelestrakSupplementalNorad() const;
 
+    // Categories d'orbite
+    const QMap<QString, QString> &mapCategoriesOrbite() const;
+
     // Evenements Station Spatiale
     const QString &nomFichierEvenementsStationSpatiale() const;
     const QString &noradStationSpatiale() const;
@@ -176,8 +179,9 @@ public:
     QMap<QString, QList<CategorieElementsOrbitaux> > &mapCategoriesElementsOrbitaux() ;
     const QMap<QString, QList<CategorieElementsOrbitaux> > &mapCategoriesMajElementsOrbitaux() const;
 
+    const QMap<QString, QString> &mapPays() const;
     const QMap<int, SatelliteTDRS> &mapTDRS() const;
-
+    const QMap<QString, Observateur> &mapSitesLancement() const;
     const QMap<QString, Observateur> &mapStations() const;
 
     // Satellites produisant des flashs

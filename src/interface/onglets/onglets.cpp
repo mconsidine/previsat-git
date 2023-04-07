@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    11 mars 2023
+ * >    7 avril 2023
  *
  */
 
@@ -170,6 +170,11 @@ InformationsSatellite *Onglets::informationsSatellite() const
 InformationsISS *Onglets::informationsISS() const
 {
     return _informationsISS;
+}
+
+RechercheSatellite *Onglets::rechercheSatellite() const
+{
+    return _rechercheSatellite;
 }
 
 CalculsPrevisions *Onglets::previsions() const

@@ -54,6 +54,8 @@ namespace Ui {
 class RechercheSatellite;
 }
 
+class Observateur;
+
 class RechercheSatellite : public QFrame
 {
     Q_OBJECT
@@ -102,6 +104,12 @@ public slots:
     void show();
 
 
+signals:
+
+    void AffichageSiteLancement(const QString &acronyme, const Observateur &site);
+    void AfficherMessageStatut(const QString &message, const int secondes);
+
+
 protected:
 
     /*
@@ -129,9 +137,12 @@ private:
 
 private slots:
 
+    bool eventFilter(QObject *watched, QEvent *event);
+
     void on_nom_returnPressed();
     void on_cosparDonneesSat_returnPressed();
     void on_satellitesTrouves_currentRowChanged(int currentRow);
+
 };
 
 #endif // RECHERCHESATELLITE_H
