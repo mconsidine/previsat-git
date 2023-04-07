@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    6 avril 2023
+ * >    7 avril 2023
  *
  */
 
@@ -233,6 +233,7 @@ void General::AffichageDate(const Date &date)
 
     const DateSysteme syst = (settings.value("affichage/systemeHoraire").toBool()) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H;
     const QString chaine = QString("%1  %2").arg(date.ToLongDate(Configuration::instance()->locale(), syst)).arg(chaineUTC);
+
     _ui->dateHeure1->setText(chaine);
     _osculateurs->ui()->dateHeure1->setText(chaine);
 
@@ -702,6 +703,24 @@ void General::AffichageVitesses(const Date &date)
     return;
 }
 
+void General::mouseDoubleClickEvent(QMouseEvent *evt)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(evt)
+
+    /* Corps de la methode */
+    if (_ui->dateHeure1->underMouse()) {
+
+        // Passage en mode manuel
+        emit ModeManuel(true);
+    }
+
+    /* Retour */
+    return;
+}
+
 /*
  * Affichage des lieux d'observation dans la liste deroulante
  */
@@ -736,8 +755,9 @@ void General::AffichageLieuObs()
             const QString fmt = "%1 %2";
             _ui->longitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(lo), AngleFormatType::DEGRE, 3, 0, false, true)).arg(ew));
             _ui->latitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(la), AngleFormatType::DEGRE, 2, 0,false, true)).arg(ns));
-            _ui->altitudeObs->setText(fmt.arg((settings.value("affichage/unite").toBool()) ? atd : qRound(atd * TERRE::PIED_PAR_METRE + 0.5 * sgn(atd))).
-                                      arg((settings.value("affichage/unite").toBool()) ? tr("m", "meter") : tr("ft", "foot")));
+            _ui->altitudeObs->setText(
+                fmt.arg((settings.value("affichage/unite").toBool()) ? atd : qRound(atd * TERRE::PIED_PAR_METRE + 0.5 * sgn(atd)))
+                    .arg((settings.value("affichage/unite").toBool()) ? tr("m", "meter") : tr("ft", "foot")));
             premier = false;
         }
     }
@@ -797,7 +817,8 @@ void General::SauveOngletGeneral(const QString &fichier)
                      << Qt::endl;
 
                 chaine = tr("Latitude  :  %1\t\tAzimut (N) : %2\tDéclinaison      : %3");
-                flux << chaine.arg(_ui->latitudeSat->text().trimmed()).arg(_ui->azimutSat->text().trimmed()).arg(_ui->declinaisonSat->text()) << Qt::endl;
+                flux << chaine.arg(_ui->latitudeSat->text().trimmed()).arg(_ui->azimutSat->text().trimmed()).arg(_ui->declinaisonSat->text())
+                     << Qt::endl;
 
                 chaine = tr("Altitude  :  %1\t\tDistance   : %2\tConstellation    : %3", "Altitude of satellite");
                 flux << chaine.arg(_ui->altitudeSat->text().leftJustified(13, ' ')).arg(_ui->distanceSat->text().leftJustified(13, ' '))

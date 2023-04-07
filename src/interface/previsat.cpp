@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 avril 2023
+ * >    7 avril 2023
  *
  */
 
@@ -1847,6 +1847,25 @@ void PreviSat::GestionTempsReel()
                 }
 
                 _onglets->show(*_dateCourante);
+
+                if (_isCarteMonde) {
+
+                    // Affichage des courbes sur la carte du monde
+                    _carte->show();
+
+                } else {
+
+                    // Affichage de la carte du ciel
+                    _ciel->show(Configuration::instance()->observateur(),
+                                Configuration::instance()->soleil(),
+                                Configuration::instance()->lune(),
+                                Configuration::instance()->lignesCst(),
+                                Configuration::instance()->constellations(),
+                                Configuration::instance()->etoiles(),
+                                Configuration::instance()->planetes(),
+                                Configuration::instance()->listeSatellites(),
+                                Configuration::instance()->isCarteMaximisee() || _ciel->fenetreMax());
+                }
             }
         }
     }
@@ -2285,21 +2304,33 @@ void PreviSat::on_aide_clicked()
 void PreviSat::on_tempsReel_toggled(bool checked)
 {
     qInfo() << "Fonction" << __FUNCTION__ << ":" << checked;
+
     _ui->pasManuel->setVisible(!checked);
     _ui->valManuel->setVisible(!checked);
     _ui->pasReel->setVisible(checked);
     _ui->secondes->setVisible(checked);
+    _ui->tempsReel->setChecked(checked);
+
     _onglets->general()->ui()->frameSimu->setVisible(!checked);
+    _onglets->general()->ui()->dateHeure->setCurrentIndex(0);
+    _onglets->osculateurs()->ui()->dateHeure->setCurrentIndex(0);
 }
 
 void PreviSat::on_modeManuel_toggled(bool checked)
 {
     qInfo() << "Fonction" << __FUNCTION__ << ":" << checked;
+
     _ui->pasReel->setVisible(!checked);
     _ui->secondes->setVisible(!checked);
     _ui->pasManuel->setVisible(checked);
     _ui->valManuel->setVisible(checked);
+    _ui->modeManuel->setChecked(checked);
+
     _onglets->general()->ui()->frameSimu->setVisible(checked);
+    _onglets->general()->ui()->dateHeure->setCurrentIndex(1);
+    _onglets->osculateurs()->ui()->dateHeure->setCurrentIndex(1);
+    _onglets->general()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
+    _onglets->osculateurs()->ui()->dateHeure2->setDateTime(_onglets->general()->ui()->dateHeure2->dateTime());
 }
 
 void PreviSat::on_zoomCarte_clicked()

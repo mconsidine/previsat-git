@@ -36,7 +36,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    6 avril 2023
+ * >    7 avril 2023
  *
  */
 
@@ -200,6 +200,8 @@ private slots:
      * @param date date
      */
     void AffichageVitesses(const Date &date);
+
+    void mouseDoubleClickEvent(QMouseEvent *evt);
 
     void on_soleilLuneSuiv_clicked();
     void on_soleilLunePrec_clicked();
