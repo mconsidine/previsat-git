@@ -30,7 +30,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    2 avril 2023
+ * >    7 avril 2023
  *
  */
 
@@ -126,9 +126,9 @@ void Apropos::show()
     _ui->nomLogiciel->setText(logiciel.arg(APP_NAME).arg(QString(APP_VER_MAJ)));
 
     const QString msg = tr("Version %1  (%2)");
+    const QString dateCompilation = QString(__DATE__).split(" ", Qt::SkipEmptyParts).join(" ");
     _ui->numeroVersion->setText(msg.arg(APP_VERSION).arg(QLocale(Configuration::instance()->locale())
-                                                         .toString(QDate::fromString(QString(__DATE__), "MMM d yyyy"),
-                                                                   tr("d MMMM yyyy", "Date format"))));
+                                                         .toString(QDate::fromString(dateCompilation, "MMM d yyyy"), tr("d MMMM yyyy", "Date format"))));
 
     /* Retour */
     return;
