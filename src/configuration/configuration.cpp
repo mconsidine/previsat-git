@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    6 avril 2023
+ * >    7 avril 2023
  *
  */
 
@@ -385,6 +385,11 @@ const QString &Configuration::adresseCelestrakSupplementalNorad() const
     return _adresseCelestrakSupplementalNorad;
 }
 
+const QMap<QString, QString> &Configuration::mapCategoriesOrbite() const
+{
+    return _mapCategoriesOrbite;
+}
+
 
 const QString &Configuration::nomFichierEvenementsStationSpatiale() const
 {
@@ -444,9 +449,19 @@ const QMap<QString, QList<CategorieElementsOrbitaux> > &Configuration::mapCatego
     return _mapCategoriesMajElementsOrbitaux;
 }
 
+const QMap<QString, QString> &Configuration::mapPays() const
+{
+    return _mapPays;
+}
+
 const QMap<int, SatelliteTDRS> &Configuration::mapTDRS() const
 {
     return _mapTDRS;
+}
+
+const QMap<QString, Observateur> &Configuration::mapSitesLancement() const
+{
+    return _mapSitesLancement;
 }
 
 const QMap<QString, Observateur> &Configuration::mapStations() const

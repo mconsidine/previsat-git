@@ -54,6 +54,7 @@ namespace Ui {
 class InformationsSatellite;
 }
 
+class Observateur;
 class Satellite;
 
 class InformationsSatellite : public QFrame
@@ -103,6 +104,12 @@ public slots:
     void changeEvent(QEvent *evt);
 
 
+signals:
+
+    void AffichageSiteLancement(const QString &acronyme, const Observateur &site);
+    void AfficherMessageStatut(const QString &message, const int secondes);
+
+
 protected:
 
     /*
@@ -125,7 +132,7 @@ private:
     /*
      * Methodes privees
      */
-
+    bool eventFilter(QObject *watched, QEvent *event);
 
 };
 

@@ -72,6 +72,7 @@
 #include "onglets/antenne/antenne.h"
 #include "onglets/donnees/informationsiss.h"
 #include "onglets/donnees/informationssatellite.h"
+#include "onglets/donnees/recherchesatellite.h"
 #include "onglets/general/general.h"
 #include "onglets/onglets.h"
 #include "onglets/osculateurs/osculateurs.h"
@@ -604,8 +605,16 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(this, &PreviSat::SauveOngletElementsOsculateurs, _onglets->osculateurs(), &Osculateurs::SauveOngletElementsOsculateurs);
     connect(this, &PreviSat::SauveOngletInformations, _onglets->informationsSatellite(), &InformationsSatellite::SauveOngletInformations);
 
+    // Connexion avec l'onglet Informations satellite
+    connect(_onglets->informationsSatellite(), &InformationsSatellite::AffichageSiteLancement, _carte, &Carte::AffichageSiteLancement);
+    connect(_onglets->informationsSatellite(), &InformationsSatellite::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+
     // Connexions avec l'onglet Informations ISS
     connect(_onglets->informationsISS(), &InformationsISS::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+
+    // Connexion avec l'onglet Recherche donnees
+    connect(_onglets->rechercheSatellite(), &RechercheSatellite::AffichageSiteLancement, _carte, &Carte::AffichageSiteLancement);
+    connect(_onglets->rechercheSatellite(), &RechercheSatellite::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
 
     // Connexions avec l'onglet Antenne
     connect(this, &PreviSat::DeconnecterUdp, _onglets->antenne(), &Antenne::DeconnecterUdp);

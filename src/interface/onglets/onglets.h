@@ -36,7 +36,7 @@
  * >    25 fevrier 2023
  *
  * Date de revision
- * >    11 mars 2023
+ * >    7 avril 2023
  *
  */
 
@@ -100,8 +100,10 @@ public:
 
     General *general() const;
     Osculateurs *osculateurs() const;
+
     InformationsSatellite *informationsSatellite() const;
     InformationsISS *informationsISS() const;
+    RechercheSatellite *rechercheSatellite() const;
 
     CalculsPrevisions *previsions() const;
     CalculsFlashs *flashs() const;
