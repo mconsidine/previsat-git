@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 avril 2023
+ * >    8 avril 2023
  *
  */
 
@@ -594,6 +594,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_onglets->evenements(), &CalculsEvenementsOrbitaux::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->suiviTelescope(), &SuiviTelescope::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->general(), &General::ModeManuel, this, &PreviSat::on_modeManuel_toggled);
+    connect(_onglets->osculateurs(), &Osculateurs::ModeManuel, this, &PreviSat::on_modeManuel_toggled);
 
     connect(_onglets->previsions(), &CalculsPrevisions::MajFichierGP, this, &PreviSat::MajFichierGP);
     connect(_onglets->evenements(), &CalculsEvenementsOrbitaux::MajFichierGP, this, &PreviSat::MajFichierGP);
@@ -605,14 +606,14 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(this, &PreviSat::SauveOngletElementsOsculateurs, _onglets->osculateurs(), &Osculateurs::SauveOngletElementsOsculateurs);
     connect(this, &PreviSat::SauveOngletInformations, _onglets->informationsSatellite(), &InformationsSatellite::SauveOngletInformations);
 
-    // Connexion avec l'onglet Informations satellite
+    // Connexions avec l'onglet Informations satellite
     connect(_onglets->informationsSatellite(), &InformationsSatellite::AffichageSiteLancement, _carte, &Carte::AffichageSiteLancement);
     connect(_onglets->informationsSatellite(), &InformationsSatellite::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
 
     // Connexions avec l'onglet Informations ISS
     connect(_onglets->informationsISS(), &InformationsISS::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
 
-    // Connexion avec l'onglet Recherche donnees
+    // Connexions avec l'onglet Recherche donnees
     connect(_onglets->rechercheSatellite(), &RechercheSatellite::AffichageSiteLancement, _carte, &Carte::AffichageSiteLancement);
     connect(_onglets->rechercheSatellite(), &RechercheSatellite::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
 
@@ -1698,6 +1699,29 @@ void PreviSat::AfficherMessageStatut3(const QString &message)
 }
 
 /*
+ * Changement de la date en mode manuel
+ */
+void PreviSat::ChangementDate(const QDateTime &dt)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const double offset = _dateCourante->offsetUTC();
+
+    /* Corps de la methode */
+    const Date date(dt.date().year(), dt.date().month(), dt.date().day(), dt.time().hour(), dt.time().minute(), dt.time().second(), 0.);
+
+    EFFACE_OBJET(_dateCourante);
+    _dateCourante = new Date(date.jourJulienUTC() - offset, offset);
+
+    _onglets->general()->ui()->dateHeure2->setDateTime(dt);
+    GestionTempsReel();
+
+    /* Retour */
+    return;
+}
+
+/*
  * Effacer la zone de message de statut
  */
 void PreviSat::EffacerMessageStatut()
@@ -1850,17 +1874,6 @@ void PreviSat::GestionTempsReel()
 
                 // Enchainement de l'ensemble des calculs
                 EnchainementCalculs();
-
-                const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
-
-                if (_onglets->osculateurs()->isVisible()) {
-                    _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
-                    _onglets->osculateurs()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
-                } else {
-                    _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
-                    _onglets->general()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
-                    _onglets->general()->ui()->dateHeure2->setFocus();
-                }
 
                 _onglets->show(*_dateCourante);
 
@@ -2319,8 +2332,12 @@ void PreviSat::on_aide_clicked()
 
 void PreviSat::on_tempsReel_toggled(bool checked)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
     qInfo() << "Fonction" << __FUNCTION__ << ":" << checked;
 
+    /* Corps de la methode */
     _ui->pasManuel->setVisible(!checked);
     _ui->valManuel->setVisible(!checked);
     _ui->pasReel->setVisible(checked);
@@ -2330,12 +2347,22 @@ void PreviSat::on_tempsReel_toggled(bool checked)
     _onglets->general()->ui()->frameSimu->setVisible(!checked);
     _onglets->general()->ui()->dateHeure->setCurrentIndex(0);
     _onglets->osculateurs()->ui()->dateHeure->setCurrentIndex(0);
+
+    disconnect(_onglets->general(), &General::ChangementDate, this, &PreviSat::ChangementDate);
+    disconnect(_onglets->osculateurs(), &Osculateurs::ChangementDate, this, &PreviSat::ChangementDate);
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_modeManuel_toggled(bool checked)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
     qInfo() << "Fonction" << __FUNCTION__ << ":" << checked;
 
+    /* Corps de la methode */
     _ui->pasReel->setVisible(!checked);
     _ui->secondes->setVisible(!checked);
     _ui->pasManuel->setVisible(checked);
@@ -2345,8 +2372,15 @@ void PreviSat::on_modeManuel_toggled(bool checked)
     _onglets->general()->ui()->frameSimu->setVisible(checked);
     _onglets->general()->ui()->dateHeure->setCurrentIndex(1);
     _onglets->osculateurs()->ui()->dateHeure->setCurrentIndex(1);
+
     _onglets->general()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
     _onglets->osculateurs()->ui()->dateHeure2->setDateTime(_onglets->general()->ui()->dateHeure2->dateTime());
+
+    connect(_onglets->general(), &General::ChangementDate, this, &PreviSat::ChangementDate);
+    connect(_onglets->osculateurs(), &Osculateurs::ChangementDate, this, &PreviSat::ChangementDate);
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_zoomCarte_clicked()

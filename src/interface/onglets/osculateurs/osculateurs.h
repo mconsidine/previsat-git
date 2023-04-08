@@ -36,7 +36,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >    27 aout 2022
+ * >
  *
  */
 
@@ -112,6 +112,8 @@ public slots:
 signals:
 
     void AffichageVitesses(const Date &date);
+    void ChangementDate(const QDateTime &date);
+    void ModeManuel(const bool enable);
 
 
 protected:
@@ -158,6 +160,10 @@ private:
 private slots:
 
     void closeEvent(QCloseEvent *evt);
+    void mouseDoubleClickEvent(QMouseEvent *evt);
+
+    void on_dateHeure2_dateTimeChanged(const QDateTime &dateTime);
+
     void on_typeRepere_currentIndexChanged(int index);
     void on_typeParametres_currentIndexChanged(int index);
 
