@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    8 avril 2023
  *
  */
 
@@ -150,8 +150,11 @@ QMap<QString, ElementsOrbitaux> TLE::LectureFichier(const QString &nomFichier, c
     /* Corps de la methode */
     QFile fi(nomFichier);
     if (!fi.exists() || (fi.size() == 0)) {
+
         const QFileInfo ff(fi.fileName());
+#if (BUILD_TEST == false)
         throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
+#endif
     }
 
     if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {

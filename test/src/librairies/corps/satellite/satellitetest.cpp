@@ -122,16 +122,28 @@ void SatelliteTest::testCalculCoordHoriz2()
     const TLE tle(ligne0, ligne1, ligne2);
     Satellite sat(tle.elements());
 
-    Date date(2020, 1, 11, 21, 20, 0., 0.);
-    sat.CalculPosVit(date);
-
     Observateur obs("Paris", -2.348640000, +48.853390000, 30);
+
+    Date date(2020, 1, 11, 21, 20, 0., 0.);
     obs.CalculPosVit(date);
 
+    sat.CalculPosVit(date);
+    sat.CalculCoordHoriz(obs, true, false);
+    sat.CalculCoordEquat(obs, false);
     sat.CalculCoordHoriz2(obs);
 
-    QCOMPARE(sat.hauteur(), 0.19275577693562085);
-    QCOMPARE(sat.azimut(), 4.48887816827556);
+    QCOMPARE(sat.hauteur(), 0.010451579950689613);
+    QCOMPARE(sat.azimut(), 3.1795612051615314);
+
+    date = Date(2020, 1, 11, 21, 28, 30., 0.);
+    obs.CalculPosVit(date);
+
+    sat.CalculPosVit(date);
+    sat.CalculCoordHoriz(obs, true, false);
+    sat.CalculCoordEquat(obs, false);
+    sat.CalculCoordHoriz2(obs);
+
+    QCOMPARE(sat.hauteur(), -0.013773458990370531);
 }
 
 void SatelliteTest::testCalculPosVit1()
@@ -323,7 +335,7 @@ void SatelliteTest::testCalculPosVitListeSatellites()
     const QMap<QString, ElementsOrbitaux> mapTLE = TLE::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
                                                                        Configuration::instance()->lgRec());
 
-    Date date(2020, 8, 16, 0, 0, 0., 0.);
+    Date date(2020, 8, 15, 13, 42, 0., 0.);
     Observateur obs("Paris", -2.348640000, +48.853390000, 30);
     obs.CalculPosVit(date);
 
@@ -339,15 +351,15 @@ void SatelliteTest::testCalculPosVitListeSatellites()
     Satellite::CalculPosVitListeSatellites(date, obs, soleil, lune, 3, true, true, true, true, true, true, true, true, satellites);
 
     QCOMPARE(satellites.first().phasage().nu0(), 15);
-    QCOMPARE(satellites.first().signal().attenuation(), 152.042308095);
-    QCOMPARE(satellites.first().altitude(), 426.06419024535444);
-    QCOMPARE(satellites.first().rangeRate(), -1.1111004734472358);
-    QCOMPARE(satellites.first().magnitude().magnitude(), 99.);
-    QCOMPARE(satellites.first().ascensionDroite(), 1.2595999417338162);
-    QCOMPARE(satellites.first().declinaison(), -0.9256418548152789);
-    QCOMPARE(satellites.first().constellation(), "Pic");
-    QCOMPARE(satellites.first().longitude(), -1.1553724672481591);
-    CompareVecteurs3D(satellites.first().dist(), Vecteur3D(1757.256968436037, 5463.306386934935, -7625.64823073472));
+    QCOMPARE(satellites.first().signal().attenuation(), 137.4342178796233);
+    QCOMPARE(satellites.first().altitude(), 424.52109699485754);
+    QCOMPARE(satellites.first().rangeRate(), -6.853740793330628);
+    QCOMPARE(satellites.first().magnitude().magnitude(), 4.801106983557947);
+    QCOMPARE(satellites.first().ascensionDroite(), 1.2459691983080656);
+    QCOMPARE(satellites.first().declinaison(), 0.308777949256643);
+    QCOMPARE(satellites.first().constellation(), "Tau");
+    QCOMPARE(satellites.first().longitude(), 0.36338638004248525);
+    CompareVecteurs3D(satellites.first().dist(), Vecteur3D(542.7538686361972, 1603.1191934262467, 536.5097144664396));
 }
 
 void SatelliteTest::testHasAos1()

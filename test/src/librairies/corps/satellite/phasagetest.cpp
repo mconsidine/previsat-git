@@ -41,6 +41,7 @@
 #pragma GCC diagnostic warning "-Wconversion"
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
+#include "librairies/corps/corpsconst.h"
 #include "librairies/corps/satellite/elementsosculateurs.h"
 #include "librairies/corps/satellite/phasage.h"
 #include "phasagetest.h"
@@ -51,10 +52,11 @@ using namespace TestTools;
 
 void PhasageTest::testAll()
 {
-    testCalcul();
+    testCalcul1();
+    testCalcul2();
 }
 
-void PhasageTest::testCalcul()
+void PhasageTest::testCalcul1()
 {
     qInfo(Q_FUNC_INFO);
 
@@ -72,4 +74,24 @@ void PhasageTest::testCalcul()
     QCOMPARE(phasage.dt0(), 1);
     QCOMPARE(phasage.nbOrb(), 31);
     QCOMPARE(phasage.nu0(), 15);
+}
+
+void PhasageTest::testCalcul2()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const double n0 = 1.;
+    const Vecteur3D position;
+    const Vecteur3D vitesse;
+
+    ElementsOsculateurs elem;
+    elem.Calcul(position, vitesse);
+
+    Phasage phasage;
+    phasage.Calcul(elem, n0);
+
+    QCOMPARE(phasage.ct0(), CORPS::ELEMENT_PHASAGE_INDEFINI);
+    QCOMPARE(phasage.dt0(), CORPS::ELEMENT_PHASAGE_INDEFINI);
+    QCOMPARE(phasage.nbOrb(), CORPS::ELEMENT_PHASAGE_INDEFINI);
+    QCOMPARE(phasage.nu0(), CORPS::ELEMENT_PHASAGE_INDEFINI);
 }

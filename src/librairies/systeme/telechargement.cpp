@@ -101,17 +101,20 @@ void Telechargement::TelechargementFichier(const QUrl &url, const bool alarme)
 
             fi.write(reponse->readAll());
             fi.close();
+
 #if (BUILD_TEST == false)
             qInfo () << "Téléchargement du fichier" << fic << "OK";
 #endif
 
         } else {
 
+#if (BUILD_TEST == false)
             qWarning() << QString("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn);
 
             if (alarme) {
                 throw PreviSatException(tr("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn), MessageType::WARNING);
             }
+#endif
         }
     }
 

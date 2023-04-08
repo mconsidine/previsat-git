@@ -53,7 +53,8 @@ public:
 private:
 
     static void testTLE();
-    static void testLectureFichier();
+    static void testLectureFichier1();
+    static void testLectureFichier2();
     static void testMiseAJourFichier();
     static void testVerifieFichier();
 

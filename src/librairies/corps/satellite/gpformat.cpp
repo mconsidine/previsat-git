@@ -209,8 +209,6 @@ QList<ElementsOrbitaux> GPFormat::LectureFichierListeGP(const QString &nomFichie
                             gp.skipCurrentElement();
                         }
                     }
-                } else {
-                    gp.skipCurrentElement();
                 }
 
                 if (norad.isEmpty()) {
@@ -358,13 +356,8 @@ void GPFormat::LectureSectionBody(QXmlStreamReader &gp, ElementsOrbitaux &elem)
                 } else if (gp.name().toString() == "data") {
 
                     LectureSectionData(gp, elem);
-
-                } else {
-                    gp.skipCurrentElement();
                 }
             }
-        } else {
-            gp.skipCurrentElement();
         }
     }
 
@@ -392,8 +385,6 @@ void GPFormat::LectureSectionData(QXmlStreamReader &gp, ElementsOrbitaux &elem)
 
             LectureSectionTleParameters(gp, elem);
 
-        } else {
-            gp.skipCurrentElement();
         }
     }
 
@@ -448,8 +439,6 @@ void GPFormat::LectureSectionMeanElements(QXmlStreamReader &gp, ElementsOrbitaux
             // Anomalie moyenne
             elem.mo = gp.readElementText().toDouble();
 
-        } else {
-            gp.skipCurrentElement();
         }
     }
 

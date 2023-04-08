@@ -53,7 +53,8 @@ using namespace TestTools;
 void TLETest::testAll()
 {
     testTLE();
-    testLectureFichier();
+    testLectureFichier1();
+    testLectureFichier2();
     testMiseAJourFichier();
     testVerifieFichier();
 }
@@ -86,7 +87,7 @@ void TLETest::testTLE()
     QCOMPARE(tle.elements().nbOrbitesEpoque, 20577u);
 }
 
-void TLETest::testLectureFichier()
+void TLETest::testLectureFichier1()
 {
     qInfo(Q_FUNC_INFO);
 
@@ -96,16 +97,38 @@ void TLETest::testLectureFichier()
     dir.cdUp();
     dir.cd(qApp->applicationName());
 
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->LectureDonneesSatellites();
+
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
-    const QMap<QString, ElementsOrbitaux> mapTLE = TLE::LectureFichier(fic, QString(), 0);
+    const QMap<QString, ElementsOrbitaux> mapTLE = TLE::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
+                                                                       Configuration::instance()->lgRec());
 
     QCOMPARE(mapTLE.keys().size(), 163);
 
     // TLE a 2 lignes
     const QString fic2 = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual2.txt";
-    const QMap<QString, ElementsOrbitaux> mapTLE2 = TLE::LectureFichier(fic2, QString(), 0);
+    const QMap<QString, ElementsOrbitaux> mapTLE2 = TLE::LectureFichier(fic2, Configuration::instance()->donneesSatellites(),
+                                                                        Configuration::instance()->lgRec());
 
     QCOMPARE(mapTLE2.keys().size(), 163);
+}
+
+void TLETest::testLectureFichier2()
+{
+    qInfo(Q_FUNC_INFO);
+
+    QDir dir = QDir::current();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cd(qApp->applicationName());
+
+    const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual3.txt";
+    const QMap<QString, ElementsOrbitaux> mapTLE = TLE::LectureFichier(fic, QString(), 0);
+
+    QCOMPARE(mapTLE.keys().size(), 0);
 }
 
 void TLETest::testMiseAJourFichier()
