@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    7 avril 2023
+ * >    8 avril 2023
  *
  */
 
@@ -958,6 +958,12 @@ void General::JouerSonFlash()
 
     /* Retour */
     return;
+}
+
+void General::on_dateHeure2_dateTimeChanged(const QDateTime &dateTime)
+{
+    _ui->dateHeure2->setDisplayFormat(tr("dddd dd MMMM yyyy  hh:mm:ss") + ((settings.value("affichage/systemeHoraire").toBool()) ? "" : "a"));
+    emit ChangementDate(dateTime);
 }
 
 void General::on_soleilLunePrec_clicked()

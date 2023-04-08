@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 avril 2023
+ * >    8 avril 2023
  *
  */
 
@@ -322,6 +322,12 @@ private slots:
      * @param message message
      */
     void AfficherMessageStatut3(const QString &message);
+
+    /**
+     * @brief ChangementDate Changement de la date en mode manuel
+     * @param dt date
+     */
+    void ChangementDate(const QDateTime &dt);
 
     /**
      * @brief EffacerMessageStatut Effacer la zone de message de statut

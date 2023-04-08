@@ -481,6 +481,30 @@ void Osculateurs::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/typeRepere", _ui->typeRepere->currentIndex());
 }
 
+void Osculateurs::mouseDoubleClickEvent(QMouseEvent *evt)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    Q_UNUSED(evt)
+
+    /* Corps de la methode */
+    if (_ui->dateHeure1->underMouse()) {
+
+        // Passage en mode manuel
+        emit ModeManuel(true);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Osculateurs::on_dateHeure2_dateTimeChanged(const QDateTime &dateTime)
+{
+    _ui->dateHeure2->setDisplayFormat(tr("dddd dd MMMM yyyy  hh:mm:ss") + ((settings.value("affichage/systemeHoraire").toBool()) ? "" : "a"));
+    emit ChangementDate(dateTime);
+}
+
 void Osculateurs::on_typeRepere_currentIndexChanged(int index)
 {
     Q_UNUSED(index)
