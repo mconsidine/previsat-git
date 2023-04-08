@@ -52,7 +52,8 @@ public:
 
 private:
 
-    static void testCalcul();
+    static void testCalcul1();
+    static void testCalcul2();
 
 };
 

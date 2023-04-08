@@ -55,7 +55,8 @@ void GPFormatTest::testAll()
     testLectureFichier1();
     testLectureFichier2();
     testLectureFichier3();
-    testLectureFichierListeGP();
+    testLectureFichierListeGP1();
+    testLectureFichierListeGP2();
     testRecupereNomsat();
 }
 
@@ -144,7 +145,7 @@ void GPFormatTest::testLectureFichier3()
     QCOMPARE(mapElem.size(), 0);
 }
 
-void GPFormatTest::testLectureFichierListeGP()
+void GPFormatTest::testLectureFichierListeGP1()
 {
     qInfo(Q_FUNC_INFO);
 
@@ -163,6 +164,27 @@ void GPFormatTest::testLectureFichierListeGP()
                                                                               Configuration::instance()->lgRec());
 
     QCOMPARE(listeElem.size(), 60);
+}
+
+void GPFormatTest::testLectureFichierListeGP2()
+{
+    qInfo(Q_FUNC_INFO);
+
+    QDir dir = QDir::current();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cd(qApp->applicationName());
+
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->LectureDonneesSatellites();
+
+    const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "iss2.gp";
+    const QList<ElementsOrbitaux> listeElem = GPFormat::LectureFichierListeGP(fic, Configuration::instance()->donneesSatellites(),
+                                                                              Configuration::instance()->lgRec());
+
+    QCOMPARE(listeElem.size(), 0);
 }
 
 void GPFormatTest::testRecupereNomsat()

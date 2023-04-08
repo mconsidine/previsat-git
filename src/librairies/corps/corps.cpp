@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 mars 2023
+ * >    8 avril 2023
  *
  */
 
@@ -250,8 +250,8 @@ void Corps::CalculCoordHoriz2(const Observateur &observateur)
     _visible = false;
     _hauteur = -MATHS::PI;
     const double cd = cos(_declinaison);
-    const Vecteur3D _vec1 = Vecteur3D(cos(_ascensionDroite) * cd, sin(_ascensionDroite) * cd, sin(_declinaison));
-    const Vecteur3D vec2 = observateur.rotHz() * _vec1;
+    const Vecteur3D vec1(cos(_ascensionDroite) * cd, sin(_ascensionDroite) * cd, sin(_declinaison));
+    const Vecteur3D vec2 = observateur.rotHz() * vec1;
 
     /* Corps de la methode */
     // Hauteur
