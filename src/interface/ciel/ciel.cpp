@@ -1023,7 +1023,10 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
                                     sdate = tr("Flash %1").arg(nomFlash);
                                 }
                             } else {
-                                const DateSysteme sys = DateSysteme::SYSTEME_24H;/*(cond.syst()) ? SYSTEME_24H : SYSTEME_12H;*/ // TODO
+
+                                const DateSysteme sys = (settings.value("affichage/systemeHoraire").toBool()) ?
+                                    DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H;
+
                                 sdate = dateTrace.ToShortDate(DateFormat::FORMAT_COURT, sys).split(" ", Qt::SkipEmptyParts).last();
                                 sdate = (sys == DateSysteme::SYSTEME_12H) ? sdate.mid(0, 5) + sdate.right(1) : sdate.mid(0, 5);
                             }

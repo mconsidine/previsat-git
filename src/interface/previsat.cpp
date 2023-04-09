@@ -1706,16 +1706,14 @@ void PreviSat::ChangementDate(const QDateTime &dt)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double offset = _dateCourante->offsetUTC();
 
     /* Corps de la methode */
-    const Date date(dt.date().year(), dt.date().month(), dt.date().day(), dt.time().hour(), dt.time().minute(), dt.time().second(), 0.);
-
-    EFFACE_OBJET(_dateCourante);
-    _dateCourante = new Date(date.jourJulienUTC() - offset, offset);
-
     _onglets->general()->ui()->dateHeure2->setDateTime(dt);
-    GestionTempsReel();
+    _onglets->osculateurs()->ui()->dateHeure2->setDateTime(dt);
+
+    if (!_onglets->general()->ui()->pause->isEnabled()) {
+        GestionTempsReel();
+    }
 
     /* Retour */
     return;
@@ -1875,11 +1873,17 @@ void PreviSat::GestionTempsReel()
                 // Enchainement de l'ensemble des calculs
                 EnchainementCalculs();
 
+                const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
+
+                _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
+                _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
+                ChangementDate(_dateCourante->ToQDateTime(1));
+
                 _onglets->show(*_dateCourante);
 
                 if (_isCarteMonde) {
 
-                    // Affichage des courbes sur la carte du monde
+                    // Affichage des elements graphiques sur la carte du monde
                     _carte->show();
 
                 } else {
@@ -2363,6 +2367,24 @@ void PreviSat::on_modeManuel_toggled(bool checked)
     qInfo() << "Fonction" << __FUNCTION__ << ":" << checked;
 
     /* Corps de la methode */
+    if (checked) {
+
+        if (!_onglets->general()->ui()->rewind->isEnabled() || !_onglets->general()->ui()->play->isEnabled()) {
+
+            double pas = 0.;
+            if (_ui->valManuel->currentIndex() < 3) {
+                pas = _ui->pasManuel->currentText().toDouble() * qPow(DATE::NB_SEC_PAR_MIN, _ui->valManuel->currentIndex()) * DATE::NB_JOUR_PAR_SEC;
+            } else {
+                pas = _ui->pasManuel->currentText().toDouble();
+            }
+
+            _chronometre->setInterval(static_cast<int> (pas * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES) * 1000);
+
+        } else if (!_onglets->general()->ui()->backward->isEnabled() || !_onglets->general()->ui()->forward->isEnabled()) {
+            _chronometre->setInterval(1000);
+        }
+    }
+
     _ui->pasReel->setVisible(!checked);
     _ui->secondes->setVisible(!checked);
     _ui->pasManuel->setVisible(checked);
@@ -2571,7 +2593,9 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
                         if (fi.copy(Configuration::instance()->instance()->dirElem() + QDir::separator() + ff.fileName())) {
 
                             qInfo() << "Import du fichier GP" << ff.fileName() << "OK";
-                            // TODO mettre a jour la liste de fichiers (et eventuellement ouvrir le fichier importe)
+
+                            Configuration::instance()->InitListeFichiersElem();
+                            InitFicGP();
 
                         } else {
                             qWarning() << "Import du fichier GP" << ff.fileName() << "KO";
@@ -2601,7 +2625,9 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
                         if (fi.copy(fo.fileName())) {
 
                             qInfo() << "Import du fichier TLE" << ff.fileName() << "OK";
-                            // TODO mettre a jour la liste de fichiers (et eventuellement ouvrir le fichier importe)
+
+                            Configuration::instance()->InitListeFichiersElem();
+                            InitFicGP();
 
                         } else {
                             qWarning() << "Import du fichier TLE" << ff.fileName() << "KO";

@@ -929,6 +929,7 @@ void General::Initialisation()
                                     _ui->stackedWidget_soleilLune->count()]));
 
     _ui->frameSimu->setVisible(false);
+    _ui->pause->setEnabled(false);
 
     connect(_osculateurs, &Osculateurs::AffichageVitesses, this, &General::AffichageVitesses);
 
