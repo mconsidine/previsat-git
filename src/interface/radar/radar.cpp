@@ -129,7 +129,7 @@ void Radar::mouseMoveEvent(QMouseEvent *evt)
             const double x2 = -x1 * xf / (double) lciel;
             const double y2 = -y1 * yf / (double) hciel;
 
-            const double ht = MATHS::PI_SUR_DEUX * (1. - std::hypot(x2, y2));
+            const double ht = MATHS::PI_SUR_DEUX * (1. - sqrt(x2 * x2 + y2 * y2));
             double az = atan2(x2, y2);
             if (az < 0.) {
                 az += MATHS::DEUX_PI;

@@ -1667,7 +1667,7 @@ PreviSat is free !</translation>
         <translation>South</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="1023"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="1027"/>
         <source>Flash %1</source>
         <translation>Flare %1</translation>
     </message>

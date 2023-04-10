@@ -148,7 +148,7 @@ ElementsEclipse ConditionEclipse::CalculEclipse(const Vecteur3D &position, const
     case CorpsOccultant::TERRE:
     {
         rho = position;
-        const double tanlat = position.z() / std::hypot(position.x(), position.y());
+        const double tanlat = position.z() / sqrt(position.x() * position.x() + position.y() * position.y());
         const double u = atan(tanlat / (1. - TERRE::APLA));
         const double cu = cos(u);
         const double su = sin(u);

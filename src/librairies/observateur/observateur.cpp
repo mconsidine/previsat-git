@@ -339,7 +339,7 @@ Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Ve
         lon *= MATHS::RAD2DEG;
 
         // Latitude
-        lat = MATHS::RAD2DEG * atan2(intersection.z(), TERRE::G2 * std::hypot(intersection.x(), intersection.y()));
+        lat = MATHS::RAD2DEG * atan2(intersection.z(), TERRE::G2 * sqrt(intersection.x() * intersection.x() + intersection.y() * intersection.y()));
 
         nom = "INTERSECT";
     }
