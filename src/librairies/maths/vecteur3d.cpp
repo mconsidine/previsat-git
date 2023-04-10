@@ -136,7 +136,7 @@ double Vecteur3D::Norme() const
     /* Corps de la methode */
 
     /* Retour */
-    return std::hypot(_x, _y, _z);
+    return sqrt(_x * _x + _y * _y + _z * _z);
 }
 
 /*

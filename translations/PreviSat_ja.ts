@@ -1667,7 +1667,7 @@ PreviSatは、完全無料です!</translation>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="1023"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="1027"/>
         <source>Flash %1</source>
         <translation>フレア %1</translation>
     </message>
