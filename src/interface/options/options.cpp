@@ -48,6 +48,7 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wconversion"
 #include "options.h"
+#include "telechargementoptions.h"
 #include "configuration/configuration.h"
 #include "configuration/fichierobs.h"
 #include "librairies/exceptions/message.h"
@@ -264,6 +265,7 @@ void Options::AppliquerPreferences()
     settings.setValue("affichage/modeSombre", _ui->modeSombre->isChecked());
     settings.setValue("affichage/magnitudeEtoiles", _ui->magnitudeEtoiles->value());
     settings.setValue("affichage/nombreTrajectoires", _ui->nombreTrajectoires->value());
+    settings.setValue("affichage/notificationSonore", _ui->listeSons->currentIndex());
     settings.setValue("affichage/affichageFrontieres", _ui->affichageFrontieres->isChecked());
     settings.setValue("affichage/refractionAtmospherique", _ui->refractionAtmospherique->isChecked());
     settings.setValue("affichage/rotationIconeISS", _ui->rotationIconeISS->isChecked());
@@ -306,6 +308,7 @@ void Options::AppliquerPreferences()
         SauvePreferences(fichierPref);
     }
 
+    emit ChargementCarteDuMonde();
     emit RecalculerPositions();
 
     /* Retour */
@@ -604,6 +607,7 @@ void Options::InitFicMap()
     QString nomFicMap;
 
     /* Initialisations */
+    const bool etat = _ui->listeMap->blockSignals(true);
     _ui->listeMap->clear();
     _ui->listeMap->addItem(tr("* Défaut"));
 
@@ -615,7 +619,11 @@ void Options::InitFicMap()
         nomFicMap[0] = nomFicMap[0].toUpper();
         _ui->listeMap->addItem(nomFicMap);
     }
+
     _ui->listeMap->addItem(tr("Télécharger..."));
+    const QString map = settings.value("fichier/nomMap").toString().trimmed();
+    _ui->listeMap->setCurrentIndex(static_cast<int> ((map.isEmpty()) ? 0 : Configuration::instance()->listeFicMap().indexOf(map)+1));
+    _ui->listeMap->blockSignals(etat);
 
     /* Retour */
     return;
@@ -704,6 +712,7 @@ void Options::InitFicSon()
     QString nomFicSon;
 
     /* Initialisations */
+    const bool etat = _ui->listeSons->blockSignals(true);
     _ui->listeSons->clear();
 
     /* Corps de la methode */
@@ -719,6 +728,8 @@ void Options::InitFicSon()
         _ui->listeSons->addItem(nomFicSon);
     }
     _ui->listeSons->addItem(tr("Télécharger..."));
+    _ui->listeSons->setCurrentIndex(settings.value("affichage/notificationSonore", 0).toInt());
+    _ui->listeSons->blockSignals(etat);
 
     /* Retour */
     return;
@@ -986,7 +997,9 @@ void Options::SupprimerCategorie()
 
 void Options::TelechargerCategorie()
 {
-    // TODO
+    TelechargementOptions * const telechargementOptions = new TelechargementOptions(TypeTelechargement::COORDONNEES, this);
+    telechargementOptions->setWindowModality(Qt::ApplicationModal);
+    telechargementOptions->show();
 }
 
 
@@ -1474,4 +1487,27 @@ void Options::on_validerObs_clicked()
 void Options::on_annulerObs_clicked()
 {
     _ui->outilsLieuxObservation->setVisible(false);
+}
+
+void Options::on_listeMap_currentIndexChanged(int index)
+{
+    if (index == _ui->listeMap->count() - 1) {
+
+        TelechargementOptions * const telechargementOptions = new TelechargementOptions(TypeTelechargement::CARTES, this);
+        telechargementOptions->setWindowModality(Qt::ApplicationModal);
+        telechargementOptions->show();
+
+    } else {
+        settings.setValue("fichier/nomMap", (index == 0) ? "" : Configuration::instance()->listeFicMap().at(index - 1));
+    }
+}
+
+void Options::on_listeSons_currentIndexChanged(int index)
+{
+    if (index == _ui->listeSons->count() - 1) {
+
+        TelechargementOptions * const telechargementOptions = new TelechargementOptions(TypeTelechargement::NOTIFICATIONS, this);
+        telechargementOptions->setWindowModality(Qt::ApplicationModal);
+        telechargementOptions->show();
+    }
 }

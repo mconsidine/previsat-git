@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    7 avril 2023
+ * >    9 avril 2023
  *
  */
 
@@ -174,6 +174,8 @@ public:
     Soleil &soleil();
     Lune &lune();
     std::array<Planete, PLANETE::NB_PLANETES> &planetes();
+
+    const QMap<TypeTelechargement, QString> &mapAdressesTelechargement() const;
 
 
     QMap<QString, QList<CategorieElementsOrbitaux> > &mapCategoriesElementsOrbitaux() ;
@@ -379,7 +381,7 @@ private:
 
 
     // Adresses de telechargement
-    QMap<AdressesTelechargement, QString> _mapAdressesTelechargement;
+    QMap<TypeTelechargement, QString> _mapAdressesTelechargement;
 
 
     // Elements orbitaux

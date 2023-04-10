@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 avril 2023
+ * >    9 avril 2023
  *
  */
 
@@ -643,6 +643,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::GestionTempsReel);
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::on_actionMode_sombre_triggered);
     connect(_options, &Options::RecalculerPositions, _coordISS, &CoordISS::setPolice);
+    connect(_options, &Options::ChargementCarteDuMonde, _carte, &Carte::ChargementCarteDuMonde);
     connect(this, &PreviSat::AppliquerPreferences, _options, &Options::AppliquerPreferences);
 
     // Connexions avec la fenetre Outils
@@ -3264,7 +3265,7 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
         QList<Satellite> &listeSatellites = Configuration::instance()->listeSatellites();
         const auto sat = std::find_if(listeSatellites.begin(), listeSatellites.end(), [norad](Satellite s) {
                 return (s.elementsOrbitaux().norad == norad);
-    });
+        });
 
         if (sat != listeSatellites.end()) {
             const int idx = static_cast<int> (std::distance(listeSatellites.begin(), sat));

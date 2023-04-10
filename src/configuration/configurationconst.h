@@ -57,7 +57,7 @@
 /*
  * Enumerations
  */
-enum class AdressesTelechargement {
+enum class TypeTelechargement {
     COORDONNEES = 0,
     CARTES,
     NOTIFICATIONS
