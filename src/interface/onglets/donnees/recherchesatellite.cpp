@@ -127,7 +127,7 @@ void RechercheSatellite::SauveOngletRecherche(const QString &fichier)
             // Donnees sur le satellite
             flux << tr("Nom                :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
-            QString chaine = tr("Numéro NORAD       : %1\t\tMagnitude std/max  : %2", "Standard/Maximal magnitude");
+            QString chaine = tr("Numéro NORAD       : %1\t\tMagnitude std/max  : %2", "Standard/Maximum magnitude");
             flux << chaine.arg(_ui->numNorad->text()).arg(_ui->magnitudeStdMaxDonneesSat->text()) << Qt::endl;
 
             chaine = tr("Désignation COSPAR : %1\t\tModèle orbital     : %2");

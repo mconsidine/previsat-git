@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    2 avril 2023
+ * >    10 avril 2023
  *
  */
 
@@ -126,7 +126,7 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const Conditi
     case TypeCalcul::PREVISIONS:
         setWindowTitle(tr("Prévisions de passage"));
         titres << tr("Satellite") << tr("Date de début", "Date and hour") << tr("Date de fin", "Date and hour")
-               << tr("Hauteur max", "Maximal elevation") << tr("Magnitude") << tr("Hauteur Soleil");
+               << tr("Hauteur max", "Maximum elevation") << tr("Magnitude") << tr("Hauteur Soleil");
         break;
 
     case TypeCalcul::EVENEMENTS:
@@ -137,7 +137,7 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const Conditi
         setWindowTitle(tr("Flashs"));
         _ui->afficherCarte->setVisible(true);
         titres << tr("Satellite") << tr("Date de début", "Date and hour") << tr("Date de fin", "Date and hour")
-               << tr("Hauteur Max", "Maximal elevation") << tr("Magn", "Magnitude") << tr("Mir", "Mirror") << tr("Haut Soleil", "Solar elevation");
+               << tr("Hauteur Max", "Maximum elevation") << tr("Magn", "Magnitude") << tr("Mir", "Mirror") << tr("Haut Soleil", "Solar elevation");
         break;
 
     case TypeCalcul::TRANSITS:
