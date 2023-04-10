@@ -28,7 +28,7 @@ affichage/modeSombre false
 affichage/langue en
 affichage/magnitudeEtoiles 4
 affichage/nombreTrajectoires 2
-affichage/affichageFrontieres true
+affichage/affichageFrontieres false
 affichage/refractionAtmospherique true
 affichage/rotationIconeISS true
 affichage/rotationLune false
