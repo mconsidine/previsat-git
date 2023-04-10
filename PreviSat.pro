@@ -33,7 +33,7 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    20 mars 2023
+# >    9 avril 2023
 
 #-------------------------------------------------
 VER_MAJ      = 6.0
@@ -113,6 +113,7 @@ SOURCES += \
     src/interface/onglets/previsions/calculstransits.cpp           \
     src/interface/onglets/telescope/ajustementdates.cpp            \
     src/interface/options/options.cpp                              \
+    src/interface/options/telechargementoptions.cpp                \
     src/interface/outils/outils.cpp                                \
     src/interface/previsat.cpp                                     \
     src/interface/radar/radar.cpp                                  \
@@ -183,6 +184,7 @@ HEADERS += \
     src/interface/onglets/previsions/calculstransits.h           \
     src/interface/onglets/telescope/ajustementdates.h            \
     src/interface/options/options.h                              \
+    src/interface/options/telechargementoptions.h                \
     src/interface/outils/outils.h                                \
     src/interface/previsat.h                                     \
     src/interface/radar/radar.h                                  \
@@ -254,6 +256,7 @@ FORMS += \
     src/interface/onglets/previsions/calculstransits.ui           \
     src/interface/onglets/telescope/ajustementdates.ui            \
     src/interface/options/options.ui                              \
+    src/interface/options/telechargementoptions.ui                \
     src/interface/outils/outils.ui                                \
     src/interface/previsat.ui                                     \
     src/interface/radar/radar.ui
@@ -364,7 +367,7 @@ HEADERS += \
         DESTDIR = release
     }
 
-    #CONFIG += lrelease
+    CONFIG += lrelease
 
     ICON = resources/interface/icone.ico
     win32:RC_FILE = icone.rc
