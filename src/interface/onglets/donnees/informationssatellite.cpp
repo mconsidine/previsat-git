@@ -281,7 +281,7 @@ void InformationsSatellite::SauveOngletInformations(const QString &fichier)
                     .arg(_ui->anomalieMoy->text().trimmed().rightJustified(9, '0')) << Qt::endl;
 
             chaine = tr("AD noeud ascendant      : %1\t\tMagnitude std/max     : %2",
-                        "Right ascension of the ascending node, Standard/Maximal magnitude");
+                        "Right ascension of the ascending node, Standard/Maximum magnitude");
             flux << chaine.arg(_ui->ADNoeudAscendantMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->magnitudeStdMax->text()) << Qt::endl;
 
             chaine = tr("Excentricité            : %1\t\tModèle orbital        : %2");

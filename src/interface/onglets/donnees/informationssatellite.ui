@@ -815,7 +815,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string extracomment="Standard/maximal magnitude">Magnitude std/max :</string>
+         <string extracomment="Standard/maximum magnitude">Magnitude std/max :</string>
         </property>
        </widget>
       </item>
