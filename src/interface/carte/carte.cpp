@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    6 avril 2023
+ * >    9 avril 2023
  *
  */
 
@@ -445,6 +445,31 @@ void Carte::AffichageSiteLancement(const QString &acronyme, const Observateur &s
         txtObs->setPos(xnobs, ynobs);
         scene->addItem(txtObs);
     }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Chargement de la carte du monde
+ */
+void Carte::ChargementCarteDuMonde()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString map = settings.value("fichier/nomMap").toString().trimmed();
+    const QString nomMap = (map.isEmpty()) ? ":/resources/interface/map.png" : Configuration::instance()->dirMap() + QDir::separator() + map;
+
+    /* Corps de la methode */
+    _pixMap.fill(palette().window().color());
+    _pixMap.load(nomMap);
+    _pixMap = _pixMap.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+    _largeurCarte = _ui->carte->width() - 2;
+    _hauteurCarte = _ui->carte->height() - 2;
+
+    scene->setSceneRect(0, 0, _largeurCarte, _hauteurCarte);
 
     /* Retour */
     return;
@@ -1616,31 +1641,6 @@ void Carte::AffichageZoneVisibilite()
             }
         }
     }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Chargement de la carte du monde
- */
-void Carte::ChargementCarteDuMonde()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const QString map = settings.value("fichier/listeMap").toString().trimmed();
-    const QString nomMap = (map.isEmpty()) ? ":/resources/interface/map.png" : map;
-
-    /* Corps de la methode */
-    _pixMap.fill(palette().window().color());
-    _pixMap.load(nomMap);
-    _pixMap = _pixMap.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-    _largeurCarte = _ui->carte->width() - 2;
-    _hauteurCarte = _ui->carte->height() - 2;
-
-    scene->setSceneRect(0, 0, _largeurCarte, _hauteurCarte);
 
     /* Retour */
     return;

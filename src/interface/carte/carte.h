@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    12 mars 2023
+ * >    9 avril 2023
  *
  */
 
@@ -110,6 +110,11 @@ public slots:
      * @param siteLancement site de lancement
      */
     void AffichageSiteLancement(const QString &acronyme, const Observateur &siteLancement);
+
+    /**
+     * @brief ChargementCarteDuMonde Chargement de la carte du monde
+     */
+    void ChargementCarteDuMonde();
 
 
 signals:
@@ -224,11 +229,6 @@ private:
      * @brief AffichageZoneVisibilite Affichage de la zone de visibilite des satellites
      */
     void AffichageZoneVisibilite();
-
-    /**
-     * @brief ChargementCarteDuMonde Chargement de la carte du monde
-     */
-    void ChargementCarteDuMonde();
 
     /**
      * @brief CouleurTraceAuSol Determination de la couleur du point de la trace au sol

@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    7 avril 2023
+ * >    9 avril 2023
  *
  */
 
@@ -138,9 +138,9 @@ void Configuration::Chargement()
         _adresseCelestrakSupplementalNorad = _adresseCelestrak + "NORAD/elements/supplemental/sup-gp.php?FILE=%1&FORMAT=xml";
 
         const QString httpDir = QString("%1data/").arg(DOMAIN_NAME);
-        _mapAdressesTelechargement.insert(AdressesTelechargement::COORDONNEES, httpDir + "coordinates/");
-        _mapAdressesTelechargement.insert(AdressesTelechargement::CARTES, httpDir + "map/");
-        _mapAdressesTelechargement.insert(AdressesTelechargement::NOTIFICATIONS, httpDir + "sound/");
+        _mapAdressesTelechargement.insert(TypeTelechargement::COORDONNEES, httpDir + "coordinates/");
+        _mapAdressesTelechargement.insert(TypeTelechargement::CARTES, httpDir + "map/");
+        _mapAdressesTelechargement.insert(TypeTelechargement::NOTIFICATIONS, httpDir + "sound/");
 
         // Initialisation de la liste de fichiers d'elements orbitaux
         InitListeFichiersElem();
@@ -436,6 +436,11 @@ Lune &Configuration::lune()
 std::array<Planete, PLANETE::NB_PLANETES> &Configuration::planetes()
 {
     return _planetes;
+}
+
+const QMap<TypeTelechargement, QString> &Configuration::mapAdressesTelechargement() const
+{
+    return _mapAdressesTelechargement;
 }
 
 
