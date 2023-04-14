@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 avril 2023
+ * >    14 avril 2023
  *
  */
 
@@ -179,6 +179,9 @@ private:
     QAction *_informationsSatellite;
     QAction *_recherche;
     QAction *_station;
+    QAction *_captureEcran;
+    QAction *_etapePrec;
+    QAction *_etapeSuiv;
 
     // Barre de statut
     QLabel *_messageStatut;
@@ -324,6 +327,11 @@ private slots:
     void AfficherMessageStatut3(const QString &message);
 
     /**
+     * @brief CaptureEcran Capture d'ecran de la fenetre
+     */
+    void CaptureEcran();
+
+    /**
      * @brief ChangementDate Changement de la date en mode manuel
      * @param dt date
      */
@@ -333,6 +341,16 @@ private slots:
      * @brief EffacerMessageStatut Effacer la zone de message de statut
      */
     void EffacerMessageStatut();
+
+    /**
+     * @brief EtapePrecedente Etape precedente en mode manuel
+     */
+    void EtapePrecedente();
+
+    /**
+     * @brief EtapeSuivante Etape suivante en mode manuel
+     */
+    void EtapeSuivante();
 
     /**
      * @brief GestionTempsReel Gestion du temps reel

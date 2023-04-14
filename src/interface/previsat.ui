@@ -135,6 +135,9 @@
                <height>20</height>
               </size>
              </property>
+             <property name="shortcut">
+              <string notr="true">Ctrl+M</string>
+             </property>
              <property name="autoRaise">
               <bool>true</bool>
              </property>
@@ -160,6 +163,9 @@
                <width>20</width>
                <height>20</height>
               </size>
+             </property>
+             <property name="shortcut">
+              <string notr="true">F10</string>
              </property>
              <property name="autoRaise">
               <bool>true</bool>
@@ -250,9 +256,6 @@
                <width>24</width>
                <height>24</height>
               </size>
-             </property>
-             <property name="shortcut">
-              <string notr="true">F1</string>
              </property>
              <property name="autoRaise">
               <bool>true</bool>

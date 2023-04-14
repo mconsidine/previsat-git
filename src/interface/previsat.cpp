@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 avril 2023
+ * >    14 avril 2023
  *
  */
 
@@ -149,6 +149,9 @@ PreviSat::~PreviSat()
     EFFACE_OBJET(_informationsSatellite);
     EFFACE_OBJET(_recherche);
     EFFACE_OBJET(_station);
+    EFFACE_OBJET(_captureEcran);
+    EFFACE_OBJET(_etapePrec);
+    EFFACE_OBJET(_etapeSuiv);
 
     EFFACE_OBJET(_messageStatut);
     EFFACE_OBJET(_messageStatut2);
@@ -740,6 +743,32 @@ void PreviSat::CreationRaccourcis()
     _station->setShortcut(Qt::ALT | Qt::Key_I);
     connect(_station, &QAction::triggered, this, &PreviSat::RaccourciStation);
     this->addAction(_station);
+
+    // Raccourci Capture ecran
+    _captureEcran = new QAction(this);
+    _captureEcran->setShortcut(Qt::Key_F8);
+    connect(_captureEcran, &QAction::triggered, this, &PreviSat::CaptureEcran);
+    this->addAction(_captureEcran);
+
+    // Raccourci Etape precedente
+    _etapePrec = new QAction(this);
+#if defined (Q_OS_MAC)
+    _etapePrec->setShortcut(Qt::Key_F6);
+#else
+    _etapePrec->setShortcut(Qt::Key_F11);
+#endif
+    connect(_etapePrec, &QAction::triggered, this, &PreviSat::EtapePrecedente);
+    this->addAction(_etapePrec);
+
+    // Raccourci Etape suivante
+    _etapeSuiv = new QAction(this);
+#if defined (Q_OS_MAC)
+    _etapeSuiv->setShortcut(Qt::Key_F7);
+#else
+    _etapeSuiv->setShortcut(Qt::Key_F12);
+#endif
+    connect(_etapeSuiv, &QAction::triggered, this, &PreviSat::EtapeSuivante);
+    this->addAction(_etapeSuiv);
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
 
@@ -1700,6 +1729,48 @@ void PreviSat::AfficherMessageStatut3(const QString &message)
 }
 
 /*
+ * Capture d'ecran de la fenetre
+ */
+void PreviSat::CaptureEcran()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Capture de la fenetre
+    _chronometre->stop();
+    _chronometreMs->stop();
+
+    const QPixmap image = QWidget::grab(rect());
+    if (_isCarteMonde) {
+        _ciel->setVisible(false);
+    } else {
+        _carte->setVisible(false);
+    }
+
+    const QString nomFicDefaut = Configuration::instance()->dirOut() + QDir::separator() + "previsat_" +
+                                 _dateCourante->ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").remove(":")
+                                     .replace(" ", "_") + "_" + _options->ui()->tuc->text().remove(" ").remove(":");
+
+    const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomFicDefaut,
+                                                     tr("Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;" \
+                                                        "Tous les fichiers (*.*)"));
+
+    if (!fic.isEmpty()) {
+        image.save(fic);
+        const QFileInfo fi(fic);
+        settings.setValue("fichier/sauvegarde", fi.absolutePath());
+    }
+
+    _chronometre->start();
+    _chronometreMs->start();
+
+    /* Retour */
+    return;
+}
+
+/*
  * Changement de la date en mode manuel
  */
 void PreviSat::ChangementDate(const QDateTime &dt)
@@ -1731,6 +1802,118 @@ void PreviSat::EffacerMessageStatut()
 
     /* Corps de la methode */
     _messageStatut->setText("");
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Etape precedente en mode manuel
+ */
+void PreviSat::EtapePrecedente()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    if (!_ui->modeManuel->isChecked()) {
+        _ui->modeManuel->setChecked(true);
+    }
+
+    /* Corps de la methode */
+    const double jd = (_ui->valManuel->currentIndex() < 3) ?
+                          _dateCourante->jourJulienUTC() - _ui->pasManuel->currentText().toDouble() *
+                                                               qPow(DATE::NB_SEC_PAR_MIN, _ui->valManuel->currentIndex()) * DATE::NB_JOUR_PAR_SEC :
+                          _dateCourante->jourJulienUTC() - _ui->pasManuel->currentText().toDouble();
+
+    const double offset = _dateCourante->offsetUTC();
+    EFFACE_OBJET(_dateCourante);
+    _dateCourante = new Date(jd, offset);
+
+    // Enchainement de l'ensemble des calculs
+    EnchainementCalculs();
+
+    const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
+
+    _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
+    _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
+    ChangementDate(_dateCourante->ToQDateTime(1));
+
+    _onglets->show(*_dateCourante);
+
+    if (_isCarteMonde) {
+
+        // Affichage des elements graphiques sur la carte du monde
+        _carte->show();
+
+    } else {
+
+        // Affichage de la carte du ciel
+        _ciel->show(Configuration::instance()->observateur(),
+                    Configuration::instance()->soleil(),
+                    Configuration::instance()->lune(),
+                    Configuration::instance()->lignesCst(),
+                    Configuration::instance()->constellations(),
+                    Configuration::instance()->etoiles(),
+                    Configuration::instance()->planetes(),
+                    Configuration::instance()->listeSatellites(),
+                    Configuration::instance()->isCarteMaximisee() || _ciel->fenetreMax());
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Etape suivante en mode manuel
+ */
+void PreviSat::EtapeSuivante()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    if (!_ui->modeManuel->isChecked()) {
+        _ui->modeManuel->setChecked(true);
+    }
+
+    /* Corps de la methode */
+    const double jd = (_ui->valManuel->currentIndex() < 3) ?
+                          _dateCourante->jourJulienUTC() + _ui->pasManuel->currentText().toDouble() *
+                                                               qPow(DATE::NB_SEC_PAR_MIN, _ui->valManuel->currentIndex()) * DATE::NB_JOUR_PAR_SEC :
+                          _dateCourante->jourJulienUTC() + _ui->pasManuel->currentText().toDouble();
+
+    const double offset = _dateCourante->offsetUTC();
+    EFFACE_OBJET(_dateCourante);
+    _dateCourante = new Date(jd, offset);
+
+    // Enchainement de l'ensemble des calculs
+    EnchainementCalculs();
+
+    const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
+
+    _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
+    _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
+    ChangementDate(_dateCourante->ToQDateTime(1));
+
+    _onglets->show(*_dateCourante);
+
+    if (_isCarteMonde) {
+
+        // Affichage des elements graphiques sur la carte du monde
+        _carte->show();
+
+    } else {
+
+        // Affichage de la carte du ciel
+        _ciel->show(Configuration::instance()->observateur(),
+                    Configuration::instance()->soleil(),
+                    Configuration::instance()->lune(),
+                    Configuration::instance()->lignesCst(),
+                    Configuration::instance()->constellations(),
+                    Configuration::instance()->etoiles(),
+                    Configuration::instance()->planetes(),
+                    Configuration::instance()->listeSatellites(),
+                    Configuration::instance()->isCarteMaximisee() || _ciel->fenetreMax());
+    }
 
     /* Retour */
     return;
