@@ -149,13 +149,13 @@
         <location filename="../src/interface/afficherresultats.cpp" line="129"/>
         <source>Hauteur max</source>
         <comment>Maximum elevation</comment>
-        <translation>最大仰角</translation>
+        <translation type="unfinished">最大仰角</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="140"/>
         <source>Hauteur Max</source>
         <comment>Maximum elevation</comment>
-        <translation>最大仰角</translation>
+        <translation type="unfinished">最大仰角</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="146"/>
@@ -382,18 +382,18 @@
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1383"/>
-        <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;Tous les fichiers (*)</source>
-        <translation>PNGファイル (*.png);;JPEGファイル (*.jpg *.jpeg);;BMPファイル (*.bmp);;すべてのファイル (*)</translation>
+        <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;Tous les fichiers (*.*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/afficherresultats.cpp" line="1413"/>
+        <source>Fichiers texte (*.txt);;Tous les fichiers (*.*)</source>
+        <translation type="unfinished">テキストファイル (*.txt);;すべてのファイル (*.*)</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1412"/>
         <source>Enregistrer sous...</source>
         <translation>名前を付けて保存...</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1413"/>
-        <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
-        <translation>テキストファイル (*.txt);;すべてのファイル (*)</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1450"/>
@@ -508,7 +508,7 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
         <location filename="../src/interface/afficherresultats.cpp" line="723"/>
         <source>S</source>
         <comment>South</comment>
-        <translation></translation>
+        <translation>南</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="841"/>
@@ -584,7 +584,7 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
         <location filename="../src/interface/onglets/telescope/ajustementdates.ui" line="112"/>
         <location filename="../src/interface/onglets/telescope/ajustementdates.ui" line="135"/>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation>yyyy年MM月dd日 hh:mm:ss</translation>
+        <translation>yyyy年MM月dd日 HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/ajustementdates.ui" line="142"/>
@@ -858,7 +858,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.ui" line="233"/>
         <source>dd/MM/yyyy HH:mm:ss</source>
         <extracomment>Date format</extracomment>
-        <translation>yyyy年MM月dd日 hh:mm:ss</translation>
+        <translation>yyyy年MM月dd日 HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.ui" line="214"/>
@@ -964,7 +964,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsflashs.ui" line="63"/>
         <source>Hauteur du Soleil :</source>
-        <translation>太陽仰角</translation>
+        <translation>太陽仰角 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsflashs.ui" line="92"/>
@@ -989,6 +989,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsflashs.ui" line="112"/>
         <source>Indifférent</source>
+        <extracomment>Pas de hauteur limite pour le Soleil : les calculs de jour sont inclus</extracomment>
         <translation>すべての仰角</translation>
     </message>
     <message>
@@ -1017,7 +1018,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/previsions/calculsflashs.ui" line="279"/>
         <source>dd/MM/yyyy HH:mm:ss</source>
         <extracomment>Date format</extracomment>
-        <translation>yyyy年MM月dd日 hh:mm:ss</translation>
+        <translation>yyyy年MM月dd日 HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsflashs.ui" line="292"/>
@@ -1153,9 +1154,9 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsprevisions.ui" line="184"/>
         <location filename="../src/interface/onglets/previsions/calculsprevisions.ui" line="239"/>
-        <source>dd/MM/yyyy hh:mm:ss</source>
+        <source>dd/MM/yyyy HH:mm:ss</source>
         <extracomment>Date format</extracomment>
-        <translation>yyyy年MM月dd日 hh:mm:ss</translation>
+        <translation>yyyy年MM月dd日 HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsprevisions.ui" line="200"/>
@@ -1255,7 +1256,8 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsprevisions.ui" line="494"/>
         <source>Indifférent</source>
-        <translation>太陽の角は関係ありません</translation>
+        <extracomment>Pas de hauteur limite pour le Soleil : les calculs de jour sont inclus</extracomment>
+        <translation type="unfinished">すべての仰角</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsprevisions.ui" line="499"/>
@@ -1266,7 +1268,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsprevisions.ui" line="594"/>
         <source>Hauteur minimale du satellite :</source>
-        <translation>最低衛星仰角 :</translation>
+        <translation>最小衛星仰角 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsprevisions.ui" line="623"/>
@@ -1392,7 +1394,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="137"/>
         <source>Hauteur minimale du satellite :</source>
-        <translation>最低衛星仰角 :</translation>
+        <translation>最小衛星仰角 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="154"/>
@@ -1439,7 +1441,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="293"/>
         <source>dd/MM/yyyy HH:mm:ss</source>
         <extracomment>Date format</extracomment>
-        <translation>yyyy年MM月dd日 hh:mm:ss</translation>
+        <translation>yyyy年MM月dd日 HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="312"/>
@@ -1636,7 +1638,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/carte/carte.cpp" line="1471"/>
         <source>S</source>
         <comment>Symbol for South</comment>
-        <translation></translation>
+        <translation>南</translation>
     </message>
     <message>
         <location filename="../src/interface/carte/carte.cpp" line="1763"/>
@@ -1710,12 +1712,13 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/general/general.ui" line="72"/>
         <location filename="../src/interface/onglets/general/general.ui" line="127"/>
         <source>Date :</source>
+        <extracomment>Date and hour</extracomment>
         <translation>日時 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="134"/>
         <source>dddd dd MMMM yyyy HH:mm:ss</source>
-        <translation>yyyy年MM月dd日 (dddd)  hh:mm:ss</translation>
+        <translation>yyyy年MM月dd日 (dddd)  HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="171"/>
@@ -1746,11 +1749,11 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="310"/>
         <source>Conditions :</source>
+        <extracomment>Conditions of observations</extracomment>
         <translation>状況 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="317"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="545"/>
         <source>Crépuscule astronomique</source>
         <translation>天文薄明</translation>
     </message>
@@ -1946,7 +1949,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/general/general.ui" line="1864"/>
         <source>Altitude :</source>
         <comment>Altitude of satellite</comment>
-        <translation>高度</translation>
+        <translation>高度 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="2034"/>
@@ -2209,21 +2212,6 @@ PreviSatは、完全無料です!</translation>
         <translation>ベータ角 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="539"/>
-        <source>Jour</source>
-        <translation>日</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="541"/>
-        <source>Crépuscule civil</source>
-        <translation>市民薄明</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="543"/>
-        <source>Crépuscule nautique</source>
-        <translation>航海薄明</translation>
-    </message>
-    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="547"/>
         <source>Nuit</source>
         <translation>夜間</translation>
@@ -2398,14 +2386,38 @@ PreviSatは、完全無料です!</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="966"/>
-        <source>dddd dd MMMM yyyy  hh:mm:ss</source>
-        <translation>yyyy年MM月dd日 (dddd)  hh:mm:ss</translation>
+        <source>dddd dd MMMM yyyy  HH:mm:ss</source>
+        <translation>yyyy年MM月dd日 (dddd)  HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="878"/>
         <source>Hauteur    : %1		Ascension droite :  %2 	Phase                    : %3</source>
         <comment>Moon phase</comment>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="539"/>
+        <source>Jour</source>
+        <comment>Sun is above horizon</comment>
+        <translation>昼間</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="541"/>
+        <source>Crépuscule civil</source>
+        <comment>Sun is 6 degrees below horizon</comment>
+        <translation>市民薄明</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="543"/>
+        <source>Crépuscule nautique</source>
+        <comment>Sun is 12 degrees below horizon</comment>
+        <translation>航海薄明</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="545"/>
+        <source>Crépuscule astronomique</source>
+        <comment>Sun is 18 degrees below horizon</comment>
+        <translation>天文薄明</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="881"/>
@@ -2691,16 +2703,6 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>n&apos; / 2 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="733"/>
-        <source>2</source>
-        <translation>2</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="746"/>
-        <source>3</source>
-        <translation>3</translation>
-    </message>
-    <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="789"/>
         <source>Anomalie moyenne :</source>
         <translation>平均近点角 :</translation>
@@ -2759,18 +2761,18 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="203"/>
         <source>Sphérique. R=%1 %2</source>
         <comment>R = radius</comment>
-        <translation>球形。&#x3000;R=%1 %2</translation>
+        <translation>球形。 R=%1 %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="207"/>
         <source>Cylindrique. L=%1 %2, R=%3 %2</source>
         <comment>L = height; R = radius</comment>
-        <translation></translation>
+        <translation>円筒形。 L=%1 %2, R=%3 %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="211"/>
         <source>Boîte. %1 x %2 x %3 %4</source>
-        <translation>直方体。&#x3000;%1 x %2 x %3 %4</translation>
+        <translation>直方体。 %1 x %2 x %3 %4</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="215"/>
@@ -2821,7 +2823,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="283"/>
         <source>AD noeud ascendant      : %1		Magnitude std/max     : %2</source>
         <comment>Right ascension of the ascending node, Standard/Maximum magnitude</comment>
-        <translation>昇交点赤経      : %1		標準・最大等級     : %2</translation>
+        <translation type="unfinished">昇交点赤経      : %1		標準・最大等級     : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="287"/>
@@ -3160,7 +3162,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="1118"/>
         <source>Système solaire / étoiles</source>
-        <translation>太陽系、星</translation>
+        <translation>太陽系 / 星</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="1133"/>
@@ -3695,12 +3697,13 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.ui" line="57"/>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.ui" line="109"/>
         <source>Date :</source>
+        <extracomment>Date and hour</extracomment>
         <translation>日時 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.ui" line="116"/>
         <source>dddd dd MMMM yyyy HH:mm:ss</source>
-        <translation>yyyy年MM月dd日 (dddd)  hh:mm:ss</translation>
+        <translation>yyyy年MM月dd日 (dddd)  HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.ui" line="177"/>
@@ -4114,8 +4117,8 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="504"/>
-        <source>dddd dd MMMM yyyy  hh:mm:ss</source>
-        <translation>yyyy年MM月dd日 (dddd)  hh:mm:ss</translation>
+        <source>dddd dd MMMM yyyy  HH:mm:ss</source>
+        <translation>yyyy年MM月dd日 (dddd)  HH:mm:ss</translation>
     </message>
 </context>
 <context>
@@ -4390,7 +4393,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <location filename="../src/interface/outils/outils.cpp" line="957"/>
         <location filename="../src/interface/outils/outils.cpp" line="1069"/>
         <source>Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)</source>
-        <translation>TLEファイル (*.txt *.tle);;すべてのファイル (*)</translation>
+        <translation>TLEファイル (*.txt *.tle);;すべてのファイル (*.*)</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="982"/>
@@ -4721,12 +4724,12 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/previsat.ui" line="1027"/>
         <source>Ctrl+F5</source>
-        <translation>Ctrl + F5</translation>
+        <translation>Ctrl+F5</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1035"/>
         <source>Shift+F5</source>
-        <translation>Shift + F5</translation>
+        <translation>Shift+F5</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1057"/>
@@ -4793,6 +4796,13 @@ le flux vidéo</source>
         <location filename="../src/interface/previsat.cpp" line="1145"/>
         <source>Vous venez de mettre à jour %1. Souhaitez-vous faire un don pour soutenir son auteur ?</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/previsat.cpp" line="1835"/>
+        <location filename="../src/interface/previsat.cpp" line="1891"/>
+        <location filename="../src/interface/previsat.cpp" line="2060"/>
+        <source>dddd dd MMMM yyyy  HH:mm:ss</source>
+        <translation>yyyy年MM月dd日 (dddd)  HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2208"/>
@@ -4869,7 +4879,7 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2745"/>
         <source>Fichiers GP (*.xml);;Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)</source>
-        <translation>GPファイル (*.xml);;TLEファイル (*.txt *.tle);;すべてのファイル (*)</translation>
+        <translation>GPファイル (*.xml);;TLEファイル (*.txt *.tle);;すべてのファイル (*.*)</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2763"/>
@@ -4886,7 +4896,7 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2855"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*.*)</source>
-        <translation>テキストファイル (*.txt);;すべてのファイル (*)</translation>
+        <translation>テキストファイル (*.txt);;すべてのファイル (*.*)</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="3074"/>
@@ -4937,13 +4947,6 @@ le flux vidéo</source>
         <location filename="../src/interface/previsat.cpp" line="1757"/>
         <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;Tous les fichiers (*.*)</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/interface/previsat.cpp" line="1835"/>
-        <location filename="../src/interface/previsat.cpp" line="1891"/>
-        <location filename="../src/interface/previsat.cpp" line="2060"/>
-        <source>dddd dd MMMM yyyy  hh:mm:ss</source>
-        <translation>yyyy年MM月dd日 (dddd)  hh:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2602"/>
@@ -5366,12 +5369,6 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>yyyy年MM月dd日</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="446"/>
-        <source>dddd dd MMMM yyyy hh:mm:ss</source>
-        <comment>Date format</comment>
-        <translation>yyyy年MM月dd日 (dddd)  hh:mm:ss</translation>
-    </message>
-    <message>
         <location filename="../src/librairies/dates/date.cpp" line="281"/>
         <source>Date au format ISO vide</source>
         <translation type="unfinished"></translation>
@@ -5397,6 +5394,12 @@ Satellite %1 - numéro NORAD : %2</source>
         <location filename="../src/librairies/dates/date.cpp" line="423"/>
         <source>Le fichier taiutc.dat n&apos;existe pas</source>
         <translation>taiutc.datファイルが存在しません</translation>
+    </message>
+    <message>
+        <location filename="../src/librairies/dates/date.cpp" line="446"/>
+        <source>dddd dd MMMM yyyy HH:mm:ss</source>
+        <comment>Date format</comment>
+        <translation>yyyy年MM月dd日 (dddd)  HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/librairies/dates/date.cpp" line="663"/>
@@ -5533,12 +5536,12 @@ Satellite %1 - numéro NORAD : %2</source>
     <message>
         <location filename="../src/previsions/evenementsorbitaux.cpp" line="392"/>
         <source>Passage terminateur Jour -&gt; Nuit</source>
-        <translation>明暗境界線の通過 (昼&#x3000;-&gt;&#x3000;夜)</translation>
+        <translation>明暗境界線の通過 (昼 -&gt; 夜)</translation>
     </message>
     <message>
         <location filename="../src/previsions/evenementsorbitaux.cpp" line="393"/>
         <source>Passage terminateur Nuit -&gt; Jour</source>
-        <translation>明暗境界線の通過 (夜&#x3000;-&gt;&#x3000;昼)</translation>
+        <translation>明暗境界線の通過 (夜 -&gt; 昼)</translation>
     </message>
     <message>
         <location filename="../src/previsions/evenementsorbitaux.cpp" line="417"/>
@@ -5751,7 +5754,7 @@ Satellite %1 - numéro NORAD : %2</source>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="130"/>
         <source>Numéro NORAD       : %1		Magnitude std/max  : %2</source>
         <comment>Standard/Maximum magnitude</comment>
-        <translation>NORAD番号       : %1		標準・最大等級  : %2</translation>
+        <translation type="unfinished">NORAD番号       : %1		標準・最大等級  : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="133"/>
@@ -5894,18 +5897,18 @@ Satellite %1 - numéro NORAD : %2</source>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="485"/>
         <source>Sphérique. R=%1 %2</source>
         <comment>R = radius</comment>
-        <translation>球形。&#x3000;R=%1 %2</translation>
+        <translation>球形。 R=%1 %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="490"/>
         <source>Cylindrique. L=%1 %2, R=%3 %2</source>
         <comment>L = height, R = radius</comment>
-        <translation>円筒形。&#x3000;L=%1 %2, R=%3 %2</translation>
+        <translation>円筒形。 L=%1 %2, R=%3 %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="495"/>
         <source>Boîte. %1 x %2 x %3 %4</source>
-        <translation>直方体。&#x3000;%1 x %2 x %3 %4</translation>
+        <translation>直方体。 %1 x %2 x %3 %4</translation>
     </message>
 </context>
 <context>
@@ -5943,7 +5946,7 @@ Satellite %1 - numéro NORAD : %2</source>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="289"/>
         <source>Hauteur minimale du satellite :</source>
-        <translation>最低衛星仰角 :</translation>
+        <translation>最小衛星仰角 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="312"/>
@@ -6092,7 +6095,7 @@ Satellite %1 - numéro NORAD : %2</source>
         <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="384"/>
         <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="460"/>
         <source>Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3</source>
-        <translation>衛星が上空を通過している。&#x3000;現在の仰角 : %1。 方位角 : %2。 %3</translation>
+        <translation>衛星が上空を通過している。 現在の仰角 : %1。 方位角 : %2。 %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="611"/>

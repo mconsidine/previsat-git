@@ -382,18 +382,18 @@
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1383"/>
-        <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;Tous les fichiers (*)</source>
+        <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;Tous les fichiers (*.*)</source>
         <translation>PNG files (*.png);;JPEG files (*.jpg *.jpeg);;BMP files (*.bmp);;All files (*.*)</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/afficherresultats.cpp" line="1413"/>
+        <source>Fichiers texte (*.txt);;Tous les fichiers (*.*)</source>
+        <translation>Text files (*.txt);;All files (*.*)</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1412"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1413"/>
-        <source>Fichiers texte (*.txt);;Tous les fichiers (*)</source>
-        <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1450"/>
@@ -584,7 +584,7 @@ Age of the oldestelementE      : %3 days</translation>
         <location filename="../src/interface/onglets/telescope/ajustementdates.ui" line="112"/>
         <location filename="../src/interface/onglets/telescope/ajustementdates.ui" line="135"/>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation>dd/MM/yyyy hh:mm:ss</translation>
+        <translation>dd/MM/yyyy HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/ajustementdates.ui" line="142"/>
@@ -858,7 +858,7 @@ PreviSat is free !</translation>
         <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.ui" line="233"/>
         <source>dd/MM/yyyy HH:mm:ss</source>
         <extracomment>Date format</extracomment>
-        <translation>dd/MM/yyyy hh:mm:ss</translation>
+        <translation>dd/MM/yyyy HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.ui" line="214"/>
@@ -989,6 +989,7 @@ PreviSat is free !</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsflashs.ui" line="112"/>
         <source>Indifférent</source>
+        <extracomment>Pas de hauteur limite pour le Soleil : les calculs de jour sont inclus</extracomment>
         <translation>Indifferent</translation>
     </message>
     <message>
@@ -1017,7 +1018,7 @@ PreviSat is free !</translation>
         <location filename="../src/interface/onglets/previsions/calculsflashs.ui" line="279"/>
         <source>dd/MM/yyyy HH:mm:ss</source>
         <extracomment>Date format</extracomment>
-        <translation>MM/dd/yyyy hh:mm:ss</translation>
+        <translation>MM/dd/yyyy HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsflashs.ui" line="292"/>
@@ -1153,9 +1154,9 @@ PreviSat is free !</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsprevisions.ui" line="184"/>
         <location filename="../src/interface/onglets/previsions/calculsprevisions.ui" line="239"/>
-        <source>dd/MM/yyyy hh:mm:ss</source>
+        <source>dd/MM/yyyy HH:mm:ss</source>
         <extracomment>Date format</extracomment>
-        <translation>MM/dd/yyyy hh:mm:ss</translation>
+        <translation>MM/dd/yyyy HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsprevisions.ui" line="200"/>
@@ -1255,6 +1256,7 @@ PreviSat is free !</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsprevisions.ui" line="494"/>
         <source>Indifférent</source>
+        <extracomment>Pas de hauteur limite pour le Soleil : les calculs de jour sont inclus</extracomment>
         <translation>Indifferent</translation>
     </message>
     <message>
@@ -1439,7 +1441,7 @@ PreviSat is free !</translation>
         <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="293"/>
         <source>dd/MM/yyyy HH:mm:ss</source>
         <extracomment>Date format</extracomment>
-        <translation>MM/dd/yyyy hh:mm:ss</translation>
+        <translation>MM/dd/yyyy HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculstransits.ui" line="312"/>
@@ -1710,12 +1712,13 @@ PreviSat is free !</translation>
         <location filename="../src/interface/onglets/general/general.ui" line="72"/>
         <location filename="../src/interface/onglets/general/general.ui" line="127"/>
         <source>Date :</source>
+        <extracomment>Date and hour</extracomment>
         <translation>Date :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="134"/>
         <source>dddd dd MMMM yyyy HH:mm:ss</source>
-        <translation>dddd, MMMM dd yyyy  hh:mm:ss</translation>
+        <translation>dddd, MMMM dd yyyy  HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="171"/>
@@ -1746,11 +1749,11 @@ PreviSat is free !</translation>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="310"/>
         <source>Conditions :</source>
+        <extracomment>Conditions of observations</extracomment>
         <translation>Conditions :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="317"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="545"/>
         <source>Crépuscule astronomique</source>
         <translation>Astronomical twilight</translation>
     </message>
@@ -2209,21 +2212,6 @@ PreviSat is free !</translation>
         <translation>Beta : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="539"/>
-        <source>Jour</source>
-        <translation>Day</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="541"/>
-        <source>Crépuscule civil</source>
-        <translation>Civil twilight</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="543"/>
-        <source>Crépuscule nautique</source>
-        <translation>Nautical twilight</translation>
-    </message>
-    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="547"/>
         <source>Nuit</source>
         <translation>Night</translation>
@@ -2398,14 +2386,38 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="966"/>
-        <source>dddd dd MMMM yyyy  hh:mm:ss</source>
-        <translation>dddd, MMMM dd yyyy  hh:mm:ss</translation>
+        <source>dddd dd MMMM yyyy  HH:mm:ss</source>
+        <translation>dddd, MMMM dd yyyy  HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="878"/>
         <source>Hauteur    : %1		Ascension droite :  %2 	Phase                    : %3</source>
         <comment>Moon phase</comment>
         <translation>Elevation    : %1		Right ascension :  %2 	Phase                    : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="539"/>
+        <source>Jour</source>
+        <comment>Sun is above horizon</comment>
+        <translation>Day</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="541"/>
+        <source>Crépuscule civil</source>
+        <comment>Sun is 6 degrees below horizon</comment>
+        <translation>Civil twilight</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="543"/>
+        <source>Crépuscule nautique</source>
+        <comment>Sun is 12 degrees below horizon</comment>
+        <translation>Nautical twilight</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="545"/>
+        <source>Crépuscule astronomique</source>
+        <comment>Sun is 18 degrees below horizon</comment>
+        <translation>Astronomical twilight</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="881"/>
@@ -2690,16 +2702,6 @@ click on &apos;Update ISS information&apos;</translation>
         <source>n&apos; / 2 :</source>
         <extracomment>derivative of the mean motion divided by two (in revolution per day square)</extracomment>
         <translation>n&apos; / 2 :</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="733"/>
-        <source>2</source>
-        <translation>2</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="746"/>
-        <source>3</source>
-        <translation>3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="789"/>
@@ -3696,12 +3698,13 @@ click on &apos;Update ISS information&apos;</translation>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.ui" line="57"/>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.ui" line="109"/>
         <source>Date :</source>
+        <extracomment>Date and hour</extracomment>
         <translation>Date :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.ui" line="116"/>
         <source>dddd dd MMMM yyyy HH:mm:ss</source>
-        <translation>dddd, MMMM dd yyyy  hh:mm:ss</translation>
+        <translation>dddd, MMMM dd yyyy  HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.ui" line="177"/>
@@ -4115,8 +4118,8 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="504"/>
-        <source>dddd dd MMMM yyyy  hh:mm:ss</source>
-        <translation>dddd, MMMM dd yyyy  hh:mm:ss</translation>
+        <source>dddd dd MMMM yyyy  HH:mm:ss</source>
+        <translation>dddd, MMMM dd yyyy  HH:mm:ss</translation>
     </message>
 </context>
 <context>
@@ -4767,13 +4770,6 @@ the video stream</translation>
         <translation>PNG files (*.png);;JPEG files (*.jpg *.jpeg);;BMP files (*.bmp);;All files (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1835"/>
-        <location filename="../src/interface/previsat.cpp" line="1891"/>
-        <location filename="../src/interface/previsat.cpp" line="2060"/>
-        <source>dddd dd MMMM yyyy  hh:mm:ss</source>
-        <translation>dddd, MMMM dd yyyy  hh:mm:ss</translation>
-    </message>
-    <message>
         <location filename="../src/interface/previsat.cpp" line="2374"/>
         <source>dd/MM/yyyy</source>
         <comment>date format</comment>
@@ -4845,6 +4841,13 @@ the video stream</translation>
         <location filename="../src/interface/previsat.cpp" line="1145"/>
         <source>Vous venez de mettre à jour %1. Souhaitez-vous faire un don pour soutenir son auteur ?</source>
         <translation>You just update %1. Do you want to make a donation to support its author ?</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/previsat.cpp" line="1835"/>
+        <location filename="../src/interface/previsat.cpp" line="1891"/>
+        <location filename="../src/interface/previsat.cpp" line="2060"/>
+        <source>dddd dd MMMM yyyy  HH:mm:ss</source>
+        <translation>dddd, MMMM dd yyyy  HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2208"/>
@@ -5374,12 +5377,6 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>MM/dd/yyyy</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="446"/>
-        <source>dddd dd MMMM yyyy hh:mm:ss</source>
-        <comment>Date format</comment>
-        <translation>dddd, MMMM dd yyyy  hh:mm:ss</translation>
-    </message>
-    <message>
         <location filename="../src/librairies/dates/date.cpp" line="281"/>
         <source>Date au format ISO vide</source>
         <translation>Date with ISO format is empty</translation>
@@ -5405,6 +5402,12 @@ Satellite %1 - NORAD number : %2</translation>
         <location filename="../src/librairies/dates/date.cpp" line="423"/>
         <source>Le fichier taiutc.dat n&apos;existe pas</source>
         <translation>The taiutc.dat file does not exist</translation>
+    </message>
+    <message>
+        <location filename="../src/librairies/dates/date.cpp" line="446"/>
+        <source>dddd dd MMMM yyyy HH:mm:ss</source>
+        <comment>Date format</comment>
+        <translation>dddd, MMMM dd yyyy  HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/librairies/dates/date.cpp" line="663"/>
