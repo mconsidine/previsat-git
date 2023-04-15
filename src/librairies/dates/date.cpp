@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    15 avril 2023
  *
  */
 
@@ -443,7 +443,7 @@ QString Date::ToLongDate(const QString &locale, const DateSysteme &systeme) cons
     const QDateTime qdate = Date((*this).jourJulien() - offset + DATE::EPS_DATES, offset).ToQDateTime(1);
 
     /* Corps de la methode */
-    QString res = QLocale(locale).toString(qdate, QObject::tr("dddd dd MMMM yyyy hh:mm:ss", "Date format") +
+    QString res = QLocale(locale).toString(qdate, QObject::tr("dddd dd MMMM yyyy HH:mm:ss", "Date format") +
                                            ((systeme == DateSysteme::SYSTEME_12H) ? "a" : ""));
     res[0] = res[0].toUpper();
 

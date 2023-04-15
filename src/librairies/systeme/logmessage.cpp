@@ -93,7 +93,7 @@ LogMessage::LogMessage(const QString &baseNomFichier, const unsigned int nbMaxFi
         listeFicLog.removeFirst();
     }
 
-    const QString dateFichierLog = QDateTime::currentDateTimeUtc().toString("_yyyy-MM-dd_hh-mm-ss-zzz");
+    const QString dateFichierLog = QDateTime::currentDateTimeUtc().toString("_yyyy-MM-dd_HH-mm-ss-zzz");
 #endif
 
     /* Corps du constructeur */
@@ -168,7 +168,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     /* Corps de la methode */
     QTextStream out(_fichierLog.data());
 #if (BUILD_TEST == false)
-    out << QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd hh:mm:ss.zzz : ");
+    out << QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd HH:mm:ss.zzz : ");
 #endif
 
     out << typeMessage.value(type) << " : ";

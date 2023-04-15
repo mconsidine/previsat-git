@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    8 avril 2023
+ * >    15 avril 2023
  *
  */
 
@@ -224,7 +224,7 @@ void General::AffichageDate(const Date &date)
     if (fabs(date.offsetUTC()) > MATHS::EPSDBL100) {
         QTime heur(0, 0);
         heur = heur.addSecs(qRound(fabs(date.offsetUTC()) * DATE::NB_SEC_PAR_JOUR));
-        chaineUTC = tr("UTC %1 %2", "Universal Time Coordinated").arg((date.offsetUTC() > 0.) ? "+" : "-").arg(heur.toString("hh:mm"));
+        chaineUTC = tr("UTC %1 %2", "Universal Time Coordinated").arg((date.offsetUTC() > 0.) ? "+" : "-").arg(heur.toString("HH:mm"));
         _ui->utcDateHeure->setText(chaineUTC);
     } else {
         chaineUTC = tr("UTC", "Universal Time Coordinated");
@@ -536,13 +536,13 @@ void General::AffichageDonneesSoleilLune()
     // Conditions d'observation
     const double ht = soleil.hauteur() * MATHS::RAD2DEG;
     if (ht >= 0.) {
-        cond = tr("Jour");
+        cond = tr("Jour", "Sun is above horizon");
     } else if (ht >= -6.) {
-        cond = tr("Crépuscule civil");
+        cond = tr("Crépuscule civil", "Sun is 6 degrees below horizon");
     } else if (ht >= -12.) {
-        cond = tr("Crépuscule nautique");
+        cond = tr("Crépuscule nautique", "Sun is 12 degrees below horizon");
     } else if (ht >= -18.) {
-        cond = tr("Crépuscule astronomique");
+        cond = tr("Crépuscule astronomique", "Sun is 18 degrees below horizon");
     } else {
         cond = tr("Nuit");
     }
@@ -963,7 +963,7 @@ void General::JouerSonFlash()
 
 void General::on_dateHeure2_dateTimeChanged(const QDateTime &dateTime)
 {
-    _ui->dateHeure2->setDisplayFormat(tr("dddd dd MMMM yyyy  hh:mm:ss") + ((settings.value("affichage/systemeHoraire").toBool()) ? "" : "a"));
+    _ui->dateHeure2->setDisplayFormat(tr("dddd dd MMMM yyyy  HH:mm:ss") + ((settings.value("affichage/systemeHoraire").toBool()) ? "" : "a"));
     emit ChangementDate(dateTime);
 }
 

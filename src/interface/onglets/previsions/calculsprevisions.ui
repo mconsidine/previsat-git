@@ -181,7 +181,7 @@
        </date>
       </property>
       <property name="displayFormat">
-       <string extracomment="Date format">dd/MM/yyyy hh:mm:ss</string>
+       <string extracomment="Date format">dd/MM/yyyy HH:mm:ss</string>
       </property>
       <property name="calendarPopup">
        <bool>true</bool>
@@ -216,7 +216,7 @@
        <bool>true</bool>
       </property>
       <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::UpDownArrows</enum>
+       <enum>QAbstractSpinBox::NoButtons</enum>
       </property>
       <property name="dateTime">
        <datetime>
@@ -236,7 +236,7 @@
        </date>
       </property>
       <property name="displayFormat">
-       <string extracomment="Date format">dd/MM/yyyy hh:mm:ss</string>
+       <string extracomment="Date format">dd/MM/yyyy HH:mm:ss</string>
       </property>
       <property name="calendarPopup">
        <bool>true</bool>
@@ -458,10 +458,10 @@
          <bool>true</bool>
         </property>
         <property name="currentText">
-         <string notr="true">Crépuscule civil (-6°)</string>
+         <string notr="true">Horizon (0°)</string>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="iconSize">
          <size>
@@ -491,7 +491,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Indifférent</string>
+          <string extracomment="Pas de hauteur limite pour le Soleil : les calculs de jour sont inclus">Indifférent</string>
          </property>
         </item>
         <item>

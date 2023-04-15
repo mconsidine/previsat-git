@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    10 avril 2023
+ * >    15 avril 2023
  *
  */
 
@@ -636,7 +636,7 @@ void AfficherResultats::EcrireEntete() const
                 (fabs(_conditions.offset) > MATHS::EPSDBL100)) {
             QTime heur(0, 0);
             heur = heur.addSecs((int) (_conditions.offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES));
-            chaine = chaine.append((_conditions.offset > 0.) ? " + " : " - ").append(heur.toString("hh:mm"));
+            chaine = chaine.append((_conditions.offset > 0.) ? " + " : " - ").append(heur.toString("HH:mm"));
         }
         flux << ligne.arg(chaine) << Qt::endl;
 
@@ -1381,7 +1381,7 @@ void AfficherResultats::on_actionEnregistrer_triggered()
     /* Corps de la methode */
     const QString fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous"), nomFicDefaut,
                                                      tr("Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;" \
-                                                        "Tous les fichiers (*)"));
+                                                        "Tous les fichiers (*.*)"));
 
     if (!fic.isEmpty()) {
         image.save(fic);
@@ -1410,7 +1410,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
     } else {
         const QString nomFicDefaut = _conditions.ficRes.split(QDir::separator()).last();
         fic = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), Configuration::instance()->dirOut() + QDir::separator() +
-                                           nomFicDefaut, tr("Fichiers texte (*.txt);;Tous les fichiers (*)"));
+                                           nomFicDefaut, tr("Fichiers texte (*.txt);;Tous les fichiers (*.*)"));
     }
 #endif
 

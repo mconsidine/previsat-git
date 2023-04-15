@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 avril 2023
+ * >    15 avril 2023
  *
  */
 
@@ -1832,7 +1832,7 @@ void PreviSat::EtapePrecedente()
     // Enchainement de l'ensemble des calculs
     EnchainementCalculs();
 
-    const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
+    const QString fmt = tr("dddd dd MMMM yyyy  HH:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
 
     _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
     _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
@@ -1888,7 +1888,7 @@ void PreviSat::EtapeSuivante()
     // Enchainement de l'ensemble des calculs
     EnchainementCalculs();
 
-    const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
+    const QString fmt = tr("dddd dd MMMM yyyy  HH:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
 
     _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
     _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
@@ -2057,7 +2057,7 @@ void PreviSat::GestionTempsReel()
                 // Enchainement de l'ensemble des calculs
                 EnchainementCalculs();
 
-                const QString fmt = tr("dddd dd MMMM yyyy  hh:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
+                const QString fmt = tr("dddd dd MMMM yyyy  HH:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
 
                 _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
                 _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
@@ -2372,7 +2372,7 @@ void PreviSat::TempsReel()
         // Affichage de la date et l'heure dans la barre de statut
         const QDateTime d = _dateCourante->ToQDateTime(1);
         _stsDate->setText(d.toString(tr("dd/MM/yyyy", "date format")));
-        _stsHeure->setText(QLocale(Configuration::instance()->locale()).toString(d, QString("hh:mm:ss") +
+        _stsHeure->setText(QLocale(Configuration::instance()->locale()).toString(d, QString("HH:mm:ss") +
                                                                                  ((_options->ui()->syst12h->isChecked()) ? "a" : "")));
         _stsDate->setToolTip(tr("Date"));
         _stsHeure->setToolTip(tr("Heure"));

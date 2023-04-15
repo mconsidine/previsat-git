@@ -730,7 +730,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>2</string>
+        <string notr="true">2</string>
        </property>
       </widget>
       <widget class="QLabel" name="lbl_revjour3_3">
@@ -743,7 +743,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>3</string>
+        <string notr="true">3</string>
        </property>
       </widget>
      </widget>

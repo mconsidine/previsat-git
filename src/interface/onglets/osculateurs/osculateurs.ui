@@ -54,7 +54,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Date :</string>
+         <string extracomment="Date and hour">Date :</string>
         </property>
        </widget>
       </item>
@@ -106,7 +106,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Date :</string>
+         <string extracomment="Date and hour">Date :</string>
         </property>
        </widget>
       </item>
