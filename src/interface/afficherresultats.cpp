@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    15 avril 2023
+ * >    16 avril 2023
  *
  */
 
@@ -142,6 +142,7 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const Conditi
 
     case TypeCalcul::TRANSITS:
         setWindowTitle(tr("Transits"));
+        scene = new QGraphicsScene;
         _ui->afficherCarte->setVisible(true);
         titres << tr("Satellite") << tr("Date du maximum", "Date and hour") << tr("Cst", "Constellation") << tr("Angle")
                << tr("Type", "Transit or conjunction") << tr("Corps") << tr("Illum", "Illumination") << tr("Durée") << tr("Hauteur Soleil");
@@ -264,12 +265,7 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
     const int lciel = qRound(0.5 * _ui->detailsTransit->width());
     const int hciel = qRound(0.5 * _ui->detailsTransit->height());
 
-    if (scene != nullptr) {
-        delete scene;
-        scene = nullptr;
-    }
-
-    scene = new QGraphicsScene;
+    scene->clear();
     scene->setBackgroundBrush(Qt::white);
 
     // Affichage de la carte du ciel
@@ -388,6 +384,7 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
     }
 
     _ui->detailsTransit->setScene(scene);
+    _ui->detailsTransit->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     /* Retour */
     return;
@@ -611,7 +608,7 @@ void AfficherResultats::EcrireEntete() const
         // Lieu d'observation
         if (_typeCalcul != TypeCalcul::EVENEMENTS) {
 
-            ligne = QObject::tr("Lieu d'observation        : %1     %2 %3   %4 %5   %6 %7");
+            ligne = QObject::tr("Lieu d'observation              : %1     %2 %3   %4 %5   %6 %7");
             const QString lon = Maths::ToSexagesimal(fabs(_conditions.observateur.longitude()), AngleFormatType::DEGRE, 3, 0, false, false);
             const QString ew = (_conditions.observateur.longitude() >= 0.) ? QObject::tr("Ouest") : QObject::tr("Est");
 
@@ -627,7 +624,7 @@ void AfficherResultats::EcrireEntete() const
         }
 
         // Fuseau horaire
-        ligne = QObject::tr("Fuseau horaire            : %1");
+        ligne = QObject::tr("Fuseau horaire                  : %1");
         QString chaine = QObject::tr("UTC", "Universal Time Coordinated");
         if (
         #if (BUILD_TEST == false)
@@ -642,7 +639,7 @@ void AfficherResultats::EcrireEntete() const
 
         if (_typeCalcul != TypeCalcul::EVENEMENTS) {
 
-            const QString cond1 = QObject::tr("Conditions d'observations :") + " ";
+            const QString cond1 = QObject::tr("Conditions d'observations       :") + " ";
             const QString cond2 = QObject::tr("Hauteur minimale du satellite = %1°");
 
             // Conditions d'observations
@@ -654,7 +651,7 @@ void AfficherResultats::EcrireEntete() const
             }
 
             // Unite de distance
-            flux << tr("Unité de distance         : %1").arg(_conditions.unite) << Qt::endl;
+            flux << tr("Unité de distance               : %1").arg(_conditions.unite) << Qt::endl;
         }
 
         // Age des elements orbitaux
@@ -662,7 +659,7 @@ void AfficherResultats::EcrireEntete() const
                 .ToShortDate(DateFormat::FORMAT_COURT, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H).trimmed();
 
         if (_donnees.ageElementsOrbitaux.count() == 1) {
-            flux << Qt::endl << tr("Age de l'élément          : %1 jours (au %2)").arg(_donnees.ageElementsOrbitaux.at(0), 4, 'f', 2).arg(date)
+            flux << Qt::endl << tr("Age de l'élément                : %1 jours (au %2)").arg(_donnees.ageElementsOrbitaux.at(0), 4, 'f', 2).arg(date)
                  << Qt::endl << Qt::endl << Qt::endl;
         } else {
 

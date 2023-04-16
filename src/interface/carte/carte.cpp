@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    9 avril 2023
+ * >    16 avril 2023
  *
  */
 
@@ -584,14 +584,17 @@ void Carte::AffichageGrille()
             scene->addLine(0., y, lg, y, (i == (_maxParalleles / 2)) ? pen : pen2);
         }
 
-        // Tropiques
-        pen2.setStyle(Qt::DashDotLine);
-        scene->addLine(0, DEG2PX(66.55), _largeurCarte, DEG2PX(66.55), pen2);
-        scene->addLine(0, DEG2PX(113.45), _largeurCarte, DEG2PX(113.45), pen2);
+        if (!_mcc) {
 
-        // Cercles polaires
-        scene->addLine(0, DEG2PX(23.45), _largeurCarte, DEG2PX(23.45), pen2);
-        scene->addLine(0, DEG2PX(156.55), _largeurCarte, DEG2PX(156.55), pen2);
+            // Tropiques
+            pen2.setStyle(Qt::DashDotLine);
+            scene->addLine(0, DEG2PX(66.55), _largeurCarte, DEG2PX(66.55), pen2);
+            scene->addLine(0, DEG2PX(113.45), _largeurCarte, DEG2PX(113.45), pen2);
+
+            // Cercles polaires
+            scene->addLine(0, DEG2PX(23.45), _largeurCarte, DEG2PX(23.45), pen2);
+            scene->addLine(0, DEG2PX(156.55), _largeurCarte, DEG2PX(156.55), pen2);
+        }
     }
 
     // Affichage de la SAA
@@ -1421,8 +1424,9 @@ void Carte::AffichageZoneOmbre()
 
                 const double lon = _stepMeridiens * i;
                 const double x = DEG2PX(lon);
+                const double val = (_mcc) ? lon - 180. : fabs(lon - 180.);
 
-                QGraphicsSimpleTextItem * const txt = new QGraphicsSimpleTextItem(QString("%1").arg(fabs(lon - 180.)));
+                QGraphicsSimpleTextItem * const txt = new QGraphicsSimpleTextItem(QString("%1").arg(val));
                 txt->setBrush(couleur);
                 txt->setFont(police);
 
@@ -1432,17 +1436,20 @@ void Carte::AffichageZoneOmbre()
             }
         }
 
-        QGraphicsSimpleTextItem * txtl = new QGraphicsSimpleTextItem(tr("W", "Symbol for West"));
-        txtl->setBrush(couleur);
-        txtl->setFont(police);
-        txtl->setPos(DEG2PX(165.) - txtl->boundingRect().width() * 0.5, _hauteurMeridiens + 4.);
-        scene->addItem(txtl);
+        if (!_mcc) {
 
-        txtl = new QGraphicsSimpleTextItem(tr("E", "Symbol for East"));
-        txtl->setBrush(couleur);
-        txtl->setFont(police);
-        txtl->setPos(DEG2PX(195.) - txtl->boundingRect().width() * 0.5, _hauteurMeridiens + 4.);
-        scene->addItem(txtl);
+            QGraphicsSimpleTextItem * txtl = new QGraphicsSimpleTextItem(tr("W", "Symbol for West"));
+            txtl->setBrush(couleur);
+            txtl->setFont(police);
+            txtl->setPos(DEG2PX(165.) - txtl->boundingRect().width() * 0.5, _hauteurMeridiens + 4.);
+            scene->addItem(txtl);
+
+            txtl = new QGraphicsSimpleTextItem(tr("E", "Symbol for East"));
+            txtl->setBrush(couleur);
+            txtl->setFont(police);
+            txtl->setPos(DEG2PX(195.) - txtl->boundingRect().width() * 0.5, _hauteurMeridiens + 4.);
+            scene->addItem(txtl);
+        }
 
         // Etiquettes de latitude
         for(unsigned int i=1; i<_maxParalleles; i++) {
@@ -1451,8 +1458,9 @@ void Carte::AffichageZoneOmbre()
 
                 const double lat = _stepParalleles * i;
                 const double y = DEG2PX(lat);
+                const double val = (_mcc) ? 90. - lat : fabs(lat - 90.);
 
-                QGraphicsSimpleTextItem * const txt = new QGraphicsSimpleTextItem(QString("%1").arg(fabs(lat - 90.)));
+                QGraphicsSimpleTextItem * const txt = new QGraphicsSimpleTextItem(QString("%1").arg(val));
                 txt->setBrush(Qt::lightGray);
                 txt->setFont(police);
 
@@ -1462,17 +1470,20 @@ void Carte::AffichageZoneOmbre()
             }
         }
 
-        txtl = new QGraphicsSimpleTextItem(tr("N", "Symbol for North"));
-        txtl->setFont(police);
-        txtl->setBrush(Qt::lightGray);
-        txtl->setPos(_largeurCarte - 7. - txtl->boundingRect().width(), DEG2PX(75.) - txtl->boundingRect().height() * 0.5);
-        scene->addItem(txtl);
+        if (!_mcc) {
 
-        txtl = new QGraphicsSimpleTextItem(tr("S", "Symbol for South"));
-        txtl->setFont(police);
-        txtl->setBrush(Qt::lightGray);
-        txtl->setPos(_largeurCarte - 7. - txtl->boundingRect().width(), DEG2PX(105.) - txtl->boundingRect().height() * 0.5);
-        scene->addItem(txtl);
+            QGraphicsSimpleTextItem * txtl = new QGraphicsSimpleTextItem(tr("N", "Symbol for North"));
+            txtl->setFont(police);
+            txtl->setBrush(Qt::lightGray);
+            txtl->setPos(_largeurCarte - 7. - txtl->boundingRect().width(), DEG2PX(75.) - txtl->boundingRect().height() * 0.5);
+            scene->addItem(txtl);
+
+            txtl = new QGraphicsSimpleTextItem(tr("S", "Symbol for South"));
+            txtl->setFont(police);
+            txtl->setBrush(Qt::lightGray);
+            txtl->setPos(_largeurCarte - 7. - txtl->boundingRect().width(), DEG2PX(105.) - txtl->boundingRect().height() * 0.5);
+            scene->addItem(txtl);
+        }
     }
 
     /* Retour */

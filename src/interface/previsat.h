@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 avril 2023
+ * >    16 avril 2023
  *
  */
 
@@ -428,7 +428,6 @@ private slots:
 
     void on_actionPayPal_triggered();
     void on_actionTipeee_triggered();
-    void on_actionUtip_triggered();
 
     void on_actionSkywatcher_triggered();
     void on_actionPianetaRadio_triggered();

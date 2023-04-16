@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    7 avril 2023
+ * >    16 avril 2023
  *
  */
 
@@ -288,10 +288,21 @@ void Onglets::show(const Date &date)
 
     AffichageOngletInformations();
 
-    _previsions->show(date);
-    _flashs->show(date);
-    _transits->show(date);
-    _evenements->show(date);
+    if (!_previsions->isVisible()) {
+        _previsions->show(date);
+    }
+
+    if (!_flashs->isVisible()) {
+        _flashs->show(date);
+    }
+
+    if (!_transits->isVisible()) {
+        _transits->show(date);
+    }
+
+    if (!_evenements->isVisible()) {
+        _evenements->show(date);
+    }
 
 #if defined (Q_OS_WIN)
     if (_ui->telescope->isVisible() && (_suiviTelescope->getListItemChecked(_suiviTelescope->ui()->listeTelescope) > 0)) {

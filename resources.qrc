@@ -49,6 +49,5 @@
         <file>resources/interface/logo-skywatcher.png</file>
         <file>resources/interface/gift.png</file>
         <file>resources/interface/tipeee.png</file>
-        <file>resources/interface/utip.png</file>
     </qresource>
 </RCC>
