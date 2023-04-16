@@ -105,7 +105,7 @@ void FlashsTest::testCalculFlashs()
     const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "flares-spctrk.txt";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "flashs1_20200815_20200915.txt";
 
-    conditions.fichier = fichier;
+    conditions.tabElem = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul des flashs

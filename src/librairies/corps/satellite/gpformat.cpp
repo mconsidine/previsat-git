@@ -385,6 +385,8 @@ void GPFormat::LectureSectionData(QXmlStreamReader &gp, ElementsOrbitaux &elem)
 
             LectureSectionTleParameters(gp, elem);
 
+        } else {
+            gp.skipCurrentElement();
         }
     }
 

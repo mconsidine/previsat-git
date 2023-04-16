@@ -408,7 +408,7 @@ void CalculsFlashs::on_calculsFlashs_clicked()
             throw PreviSatException(tr("Aucun satellite produisant des flashs n'a été trouvé dans le fichier d'éléments orbitaux"), MessageType::WARNING);
         }
 
-        conditions.fichier = fichier;
+        conditions.tabElem = tabElem;
         conditions.listeSatellites = listeSatellites;
 
         // Ecriture des informations de prévisions dans le fichier de log
