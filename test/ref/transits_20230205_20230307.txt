@@ -1,7 +1,7 @@
-Lieu d'observation        : Paris      002°20'55" Est    48°51'12" Nord   30 m
-Fuseau horaire            : UTC + 01:00
-Conditions d'observations : Hauteur minimale du satellite = 5°
-Unité de distance         : km
+Lieu d'observation              : Paris      002°20'55" Est    48°51'12" Nord   30 m
+Fuseau horaire                  : UTC + 01:00
+Conditions d'observations       : Hauteur minimale du satellite = 5°
+Unité de distance               : km
 
 Age de l'élément le plus récent : 0.71 jours (au 04/02/2023 23:00:00)
 Age de l'élément le plus ancien : 1.08 jours
