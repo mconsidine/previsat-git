@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    6 avril 2023
+ * >    16 avril 2023
  *
  */
 
@@ -546,24 +546,27 @@ void Ciel::resizeEvent(QResizeEvent *evt)
     Q_UNUSED(evt)
 
     /* Corps de la methode */
-    _ui->vueCiel->setGeometry(_ui->vueCiel->x(), _ui->vueCiel->y(), parentWidget()->height()-32, parentWidget()->height()-32);
-    setGeometry((parentWidget()->width() - width() - _ui->est->width()) / 2, 0, _ui->vueCiel->width() + 2 * _ui->est->width(),
-                parentWidget()->height());
+    if (!_labelHeure) {
 
-    _ui->est->setGeometry(_ui->est->x(), _ui->est->y(), _ui->est->width(), _ui->vueCiel->height());
-    _ui->ouest->setGeometry(_ui->est->width() + _ui->vueCiel->width(), _ui->ouest->y(), _ui->ouest->width(), _ui->vueCiel->height());
-    _ui->nord->setGeometry(_ui->nord->x(), _ui->nord->y(), 2 * _ui->est->width() + _ui->vueCiel->width(), _ui->nord->height());
-    _ui->sud->setGeometry(_ui->sud->x(), _ui->nord->height() + _ui->vueCiel->height(), _ui->nord->width(), _ui->sud->height());
+        _ui->vueCiel->setGeometry(_ui->vueCiel->x(), _ui->vueCiel->y(), parentWidget()->height()-32, parentWidget()->height()-32);
+        setGeometry((parentWidget()->width() - width() - _ui->est->width()) / 2, 0, _ui->vueCiel->width() + 2 * _ui->est->width(),
+                    parentWidget()->height());
 
-    show(Configuration::instance()->observateur(),
-         Configuration::instance()->soleil(),
-         Configuration::instance()->lune(),
-         Configuration::instance()->lignesCst(),
-         Configuration::instance()->constellations(),
-         Configuration::instance()->etoiles(),
-         Configuration::instance()->planetes(),
-         Configuration::instance()->listeSatellites(),
-         Configuration::instance()->isCarteMaximisee());
+        _ui->est->setGeometry(_ui->est->x(), _ui->est->y(), _ui->est->width(), _ui->vueCiel->height());
+        _ui->ouest->setGeometry(_ui->est->width() + _ui->vueCiel->width(), _ui->ouest->y(), _ui->ouest->width(), _ui->vueCiel->height());
+        _ui->nord->setGeometry(_ui->nord->x(), _ui->nord->y(), 2 * _ui->est->width() + _ui->vueCiel->width(), _ui->nord->height());
+        _ui->sud->setGeometry(_ui->sud->x(), _ui->nord->height() + _ui->vueCiel->height(), _ui->nord->width(), _ui->sud->height());
+
+        show(Configuration::instance()->observateur(),
+             Configuration::instance()->soleil(),
+             Configuration::instance()->lune(),
+             Configuration::instance()->lignesCst(),
+             Configuration::instance()->constellations(),
+             Configuration::instance()->etoiles(),
+             Configuration::instance()->planetes(),
+             Configuration::instance()->listeSatellites(),
+             Configuration::instance()->isCarteMaximisee());
+    }
 
     /* Retour */
     return;
