@@ -1,4 +1,4 @@
-Fuseau horaire            : UTC + 02:00
+Fuseau horaire                  : UTC + 02:00
 
 Age de l'élément le plus récent : 0.36 jours (au 15/08/2020 00:00:00)
 Age de l'élément le plus ancien : 0.46 jours
