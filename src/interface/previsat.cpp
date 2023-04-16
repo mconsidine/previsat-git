@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 avril 2023
+ * >    16 avril 2023
  *
  */
 
@@ -2659,6 +2659,7 @@ void PreviSat::on_issLive_toggled(bool checked)
 
     /* Corps de la methode */
     Configuration::instance()->issLive() = checked;
+    settings.setValue("affichage/issLive", checked);
     GestionTempsReel();
 
     _ui->frameVideo->setVisible(checked);

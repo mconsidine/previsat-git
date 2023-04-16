@@ -373,12 +373,14 @@ void SuiviTelescope::CalculAos()
                 // Le satellite est deja dans le ciel
                 satSuivi.CalculElementsOsculateurs(dateCalcul);
 
-                _dateLosSuivi = _dateAosSuivi;
+                EFFACE_OBJET(_dateLosSuivi);
+                _dateLosSuivi = new Date(_dateAosSuivi->jourJulienUTC(), _date->offsetUTC());
 
                 const ElementsAOS elem = Evenements::CalculAOS(Date(_dateLosSuivi->jourJulienUTC() - 10. * DATE::NB_JOUR_PAR_SEC, _date->offsetUTC()),
                                                                satSuivi, obs, SensCalcul::ANTI_CHRONOLOGIQUE, 0.);
 
-                *_dateAosSuivi = elem.date;
+                EFFACE_OBJET(_dateAosSuivi);
+                _dateAosSuivi = new Date(elem.date, _date->offsetUTC());
                 azim = elemAos.azimut;
 
                 const QString chaine2 = tr("Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3");

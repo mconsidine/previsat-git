@@ -632,6 +632,7 @@ void Outils::on_ajoutFichiersElem_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
+    _ui->listeFichiers->clear();
     _ui->listeFichiersElem->setCurrentRow(-1);
     _ui->stackedWidget_satellites->setVisible(true);
     _ui->stackedWidget_satellites->setCurrentWidget(_ui->groupe);
