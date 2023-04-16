@@ -1146,7 +1146,6 @@ void PreviSat::InitVerificationsMAJ()
 
             QPushButton * const paypal = msgbox.addButton("PayPal", QMessageBox::YesRole);
             const QPushButton * const tipeee = msgbox.addButton("Tipeee", QMessageBox::AcceptRole);
-            const QPushButton * const utip = msgbox.addButton("Utip", QMessageBox::ActionRole);
             msgbox.addButton(tr("Non"), QMessageBox::RejectRole);
 
             msgbox.setDefaultButton(paypal);
@@ -1157,9 +1156,6 @@ void PreviSat::InitVerificationsMAJ()
 
             } else if (msgbox.clickedButton() == tipeee) {
                 on_actionTipeee_triggered();
-
-            } else if (msgbox.clickedButton() == utip) {
-                on_actionUtip_triggered();
             }
         }
     }
@@ -3175,13 +3171,6 @@ void PreviSat::on_actionTipeee_triggered()
     Message::Afficher(tr("Attention : Il est possible d'effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires"),
                       MessageType::INFO);
     QDesktopServices::openUrl(QUrl("https://tipeee.com/previsat"));
-}
-
-void PreviSat::on_actionUtip_triggered()
-{
-    Message::Afficher(tr("Attention : Il est possible d'effectuer un don PayPal via Utip, mais ceci induira des frais supplémentaires"),
-                      MessageType::INFO);
-    QDesktopServices::openUrl(QUrl("https://utip.io/previsat/"));
 }
 
 void PreviSat::on_actionSkywatcher_triggered()

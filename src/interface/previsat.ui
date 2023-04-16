@@ -928,7 +928,6 @@ le flux vidéo</string>
     </property>
     <addaction name="actionPayPal"/>
     <addaction name="actionTipeee"/>
-    <addaction name="actionUtip"/>
    </widget>
    <widget class="QMenu" name="menuPartenaires">
     <property name="title">
@@ -980,15 +979,6 @@ le flux vidéo</string>
    </property>
    <property name="text">
     <string>Tipeee</string>
-   </property>
-  </action>
-  <action name="actionUtip">
-   <property name="icon">
-    <iconset resource="../../resources.qrc">
-     <normaloff>:/resources/interface/utip.png</normaloff>:/resources/interface/utip.png</iconset>
-   </property>
-   <property name="text">
-    <string>Utip</string>
    </property>
   </action>
   <action name="actionEnregistrer">
