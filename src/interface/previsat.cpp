@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 avril 2023
+ * >    22 avril 2023
  *
  */
 
@@ -605,13 +605,13 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(this, &PreviSat::AffichageListeSatellites, _onglets->suiviTelescope(), &SuiviTelescope::AfficherListeSatellites);
     connect(this, &PreviSat::InitAffichageListeSatellites, _onglets->suiviTelescope(), &SuiviTelescope::InitAffichageListeSatellites);
     connect(this, &PreviSat::TriAffichageListeSatellites, _onglets->suiviTelescope(), &SuiviTelescope::TriAffichageListeSatellites);
+    connect(_onglets->suiviTelescope(), &SuiviTelescope::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
 #endif
 
     connect(_onglets->previsions(), &CalculsPrevisions::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->flashs(), &CalculsFlashs::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->transits(), &CalculsTransits::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->evenements(), &CalculsEvenementsOrbitaux::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
-    connect(_onglets->suiviTelescope(), &SuiviTelescope::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->general(), &General::ModeManuel, this, &PreviSat::on_modeManuel_toggled);
     connect(_onglets->osculateurs(), &Osculateurs::ModeManuel, this, &PreviSat::on_modeManuel_toggled);
 
@@ -2934,7 +2934,7 @@ void PreviSat::on_actionMode_sombre_triggered()
 #if defined (Q_OS_WIN)
     qApp->setStyle("windowsvista");
 #elif defined (Q_OS_LINUX)
-    // TODO
+    qApp->setStyle("Windows");
 #elif defined (Q_OS_MAC)
     qApp->setStyle("macos");
 #endif

@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    16 avril 2023
+ * >    22 avril 2023
  *
  */
 
@@ -494,8 +494,9 @@ void Onglets::Initialisation()
     connect(this, &Onglets::AffichageLieuObs, _previsions, &CalculsPrevisions::AffichageLieuObs);
     connect(this, &Onglets::AffichageLieuObs, _flashs, &CalculsFlashs::AffichageLieuObs);
     connect(this, &Onglets::AffichageLieuObs, _transits, &CalculsTransits::AffichageLieuObs);
+#if defined (Q_OS_WIN)
     connect(this, &Onglets::AffichageLieuObs, _suiviTelescope, &SuiviTelescope::AffichageLieuObs);
-
+#endif
     AffichageLieuObservation();
 
     _ui->stackedWidget_informations->setCurrentIndex(_indexInformations);

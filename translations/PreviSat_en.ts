@@ -5043,7 +5043,7 @@ which represents approximately %2 pages.</translation>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1138"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1240"/>
         <location filename="../src/librairies/corps/corps.cpp" line="671"/>
-        <location filename="../src/librairies/dates/date.cpp" line="413"/>
+        <location filename="../src/librairies/dates/date.cpp" line="415"/>
         <source>Erreur lors de la lecture du fichier %1, veuillez réinstaller %2</source>
         <translation>Error while reading file %1, please re-install %2</translation>
     </message>
@@ -5368,7 +5368,7 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Full Moon</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="488"/>
+        <location filename="../src/librairies/dates/date.cpp" line="486"/>
         <source>dd/MM/yyyy</source>
         <comment>Date format</comment>
         <translation>MM/dd/yyyy</translation>
@@ -5396,18 +5396,18 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Date with NASA format is invalid</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="423"/>
+        <location filename="../src/librairies/dates/date.cpp" line="392"/>
         <source>Le fichier taiutc.dat n&apos;existe pas</source>
         <translation>The taiutc.dat file does not exist</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="446"/>
+        <location filename="../src/librairies/dates/date.cpp" line="444"/>
         <source>dddd dd MMMM yyyy HH:mm:ss</source>
         <comment>Date format</comment>
         <translation>dddd, MMMM dd yyyy  HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="663"/>
+        <location filename="../src/librairies/dates/date.cpp" line="661"/>
         <source>Ecarts TAI-UTC non initialisés</source>
         <translation>TAI-UTC offsets not initialized</translation>
     </message>

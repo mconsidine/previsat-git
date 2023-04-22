@@ -5040,7 +5040,7 @@ ce qui représente environ %2 pages.</source>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1138"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1240"/>
         <location filename="../src/librairies/corps/corps.cpp" line="671"/>
-        <location filename="../src/librairies/dates/date.cpp" line="413"/>
+        <location filename="../src/librairies/dates/date.cpp" line="415"/>
         <source>Erreur lors de la lecture du fichier %1, veuillez réinstaller %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5360,7 +5360,7 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>フルムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="488"/>
+        <location filename="../src/librairies/dates/date.cpp" line="486"/>
         <source>dd/MM/yyyy</source>
         <comment>Date format</comment>
         <translation>yyyy年MM月dd日</translation>
@@ -5388,18 +5388,18 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="423"/>
+        <location filename="../src/librairies/dates/date.cpp" line="392"/>
         <source>Le fichier taiutc.dat n&apos;existe pas</source>
         <translation>taiutc.datファイルが存在しません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="446"/>
+        <location filename="../src/librairies/dates/date.cpp" line="444"/>
         <source>dddd dd MMMM yyyy HH:mm:ss</source>
         <comment>Date format</comment>
         <translation>yyyy年MM月dd日 (dddd)  HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="663"/>
+        <location filename="../src/librairies/dates/date.cpp" line="661"/>
         <source>Ecarts TAI-UTC non initialisés</source>
         <translation>TAIとUTCの差が初期化されていません</translation>
     </message>
