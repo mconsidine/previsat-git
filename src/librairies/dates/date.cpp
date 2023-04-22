@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 avril 2023
+ * >    22 avril 2023
  *
  */
 
@@ -388,40 +388,38 @@ void Date::Initialisation(const QString &dirLocalData)
         const QString fic = dirLocalData + QDir::separator() + "taiutc.dat";
 
         QFile fi(fic);
-        if (fi.exists() && (fi.size() != 0)) {
+        if (!fi.exists() && (fi.size() == 0)) {
+            throw PreviSatException(QObject::tr("Le fichier taiutc.dat n'existe pas"), MessageType::WARNING);
+        }
 
-            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-                QTextStream flux(&fi);
+            QTextStream flux(&fi);
 
-                _ecartsTAI_UTC.clear();
-                while (!flux.atEnd()) {
+            _ecartsTAI_UTC.clear();
+            while (!flux.atEnd()) {
 
-                    const QString ligne = flux.readLine();
+                const QString ligne = flux.readLine();
 
-                    if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
-                        const QPair<double, double> pair(ligne.mid(0, 10).toDouble(), ligne.mid(11, 5).toDouble());
-                        _ecartsTAI_UTC.append(pair);
-                    }
+                if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
+                    const QPair<double, double> pair(ligne.mid(0, 10).toDouble(), ligne.mid(11, 5).toDouble());
+                    _ecartsTAI_UTC.append(pair);
                 }
             }
-            fi.close();
+        }
+        fi.close();
 
 #if (COVERAGE_TEST == false)
-            if (_ecartsTAI_UTC.isEmpty()) {
-                const QFileInfo ff(fi.fileName());
-                throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
-                                                          .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
-            }
+        if (_ecartsTAI_UTC.isEmpty()) {
+            const QFileInfo ff(fi.fileName());
+            throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                            .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+        }
 #endif
 
 #if (BUILD_TEST == false)
-            qInfo() << "Lecture fichier taiutc.dat OK";
+        qInfo() << "Lecture fichier taiutc.dat OK";
 #endif
-
-        } else {
-            throw PreviSatException(QObject::tr("Le fichier taiutc.dat n'existe pas"), MessageType::WARNING);
-        }
 
     } catch (PreviSatException &e) {
         throw PreviSatException();
