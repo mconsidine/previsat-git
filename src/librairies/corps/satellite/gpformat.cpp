@@ -117,28 +117,21 @@ QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichi
                     gp.skipCurrentElement();
                 }
 
-                if (listeSatellites.isEmpty() || listeSatellites.contains(elem.norad)) {
+                if ((listeSatellites.isEmpty() || listeSatellites.contains(elem.norad)) && !mapElem.contains(elem.norad) && ajoutDonnees) {
 
-                    if (!mapElem.contains(elem.norad)) {
+                    // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
+                    const int idx = lgRec * elem.norad.toInt();
+                    if ((idx >= 0) && (idx < donneesSat.size())) {
 
-                        if (ajoutDonnees) {
+                        elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
 
-                            // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
-                            const int idx = lgRec * elem.norad.toInt();
-                            if ((idx >= 0) && (idx < donneesSat.size())) {
-
-                                elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
-
-                                // Correction eventuelle du nombre d'orbites a l'epoque
-                                elem.nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
-                            }
-                        }
-
-                        mapElem.insert(elem.norad, elem);
+                        // Correction eventuelle du nombre d'orbites a l'epoque
+                        elem.nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
                     }
+
+                    mapElem.insert(elem.norad, elem);
                 }
             }
-
         } else {
 
 #if (BUILD_TEST == false)
@@ -321,7 +314,7 @@ int GPFormat::CalculNombreOrbitesEpoque(const ElementsOrbitaux &elements)
 
         // Nombre theorique d'orbites a l'epoque
         const int nbOrbTheo = static_cast<int> (elements.no * (elements.epoque.jourJulienUTC() - dateLct.jourJulienUTC()));
-        int resteOrb = nbOrbTheo%100000;
+        int resteOrb = nbOrbTheo % 100000;
         resteOrb += (((elements.nbOrbitesEpoque > 50000) && (resteOrb < 50000)) ? 100000 : 0);
         resteOrb -= (((elements.nbOrbitesEpoque < 50000) && (resteOrb > 50000)) ? 100000 : 0);
         const int deltaNbOrb = nbOrbTheo - resteOrb;

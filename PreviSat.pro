@@ -70,6 +70,7 @@ APP_NAME_STR    = '\\"$${TARGET}\\"'
 ORG_NAME_STR    = '\\"$${ORGANIZATION}\\"'
 DOMAIN_NAME_STR = '\\"$${DOMAIN}\\"'
 MAIL_STR        = '\\"$${MAIL}\\"'
+NBL_STR         = '\\"$${NB_LINES}\\"'
 
 
 DEFINES += APP_VERSION=\"$${VERSION_STR}\" \
@@ -81,6 +82,7 @@ DEFINES += APP_VERSION=\"$${VERSION_STR}\" \
     MAILTO=\"$${MAIL_STR}\"                \
     BUILD_TEST=$${BUILD_TEST}              \
     COVERAGE_TEST=$${COV_TEST}             \
+    NB_LIGNES=$${NBL_STR}                  \
     QT_DISABLE_DEPRECATED_BEFORE=0x060000  \
     QT_MESSAGELOGCONTEXT
 

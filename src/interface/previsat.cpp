@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 avril 2023
+ * >    20 avril 2023
  *
  */
 
@@ -429,38 +429,7 @@ void PreviSat::DemarrageApplication()
 
     _ui->issLive->setChecked(settings.value("affichage/issLive", false).toBool());
 
-    if (_isCarteMonde) {
-
-        // Affichage de la carte du monde
-        _carte->show();
-
-        if (Configuration::instance()->issLive()) {
-            AfficherCoordIssGmt();
-        }
-
-    } else {
-
-        // Affichage de la carte du ciel
-        _ciel->show(Configuration::instance()->observateur(),
-                    Configuration::instance()->soleil(),
-                    Configuration::instance()->lune(),
-                    Configuration::instance()->lignesCst(),
-                    Configuration::instance()->constellations(),
-                    Configuration::instance()->etoiles(),
-                    Configuration::instance()->planetes(),
-                    Configuration::instance()->listeSatellites(),
-                    Configuration::instance()->isCarteMaximisee());
-    }
-
-    // Affichage du radar
-    const bool radarVisible = ((_options->ui()->affradar->checkState() == Qt::Checked)
-                               || ((_options->ui()->affradar->checkState() == Qt::PartiallyChecked)
-                                   && Configuration::instance()->listeSatellites().first().isVisible()));
-    if (radarVisible) {
-        _radar->show();
-    }
-
-    _radar->setVisible(!_ui->issLive->isChecked() && radarVisible);
+    AffichageCartesRadar();
 
     // Affichage de la fenetre d'informations
     const QUrl urlLastNews(QString("%1%2/Qt/informations/").arg(DOMAIN_NAME).arg(QString(APP_NAME).toLower())
@@ -516,6 +485,53 @@ void PreviSat::DemarrageApplication()
 /*
  * Methodes privees
  */
+/*
+ * Affichage des elements graphiques (carte du monde, carte du ciel, radar)
+ */
+void PreviSat::AffichageCartesRadar()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_isCarteMonde) {
+
+        // Affichage de la carte du monde
+        _carte->show();
+
+        if (Configuration::instance()->issLive()) {
+            AfficherCoordIssGmt();
+        }
+
+    } else {
+
+        // Affichage de la carte du ciel
+        _ciel->show(Configuration::instance()->observateur(),
+                    Configuration::instance()->soleil(),
+                    Configuration::instance()->lune(),
+                    Configuration::instance()->lignesCst(),
+                    Configuration::instance()->constellations(),
+                    Configuration::instance()->etoiles(),
+                    Configuration::instance()->planetes(),
+                    Configuration::instance()->listeSatellites(),
+                    Configuration::instance()->isCarteMaximisee());
+    }
+
+    // Affichage du radar
+    const bool radarVisible = ((_options->ui()->affradar->checkState() == Qt::Checked)
+                               || ((_options->ui()->affradar->checkState() == Qt::PartiallyChecked)
+                                   && Configuration::instance()->listeSatellites().first().isVisible()));
+    if (radarVisible) {
+        _radar->show();
+    }
+
+    _radar->setVisible(!_ui->issLive->isChecked() && radarVisible);
+
+    /* Retour */
+    return;
+}
+
 /*
  * Chargement de la traduction
  */
@@ -1141,8 +1157,13 @@ void PreviSat::InitVerificationsMAJ()
 
         if (QVersionNumber::compare(versionPrec, versionAct) < 0) {
 
-            QMessageBox msgbox(QMessageBox::Question, tr("Information"),
-                               tr("Vous venez de mettre à jour %1. Souhaitez-vous faire un don pour soutenir son auteur ?").arg(APP_NAME));
+            const int nbl = atoi(NB_LIGNES);
+            const QString nbLignes =
+                (nbl == 0) ? "" : tr("Cette version comporte %1 lignes de code,\n" \
+                                     "ce qui représente environ %2 pages.").arg(NB_LIGNES).arg(100 * qRound(nbl / 3000.)) + "\n\n";
+
+            const QString msg = tr("Vous venez de mettre à jour %1.\n%2Souhaitez-vous faire un don pour soutenir son auteur ?");
+            QMessageBox msgbox(QMessageBox::Question, tr("Information"), msg.arg(APP_NAME).arg(nbLignes));
 
             QPushButton * const paypal = msgbox.addButton("PayPal", QMessageBox::YesRole);
             const QPushButton * const tipeee = msgbox.addButton("Tipeee", QMessageBox::AcceptRole);
@@ -1836,24 +1857,7 @@ void PreviSat::EtapePrecedente()
 
     _onglets->show(*_dateCourante);
 
-    if (_isCarteMonde) {
-
-        // Affichage des elements graphiques sur la carte du monde
-        _carte->show();
-
-    } else {
-
-        // Affichage de la carte du ciel
-        _ciel->show(Configuration::instance()->observateur(),
-                    Configuration::instance()->soleil(),
-                    Configuration::instance()->lune(),
-                    Configuration::instance()->lignesCst(),
-                    Configuration::instance()->constellations(),
-                    Configuration::instance()->etoiles(),
-                    Configuration::instance()->planetes(),
-                    Configuration::instance()->listeSatellites(),
-                    Configuration::instance()->isCarteMaximisee() || _ciel->fenetreMax());
-    }
+    AffichageCartesRadar();
 
     /* Retour */
     return;
@@ -1892,24 +1896,7 @@ void PreviSat::EtapeSuivante()
 
     _onglets->show(*_dateCourante);
 
-    if (_isCarteMonde) {
-
-        // Affichage des elements graphiques sur la carte du monde
-        _carte->show();
-
-    } else {
-
-        // Affichage de la carte du ciel
-        _ciel->show(Configuration::instance()->observateur(),
-                    Configuration::instance()->soleil(),
-                    Configuration::instance()->lune(),
-                    Configuration::instance()->lignesCst(),
-                    Configuration::instance()->constellations(),
-                    Configuration::instance()->etoiles(),
-                    Configuration::instance()->planetes(),
-                    Configuration::instance()->listeSatellites(),
-                    Configuration::instance()->isCarteMaximisee() || _ciel->fenetreMax());
-    }
+    AffichageCartesRadar();
 
     /* Retour */
     return;
@@ -1988,38 +1975,7 @@ void PreviSat::GestionTempsReel()
             }
         }
 
-        if (_isCarteMonde) {
-
-            // Affichage des courbes sur la carte du monde
-            _carte->show();
-
-            if (Configuration::instance()->issLive()) {
-                AfficherCoordIssGmt();
-            }
-
-        } else {
-
-            // Affichage de la carte du ciel
-            _ciel->show(Configuration::instance()->observateur(),
-                        Configuration::instance()->soleil(),
-                        Configuration::instance()->lune(),
-                        Configuration::instance()->lignesCst(),
-                        Configuration::instance()->constellations(),
-                        Configuration::instance()->etoiles(),
-                        Configuration::instance()->planetes(),
-                        Configuration::instance()->listeSatellites(),
-                        Configuration::instance()->isCarteMaximisee() || _ciel->fenetreMax());
-        }
-
-        // Affichage du radar
-        const bool radarVisible = ((_options->ui()->affradar->checkState() == Qt::Checked) ||
-                                   ((_options->ui()->affradar->checkState() == Qt::PartiallyChecked)
-                                    && Configuration::instance()->listeSatellites().first().isVisible()));
-
-        if (radarVisible) {
-            _radar->show();
-        }
-        _radar->setVisible(!_ui->issLive->isChecked() && radarVisible);
+        AffichageCartesRadar();
     }
 
     if (_ui->modeManuel->isChecked()) {
@@ -2061,24 +2017,7 @@ void PreviSat::GestionTempsReel()
 
                 _onglets->show(*_dateCourante);
 
-                if (_isCarteMonde) {
-
-                    // Affichage des elements graphiques sur la carte du monde
-                    _carte->show();
-
-                } else {
-
-                    // Affichage de la carte du ciel
-                    _ciel->show(Configuration::instance()->observateur(),
-                                Configuration::instance()->soleil(),
-                                Configuration::instance()->lune(),
-                                Configuration::instance()->lignesCst(),
-                                Configuration::instance()->constellations(),
-                                Configuration::instance()->etoiles(),
-                                Configuration::instance()->planetes(),
-                                Configuration::instance()->listeSatellites(),
-                                Configuration::instance()->isCarteMaximisee() || _ciel->fenetreMax());
-                }
+                AffichageCartesRadar();
             }
         }
     }
@@ -3346,37 +3285,7 @@ void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
 
         _ui->issLive->setChecked(settings.value("affichage/issLive", false).toBool());
 
-        if (_isCarteMonde) {
-
-            // Affichage des courbes sur la carte du monde
-            _carte->show();
-
-            if (Configuration::instance()->issLive()) {
-                AfficherCoordIssGmt();
-            }
-
-        } else {
-
-            // Affichage de la carte du ciel
-            _ciel->show(Configuration::instance()->observateur(),
-                        Configuration::instance()->soleil(),
-                        Configuration::instance()->lune(),
-                        Configuration::instance()->lignesCst(),
-                        Configuration::instance()->constellations(),
-                        Configuration::instance()->etoiles(),
-                        Configuration::instance()->planetes(),
-                        Configuration::instance()->listeSatellites(),
-                        Configuration::instance()->isCarteMaximisee() || _ciel->fenetreMax());
-        }
-
-        // Affichage du radar
-        const bool radarVisible = ((_options->ui()->affradar->checkState() == Qt::Checked) ||
-                                   ((_options->ui()->affradar->checkState() == Qt::PartiallyChecked)
-                                    && Configuration::instance()->listeSatellites().first().isVisible()));
-        if (radarVisible) {
-            _radar->show();
-        }
-        _radar->setVisible(!_ui->issLive->isChecked() && radarVisible);
+        AffichageCartesRadar();
 
         GestionnaireXml::EcritureConfiguration();
     }
