@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 avril 2023
+ * >    20 avril 2023
  *
  */
 
@@ -203,6 +203,11 @@ private:
     /*
      * Methodes privees
      */
+    /**
+     * @brief AffichageCartesRadar Affichage des elements graphiques (carte du monde, carte du ciel, radar)
+     */
+    void AffichageCartesRadar();
+
     /**
      * @brief ChargementTraduction Chargement de la traduction
      * @param langue langue (fr, en, ja)
