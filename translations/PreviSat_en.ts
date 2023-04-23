@@ -2534,7 +2534,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationsiss.ui" line="206"/>
-        <source>Fichier d&apos;évènements ISS absent :
+        <source>Fichier d&apos;informations ISS absent :
 cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>Missing ISS information file :
 click on &apos;Update ISS information&apos;</translation>
@@ -2594,7 +2594,7 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="288"/>
-        <source>Téléchargement du fichier d&apos;évènements ISS...</source>
+        <source>Téléchargement du fichier d&apos;informations ISS...</source>
         <translation>Downloading ISS information file...</translation>
     </message>
     <message>

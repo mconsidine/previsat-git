@@ -650,7 +650,7 @@
               <string notr="true"/>
              </property>
              <property name="text">
-              <string notr="true"/>
+              <string notr="true" extracomment="Filter satellite names"/>
              </property>
              <property name="placeholderText">
               <string>Filtre</string>

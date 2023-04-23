@@ -203,7 +203,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Fichier d'évènements ISS absent :
+    <string>Fichier d'informations ISS absent :
 cliquer sur 'Mettre à jour les informations de l'ISS'</string>
    </property>
    <property name="alignment">
