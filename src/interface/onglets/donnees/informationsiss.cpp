@@ -252,7 +252,7 @@ void InformationsISS::show()
             _ui->evenementsISS->setVisible(true);
         }
     } else {
-        _ui->lbl_evenementsISS->setText("Fichier d'évènements ISS absent :\nCliquer sur 'Mettre à jour les informations de l'ISS'");
+        _ui->lbl_evenementsISS->setText("Fichier d'informations ISS absent :\nCliquer sur 'Mettre à jour les informations de l'ISS'");
         _ui->lbl_evenementsISS->setVisible(true);
     }
 
@@ -285,7 +285,7 @@ void InformationsISS::on_majEvenementsIss_clicked()
     Telechargement tel(Configuration::instance()->dirLocalData());
 
     /* Corps de la methode */
-    emit AfficherMessageStatut(tr("Téléchargement du fichier d'évènements ISS..."));
+    emit AfficherMessageStatut(tr("Téléchargement du fichier d'informations ISS..."));
     tel.TelechargementFichier(QUrl(QString("%1data/%2").arg(DOMAIN_NAME).arg(Configuration::instance()->nomFichierEvenementsStationSpatiale())));
     emit AfficherMessageStatut(tr("Téléchargement terminé"), 5);
 

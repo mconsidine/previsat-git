@@ -834,7 +834,7 @@
       <string notr="true"/>
      </property>
      <property name="text">
-      <string notr="true"/>
+      <string notr="true" extracomment="Filter location names"/>
      </property>
      <property name="placeholderText">
       <string>Filtre</string>
@@ -856,7 +856,7 @@
       <string notr="true"/>
      </property>
      <property name="text">
-      <string notr="true"/>
+      <string notr="true" extracomment="Filter location names"/>
      </property>
      <property name="placeholderText">
       <string>Filtre</string>
