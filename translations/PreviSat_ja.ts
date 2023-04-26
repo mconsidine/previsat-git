@@ -2464,22 +2464,22 @@ PreviSatは、完全無料です!</translation>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/interface/informations/informations.ui" line="68"/>
+        <location filename="../src/interface/informations/informations.ui" line="71"/>
         <source>Dernière Information</source>
         <translation>最新情報</translation>
     </message>
     <message>
-        <location filename="../src/interface/informations/informations.ui" line="88"/>
+        <location filename="../src/interface/informations/informations.ui" line="91"/>
         <source>Informations plus anciennes</source>
         <translation>古い情報</translation>
     </message>
     <message>
-        <location filename="../src/interface/informations/informations.ui" line="119"/>
+        <location filename="../src/interface/informations/informations.ui" line="124"/>
         <source>Versions</source>
         <translation>バージョン</translation>
     </message>
     <message>
-        <location filename="../src/interface/informations/informations.ui" line="159"/>
+        <location filename="../src/interface/informations/informations.ui" line="166"/>
         <source>Afficher les informations au démarrage</source>
         <translation>起動時に情報を表示する</translation>
     </message>
@@ -4352,14 +4352,14 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="402"/>
         <location filename="../src/interface/outils/outils.cpp" line="432"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1137"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1135"/>
         <source>Oui</source>
         <translation>はい</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="403"/>
         <location filename="../src/interface/outils/outils.cpp" line="433"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1138"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1136"/>
         <source>Non</source>
         <translation>いいえ</translation>
     </message>
@@ -4384,55 +4384,55 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="934"/>
-        <location filename="../src/interface/outils/outils.cpp" line="956"/>
+        <location filename="../src/interface/outils/outils.cpp" line="933"/>
+        <location filename="../src/interface/outils/outils.cpp" line="955"/>
         <source>Ouvrir fichier TLE</source>
         <translation>TLEファイルを開く</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="936"/>
-        <location filename="../src/interface/outils/outils.cpp" line="958"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1070"/>
+        <location filename="../src/interface/outils/outils.cpp" line="935"/>
+        <location filename="../src/interface/outils/outils.cpp" line="957"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1068"/>
         <source>Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)</source>
         <translation>TLEファイル (*.txt *.tle);;すべてのファイル (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="983"/>
+        <location filename="../src/interface/outils/outils.cpp" line="982"/>
         <source>Le nom du fichier à mettre à jour n&apos;est pas spécifié</source>
         <translation>更新するファイル名が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="987"/>
+        <location filename="../src/interface/outils/outils.cpp" line="986"/>
         <source>Le nom du fichier à lire n&apos;est pas spécifié</source>
         <translation>読むファイルの名前が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="997"/>
+        <location filename="../src/interface/outils/outils.cpp" line="996"/>
         <source>Le fichier %1 n&apos;existe pas</source>
         <translation>ファイル「%1」が存在しません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1068"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1066"/>
         <source>Importe TLE...</source>
         <translation type="unfinished">TLEをインポートています...</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1087"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1085"/>
         <source>Le fichier %1 existe déjà</source>
         <translation type="unfinished">ファイル「%1」は既に存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1109"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1107"/>
         <source>Le fichier %1 ne contient pas d&apos;éléments orbitaux</source>
         <translation type="unfinished">ファイル「%1」に軌道要素が含まれていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1136"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1134"/>
         <source>Avertissement</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1136"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1134"/>
         <source>Voulez-vous vraiment supprimer les fichiers TLE sélectionnés ?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5046,18 +5046,18 @@ ce qui représente environ %2 pages.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="949"/>
+        <location filename="../src/configuration/configuration.cpp" line="953"/>
         <source>Le répertoire %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation type="unfinished">フォルダ「%1」が存在しません</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1010"/>
+        <location filename="../src/configuration/configuration.cpp" line="1014"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1272"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1017"/>
+        <location filename="../src/configuration/configuration.cpp" line="1021"/>
         <source>Le fichier %1 est vide, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が空なので、「%2」を再インストールしてください</translation>
     </message>

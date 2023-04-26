@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    9 avril 2023
+ * >    26 avril 2023
  *
  */
 
@@ -931,11 +931,15 @@ void Configuration::VerificationArborescences()
                                     << _dirCommonData + QDir::separator() + "taiutc.dat");
 
         foreach(QString fic, listeFics) {
-            QString file(fic);
+
+            const QString file(fic);
             const QString dest = fic.replace(_dirCommonData, _dirLocalData);
-            QFile fi;
-            fi.rename(file, dest);
-            fi.remove(file);
+
+            QFileInfo ff(dest);
+            if (!ff.exists()) {
+                QFile fi;
+                fi.rename(file, dest);
+            }
         }
 #endif
 
