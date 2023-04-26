@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    16 avril 2023
+ * >    26 avril 2023
  *
  */
 
@@ -1141,28 +1141,21 @@ void Carte::AffichageTraceAuSol()
                             if (!txt.isEmpty()) {
 
                                 const QLineF lig(ptActuel, ptPrec);
-
                                 const double ang = fmod(180. - lig.angle(), MATHS::T360);
-                                const double ca = cos(ang * MATHS::DEG2RAD);
-                                const double sa = sin(ang * MATHS::DEG2RAD);
 
 #if defined (Q_OS_MAC)
                                 const QFont policeOmb(Configuration::instance()->police().family(), 24);
-                                const double fact = (trace.eclipsePartielle) ? 3. : 1.;
-                                const double xnc = ptActuel.x() - fact * ca + 10. * sa;
-                                const double ync = ptActuel.y() - fact * sa - 10. * ca;
 #else
                                 const QFont policeOmb(Configuration::instance()->police().family(), 14);
-                                const double fact = (trace.eclipsePartielle) ? 4. : 2.;
-                                const double xnc = ptActuel.x() - fact * ca + 14. * sa;
-                                const double ync = ptActuel.y() - fact * sa - 13. * ca;
 #endif
 
                                 QGraphicsSimpleTextItem * const txtOmb = new QGraphicsSimpleTextItem(txt);
 
                                 txtOmb->setFont(policeOmb);
                                 txtOmb->setBrush(Qt::white);
-                                txtOmb->setPos(xnc, ync);
+                                const double dy = txtOmb->boundingRect().height() / 2. + 2.;
+                                txtOmb->setPos(ptActuel.x(), ptActuel.y() - dy);
+                                txtOmb->setTransformOriginPoint(0, dy);
                                 txtOmb->setRotation(ang);
                                 scene->addItem(txtOmb);
                             }
