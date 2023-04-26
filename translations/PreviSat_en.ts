@@ -2464,22 +2464,22 @@ PreviSat is free !</translation>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/interface/informations/informations.ui" line="68"/>
+        <location filename="../src/interface/informations/informations.ui" line="71"/>
         <source>Dernière Information</source>
         <translation>Latest information</translation>
     </message>
     <message>
-        <location filename="../src/interface/informations/informations.ui" line="88"/>
+        <location filename="../src/interface/informations/informations.ui" line="91"/>
         <source>Informations plus anciennes</source>
         <translation>Older information</translation>
     </message>
     <message>
-        <location filename="../src/interface/informations/informations.ui" line="119"/>
+        <location filename="../src/interface/informations/informations.ui" line="124"/>
         <source>Versions</source>
         <translation>Versions</translation>
     </message>
     <message>
-        <location filename="../src/interface/informations/informations.ui" line="159"/>
+        <location filename="../src/interface/informations/informations.ui" line="166"/>
         <source>Afficher les informations au démarrage</source>
         <translation>Display information at startup</translation>
     </message>
@@ -4352,14 +4352,14 @@ click on &apos;Update ISS information&apos;</translation>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="402"/>
         <location filename="../src/interface/outils/outils.cpp" line="432"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1137"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1135"/>
         <source>Oui</source>
         <translation>Yes</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="403"/>
         <location filename="../src/interface/outils/outils.cpp" line="433"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1138"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1136"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
@@ -4384,55 +4384,55 @@ click on &apos;Update ISS information&apos;</translation>
         <translation>The list of files is empty</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="934"/>
-        <location filename="../src/interface/outils/outils.cpp" line="956"/>
+        <location filename="../src/interface/outils/outils.cpp" line="933"/>
+        <location filename="../src/interface/outils/outils.cpp" line="955"/>
         <source>Ouvrir fichier TLE</source>
         <translation>Open TLE file</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="936"/>
-        <location filename="../src/interface/outils/outils.cpp" line="958"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1070"/>
+        <location filename="../src/interface/outils/outils.cpp" line="935"/>
+        <location filename="../src/interface/outils/outils.cpp" line="957"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1068"/>
         <source>Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)</source>
         <translation>TLE files (*.txt *.tle);; All files (*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="983"/>
+        <location filename="../src/interface/outils/outils.cpp" line="982"/>
         <source>Le nom du fichier à mettre à jour n&apos;est pas spécifié</source>
         <translation>The name of TLE file to update is not given</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="987"/>
+        <location filename="../src/interface/outils/outils.cpp" line="986"/>
         <source>Le nom du fichier à lire n&apos;est pas spécifié</source>
         <translation>The name of TLE file to read is not given</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="997"/>
+        <location filename="../src/interface/outils/outils.cpp" line="996"/>
         <source>Le fichier %1 n&apos;existe pas</source>
         <translation>The file %1 does not exist</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1068"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1066"/>
         <source>Importe TLE...</source>
         <translation>Import TLE...</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1087"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1085"/>
         <source>Le fichier %1 existe déjà</source>
         <translation>The file %1 already exists</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1109"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1107"/>
         <source>Le fichier %1 ne contient pas d&apos;éléments orbitaux</source>
         <translation>The file %1 does not contain orbital elements</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1136"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1134"/>
         <source>Avertissement</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1136"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1134"/>
         <source>Voulez-vous vraiment supprimer les fichiers TLE sélectionnés ?</source>
         <translation>Do you really want to remove the selected TLE files ?</translation>
     </message>
@@ -5048,18 +5048,18 @@ which represents approximately %2 pages.</translation>
         <translation>Error while reading file %1, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="949"/>
+        <location filename="../src/configuration/configuration.cpp" line="953"/>
         <source>Le répertoire %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>The directory %1 does not exist, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1010"/>
+        <location filename="../src/configuration/configuration.cpp" line="1014"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1272"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>The file %1 does not exist, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1017"/>
+        <location filename="../src/configuration/configuration.cpp" line="1021"/>
         <source>Le fichier %1 est vide, veuillez réinstaller %2</source>
         <translation>The file %1 is empty, please re-install %2</translation>
     </message>
