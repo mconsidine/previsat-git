@@ -58,9 +58,10 @@ public:
      */
     /**
      * @brief LogMessage Constructeur par defaut
-     * @param baseNomFichier base du nom du fichier de log
+     * @param[in] baseNomFichier base du nom du fichier de log
+     * @param[in] nbMaxFic nombre maximum de fichiers
      */
-    explicit LogMessage(const QString &baseNomFichier, const unsigned int nbMaxFic);
+    LogMessage(const QString &baseNomFichier, const unsigned int nbMaxFic);
 
     /*
      * Destructeur

@@ -63,8 +63,8 @@ public:
 
     /**
      * @brief PreviSatException Propagation de l'exception avec affichage d'un message
-     * @param message message
-     * @param typeMessage type du message (INFO, WARNING ou ERREUR)
+     * @param[in] message message
+     * @param[in] typeMessage type du message (INFO, WARNING ou ERREUR)
      */
     PreviSatException(const QString &message, const MessageType &typeMessage) throw();
 

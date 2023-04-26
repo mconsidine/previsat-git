@@ -79,7 +79,7 @@ public:
      */
     /**
      * @brief CalculEvenements Calcul des evenements orbitaux
-     * @param nombre nombre de satellites
+     * @param[in/out] nombre nombre de satellites
      * @return nombre de satellites
      */
     static int CalculEvenements(int &nombre);
@@ -115,17 +115,17 @@ private:
      */
     /**
      * @brief CalculEphemerides Calcul des ephemerides du satellite, du Soleil et de la Lune
-     * @param satellites satellites
+     * @param[in] satellites satellites
      * @return ephemerides
      */
     static QMap<QString, QList<EphemeridesEvenements> > CalculEphemerides(const QList<Satellite> &satellites);
 
     /**
      * @brief CalculEvt Calcul des elements de l'evenement orbital
-     * @param jjm tableau de dates
-     * @param evt grandeurs caracteristiques de l'evenement
-     * @param yval valeur que doit prendre la grandeur caracteristique de l'evenement
-     * @param sat satellite
+     * @param[in] jjm tableau de dates
+     * @param[in] evt grandeurs caracteristiques de l'evenement
+     * @param[in] yval valeur que doit prendre la grandeur caracteristique de l'evenement
+     * @param[in/out] sat satellite
      * @return elements de l'evenement
      */
     static ResultatPrevisions CalculEvt(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, const std::array<double, MATHS::DEGRE_INTERPOLATION> &evt,

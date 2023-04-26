@@ -63,10 +63,10 @@ public:
 
     /**
      * @brief Etoile Definition a partir de ses composantes
-     * @param nomEtoile nom de l'etoile
-     * @param ascDroite ascension droite (heures)
-     * @param decl declinaison (degres)
-     * @param mag magnitude
+     * @param[in] nomEtoile nom de l'etoile
+     * @param[in] ascDroite ascension droite (heures)
+     * @param[in] decl declinaison (degres)
+     * @param[in] mag magnitude
      */
     Etoile(const QString &nomEtoile, const double ascDroite, const double decl, const double mag);
 
@@ -76,13 +76,18 @@ public:
      */
     /**
      * @brief CalculPositionEtoiles Calcul de la position des etoiles
-     * @param observateur observateur
+     * @param[in] observateur observateur
      */
     static void CalculPositionEtoiles(const Observateur &observateur, QList<Etoile> &etoiles);
 
     /**
      * @brief Initialisation Lecture du fichier d'etoiles
-     * @param dirCommonData chemin des donnees communes
+     * @param[in] dirCommonData chemin des donnees communes
+     */
+    /**
+     * @brief Initialisation Lecture du fichier d'etoiles
+     * @param[in] dirCommonData chemin des donnees communes
+     * @param[out] etoiles tableau d'etoiles
      */
     static void Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles);
 
@@ -119,7 +124,7 @@ private:
      */
     /**
      * @brief InitTabEtoiles Lecture du fichier d'etoiles
-     * @param etoiles tableau d'etoiles
+     * @param[out] etoiles tableau d'etoiles
      */
     static void InitTabEtoiles(QList<Etoile> &etoiles);
 

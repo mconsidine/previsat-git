@@ -66,13 +66,13 @@ public:
      */
     /**
      * @brief Calcul Calcul de la magnitude visuelle du satellite
-     * @param conditionEclipse condition d'eclipse du satellite
-     * @param observateur observateur
-     * @param distance distance au satellite
-     * @param hauteur hauteur du satellite
-     * @param magnitudeStandard magnitude standard du satellite
-     * @param extinction prise en compte de l'extinction atmospherique
-     * @param effetEclipsePartielle prise en compte de l'effet des eclipses partielles
+     * @param[in] conditionEclipse condition d'eclipse du satellite
+     * @param[in] observateur observateur
+     * @param[in] distance distance au satellite
+     * @param[in] hauteur hauteur du satellite
+     * @param[in] magnitudeStandard magnitude standard du satellite
+     * @param[in] extinction prise en compte de l'extinction atmospherique
+     * @param[in] effetEclipsePartielle prise en compte de l'effet des eclipses partielles
      */
     void Calcul(const ConditionEclipse &conditionEclipse, const Observateur &observateur, const double distance, const double hauteur,
                 const double magnitudeStandard, const bool extinction = true, const bool effetEclipsePartielle = true);
@@ -80,8 +80,8 @@ public:
     /**
      * @brief ExtinctionAtmospherique Determination de l'extinction atmospherique
      * issu de l'article "Magnitude corrections for atmospheric extinction" de Daniel Green, 1992
-     * @param observateur observateur
-     * @param hauteur hauteur du satellite
+     * @param[in] observateur observateur
+     * @param[in] hauteur hauteur du satellite
      * @return correction de magnitude correspondant a l'extinction atmospherique
      */
     double ExtinctionAtmospherique(const Observateur &observateur, const double hauteur) const;

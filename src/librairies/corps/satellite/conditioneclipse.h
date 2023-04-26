@@ -78,10 +78,10 @@ public:
      */
     /**
      * @brief CalculSatelliteEclipse Calcul de la condition d'eclipse du satellite
-     * @param position position du satellite
-     * @param soleil Soleil
-     * @param lune Lune
-     * @param refraction prise en compte de la refraction (cas de la Terre)
+     * @param[in] position position du satellite
+     * @param[in] soleil Soleil
+     * @param[in] lune Lune
+     * @param[in] refraction prise en compte de la refraction (cas de la Terre)
      */
     void CalculSatelliteEclipse(const Vecteur3D &position, const Soleil &soleil, const Lune *lune = nullptr, const bool refraction = true);
 
@@ -124,10 +124,10 @@ private:
      */
     /**
      * @brief CalculEclipse Calcul des elements d'une eclipse
-     * @param position position du satellite
-     * @param positionCorpsOccultant position du corps occultant
-     * @param corpsOccultant corps occultant (TERRE ou LUNE)
-     * @param refraction prise en compte de la refraction (cas de la Terre)
+     * @param[in] position position du satellite
+     * @param[in] positionCorpsOccultant position du corps occultant
+     * @param[in] corpsOccultant corps occultant (TERRE ou LUNE)
+     * @param[in] refraction prise en compte de la refraction (cas de la Terre)
      * @return elements de l'eclipse
      */
     ElementsEclipse CalculEclipse(const Vecteur3D &position, const Vecteur3D &positionCorpsOccultant, const CorpsOccultant &corpsOccultant,

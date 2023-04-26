@@ -64,8 +64,8 @@ public:
 
     /**
      * @brief LigneConstellation Defiinition a partie de 2 etoiles
-     * @param star1 etoile 1
-     * @param star2 etoile 2
+     * @param[in] star1 etoile 1
+     * @param[in] star2 etoile 2
      */
     LigneConstellation(const Etoile &star1, const Etoile &star2) :
         _etoile1(star1),
@@ -79,13 +79,18 @@ public:
      */
     /**
      * @brief CalculLignesCst Calcul des lignes de constellations
-     * @param etoiles tableau d'etoiles
+     * @param[in] etoiles tableau d'etoiles
+     */
+    /**
+     * @brief CalculLignesCst Calcul des lignes de constellations
+     * @param[in] etoiles tableau d'etoiles
+     * @param[out] lignesCst tableau de lignes de constellation
      */
     static void CalculLignesCst(const QList<Etoile> &etoiles, QList<LigneConstellation> &lignesCst);
 
     /**
      * @brief Initialisation Lecture du fichier contenant les lignes de constellations
-     * @param dirCommonData chemin des donnees communes
+     * @param[in] dirCommonData chemin des donnees communes
      */
     static void Initialisation(const QString &dirCommonData);
 

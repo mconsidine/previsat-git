@@ -68,12 +68,12 @@ public:
      */
     /**
      * @brief CalculAOS Calcul de l'AOS (ou LOS) suivant ou precedent
-     * @param dateInit date initiale
-     * @param satellite satellite
-     * @param observateur observateur
-     * @param sensCalcul sens de calcul (vrai pour l'AOS suivant)
-     * @param hauteurMin hauteur minimale du satellite
-     * @param refraction prise en compte de la refraction
+     * @param[in] dateInit date initiale
+     * @param[in] satellite satellite
+     * @param[in] observateur observateur
+     * @param[in] sensCalcul sens de calcul (vrai pour l'AOS suivant)
+     * @param[in] hauteurMin hauteur minimale du satellite
+     * @param[in] refraction prise en compte de la refraction
      * @return elements de l'AOS (ou LOS) suivant ou precedent
      */
     static ElementsAOS CalculAOS(const Date &dateInit, const Satellite &satellite, const Observateur &observateur,
@@ -81,10 +81,10 @@ public:
 
     /**
      * @brief CalculNoeudOrbite Calcul du noeud (ascendant ou descendant) precedent ou suivant
-     * @param dateInit date initiale
-     * @param satellite satellite
-     * @param sensCalcul sens du calcul (vrai pour le noeud suivant)
-     * @param typeNoeud noeud ascendant ou noeud descendant
+     * @param[in] dateInit date initiale
+     * @param[in] satellite satellite
+     * @param[in] sensCalcul sens du calcul (vrai pour le noeud suivant)
+     * @param[in] typeNoeud noeud ascendant ou noeud descendant
      * @return date du noeud (ascendant ou descendant) precedent ou suivant
      */
     static Date CalculNoeudOrbite(const Date &dateInit, const Satellite &satellite, const SensCalcul &sensCalcul = SensCalcul::CHRONOLOGIQUE,
@@ -92,11 +92,11 @@ public:
 
     /**
      * @brief CalculOmbrePenombre Calcul du prochain passage ombre->penombre ou penombre->ombre
-     * @param dateInit date initiale
-     * @param satellite satellite
-     * @param nbTrajectoires nombre de trajectoires
-     * @param acalcEclipseLune calcul des eclipses produites par la Lune
-     * @param refraction prise en compte de la refraction
+     * @param[in] dateInit date initiale
+     * @param[in] satellite satellite
+     * @param[in] nbTrajectoires nombre de trajectoires
+     * @param[in] acalcEclipseLune calcul des eclipses produites par la Lune
+     * @param[in] refraction prise en compte de la refraction
      * @return date du prochain passage ombre->penombre ou penombre->ombre
      */
     static Date CalculOmbrePenombre(const Date &dateInit, const Satellite &satellite, const int nbTrajectoires, const bool acalcEclipseLune,

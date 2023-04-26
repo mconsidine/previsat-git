@@ -64,8 +64,8 @@ public:
     /**
      * @brief CalculExtremumInterpolation3 Calcul d'un extremum par interpolation a l'ordre 3,
      * issu de l'Astronomical Algorithms 2nd edition, de Jean Meeus, pp23-25
-     * @param xtab Tableau des abscisses
-     * @param ytab Tableau des ordonnees
+     * @param[in] xtab Tableau des abscisses
+     * @param[in] ytab Tableau des ordonnees
      * @return Coordonnees de l'extremum
      */
     static QPair<double, double> CalculExtremumInterpolation3(const std::array<double, MATHS::DEGRE_INTERPOLATION> &xtab,
@@ -74,10 +74,10 @@ public:
     /**
      * @brief CalculValeurXInterpolation3 Calcul d'une valeur x pour une valeur y donnee, par interpolation a l'ordre 3,
      * issu de l'Astronomical Algorithms 2nd edition, de Jean Meeus, pp23-27
-     * @param xtab Tableau des abscisses
-     * @param ytab Tableau des ordonnees
-     * @param yval Valeur de l'ordonnee
-     * @param Epsilon Seuil de comparaison
+     * @param[in] xtab Tableau des abscisses
+     * @param[in] ytab Tableau des ordonnees
+     * @param[in] yval Valeur de l'ordonnee
+     * @param[in] Epsilon Seuil de comparaison
      * @return valeur x correspondante
      */
     static double CalculValeurXInterpolation3(const std::array<double, MATHS::DEGRE_INTERPOLATION> &xtab,
@@ -87,12 +87,12 @@ public:
 
     /**
      * @brief ToSexagesimal Conversion d'un angle sous forme decimale en chaine de caracteres formattee
-     * @param xdec Valeur de l'angle
-     * @param typeAngle Type de l'angle (DEGRE, HEURE1, HEURE2, RADIAN, ARCSEC, NO_TYPE)
-     * @param nbDeg Nombre de chiffres pour les degres
-     * @param nbDecimales Nombre de decimales a afficher
-     * @param signe Affichage du signe +
-     * @param espace Affichage d'un espace entre les composantes de l'angle
+     * @param xdec[in] Valeur de l'angle
+     * @param typeAngle[in] Type de l'angle (DEGRE, HEURE1, HEURE2, RADIAN, ARCSEC, NO_TYPE)
+     * @param nbDeg[in] Nombre de chiffres pour les degres
+     * @param nbDecimales[in] Nombre de decimales a afficher
+     * @param signe[in] Affichage du signe +
+     * @param espace[in] Affichage d'un espace entre les composantes de l'angle
      * @return chaine de caracteres contenant la valeur angulaire
      */
     static QString ToSexagesimal(const double xdec, const AngleFormatType &typeAngle, const int nbDeg, const int nbDecimales, const bool signe,
@@ -131,7 +131,7 @@ private:
 
 /**
  * @brief sgn signe d'un reel
- * @param x reel
+ * @param[in] x reel
  * @return signe du reel
  */
 static inline int sgn(const double x)
@@ -148,8 +148,8 @@ static inline int sgn(const double x)
 
 /**
  * @brief arrondi Arrondi d'un nombre reel avec un nombre de decimales
- * @param x nombre reel
- * @param nbDec nombre de decimales
+ * @param[in] x nombre reel
+ * @param[in] nbDec nombre de decimales
  * @return Arrondi
  */
 static inline double arrondi(const double x, const unsigned int nbDec)
@@ -168,8 +168,8 @@ static inline double arrondi(const double x, const unsigned int nbDec)
 
 /**
  * @brief modulo Calcul du modulo
- * @param x valeur a moduler
- * @param y valeur modulante
+ * @param[in] x valeur a moduler
+ * @param[in] y valeur modulante
  * @return valeur modulee
  */
 static inline double modulo(const double x, const double y)

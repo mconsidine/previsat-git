@@ -67,7 +67,7 @@ public:
      */
     /**
      * @brief Options Constructeur par defaut
-     * @param parent fenetre parent
+     * @param[in] parent fenetre parent
      */
     explicit Options(QWidget *parent = nullptr);
 
@@ -157,7 +157,7 @@ private:
 
     /**
      * @brief AfficherLieu Afficher les coordonnees du lieu selectionne
-     * @param obs
+     * @param[in] obs
      */
     void AfficherLieu(const Observateur &obs);
 
@@ -213,7 +213,7 @@ private:
 
     /**
      * @brief SauvePreferences Sauvegarde des preferences d'affichage
-     * @param fichierPref fichier de preferences
+     * @param[in] fichierPref fichier de preferences
      */
     void SauvePreferences(const QString &fichierPref);
 

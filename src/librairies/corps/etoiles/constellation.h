@@ -63,9 +63,9 @@ public:
 
     /**
      * @brief Constellation Definition a partir des composantes
-     * @param nomConst nom de la constellation
-     * @param ascDroite ascension droite moyenne de la constellation
-     * @param decl declinaison myenne de la declinaison
+     * @param[in] nomConst nom de la constellation
+     * @param[in] ascDroite ascension droite moyenne de la constellation
+     * @param[in] decl declinaison myenne de la declinaison
      */
     Constellation(const QString &nomConst, const double ascDroite, const double decl);
 
@@ -75,14 +75,15 @@ public:
      */
     /**
      * @brief CalculConstellations Calcul des positions des noms des constellations pour la carte du ciel
-     * @param observateur observateur
-     * @param constellations tableau des constellations
+     * @param[in] observateur observateur
+     * @param[out] constellations tableau des constellations
      */
     static void CalculConstellations(const Observateur &observateur, QList<Constellation> &constellations);
 
     /**
      * @brief Initialisation Lecture du fichier de constellations
-     * @param dirCommonData chemin des donnees communes
+     * @param[in] dirCommonData chemin des donnees communes
+     * @param[out] constellations tableau de constellations
      */
     static void Initialisation(const QString &dirCommonData, QList<Constellation> &constellations);
 

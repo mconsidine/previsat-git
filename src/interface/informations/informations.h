@@ -65,7 +65,7 @@ public:
      */
     /**
      * @brief Informations Constructeur par defaut
-     * @param fenetreParent fenetre parent
+     * @param[in] fenetreParent fenetre parent
      */
     explicit Informations(QWidget *fenetreParent);
 
@@ -87,7 +87,7 @@ public:
      */
     /**
      * @brief UrlExiste Verification de l'existence d'une adresse
-     * @param url url
+     * @param[in] url url
      * @return vrai si l'url existe
      */
     static bool UrlExiste(const QUrl &url);
@@ -127,9 +127,9 @@ private:
 
     /**
      * @brief OuvertureInfo Ouverture du fichier d'informations
-     * @param nomfic nom du fichier
-     * @param onglet onglet
-     * @param zoneTexte zone de texte
+     * @param[in] nomfic nom du fichier
+     * @param[in] onglet onglet
+     * @param[in] zoneTexte zone de texte
      */
     void OuvertureInfo(const QString &nomfic, QWidget *onglet, QTextBrowser *zoneTexte);
 

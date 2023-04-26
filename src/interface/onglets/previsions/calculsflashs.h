@@ -69,7 +69,7 @@ public:
      */
     /**
      * @brief CalculsFlashs Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit CalculsFlashs(QWidget *parent = nullptr);
 

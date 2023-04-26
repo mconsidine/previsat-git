@@ -467,8 +467,8 @@ private:
 
     /**
      * @brief VerifieFichiersData Verifie la presence des fichiers du repertoire data
-     * @param dirData repertoire data
-     * @param listeFicData liste de fichiers du repertoire data
+     * @param[in] dirData repertoire data
+     * @param[in] listeFicData liste de fichiers du repertoire data
      */
     void VerifieFichiersData(const QString &dirData, const QStringList &listeFicData) const;
 

@@ -62,14 +62,14 @@ public:
      */
     /**
      * @brief Afficher Affichage d'un message dans une boite de message
-     * @param message Message a afficher
-     * @param typeMessage Type de message (ERREUR, INFO, WARNING)
+     * @param[in] message Message a afficher
+     * @param[in] typeMessage Type de message (ERREUR, INFO, WARNING)
      */
     static void Afficher(const QString &message, const MessageType &typeMessage);
 
     /**
      * @brief setFenetreParent Definition de la fenetre parent (pour centrer l'affichage)
-     * @param fenetre fenetre
+     * @param[in] fenetre fenetre
      */
     static void setFenetreParent(QMainWindow *fenetre);
 

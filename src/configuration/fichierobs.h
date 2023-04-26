@@ -59,14 +59,14 @@ public:
      */
     /**
      * @brief Ecriture Ecriture du fichier de lieu d'observation
-     * @param ficObsXml nom du fichier
+     * @param[in] ficObsXml nom du fichier
      */
     static void Ecriture(const QString &ficObsXml);
 
     /**
      * @brief Lecture Lecture du fichier de lieu d'observation
-     * @param ficObsXml nom du fichier
-     * @param alarme affichage d'un message si le fichier ne contient pas de lieux d'observations
+     * @param[in] ficObsXml nom du fichier
+     * @param[in] alarme affichage d'un message si le fichier ne contient pas de lieux d'observations
      * @return map contenant les lieux d'observation
      */
     static QMap<QString, Observateur> Lecture(const QString &ficObsXml, const bool alarme);

@@ -70,7 +70,7 @@ public:
      */
     /**
      * @brief CalculsEvenementsOrbitaux Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit CalculsEvenementsOrbitaux(QWidget *parent = nullptr);
 
@@ -99,11 +99,11 @@ public slots:
 
     /**
      * @brief AfficherListeSatellites Affichage des satellites dans la liste
-     * @param nomsat nom du satellite
-     * @param norad numero NORAD
-     * @param noradDefaut numero NORAD du satellite par defaut
-     * @param tooltip tooltip a afficher
-     * @param check vrai si le satellite doit etre coche
+     * @param[in] nomsat nom du satellite
+     * @param[in] norad numero NORAD
+     * @param[in] noradDefaut numero NORAD du satellite par defaut
+     * @param[in] tooltip tooltip a afficher
+     * @param[in] check vrai si le satellite doit etre coche
      */
     void AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip, const bool check);
 

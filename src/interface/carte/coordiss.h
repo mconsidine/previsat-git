@@ -67,7 +67,7 @@ public:
      */
     /**
      * @brief CoordISS Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit CoordISS(QWidget *parent = nullptr);
 
@@ -89,7 +89,7 @@ public:
      */
     /**
      * @brief CalculNumeroOrbiteISS Calcul du numero d'orbite de l'ISS
-     * @param date date
+     * @param[in] date date
      * @return numero d'orbite de l'ISS
      */
     static int CalculNumeroOrbiteISS(const Date &date);
@@ -102,8 +102,8 @@ public slots:
      */
     /**
      * @brief show Affichage des coordonnees ISS
-     * @param dateCourante date courante
-     * @param dateEcl date d'eclipse
+     * @param[in] dateCourante date courante
+     * @param[in] dateEcl date d'eclipse
      */
     void show(const Date &dateCourante, const Date &dateEcl);
 

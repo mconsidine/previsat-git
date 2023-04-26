@@ -67,7 +67,7 @@ public:
      */
     /**
      * @brief Radar Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit Radar(QWidget *parent = nullptr);
 

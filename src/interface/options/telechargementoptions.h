@@ -68,7 +68,7 @@ public:
      */
     /**
      * @brief Options Constructeur par defaut
-     * @param parent fenetre parent
+     * @param[in] parent fenetre parent
      */
     explicit TelechargementOptions(const TypeTelechargement &type, QWidget *parent);
 
@@ -132,6 +132,7 @@ private slots:
     void on_filtreFichiers_textChanged(const QString &arg1);
     void on_listeFichiers_itemClicked(QListWidgetItem *item);
     void on_telecharger_clicked();
+
 };
 
 #endif // TELECHARGEMENTOPTIONS_H

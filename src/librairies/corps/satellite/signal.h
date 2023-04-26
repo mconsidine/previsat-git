@@ -62,9 +62,9 @@ public:
      */
     /**
      * @brief Calcul Calcul des elements du signal
-     * @param rangeRate taux de variation de la distance au satellite (km/s)
-     * @param distance distance au satellite (km)
-     * @param frequence frequence (Hz). Par defaut 100 MHz
+     * @param[in] rangeRate taux de variation de la distance au satellite (km/s)
+     * @param[in] distance distance au satellite (km)
+     * @param[in] frequence frequence (Hz). Par defaut 100 MHz
      */
     void Calcul(const double rangeRate, const double distance, const double frequence = 100.e6);
 

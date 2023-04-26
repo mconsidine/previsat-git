@@ -78,13 +78,13 @@ public:
      */
     /**
      * @brief AfficherResultats Constructeur par defaut
-     * @param typeCalcul type de calcul
-     * @param conditions conditions de prevision
-     * @param donnees donnees de prevision
-     * @param resultats resultats du calcul
-     * @param onglets onglets
-     * @param zoom niveau de zoom pour les maps
-     * @param parent fenetre parent
+     * @param[in] typeCalcul type de calcul
+     * @param[in] conditions conditions de prevision
+     * @param[in] donnees donnees de prevision
+     * @param[in] resultats resultats du calcul
+     * @param[in] onglets onglets
+     * @param[in] zoom niveau de zoom pour les maps
+     * @param[in] parent fenetre parent
      */
     AfficherResultats(const TypeCalcul &typeCalcul, const ConditionsPrevisions &conditions, const DonneesPrevisions &donnees,
              const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats, const int zoom = 9,

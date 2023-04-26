@@ -89,7 +89,7 @@ public:
 
     /**
      * @brief Satellite Constructeur a partir des elements orbitaux
-     * @param elem elements orbitaux
+     * @param[in] elem elements orbitaux
      */
     explicit Satellite(const ElementsOrbitaux &elem) :
         _elementsOrbitaux(elem) {
@@ -102,7 +102,7 @@ public:
 
     /**
      * @brief Satellite Constructeur a partir d'un tableau d'elements orbitaux
-     * @param listElements tableau de TLE
+     * @param[in] listElements tableau d'elements orbitaux
      */
     explicit Satellite(const QList<ElementsOrbitaux> &listElements);
 
@@ -112,43 +112,43 @@ public:
      */
     /**
      * @brief CalculBeta Calcul de l'angle beta (angle entre le plan de l'orbite et la direction du Soleil)
-     * @param soleil Soleil
+     * @param[in] soleil Soleil
      */
     void CalculBeta(const Soleil &soleil);
 
     /**
      * @brief CalculCercleAcquisition Calcul du cercle d'acquisition d'une station
-     * @param station sation
+     * @param[in] station sation
      */
     void CalculCercleAcquisition(const Observateur &station);
 
     /**
      * @brief CalculElementsOsculateurs Calcul des elements osculateurs
-     * @param date date
+     * @param[in] date date
      */
     void CalculElementsOsculateurs(const Date &date);
 
     /**
      * @brief CalculPosVit Calcul de la position et de la vitesse du satellite
-     * Modele SGP4 : d'apres l'article "Revisiting Spacetrack Report #3: Rev 1" de David Vallado (2006)
-     * @param date date
+     * Modele SGP4 : d'apres l'article "Revisiting Spacetrack Report #3: Rev 3" de David Vallado (2006)
+     * @param[in] date date
      */
     void CalculPosVit(const Date &date);
 
     /**
      * @brief CalculPosVitListeSatellites Calcul de la position d'une liste de satellites
-     * @param date date
-     * @param observateur observateur
-     * @param soleil soleil
-     * @param lune lune
-     * @param nbTracesAuSol nombre de traces au sol
-     * @param acalcEclipseLune calcul des eclipses produites par la Lune
-     * @param effetEclipsePartielle prise en compte de l'effet des eclipses partielles
-     * @param extinction prise en compte de l'extinction atmospherique
-     * @param refractionAtmospherique prise en compte de la refraction atmospherique
-     * @param traceCiel calcul de la trace dans le ciel
-     * @param visibilite calcul de la zone de visibilite
-     * @param satellites liste de satellites
+     * @param[in] date date
+     * @param[in] observateur observateur
+     * @param[in] soleil soleil
+     * @param[in] lune lune
+     * @param[in] nbTracesAuSol nombre de traces au sol
+     * @param[in] acalcEclipseLune calcul des eclipses produites par la Lune
+     * @param[in] effetEclipsePartielle prise en compte de l'effet des eclipses partielles
+     * @param[in] extinction prise en compte de l'extinction atmospherique
+     * @param[in] refractionAtmospherique prise en compte de la refraction atmospherique
+     * @param[in] traceCiel calcul de la trace dans le ciel
+     * @param[in] visibilite calcul de la zone de visibilite
+     * @param[in/out] satellites liste de satellites
      */
     static void CalculPosVitListeSatellites(const Date &date,
                                             const Observateur &observateur,
@@ -167,26 +167,26 @@ public:
 
     /**
      * @brief CalculTraceCiel Calcul de la trace dans le ciel
-     * @param date date
-     * @param acalcEclipseLune calcul des eclipses produites par la Lune
-     * @param refraction prise en compte de la refraction atmospherique
-     * @param observateur observateur
-     * @param sec pas en secondes
+     * @param[in] date date
+     * @param[in] acalcEclipseLune calcul des eclipses produites par la Lune
+     * @param[in] refraction prise en compte de la refraction atmospherique
+     * @param[in] observateur observateur
+     * @param[in] sec pas en secondes
      */
     void CalculTraceCiel(const Date &date, const bool acalcEclipseLune, const bool refraction, const Observateur &observateur, const int sec = 0);
 
     /**
      * @brief CalculTracesAuSol Calcul des traces au sol
-     * @param dateInit date de depart
-     * @param nbOrb nombre d'orbites
-     * @param acalcEclipseLune calcul des eclipses produites par la Lune
-     * @param refraction prise en compte de la refraction atmospherique
+     * @param[in] dateInit date de depart
+     * @param[in] nbOrb nombre d'orbites
+     * @param[in] acalcEclipseLune calcul des eclipses produites par la Lune
+     * @param[in] refraction prise en compte de la refraction atmospherique
      */
     void CalculTracesAuSol(const Date &dateInit, const int nbOrb, const bool acalcEclipseLune, const bool refraction);
 
     /**
      * @brief hasAOS Determination si le satellite peut se lever (ou se coucher) dans le ciel de l'observateur
-     * @param observateur observateur
+     * @param[in] observateur observateur
      * @return vrai si le satellite peut se lever (ou se coucher) dans le ciel de l'observateur
      */
     bool hasAOS(const Observateur &observateur) const;
