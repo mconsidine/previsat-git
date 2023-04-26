@@ -1,0 +1,53 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    26 avril 2023
+ *
+ */
+ 
+ 
+ /**
+\page Telescope Suivi avec un télescope
+
+Cette fonctionnalité, disponible uniquement sous Windows, permet de suivre un satellite artificiel au moyen d'un télescope équipé d'une monture Sky-Watcher.
+
+\image html telescope.png
+
+Sur cet onglet est affiché le prochain passage du satellite sélectionné dans la liste, à savoir :
+<ul>
+<li>la date de lever et l'azimut correspondant (si le satellite est déjà dans le ciel, on affiche sa hauteur et son azimut)
+<li>la hauteur maximale du passage
+<li>la date de coucher et l'azimut correspondant
+</ul>
+
+Si on choisit une hauteur minimale différente de 0°, les dates de lever et de coucher sont alors les dates pour lesquelles le satellite passe à la hauteur choisie.
+
+Il est possible de modifier les dates de début et de fin en cliquant sur le bouton 'Ajuster les dates'.
+
+En cliquant sur le bouton <b>Générer les positions</b>, PreviSat produit un fichier contenant les positions du satellite avec le pas spécifié. Ce fichier devra être ouvert avec le logiciel Satellite Tracker fourni par Sky-Watcher pour être envoyé à la monture pour suivre le satellite.
+
+En cliquant sur le bouton 'Ouvrir Satellite Tracker', le fichier généré est automatiquement chargé. Il est également possible de définir un délai de démarrage du suivi, et d'envoyer les données à la monture (bouton 'Démarrer').
+
+Pour plus d'informations concernant l'utilisation de Satellite Tracker ainsi que les montures compatibles, il faut se référer à la notice d'utilisation fournie par Sky-Watcher.
+
+*/

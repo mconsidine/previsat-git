@@ -1,3 +1,31 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    26 avril 2023
+ *
+ */
+
+
 /**
 \page WCC Visualisation Wall Command Center
 
@@ -8,6 +36,8 @@ Lorsque la case "ISS Live" est cochée, la représentation de la carte du monde 
 Il est alors possible d'afficher le flux vidéo en direct de l'ISS en cliquant sur le bouton "NASA". La plupart du temps, la caméra à bord de l'ISS pointe en direction du sol. Parfois, elle montre l'intérieur de la station, et on peut voir l'équipage. Lors d'une sortie extravéhiculaire (EVA), la caméra est placée sur le casque d'un astronaute.
 
 \image html iss-live.png
+
+Il est fourni également les flux vidéos de la NASA TV.
 
 Note : parce qu'il y a un délai dans la diffusion du flux ISS Live, les dates des entrées et de sorties d'éclipse observées sur la vidéo ne sont pas simultanées avec les valeurs affichées par PreviSat.
 

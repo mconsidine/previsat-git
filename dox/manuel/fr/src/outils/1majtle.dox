@@ -27,10 +27,17 @@
 
 
 /**
-\page Informations Onglet Informations sur les satellites
+\page MajTLE Mise à jour TLE
 
-- \subpage Infos
-- \subpage RechercheDonnees
-- \subpage InformationsISS
+Même si les éléments orbitaux au format TLE sont voués à disparaître, PreviSat possède un outil <b>Mise à jour TLE</b> pour les mettre à jour.
+
+L'onglet <b>Mise à jour TLE auto</b> permet de mettre à jour les éléments orbitaux des satellites en téléchargeant les fichiers depuis les serveurs dédiés.
+
+\image html majtle.png
+
+<hr>
+L'onglet <b>Mise à jour TLE manuelle</b> permet de mettre à jour les éléments orbitaux des satellites à partir d'un fichier déjà présent sur l'ordinateur.
+
+\image html majtle2.png
 
 */

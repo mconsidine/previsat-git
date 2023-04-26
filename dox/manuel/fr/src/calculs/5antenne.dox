@@ -27,10 +27,14 @@
 
 
 /**
-\page Informations Onglet Informations sur les satellites
+\page Antenne Pilotage d'antenne
 
-- \subpage Infos
-- \subpage RechercheDonnees
-- \subpage InformationsISS
+Cette fonctionnalité permet de suivre un satellite artificiel au moyen d'une antenne dédiée à la radio, par l'intermédiaire du logiciel CatRotator.
+
+\image html antenne.png
+
+En cliquant sur le bouton Connecter, PreviSat envoie les données grâce au protocole UDP à l'adresse et au port fournis par l'utilisateur. Le logiciel CatRotator se connecte alors à cette adresse et à ce port pour recevoir les données de hauteur et d'azimut du satellite sélectionné dans la liste.
+
+PreviSat affiche dans des listes déroulantes les fréquences utilisées par le satellite sélectionné (si elles sont connues). L'effet Doppler et la fréquence réelle (montante et descendante), ainsi que l'atténuation et le délai de transmission dans le vide sont calculés et affichés dans l'onglet.
 
 */

@@ -27,10 +27,22 @@
 
 
 /**
-\page Informations Onglet Informations sur les satellites
+\page Evenements Évènements orbitaux
 
-- \subpage Infos
-- \subpage RechercheDonnees
-- \subpage InformationsISS
+L'onglet <b>Évènements orbitaux</b> permet de générer les évènements liés à la position du satellite sur son orbite. Il est possible de choisir les évènements parmi les suivants :
+<ul>
+<li>Les passages du satellite aux nœuds ascendants et descendants (passages à l'équateur),
+<li>Les passages aux quadrangles (à PSO = 90° et 270°, PSO : Position sur orbite), c'est-à-dire les passages aux latitudes maximales,
+<li>Les passages ombre/pénombre/lumière,
+<li>Les passages apogée/périgée,
+<li>Les passages au terminateur, c'est-à-dire les passages du satellite au dessus du terminateur (limite jour/nuit).
+
+\image html evenements.png
+
+Les résultats du calcul sont présentés sous la forme d'un tableau.
+
+\image html resultats-evenements.png
+
+Il est possible de sauvegarder les résultats dans un fichier texte.
 
 */

@@ -1,5 +1,65 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    26 avril 2023
+ *
+ */
+
+
 /**
 \page Historique Historique des versions
+
+<b><span style="color:red;">Version 6.0 (révision 0) :</span><br />
+Juillet 2022 - Avril 2023 :</b>
+<ul>
+<li>Migration du code de Qt5 vers Qt6.
+<li>Refonte partielle du code pour l'interface graphique.
+<li>Gestionnaire pour l'ancien format d'éléments orbitaux (TLE).
+<li>Amélioration de l'affichage des éléments sur la carte du monde, la carte du ciel et le radar.
+<li>Ajout de raccourcis vers les principales fonctionnalités.
+<li>Ajout de la gestion du nouveau format d'éléments orbitaux (GP).
+<li>Ajout d'informations supplémentaires pour le Soleil et la Lune.
+<li>Ajout de filtres pour les listes de satellites.
+<li>Ajout de la gestion de fichiers de log.
+<li>Ajout des transits devant la Lune et le Soleil pour tous les satellites.
+<li>Ajout des fenêtres Options et Outils.
+<li>Ajout de l'ajustement des dates dans l'onglet Télescope.
+<li>Ajout du zoom sur la carte du monde.
+<li>Ajout des frontières sur la carte du monde.
+<li>Ajout du mode sombre.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 5.1 (révision 3) :</span><br />
+Novembre 2022 :</b>
+<ul>
+<li>Ajout de l'onglet Antenne
+<li>Correction de la prise en compte du pas dans le mode Temps réel
+<li>Correction au démarrage
+</ul>
+
+<hr />
 
 <b><span style="color:red;">Version 5.0 (révision 1) :</span><br />
 Février 2019 - Juillet 2022 :</b>

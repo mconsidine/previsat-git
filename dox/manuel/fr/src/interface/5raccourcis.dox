@@ -1,3 +1,31 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    26 avril 2023
+ *
+ */
+
+
 /**
 \page Raccourcis Raccourcis clavier
 
@@ -5,16 +33,27 @@
 |--------|------------|
 | <b><center>F1</center></b> | Affiche le fichier d'aide |
 | <b><center>F2</center></b> | Affiche la fenêtre d’informations |
+| <b><center>F3</center></b> | Affiche la fenêtre d’options |
+| <b><center>F4</center></b> | Affiche la fenêtre d’outils |
 | <b><center>F5</center></b> | Mise à jour du fichier TLE courant |
-| <b><center>Ctrl + F5</center></b> | Mise à jour du groupe de TLE courant |
-| <b><center>Alt + F5</center></b> | Mise à jour des groupes de TLE communs |
+| <b><center>Ctrl + F5</center></b> | Mise à jour des groupes de TLE communs |
 | <b><center>Maj + F5</center></b> | Mise à jour de tous les groupes de TLE |
 | <b><center>F8</center></b> | Capture d'écran de la fenêtre principale |
 | <b><center>F9</center></b> | Bascule carte du monde / carte du ciel |
 | <b><center>F10</center></b> | Bascule Temps réel / Mode manuel |
 | <b><center>F11 (F6 sur MacOS X)</center></b> | Étape précédente |
 | <b><center>F12 (F7 sur MacOS X)</center></b> | Étape suivante |
+| <b><center>Ctrl + M</center></b> | Agrandir ou réduire la carte |
+| <b><center>Ctrl + O</center></b> | Importer un fichier GP ou TLE |
+| <b><center>Ctrl + P</center></b> | Imprimer la carte |
 | <b><center>Ctrl + S</center></b> | Enregistrer dans un fichier texte les données de l'onglet affiché |
+| <b><center>Alt + S</center></b> | Aller à l'onglet Informations satellite |
+| <b><center>Alt + R</center></b> | Aller à l'onglet Recherche satellite |
+| <b><center>Alt + I</center></b> | Aller à l'onglet Informations ISS |
+| <b><center>Alt + P</center></b> | Aller à l'onglet Prévisions |
+| <b><center>Alt + F</center></b> | Aller à l'onglet Flashs |
+| <b><center>Alt + T</center></b> | Aller à l'onglet Transits |
+| <b><center>Alt + E</center></b> | Aller à l'onglet Evènements |
 | <b><center>A…Z</center></b> | Permet de se déplacer dans la liste des satellites lorsque celle-ci est active |
 
 */

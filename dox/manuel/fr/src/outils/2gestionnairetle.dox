@@ -27,10 +27,12 @@
 
 
 /**
-\page Informations Onglet Informations sur les satellites
+\page GestionnaireTLE Gestionnaire TLE
 
-- \subpage Infos
-- \subpage RechercheDonnees
-- \subpage InformationsISS
+L'outil <b>Gestionnaire TLE</b> permet d'importer ou de supprimer des fichiers au format TLE.
+
+\image html gestionnairetle.png
+
+La liste contient les fichiers au format TLE dans le répertoire d'éléments orbitaux de PreviSat. Un bouton permet l'importation d'un fichier TLE. Le bouton 'Supprimer' permet d'effacer les fichiers TLE sélectionnés dans la liste.
 
 */
