@@ -68,9 +68,9 @@ public:
 
     /**
      * @brief TLE Definition a partir des composantes du TLE
-     * @param lig0 ligne 0 du TLE (nom du satellite)
-     * @param lig1 ligne 1 du TLE
-     * @param lig2 ligne 2 du TLE
+     * @param[in] lig0 ligne 0 du TLE (nom du satellite)
+     * @param[in] lig1 ligne 1 du TLE
+     * @param[in] lig2 ligne 2 du TLE
      */
     TLE(const QString &lig0, const QString &lig1, const QString &lig2);
 
@@ -80,11 +80,11 @@ public:
      */
     /**
      * @brief LectureFichier Lecture du fichier TLE
-     * @param nomFichier nom du fichier TLE
-     * @param donneesSat donnees satellites
-     * @param lgRec longueur d'une ligne dans les donnees satellite
-     * @param listeSatellites liste des numeros NORAD (si elle est vide on recupere tous les TLE)
-     * @param ajoutDonnees ajout des donnees satellite
+     * @param[in] nomFichier nom du fichier TLE
+     * @param[in] donneesSat donnees satellites
+     * @param[in] lgRec longueur d'une ligne dans les donnees satellite
+     * @param[in] listeSatellites liste des numeros NORAD (si elle est vide on recupere tous les TLE)
+     * @param[in] ajoutDonnees ajout des donnees satellite
      * @return tableau d'elements orbitaux
      */
     static QMap<QString, ElementsOrbitaux> LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
@@ -92,20 +92,19 @@ public:
 
     /**
      * @brief MiseAJourFichier Mise a jour du fichier TLE
-     * @param ficOld fichier avec les anciens TLE
-     * @param ficNew fichier avec les nouveaux TLE
-     * @param donneesSat donnees satellites
-     * @param lgRec longueur d'une ligne dans les donnees satellite
-     * @param affMsg affichage des messages
-     * @param compteRendu compte rendu de mise a jour
+     * @param[in] ficOld fichier avec les anciens TLE
+     * @param[in] ficNew fichier avec les nouveaux TLE
+     * @param[in] donneesSat donnees satellites
+     * @param[in] lgRec longueur d'une ligne dans les donnees satellite
+     * @param[in] affMsg affichage des messages
+     * @return compte rendu de mise a jour
      */
-    static void MiseAJourFichier(const QString &ficOld, const QString &ficNew, const QString &donneesSat, const int lgRec, const int affMsg,
-                                 QStringList &compteRendu);
+    static QStringList MiseAJourFichier(const QString &ficOld, const QString &ficNew, const QString &donneesSat, const int lgRec, const int affMsg);
 
     /**
      * @brief VerifieFichier Verification du fichier TLE
-     * @param nomFichier nom du fichier TLE
-     * @param alarme affichage d'une boite de message
+     * @param[in] nomFichier nom du fichier TLE
+     * @param[in] alarme affichage d'une boite de message
      * @return nombre de satellites dans le fichier
      */
     static int VerifieFichier(const QString &nomFichier, const bool alarme = false);
@@ -147,17 +146,17 @@ private:
      */
     /**
      * @brief CheckSum Verification du checksum d'une ligne de TLE
-     * @param ligne ligne d'un TLE
+     * @param[in] ligne ligne d'un TLE
      * @return vrai si le checksum est correct
      */
     static bool CheckSum(const QString &ligne);
 
     /**
      * @brief VerifieLignes Verification des lignes d'un TLE
-     * @param li1 ligne 1 du TLE
-     * @param li2 ligne 2 du TLE
-     * @param nomsat nom du satellite
-     * @param alarme affichage d'une boite de message
+     * @param[in] li1 ligne 1 du TLE
+     * @param[in] li2 ligne 2 du TLE
+     * @param[in] nomsat nom du satellite
+     * @param[in] alarme affichage d'une boite de message
      */
     static void VerifieLignes(const QString &li1, const QString &li2, const QString &nomsat, const bool alarme);
 

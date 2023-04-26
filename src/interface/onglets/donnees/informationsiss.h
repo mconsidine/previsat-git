@@ -65,7 +65,7 @@ public:
      */
     /**
      * @brief InformationsISS Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit InformationsISS(QWidget *parent = nullptr);
 

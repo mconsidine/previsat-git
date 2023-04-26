@@ -71,7 +71,7 @@ public:
      */
     /**
      * @brief Carte Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit Carte(QWidget *parent = nullptr);
 
@@ -106,8 +106,8 @@ public slots:
 
     /**
      * @brief AffichageSiteLancement Affichage de l'info bulle du site de lancement
-     * @param acronyme acronyme
-     * @param siteLancement site de lancement
+     * @param[in] acronyme acronyme
+     * @param[in] siteLancement site de lancement
      */
     void AffichageSiteLancement(const QString &acronyme, const Observateur &siteLancement);
 
@@ -189,9 +189,9 @@ private:
 
     /**
      * @brief AffichageSatellite Affichage par defaut d'un satellite (sans icone)
-     * @param satellite satellite
-     * @param lsat longitude du satellite, en pixels
-     * @param bsat latitude du satellite, en pixels
+     * @param[in] satellite satellite
+     * @param[in] lsat longitude du satellite, en pixels
+     * @param[in] bsat latitude du satellite, en pixels
      */
     void AffichageSatelliteDefaut(const Satellite &satellite, const int lsat, const int bsat) const;
 
@@ -232,7 +232,7 @@ private:
 
     /**
      * @brief CouleurTraceAuSol Determination de la couleur du point de la trace au sol
-     * @param trace point de la trace au sol
+     * @param[in] trace point de la trace au sol
      * @return couleur du point
      */
     QColor CouleurTraceAuSol(const ElementsTraceSol &trace) const;
@@ -244,16 +244,16 @@ private:
 
     /**
      * @brief LectureCoordonnees Lecture des coordonnees dans le fichier de coordonnees geographiques
-     * @param coordonnees coordonnees
+     * @param[in] coordonnees coordonnees
      * @return Lignes de coordonnees
      */
     QPainterPath LectureCoordonnees(const QString &coordonnees);
 
     /**
      * @brief LectureFichierKml Lecture d'un fichier de coordonnees geographiques au format kml
-     * @param fichier nom du fichier
-     * @param visible visibilite des frontieres
-     * @param echelleMin echelle minimale ou la frontiere doit etre visible
+     * @param[in] fichier nom du fichier
+     * @param[in] visible visibilite des frontieres
+     * @param[in] echelleMin echelle minimale ou la frontiere doit etre visible
      */
     void LectureFichierKml(const QString &fichier, const bool visible = true, const double echelleMin = 0.);
 

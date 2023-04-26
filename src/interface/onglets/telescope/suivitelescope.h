@@ -74,7 +74,7 @@ public:
      */
     /**
      * @brief SuiviTelescope Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit SuiviTelescope(QWidget *parent = nullptr);
 
@@ -99,7 +99,7 @@ public:
      */
     /**
      * @brief CalculAosSatSuivi Calcul des informations AOS/LOS pour le suivi d'un satellite
-     * @param date date
+     * @param[in] date date
      */
     void CalculAosSatSuivi(const Date &date);
 
@@ -115,11 +115,11 @@ public slots:
 
     /**
      * @brief AfficherListeSatellites Affichage des satellites dans la liste
-     * @param nomsat nom du satellite
-     * @param norad numero NORAD
-     * @param noradDefaut numero NORAD du satellite par defaut
-     * @param tooltip tooltip a afficher
-     * @param check vrai si le satellite doit etre coche
+     * @param[in] nomsat nom du satellite
+     * @param[in] norad numero NORAD
+     * @param[in] noradDefaut numero NORAD du satellite par defaut
+     * @param[in] tooltip tooltip a afficher
+     * @param[in] check vrai si le satellite doit etre coche
      */
     void AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip, const bool check);
 
@@ -177,9 +177,9 @@ private:
 
     /**
      * @brief CalculHauteurMax Calcul de la hauteur maximale d'un satellite dans le ciel
-     * @param jjm dates
-     * @param obs observateur
-     * @param satSuivi satellite suivi
+     * @param[in] jjm dates
+     * @param[in/out] obs observateur
+     * @param[in/out] satSuivi satellite suivi
      * @return jour et hauteur maximale
      */
     QPair<double, double> CalculHauteurMax(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, Observateur &obs, Satellite &satSuivi) const;
@@ -194,8 +194,8 @@ private slots:
 
     /**
      * @brief AjusterDates Ajuster les dates initiale et finale
-     * @param date1 date initiale
-     * @param date2 date finale
+     * @param[in] date1 date initiale
+     * @param[in] date2 date finale
      */
     void AjusterDates(const QDateTime &date1, const QDateTime &date2);
 

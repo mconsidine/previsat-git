@@ -64,8 +64,8 @@ public:
      */
     /**
      * @brief Calcul Calcul des elements de phasage
-     * @param elements elements osculateurs
-     * @param n0 nombre d'orbites par jour (TLE)
+     * @param[in] elements elements osculateurs
+     * @param[in] n0 nombre d'orbites par jour (elements orbitaux)
      */
     void Calcul(const ElementsOsculateurs &elements, const double n0);
 

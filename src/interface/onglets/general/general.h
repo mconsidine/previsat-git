@@ -73,7 +73,7 @@ public:
      */
     /**
      * @brief General Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit General(CalculsFlashs *flashs, Osculateurs *osculateurs, QWidget *parent = nullptr);
 
@@ -111,7 +111,7 @@ public slots:
 
     /**
      * @brief SauveOngletGeneral Sauvegarde des donnees de l'onglet
-     * @param fichier nom du fichier
+     * @param[in] fichier nom du fichier
      */
     void SauveOngletGeneral(const QString &fichier);
 
@@ -161,13 +161,13 @@ private:
      */
     /**
      * @brief AffichageDate Affichage de la date
-     * @param date date
+     * @param[in] date date
      */
     void AffichageDate(const Date &date);
 
     /**
      * @brief AffichageDonneesSatellite Affichage des donnees relatives au satellite par defaut
-     * @param date date
+     * @param[in] date date
      */
     void AffichageDonneesSatellite(const Date &date);
 
@@ -178,8 +178,8 @@ private:
 
     /**
      * @brief EcritureInformationsEclipse Ecriture des informations d'eclipse
-     * @param corpsOccultant corps occultant
-     * @param fractionIlluminee fraction illuminee
+     * @param[in] corpsOccultant corps occultant
+     * @param[in] fractionIlluminee fraction illuminee
      */
     void EcritureInformationsEclipse(const QString &corpsOccultant, const double fractionIlluminee) const;
 
@@ -198,7 +198,7 @@ private slots:
 
     /**
      * @brief AffichageVitesses Affichage des vitesses (par seconde ou par heure)
-     * @param date date
+     * @param[in] date date
      */
     void AffichageVitesses(const Date &date);
 

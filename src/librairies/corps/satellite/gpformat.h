@@ -59,7 +59,7 @@ public:
      */
     /**
      * @brief GPFormat Constructeur a partir des elements orbitaux
-     * @param elem elements orbitaux
+     * @param[in] elem elements orbitaux
      */
     explicit GPFormat(const ElementsOrbitaux &elem);
 
@@ -69,19 +69,19 @@ public:
      */
     /**
      * @brief CalculNombreOrbitesEpoque Calcul du nombre d'orbites a l'epoque (cas depassant 100000 orbites)
-     * @param elements elements orbitaux
+     * @param[in] elements elements orbitaux
      * @return nombre d'orbites a l'epoque
      */
     static int CalculNombreOrbitesEpoque(const ElementsOrbitaux &elements);
 
     /**
      * @brief LectureFichier Lecture d'un fichier au format GP
-     * @param fichier nom du fichier d'elements orbitaux
-     * @param donneesSat donnees satellites
-     * @param lgRec longueur d'une ligne dans les donnees satellite
-     * @param listeSatellites liste des numeros NORAD (si elle est vide on recupere tous les elements orbitaux)
-     * @param ajoutDonnees ajout des donnees satellite
-     * @param alarme affichage des messages d'erreurs ou de warnings
+     * @param[in] fichier nom du fichier d'elements orbitaux
+     * @param[in] donneesSat donnees satellites
+     * @param[in] lgRec longueur d'une ligne dans les donnees satellite
+     * @param[in] listeSatellites liste des numeros NORAD (si elle est vide on recupere tous les elements orbitaux)
+     * @param[in] ajoutDonnees ajout des donnees satellite
+     * @param[in] alarme affichage des messages d'erreurs ou de warnings
      * @return tableau d'elements orbitaux
      */
     static QMap<QString, ElementsOrbitaux> LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
@@ -90,10 +90,10 @@ public:
 
     /**
      * @brief LectureFichierListeGP Lecture d'un fichier GP contenant une liste d'elements orbitaux pour un meme satellite
-     * @param fichier nom du fichier d'elements orbitaux
-     * @param donneesSat donnees satellites
-     * @param lgRec longueur d'une ligne dans les donnees satellite
-     * @param alarme affichage des messages d'erreurs ou de warnings
+     * @param[in] fichier nom du fichier d'elements orbitaux
+     * @param[in] donneesSat donnees satellites
+     * @param[in] lgRec longueur d'une ligne dans les donnees satellite
+     * @param[in] alarme affichage des messages d'erreurs ou de warnings
      * @return liste d'elements orbitaux
      */
     static QList<ElementsOrbitaux> LectureFichierListeGP(const QString &nomFichier, const QString &donneesSat, const int lgRec,
@@ -101,7 +101,7 @@ public:
 
     /**
      * @brief RecupereNomsat Recupere le nom du satellite
-     * @param nomComplet nom complet du satellite
+     * @param[in] nomComplet nom complet du satellite
      * @return nom du satellite
      */
     static QString RecupereNomsat(const QString &nomsat);
@@ -138,36 +138,36 @@ private:
      */
     /**
      * @brief LectureSectionBody Lecture de la section Body du fichier d'elements orbitaux
-     * @param gp contenu du fichier
-     * @param elem elements orbitaux
+     * @param[in/out] gp contenu du fichier
+     * @param[in/out] elem elements orbitaux
      */
     static void LectureSectionBody(QXmlStreamReader &gp, ElementsOrbitaux &elem);
 
     /**
      * @brief LectureSectionData Lecture de la section Data du fichier d'elements orbitaux
-     * @param gp contenu du fichier
-     * @param elem elements orbitaux
+     * @param[in/out] gp contenu du fichier
+     * @param[in/out] elem elements orbitaux
      */
     static void LectureSectionData(QXmlStreamReader &gp, ElementsOrbitaux &elem);
 
     /**
      * @brief LectureSectionMeanElements Lecture de la section MeanElements du fichier d'elements orbitaux
-     * @param gp contenu du fichier
-     * @param elem elements orbitaux
+     * @param[in/out] gp contenu du fichier
+     * @param[in/out] elem elements orbitaux
      */
     static void LectureSectionMeanElements(QXmlStreamReader &gp, ElementsOrbitaux &elem);
 
     /**
      * @brief LectureSectionMetaData Lecture de la section MetaData du fichier d'elements orbitaux
-     * @param gp contenu du fichier
-     * @param elem elements orbitaux
+     * @param[in/out] gp contenu du fichier
+     * @param[in/out] elem elements orbitaux
      */
     static void LectureSectionMetaData(QXmlStreamReader &gp, ElementsOrbitaux &elem);
 
     /**
      * @brief LectureSectionTleParameters Lecture de la section TleParameters du fichier d'elements orbitaux
-     * @param gp contenu du fichier
-     * @param elem elements orbitaux
+     * @param[in/out] gp contenu du fichier
+     * @param[in/out] elem elements orbitaux
      */
     static void LectureSectionTleParameters(QXmlStreamReader &gp, ElementsOrbitaux &elem);
 

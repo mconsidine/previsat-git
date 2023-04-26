@@ -71,7 +71,7 @@ public:
      */
     /**
      * @brief CalculPrevisions Calcul des previsions de passage
-     * @param nombre nombre de satellites
+     * @param[in/out] nombre nombre de satellites
      * @return nombre de satellites
      */
     static int CalculPrevisions(int &nombre);

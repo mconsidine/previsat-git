@@ -67,8 +67,8 @@ public:
      */
     /**
      * @brief Calcul Calcul de la position et de la vitesse
-     * @param date date
-     * @param elements elements orbitaux du satellite
+     * @param[in] date date
+     * @param[in] elements elements orbitaux du satellite
      */
     void Calcul(const Date &date, const ElementsOrbitaux &elements);
 
@@ -124,25 +124,25 @@ private:
 
     /**
      * @brief Dscom Modele haute orbite
-     * @param tc date
+     * @param[in] tc date
      */
     void Dscom(const double tc);
 
     /**
      * @brief Dsinit Modele haute orbite
-     * @param tc date
+     * @param[in] tc date
      */
     void Dsinit(const double tc);
 
     /**
      * @brief Dspace Modele haute orbite
-     * @param tc date
+     * @param[in] tc date
      */
     void Dspace(const double tc);
 
     /**
      * @brief SGP4Init Initialisation du modele SGP4
-     * @param tle tle
+     * @param[in] elements elements
      */
     void SGP4Init(const ElementsOrbitaux &elements);
 

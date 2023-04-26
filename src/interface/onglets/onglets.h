@@ -82,7 +82,7 @@ public:
      */
     /**
      * @brief Onglets Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit Onglets(QWidget *parent = nullptr);
 

@@ -63,43 +63,43 @@ public:
      */
     /**
      * @brief Date Obtention de la date systeme
-     * @param offset ecart heure legale - UTC
+     * @param[in] offset ecart heure legale - UTC
      */
     explicit Date(const double offset = 0.);
 
     /**
      * @brief Date Definition de la date a partir d'un objet Date et de l'ecart heure legale - UTC
-     * @param date date
-     * @param offset ecart heure legale - UTC
+     * @param[in] date date
+     * @param[in] offset ecart heure legale - UTC
      */
     Date(const Date &date, const double offset = 0.);
 
     /**
      * @brief Date Definition de la date a partir d'un jour julien 2000 et de l'ecart heure legale - UTC
-     * @param jourJulien2000 jour julien 2000
-     * @param offset ecart heure legale - UTC
-     * @param acalc calcul des elements du calendrier
+     * @param[in] jourJulien2000 jour julien 2000
+     * @param[in] offset ecart heure legale - UTC
+     * @param[in] acalc calcul des elements du calendrier
      */
     Date(const double jourJulien2000, const double offset, const bool acalc = true);
 
     /**
      * @brief Date Definition de la date a partir de l'annee, du mois et du jour (decimal)
-     * @param an annee
-     * @param mo mois
-     * @param xjour jour decimal
-     * @param offset ecart heure legale - UTC
+     * @param[in] an annee
+     * @param[in] mo mois
+     * @param[in] xjour jour decimal
+     * @param[in] offset ecart heure legale - UTC
      */
     Date(const int an, const int mo, const double xjour, const double offset);
 
     /**
      * @brief Date Definition de la date a partir des elements du calendrier
-     * @param an annee
-     * @param mo mois
-     * @param j jour
-     * @param h heure
-     * @param min minutes
-     * @param sec secondes
-     * @param offset ecart heure legale - UTC
+     * @param[in] an annee
+     * @param[in] mo mois
+     * @param[in] j jour
+     * @param[in] h heure
+     * @param[in] min minutes
+     * @param[in] sec secondes
+     * @param[in] offset ecart heure legale - UTC
      */
     Date(const int an, const int mo, const int j, const int h, const int min, const double sec, const double offset);
 
@@ -109,58 +109,58 @@ public:
      */
     /**
      * @brief CalculOffsetUTC Calcul de l'ecart heure legale - UTC
-     * @param date date
+     * @param[in] date date
      * @return ecart heure legale - UTC
      */
     static double CalculOffsetUTC(const QDateTime &date);
 
     /**
      * @brief ConversionDateIso Conversion d'une date au format ISO en Date
-     * @param dateFormatIso date au format ISO
+     * @param[in] dateFormatIso date au format ISO
      * @return date
      */
     static Date ConversionDateIso(const QString &dateFormatIso);
 
     /**
      * @brief ConversionDateNasa Conversion d'une date au format NASA en Date
-     * @param dateFormatNasa date au format NASA
+     * @param[in] dateFormatNasa date au format NASA
      * @return date
      */
     static Date ConversionDateNasa(const QString &dateFormatNasa);
 
     /**
      * @brief Initialisation Lecture du fichier taiutc.dat
-     * @param dirLocalData chemin ou se trouve le fichier
+     * @param[in] dirLocalData chemin ou se trouve le fichier
      */
     static void Initialisation(const QString &dirLocalData);
 
     /**
      * @brief ToLongDate Conversion en chaine de caracteres longue
-     * @param locale locale
-     * @param systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
+     * @param[in] locale locale
+     * @param[in] systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
      * @return chaine de caracteres contenant la date au format long
      */
     QString ToLongDate(const QString &locale, const DateSysteme &systeme) const;
 
     /**
      * @brief ToQDateTime Conversion de la date en QDateTime
-     * @param type type d'affichage des secondes (0 = secondes prises a zero; arrondi a l'entier le plus proche sinon)
+     * @param[in] type type d'affichage des secondes (0 = secondes prises a zero; arrondi a l'entier le plus proche sinon)
      * @return date
      */
     QDateTime ToQDateTime(const int type) const;
 
     /**
      * @brief ToShortDate Conversion en chaine de caracteres courte
-     * @param format format (COURT ou LONG)
-     * @param systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
+     * @param[in] format format (COURT ou LONG)
+     * @param[in] systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
      * @return chaine de caracteres contenant la date au format court
      */
     QString ToShortDate(const DateFormat &format, const DateSysteme &systeme) const;
 
     /**
      * @brief ToShortDateAMJ Conversion en chaine de caracteres courte (AAAA/MM/JJ)
-     * @param format format (COURT ou LONG)
-     * @param systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
+     * @param[in] format format (COURT ou LONG)
+     * @param[in] systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
      * @return chaine de caracteres contenant la date au format court (AAAA/MM/JJ)
      */
     QString ToShortDateAMJ(const DateFormat &format, const DateSysteme &systeme) const;
@@ -173,7 +173,7 @@ public:
 
     /**
      * @brief operator = Affectation d'une date
-     * @param date date
+     * @param[in] date date
      */
     Date &operator = (const Date &date) = default;
 
@@ -243,8 +243,8 @@ private:
 
     /**
      * @brief getHrAmPm Obtention de l'heure AM/PM
-     * @param heure heure
-     * @param systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
+     * @param[in] heure heure
+     * @param[in] systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
      * @return heure AM/PM
      */
     QPair<int, QString> getHrAmPm(const int heure, const DateSysteme &systeme) const;

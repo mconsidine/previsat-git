@@ -66,8 +66,8 @@ public:
      * @brief Calcul Calcul des elements osculateurs pour une orbite elliptique
      * D'apres les formules de Fundamental Astrodynamics and applications, 2nd edition, D. Vallado
      * Trajectoires spatiales, O. Zarrouati
-     * @param position vecteur position
-     * @param vitesse vecteur vitesse
+     * @param[in] position vecteur position
+     * @param[in] vitesse vecteur vitesse
      */
     void Calcul(const Vecteur3D &position, const Vecteur3D &vitesse);
 

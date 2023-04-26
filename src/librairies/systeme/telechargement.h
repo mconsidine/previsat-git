@@ -65,7 +65,7 @@ public:
      */
     /**
      * @brief Telechargement Constructeur par defaut
-     * @param dir repertoire de telechargement
+     * @param[in] dir repertoire de telechargement
      */
     explicit Telechargement(const QString &dir);
 
@@ -75,8 +75,8 @@ public:
      */
     /**
      * @brief TelechargementFichier Telechargement de fichier
-     * @param url adresse
-     * @param alarme affichage des messages d'erreur
+     * @param[in] url adresse
+     * @param[in] alarme affichage des messages d'erreur
      */
     void TelechargementFichier(const QUrl &url, const bool alarme = true);
 
@@ -121,8 +121,8 @@ private slots:
 
     /**
      * @brief ProgressionTelechargement Progression du telechargement
-     * @param octetsRecus octets recus
-     * @param octetsTotal octets du fichier total
+     * @param[in] octetsRecus octets recus
+     * @param[in] octetsTotal octets du fichier total
      */
     void ProgressionTelechargement(qint64 octetsRecus, qint64 octetsTotal);
 

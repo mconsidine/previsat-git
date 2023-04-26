@@ -78,70 +78,70 @@ public:
      */
     /**
      * @brief CalculAltitude Calcul de l'altitude du corps
-     * @param pos position cartesienne du corps
+     * @param[in] pos position cartesienne du corps
      * @return altitude (km)
      */
     double CalculAltitude(const Vecteur3D &pos) const;
 
     /**
      * @brief CalculCoordEquat Calcul des coordonnees equatoriales
-     * @param observateur observateur
-     * @param determinationConstellation determination de la constellation
+     * @param[in] observateur observateur
+     * @param[in] determinationConstellation determination de la constellation
      */
     void CalculCoordEquat(const Observateur &observateur, const bool determinationConstellation = true);
 
     /**
      * @brief CalculCoordHoriz Calcul des coordonnees horizontales
-     * @param observateur observateur
-     * @param acalc calcul de l'azimut
-     * @param arefr prise en compte de la refraction
-     * @param aos gestion de la refraction dans le cas du calcul de lever/coucher
+     * @param[in] observateur observateur
+     * @param[in] acalc calcul de l'azimut
+     * @param[in] arefr prise en compte de la refraction
+     * @param[in] aos gestion de la refraction dans le cas du calcul de lever/coucher
      */
     void CalculCoordHoriz(const Observateur &observateur, const bool acalc = true, const bool arefr = true, const bool aos = false);
 
     /**
      * @brief CalculCoordHoriz2 Calcul des coordonnees horizontales (avec condition de visibilite)
-     * @param observateur observateur
+     * @param[in] observateur observateur
      */
     void CalculCoordHoriz2(const Observateur &observateur);
 
     /**
      * @brief CalculCoordTerrestres Calcul des coordonnees terrestres du corps a la date courante
-     * @param observateur observateur
+     * @param[in] observateur observateur
      */
     void CalculCoordTerrestres(const Observateur &observateur);
 
     /**
      * @brief CalculCoordTerrestres Calcul des coordonnees terrestres du corps a une date donnee
-     * @param date date
+     * @param[in] date date
      */
     void CalculCoordTerrestres(const Date &date);
 
     /**
      * @brief CalculLatitude Calcul de la latitude geodesique du corps
-     * @param pos position cartesienne du corps
+     * @param[in] pos position cartesienne du corps
      * @return latitude (radian)
      */
     double CalculLatitude(const Vecteur3D &pos);
 
     /**
      * @brief CalculPosVitECEF Calcul de la position et de la vitesse dans le repere ECEF
-     * @param date date
-     * @param positionECEF position dans le repere ECEF
-     * @param vitesseECEF vitesse dans le repere ECEF
+     * @param[in] date date
+     * @param[out] positionECEF position dans le repere ECEF
+     * @param[out] vitesseECEF vitesse dans le repere ECEF
      */
     void CalculPosVitECEF(const Date &date, Vecteur3D &positionECEF, Vecteur3D &vitesseECEF) const;
 
     /**
      * @brief CalculRefractionAtmospherique Calcul de la refraction atmospherique
-     * @param ht hauteur du corps (en radians)
+     * @param[in] ht hauteur du corps (en radians)
      * @return refraction atmospherique (en radians)
      */
     double CalculRefractionAtmospherique(const double ht) const;
 
     /**
      * @brief CalculZoneVisibilite Calcul de la zone de visibilite du corps
-     * @param beta rayon apparent du corps
+     * @param[in] beta rayon apparent du corps
      */
     void CalculZoneVisibilite(const double beta);
 
@@ -152,8 +152,8 @@ public:
 
     /**
      * @brief Sph2Cart Conversion d'un vecteur en coordonnees ecliptiques spheriques en coordonnees cartesiennes equatoriales
-     * @param vecteur vecteur en coordonnees ecliptiques spheriques
-     * @param date date
+     * @param[in] vecteur vecteur en coordonnees ecliptiques spheriques
+     * @param[in] date date
      * @return vecteur en coordonnees cartesiennes equatoriales
      */
     Vecteur3D Sph2Cart(const Vecteur3D &vecteur, const Date &date) const;
@@ -237,8 +237,9 @@ protected:
      */
     /**
      * @brief CalculLeverMeridienCoucher Calcul des lever/passage au meridien/coucher
-     * @param date date
-     * @param calculCrepuscules calcul des crepuscules (dans le cas du Soleil)
+     * @param[in] date date
+     * @param[in] syst systeme horaire
+     * @param[in] calculCrepuscules calcul des crepuscules
      */
     void CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst, const bool calculCrepuscules = true);
 

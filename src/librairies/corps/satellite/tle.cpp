@@ -248,10 +248,10 @@ QMap<QString, ElementsOrbitaux> TLE::LectureFichier(const QString &nomFichier, c
 /*
  * Mise a jour du fichier TLE
  */
-void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const QString &donneesSat, const int lgRec,  const int affMsg,
-                           QStringList &compteRendu)
+QStringList TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const QString &donneesSat, const int lgRec,  const int affMsg)
 {
     /* Declarations des variables locales */
+    QStringList compteRendu;
 
     /* Initialisations */
     int res1 = (affMsg == 0) ? -1 : (affMsg == 1) ? QMessageBox::YesToAll : QMessageBox::NoToAll;
@@ -418,7 +418,7 @@ void TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const Q
     tleNew.clear();
 
     /* Retour */
-    return;
+    return compteRendu;
 }
 
 /*

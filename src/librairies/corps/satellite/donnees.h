@@ -60,7 +60,7 @@ public:
 
     /**
      * @brief Donnees Definition a partir des informations
-     * @param donnee informations sur le satellite
+     * @param[in] donnee informations sur le satellite
      */
     explicit Donnees(const QString &donnee);
 

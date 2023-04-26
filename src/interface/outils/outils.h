@@ -70,7 +70,7 @@ public:
      */
     /**
      * @brief Outils Constructeur par defaut
-     * @param parent fenetre parent
+     * @param[in] parent fenetre parent
      */
     explicit Outils(QWidget *parent = nullptr);
 
@@ -147,8 +147,8 @@ private:
 
     /**
      * @brief EcritureCompteRenduMaj Ecriture du compte-rendu de mise a jour des TLE
-     * @param compteRendu compte-rendu
-     * @param compteRenduMaj zone de texte ou ecrire le compte-rendu
+     * @param[in] compteRendu compte-rendu
+     * @param[out] compteRenduMaj zone de texte ou ecrire le compte-rendu
      */
     void EcritureCompteRenduMaj(const QStringList &compteRendu, QPlainTextEdit * compteRenduMaj);
 
@@ -159,7 +159,7 @@ private:
 
     /**
      * @brief InitGestionnaireTLE Initialisation du gestionnaire de suppression de TLE
-     * @param listeFicTLE liste des fichiers TLE
+     * @param[in] listeFicTLE liste des fichiers TLE
      */
     void InitGestionnaireTLE(const QStringList &listeFicTLE);
 
@@ -183,19 +183,19 @@ private slots:
 
     /**
      * @brief ProgressionElem Affichage de la progression de telechargement des elements orbitaux
-     * @param octetsRecus octets recus
-     * @param octetsTotal octets au total
-     * @param vitesse vitesse de telechargement
-     * @param unite unite de vitesse de telechargement
+     * @param[in] octetsRecus octets recus
+     * @param[in] octetsTotal octets au total
+     * @param[in] vitesse vitesse de telechargement
+     * @param[in] unite unite de vitesse de telechargement
      */
     void ProgressionElem(const int octetsRecus, const int octetsTotal, const double vitesse, const QString &unite);
 
     /**
      * @brief ProgressionElem Affichage de la progression de telechargement des TLE
-     * @param octetsRecus octets recus
-     * @param octetsTotal octets au total
-     * @param vitesse vitesse de telechargement
-     * @param unite unite de vitesse de telechargement
+     * @param[in] octetsRecus octets recus
+     * @param[in] octetsTotal octets au total
+     * @param[in] vitesse vitesse de telechargement
+     * @param[in] unite unite de vitesse de telechargement
      */
     void ProgressionTLE(const int octetsRecus, const int octetsTotal, const double vitesse, const QString &unite);
 

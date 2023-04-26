@@ -80,7 +80,7 @@ public:
      */
     /**
      * @brief CalculPrevisions Calcul des transits de l'ISS devant la Lune ou le Soleil
-     * @param nombre nombre de satellites
+     * @param[in/out] nombre nombre de satellites
      * @return nombre de satellites
      */
     static int CalculTransits(int &nombre);
@@ -116,30 +116,31 @@ private:
      */
     /**
      * @brief CalculAngleMin Calcul de l'angle minimum du panneau
-     * @param jjm tableau de dates
-     * @param satellite satellite
-     * @param observateur observateur
-     * @param soleil Soleil
-     * @param minmax tableau de la date et de l'angle minimum
+     * @param[in] jjm tableau de dates
+     * @param[in] typeCorps type du corps (SOLEIL ou LUNE)
+     * @param[in/out] satellite satellite
+     * @return tableau de la date et de l'angle minimum
      */
-    static QPair<double, double> CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps, Satellite &satellite);
+    static QPair<double, double> CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps,
+                                                Satellite &satellite);
 
     /**
      * @brief CalculDate Calcul de la date ou la distance angulaire est minimale
-     * @param jjm tableau de dates
-     * @param typeCorps type du corps (SOLEIL ou LUNE)
-     * @param itransit cas d'un transit
-     * @param satellite satellite
+     * @param[in] jjm tableau de dates
+     * @param[in] typeCorps type du corps (SOLEIL ou LUNE)
+     * @param[in] itransit cas d'un transit
+     * @param[in/out] satellite satellite
      * @return date ou la distance angulaire est minimale
      */
-    static double CalculDate(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit & typeCorps, const bool itransit, Satellite &satellite);
+    static double CalculDate(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps, const bool itransit,
+                             Satellite &satellite);
 
     /**
      * @brief CalculElements Calcul des dates caracteristiques de la conjonction ou du transit
-     * @param jmax date
-     * @param typeCorps type du corps (SOLEIL ou LUNE)
-     * @param itransit cas d'un transit
-     * @param satellite satellite
+     * @param[in] jmax date
+     * @param[in] typeCorps type du corps (SOLEIL ou LUNE)
+     * @param[in] itransit cas d'un transit
+     * @param[in/out] satellite satellite
      * @return ensemble des dates
      */
     static QList<Date> CalculElements(const double jmax, const CorpsTransit &typeCorps, const bool itransit, Satellite &satellite);

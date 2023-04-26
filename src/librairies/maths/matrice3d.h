@@ -55,7 +55,7 @@ public:
      */
     /**
      * @brief Matrice3D Constructeur par defaut
-     * @param valeurInit valeur d'initialisation
+     * @param[in] valeurInit valeur d'initialisation
      */
     explicit Matrice3D(const double valeurInit = 0.) :
         _vecteur1(valeurInit),
@@ -65,22 +65,22 @@ public:
 
     /**
      * @brief Matrice3D Definition a partir d'une matrice
-     * @param matrice matrice
+     * @param[in] matrice matrice
      */
     Matrice3D(const Matrice3D &matrice) = default;
 
     /**
      * @brief Matrice3D Definition d'une matrice de rotation
-     * @param axe axe de rotation
-     * @param ang angle de rotation
+     * @param[in] axe axe de rotation
+     * @param[in] ang angle de rotation
      */
     Matrice3D(const AxeType &axe, const double ang);
 
     /**
      * @brief Matrice3D Definition a partir des vecteurs colonne
-     * @param vec1 vecteur 1
-     * @param vec2 vecteur 2
-     * @param vec3 vecteur 3
+     * @param[in] vec1 vecteur 1
+     * @param[in] vec2 vecteur 2
+     * @param[in] vec3 vecteur 3
      */
     Matrice3D(const Vecteur3D &vec1, const Vecteur3D &vec2, const Vecteur3D &vec3) :
         _vecteur1(vec1),
@@ -100,23 +100,23 @@ public:
 
     /**
      * @brief operator = Affectation d'une matrice 3D
-     * @param matrice
+     * @param[in] matrice
      * @return matrice affectee
      */
     Matrice3D &operator = (const Matrice3D &matrice) = default;
 
     /**
      * @brief operator * produit d'une matrice 3x3 par un vecteur 3D
-     * @param matrice matrice 3x3
-     * @param vecteur 3D
+     * @param[in] matrice matrice 3x3
+     * @param[in] vecteur vecteur 3D
      * @return vecteur 3D resultat
      */
     friend inline Vecteur3D operator * (const Matrice3D &matrice, const Vecteur3D &vecteur);
 
     /**
      * @brief operator * produit de 2 matrices 3x3
-     * @param matrice1 matrice 1
-     * @param matrice2 matrice 2
+     * @param[in] matrice1 matrice 1
+     * @param[in] matrice2 matrice 2
      * @return matrice 3D resultat
      */
     friend inline Matrice3D operator * (const Matrice3D &matrice1, const Matrice3D &matrice2);

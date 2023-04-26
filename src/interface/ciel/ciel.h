@@ -78,7 +78,7 @@ public:
      */
     /**
      * @brief Ciel Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit Ciel(QWidget *parent = nullptr);
 
@@ -122,22 +122,22 @@ public:
 
     /**
      * @brief AffichagePhaseLune Affichage de la phase lunaire
-     * @param lune lune
-     * @param dimensionPx rayon de la lune (en pixels)
+     * @param[in] lune lune
+     * @param[in] dimensionPx rayon de la lune (en pixels)
      * @return ensemble des points decrivant la partie dans l'ombre
      */
     static QPolygonF AffichagePhaseLune(const Lune &lune, const int dimensionPx);
 
     /**
      * @brief CalculCouleurCiel Determination de la couleur du ciel
-     * @param hauteurSoleil hauteur du Soleil (en degres)
-     * @return
+     * @param[in] hauteurSoleil hauteur du Soleil (en degres)
+     * @return couleur du ciel
      */
     static QBrush CalculCouleurCiel(const double hauteurSoleil);
 
     /**
      * @brief CouleurTraceCiel Determination de la couleur de la trace dans le ciel
-     * @param trace element de la trace dans le ciel
+     * @param[in] trace element de la trace dans le ciel
      * @return couleur de l'element de la trace dans le ciel
      */
     static QColor CouleurTraceCiel(const ElementsTraceCiel &trace);
@@ -197,14 +197,14 @@ private:
      */
     /**
      * @brief AffichageConstellations Affichage des constellations
-     * @param lignesCst lignes des constellations
-     * @param constellations constellations
+     * @param[in] lignesCst lignes des constellations
+     * @param[in] constellations constellations
      */
     void AffichageConstellations(const QList<LigneConstellation> &lignesCst, const QList<Constellation> &constellations);
 
     /**
      * @brief AffichageEtoiles Affichage des etoiles
-     * @param etoiles etoiles
+     * @param[in] etoiles etoiles
      */
     void AffichageEtoiles(const QList<Etoile> &etoiles);
 
@@ -225,10 +225,10 @@ private:
 
     /**
      * @brief AffichageSatellites Affichage des satellites
-     * @param dateDeb date de debut de flash
-     * @param dateMax date max de flash
-     * @param dateFin date de fin de flash
-     * @param maxFlash maximum du flash
+     * @param[in] dateDeb date de debut de flash
+     * @param[in] dateMax date max de flash
+     * @param[in] dateFin date de fin de flash
+     * @param[in] maxFlash maximum du flash
      */
     void AffichageSatellites(const Date &dateDeb, const Date &dateMax, const Date &dateFin, const bool maxFlash);
 

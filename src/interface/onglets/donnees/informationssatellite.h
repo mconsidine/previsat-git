@@ -68,7 +68,7 @@ public:
      */
     /**
      * @brief InformationsSatellite Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit InformationsSatellite(QWidget *parent = nullptr);
 
@@ -97,7 +97,7 @@ public slots:
 
     /**
      * @brief SauveOngletInformations Sauvegarde des donnees de l'onglet
-     * @param fichier nom du fichier
+     * @param[in] fichier nom du fichier
      */
     void SauveOngletInformations(const QString &fichier);
 

@@ -80,7 +80,7 @@ public:
      */
     /**
      * @brief PreviSat Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit PreviSat(QWidget *parent = nullptr);
 
@@ -210,7 +210,7 @@ private:
 
     /**
      * @brief ChargementTraduction Chargement de la traduction
-     * @param langue langue (fr, en, ja)
+     * @param[in] langue langue (fr, en, ja)
      */
     void ChargementTraduction(const QString &langue);
 
@@ -261,8 +261,8 @@ private:
 
     /**
      * @brief InstallationTraduction Installation de la traduction
-     * @param langue langue
-     * @param traduction traduction
+     * @param[in] langue langue
+     * @param[out] traduction traduction
      */
     void InstallationTraduction(const QString &langue, QTranslator &traduction);
 
@@ -278,9 +278,9 @@ private:
 
     /**
      * @brief VerifMajDate Verification d'une mise a jour a partir d'une date
-     * @param fichier nom du fichier contenant la date
-     * @param listeFichierMaj liste des fichiers a mettre a jour
-     * @param dateMaj date de reference
+     * @param[in] fichier nom du fichier contenant la date
+     * @param[in] listeFichierMaj liste des fichiers a mettre a jour
+     * @param[in] dateMaj date de reference
      * @return vrai si la date contenue dans le fichier est plus recente
      */
     bool VerifMajDate(const QString &fichier, const QStringList &listeFichierMaj = QStringList(), const QDate &dateMaj = QDate());
@@ -292,7 +292,7 @@ private:
 
     /**
      * @brief VerifMajVersion Verification d'une mise a jour a partir d'un fichier de version
-     * @param fichier nom du fichier de version
+     * @param[in] fichier nom du fichier de version
      * @return vrai si le numero de version du fichier est plus recent
      */
     bool VerifMajVersion(const QString &fichier);
@@ -307,27 +307,27 @@ private slots:
 
     /**
      * @brief AfficherListeSatellites Afficher les noms des satellites dans les listes
-     * @param nomfic nom du fichier TLE
-     * @param majListesOnglets mise a jour des listes dans les onglets
+     * @param[in] nomfic nom du fichier TLE
+     * @param[in] majListesOnglets mise a jour des listes dans les onglets
      */
     void AfficherListeSatellites(const QString &nomfic, const bool majListesOnglets = true);
 
     /**
      * @brief AfficherMessageStatut Affichage d'un message dans la zone de statut
-     * @param message message
-     * @param secondes nombre de secondes pendant lesquelles le message est affiche
+     * @param[in] message message
+     * @param[in] secondes nombre de secondes pendant lesquelles le message est affiche
      */
     void AfficherMessageStatut(const QString &message, const int secondes = -1);
 
     /**
      * @brief AfficherMessageStatut2 Affichage d'un message dans la zone de statut 2
-     * @param message message
+     * @param[in] message message
      */
     void AfficherMessageStatut2(const QString &message);
 
     /**
      * @brief AfficherMessageStatut3 Affichage d'un message dans la zone de statut 3
-     * @param message message
+     * @param[in] message message
      */
     void AfficherMessageStatut3(const QString &message);
 
@@ -338,7 +338,7 @@ private slots:
 
     /**
      * @brief ChangementDate Changement de la date en mode manuel
-     * @param dt date
+     * @param[in] dt date
      */
     void ChangementDate(const QDateTime &dt);
 
@@ -374,7 +374,7 @@ private slots:
 
     /**
      * @brief MettreAjourGroupeElem Mise a jour d'un groupe d'elements orbitaux
-     * @param groupe nom du groupe
+     * @param[in] groupe nom du groupe
      */
     void MettreAjourGroupeElem(const QString &groupe);
 

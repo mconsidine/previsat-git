@@ -61,7 +61,7 @@ public:
      */
     /**
      * @brief ItemGroup Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit ItemGroup(QGraphicsItem *parent = nullptr);
 

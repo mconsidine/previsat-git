@@ -66,7 +66,7 @@ public:
      */
     /**
      * @brief CalculSuiviTelescope Calcul des coordonnees du satellite pour le suivi avec un telescope
-     * @param nombre nombre de satellites
+     * @param[in/out] nombre nombre de satellites
      * @return nombre de satellites
      */
     static int CalculSuiviTelescope(int &nombre);

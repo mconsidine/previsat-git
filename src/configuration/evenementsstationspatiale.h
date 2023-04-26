@@ -99,22 +99,22 @@ private:
      */
     /**
      * @brief LectureBody Lecture de la section body du fichier Station Spatiale
-     * @param cfg lecteur xml
-     * @param evenements evenements
+     * @param[in/out] cfg lecteur xml
+     * @param[in/out] evenements evenements
      */
     static void LectureBody(QXmlStreamReader &cfg, EvenementsStation &evenements);
 
     /**
      * @brief LectureData Lecture de la section data du fichier Station Spatiale
-     * @param cfg lecteur xml
-     * @param evenements evenements
+     * @param[in/out] cfg lecteur xml
+     * @param[in/out] evenements evenements
      */
     static void LectureData(QXmlStreamReader &cfg, EvenementsStation &evenements);
 
     /**
      * @brief LectureMetadata Lecture de la section metadata du fichier Station Spatiale
-     * @param cfg lecteur xml
-     * @param evenements evenements
+     * @param[in/out] cfg lecteur xml
+     * @param[in/out] evenements evenements
      */
     static void LectureMetadata(QXmlStreamReader &cfg, EvenementsStation &evenements);
 

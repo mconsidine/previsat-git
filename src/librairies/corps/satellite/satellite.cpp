@@ -157,7 +157,7 @@ void Satellite::CalculElementsOsculateurs(const Date &date)
 
 /*
  * Calcul de la position et de la vitesse du satellite
- * Modele SGP4 : d'apres l'article "Revisiting Spacetrack Report #3: Rev 1" de David Vallado (2006)
+ * Modele SGP4 : d'apres l'article "Revisiting Spacetrack Report #3: Rev 3" de David Vallado (2006)
  */
 void Satellite::CalculPosVit(const Date &date)
 {

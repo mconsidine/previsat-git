@@ -68,33 +68,33 @@ public:
      */
     /**
      * @brief CalculDatesPhases Calcul des dates des phases lunaires
-     * @param date date
+     * @param[in] date date
      */
     void CalculDatesPhases(const Date &date, const DateSysteme &syst);
 
     /**
      * @brief CalculLeverMeridienCoucher Calcul des heures de lever, passage au meridien et coucher
-     * @param date date
-     * @param observateur observateur
+     * @param[in] date date
+     * @param[in] observateur observateur
      */
     void CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur, const DateSysteme &syst);
 
     /**
      * @brief CalculMagnitude Calcul de la magnitude visuelle de la Lune
-     * @param soleil Soleil
+     * @param[in] soleil Soleil
      */
     void CalculMagnitude(const Soleil &soleil);
 
     /**
      * @brief CalculPhase Calcul de la phase actuelle de la Lune
-     * @param soleil
+     * @param[in] soleil
      */
     void CalculPhase(const Soleil &soleil);
 
     /**
      * @brief CalculPosition Calcul de la position de la Lune avec le modele simplifie issu de
      * l'Astronomical Algorithms 2nd edition de Jean Meeus, pp337-342
-     * @param date date
+     * @param[in] date date
      */
     void CalculPosition(const Date &date);
 
@@ -139,7 +139,7 @@ private:
      */
     /**
      * @brief CalculJourJulienPhase Calcul du jour julien approximatif d'une phase lunaire
-     * @param k nombre de lunaison depuis le 1er janvier 2000 (sans partie fractionnaire pour la nouvelle lune, +0.25 pour le premier quartier, etc.)
+     * @param[in] k nombre de lunaison depuis le 1er janvier 2000 (sans partie fractionnaire pour la nouvelle lune, +0.25 pour le premier quartier, etc.)
      * @return jour julien approximatif de la phase
      */
     double CalculJourJulienPhase(const double k);

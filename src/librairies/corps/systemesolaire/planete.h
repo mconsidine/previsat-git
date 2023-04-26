@@ -63,7 +63,7 @@ public:
 
     /**
      * @brief Planete Constructeur avec l'identifiant de la planete
-     * @param iplanete indice de la planete
+     * @param[in] iplanete indice de la planete
      */
     explicit Planete(const IndicePlanete &iplanete);
 
@@ -73,8 +73,8 @@ public:
      */
     /**
      * @brief CalculPosition Calcul de la position d'une planete
-     * @param date date
-     * @param soleil soleil
+     * @param[in] date date
+     * @param[in] soleil soleil
      */
     void CalculPosition(const Date &date, const Soleil &soleil);
 
@@ -112,7 +112,7 @@ private:
      */
     /**
      * @brief CalculElements Calcul des elements orbitaux moyens d'une planete
-     * @param date date
+     * @param[in] date date
      */
     void CalculElements(const Date &date);
 

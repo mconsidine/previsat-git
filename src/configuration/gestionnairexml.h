@@ -120,14 +120,14 @@ private:
 
     /**
      * @brief LectureConfiguration Lecture du fichier de configuration generale
-     * @param nomFichierEvenementsStationSpatiale nom du fichier d'evenements de la Station Spatiale
-     * @param noradStationSpatiale numero NORAD de la Station Spatiale
-     * @param versionCfg version du fichier de configuration
-     * @param adresseCelestrak adresse du site Celestrak
-     * @param nomfic nomdu fichier d'elements orbitaux par defaut
-     * @param noradDefaut numero NORAD par defaut
-     * @param observateurs liste des lieux d'observation
-     * @param mapSatellitesFichierElem liste des satellites par fichier d'elements orbitaux
+     * @param[out] nomFichierEvenementsStationSpatiale nom du fichier d'evenements de la Station Spatiale
+     * @param[out] noradStationSpatiale numero NORAD de la Station Spatiale
+     * @param[out] versionCfg version du fichier de configuration
+     * @param[out] adresseCelestrak adresse du site Celestrak
+     * @param[out] nomfic nomdu fichier d'elements orbitaux par defaut
+     * @param[out] noradDefaut numero NORAD par defaut
+     * @param[out] observateurs liste des lieux d'observation
+     * @param[out] mapSatellitesFichierElem liste des satellites par fichier d'elements orbitaux
      */
     static void LectureConfiguration(QString &nomFichierEvenementsStationSpatiale,
                                      QString &noradStationSpatiale,
@@ -146,15 +146,16 @@ private:
 
     /**
      * @brief LectureGestionnaireElementsOrbitaux Lecture du fichier de gestionnaire d'elements orbitaux
-     * @param versionCategorieElem version du fichier de categories d'elements orbitaux
-     * @return liste contenant les categories d'elements orbitaux
+     * @param[out] versionCategorieElem
+     * @param[out] mapCategoriesMajElementsOrbitaux map contenant les categories d'elements orbitaux a mettre a jour
+     * @return map contenant les categories d'elements orbitaux
      */
     static QMap<QString, QList<CategorieElementsOrbitaux> > LectureGestionnaireElementsOrbitaux(
             QString &versionCategorieElem, QMap<QString, QList<CategorieElementsOrbitaux> > &mapCategoriesMajElementsOrbitaux);
 
     /**
      * @brief LectureLieuxObservation Lecture de la structure de lieux d'observations
-     * @param cfg lecteur xml
+     * @param[in/out] cfg lecteur xml
      * @return liste de lieux d'observations
      */
     static QList<Observateur> LectureLieuxObservation(QXmlStreamReader &cfg);
@@ -191,17 +192,17 @@ private:
 
     /**
      * @brief VerifieFichierXml Verification du fichier xml
-     * @param nomficXml nom du fichier xml
-     * @param version numero de version
-     * @param message message a afficher
+     * @param[in] nomficXml nom du fichier xml
+     * @param[out] version numero de version
+     * @param[in] message message a afficher
      */
     static void VerifieFichierXml(const QString &nomficXml, QString &version, const QString &message = QString());
 
     /**
      * @brief VerifieVersionXml Verification du numero de version du fichier xml
-     * @param fi1 fichier xml du repertoire commun
-     * @param fi2 fichier xml du repertoire local
-     * @param msg message a afficher
+     * @param[in/out] fi1 fichier xml du repertoire commun
+     * @param[in/out] fi2 fichier xml du repertoire local
+     * @param[in] msg message a afficher
      */
     static void VerifieVersionXml(QFile &fi1, QFile &fi2, QString &version, const QString &msg = QString());
 

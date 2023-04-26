@@ -55,21 +55,21 @@ public:
      */
     /**
      * @brief Vecteur3D Constructeur par defaut
-     * @param valeurInit valeur d'initialisation
+     * @param[in] valeurInit valeur d'initialisation
      */
     explicit Vecteur3D(const double valeurInit = 0.);
 
     /**
      * @brief Vecteur3D Definition a partir d'un vecteur
-     * @param vecteur vecteur
+     * @param[in] vecteur vecteur
      */
     Vecteur3D(const Vecteur3D &vecteur) = default;
 
     /**
      * @brief Vecteur3D Definition du vecteur a partir de ses composantes
-     * @param xval composante x du vecteur
-     * @param yval composante y du vecteur
-     * @param zval composante z du vecteur
+     * @param[in] xval composante x du vecteur
+     * @param[in] yval composante y du vecteur
+     * @param[in] zval composante z du vecteur
      */
     Vecteur3D(const double xval, const double yval, const double zval);
 
@@ -79,7 +79,7 @@ public:
      */
     /**
      * @brief Angle Angle entre 2 vecteurs
-     * @param vecteur vecteur
+     * @param[in] vecteur vecteur
      * @return angle
      */
     double Angle(const Vecteur3D &vecteur) const;
@@ -104,69 +104,69 @@ public:
 
     /**
      * @brief Rotation Rotation d'un vecteur autour d'un axe
-     * @param axe axe (AXE_X, AXE_Y ou AXE_Z)
-     * @param angle angle de rotation (rad)
+     * @param[in] axe axe (AXE_X, AXE_Y ou AXE_Z)
+     * @param[in] angle angle de rotation (rad)
      * @return vecteur issu de la rotation
      */
     Vecteur3D Rotation(const AxeType &axe, const double angle) const;
 
     /**
      * @brief operator = Affectation d'un vecteur 3D
-     * @param vecteur vecteur
+     * @param[in] vecteur vecteur
      * @return vecteur affecte
      */
     Vecteur3D &operator = (const Vecteur3D &vecteur) = default;
 
     /**
      * @brief operator - Oppose du vecteur 3D
-     * @param vecteur vecteur
+     * @param[in] vecteur vecteur
      * @return Oppose du vecteur 3D
      */
     friend inline Vecteur3D operator - (const Vecteur3D &vecteur);
 
     /**
      * @brief operator + Somme de deux vecteurs 3D
-     * @param vecteur1 vecteur1
-     * @param vecteur2 vecteur2
+     * @param[in] vecteur1 vecteur1
+     * @param[in] vecteur2 vecteur2
      * @return Somme de deux vecteurs 3D
      */
     friend inline Vecteur3D operator + (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2);
 
     /**
      * @brief operator - Difference de deux vecteurs 3D
-     * @param vecteur1 vecteur1
-     * @param vecteur2 vecteur2
+     * @param[in] vecteur1 vecteur1
+     * @param[in] vecteur2 vecteur2
      * @return Difference de deux vecteurs 3D
      */
     friend inline Vecteur3D operator - (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2);
 
     /**
      * @brief operator * Produit d'un vecteur 3D par un scalaire
-     * @param vecteur1 vecteur
-     * @param scalaire grandeur scalaire
+     * @param[in] vecteur1 vecteur
+     * @param[in] scalaire grandeur scalaire
      * @return Produit d'un vecteur 3D par un scalaire
      */
     friend inline Vecteur3D operator * (const Vecteur3D &vecteur1, const double scalaire);
 
     /**
      * @brief operator *= Produit d'un vecteur avec un scalaire
-     * @param vecteur vecteur
-     * @param scalaire scalaire
+     * @param[in/out] vecteur vecteur
+     * @param[in] scalaire scalaire
      */
     friend inline void operator *= (Vecteur3D &vecteur, const double scalaire);
 
     /**
      * @brief operator * Produit scalaire de deux vecteurs 3D
-     * @param vecteur1 vecteur1
-     * @param vecteur2 vecteur2
+     * @param[in] vecteur1 vecteur1
+     * @param[in] vecteur2 vecteur2
      * @return Produit scalaire de deux vecteurs 3D
      */
     friend inline double operator * (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2);
 
     /**
      * @brief operator ^ Produit vectoriel de deux vecteurs 3D
-     * @param vecteur1 vecteur1
-     * @param vecteur2 vecteur2
+     * @param[in] vecteur1 vecteur1
+     * @param[in] vecteur2 vecteur2
      * @return Produit vectoriel de deux vecteurs 3D
      */
     friend inline Vecteur3D operator ^ (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2);

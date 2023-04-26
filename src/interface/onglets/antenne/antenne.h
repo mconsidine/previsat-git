@@ -69,7 +69,7 @@ public:
      */
     /**
      * @brief Antenne Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit Antenne(QWidget *parent = nullptr);
 
@@ -159,6 +159,7 @@ private slots:
     void on_ouvrirCatRotator_clicked();
     void on_frequenceMontante_currentIndexChanged(int index);
     void on_frequenceDescendante_currentIndexChanged(int index);
+
 };
 
 #endif // ANTENNE_H

@@ -64,27 +64,27 @@ public:
 
     /**
      * @brief Observateur Definition a partir d'un objet Observateur
-     * @param observateur lieu d'observation
+     * @param[in] observateur lieu d'observation
      */
     Observateur(const Observateur &observateur) = default;
 
     /**
      * @brief Observateur Constructeur a partir des coordonnees geographiques d'un lieu d'observation
-     * @param nom nom du lieu d'observation
-     * @param lon longitude en degres (negative a l'est)
-     * @param lat latitude en degres (negative au sud)
-     * @param alt altitude en metres
+     * @param[in] nom nom du lieu d'observation
+     * @param[in] lon longitude en degres (negative a l'est)
+     * @param[in] lat latitude en degres (negative au sud)
+     * @param[in] alt altitude en metres
      */
     Observateur(const QString &nom, const double lon, const double lat, const double alt = 0.);
 
     /**
      * @brief Observateur Constructeur a partir des donnees relatives au lieu d'observation a une date donnee
      * (pour le calcul des previsions)
-     * @param pos position de l'observateur
-     * @param vit vitesse de l'observateur
-     * @param matRotHz matrice de rotation pour le calcul des coordonnees horizontales
-     * @param aaerVal aray
-     * @param arayVal aaer
+     * @param[in] pos position de l'observateur
+     * @param[in] vit vitesse de l'observateur
+     * @param[in] matRotHz matrice de rotation pour le calcul des coordonnees horizontales
+     * @param[in] aaerVal aray
+     * @param[in] arayVal aaer
      */
     Observateur(const Vecteur3D &pos, const Vecteur3D &vit, const Matrice3D &matRotHz, const double aaerVal, const double arayVal);
 
@@ -94,21 +94,21 @@ public:
      */
     /**
      * @brief CalculPosVit Calcul de la position et de la vitesse du lieu d'observation
-     * @param date date
+     * @param[in] date date
      */
     void CalculPosVit(const Date &date);
 
     /**
      * @brief CalculTempsSideralGreenwich Calcul du temps sideral de Greenwich
      * D'apres la formule donnee dans l'Astronomical Algorithms 2nd edition de Jean Meeus, p88
-     * @param date date
+     * @param[in] date date
      * @return temps sideral de Greenwich
      */
     static double CalculTempsSideralGreenwich(const Date &date);
 
     /**
      * @brief CalculCap Calcul du cap d'un lieu d'observation par rapport a un autre
-     * @param lieuDistant lieu distant
+     * @param[in] lieuDistant lieu distant
      * @return nom et valeur du cap
      */
     QPair<QString, double> CalculCap(const Observateur &lieuDistant) const;
@@ -117,7 +117,7 @@ public:
      * @brief CalculDistance Calcul de la distance entre 2 lieux d'observation mesuree le long de la surface terrestre
      * en tenant compte de l'applatissement du globe terrestre, mais sans prise en compte de l'altitude
      * Astronomical Algorithms 2nd edition de Jean Meeus, p85
-     * @param observateur lieu d'observation distant
+     * @param[in] observateur lieu d'observation distant
      * @return distance entre les 2 lieux d'observation
      */
     double CalculDistance(const Observateur &observateur) const;
@@ -125,16 +125,16 @@ public:
     /**
      * @brief CalculIntersectionEllipsoide Calcul des coordonnees geographiques du lieu a l'intersection d'un vecteur pointant
      * vers la Terre et de l'ellipsoide terrestre
-     * @param date date
-     * @param origine vecteur origine
-     * @param direction direction du vecteur vers l'ellipsoide
+     * @param[in] date date
+     * @param[in] origine vecteur origine
+     * @param[in] direction direction du vecteur vers l'ellipsoide
      * @return lieu pointe par le vecteur
      */
     static Observateur CalculIntersectionEllipsoide(const Date &date, const Vecteur3D &origine, const Vecteur3D &direction);
 
     /**
      * @brief operator = Affectation d'un observateur
-     * @param observateur observateur
+     * @param[in] observateur observateur
      */
     Observateur &operator = (const Observateur &observateur) = default;
 

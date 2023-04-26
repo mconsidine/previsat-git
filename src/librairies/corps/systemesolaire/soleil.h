@@ -61,7 +61,7 @@ public:
 
     /**
      * @brief Soleil Constructeur a partir du vecteur position
-     * @param pos vecteur position du Soleil
+     * @param[in] pos vecteur position du Soleil
      */
     explicit Soleil(const Vecteur3D &pos);
 
@@ -71,15 +71,15 @@ public:
      */
     /**
      * @brief CalculLeverMeridienCoucher Calcul des heures de lever/coucher/passage au meridien/crepuscules pour une date donnee
-     * @param date date
-     * @param observateur observateur
+     * @param[in] date date
+     * @param[in] observateur observateur
      */
     void CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur, const DateSysteme &syst);
 
     /**
      * @brief CalculPosition Calcul de la position du Soleil a partir du modele simplifie
      * de l'Astronomical Algorithms 2nd edition de Jean Meeus, p163-164
-     * @param date date
+     * @param[in] date date
      */
     void CalculPosition(const Date &date);
 

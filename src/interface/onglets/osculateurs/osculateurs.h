@@ -71,7 +71,7 @@ public:
      */
     /**
      * @brief Osculateurs Constructeur par defaut
-     * @param parent parent
+     * @param[in] parent parent
      */
     explicit Osculateurs(QWidget *parent = nullptr);
 
@@ -102,7 +102,7 @@ public slots:
 
     /**
      * @brief SauveOngletElementsOsculateurs Sauvegarde des donnees de l'onglet
-     * @param fichier nom du fichier
+     * @param[in] fichier nom du fichier
      */
     void SauveOngletElementsOsculateurs(const QString &fichier);
 
