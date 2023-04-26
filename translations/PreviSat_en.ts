@@ -1617,31 +1617,31 @@ PreviSat is free !</translation>
         <translation>Moon</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1441"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1434"/>
         <source>W</source>
         <comment>Symbol for West</comment>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1447"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1440"/>
         <source>E</source>
         <comment>Symbol for East</comment>
         <translation>E</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1475"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1468"/>
         <source>N</source>
         <comment>Symbol for North</comment>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1481"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1474"/>
         <source>S</source>
         <comment>Symbol for South</comment>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1774"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1767"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>The file %1 does not exist, please re-install %2</translation>
     </message>
