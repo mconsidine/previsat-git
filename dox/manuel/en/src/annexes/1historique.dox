@@ -1,6 +1,38 @@
 /**
 \page Historique Version history
 
+<b><span style="color:red;">Version 6.0 (revision 0) :</span><br />
+July 2022 - April 2023 :</b>
+<ul>
+<li>Code migration from Qt5 to Qt6.
+<li>Partial software overhaul for the graphic interface.
+<li>Management tools for the old orbital elements format (TLE).
+<li>Improvement of display of the drawings on the world map, the sky map and the radar.
+<li>Add shortcuts to main features.
+<li>Add management of the new format of orbital elements (GP).
+<li>Add additional informations about Sun and Moon.
+<li>Add filters for satellites lists.
+<li>Add management of log files.
+<li>Add Sun and Moon transits for all satellites.
+<li>Add Options and Tools windows.
+<li>Add date adjustments in the Telescope tab.
+<li>Add zoom on the world map.
+<li>Add boundaries on the world map.
+<li>Add dark mode.
+</ul>
+
+<hr />
+
+<b><span style="color:red;">Version 5.1 (revision 3) :</span><br />
+November 2022 :</b>
+<ul>
+<li>Add Antenna tab.
+<li>Correction of taking into account real time step.
+<li>Correction at launch.
+</ul>
+
+<hr />
+
 <b><span style="color:red;">Version 5.0 (revision 1) :</span><br />
 February 2019 - July 2022 :</b>
 <ul>

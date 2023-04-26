@@ -1,3 +1,31 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    26 avril 2023
+ *
+ */
+
+
 /**
 \page Caracteristiques Caractéristiques techniques
 
@@ -6,14 +34,14 @@
 
 | Logiciel | Version | Commentaires |
 |----------|---------|--------------|
-| PreviSat | VERSION_PREVISAT | NB_LIGNES_CODE lignes de code source |
-| Qt Creator | VERSION_QTCREATOR | EDI |
-| Librairie Qt | VERSION_LIB_QT | Librairie d'interface graphique |
-| CppCheck | VERSION_CPPCHECK | Contrôle et analyse du code source |
-| Inno Setup Compiler | VERSION_INNOSETUP | Setup d'installation pour Windows |
-| Tortoise Hg | VERSION_TORTOISEHG | Logiciel de gestion de version |
-| UPX | VERSION_UPX | Logiciel de compression d'exécutable |
-| doxygen | VERSION_DOXYGEN | Générateur de documentation |
+| PreviSat | <center>VERSION_PREVISAT</center> | NB_LIGNES_CODE lignes de code source |
+| Qt Creator | <center>VERSION_QTCREATOR</center> | EDI |
+| Librairie Qt | <center>VERSION_LIB_QT</center> | Librairie d'interface graphique |
+| CppCheck | <center>VERSION_CPPCHECK</center> | Contrôle et analyse du code source |
+| Inno Setup Compiler | <center>VERSION_INNOSETUP</center> | Setup d'installation pour Windows |
+| Tortoise Hg | <center>VERSION_TORTOISEHG</center> | Logiciel de gestion de version |
+| UPX | <center>VERSION_UPX</center> | Logiciel de compression d'exécutable |
+| doxygen | <center>VERSION_DOXYGEN</center> | Générateur de documentation |
 <br />
 
 <li>Modèles et constantes utilisées
@@ -25,13 +53,14 @@
 | <center>Éléments osculateurs</center> | <center>Fundamental of Astrodynamics and Application 2nd edition</center> | Vallado | |
 | <center>Extinction atmosphérique</center> | <center>Magnitude corrections for atmospheric extinction, 1992</center>  | Green | |
 | <center>Catalogue d'étoiles</center> | <center>Bright Star Catalog 5, 1991</center> | Hoffleit | |
+| <center>Informations satellites</center> | <center>GCAT</center> | Jonathan C. McDowell | https://planet4589.org/space/gcat |
 <br />
 
 | Constante | Symbole | Valeur | Origine |
 |-----------|---------|--------|---------|
-| Constante gravitationnelle géocentrique<br />Constante d'ellipticité géopotentielle<br />Troisième harmonique zonal<br />Quatrième harmonique zonal<br />Aplatissement du globe terrestre<br />Rayon équatorial terrestre | GM<br />J2<br />J3<br />J4<br />f<br />Re | 398 600.8 km<sup>3</sup>.s<sup>-2</sup><br />0.001 082 6158<br />-0.000 002 538 81<br />-0.000 001 655 97<br />1/298.26<br />6378.135 km | WGS-72
-| Unité astronomique | UA | 149 597 870 km | UAI 1976 |
-| Rayon équatorial solaire<br />Rayon équatorial lunaire<br />Magnitude du centre du disque solaire | R<sub>s</sub><br />R<sub>l</sub><br />M<sub>s</sub>| 696 342 km<br />1737.4 km<br />-26.98 | |
+| Constante gravitationnelle géocentrique<br />Constante d'ellipticité géopotentielle<br />Troisième harmonique zonal<br />Quatrième harmonique zonal<br />Aplatissement du globe terrestre<br />Rayon équatorial terrestre | <center>GM<br />J2<br />J3<br />J4<br />f<br />Re</center> | 398 600.8 km<sup>3</sup>.s<sup>-2</sup><br />0.001 082 6158<br />-0.000 002 538 81<br />-0.000 001 655 97<br />1/298.26<br />6378.135 km | WGS-72
+| Unité astronomique | <center>UA</center> | 149 597 870 km | UAI 1976 |
+| Rayon équatorial solaire<br />Rayon équatorial lunaire<br />Magnitude du centre du disque solaire | <center>R<sub>s</sub><br />R<sub>l</sub><br />M<sub>s</sub></center>| 696 342 km<br />1737.4 km<br />-26.98 | |
 </ol>
 
 */

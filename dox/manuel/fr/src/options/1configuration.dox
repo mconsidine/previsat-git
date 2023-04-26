@@ -1,9 +1,37 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    26 avril 2023
+ *
+ */
+
+
 /**
 \page Configuration Configuration
 
 \image html configuration.png
 
-Cet onglet contient une liste de cases à cocher permettant d'activer ou de désactiver l'affichage des éléments de l'interface graphique et de la configuration du logiciel. Plusieurs cases à cocher comportent 3 états possibles :
+Cet ensemble d'onglets contient une liste de cases à cocher classées thématiquement permettant d'activer ou de désactiver l'affichage des éléments de l'interface graphique et de la configuration du logiciel. Plusieurs cases à cocher comportent 3 états possibles :
 
 Case <b>Nom des satellites</b> :
 - <b>Coché</b> : les noms des satellites sélectionnés sont affichés,
@@ -30,7 +58,7 @@ Case <b>Nom des lieux d'observation</b> :
 - <b>Partiellement coché</b> : le nom du lieu d'observation par défaut est affiché, les autres lieux d'observation sont uniquement indiqués par une croix blanche,
 - <b>Décoché</b> : le nom du lieu d'observation par défaut est affiché.
 
-Une première liste de choix permet de choisir les unités de distance affichées dans PreviSat. Pour les satellites ainsi que la Lune, l'unité peut être soit kilomètres, soit miles (1 mile = 1.609344 km); l'altitude du lieu d'observation et les dimensions du satellite sont alors exprimées respectivement en mètres ou en pieds (1 pied (ft) = 0.3048 m). La distance du Soleil est toujours donnée en unités astronomiques (1 UA = 149 597 870 km = 92 955 807 miles).
+Dans l'onglet <b>Système</b>, une première liste de choix permet de choisir les unités de distance affichées dans PreviSat. Pour les satellites ainsi que pour la Lune, l'unité peut être soit kilomètres, soit miles (1 mile = 1.609344 km); l'altitude du lieu d'observation et les dimensions du satellite sont alors exprimées respectivement en mètres ou en pieds (1 pied (ft) = 0.3048 m). La distance du Soleil est toujours donnée en unités astronomiques (1 UA = 149 597 870 km = 92 955 807 miles).
 
 <b>Note</b> : Après la saisie d'un nouveau lieu d'observation lorsque l'unité est le pied, l'altitude affichée peut différer légèrement par rapport à la valeur entrée, car PreviSat sauvegarde l'altitude en mètres avec une valeur entière. Cela n'a aucune incidence sur les calculs effectués par PreviSat.
 
