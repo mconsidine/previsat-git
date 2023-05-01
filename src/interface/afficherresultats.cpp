@@ -1243,6 +1243,7 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
         }
 
         int kmax;
+        int nmax;
         QStringList elems;
         QTableWidgetItem * itm;
         QListIterator it(list);
@@ -1278,9 +1279,14 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
                 _tableDetail->insertRow(m);
                 _tableDetail->setRowHeight(m, 16);
 
-                kmax = static_cast<int> (elems.count());
-                if ((_typeCalcul == TypeCalcul::FLASHS) && (j != 1)) {
-                    kmax = static_cast<int> (elems.count() - 4);
+                kmax = _tableDetail->columnCount();
+                if (_typeCalcul == TypeCalcul::FLASHS) {
+                    if (j == 1) {
+                        kmax = qMin(kmax, static_cast<int> (elems.count()));
+                        nmax = kmax;
+                    } else {
+                        kmax = qMin(kmax - 4, static_cast<int> (elems.count()));
+                    }
                 }
 
                 for(int k=0; k<kmax; k++) {
@@ -1301,6 +1307,10 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
             }
 
             j++;
+        }
+
+        if (_typeCalcul == TypeCalcul::FLASHS) {
+            _tableDetail->setColumnCount(nmax);
         }
 
         _tableDetail->setSelectionMode(QTableWidget::SingleSelection);
@@ -1532,8 +1542,13 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
                         if (!elems.isEmpty()) {
 
                             kmax = static_cast<int> (elems.count());
-                            if ((_typeCalcul == TypeCalcul::FLASHS) && (i != 1)) {
-                                kmax = static_cast<int> (elems.count() - 4);
+
+                            if (_typeCalcul == TypeCalcul::FLASHS) {
+                                if (i == 1) {
+                                    kmax = qMin(18, static_cast<int> (elems.count()));
+                                } else {
+                                    kmax = qMin(14, static_cast<int> (elems.count()));
+                                }
                             }
 
                             ligne = "";

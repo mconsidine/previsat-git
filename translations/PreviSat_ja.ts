@@ -371,71 +371,71 @@
         <translation>最適地点からの距離</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1327"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1337"/>
         <source>Détail du passage</source>
         <translation>通過の詳細</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1331"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1341"/>
         <source>Détail du flash</source>
         <translation>フレアの詳細</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1335"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1345"/>
         <source>Détail du transit ou conjonction</source>
         <translation>通過又は合の詳細</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1379"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1389"/>
         <source>Enregistrer sous</source>
         <translation>名前を付けて保存</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1380"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1390"/>
         <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;Tous les fichiers (*.*)</source>
         <translation type="unfinished">PNGファイル (*.png);;JPEGファイル (*.jpg *.jpeg);;BMPファイル (*.bmp);;すべてのファイル (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1410"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1420"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*.*)</source>
         <translation type="unfinished">テキストファイル (*.txt);;すべてのファイル (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1476"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1486"/>
         <source>   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance</source>
         <comment>Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, Angle, Type, Body, Illumination, Duration, Altitude of satellite, Range, Solar azimuth, Solar elevation, Longitude of the maximum, Latitude of the maximum, Range from the maximum</comment>
         <translation type="unfinished">   日付      時刻      衛星方位角 衛星仰角  衛星赤経    衛星赤緯   星座  角度  種類 天体 照射 継続時間    高度    距離  太陽方位角  太陽仰角   最適経度    最適緯度     距離</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1409"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1419"/>
         <source>Enregistrer sous...</source>
         <translation>名前を付けて保存...</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1447"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1457"/>
         <source>(numéro NORAD : %1)</source>
         <translation>(NORAD番号 : %1)</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1455"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1465"/>
         <source>   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  Haut Soleil</source>
         <comment>Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation</comment>
         <translation>   日付      時刻    衛星方位角 衛星仰角  衛星赤経    衛星赤緯  星座 等級  高度  距離  太陽方位角  太陽仰角</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1464"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1474"/>
         <source>Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang   Mir Magn       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance</source>
         <comment>Satellite, Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, Angle, Mirror, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation, Longitude of the maximum, Latitude of the maximum, Magnitude at the maximum, Range from the maximum</comment>
         <translation>衛星     日付      時刻      衛星方位角 衛星仰角  衛星赤経    衛星赤緯   星座  角度  鏡面 等級       高度      距離  太陽方位角  太陽仰角   最適経度    最適緯度    最大等級  距離</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1486"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1496"/>
         <source>   Date      Heure     PSO    Longitude  Latitude  Évènements</source>
         <comment>Date, Hour, In orbit position, Longitude, Latitude, Events</comment>
         <translation>   日付      時刻     位置    経度  緯度  事象</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1612"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1627"/>
         <source>Temps écoulé : %1s</source>
         <translation>経過時間 : %1s</translation>
     </message>
