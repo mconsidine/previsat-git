@@ -130,6 +130,12 @@
       </item>
       <item row="0" column="1">
        <widget class="QDateTimeEdit" name="dateHeure2">
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
+        <property name="currentSection">
+         <enum>QDateTimeEdit::NoSection</enum>
+        </property>
         <property name="displayFormat">
          <string>dddd dd MMMM yyyy HH:mm:ss</string>
         </property>

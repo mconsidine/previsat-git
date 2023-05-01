@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 avril 2023
+ * >    1er mai 2023
  *
  */
 
@@ -59,6 +59,7 @@
 #include "ui_carte.h"
 #include "ui_coordiss.h"
 #include "ui_general.h"
+#include "ui_informationssatellite.h"
 #include "ui_onglets.h"
 #include "ui_osculateurs.h"
 #include "apropos/apropos.h"
@@ -533,45 +534,6 @@ void PreviSat::AffichageCartesRadar()
 }
 
 /*
- * Chargement de la traduction
- */
-void PreviSat::ChargementTraduction(const QString &langue)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    qInfo() << "Locale :" << langue;
-
-    /* Corps de la methode */
-    if (langue != "fr") {
-        InstallationTraduction(QString("%1_%2").arg(APP_NAME).arg(langue), _appTraduction);
-    }
-    InstallationTraduction(QString("qt_%1").arg(langue), _qtTraduction);
-
-    _ui->retranslateUi(this);
-    QEvent evt(QEvent::LanguageChange);
-
-    if (_informations != nullptr) {
-        _informations->changeEvent(&evt);
-    }
-
-    if (_onglets != nullptr) {
-        _onglets->changeEvent(&evt);
-    }
-
-    if (_options != nullptr) {
-        _options->changeEvent(&evt);
-    }
-
-    if (_outils != nullptr) {
-        _outils->changeEvent(&evt);
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
  * Connexions entre les differents elements de l'interface
  */
 void PreviSat::ConnexionsSignauxSlots()
@@ -613,7 +575,9 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_onglets->transits(), &CalculsTransits::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->evenements(), &CalculsEvenementsOrbitaux::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->general(), &General::ModeManuel, this, &PreviSat::on_modeManuel_toggled);
+    connect(_onglets->general(), &General::ModificationDate, this, &PreviSat::ModificationDate);
     connect(_onglets->osculateurs(), &Osculateurs::ModeManuel, this, &PreviSat::on_modeManuel_toggled);
+    connect(_onglets->osculateurs(), &Osculateurs::ModificationDate, this, &PreviSat::ModificationDate);
 
     connect(_onglets->previsions(), &CalculsPrevisions::MajFichierGP, this, &PreviSat::MajFichierGP);
     connect(_onglets->evenements(), &CalculsEvenementsOrbitaux::MajFichierGP, this, &PreviSat::MajFichierGP);
@@ -624,6 +588,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(this, &PreviSat::SauveOngletGeneral, _onglets->general(), &General::SauveOngletGeneral);
     connect(this, &PreviSat::SauveOngletElementsOsculateurs, _onglets->osculateurs(), &Osculateurs::SauveOngletElementsOsculateurs);
     connect(this, &PreviSat::SauveOngletInformations, _onglets->informationsSatellite(), &InformationsSatellite::SauveOngletInformations);
+    connect(this, &PreviSat::SauveOngletRecherche, _onglets->rechercheSatellite(), &RechercheSatellite::SauveOngletRecherche);
 
     // Connexions avec l'onglet Informations satellite
     connect(_onglets->informationsSatellite(), &InformationsSatellite::AffichageSiteLancement, _carte, &Carte::AffichageSiteLancement);
@@ -663,6 +628,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::on_actionMode_sombre_triggered);
     connect(_options, &Options::RecalculerPositions, _coordISS, &CoordISS::setPolice);
     connect(_options, &Options::ChargementCarteDuMonde, _carte, &Carte::ChargementCarteDuMonde);
+    connect(_options, &Options::ChargementTraduction, this, &PreviSat::ChargementTraduction);
     connect(this, &PreviSat::AppliquerPreferences, _options, &Options::AppliquerPreferences);
 
     // Connexions avec la fenetre Outils
@@ -1028,7 +994,7 @@ void PreviSat::Initialisation()
         restoreGeometry(settings.value("affichage/geometrie").toByteArray());
         restoreState(settings.value("affichage/etat").toByteArray());
 
-        ChargementTraduction(Configuration::instance()->locale());
+        ChargementTraduction(settings.value("affichage/langue", "en").toString());
 
         // Chargement de la configuration generale
         Configuration::instance()->Chargement();
@@ -1231,7 +1197,9 @@ void PreviSat::InstallationTraduction(const QString &langue, QTranslator &traduc
     if (traduction.load(langue, Configuration::instance()->dirLang())) {
         qApp->installTranslator(&traduction);
     } else {
-        qWarning() << "Impossible de charger le fichier de traduction" << langue;
+        if (langue != "fr") {
+            qWarning() << "Impossible de charger le fichier de traduction" << langue;
+        }
     }
 
     /* Retour */
@@ -1797,11 +1765,49 @@ void PreviSat::ChangementDate(const QDateTime &dt)
     /* Initialisations */
 
     /* Corps de la methode */
+    const bool etat1 = _onglets->general()->ui()->dateHeure2->blockSignals(true);
+    const bool etat2 = _onglets->osculateurs()->ui()->dateHeure2->blockSignals(true);
+
     _onglets->general()->ui()->dateHeure2->setDateTime(dt);
     _onglets->osculateurs()->ui()->dateHeure2->setDateTime(dt);
 
+    _onglets->general()->ui()->dateHeure2->blockSignals(etat1);
+    _onglets->osculateurs()->ui()->dateHeure2->blockSignals(etat2);
+
     if (!_onglets->general()->ui()->pause->isEnabled()) {
         GestionTempsReel();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Chargement de la traduction
+ */
+void PreviSat::ChargementTraduction(const QString &langue)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    qInfo() << "Locale :" << langue;
+
+    /* Corps de la methode */
+    InstallationTraduction(QString("%1_%2").arg(APP_NAME).arg(langue), _appTraduction);
+    InstallationTraduction(QString("qt_%1").arg(langue), _qtTraduction);
+
+    _ui->retranslateUi(this);
+    if (_onglets != nullptr) {
+        _onglets->ReinitFlags();
+        _onglets->ui()->retranslateUi(_onglets);
+        _onglets->general()->ui()->retranslateUi(_onglets->general());
+        _onglets->osculateurs()->ui()->retranslateUi(_onglets->osculateurs());
+        _onglets->informationsSatellite()->ui()->retranslateUi(_onglets->informationsSatellite());
+    }
+    QEvent evt(QEvent::LanguageChange);
+
+    if (_outils != nullptr) {
+        _outils->changeEvent(&evt);
     }
 
     /* Retour */
@@ -2214,6 +2220,28 @@ void PreviSat::MettreAjourGroupeElem(const QString &groupe)
     return;
 }
 
+void PreviSat::ModificationDate(const QDateTime &dt)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const double offset = _dateCourante->offsetUTC();
+    EFFACE_OBJET(_dateCourante);
+    _dateCourante = new Date(dt.date().year(), dt.date().month(), dt.date().day(), dt.time().hour(), dt.time().minute(), dt.time().second(), offset);
+
+    // Enchainement de l'ensemble des calculs
+    EnchainementCalculs();
+
+    _onglets->show(*_dateCourante);
+
+    AffichageCartesRadar();
+
+    /* Retour */
+    return;
+}
+
 /*
  * Raccourcis vers les fonctionnalites
  */
@@ -2471,9 +2499,6 @@ void PreviSat::on_tempsReel_toggled(bool checked)
     _onglets->general()->ui()->dateHeure->setCurrentIndex(0);
     _onglets->osculateurs()->ui()->dateHeure->setCurrentIndex(0);
 
-    disconnect(_onglets->general(), &General::ChangementDate, this, &PreviSat::ChangementDate);
-    disconnect(_onglets->osculateurs(), &Osculateurs::ChangementDate, this, &PreviSat::ChangementDate);
-
     /* Retour */
     return;
 }
@@ -2514,15 +2539,52 @@ void PreviSat::on_modeManuel_toggled(bool checked)
     _onglets->general()->ui()->dateHeure->setCurrentIndex(1);
     _onglets->osculateurs()->ui()->dateHeure->setCurrentIndex(1);
 
+    const bool etat1 = _onglets->general()->ui()->dateHeure2->blockSignals(true);
+    const bool etat2 = _onglets->osculateurs()->ui()->dateHeure2->blockSignals(true);
+
     _onglets->general()->ui()->dateHeure2->setDateTime(_dateCourante->ToQDateTime(1));
     _onglets->osculateurs()->ui()->dateHeure2->setDateTime(_onglets->general()->ui()->dateHeure2->dateTime());
 
-    connect(_onglets->general(), &General::ChangementDate, this, &PreviSat::ChangementDate);
-    connect(_onglets->osculateurs(), &Osculateurs::ChangementDate, this, &PreviSat::ChangementDate);
+    _onglets->general()->ui()->dateHeure2->blockSignals(etat1);
+    _onglets->osculateurs()->ui()->dateHeure2->blockSignals(etat2);
 
     /* Retour */
     return;
 }
+
+void PreviSat::on_pasReel_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->secondes->setText((index == 0) ? tr("seconde") : tr("secondes"));
+    if (_chronometre != nullptr) {
+        _chronometre->setInterval(_ui->pasReel->currentText().toInt() * 1000);
+    }
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_pasManuel_currentIndexChanged(int index)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const bool aindx = (index == 0);
+
+    /* Corps de la methode */
+    _ui->valManuel->setItemText(0, (aindx) ? tr("seconde") : tr("secondes"));
+    _ui->valManuel->setItemText(1, (aindx) ? tr("minute") : tr("minutes"));
+    _ui->valManuel->setItemText(2, (aindx) ? tr("heure") : tr("heures"));
+    _ui->valManuel->setItemText(3, (aindx) ? tr("jour") : tr("jours"));
+
+    /* Retour */
+    return;
+}
+
 
 void PreviSat::on_zoomCarte_clicked()
 {
@@ -2779,7 +2841,7 @@ void PreviSat::on_actionEnregistrer_triggered()
     /* Corps de la methode */
     qInfo() << "Début Fonction" << __FUNCTION__;
 
-    if (_ui->actionEnregistrer->isVisible() && (_onglets->currentIndex() < 3)) {
+    if (_ui->actionEnregistrer->isVisible() && (_onglets->currentIndex() < 3) && !_onglets->ui()->informationsStationSpatiale->isVisible()) {
 
         const QStringList listeNoms(QStringList() << tr("onglet_general", "file name (without accent)")
                                     << tr("onglet_elements", "file name (without accent)") << tr("onglet_informations", "file name (without accent)"));

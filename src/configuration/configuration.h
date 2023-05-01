@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    9 avril 2023
+ * >    1er mai 2023
  *
  */
 
@@ -133,7 +133,7 @@ public:
     const QString &dirTmp() const;
 
     // Locale
-    const QString &locale() const;
+    QString &locale();
     const QStringList &listeFicLang() const;
 
     const QStringList &listeFicLocalData() const;

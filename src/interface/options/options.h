@@ -110,6 +110,7 @@ public slots:
 signals:
 
     void ChargementCarteDuMonde();
+    void ChargementTraduction(const QString &langue);
     void RecalculerPositions();
 
 

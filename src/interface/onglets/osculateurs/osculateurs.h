@@ -106,14 +106,12 @@ public slots:
      */
     void SauveOngletElementsOsculateurs(const QString &fichier);
 
-    void changeEvent(QEvent *evt);
-
 
 signals:
 
     void AffichageVitesses(const Date &date);
-    void ChangementDate(const QDateTime &date);
     void ModeManuel(const bool enable);
+    void ModificationDate(const QDateTime &date);
 
 
 protected:

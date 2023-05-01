@@ -309,13 +309,6 @@ void Antenne::DeconnecterUdp()
     return;
 }
 
-void Antenne::changeEvent(QEvent *evt)
-{
-    if (evt->type() == QEvent::LanguageChange) {
-        _ui->retranslateUi(this);
-    }
-}
-
 
 /*************
  * PROTECTED *

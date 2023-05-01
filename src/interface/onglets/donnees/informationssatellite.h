@@ -82,6 +82,8 @@ public:
     /*
      * Accesseurs
      */
+    Ui::InformationsSatellite *ui() const;
+
 
     /*
      * Modificateurs

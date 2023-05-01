@@ -85,7 +85,10 @@ InformationsSatellite::~InformationsSatellite()
 /*
  * Accesseurs
  */
-
+Ui::InformationsSatellite *InformationsSatellite::ui() const
+{
+    return _ui;
+}
 
 /*
  * Modificateurs
@@ -254,17 +257,17 @@ void InformationsSatellite::SauveOngletInformations(const QString &fichier)
 
 #if (BUILD_TEST == false)
             const QString titre = "%1 %2 / %3 (c) %4";
-            flux << titre.arg(APP_NAME).arg(QString(APP_VER_MAJ)).arg(APP_NAME).arg(QString(APP_ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
+            flux << titre.arg(APP_NAME).arg(QString(APP_VER_MAJ)).arg(ORG_NAME).arg(QString(APP_ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
 #endif
 
             // Donnees sur le satellite
             flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
-            QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3",
+            QString chaine = tr("Numéro NORAD            : %1 \t\t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3",
                                 "revolution per day");
             flux << chaine.arg(_ui->norad->text()).arg(_ui->nbRev->text()).arg(_ui->dateLancement->text()) << Qt::endl;
 
-            chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2 rev/jour^2\t Catégorie d'orbite : %3",
+            chaine = tr("Désignation COSPAR      : %1\t\t\tn'/2                  : %2 rev/jour^2\t Catégorie d'orbite : %3",
                         "n'/2 = derivative of the mean motion divided by two (in revolution per day square)");
             flux << chaine.arg(_ui->cospar->text()).arg(_ui->nbRev2->text().rightJustified(11, ' ')).arg(_ui->categorieOrbite->text()) << Qt::endl;
 
@@ -276,18 +279,18 @@ void InformationsSatellite::SauveOngletInformations(const QString &fichier)
                         "Pseudo-ballistic coefficient in 1/Earth radius");
             flux << chaine.arg(_ui->bstar->text()).arg(_ui->nbOrbitesEpoque->text()).arg(_ui->siteLancement->text()) << Qt::endl << Qt::endl;
 
-            chaine = tr("Inclinaison             : %1\t\tAnomalie moyenne      : %2");
+            chaine = tr("Inclinaison             : %1\t\t\tAnomalie moyenne      : %2");
             flux << chaine.arg(_ui->inclinaisonMoy->text().trimmed().rightJustified(9, '0'))
                     .arg(_ui->anomalieMoy->text().trimmed().rightJustified(9, '0')) << Qt::endl;
 
-            chaine = tr("AD noeud ascendant      : %1\t\tMagnitude std/max     : %2",
+            chaine = tr("AD noeud ascendant      : %1\t\t\tMagnitude std/max     : %2",
                         "Right ascension of the ascending node, Standard/Maximum magnitude");
             flux << chaine.arg(_ui->ADNoeudAscendantMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->magnitudeStdMax->text()) << Qt::endl;
 
-            chaine = tr("Excentricité            : %1\t\tModèle orbital        : %2");
+            chaine = tr("Excentricité            : %1\t\t\tModèle orbital        : %2");
             flux << chaine.arg(_ui->excentriciteMoy->text()).arg(_ui->modele->text()) << Qt::endl;
 
-            chaine = tr("Argument du périgée     : %1\t\tDimensions/Section    : %2%3");
+            chaine = tr("Argument du périgée     : %1\t\t\tDimensions/Section    : %2%3");
             flux << chaine.arg(_ui->argumentPerigeeMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->dimensions->text())
                     .arg((_ui->dimensions->text() == tr("Inconnues")) ? "" : "^2") << Qt::endl;
 

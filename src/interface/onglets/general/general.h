@@ -36,7 +36,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    8 avril 2023
+ * >    1er mai 2023
  *
  */
 
@@ -120,7 +120,7 @@ public slots:
 
 signals:
 
-    void ChangementDate(const QDateTime &date);
+    void ModificationDate(const QDateTime &date);
     void ModeManuel(const bool enable);
 
 

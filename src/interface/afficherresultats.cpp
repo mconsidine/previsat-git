@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    16 avril 2023
+ * >    1er mai 2023
  *
  */
 
@@ -1103,8 +1103,8 @@ QStringList AfficherResultats::ElementsDetailsTransits(const ResultatPrevisions 
         altitude *= TERRE::MILE_PAR_KM;
         distance *= TERRE::MILE_PAR_KM;
     }
-    elems.append(QString("%1").arg(altitude, 6, 'f', 1));
-    elems.append(QString("%1").arg(distance, 7, 'f', 1));
+    elems.append(QString("%1").arg(altitude, 8, 'f', 1));
+    elems.append(QString("%1").arg(distance, 9, 'f', 1));
 
     // Azimut et hauteur Soleil
     elems.append(Maths::ToSexagesimal(res.azimutSoleil, AngleFormatType::DEGRE, 3, 0, false, false));
@@ -1474,7 +1474,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
                 case TypeCalcul::TRANSITS:
                     flux << nomsat << Qt::endl;
                     flux << tr("   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps " \
-                               "Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance",
+                               "Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance",
                                "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
                                "Constellation, Angle, Type, Body, Illumination, Duration, Altitude of satellite, Range, Solar azimuth, " \
                                "Solar elevation, Longitude of the maximum, Latitude of the maximum, Range from the maximum")

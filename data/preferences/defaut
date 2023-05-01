@@ -8,7 +8,7 @@ affichage/affinvew false
 affichage/affinvns false
 affichage/afflune true
 affichage/affnomlieu 2
-affichage/affnomsat 1
+affichage/affnomsat 2
 affichage/affNoradListes 0
 affichage/affnotif false
 affichage/affnuit 2
@@ -25,7 +25,6 @@ affichage/effetEclipsesMagnitude true
 affichage/extinction true
 affichage/intensiteOmbre 30
 affichage/modeSombre false
-affichage/langue en
 affichage/magnitudeEtoiles 4
 affichage/nombreTrajectoires 2
 affichage/affichageFrontieres false

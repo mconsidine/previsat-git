@@ -112,6 +112,12 @@
       </item>
       <item row="0" column="1">
        <widget class="QDateTimeEdit" name="dateHeure2">
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
+        <property name="currentSection">
+         <enum>QDateTimeEdit::DaySection</enum>
+        </property>
         <property name="displayFormat">
          <string>dddd dd MMMM yyyy HH:mm:ss</string>
         </property>
@@ -555,7 +561,7 @@
     <rect>
      <x>160</x>
      <y>65</y>
-     <width>446</width>
+     <width>441</width>
      <height>141</height>
     </rect>
    </property>
@@ -660,7 +666,7 @@
      <rect>
       <x>200</x>
       <y>80</y>
-      <width>246</width>
+      <width>241</width>
       <height>52</height>
      </rect>
     </property>
@@ -1517,9 +1523,9 @@
   <widget class="QGroupBox" name="grpSignal">
    <property name="geometry">
     <rect>
-     <x>613</x>
+     <x>608</x>
      <y>65</y>
-     <width>171</width>
+     <width>181</width>
      <height>141</height>
     </rect>
    </property>
@@ -1531,7 +1537,7 @@
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>161</width>
+      <width>171</width>
       <height>52</height>
      </rect>
     </property>

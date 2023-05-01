@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    26 avril 2023
+ * >    1er mai 2023
  *
  */
 
@@ -322,7 +322,7 @@ const QString &Configuration::dirTmp() const
 
 
 // Locale
-const QString &Configuration::locale() const
+QString &Configuration::locale()
 {
     return _locale;
 }

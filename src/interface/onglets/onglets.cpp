@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    22 avril 2023
+ * >    1er mai 2023
  *
  */
 
@@ -328,29 +328,10 @@ void Onglets::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
 
-        _ui->retranslateUi(this);
-
-        _general->changeEvent(evt);
-        _osculateurs->changeEvent(evt);
-
-        _informationsSatellite->changeEvent(evt);
-        _rechercheSatellite->changeEvent(evt);
-        _informationsISS->changeEvent(evt);
-
-        _previsions->changeEvent(evt);
-        _flashs->changeEvent(evt);
-        _transits->changeEvent(evt);
-        _evenements->changeEvent(evt);
-
-#if defined (Q_OS_WIN)
-        _suiviTelescope->changeEvent(evt);
-#endif
-
-        _antenne->changeEvent(evt);
-
         _ui->previsionPrec->setToolTip(
                     QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)
                     % _ui->stackedWidget_previsions->count()]));
+
         _ui->previsionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + 1) %
                                        _ui->stackedWidget_previsions->count()]));
     }
