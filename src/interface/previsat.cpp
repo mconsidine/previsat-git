@@ -1164,7 +1164,7 @@ void PreviSat::InitVerificationsMAJ()
 
         const QUrl url(QString("%1/maj/don").arg(DOMAIN_NAME));
         Telechargement tel(Configuration::instance()->dirTmp());
-        tel.TelechargementFichier(url, false);
+        tel.TelechargementFichier(url, false, false);
 
         QFile fi(tel.dirDwn() + QDir::separator() + QFileInfo(url.path()).fileName());
 
@@ -1197,7 +1197,7 @@ void PreviSat::InstallationTraduction(const QString &langue, QTranslator &traduc
     if (traduction.load(langue, Configuration::instance()->dirLang())) {
         qApp->installTranslator(&traduction);
     } else {
-        if (langue != "fr") {
+        if (!langue.endsWith("_fr")) {
             qWarning() << "Impossible de charger le fichier de traduction" << langue;
         }
     }
@@ -1437,7 +1437,7 @@ bool PreviSat::VerifMajVersion(const QString &fichier)
     Telechargement tel(Configuration::instance()->dirTmp());
 
     /* Corps de la methode */
-    tel.TelechargementFichier(QString("%1/maj/%2").arg(DOMAIN_NAME).arg(fichier), false);
+    tel.TelechargementFichier(QString("%1/maj/%2").arg(DOMAIN_NAME).arg(fichier), false, false);
 
     QFile fi(tel.dirDwn() + QDir::separator() + fichier);
     if (fi.exists() && (fi.size() != 0)) {
@@ -3099,7 +3099,7 @@ void PreviSat::on_actionMettre_a_jour_les_fichiers_de_donnees_triggered()
         if (!fic.contains("preferences", Qt::CaseInsensitive)) {
             const QString fichier = QString("%1data/%2").arg(DOMAIN_NAME).arg(fic).replace(QDir::separator(), "/");
             const QUrl url(fichier);
-            tel.TelechargementFichier(url);
+            tel.TelechargementFichier(url, false, false);
 
             const QString file = QFileInfo(url.path()).fileName();
             if (!fic.startsWith(file)) {
