@@ -6146,27 +6146,27 @@ Satellite %1 - numéro NORAD : %2</source>
 <context>
     <name>Telechargement</name>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="93"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="95"/>
         <source>Erreur lors du téléchargement du fichier %1</source>
         <translation>ファイル「%1」のダウンロード中にエラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="115"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="119"/>
         <source>Impossible d&apos;écrire le fichier %1 dans le répertoire %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="167"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="171"/>
         <source>o/s</source>
         <translation>B/s</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="170"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="174"/>
         <source>ko/s</source>
         <translation>KB/s</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="173"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="177"/>
         <source>Mo/s</source>
         <translation>MB/s</translation>
     </message>
