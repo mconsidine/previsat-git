@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 mars 2023
+ * >    1er mai 2023
  *
  */
 
@@ -78,6 +78,9 @@ int main(int argc, char *argv[])
         const LogMessage msg(Configuration::instance()->dirLog() + QDir::separator() + APP_NAME, settings.value("fichier/nbFichiersLog", 10).toUInt());
         Q_UNUSED(msg)
 
+        // Creation de la fenetre principale
+        PreviSat w;
+
         // Verification si une instance de PreviSat existe
         const qint64 pid = a.applicationPid();
         QSharedMemory mem;
@@ -96,9 +99,6 @@ int main(int argc, char *argv[])
                 throw PreviSatException(mem.errorString(), MessageType::WARNING);
             }
         }
-
-        // Creation de la fenetre principale
-        PreviSat w;
 
         // Lancement du splash screen
         QSplashScreen * const splash = new QSplashScreen;

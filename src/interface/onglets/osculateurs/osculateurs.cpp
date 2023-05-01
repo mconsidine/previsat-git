@@ -201,7 +201,7 @@ void Osculateurs::SauveOngletElementsOsculateurs(const QString &fichier)
 
 #if (BUILD_TEST == false)
             const QString titre = "%1 %2 / %3 (c) %4";
-            flux << titre.arg(APP_NAME).arg(QString(APP_VER_MAJ)).arg(APP_NAME).arg(QString(APP_ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
+            flux << titre.arg(APP_NAME).arg(QString(APP_VER_MAJ)).arg(ORG_NAME).arg(QString(APP_ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
 #endif
             flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure1->text() << Qt::endl << Qt::endl;
 
@@ -209,13 +209,13 @@ void Osculateurs::SauveOngletElementsOsculateurs(const QString &fichier)
             flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
             flux << tr("Vecteur d'état") << " (" << _ui->typeRepere->currentText() << ") :" << Qt::endl;
-            QString chaine = tr("x : %1\tvx : %2", "Position, velocity");
+            QString chaine = tr("x : %1\t\tvx : %2", "Position, velocity");
             flux << chaine.arg(_ui->xsat->text().rightJustified(13, ' ')).arg(_ui->vxsat->text().rightJustified(15, ' ')) << Qt::endl;
 
-            chaine = tr("y : %1\tvy : %2", "Position, velocity");
+            chaine = tr("y : %1\t\tvy : %2", "Position, velocity");
             flux << chaine.arg(_ui->ysat->text().rightJustified(13, ' ')).arg(_ui->vysat->text().rightJustified(15, ' ')) << Qt::endl;
 
-            chaine = tr("z : %1\tvz : %2", "Position, velocity");
+            chaine = tr("z : %1\t\tvz : %2", "Position, velocity");
             flux << chaine.arg(_ui->zsat->text().rightJustified(13, ' ')).arg(_ui->vzsat->text().rightJustified(15, ' ')) << Qt::endl << Qt::endl;
 
             flux << tr("Éléments osculateurs :") << Qt::endl;
@@ -311,12 +311,6 @@ void Osculateurs::SauveOngletElementsOsculateurs(const QString &fichier)
     return;
 }
 
-void Osculateurs::changeEvent(QEvent *evt)
-{
-    if (evt->type() == QEvent::LanguageChange) {
-        _ui->retranslateUi(this);
-    }
-}
 
 
 /*************
@@ -501,8 +495,9 @@ void Osculateurs::mouseDoubleClickEvent(QMouseEvent *evt)
 
 void Osculateurs::on_dateHeure2_dateTimeChanged(const QDateTime &dateTime)
 {
-    _ui->dateHeure2->setDisplayFormat(tr("dddd dd MMMM yyyy  HH:mm:ss") + ((settings.value("affichage/systemeHoraire").toBool()) ? "" : "a"));
-    emit ChangementDate(dateTime);
+    if (_ui->dateHeure2->isVisible()) {
+        emit ModificationDate(dateTime);
+    }
 }
 
 void Osculateurs::on_typeRepere_currentIndexChanged(int index)

@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 avril 2023
+ * >    1er mai 2023
  *
  */
 
@@ -209,12 +209,6 @@ private:
     void AffichageCartesRadar();
 
     /**
-     * @brief ChargementTraduction Chargement de la traduction
-     * @param[in] langue langue (fr, en, ja)
-     */
-    void ChargementTraduction(const QString &langue);
-
-    /**
      * @brief ConnexionsSignauxSlots Connexions entre les differents elements de l'interface
      */
     void ConnexionsSignauxSlots();
@@ -343,6 +337,12 @@ private slots:
     void ChangementDate(const QDateTime &dt);
 
     /**
+     * @brief ChargementTraduction Chargement de la traduction
+     * @param[in] langue langue (fr, en, ja)
+     */
+    void ChargementTraduction(const QString &langue);
+
+    /**
      * @brief EffacerMessageStatut Effacer la zone de message de statut
      */
     void EffacerMessageStatut();
@@ -378,6 +378,8 @@ private slots:
      */
     void MettreAjourGroupeElem(const QString &groupe);
 
+    void ModificationDate(const QDateTime &dt);
+
     // Raccourcis vers les fonctionnalites
     void RaccourciPrevisions();
     void RaccourciFlashs();
@@ -403,6 +405,9 @@ private slots:
 
     void on_tempsReel_toggled(bool checked);
     void on_modeManuel_toggled(bool checked);
+
+    void on_pasReel_currentIndexChanged(int index);
+    void on_pasManuel_currentIndexChanged(int index);
 
     void on_zoomCarte_clicked();
     void on_changerCarte_clicked();

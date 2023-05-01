@@ -262,6 +262,7 @@ void Options::AppliquerPreferences()
     settings.setValue("affichage/effetEclipsesMagnitude", _ui->effetEclipsesMagnitude->isChecked());
     settings.setValue("affichage/extinction", _ui->extinctionAtmospherique->isChecked());
     settings.setValue("affichage/intensiteOmbre", _ui->intensiteOmbre->value());
+    settings.setValue("affichage/langue", Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex()));
     settings.setValue("affichage/modeSombre", _ui->modeSombre->isChecked());
     settings.setValue("affichage/magnitudeEtoiles", _ui->magnitudeEtoiles->value());
     settings.setValue("affichage/nombreTrajectoires", _ui->nombreTrajectoires->value());
@@ -308,6 +309,10 @@ void Options::AppliquerPreferences()
         SauvePreferences(fichierPref);
     }
 
+    const QString langue = Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex());
+    Configuration::instance()->locale() = langue;
+
+    emit ChargementTraduction(langue);
     emit ChargementCarteDuMonde();
     emit RecalculerPositions();
 
@@ -594,6 +599,9 @@ void Options::InitFicLang()
         }
     }
 
+    _ui->langue->setCurrentIndex(static_cast<int> (Configuration::instance()->listeFicLang()
+                                                      .indexOf(settings.value("affichage/langue", "en").toString())));
+
     /* Retour */
     return;
 }
@@ -857,7 +865,6 @@ void Options::SauvePreferences(const QString &fichierPref)
                  << "affichage/extinction " << QVariant(_ui->extinctionAtmospherique->isChecked()).toString() << Qt::endl
                  << "affichage/intensiteOmbre " << _ui->intensiteOmbre->value() << Qt::endl
                  << "affichage/modeSombre " << QVariant(_ui->modeSombre->isChecked()).toString() << Qt::endl
-                 << "affichage/langue " << Configuration::instance()->locale() << Qt::endl
                  << "affichage/magnitudeEtoiles " << _ui->magnitudeEtoiles->value() << Qt::endl
                  << "affichage/nombreTrajectoires " << _ui->nombreTrajectoires->value() << Qt::endl
                  << "affichage/affichageFrontieres " << QVariant(_ui->affichageFrontieres->isChecked()).toString() << Qt::endl

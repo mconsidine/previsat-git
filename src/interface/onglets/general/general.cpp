@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    15 avril 2023
+ * >    1er mai 2023
  *
  */
 
@@ -183,11 +183,11 @@ void General::show(const Date &date)
 void General::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
-        _ui->retranslateUi(this);
 
         _ui->soleilLunePrec->setToolTip(
                     QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + _ui->stackedWidget_soleilLune->count() - 1)
                     % _ui->stackedWidget_soleilLune->count()]));
+
         _ui->soleilLuneSuiv->setToolTip(QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + 1) %
                                         _ui->stackedWidget_soleilLune->count()]));
     }
@@ -505,14 +505,14 @@ void General::AffichageDonneesSatellite(const Date &date)
 
         _ui->dateAOS1->setText(chaine.arg(dateAOS.ToShortDate(DateFormat::FORMAT_COURT, syst).trimmed()).arg(cDelaiAOS));
         _ui->dateAOS2->setText(_ui->dateAOS1->text());
-        _ui->lbl_azimut1->setText(tr("Azimut : %1").arg(Maths::ToSexagesimal(_elementsAOS->azimut, AngleFormatType::DEGRE, 3, 0, false, true)
-                                                        .mid(0, 9)));
+        _ui->lbl_azimut1->setText(tr("Azimut : %1").arg(Maths::ToSexagesimal(_elementsAOS->azimut, AngleFormatType::DEGRE, 3, 0, false, true).trimmed()
+                                                        .mid(0, 8)));
         _ui->lbl_azimut2->setText(_ui->lbl_azimut1->text());
     }
 
     // Angle beta
     const QString angleBeta = tr("Beta : %1", "Beta angle (angle between orbit plane and direction of Sun)");
-    _ui->lbl_beta1->setText(angleBeta.arg(Maths::ToSexagesimal(satellite.beta(), AngleFormatType::DEGRE, 3, 0, false, true).mid(0, 9)));
+    _ui->lbl_beta1->setText(angleBeta.arg(Maths::ToSexagesimal(satellite.beta(), AngleFormatType::DEGRE, 3, 0, false, true).trimmed().mid(0, 8)));
     _ui->lbl_beta2->setText(_ui->lbl_beta1->text());
 
     /* Retour */
@@ -793,7 +793,7 @@ void General::SauveOngletGeneral(const QString &fichier)
 
 #if (BUILD_TEST == false)
             const QString titre = "%1 %2 / %3 (c) %4";
-            flux << titre.arg(QCoreApplication::applicationName()).arg(QString(APP_VER_MAJ)).arg(APP_NAME).arg(QString(APP_ANNEES_DEV))
+            flux << titre.arg(APP_NAME).arg(QString(APP_VER_MAJ)).arg(ORG_NAME).arg(QString(APP_ANNEES_DEV))
                  << Qt::endl << Qt::endl << Qt::endl;
 #endif
 
@@ -812,7 +812,7 @@ void General::SauveOngletGeneral(const QString &fichier)
                 // Donnees sur le satellite
                 flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
-                chaine = tr("Longitude : %1\t\tHauteur    : %2\tAscension droite :  %3");
+                chaine = tr("Longitude : %1  \tHauteur    : %2\tAscension droite :  %3");
                 flux << chaine.arg(_ui->longitudeSat->text().trimmed()).arg(_ui->hauteurSat->text()).arg(_ui->ascensionDroiteSat->text().trimmed())
                      << Qt::endl;
 
@@ -828,7 +828,7 @@ void General::SauveOngletGeneral(const QString &fichier)
                 flux << chaine.arg(_ui->directionSat->text()).arg(_ui->orbiteSat1->text())
                         .arg((_ui->magnitudeSat->x() == 333) ? _ui->magnitudeSat->text() : "").trimmed() << Qt::endl;
 
-                chaine = tr("Vitesse orbitale   : %1\t%2\t%3");
+                chaine = tr("Vitesse orbitale   : %1\t%2  %3");
                 flux << chaine.arg(_ui->vitesseSat->text().rightJustified(11, ' '))
 #if (BUILD_TEST == true)
                         .arg(_ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " ")
@@ -864,11 +864,11 @@ void General::SauveOngletGeneral(const QString &fichier)
                  << Qt::endl << Qt::endl;
 
             flux << tr("Évènements Soleil :") << Qt::endl;
-            chaine = tr("Lever    : %1\t\t\tAube astronomique : %2\t\tCrépuscule civil         : %3", "Sunrise");
+            chaine = tr("Lever    : %1\t\t\t\tAube astronomique : %2\t\tCrépuscule civil         : %3", "Sunrise");
             flux << chaine.arg(_ui->leverSoleil->text()).arg(_ui->aubeAstro->text()).arg(_ui->crepusculeCivil->text()) << Qt::endl;
-            chaine = tr("Méridien : %1\t\t\tAube nautique     : %2\t\tCrépuscule nautique      : %3", "Meridian pass for the Sun");
+            chaine = tr("Méridien : %1\t\t\t\tAube nautique     : %2\t\tCrépuscule nautique      : %3", "Meridian pass for the Sun");
             flux << chaine.arg(_ui->meridienSoleil->text()).arg(_ui->aubeNautique->text()).arg(_ui->crepusculeNautique->text()) << Qt::endl;
-            chaine = tr("Coucher  : %1\t\t\tAube civile       : %2\t\tCrépuscule astronomique  : %3", "Sunset");
+            chaine = tr("Coucher  : %1\t\t\t\tAube civile       : %2\t\tCrépuscule astronomique  : %3", "Sunset");
             flux << chaine.arg(_ui->coucherSoleil->text()).arg(_ui->aubeCivile->text()).arg(_ui->crepusculeAstro->text())
                  << Qt::endl << Qt::endl << Qt::endl;
 
@@ -963,8 +963,9 @@ void General::JouerSonFlash()
 
 void General::on_dateHeure2_dateTimeChanged(const QDateTime &dateTime)
 {
-    _ui->dateHeure2->setDisplayFormat(tr("dddd dd MMMM yyyy  HH:mm:ss") + ((settings.value("affichage/systemeHoraire").toBool()) ? "" : "a"));
-    emit ChangementDate(dateTime);
+    if (_ui->dateHeure2->isVisible()) {
+        emit ModificationDate(dateTime);
+    }
 }
 
 void General::on_soleilLunePrec_clicked()

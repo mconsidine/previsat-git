@@ -106,8 +106,6 @@ public slots:
      */
     void DeconnecterUdp();
 
-    void changeEvent(QEvent *evt);
-
 
 protected:
 
