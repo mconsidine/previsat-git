@@ -153,8 +153,14 @@ void TLETest::testMiseAJourFichier()
     const QString ficold = dest + QDir::separator() + "test" + QDir::separator() + QFileInfo(fic).fileName();
     fi.copy(ficold);
 
-    QStringList compteRendu;
-    TLE::MiseAJourFichier(ficold, ficnew, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(), 1, compteRendu);
+    const QStringList compteRendu = TLE::MiseAJourFichier(ficold, ficnew, Configuration::instance()->donneesSatellites(),
+                                                          Configuration::instance()->lgRec(), 1);
+
+    QCOMPARE(compteRendu.first(), "visual.txt");
+    QCOMPARE(compteRendu.at(1), "157");
+    QCOMPARE(compteRendu.at(2), "165");
+    QCOMPARE(compteRendu.at(3), "8");
+    QCOMPARE(compteRendu.at(4), "6");
 }
 
 void TLETest::testVerifieFichier()
