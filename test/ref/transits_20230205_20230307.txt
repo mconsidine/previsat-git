@@ -8,428 +8,428 @@ Age de l'élément le plus ancien : 1.08 jours
 
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/05 03:33:32.4   274°20'08"  59°33'39"  08h50m13s +42°24'38"  Lyn 20.00   C    L   Omb        707.9   807.5  055°52'24" -45°20'47"   005.3581 E  51.3127 N    348.1 (NNE)
-2023/02/05 03:34:11.4   243°45'03"  50°39'23"  09h10m22s +23°26'42"  Cnc  5.07   C    L   Omb  91.1  707.4   886.0  056°03'21" -45°15'28"   003.6956 E  48.7534 N     99.6 (E)
-2023/02/05 03:35:03.5   225°32'03"  36°18'58"  09h23m34s +04°16'39"  Hya 20.00   C    L   Omb        706.7  1099.9  056°17'58" -45°08'20"   001.7578 E  45.3188 N    395.5 (S)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/05 03:33:32.4   274°20'08"  59°33'39"  08h50m13s +42°24'38"  Lyn 20.00   C    L   Omb          707.9     807.5  055°52'24" -45°20'47"   005.3581 E  51.3127 N    348.1 (NNE)
+2023/02/05 03:34:11.4   243°45'03"  50°39'23"  09h10m22s +23°26'42"  Cnc  5.07   C    L   Omb  91.1    707.4     886.0  056°03'21" -45°15'28"   003.6956 E  48.7534 N     99.6 (E)
+2023/02/05 03:35:03.5   225°32'03"  36°18'58"  09h23m34s +04°16'39"  Hya 20.00   C    L   Omb          706.7    1099.9  056°17'58" -45°08'20"   001.7578 E  45.3188 N    395.5 (S)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/05 07:11:50.4   309°45'59"  11°42'21"  07h45m02s +34°23'47"  Lyn 20.00   C    L   Pen        773.3  2195.9  102°00'17" -10°47'42"   010.6168 E  54.0920 N    817.4 (NNE)
-2023/02/05 07:13:32.5   289°50'13"  10°19'06"  08h50m40s +20°45'58"  Cnc  1.56   C    L   Omb 224.5  772.0  2293.0  102°18'49" -10°31'16"   001.2127 W  49.7047 N    275.9 (W)
-2023/02/05 07:15:34.9   270°38'34"  05°40'21"  09h38m35s +04°41'27"  Sex 20.00   C    L   Omb        770.5  2674.0  102°41'03" -10°11'36"   009.8850 W  42.8965 N   1155.6 (SW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/05 07:11:50.4   309°45'59"  11°42'21"  07h45m02s +34°23'47"  Lyn 20.00   C    L   Pen          773.3    2195.9  102°00'17" -10°47'42"   010.6168 E  54.0920 N    817.4 (NNE)
+2023/02/05 07:13:32.5   289°50'13"  10°19'06"  08h50m40s +20°45'58"  Cnc  1.56   C    L   Omb 224.5    772.0    2293.0  102°18'49" -10°31'16"   001.2127 W  49.7047 N    275.9 (W)
+2023/02/05 07:15:34.9   270°38'34"  05°40'21"  09h38m35s +04°41'27"  Sex 20.00   C    L   Omb          770.5    2674.0  102°41'03" -10°11'36"   009.8850 W  42.8965 N   1155.6 (SW)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/06 06:35:51.4   294°02'51"  21°20'44"  08h37m12s +31°35'22"  Cnc 20.00   C    L   Pen        772.2  1660.2  095°13'07" -16°26'14"   004.4276 E  53.9169 N    581.6 (N)
-2023/02/06 06:37:10.8   273°46'01"  18°11'45"  09h28m57s +16°02'04"  Leo  3.86   C    L   Omb 182.5  771.2  1806.1  095°27'42" -16°13'13"   001.7401 W  49.1841 N    301.3 (W)
-2023/02/06 06:38:53.9   255°06'13"  11°27'22"  10h07m29s -00°55'45"  Sex 20.00   C    L   Omb        769.9  2206.3  095°46'37" -15°56'19"   007.3858 W  42.7366 N   1015.9 (SW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/06 06:35:51.4   294°02'51"  21°20'44"  08h37m12s +31°35'22"  Cnc 20.00   C    L   Pen          772.2    1660.2  095°13'07" -16°26'14"   004.4276 E  53.9169 N    581.6 (N)
+2023/02/06 06:37:10.8   273°46'01"  18°11'45"  09h28m57s +16°02'04"  Leo  3.86   C    L   Omb 182.5    771.2    1806.1  095°27'42" -16°13'13"   001.7401 W  49.1841 N    301.3 (W)
+2023/02/06 06:38:53.9   255°06'13"  11°27'22"  10h07m29s -00°55'45"  Sex 20.00   C    L   Omb          769.9    2206.3  095°46'37" -15°56'19"   007.3858 W  42.7366 N   1015.9 (SW)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/07 03:20:32.4   228°42'48"  70°20'00"  10h26m29s +34°15'46"  LMi 20.00   C    L   Omb        707.6   746.7  051°35'30" -46°34'51"   003.6078 E  51.6526 N    324.0 (N)
-2023/02/07 03:21:12.8   211°02'12"  52°02'27"  10h22m01s +14°17'47"  Leo  0.49   C    L   Omb 102.2  707.1   871.2  051°47'27" -46°29'37"   002.2455 E  48.8637 N      7.7 (W)
-2023/02/07 03:22:14.5   204°26'14"  32°37'54"  10h17m30s -05°38'54"  Sex 20.00   C    L   Omb        706.3  1180.4  052°05'39" -46°21'37"   000.4374 E  44.6277 N    491.9 (S)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/07 03:20:32.4   228°42'48"  70°20'00"  10h26m29s +34°15'46"  LMi 20.00   C    L   Omb          707.6     746.7  051°35'30" -46°34'51"   003.6078 E  51.6526 N    324.0 (N)
+2023/02/07 03:21:12.8   211°02'12"  52°02'27"  10h22m01s +14°17'47"  Leo  0.49   C    L   Omb 102.2    707.1     871.2  051°47'27" -46°29'37"   002.2455 E  48.8637 N      7.7 (W)
+2023/02/07 03:22:14.5   204°26'14"  32°37'54"  10h17m30s -05°38'54"  Sex 20.00   C    L   Omb          706.3    1180.4  052°05'39" -46°21'37"   000.4374 E  44.6277 N    491.9 (S)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/07 06:00:19.3   254°05'07"  31°35'37"  10h27m44s +13°56'07"  Leo  0.25   T    L   Omb        770.8  1306.1  088°21'26" -22°03'57"   002.4351 E  48.9075 N      8.7 (NE)
-2023/02/07 06:00:20.1   253°50'27"  31°28'53"  10h28m06s +13°42'51"  Leo  0.07   T    L   Omb   1.6  770.8  1309.1  088°21'36" -22°03'49"   002.3898 E  48.8538 N      3.0 (ENE)
-2023/02/07 06:00:21.0   253°35'53"  31°22'09"  10h28m27s +13°29'39"  Leo  0.25   T    L   Omb        770.8  1312.1  088°21'45" -22°03'41"   002.3447 E  48.8001 N      5.9 (S)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/07 06:00:19.3   254°05'07"  31°35'37"  10h27m44s +13°56'07"  Leo  0.25   T    L   Omb          770.8    1306.1  088°21'26" -22°03'57"   002.4351 E  48.9075 N      8.7 (NE)
+2023/02/07 06:00:20.1   253°50'27"  31°28'53"  10h28m06s +13°42'51"  Leo  0.07   T    L   Omb   1.6    770.8    1309.1  088°21'36" -22°03'49"   002.3898 E  48.8538 N      3.0 (ENE)
+2023/02/07 06:00:21.0   253°35'53"  31°22'09"  10h28m27s +13°29'39"  Leo  0.25   T    L   Omb          770.8    1312.1  088°21'45" -22°03'41"   002.3447 E  48.8001 N      5.9 (S)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/08 05:23:04.7   211°07'35"  52°54'05"  12h29m12s +15°07'17"  Com 20.00   C    L   Omb        770.6   938.2  080°49'53" -27°56'42"   008.7104 E  49.6756 N    471.8 (ENE)
-2023/02/08 05:23:24.2   208°11'15"  46°03'09"  12h27m34s +08°01'45"  Vir 18.77   C    L   Omb  42.4  770.4  1021.3  080°53'49" -27°53'32"   007.7556 E  48.3279 N    403.0 (E)
-2023/02/08 05:23:47.1   205°58'52"  39°11'38"  12h25m53s +01°00'02"  Vir 20.00   C    L   Omb        770.1  1133.3  080°58'27" -27°49'48"   006.7167 E  46.7448 N    402.4 (ESE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/08 05:23:04.7   211°07'35"  52°54'05"  12h29m12s +15°07'17"  Com 20.00   C    L   Omb          770.6     938.2  080°49'53" -27°56'42"   008.7104 E  49.6756 N    471.8 (ENE)
+2023/02/08 05:23:24.2   208°11'15"  46°03'09"  12h27m34s +08°01'45"  Vir 18.77   C    L   Omb  42.4    770.4    1021.3  080°53'49" -27°53'32"   007.7556 E  48.3279 N    403.0 (E)
+2023/02/08 05:23:47.1   205°58'52"  39°11'38"  12h25m53s +01°00'02"  Vir 20.00   C    L   Omb          770.1    1133.3  080°58'27" -27°49'48"   006.7167 E  46.7448 N    402.4 (ESE)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/08 07:03:41.9   265°34'08"  07°09'07"  09h57m37s +02°28'56"  Sex 20.00   C    L   Omb        770.3  2541.9  099°51'14" -11°27'14"   017.7642 W  47.9632 N   1488.0 (W)
-2023/02/08 07:04:08.0   262°16'24"  05°50'27"  10h04m31s -00°39'06"  Sex 19.64   C    L   Omb  54.1  770.0  2657.3  099°56'00" -11°23'00"   018.9091 W  46.1552 N   1623.7 (WSW)
-2023/02/08 07:04:35.9   259°05'15"  04°26'43"  10h11m01s -03°46'27"  Sex 20.00   C    L   Omb        769.7  2788.4  100°01'06" -11°18'28"   020.0236 W  44.2313 N   1783.8 (WSW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/08 07:03:41.9   265°34'08"  07°09'07"  09h57m37s +02°28'56"  Sex 20.00   C    L   Omb          770.3    2541.9  099°51'14" -11°27'14"   017.7642 W  47.9632 N   1488.0 (W)
+2023/02/08 07:04:08.0   262°16'24"  05°50'27"  10h04m31s -00°39'06"  Sex 19.64   C    L   Omb  54.1    770.0    2657.3  099°56'00" -11°23'00"   018.9091 W  46.1552 N   1623.7 (WSW)
+2023/02/08 07:04:35.9   259°05'15"  04°26'43"  10h11m01s -03°46'27"  Sex 20.00   C    L   Omb          769.7    2788.4  100°01'06" -11°18'28"   020.0236 W  44.2313 N   1783.8 (WSW)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/09 03:07:28.1   170°45'00"  64°36'17"  11h49m48s +23°41'15"  Leo 20.00   C    L   Omb        707.4   774.4  047°07'01" -47°41'12"   001.8098 E  52.3439 N    390.2 (NNW)
-2023/02/09 03:08:10.3   182°18'21"  46°44'59"  11h26m54s +05°37'27"  Leo  6.78   C    L   Omb 110.0  706.8   931.0  047°20'07" -47°36'05"   000.8520 E  49.2494 N    117.9 (WNW)
-2023/02/09 03:09:18.1   187°48'34"  28°16'40"  11h06m12s -12°33'12"  Crt 20.00   C    L   Omb        706.0  1295.7  047°41'05" -47°27'52"   000.5267 W  44.3824 N    543.5 (SSW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/09 03:07:28.1   170°45'00"  64°36'17"  11h49m48s +23°41'15"  Leo 20.00   C    L   Omb          707.4     774.4  047°07'01" -47°41'12"   001.8098 E  52.3439 N    390.2 (NNW)
+2023/02/09 03:08:10.3   182°18'21"  46°44'59"  11h26m54s +05°37'27"  Leo  6.78   C    L   Omb 110.0    706.8     931.0  047°20'07" -47°36'05"   000.8520 E  49.2494 N    117.9 (WNW)
+2023/02/09 03:09:18.1   187°48'34"  28°16'40"  11h06m12s -12°33'12"  Crt 20.00   C    L   Omb          706.0    1295.7  047°41'05" -47°27'52"   000.5267 W  44.3824 N    543.5 (SSW)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/10 02:12:59.3   129°05'25"  19°35'21"  13h52m13s -07°57'21"  Vir 20.00   C    L   Omb        706.1  1615.9  028°04'03" -52°53'19"   011.2452 E  46.2969 N    726.6 (E)
-2023/02/10 02:13:31.1   135°58'24"  16°58'46"  13h34m50s -13°26'56"  Vir 18.69   C    L   Omb  68.4  705.7  1741.4  028°16'07" -52°50'50"   010.8179 E  43.9603 N    847.6 (ESE)
-2023/02/10 02:14:07.7   142°30'31"  13°58'03"  13h17m35s -18°57'30"  Vir 20.00   C    L   Omb        705.3  1908.5  028°30'00" -52°47'58"   010.3277 E  41.3037 N   1046.9 (SE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/10 02:12:59.3   129°05'25"  19°35'21"  13h52m13s -07°57'21"  Vir 20.00   C    L   Omb          706.1    1615.9  028°04'03" -52°53'19"   011.2452 E  46.2969 N    726.6 (E)
+2023/02/10 02:13:31.1   135°58'24"  16°58'46"  13h34m50s -13°26'56"  Vir 18.69   C    L   Omb  68.4    705.7    1741.4  028°16'07" -52°50'50"   010.8179 E  43.9603 N    847.6 (ESE)
+2023/02/10 02:14:07.7   142°30'31"  13°58'03"  13h17m35s -18°57'30"  Vir 20.00   C    L   Omb          705.3    1908.5  028°30'00" -52°47'58"   010.3277 E  41.3037 N   1046.9 (SE)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/10 05:49:02.4   232°41'27"  28°40'09"  11h21m27s +00°39'00"  Leo 20.00   C    L   Omb        770.2  1388.6  085°28'09" -23°14'26"   004.1479 W  49.8559 N    484.8 (W)
-2023/02/10 05:49:39.3   227°02'18"  23°00'22"  11h28m15s -06°48'11"  Crt 18.44   C    L   Omb  83.4  769.7  1586.2  085°35'18" -23°08'22"   005.4217 W  47.0432 N    614.0 (WSW)
-2023/02/10 05:50:25.8   222°12'14"  17°07'15"  11h34m04s -14°07'49"  Crt 20.00   C    L   Omb        769.2  1857.2  085°44'17" -23°00'45"   006.8154 W  43.5901 N    916.6 (SW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/10 05:49:02.4   232°41'27"  28°40'09"  11h21m27s +00°39'00"  Leo 20.00   C    L   Omb          770.2    1388.6  085°28'09" -23°14'26"   004.1479 W  49.8559 N    484.8 (W)
+2023/02/10 05:49:39.3   227°02'18"  23°00'22"  11h28m15s -06°48'11"  Crt 18.44   C    L   Omb  83.4    769.7    1586.2  085°35'18" -23°08'22"   005.4217 W  47.0432 N    614.0 (WSW)
+2023/02/10 05:50:25.8   222°12'14"  17°07'15"  11h34m04s -14°07'49"  Crt 20.00   C    L   Omb          769.2    1857.2  085°44'17" -23°00'45"   006.8154 W  43.5901 N    916.6 (SW)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/11 02:54:31.2   151°10'31"  47°53'49"  12h44m04s +09°54'58"  Vir 20.00   C    L   Omb        707.0   917.0  042°31'00" -48°37'38"   004.3046 W  54.1569 N    748.7 (NW)
-2023/02/11 02:55:02.8   162°18'00"  39°11'07"  12h22m29s -00°34'40"  Vir 16.40   C    L   Omb  73.6  706.6  1045.1  042°41'16" -48°34'07"   003.9690 W  51.4586 N    536.2 (WNW)
-2023/02/11 02:55:44.9   170°39'50"  29°32'52"  12h01m45s -11°09'21"  Crv 20.00   C    L   Omb        706.1  1259.6  042°54'56" -48°29'24"   003.7864 W  48.0142 N    463.3 (WSW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/11 02:54:31.2   151°10'31"  47°53'49"  12h44m04s +09°54'58"  Vir 20.00   C    L   Omb          707.0     917.0  042°31'00" -48°37'38"   004.3046 W  54.1569 N    748.7 (NW)
+2023/02/11 02:55:02.8   162°18'00"  39°11'07"  12h22m29s -00°34'40"  Vir 16.40   C    L   Omb  73.6    706.6    1045.1  042°41'16" -48°34'07"   003.9690 W  51.4586 N    536.2 (WNW)
+2023/02/11 02:55:44.9   170°39'50"  29°32'52"  12h01m45s -11°09'21"  Crv 20.00   C    L   Omb          706.1    1259.6  042°54'56" -48°29'24"   003.7864 W  48.0142 N    463.3 (WSW)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/11 05:11:01.6   185°03'08"  52°39'45"  13h31m49s +11°36'24"  Boo 20.00   C    L   Omb        770.6   940.6  077°36'47" -29°11'17"   003.4817 E  54.6658 N    651.4 (N)
-2023/02/11 05:12:07.4   189°37'39"  33°04'46"  13h12m55s -07°37'05"  Vir  2.98   C    L   Omb 196.3  769.8  1266.0  077°50'27" -29°00'41"   001.4893 E  49.0902 N     68.2 (WNW)
-2023/02/11 05:14:17.8   192°25'45"  13°20'39"  12h53m18s -26°50'06"  Hya 20.00   C    L   Omb        768.4  2075.2  078°17'26" -28°39'41"   001.4615 W  39.0202 N   1134.2 (S)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/11 05:11:01.6   185°03'08"  52°39'45"  13h31m49s +11°36'24"  Boo 20.00   C    L   Omb          770.6     940.6  077°36'47" -29°11'17"   003.4817 E  54.6658 N    651.4 (N)
+2023/02/11 05:12:07.4   189°37'39"  33°04'46"  13h12m55s -07°37'05"  Vir  2.98   C    L   Omb 196.3    769.8    1266.0  077°50'27" -29°00'41"   001.4893 E  49.0902 N     68.2 (WNW)
+2023/02/11 05:14:17.8   192°25'45"  13°20'39"  12h53m18s -26°50'06"  Hya 20.00   C    L   Omb          768.4    2075.2  078°17'26" -28°39'41"   001.4615 W  39.0202 N   1134.2 (S)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/12 01:58:36.1   107°26'41"  18°28'12"  14h55m11s +02°57'02"  Vir 20.00   C    L   Omb        706.8  1669.8  022°11'20" -53°16'16"
-2023/02/12 02:00:05.9   127°56'56"  13°42'29"  14h03m28s -12°23'45"  Vir  1.11   C    L   Omb 221.3  705.7  1925.6  022°46'28" -53°10'36"   000.3402 E  49.6933 N    173.4 (WNW)
-2023/02/12 02:02:17.5   146°46'34"  05°26'15"  13h12m24s -28°27'48"  Hya 20.00   C    L   Omb        704.3  2546.1  023°37'44" -53°02'02"   004.4957 E  38.0886 N   1208.4 (SSE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/12 01:58:36.1   107°26'41"  18°28'12"  14h55m11s +02°57'02"  Vir 20.00   C    L   Omb          706.8    1669.8  022°11'20" -53°16'16"
+2023/02/12 02:00:05.9   127°56'56"  13°42'29"  14h03m28s -12°23'45"  Vir  1.11   C    L   Omb 221.3    705.7    1925.6  022°46'28" -53°10'36"   000.3402 E  49.6933 N    173.4 (WNW)
+2023/02/12 02:02:17.5   146°46'34"  05°26'15"  13h12m24s -28°27'48"  Hya 20.00   C    L   Omb          704.3    2546.1  023°37'44" -53°02'02"   004.4957 E  38.0886 N   1208.4 (SSE)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/12 04:34:26.0   141°40'48"  30°01'25"  15h21m49s -04°01'28"  Lib 20.00   C    L   Omb        770.0  1348.2  069°24'23" -34°42'45"   007.2358 E  52.9228 N    568.2 (NNE)
-2023/02/12 04:35:46.8   157°28'10"  19°32'22"  14h42m34s -18°43'06"  Lib  9.08   C    L   Omb 219.0  769.1  1735.4  069°42'46" -34°30'17"   006.1783 E  45.7176 N    453.2 (SE)
-2023/02/12 04:38:05.0   169°59'33"  06°52'59"  14h03m02s -33°34'38"  Cen 20.00   C    L   Omb        767.8  2556.2  070°14'05" -34°08'54"   004.3216 E  34.8450 N   1564.4 (SSE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/12 04:34:26.0   141°40'48"  30°01'25"  15h21m49s -04°01'28"  Lib 20.00   C    L   Omb          770.0    1348.2  069°24'23" -34°42'45"   007.2358 E  52.9228 N    568.2 (NNE)
+2023/02/12 04:35:46.8   157°28'10"  19°32'22"  14h42m34s -18°43'06"  Lib  9.08   C    L   Omb 219.0    769.1    1735.4  069°42'46" -34°30'17"   006.1783 E  45.7176 N    453.2 (SE)
+2023/02/12 04:38:05.0   169°59'33"  06°52'59"  14h03m02s -33°34'38"  Cen 20.00   C    L   Omb          767.8    2556.2  070°14'05" -34°08'54"   004.3216 E  34.8450 N   1564.4 (SSE)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/13 03:57:38.3   124°32'57"  15°08'15"  16h13m25s -09°24'49"  Sco 20.00   C    L   Omb        769.6  1969.0  060°15'46" -39°55'49"   008.8193 E  53.8681 N    716.6 (NNE)
-2023/02/13 03:59:28.6   141°29'02"  08°15'32"  15h29m36s -23°39'39"  Lib  8.46   C    L   Omb 282.8  768.4  2443.2  060°43'57" -39°40'00"   010.4930 E  42.5764 N    941.7 (ESE)
-2023/02/13 04:02:21.1   156°24'32" -01°33'28"  14h46m25s -38°33'12"  Cen 20.00   C    L   Omb        767.1  3395.4  061°27'42" -39°15'07"   009.7439 E  28.6987 N   2325.2 (SSE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/13 03:57:38.3   124°32'57"  15°08'15"  16h13m25s -09°24'49"  Sco 20.00   C    L   Omb          769.6    1969.0  060°15'46" -39°55'49"   008.8193 E  53.8681 N    716.6 (NNE)
+2023/02/13 03:59:28.6   141°29'02"  08°15'32"  15h29m36s -23°39'39"  Lib  8.46   C    L   Omb 282.8    768.4    2443.2  060°43'57" -39°40'00"   010.4930 E  42.5764 N    941.7 (ESE)
+2023/02/13 04:02:21.1   156°24'32" -01°33'28"  14h46m25s -38°33'12"  Cen 20.00   C    L   Omb          767.1    3395.4  061°27'42" -39°15'07"   009.7439 E  28.6987 N   2325.2 (SSE)
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/13 07:45:33.6   208°46'51"  01°27'14"  14h05m26s -33°52'37"  Cen 20.00   C    L   Lum        386.0  2131.8  106°26'03" -03°31'48"   006.7530 W  36.8612 N   1523.3 (SSW)
-2023/02/13 07:46:54.3   196°26'41"  05°30'31"  15h09m15s -33°46'14"  Lup 14.37   C    L   Lum 140.3  386.4  1734.4  106°41'00" -03°19'04"   000.4808 W  39.7945 N   1031.4 (S)
-2023/02/13 07:47:53.9   183°23'10"  08°25'25"  16h13m35s -32°38'44"  Sco 20.00   C    L   Lum        386.6  1512.3  106°52'03" -03°09'40"   004.5942 E  41.8712 N    795.6 (SSE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/13 07:45:33.6   208°46'51"  01°27'14"  14h05m26s -33°52'37"  Cen 20.00   C    L   Lum          386.0    2131.8  106°26'03" -03°31'48"   006.7530 W  36.8612 N   1523.3 (SSW)
+2023/02/13 07:46:54.3   196°26'41"  05°30'31"  15h09m15s -33°46'14"  Lup 14.37   C    L   Lum 140.3    386.4    1734.4  106°41'00" -03°19'04"   000.4808 W  39.7945 N   1031.4 (S)
+2023/02/13 07:47:53.9   183°23'10"  08°25'25"  16h13m35s -32°38'44"  Sco 20.00   C    L   Lum          386.6    1512.3  106°52'03" -03°09'40"   004.5942 E  41.8712 N    795.6 (SSE)
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/13 09:23:15.4   222°02'42"  10°55'08"  15h07m54s -19°42'12"  Lib  0.26   T    L   Lum        387.2  1355.6  125°23'13" +10°58'57"   002.2056 E  48.8281 N     10.9 (WSW)
-2023/02/13 09:23:16.5   221°48'27"  11°01'04"  15h09m00s -19°43'29"  Lib  0.03   T    L   Lum   2.3  387.2  1349.9  125°23'27" +10°59'06"   002.3782 E  48.8796 N      3.6 (NNE)
-2023/02/13 09:23:17.7   221°33'58"  11°07'04"  15h10m06s -19°44'47"  Lib  0.26   T    L   Lum        387.2  1344.1  125°23'41" +10°59'15"   002.5532 E  48.9319 N     17.4 (NE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/13 09:23:15.4   222°02'42"  10°55'08"  15h07m54s -19°42'12"  Lib  0.26   T    L   Lum          387.2    1355.6  125°23'13" +10°58'57"   002.2056 E  48.8281 N     10.9 (WSW)
+2023/02/13 09:23:16.5   221°48'27"  11°01'04"  15h09m00s -19°43'29"  Lib  0.03   T    L   Lum   2.3    387.2    1349.9  125°23'27" +10°59'06"   002.3782 E  48.8796 N      3.6 (NNE)
+2023/02/13 09:23:17.7   221°33'58"  11°07'04"  15h10m06s -19°44'47"  Lib  0.26   T    L   Lum          387.2    1344.1  125°23'41" +10°59'15"   002.5532 E  48.9319 N     17.4 (NE)
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/13 09:27:42.3   126°34'15"  11°29'22"  21h45m47s -13°32'38"  Cap  0.27   T    S   Lum        387.2  1323.1  126°18'31" +11°34'21"   002.4046 E  48.7599 N     11.2 (SSE)
-2023/02/13 09:27:43.2   126°22'46"  11°24'44"  21h46m38s -13°30'24"  Cap  0.18   T    S   Lum   1.7  387.2  1327.4  126°18'42" +11°34'28"   002.5411 E  48.7426 N     18.8 (ESE)
-2023/02/13 09:27:44.0   126°11'30"  11°20'10"  21h47m27s -13°28'12"  Cap  0.27   T    S   Lum        387.2  1331.8  126°18'53" +11°34'34"   002.6751 E  48.7255 N     27.9 (ESE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/13 09:27:42.3   126°34'15"  11°29'22"  21h45m47s -13°32'38"  Cap  0.27   T    S   Lum          387.2    1323.1  126°18'31" +11°34'21"   002.4046 E  48.7599 N     11.2 (SSE)
+2023/02/13 09:27:43.2   126°22'46"  11°24'44"  21h46m38s -13°30'24"  Cap  0.18   T    S   Lum   1.7    387.2    1327.4  126°18'42" +11°34'28"   002.5411 E  48.7426 N     18.8 (ESE)
+2023/02/13 09:27:44.0   126°11'30"  11°20'10"  21h47m27s -13°28'12"  Cap  0.27   T    S   Lum          387.2    1331.8  126°18'53" +11°34'34"   002.6751 E  48.7255 N     27.9 (ESE)
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/14 06:47:10.7   187°38'43"  03°03'53"  14h53m55s -37°39'28"  Cen 20.00   C    L   Lum        386.0  1957.8  095°27'56" -12°41'53"   001.5459 W  37.7120 N   1277.1 (S)
-2023/02/14 06:48:26.4   172°15'48"  05°46'18"  16h11m27s -34°57'26"  Sco 11.68   C    L   Lum 139.3  386.4  1712.2  095°41'55" -12°29'28"   004.0757 E  40.4525 N    943.5 (SSE)
-2023/02/14 06:49:30.0   156°29'56"  06°58'48"  17h24m16s -30°29'33"  Sco 20.00   C    L   Lum        386.6  1617.3  095°53'38" -12°19'03"   009.1524 E  42.6320 N    870.2 (SE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/14 06:47:10.7   187°38'43"  03°03'53"  14h53m55s -37°39'28"  Cen 20.00   C    L   Lum          386.0    1957.8  095°27'56" -12°41'53"   001.5459 W  37.7120 N   1277.1 (S)
+2023/02/14 06:48:26.4   172°15'48"  05°46'18"  16h11m27s -34°57'26"  Sco 11.68   C    L   Lum 139.3    386.4    1712.2  095°41'55" -12°29'28"   004.0757 E  40.4525 N    943.5 (SSE)
+2023/02/14 06:49:30.0   156°29'56"  06°58'48"  17h24m16s -30°29'33"  Sco 20.00   C    L   Lum          386.6    1617.3  095°53'38" -12°19'03"   009.1524 E  42.6320 N    870.2 (SE)
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/14 08:02:09.8   201°33'36"  00°04'00"  14h57m07s -37°40'03"  Lup 20.00   C    L   Lum        414.6  2390.3  109°18'54" -00°39'55"   005.8021 W  34.5719 N   1722.7 (SSW)
-2023/02/14 08:04:12.5   187°20'50"  07°12'35"  16h14m46s -33°34'03"  Sco 10.18   C    L   Lum 197.2  416.2  1682.2  109°41'55" +00°11'19"   001.8571 E  41.6226 N    804.5 (S)
-2023/02/14 08:05:27.0   171°26'47"  12°27'53"  17h29m00s -28°12'58"  Oph 20.00   C    L   Lum        417.3  1345.6  109°55'55" +00°21'03"   007.6463 E  46.2254 N    494.2 (ESE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/14 08:02:09.8   201°33'36"  00°04'00"  14h57m07s -37°40'03"  Lup 20.00   C    L   Lum          414.6    2390.3  109°18'54" -00°39'55"   005.8021 W  34.5719 N   1722.7 (SSW)
+2023/02/14 08:04:12.5   187°20'50"  07°12'35"  16h14m46s -33°34'03"  Sco 10.18   C    L   Lum 197.2    416.2    1682.2  109°41'55" +00°11'19"   001.8571 E  41.6226 N    804.5 (S)
+2023/02/14 08:05:27.0   171°26'47"  12°27'53"  17h29m00s -28°12'58"  Oph 20.00   C    L   Lum          417.3    1345.6  109°55'55" +00°21'03"   007.6463 E  46.2254 N    494.2 (ESE)
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/14 08:23:23.9   215°09'00"  09°16'22"  14h34m57s -24°10'54"  Lib 20.00   C    L   Lum        387.0  1456.7  113°19'56" +02°50'23"   005.1040 W  46.1439 N    636.8 (SW)
-2023/02/14 08:24:37.6   195°53'11"  14°57'02"  16h02m36s -24°39'21"  Sco  0.77   C    L   Lum 127.1  387.2  1149.2  113°34'01" +03°00'57"   002.1835 E  48.3662 N     55.5 (S)
-2023/02/14 08:25:31.0   175°28'34"  17°38'27"  17h29m58s -23°23'02"  Oph 20.00   C    L   Lum        387.3  1039.8  113°44'15" +03°08'38"   008.0648 E  50.0014 N    433.8 (ENE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/14 08:23:23.9   215°09'00"  09°16'22"  14h34m57s -24°10'54"  Lib 20.00   C    L   Lum          387.0    1456.7  113°19'56" +02°50'23"   005.1040 W  46.1439 N    636.8 (SW)
+2023/02/14 08:24:37.6   195°53'11"  14°57'02"  16h02m36s -24°39'21"  Sco  0.77   C    L   Lum 127.1    387.2    1149.2  113°34'01" +03°00'57"   002.1835 E  48.3662 N     55.5 (S)
+2023/02/14 08:25:31.0   175°28'34"  17°38'27"  17h29m58s -23°23'02"  Oph 20.00   C    L   Lum          387.3    1039.8  113°44'15" +03°08'38"   008.0648 E  50.0014 N    433.8 (ENE)
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/14 09:59:32.2   236°40'16"  09°51'45"  14h54m38s -13°07'57"  Lib 20.00   C    L   Lum        387.4  1420.5  132°56'18" +15°52'57"   000.9910 E  55.1711 N    709.1 (NNW)
-2023/02/14 10:00:42.8   218°54'26"  16°16'57"  16h11m00s -16°16'53"  Sco  7.91   C    L   Lum 119.3  387.4  1093.0  133°11'51" +16°01'25"
-2023/02/14 10:01:31.4   199°49'22"  19°57'34"  17h28m40s -18°57'06"  Oph 20.00   C    L   Lum        387.3   959.4  133°22'34" +16°07'14"
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/14 09:59:32.2   236°40'16"  09°51'45"  14h54m38s -13°07'57"  Lib 20.00   C    L   Lum          387.4    1420.5  132°56'18" +15°52'57"   000.9910 E  55.1711 N    709.1 (NNW)
+2023/02/14 10:00:42.8   218°54'26"  16°16'57"  16h11m00s -16°16'53"  Sco  7.91   C    L   Lum 119.3    387.4    1093.0  133°11'51" +16°01'25"
+2023/02/14 10:01:31.4   199°49'22"  19°57'34"  17h28m40s -18°57'06"  Oph 20.00   C    L   Lum          387.3     959.4  133°22'34" +16°07'14"
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/15 07:15:20.3   183°41'09"  01°55'22"  15h45m44s -39°07'24"  Lup 20.00   C    L   Lum        414.5  2161.7  100°25'30" -07°50'48"   001.3883 W  36.9208 N   1359.9 (S)
-2023/02/15 07:17:04.8   166°11'29"  07°07'43"  17h11m53s -32°43'24"  Sco  6.43   C    L   Lum 178.7  415.9  1687.5  100°44'43" -07°33'53"   004.5863 E  43.1092 N    661.5 (SSE)
-2023/02/15 07:18:19.0   147°45'17"  10°01'18"  18h28m59s -24°38'37"  Sgr 20.00   C    L   Lum        416.9  1488.4  100°58'23" -07°21'53"   009.5312 E  47.8623 N    543.4 (E)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/15 07:15:20.3   183°41'09"  01°55'22"  15h45m44s -39°07'24"  Lup 20.00   C    L   Lum          414.5    2161.7  100°25'30" -07°50'48"   001.3883 W  36.9208 N   1359.9 (S)
+2023/02/15 07:17:04.8   166°11'29"  07°07'43"  17h11m53s -32°43'24"  Sco  6.43   C    L   Lum 178.7    415.9    1687.5  100°44'43" -07°33'53"   004.5863 E  43.1092 N    661.5 (SSE)
+2023/02/15 07:18:19.0   147°45'17"  10°01'18"  18h28m59s -24°38'37"  Sgr 20.00   C    L   Lum          416.9    1488.4  100°58'23" -07°21'53"   009.5312 E  47.8623 N    543.4 (E)
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/15 07:24:45.4   189°43'51"  11°50'05"  15h30m42s -28°42'18"  Lib 20.00   C    L   Lum        387.0  1302.8  102°09'32" -06°19'33"   003.4488 W  47.7362 N    447.6 (WSW)
-2023/02/15 07:25:46.0   169°33'51"  14°15'36"  17h00m20s -26°12'39"  Oph  0.66   C    L   Lum 116.7  387.2  1180.5  102°20'43" -06°09'47"   002.1908 E  49.3778 N     59.4 (NNW)
-2023/02/15 07:26:42.1   149°08'59"  13°49'58"  18h25m41s -21°37'16"  Sgr 20.00   C    L   Lum        387.3  1201.2  102°31'03" -06°00'46"   007.7053 E  50.7758 N    440.7 (NE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/15 07:24:45.4   189°43'51"  11°50'05"  15h30m42s -28°42'18"  Lib 20.00   C    L   Lum          387.0    1302.8  102°09'32" -06°19'33"   003.4488 W  47.7362 N    447.6 (WSW)
+2023/02/15 07:25:46.0   169°33'51"  14°15'36"  17h00m20s -26°12'39"  Oph  0.66   C    L   Lum 116.7    387.2    1180.5  102°20'43" -06°09'47"   002.1908 E  49.3778 N     59.4 (NNW)
+2023/02/15 07:26:42.1   149°08'59"  13°49'58"  18h25m41s -21°37'16"  Sgr 20.00   C    L   Lum          387.3    1201.2  102°31'03" -06°00'46"   007.7053 E  50.7758 N    440.7 (NE)
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/15 09:01:05.3   211°02'36"  17°30'01"  15h46m07s -18°07'57"  Lib 20.00   C    L   Lum        387.5  1045.5  120°30'04" +08°30'33"   001.3940 W  53.9445 N    623.2 (NW)
-2023/02/15 09:01:51.5   191°43'11"  20°54'02"  17h05m07s -19°27'56"  Oph  7.58   C    L   Lum  87.1  387.4   930.4  120°39'20" +08°37'02"   004.1945 E  54.9675 N    692.0 (N)
-2023/02/15 09:02:32.4   171°47'28"  21°16'29"  18h24m42s -19°29'23"  Sgr 20.00   C    L   Lum        387.4   919.1  120°47'33" +08°42'46"   009.6115 E  56.1106 N    945.2 (NNE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/15 09:01:05.3   211°02'36"  17°30'01"  15h46m07s -18°07'57"  Lib 20.00   C    L   Lum          387.5    1045.5  120°30'04" +08°30'33"   001.3940 W  53.9445 N    623.2 (NW)
+2023/02/15 09:01:51.5   191°43'11"  20°54'02"  17h05m07s -19°27'56"  Oph  7.58   C    L   Lum  87.1    387.4     930.4  120°39'20" +08°37'02"   004.1945 E  54.9675 N    692.0 (N)
+2023/02/15 09:02:32.4   171°47'28"  21°16'29"  18h24m42s -19°29'23"  Sgr 20.00   C    L   Lum          387.4     919.1  120°47'33" +08°42'46"   009.6115 E  56.1106 N    945.2 (NNE)
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/15 10:36:45.7   230°59'38"  10°57'25"  15h57m39s -15°16'32"  Sco 20.00   C    L   Lum        387.1  1353.3  141°15'25" +20°21'14"
-2023/02/15 10:37:47.3   211°57'21"  14°23'28"  17h14m49s -20°42'28"  Oph  6.66   C    L   Lum 113.8  386.9  1173.9  141°29'57" +20°27'34"
-2023/02/15 10:38:39.5   192°24'08"  15°11'08"  18h35m44s -25°01'14"  Sgr 20.00   C    L   Lum        386.7  1137.5  141°42'17" +20°32'53"
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/15 10:36:45.7   230°59'38"  10°57'25"  15h57m39s -15°16'32"  Sco 20.00   C    L   Lum          387.1    1353.3  141°15'25" +20°21'14"
+2023/02/15 10:37:47.3   211°57'21"  14°23'28"  17h14m49s -20°42'28"  Oph  6.66   C    L   Lum 113.8    386.9    1173.9  141°29'57" +20°27'34"
+2023/02/15 10:38:39.5   192°24'08"  15°11'08"  18h35m44s -25°01'14"  Sgr 20.00   C    L   Lum          386.7    1137.5  141°42'17" +20°32'53"
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/16 06:30:01.9   145°36'29"  05°15'02"  18h01m48s -28°08'59"  Sgr  0.27   T    L   Lum        415.6  1840.4  091°49'32" -14°59'38"   001.6472 E  49.4189 N     81.1 (NW)
-2023/02/16 06:30:02.7   145°26'30"  05°16'00"  18h02m28s -28°03'54"  Sgr  0.21   T    L   Lum   1.5  415.6  1839.1  091°49'40" -14°59'31"   001.6546 E  49.4970 N     87.7 (NW)
-2023/02/16 06:30:03.4   145°16'28"  05°16'59"  18h03m08s -27°58'48"  Sgr  0.27   T    L   Lum        415.6  1837.7  091°49'49" -14°59'23"   001.6613 E  49.5761 N     94.7 (NW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/16 06:30:01.9   145°36'29"  05°15'02"  18h01m48s -28°08'59"  Sgr  0.27   T    L   Lum          415.6    1840.4  091°49'32" -14°59'38"   001.6472 E  49.4189 N     81.1 (NW)
+2023/02/16 06:30:02.7   145°26'30"  05°16'00"  18h02m28s -28°03'54"  Sgr  0.21   T    L   Lum   1.5    415.6    1839.1  091°49'40" -14°59'31"   001.6546 E  49.4970 N     87.7 (NW)
+2023/02/16 06:30:03.4   145°16'28"  05°16'59"  18h03m08s -27°58'48"  Sgr  0.27   T    L   Lum          415.6    1837.7  091°49'49" -14°59'23"   001.6613 E  49.5761 N     94.7 (NW)
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/16 08:02:10.3   182°46'21"  20°06'01"  16h44m29s -21°00'07"  Oph 20.00   C    L   Lum        387.5   955.3  108°53'47" +00°22'46"
-2023/02/16 08:02:51.4   163°32'43"  20°01'40"  18h01m58s -19°34'18"  Sgr  8.94   C    L   Lum  86.1  387.5   957.7  109°01'31" +00°28'13"
-2023/02/16 08:03:36.5   144°49'39"  17°11'02"  19h17m34s -16°56'24"  Sgr 20.00   C    L   Lum        387.5  1057.6  109°10'00" +00°34'13"
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/16 08:02:10.3   182°46'21"  20°06'01"  16h44m29s -21°00'07"  Oph 20.00   C    L   Lum          387.5     955.3  108°53'47" +00°22'46"
+2023/02/16 08:02:51.4   163°32'43"  20°01'40"  18h01m58s -19°34'18"  Sgr  8.94   C    L   Lum  86.1    387.5     957.7  109°01'31" +00°28'13"
+2023/02/16 08:03:36.5   144°49'39"  17°11'02"  19h17m34s -16°56'24"  Sgr 20.00   C    L   Lum          387.5    1057.6  109°10'00" +00°34'13"
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/16 09:38:10.8   205°00'53"  17°46'15"  16h50m35s -19°45'15"  Oph 20.00   C    L   Lum        387.2  1034.8  127°58'23" +13°48'51"   001.9897 W  55.6909 N    816.0 (NNW)
-2023/02/16 09:38:57.3   184°54'31"  18°23'48"  18h12m31s -22°36'28"  Sgr  5.92   C    L   Lum  96.0  387.1  1011.7  128°08'18" +13°54'52"   003.2955 E  54.4674 N    628.0 (N)
-2023/02/16 09:39:46.8   165°03'26"  16°02'34"  19h36m22s -23°45'30"  Sgr 20.00   C    L   Lum        386.9  1101.5  128°18'51" +14°01'14"   008.6157 E  53.2098 N    653.9 (NNE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/16 09:38:10.8   205°00'53"  17°46'15"  16h50m35s -19°45'15"  Oph 20.00   C    L   Lum          387.2    1034.8  127°58'23" +13°48'51"   001.9897 W  55.6909 N    816.0 (NNW)
+2023/02/16 09:38:57.3   184°54'31"  18°23'48"  18h12m31s -22°36'28"  Sgr  5.92   C    L   Lum  96.0    387.1    1011.7  128°08'18" +13°54'52"   003.2955 E  54.4674 N    628.0 (N)
+2023/02/16 09:39:46.8   165°03'26"  16°02'34"  19h36m22s -23°45'30"  Sgr 20.00   C    L   Lum          386.9    1101.5  128°18'51" +14°01'14"   008.6157 E  53.2098 N    653.9 (NNE)
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/16 11:13:36.5   225°21'16"  06°50'44"  16h49m42s -21°40'28"  Oph 20.00   C    L   Lum        386.4  1627.4  150°06'38" +24°05'48"   005.1706 W  50.1564 N    563.3 (W)
-2023/02/16 11:14:51.6   205°30'41"  07°50'27"  18h12m01s -29°02'55"  Sgr  0.66   C    L   Lum 151.4  385.9  1551.6  150°25'34" +24°11'56"   001.6828 E  47.9157 N    115.3 (SSW)
-2023/02/16 11:16:08.0   185°42'01"  06°26'20"  19h42m38s -34°28'58"  Sgr 20.00   C    L   Lum        385.4  1655.6  150°44'52" +24°18'07"   008.2263 E  45.5075 N    580.1 (ESE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/16 11:13:36.5   225°21'16"  06°50'44"  16h49m42s -21°40'28"  Oph 20.00   C    L   Lum          386.4    1627.4  150°06'38" +24°05'48"   005.1706 W  50.1564 N    563.3 (W)
+2023/02/16 11:14:51.6   205°30'41"  07°50'27"  18h12m01s -29°02'55"  Sgr  0.66   C    L   Lum 151.4    385.9    1551.6  150°25'34" +24°11'56"   001.6828 E  47.9157 N    115.3 (SSW)
+2023/02/16 11:16:08.0   185°42'01"  06°26'20"  19h42m38s -34°28'58"  Sgr 20.00   C    L   Lum          385.4    1655.6  150°44'52" +24°18'07"   008.2263 E  45.5075 N    580.1 (ESE)
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/17 08:39:14.9   175°58'59"  20°28'56"  17h52m51s -20°34'18"  Sgr 20.00   C    L   Lum        387.3   943.0  115°47'18" +05°57'00"
-2023/02/17 08:40:00.6   156°33'55"  17°36'45"  19h12m55s -20°20'18"  Sgr  7.70   C    L   Lum 107.7  387.2  1040.6  115°56'14" +06°03'38"
-2023/02/17 08:41:02.7   138°19'30"  11°56'41"  20h32m24s -18°57'51"  Cap 20.00   C    L   Lum        387.0  1297.2  116°08'22" +06°12'39"   005.8880 E  54.4610 N    670.0 (N)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/17 08:39:14.9   175°58'59"  20°28'56"  17h52m51s -20°34'18"  Sgr 20.00   C    L   Lum          387.3     943.0  115°47'18" +05°57'00"
+2023/02/17 08:40:00.6   156°33'55"  17°36'45"  19h12m55s -20°20'18"  Sgr  7.70   C    L   Lum 107.7    387.2    1040.6  115°56'14" +06°03'38"
+2023/02/17 08:41:02.7   138°19'30"  11°56'41"  20h32m24s -18°57'51"  Cap 20.00   C    L   Lum          387.0    1297.2  116°08'22" +06°12'39"   005.8880 E  54.4610 N    670.0 (N)
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/17 10:15:11.3   199°19'25"  11°31'16"  17h47m24s -27°15'31"  Sgr 20.00   C    L   Lum        386.4  1318.8  135°57'22" +18°38'25"   003.7658 W  48.4267 N    453.0 (WSW)
-2023/02/17 10:16:15.4   179°38'46"  09°55'29"  19h15m40s -31°13'15"  Sgr  3.33   C    L   Lum 146.0  386.1  1412.1  136°12'00" +18°45'44"   002.2562 E  45.9453 N    323.4 (S)
-2023/02/17 10:17:37.3   160°38'28"  05°47'39"  20h47m48s -32°47'32"  Mic 20.00   C    L   Lum        385.5  1708.2  136°30'43" +18°55'02"   009.1644 E  42.8408 N    851.9 (SE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/17 10:15:11.3   199°19'25"  11°31'16"  17h47m24s -27°15'31"  Sgr 20.00   C    L   Lum          386.4    1318.8  135°57'22" +18°38'25"   003.7658 W  48.4267 N    453.0 (WSW)
+2023/02/17 10:16:15.4   179°38'46"  09°55'29"  19h15m40s -31°13'15"  Sgr  3.33   C    L   Lum 146.0    386.1    1412.1  136°12'00" +18°45'44"   002.2562 E  45.9453 N    323.4 (S)
+2023/02/17 10:17:37.3   160°38'28"  05°47'39"  20h47m48s -32°47'32"  Mic 20.00   C    L   Lum          385.5    1708.2  136°30'43" +18°55'02"   009.1644 E  42.8408 N    851.9 (SE)
 
 CSS (TIANHE)
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/18 09:16:25.1   172°01'51"  13°08'53"  18h53m02s -27°35'52"  Sgr 20.00   C    L   Lum        386.6  1232.8  123°03'01" +11°30'47"   007.0972 W  51.4785 N    734.7 (WNW)
-2023/02/18 09:17:39.3   152°50'43"  08°20'31"  20h22m18s -28°02'08"  Mic  2.53   C    L   Lum 200.9  386.2  1516.9  123°18'20" +11°40'57"   003.9602 E  46.3217 N    306.5 (SE)
-2023/02/18 09:19:46.0   135°18'15"  00°46'04"  21h50m26s -27°13'56"  PsA 20.00   C    L   Lum        385.4  2213.5  123°44'34" +11°58'15"   016.1243 E  40.7313 N   1411.5 (ESE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/18 09:16:25.1   172°01'51"  13°08'53"  18h53m02s -27°35'52"  Sgr 20.00   C    L   Lum          386.6    1232.8  123°03'01" +11°30'47"   007.0972 W  51.4785 N    734.7 (WNW)
+2023/02/18 09:17:39.3   152°50'43"  08°20'31"  20h22m18s -28°02'08"  Mic  2.53   C    L   Lum 200.9    386.2    1516.9  123°18'20" +11°40'57"   003.9602 E  46.3217 N    306.5 (SE)
+2023/02/18 09:19:46.0   135°18'15"  00°46'04"  21h50m26s -27°13'56"  PsA 20.00   C    L   Lum          385.4    2213.5  123°44'34" +11°58'15"   016.1243 E  40.7313 N   1411.5 (ESE)
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/18 12:58:35.8   208°22'06"  32°12'20"  20h25m33s -05°04'50"  Aql 20.00   C    L   Lum        425.7   744.4  178°20'10" +29°32'09"
-2023/02/18 12:58:51.8   198°04'27"  31°09'19"  20h58m46s -08°22'43"  Aqr 18.07   C    L   Lum  33.0  425.7   762.7  178°24'39" +29°32'14"
-2023/02/18 12:59:08.8   188°11'08"  29°11'35"  21h32m10s -11°36'40"  Cap 20.00   C    L   Lum        425.7   799.7  178°29'26" +29°32'19"
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/18 12:58:35.8   208°22'06"  32°12'20"  20h25m33s -05°04'50"  Aql 20.00   C    L   Lum          425.7     744.4  178°20'10" +29°32'09"
+2023/02/18 12:58:51.8   198°04'27"  31°09'19"  20h58m46s -08°22'43"  Aqr 18.07   C    L   Lum  33.0    425.7     762.7  178°24'39" +29°32'14"
+2023/02/18 12:59:08.8   188°11'08"  29°11'35"  21h32m10s -11°36'40"  Cap 20.00   C    L   Lum          425.7     799.7  178°29'26" +29°32'19"
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/19 12:11:44.6   170°39'27"  39°36'45"  21h46m28s -01°08'56"  Aqr 20.00   C    L   Lum        426.2   640.5  165°14'04" +28°46'44"   002.4696 E  55.4701 N    736.3 (N)
-2023/02/19 12:11:53.3   165°22'48"  37°04'49"  22h04m25s -03°05'26"  Aqr 19.45   C    L   Lum  18.0  426.2   672.0  165°16'27" +28°47'06"   003.3681 E  54.9483 N    681.8 (N)
-2023/02/19 12:12:02.6   160°37'25"  34°23'00"  22h21m50s -04°59'30"  Aqr 20.00   C    L   Lum        426.2   710.2  165°19'01" +28°47'29"   004.3035 E  54.3992 N    631.6 (N)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/19 12:11:44.6   170°39'27"  39°36'45"  21h46m28s -01°08'56"  Aqr 20.00   C    L   Lum          426.2     640.5  165°14'04" +28°46'44"   002.4696 E  55.4701 N    736.3 (N)
+2023/02/19 12:11:53.3   165°22'48"  37°04'49"  22h04m25s -03°05'26"  Aqr 19.45   C    L   Lum  18.0    426.2     672.0  165°16'27" +28°47'06"   003.3681 E  54.9483 N    681.8 (N)
+2023/02/19 12:12:02.6   160°37'25"  34°23'00"  22h21m50s -04°59'30"  Aqr 20.00   C    L   Lum          426.2     710.2  165°19'01" +28°47'29"   004.3035 E  54.3992 N    631.6 (N)
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/19 13:47:45.0   217°57'56"  09°18'00"  20h08m59s -22°58'08"  Cap 20.00   C    L   Lum        426.0  1559.6  192°10'57" +29°09'37"   005.9571 W  45.0817 N    757.8 (SW)
-2023/02/19 13:48:49.3   201°48'37"  07°27'16"  21h13m47s -30°31'57"  Mic 11.20   C    L   Lum 144.5  425.9  1690.2  192°28'49" +29°07'22"   001.7782 W  41.6931 N    858.8 (SSW)
-2023/02/19 13:50:09.5   186°16'27"  03°53'59"  22h25m02s -36°57'52"  PsA 20.00   C    L   Lum        425.7  1991.1  192°51'04" +29°04'30"   002.8942 E  37.4533 N   1267.3 (SSE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/19 13:47:45.0   217°57'56"  09°18'00"  20h08m59s -22°58'08"  Cap 20.00   C    L   Lum          426.0    1559.6  192°10'57" +29°09'37"   005.9571 W  45.0817 N    757.8 (SW)
+2023/02/19 13:48:49.3   201°48'37"  07°27'16"  21h13m47s -30°31'57"  Mic 11.20   C    L   Lum 144.5    425.9    1690.2  192°28'49" +29°07'22"   001.7782 W  41.6931 N    858.8 (SSW)
+2023/02/19 13:50:09.5   186°16'27"  03°53'59"  22h25m02s -36°57'52"  PsA 20.00   C    L   Lum          425.7    1991.1  192°51'04" +29°04'30"   002.8942 E  37.4533 N   1267.3 (SSE)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/19 14:42:03.4   194°34'23"  04°46'53"  22h37m16s -34°52'42"  PsA 20.00   C    L   Lum        703.6  2605.0  206°50'44" +26°11'22"   003.0612 E  36.4012 N   1384.5 (SSE)
-2023/02/19 14:44:36.1   210°41'32"  17°24'35"  21h47m32s -18°20'10"  Cap  3.26   C    L   Lum 238.1  705.2  1718.1  207°30'26" +25°59'57"   005.8193 E  51.2977 N    368.2 (NNE)
-2023/02/19 14:46:01.5   230°00'45"  26°35'59"  20h59m17s -02°20'40"  Aqr 20.00   C    L   Lum        706.2  1348.0  207°52'32" +25°53'27"
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/19 14:42:03.4   194°34'23"  04°46'53"  22h37m16s -34°52'42"  PsA 20.00   C    L   Lum          703.6    2605.0  206°50'44" +26°11'22"   003.0612 E  36.4012 N   1384.5 (SSE)
+2023/02/19 14:44:36.1   210°41'32"  17°24'35"  21h47m32s -18°20'10"  Cap  3.26   C    L   Lum 238.1    705.2    1718.1  207°30'26" +25°59'57"   005.8193 E  51.2977 N    368.2 (NNE)
+2023/02/19 14:46:01.5   230°00'45"  26°35'59"  20h59m17s -02°20'40"  Aqr 20.00   C    L   Lum          706.2    1348.0  207°52'32" +25°53'27"
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/20 13:02:10.0   187°20'32"  10°12'53"  21h38m38s -30°34'41"  PsA 20.00   C    L   Lum        426.4  1500.6  179°23'15" +30°15'38"   000.6570 W  41.4632 N    854.4 (S)
-2023/02/20 13:02:38.9   181°10'45"  08°22'17"  22h07m10s -32°45'57"  PsA 18.85   C    L   Lum  62.5  426.3  1624.0  179°31'28" +30°15'41"   001.2785 E  40.0016 N    987.3 (S)
-2023/02/20 13:03:12.4   175°14'41"  06°14'38"  22h36m18s -34°44'44"  PsA 20.00   C    L   Lum        426.3  1786.1  179°41'00" +30°15'44"   003.4121 E  38.2937 N   1176.3 (SSE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/20 13:02:10.0   187°20'32"  10°12'53"  21h38m38s -30°34'41"  PsA 20.00   C    L   Lum          426.4    1500.6  179°23'15" +30°15'38"   000.6570 W  41.4632 N    854.4 (S)
+2023/02/20 13:02:38.9   181°10'45"  08°22'17"  22h07m10s -32°45'57"  PsA 18.85   C    L   Lum  62.5    426.3    1624.0  179°31'28" +30°15'41"   001.2785 E  40.0016 N    987.3 (S)
+2023/02/20 13:03:12.4   175°14'41"  06°14'38"  22h36m18s -34°44'44"  PsA 20.00   C    L   Lum          426.3    1786.1  179°41'00" +30°15'44"   003.4121 E  38.2937 N   1176.3 (SSE)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/20 17:25:59.9   218°28'17"  02°34'53"  23h36m15s -28°43'55"  Scl 20.00   C    L   Lum        766.9  2971.3  244°13'12" +07°25'04"   001.1968 W  36.4643 N   1406.2 (S)
-2023/02/20 17:28:31.6   237°26'59"  10°10'23"  22h46m38s -12°26'32"  Aqr  1.92   C    L   Lum 258.6  768.5  2295.4  244°43'07" +07°02'55"
-2023/02/20 17:30:18.6   257°46'31"  14°23'21"  21h55m22s +02°59'27"  Peg 20.00   C    L   Lum        769.9  2014.7  245°04'10" +06°47'14"
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/20 17:25:59.9   218°28'17"  02°34'53"  23h36m15s -28°43'55"  Scl 20.00   C    L   Lum          766.9    2971.3  244°13'12" +07°25'04"   001.1968 W  36.4643 N   1406.2 (S)
+2023/02/20 17:28:31.6   237°26'59"  10°10'23"  22h46m38s -12°26'32"  Aqr  1.92   C    L   Lum 258.6    768.5    2295.4  244°43'07" +07°02'55"
+2023/02/20 17:30:18.6   257°46'31"  14°23'21"  21h55m22s +02°59'27"  Peg 20.00   C    L   Lum          769.9    2014.7  245°04'10" +06°47'14"
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/21 10:38:23.2   110°29'23"  30°54'20"  23h31m45s +10°54'12"  Peg 20.00   C    L   Lum        427.0   769.4  140°48'00" +22°29'12"   010.3421 W  55.1224 N   1113.6 (WNW)
-2023/02/21 10:39:27.9   110°52'10"  16°24'31"  00h07m50s -00°41'43"  Psc 13.74   C    L   Lum 208.0  427.0  1180.0  141°03'37" +22°35'55"   003.6718 E  51.3499 N    293.4 (N)
-2023/02/21 10:41:51.1   111°25'13"  02°20'28"  00h43m36s -12°05'01"  Cet 20.00   C    L   Lum        426.9  2154.7  141°38'15" +22°50'39"   019.7520 E  44.5222 N   1411.8 (E)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/21 10:38:23.2   110°29'23"  30°54'20"  23h31m45s +10°54'12"  Peg 20.00   C    L   Lum          427.0     769.4  140°48'00" +22°29'12"   010.3421 W  55.1224 N   1113.6 (WNW)
+2023/02/21 10:39:27.9   110°52'10"  16°24'31"  00h07m50s -00°41'43"  Psc 13.74   C    L   Lum 208.0    427.0    1180.0  141°03'37" +22°35'55"   003.6718 E  51.3499 N    293.4 (N)
+2023/02/21 10:41:51.1   111°25'13"  02°20'28"  00h43m36s -12°05'01"  Cet 20.00   C    L   Lum          426.9    2154.7  141°38'15" +22°50'39"   019.7520 E  44.5222 N   1411.8 (E)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/21 14:30:35.7   195°27'07"  15°51'09"  22h39m45s -23°51'10"  Aqr 20.00   C    L   Lum        704.8  1798.9  204°06'39" +27°40'09"   002.4115 W  41.3329 N    915.5 (SSW)
-2023/02/21 14:31:12.5   200°05'38"  20°11'15"  22h25m52s -18°40'11"  Aqr 18.97   C    L   Lum  67.3  705.2  1587.0  204°16'29" +27°37'40"   003.1943 W  44.1194 N    676.4 (SSW)
-2023/02/21 14:31:42.9   205°10'57"  24°18'14"  22h11m58s -13°27'32"  Aqr 20.00   C    L   Lum        705.6  1424.4  204°24'36" +27°35'37"   003.8912 W  46.4712 N    538.1 (SW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/21 14:30:35.7   195°27'07"  15°51'09"  22h39m45s -23°51'10"  Aqr 20.00   C    L   Lum          704.8    1798.9  204°06'39" +27°40'09"   002.4115 W  41.3329 N    915.5 (SSW)
+2023/02/21 14:31:12.5   200°05'38"  20°11'15"  22h25m52s -18°40'11"  Aqr 18.97   C    L   Lum  67.3    705.2    1587.0  204°16'29" +27°37'40"   003.1943 W  44.1194 N    676.4 (SSW)
+2023/02/21 14:31:42.9   205°10'57"  24°18'14"  22h11m58s -13°27'32"  Aqr 20.00   C    L   Lum          705.6    1424.4  204°24'36" +27°35'37"   003.8912 W  46.4712 N    538.1 (SW)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/21 16:49:51.8   206°00'15"  11°48'17"  00h11m18s -25°08'20"  Cet 20.00   C    L   Lum        767.7  2175.9  237°07'38" +12°49'17"   000.4175 E  39.2220 N   1081.2 (S)
-2023/02/21 16:51:44.5   223°49'34"  22°01'32"  23h24m12s -09°04'15"  Aqr  3.03   C    L   Lum 188.0  769.0  1625.0  237°31'06" +12°33'47"   000.3560 E  47.8814 N    183.0 (SW)
-2023/02/21 16:52:59.8   244°36'45"  28°35'26"  22h35m45s +06°28'06"  Peg 20.00   C    L   Lum        770.0  1390.8  237°46'45" +12°23'23"   001.1721 E  54.1899 N    599.3 (NNW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/21 16:49:51.8   206°00'15"  11°48'17"  00h11m18s -25°08'20"  Cet 20.00   C    L   Lum          767.7    2175.9  237°07'38" +12°49'17"   000.4175 E  39.2220 N   1081.2 (S)
+2023/02/21 16:51:44.5   223°49'34"  22°01'32"  23h24m12s -09°04'15"  Aqr  3.03   C    L   Lum 188.0    769.0    1625.0  237°31'06" +12°33'47"   000.3560 E  47.8814 N    183.0 (SW)
+2023/02/21 16:52:59.8   244°36'45"  28°35'26"  22h35m45s +06°28'06"  Peg 20.00   C    L   Lum          770.0    1390.8  237°46'45" +12°23'23"   001.1721 E  54.1899 N    599.3 (NNW)
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/22 09:51:54.1   095°38'14"  26°06'44"  23h42m26s +15°51'59"  Peg 20.00   C    L   Lum        427.3   869.8  129°54'52" +17°27'01"
-2023/02/22 09:54:01.1   101°53'40"  07°21'01"  00h16m19s -02°11'14"  Psc  0.40   C    L   Lum 460.8  427.4  1703.8  130°23'00" +17°42'58"   002.6762 E  48.9135 N     24.9 (ENE)
-2023/02/22 09:59:35.0   105°54'36" -11°37'13"  01h00m07s -19°10'08"  Cet 20.00   C    L   Lum        427.1  3985.4  131°37'33" +18°24'22"   038.3506 E  33.4601 N   3426.4 (E)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/22 09:51:54.1   095°38'14"  26°06'44"  23h42m26s +15°51'59"  Peg 20.00   C    L   Lum          427.3     869.8  129°54'52" +17°27'01"
+2023/02/22 09:54:01.1   101°53'40"  07°21'01"  00h16m19s -02°11'14"  Psc  0.40   C    L   Lum 460.8    427.4    1703.8  130°23'00" +17°42'58"   002.6762 E  48.9135 N     24.9 (ENE)
+2023/02/22 09:59:35.0   105°54'36" -11°37'13"  01h00m07s -19°10'08"  Cet 20.00   C    L   Lum          427.1    3985.4  131°37'33" +18°24'22"   038.3506 E  33.4601 N   3426.4 (E)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/22 13:34:52.6   148°09'13"  16°33'56"  01h02m01s -18°43'33"  Cet 20.00   C    L   Lum        705.1  1761.5  188°48'30" +30°36'18"   008.7547 E  41.8770 N    922.8 (SE)
-2023/02/22 13:36:21.2   140°12'50"  30°46'39"  01h08m00s -02°48'49"  Cet 11.71   C    L   Lum 141.4  706.2  1226.8  189°13'42" +30°34'03"   006.1140 E  48.3881 N    282.4 (E)
-2023/02/22 13:37:14.0   128°30'17"  43°59'25"  01h16m36s +13°11'45"  Psc 20.00   C    L   Lum        706.9   968.6  189°28'41" +30°32'39"   004.1253 E  52.4023 N    414.3 (N)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/22 13:34:52.6   148°09'13"  16°33'56"  01h02m01s -18°43'33"  Cet 20.00   C    L   Lum          705.1    1761.5  188°48'30" +30°36'18"   008.7547 E  41.8770 N    922.8 (SE)
+2023/02/22 13:36:21.2   140°12'50"  30°46'39"  01h08m00s -02°48'49"  Cet 11.71   C    L   Lum 141.4    706.2    1226.8  189°13'42" +30°34'03"   006.1140 E  48.3881 N    282.4 (E)
+2023/02/22 13:37:14.0   128°30'17"  43°59'25"  01h16m36s +13°11'45"  Psc 20.00   C    L   Lum          706.9     968.6  189°28'41" +30°32'39"   004.1253 E  52.4023 N    414.3 (N)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/22 16:13:46.9   184°12'48"  24°50'06"  01h16m20s -16°12'55"  Cet 20.00   C    L   Lum        768.7  1514.0  229°35'00" +17°50'46"   004.9222 E  43.4978 N    627.5 (SSE)
-2023/02/22 16:15:07.3   196°35'02"  41°29'15"  00h44m12s +01°30'57"  Cet  5.18   C    L   Lum 131.1  769.7  1091.3  229°52'54" +17°40'43"   003.8554 E  49.4378 N    127.7 (NE)
-2023/02/22 16:15:58.0   217°21'53"  55°30'27"  00h09m14s +18°56'06"  Psc 20.00   C    L   Lum        770.4   912.1  230°04'08" +17°34'22"   003.1878 E  53.3128 N    499.6 (N)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/22 16:13:46.9   184°12'48"  24°50'06"  01h16m20s -16°12'55"  Cet 20.00   C    L   Lum          768.7    1514.0  229°35'00" +17°50'46"   004.9222 E  43.4978 N    627.5 (SSE)
+2023/02/22 16:15:07.3   196°35'02"  41°29'15"  00h44m12s +01°30'57"  Cet  5.18   C    L   Lum 131.1    769.7    1091.3  229°52'54" +17°40'43"   003.8554 E  49.4378 N    127.7 (NE)
+2023/02/22 16:15:58.0   217°21'53"  55°30'27"  00h09m14s +18°56'06"  Psc 20.00   C    L   Lum          770.4     912.1  230°04'08" +17°34'22"   003.1878 E  53.3128 N    499.6 (N)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/24 13:22:22.7   132°31'25"  21°14'59"  01h44m01s -08°08'20"  Cet 20.00   C    L   Lum        705.8  1543.0  185°22'30" +31°34'52"   006.0750 E  43.3624 N    674.7 (SE)
-2023/02/24 13:23:43.5   115°50'57"  34°39'46"  02h05m29s +11°05'17"  Ari  0.79   C    L   Lum 133.3  706.8  1134.9  185°45'49" +31°33'36"   002.6721 E  48.8391 N     23.8 (E)
-2023/02/24 13:24:36.0   092°59'53"  44°00'45"  02h34m16s +29°53'54"  Ari 20.00   C    L   Lum        707.6   969.2  186°00'59" +31°32'43"   000.1405 W  52.4108 N    433.1 (NW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/24 13:22:22.7   132°31'25"  21°14'59"  01h44m01s -08°08'20"  Cet 20.00   C    L   Lum          705.8    1543.0  185°22'30" +31°34'52"   006.0750 E  43.3624 N    674.7 (SE)
+2023/02/24 13:23:43.5   115°50'57"  34°39'46"  02h05m29s +11°05'17"  Ari  0.79   C    L   Lum 133.3    706.8    1134.9  185°45'49" +31°33'36"   002.6721 E  48.8391 N     23.8 (E)
+2023/02/24 13:24:36.0   092°59'53"  44°00'45"  02h34m16s +29°53'54"  Ari 20.00   C    L   Lum          707.6     969.2  186°00'59" +31°32'43"   000.1405 W  52.4108 N    433.1 (NW)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/25 12:26:25.3   104°14'30"  07°37'58"  02h53m05s -03°27'50"  Eri 20.00   C    L   Lum        705.9  2360.4  169°12'09" +31°30'13"   017.2855 E  42.7323 N   1342.5 (ESE)
-2023/02/25 12:28:03.2   088°24'46"  13°22'20"  03h26m51s +11°03'47"  Tau 10.23   C    L   Lum 173.2  707.3  1950.2  169°40'18" +31°33'12"   012.6470 E  49.0980 N    753.8 (ENE)
-2023/02/25 12:29:18.5   071°25'15"  16°40'06"  04h09m22s +24°38'04"  Tau 20.00   C    L   Lum        708.3  1763.4  170°01'57" +31°35'24"   007.7533 E  53.8937 N    674.9 (NNE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/25 12:26:25.3   104°14'30"  07°37'58"  02h53m05s -03°27'50"  Eri 20.00   C    L   Lum          705.9    2360.4  169°12'09" +31°30'13"   017.2855 E  42.7323 N   1342.5 (ESE)
+2023/02/25 12:28:03.2   088°24'46"  13°22'20"  03h26m51s +11°03'47"  Tau 10.23   C    L   Lum 173.2    707.3    1950.2  169°40'18" +31°33'12"   012.6470 E  49.0980 N    753.8 (ENE)
+2023/02/25 12:29:18.5   071°25'15"  16°40'06"  04h09m22s +24°38'04"  Tau 20.00   C    L   Lum          708.3    1763.4  170°01'57" +31°35'24"   007.7533 E  53.8937 N    674.9 (NNE)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/26 13:10:09.4   108°46'04"  26°37'02"  02h39m21s +08°31'04"  Cet 20.00   C    L   Lum        706.8  1348.6  181°56'55" +32°26'43"   000.2121 E  44.6073 N    499.4 (S)
-2023/02/26 13:11:07.4   089°11'39"  33°36'14"  03h12m26s +25°07'02"  Ari  8.33   C    L   Lum 106.2  707.6  1159.8  182°13'53" +32°26'23"   003.0750 W  48.1351 N    408.6 (WSW)
-2023/02/26 13:11:55.6   066°57'11"  36°15'06"  03h59m34s +40°46'11"  Per 20.00   C    L   Lum        708.2  1103.5  182°28'00" +32°26'04"   006.3851 W  50.9728 N    669.6 (WNW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/26 13:10:09.4   108°46'04"  26°37'02"  02h39m21s +08°31'04"  Cet 20.00   C    L   Lum          706.8    1348.6  181°56'55" +32°26'43"   000.2121 E  44.6073 N    499.4 (S)
+2023/02/26 13:11:07.4   089°11'39"  33°36'14"  03h12m26s +25°07'02"  Ari  8.33   C    L   Lum 106.2    707.6    1159.8  182°13'53" +32°26'23"   003.0750 W  48.1351 N    408.6 (WSW)
+2023/02/26 13:11:55.6   066°57'11"  36°15'06"  03h59m34s +40°46'11"  Per 20.00   C    L   Lum          708.2    1103.5  182°28'00" +32°26'04"   006.3851 W  50.9728 N    669.6 (WNW)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/26 15:25:24.2   128°56'15"  30°32'24"  03h47m50s +01°31'03"  Tau 20.00   C    L   Lum        769.7  1333.2  219°07'29" +24°37'34"   006.0714 E  44.6826 N    543.7 (SE)
-2023/02/26 15:26:28.1   110°38'05"  43°18'15"  04h06m55s +20°20'56"  Tau  4.53   C    L   Lum 111.0  770.6  1062.7  219°23'15" +24°30'56"   003.7748 E  48.9071 N    104.8 (ENE)
-2023/02/26 15:27:15.2   084°17'43"  51°06'32"  04h34m42s +38°50'31"  Per 20.00   C    L   Lum        771.3   958.5  219°34'50" +24°26'02"   001.7741 E  52.0125 N    353.8 (NNW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/26 15:25:24.2   128°56'15"  30°32'24"  03h47m50s +01°31'03"  Tau 20.00   C    L   Lum          769.7    1333.2  219°07'29" +24°37'34"   006.0714 E  44.6826 N    543.7 (SE)
+2023/02/26 15:26:28.1   110°38'05"  43°18'15"  04h06m55s +20°20'56"  Tau  4.53   C    L   Lum 111.0    770.6    1062.7  219°23'15" +24°30'56"   003.7748 E  48.9071 N    104.8 (ENE)
+2023/02/26 15:27:15.2   084°17'43"  51°06'32"  04h34m42s +38°50'31"  Per 20.00   C    L   Lum          771.3     958.5  219°34'50" +24°26'02"   001.7741 E  52.0125 N    353.8 (NNW)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/27 12:14:31.0   086°28'04"  09°43'21"  03h36m50s +09°37'15"  Tau 20.00   C    L   Lum        707.2  2199.3  165°45'07" +31°49'40"   005.8435 E  42.4948 N    757.2 (SSE)
-2023/02/27 12:16:10.3   066°37'21"  13°18'45"  04h29m09s +25°18'23"  Tau  1.64   C    L   Lum 187.6  708.6  1956.7  166°13'38" +31°53'38"   001.5079 W  47.6044 N    318.3 (SW)
-2023/02/27 12:17:38.6   046°17'11"  13°32'27"  05h41m35s +38°11'52"  Aur 20.00   C    L   Lum        709.8  1944.6  166°39'04" +31°57'04"   011.9610 W  50.6318 N   1048.5 (W)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/27 12:14:31.0   086°28'04"  09°43'21"  03h36m50s +09°37'15"  Tau 20.00   C    L   Lum          707.2    2199.3  165°45'07" +31°49'40"   005.8435 E  42.4948 N    757.2 (SSE)
+2023/02/27 12:16:10.3   066°37'21"  13°18'45"  04h29m09s +25°18'23"  Tau  1.64   C    L   Lum 187.6    708.6    1956.7  166°13'38" +31°53'38"   001.5079 W  47.6044 N    318.3 (SW)
+2023/02/27 12:17:38.6   046°17'11"  13°32'27"  05h41m35s +38°11'52"  Aur 20.00   C    L   Lum          709.8    1944.6  166°39'04" +31°57'04"   011.9610 W  50.6318 N   1048.5 (W)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/27 14:48:17.8   104°00'48"  18°26'53"  04h56m16s +04°59'59"  Ori 20.00   C    L   Lum        770.1  1791.1  209°49'17" +28°24'00"   012.2550 E  44.9990 N    866.7 (ESE)
-2023/02/27 14:49:24.9   088°33'20"  23°54'30"  05h26m20s +18°41'02"  Tau 12.30   C    L   Lum 122.4  771.0  1553.4  210°07'04" +28°18'31"   009.4813 E  49.3154 N    523.4 (ENE)
-2023/02/27 14:50:20.2   071°42'14"  26°50'55"  06h05m02s +31°37'37"  Aur 20.00   C    L   Lum        771.8  1449.5  210°21'42" +28°13'57"   006.7022 E  52.8377 N    538.7 (NNE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/27 14:48:17.8   104°00'48"  18°26'53"  04h56m16s +04°59'59"  Ori 20.00   C    L   Lum          770.1    1791.1  209°49'17" +28°24'00"   012.2550 E  44.9990 N    866.7 (ESE)
+2023/02/27 14:49:24.9   088°33'20"  23°54'30"  05h26m20s +18°41'02"  Tau 12.30   C    L   Lum 122.4    771.0    1553.4  210°07'04" +28°18'31"   009.4813 E  49.3154 N    523.4 (ENE)
+2023/02/27 14:50:20.2   071°42'14"  26°50'55"  06h05m02s +31°37'37"  Aur 20.00   C    L   Lum          771.8    1449.5  210°21'42" +28°13'57"   006.7022 E  52.8377 N    538.7 (NNE)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/28 12:58:07.0   076°37'18"  27°39'44"  03h59m55s +28°58'33"  Tau 20.00   C    L   Lum        708.0  1318.0  178°30'37" +33°12'06"
-2023/02/28 12:58:42.1   063°25'26"  28°28'26"  04h35m11s +38°09'15"  Per 16.48   C    L   Lum  70.3  708.5  1294.6  178°41'00" +33°12'15"
-2023/02/28 12:59:17.3   050°14'02"  27°38'14"  05h21m21s +46°14'02"  Aur 20.00   C    L   Lum        709.0  1320.3  178°51'25" +33°12'23"
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/28 12:58:07.0   076°37'18"  27°39'44"  03h59m55s +28°58'33"  Tau 20.00   C    L   Lum          708.0    1318.0  178°30'37" +33°12'06"
+2023/02/28 12:58:42.1   063°25'26"  28°28'26"  04h35m11s +38°09'15"  Per 16.48   C    L   Lum  70.3    708.5    1294.6  178°41'00" +33°12'15"
+2023/02/28 12:59:17.3   050°14'02"  27°38'14"  05h21m21s +46°14'02"  Aur 20.00   C    L   Lum          709.0    1320.3  178°51'25" +33°12'23"
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/02/28 14:11:10.3   090°41'52"  09°19'30"  05h26m14s +06°33'08"  Ori 20.00   C    L   Lum        770.4  2364.7  199°48'47" +31°18'10"   017.5707 E  44.8164 N   1242.3 (E)
-2023/02/28 14:12:44.5   074°00'25"  13°25'59"  06h06m32s +20°33'53"  Ori  9.83   C    L   Lum 174.4  771.7  2078.1  200°15'20" +31°12'53"   012.9226 E  50.6377 N    786.7 (ENE)
-2023/02/28 14:14:04.7   056°35'40"  15°00'02"  06h59m36s +33°00'45"  Gem 20.00   C    L   Lum        772.8  1983.9  200°37'56" +31°08'18"   007.6049 E  55.4011 N    812.1 (NNE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/02/28 14:11:10.3   090°41'52"  09°19'30"  05h26m14s +06°33'08"  Ori 20.00   C    L   Lum          770.4    2364.7  199°48'47" +31°18'10"   017.5707 E  44.8164 N   1242.3 (E)
+2023/02/28 14:12:44.5   074°00'25"  13°25'59"  06h06m32s +20°33'53"  Ori  9.83   C    L   Lum 174.4    771.7    2078.1  200°15'20" +31°12'53"   012.9226 E  50.6377 N    786.7 (ENE)
+2023/02/28 14:14:04.7   056°35'40"  15°00'02"  06h59m36s +33°00'45"  Gem 20.00   C    L   Lum          772.8    1983.9  200°37'56" +31°08'18"   007.6049 E  55.4011 N    812.1 (NNE)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/01 13:34:23.1   079°14'39"  03°28'10"  05h43m25s +09°40'47"  Ori 20.00   C    L   Lum        771.0  2889.9  189°18'54" +33°10'52"   019.4998 E  44.6410 N   1388.1 (E)
-2023/03/01 13:36:30.4   060°23'17"  06°56'54"  06h36m23s +24°26'46"  Gem  3.79   C    L   Lum 239.5  772.8  2564.7  189°56'20" +33°07'24"   011.2486 E  51.7738 N    711.7 (NE)
-2023/03/01 13:38:22.7   041°05'09"  07°31'09"  07h48m46s +36°10'21"  Lyn 20.00   C    L   Lum        774.2  2518.5  190°29'19" +33°04'09"   000.0711 E  56.9736 N    916.4 (NNW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/01 13:34:23.1   079°14'39"  03°28'10"  05h43m25s +09°40'47"  Ori 20.00   C    L   Lum          771.0    2889.9  189°18'54" +33°10'52"   019.4998 E  44.6410 N   1388.1 (E)
+2023/03/01 13:36:30.4   060°23'17"  06°56'54"  06h36m23s +24°26'46"  Gem  3.79   C    L   Lum 239.5    772.8    2564.7  189°56'20" +33°07'24"   011.2486 E  51.7738 N    711.7 (NE)
+2023/03/01 13:38:22.7   041°05'09"  07°31'09"  07h48m46s +36°10'21"  Lyn 20.00   C    L   Lum          774.2    2518.5  190°29'19" +33°04'09"   000.0711 E  56.9736 N    916.4 (NNW)
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/01 15:14:35.6   094°49'56"  38°01'04"  05h00m04s +24°50'34"  Tau 20.00   C    L   Lum        771.0  1157.6  217°04'02" +26°41'43"   006.2352 W  44.4320 N    819.8 (SW)
-2023/03/01 15:15:08.2   079°34'22"  41°10'40"  05h24m47s +35°49'59"  Aur 16.10   C    L   Lum  63.3  771.5  1099.2  217°12'18" +26°38'29"   008.0449 W  46.3218 N    830.1 (WSW)
-2023/03/01 15:15:38.9   063°19'29"  41°52'17"  05h58m38s +46°16'05"  Aur 20.00   C    L   Lum        771.9  1087.9  217°20'06" +26°35'26"   009.9411 W  48.0588 N    912.3 (WSW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/01 15:14:35.6   094°49'56"  38°01'04"  05h00m04s +24°50'34"  Tau 20.00   C    L   Lum          771.0    1157.6  217°04'02" +26°41'43"   006.2352 W  44.4320 N    819.8 (SW)
+2023/03/01 15:15:08.2   079°34'22"  41°10'40"  05h24m47s +35°49'59"  Aur 16.10   C    L   Lum  63.3    771.5    1099.2  217°12'18" +26°38'29"   008.0449 W  46.3218 N    830.1 (WSW)
+2023/03/01 15:15:38.9   063°19'29"  41°52'17"  05h58m38s +46°16'05"  Aur 20.00   C    L   Lum          771.9    1087.9  217°20'06" +26°35'26"   009.9411 W  48.0588 N    912.3 (WSW)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/02 04:48:58.4   324°40'51"  13°11'46"  06h03m03s +43°59'46"  Aur 20.00   C    L   Omb        710.9  1968.2  068°22'48" -27°07'33"
-2023/03/02 04:50:16.2   306°48'58"  14°57'22"  07h22m28s +35°07'10"  Gem 10.27   C    L   Omb 153.4  710.0  1860.9  068°39'48" -26°55'38"
-2023/03/02 04:51:31.9   288°50'25"  14°02'03"  08h20m40s +22°52'37"  Cnc 20.00   C    L   Omb        709.0  1913.3  068°56'19" -26°44'00"
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/02 04:48:58.4   324°40'51"  13°11'46"  06h03m03s +43°59'46"  Aur 20.00   C    L   Omb          710.9    1968.2  068°22'48" -27°07'33"
+2023/03/02 04:50:16.2   306°48'58"  14°57'22"  07h22m28s +35°07'10"  Gem 10.27   C    L   Omb 153.4    710.0    1860.9  068°39'48" -26°55'38"
+2023/03/02 04:51:31.9   288°50'25"  14°02'03"  08h20m40s +22°52'37"  Cnc 20.00   C    L   Omb          709.0    1913.3  068°56'19" -26°44'00"
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/02 14:37:30.4   081°27'22"  20°23'17"  05h56m42s +20°43'49"  Ori 20.00   C    L   Lum        771.4  1701.2  207°28'55" +30°16'48"
-2023/03/02 14:38:36.6   063°12'58"  22°29'33"  06h45m30s +34°11'47"  Gem 10.79   C    L   Lum 130.8  772.3  1611.9  207°47'01" +30°11'46"
-2023/03/02 14:39:41.2   044°48'30"  21°29'50"  07h54m44s +45°15'33"  Lyn 20.00   C    L   Lum        773.2  1655.2  208°04'38" +30°06'49"
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/02 14:37:30.4   081°27'22"  20°23'17"  05h56m42s +20°43'49"  Ori 20.00   C    L   Lum          771.4    1701.2  207°28'55" +30°16'48"
+2023/03/02 14:38:36.6   063°12'58"  22°29'33"  06h45m30s +34°11'47"  Gem 10.79   C    L   Lum 130.8    772.3    1611.9  207°47'01" +30°11'46"
+2023/03/02 14:39:41.2   044°48'30"  21°29'50"  07h54m44s +45°15'33"  Lyn 20.00   C    L   Lum          773.2    1655.2  208°04'38" +30°06'49"
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/02 17:54:55.5   252°16'10"  05°51'40"  22h54m28s -07°01'58"  Aqr  0.27   T    S   Lum        769.0  2652.7  252°29'38" +05°42'50"   003.3934 E  48.9682 N     77.6 (ENE)
-2023/03/02 17:54:56.7   252°27'24"  05°53'48"  22h54m00s -06°53'15"  Aqr  0.19   T    S   Lum   2.5  769.0  2649.5  252°29'52" +05°42'38"   003.6473 E  49.0971 N     98.9 (ENE)
-2023/03/02 17:54:58.0   252°38'36"  05°55'56"  22h53m31s -06°44'34"  Aqr  0.27   T    S   Lum        769.0  2646.4  252°30'07" +05°42'27"   003.9144 E  49.2274 N    121.8 (ENE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/02 17:54:55.5   252°16'10"  05°51'40"  22h54m28s -07°01'58"  Aqr  0.27   T    S   Lum          769.0    2652.7  252°29'38" +05°42'50"   003.3934 E  48.9682 N     77.6 (ENE)
+2023/03/02 17:54:56.7   252°27'24"  05°53'48"  22h54m00s -06°53'15"  Aqr  0.19   T    S   Lum   2.5    769.0    2649.5  252°29'52" +05°42'38"   003.6473 E  49.0971 N     98.9 (ENE)
+2023/03/02 17:54:58.0   252°38'36"  05°55'56"  22h53m31s -06°44'34"  Aqr  0.27   T    S   Lum          769.0    2646.4  252°30'07" +05°42'27"   003.9144 E  49.2274 N    121.8 (ENE)
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/03 04:34:05.1   274°47'44"  07°29'14"  08h31m32s +08°46'53"  Cnc 20.00   C    L   Omb        428.0  1695.2  064°50'30" -29°02'36"   005.8489 W  45.5623 N    720.2 (SW)
-2023/03/03 04:35:48.6   283°56'20"  20°35'57"  08h43m24s +24°24'45"  Cnc 13.06   C    L   Omb 153.5  428.7  1026.9  065°13'57" -28°47'08"
-2023/03/03 04:36:38.6   295°29'09"  32°22'49"  08h52m17s +39°58'09"  Lyn 20.00   C    L   Omb        429.0   747.0  065°25'14" -28°39'39"
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/03 04:34:05.1   274°47'44"  07°29'14"  08h31m32s +08°46'53"  Cnc 20.00   C    L   Omb          428.0    1695.2  064°50'30" -29°02'36"   005.8489 W  45.5623 N    720.2 (SW)
+2023/03/03 04:35:48.6   283°56'20"  20°35'57"  08h43m24s +24°24'45"  Cnc 13.06   C    L   Omb 153.5    428.7    1026.9  065°13'57" -28°47'08"
+2023/03/03 04:36:38.6   295°29'09"  32°22'49"  08h52m17s +39°58'09"  Lyn 20.00   C    L   Omb          429.0     747.0  065°25'14" -28°39'39"
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/03 05:30:51.9   323°59'02"  06°05'47"  06h33m04s +37°31'48"  Aur 20.00   C    L   Pen        711.5  2504.3  076°56'55" -20°12'53"
-2023/03/03 05:32:44.6   304°09'56"  06°16'40"  07h53m07s +26°43'15"  Cnc  1.61   C    L   Omb 235.6  710.1  2485.9  077°19'37" -19°54'47"
-2023/03/03 05:34:47.5   284°35'11"  03°30'37"  08h51m56s +12°12'37"  Cnc 20.00   C    L   Omb        708.6  2746.0  077°44'18" -19°35'01"
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/03 05:30:51.9   323°59'02"  06°05'47"  06h33m04s +37°31'48"  Aur 20.00   C    L   Pen          711.5    2504.3  076°56'55" -20°12'53"
+2023/03/03 05:32:44.6   304°09'56"  06°16'40"  07h53m07s +26°43'15"  Cnc  1.61   C    L   Omb 235.6    710.1    2485.9  077°19'37" -19°54'47"
+2023/03/03 05:34:47.5   284°35'11"  03°30'37"  08h51m56s +12°12'37"  Cnc 20.00   C    L   Omb          708.6    2746.0  077°44'18" -19°35'01"
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/04 03:49:43.8   268°30'12"  07°06'21"  08h08m50s +04°21'52"  Hya 20.00   C    L   Omb        428.1  1724.8  053°57'23" -34°59'11"   011.9201 W  46.8321 N   1089.7 (WSW)
-2023/03/04 03:51:47.6   278°48'59"  24°06'01"  08h28m43s +23°32'59"  Cnc  1.58   C    L   Omb 176.2  429.0   923.7  054°28'59" -34°42'38"   001.9459 E  49.0810 N     38.9 (WNW)
-2023/03/04 03:52:40.0   293°32'09"  39°35'33"  08h48m02s +43°01'52"  Lyn 20.00   C    L   Omb        429.3   645.4  054°42'17" -34°35'36"   008.7689 E  49.3734 N    472.1 (ENE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/04 03:49:43.8   268°30'12"  07°06'21"  08h08m50s +04°21'52"  Hya 20.00   C    L   Omb          428.1    1724.8  053°57'23" -34°59'11"   011.9201 W  46.8321 N   1089.7 (WSW)
+2023/03/04 03:51:47.6   278°48'59"  24°06'01"  08h28m43s +23°32'59"  Cnc  1.58   C    L   Omb 176.2    429.0     923.7  054°28'59" -34°42'38"   001.9459 E  49.0810 N     38.9 (WNW)
+2023/03/04 03:52:40.0   293°32'09"  39°35'33"  08h48m02s +43°01'52"  Lyn 20.00   C    L   Omb          429.3     645.4  054°42'17" -34°35'36"   008.7689 E  49.3734 N    472.1 (ENE)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/04 04:38:14.5   285°23'48"  17°45'09"  08h36m47s +23°19'38"  Cnc  0.25   T    L   Omb        708.9  1709.0  065°33'52" -28°05'01"   002.5497 E  48.8747 N     14.9 (ENE)
-2023/03/04 04:38:15.4   285°10'00"  17°43'13"  08h37m24s +23°09'09"  Cnc  0.11   T    L   Omb   1.8  708.9  1710.6  065°34'04" -28°04'53"   002.4864 E  48.8243 N     10.6 (E)
-2023/03/04 04:38:16.3   284°56'21"  17°41'17"  08h38m00s +22°58'46"  Cnc  0.25   T    L   Omb        708.9  1712.2  065°34'16" -28°04'45"   002.4238 E  48.7742 N     10.4 (SE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/04 04:38:14.5   285°23'48"  17°45'09"  08h36m47s +23°19'38"  Cnc  0.25   T    L   Omb          708.9    1709.0  065°33'52" -28°05'01"   002.5497 E  48.8747 N     14.9 (ENE)
+2023/03/04 04:38:15.4   285°10'00"  17°43'13"  08h37m24s +23°09'09"  Cnc  0.11   T    L   Omb   1.8    708.9    1710.6  065°34'04" -28°04'53"   002.4864 E  48.8243 N     10.6 (E)
+2023/03/04 04:38:16.3   284°56'21"  17°41'17"  08h38m00s +22°58'46"  Cnc  0.25   T    L   Omb          708.9    1712.2  065°34'16" -28°04'45"   002.4238 E  48.7742 N     10.4 (SE)
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/04 05:23:17.5   283°03'46" -06°51'20"  08h21m59s +03°18'42"  Hya 20.00   C    L   Omb        428.4  3260.7  075°11'23" -21°05'53"   033.0286 W  47.5589 N   2609.7 (W)
-2023/03/04 05:27:46.6   290°23'02"  11°31'55"  08h52m48s +22°01'49"  Cnc  3.35   C    L   Omb 366.4  430.0  1431.2  076°06'10" -20°22'56"   004.8111 E  47.3577 N    247.5 (ESE)
-2023/03/04 05:29:23.9   301°15'23"  28°31'30"  09h16m40s +41°16'01"  Lyn 20.00   C    L   Omb        430.4   821.7  076°25'52" -20°07'22"
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/04 05:23:17.5   283°03'46" -06°51'20"  08h21m59s +03°18'42"  Hya 20.00   C    L   Omb          428.4    3260.7  075°11'23" -21°05'53"   033.0286 W  47.5589 N   2609.7 (W)
+2023/03/04 05:27:46.6   290°23'02"  11°31'55"  08h52m48s +22°01'49"  Cnc  3.35   C    L   Omb 366.4    430.0    1431.2  076°06'10" -20°22'56"   004.8111 E  47.3577 N    247.5 (ESE)
+2023/03/04 05:29:23.9   301°15'23"  28°31'30"  09h16m40s +41°16'01"  Lyn 20.00   C    L   Omb          430.4     821.7  076°25'52" -20°07'22"
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/05 03:07:16.2   266°12'41"  18°37'18"  08h07m50s +11°29'36"  Cnc 20.00   C    L   Omb        429.1  1096.8  042°12'32" -39°49'59"   005.2530 W  48.9500 N    557.2 (W)
-2023/03/05 03:08:11.3   273°01'53"  31°32'37"  08h28m00s +25°03'43"  Cnc 13.77   C    L   Omb  87.1  429.4   762.1  042°28'28" -39°43'52"   000.5732 E  50.1765 N    195.4 (NW)
-2023/03/05 03:08:43.3   282°27'39"  43°57'18"  08h51m36s +38°40'24"  Lyn 20.00   C    L   Omb        429.6   599.4  042°37'43" -39°40'18"   004.1634 E  50.7491 N    248.0 (NNE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/05 03:07:16.2   266°12'41"  18°37'18"  08h07m50s +11°29'36"  Cnc 20.00   C    L   Omb          429.1    1096.8  042°12'32" -39°49'59"   005.2530 W  48.9500 N    557.2 (W)
+2023/03/05 03:08:11.3   273°01'53"  31°32'37"  08h28m00s +25°03'43"  Cnc 13.77   C    L   Omb  87.1    429.4     762.1  042°28'28" -39°43'52"   000.5732 E  50.1765 N    195.4 (NW)
+2023/03/05 03:08:43.3   282°27'39"  43°57'18"  08h51m36s +38°40'24"  Lyn 20.00   C    L   Omb          429.6     599.4  042°37'43" -39°40'18"   004.1634 E  50.7491 N    248.0 (NNE)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/05 03:42:31.3   273°58'20"  50°05'49"  10h07m47s +37°21'59"  LMi 20.00   C    L   Omb        708.5   893.5  051°54'05" -35°34'44"   010.6906 E  49.9367 N    617.1 (ENE)
-2023/03/05 03:42:59.3   256°08'30"  45°30'24"  10h27m36s +25°15'32"  Leo 15.62   C    L   Omb  60.9  708.2   949.2  052°01'23" -35°31'05"   009.0265 E  48.1996 N    498.4 (E)
-2023/03/05 03:43:32.1   241°50'20"  38°25'17"  10h42m46s +12°59'00"  Leo 20.00   C    L   Omb        707.7  1060.7  052°09'56" -35°26'49"   007.2739 E  46.1393 N    478.1 (ESE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/05 03:42:31.3   273°58'20"  50°05'49"  10h07m47s +37°21'59"  LMi 20.00   C    L   Omb          708.5     893.5  051°54'05" -35°34'44"   010.6906 E  49.9367 N    617.1 (ENE)
+2023/03/05 03:42:59.3   256°08'30"  45°30'24"  10h27m36s +25°15'32"  Leo 15.62   C    L   Omb  60.9    708.2     949.2  052°01'23" -35°31'05"   009.0265 E  48.1996 N    498.4 (E)
+2023/03/05 03:43:32.1   241°50'20"  38°25'17"  10h42m46s +12°59'00"  Leo 20.00   C    L   Omb          707.7    1060.7  052°09'56" -35°26'49"   007.2739 E  46.1393 N    478.1 (ESE)
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/05 04:42:19.8   284°00'11"  03°45'22"  08h09m40s +12°01'02"  Cnc 20.00   C    L   Omb        429.8  2019.7  066°15'47" -27°07'45"   016.3585 W  51.2534 N   1362.1 (W)
-2023/03/05 04:44:06.0   289°52'31"  13°43'51"  08h20m56s +23°19'52"  Cnc 15.64   C    L   Omb 165.6  430.4  1312.5  066°39'18" -26°51'43"   002.9127 W  51.9084 N    505.3 (WNW)
-2023/03/05 04:45:05.4   297°16'48"  23°29'33"  08h29m49s +35°13'24"  Lyn 20.00   C    L   Omb        430.6   943.4  066°52'25" -26°42'43"   005.5284 E  51.4871 N    370.6 (NNE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/05 04:42:19.8   284°00'11"  03°45'22"  08h09m40s +12°01'02"  Cnc 20.00   C    L   Omb          429.8    2019.7  066°15'47" -27°07'45"   016.3585 W  51.2534 N   1362.1 (W)
+2023/03/05 04:44:06.0   289°52'31"  13°43'51"  08h20m56s +23°19'52"  Cnc 15.64   C    L   Omb 165.6    430.4    1312.5  066°39'18" -26°51'43"   002.9127 W  51.9084 N    505.3 (WNW)
+2023/03/05 04:45:05.4   297°16'48"  23°29'33"  08h29m49s +35°13'24"  Lyn 20.00   C    L   Omb          430.6     943.4  066°52'25" -26°42'43"   005.5284 E  51.4871 N    370.6 (NNE)
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/05 05:19:35.9   300°45'38"  08°28'44"  08h05m46s +26°21'06"  Cnc 20.00   C    L   Omb        709.9  2300.7  074°12'49" -21°21'14"   005.9795 W  56.4210 N   1011.9 (NW)
-2023/03/05 05:21:12.4   283°51'35"  06°07'55"  08h55m29s +13°43'07"  Cnc  9.62   C    L   Omb 217.0  708.7  2495.8  074°32'38" -21°05'55"   013.6384 W  50.6709 N   1167.1 (W)
-2023/03/05 05:23:12.8   267°43'18"  01°35'57"  09h34m21s -00°17'38"  Hya 20.00   C    L   Omb        707.1  2950.4  074°57'17" -20°46'47"   019.9784 W  43.0871 N   1837.1 (WSW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/05 05:19:35.9   300°45'38"  08°28'44"  08h05m46s +26°21'06"  Cnc 20.00   C    L   Omb          709.9    2300.7  074°12'49" -21°21'14"   005.9795 W  56.4210 N   1011.9 (NW)
+2023/03/05 05:21:12.4   283°51'35"  06°07'55"  08h55m29s +13°43'07"  Cnc  9.62   C    L   Omb 217.0    708.7    2495.8  074°32'38" -21°05'55"   013.6384 W  50.6709 N   1167.1 (W)
+2023/03/05 05:23:12.8   267°43'18"  01°35'57"  09h34m21s -00°17'38"  Hya 20.00   C    L   Omb          707.1    2950.4  074°57'17" -20°46'47"   019.9784 W  43.0871 N   1837.1 (WSW)
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/05 06:14:11.5   291°40'47" -12°46'54"  08h35m35s +04°02'24"  Hya 20.00   C    L   Omb        429.4  4183.4  084°59'52" -12°31'10"   048.7820 W  49.9942 N   3638.4 (W)
-2023/03/05 06:19:53.6   289°10'46"  05°41'50"  09h36m33s +16°50'57"  Leo  2.96   C    L   Omb 479.0  431.0  1847.0  086°05'09" -11°35'00"   000.6194 W  48.7163 N    218.6 (WSW)
-2023/03/05 06:22:10.5   282°30'13"  23°36'51"  10h51m30s +25°36'19"  LMi 20.00   C    L   Lum        431.2   941.2  086°31'12" -11°12'29"
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/05 06:14:11.5   291°40'47" -12°46'54"  08h35m35s +04°02'24"  Hya 20.00   C    L   Omb          429.4    4183.4  084°59'52" -12°31'10"   048.7820 W  49.9942 N   3638.4 (W)
+2023/03/05 06:19:53.6   289°10'46"  05°41'50"  09h36m33s +16°50'57"  Leo  2.96   C    L   Omb 479.0    431.0    1847.0  086°05'09" -11°35'00"   000.6194 W  48.7163 N    218.6 (WSW)
+2023/03/05 06:22:10.5   282°30'13"  23°36'51"  10h51m30s +25°36'19"  LMi 20.00   C    L   Lum          431.2     941.2  086°31'12" -11°12'29"
 
 ENVISAT
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/05 06:25:28.7   300°53'05"  24°03'37"  10h01m02s +37°58'56"  LMi 20.00   C    L   Lum        773.6  1552.0  087°08'50" -10°39'53"
-2023/03/05 06:25:58.3   291°53'34"  23°49'02"  10h28m36s +31°54'24"  LMi 18.38   C    L   Lum  59.9  773.2  1560.7  087°14'26" -10°35'01"
-2023/03/05 06:26:28.6   283°01'29"  22°50'06"  10h51m52s +25°23'53"  Leo 20.00   C    L   Lum        772.8  1598.9  087°20'11" -10°30'02"
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/05 06:25:28.7   300°53'05"  24°03'37"  10h01m02s +37°58'56"  LMi 20.00   C    L   Lum          773.6    1552.0  087°08'50" -10°39'53"
+2023/03/05 06:25:58.3   291°53'34"  23°49'02"  10h28m36s +31°54'24"  LMi 18.38   C    L   Lum  59.9    773.2    1560.7  087°14'26" -10°35'01"
+2023/03/05 06:26:28.6   283°01'29"  22°50'06"  10h51m52s +25°23'53"  Leo 20.00   C    L   Lum          772.8    1598.9  087°20'11" -10°30'02"
 
 AQUA
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/06 04:24:55.0   281°40'14"  22°21'07"  08h56m18s +24°10'18"  Cnc 20.00   C    L   Omb        708.8  1504.1  062°06'23" -29°22'03"   001.8206 W  52.9525 N    542.0 (NW)
-2023/03/06 04:26:00.1   264°31'15"  18°12'15"  09h34m28s +10°06'42"  Leo 10.65   C    L   Omb 151.6  707.9  1684.9  062°21'26" -29°12'34"   005.5732 W  48.6895 N    582.3 (W)
-2023/03/06 04:27:26.6   249°01'21"  11°32'26"  10h04m52s -04°35'49"  Sex 20.00   C    L   Omb        706.8  2068.2  062°41'21" -28°59'55"   009.3844 W  42.9789 N   1118.2 (SW)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/06 04:24:55.0   281°40'14"  22°21'07"  08h56m18s +24°10'18"  Cnc 20.00   C    L   Omb          708.8    1504.1  062°06'23" -29°22'03"   001.8206 W  52.9525 N    542.0 (NW)
+2023/03/06 04:26:00.1   264°31'15"  18°12'15"  09h34m28s +10°06'42"  Leo 10.65   C    L   Omb 151.6    707.9    1684.9  062°21'26" -29°12'34"   005.5732 W  48.6895 N    582.3 (W)
+2023/03/06 04:27:26.6   249°01'21"  11°32'26"  10h04m52s -04°35'49"  Sex 20.00   C    L   Omb          706.8    2068.2  062°41'21" -28°59'55"   009.3844 W  42.9789 N   1118.2 (SW)
 
 ISS
-   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée    Alt    Dist  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
-2023/03/06 05:36:01.0   289°55'22"  04°55'27"  08h52m02s +16°44'22"  Cnc 20.00   C    L   Omb        431.3  1915.2  077°19'29" -18°23'59"   012.0504 W  53.4173 N   1125.7 (WNW)
-2023/03/06 05:37:59.2   289°23'41"  18°14'00"  09h33m57s +26°18'17"  Leo 14.77   C    L   Omb 174.8  431.6  1116.8  077°43'06" -18°04'58"   005.2369 E  51.2371 N    336.2 (NNE)
-2023/03/06 05:38:55.8   288°16'49"  31°45'19"  10h23m50s +34°52'35"  LMi 20.00   C    L   Omb        431.6   762.0  077°54'24" -17°55'51"   016.6233 E  48.7187 N   1047.5 (ENE)
+   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance
+2023/03/06 05:36:01.0   289°55'22"  04°55'27"  08h52m02s +16°44'22"  Cnc 20.00   C    L   Omb          431.3    1915.2  077°19'29" -18°23'59"   012.0504 W  53.4173 N   1125.7 (WNW)
+2023/03/06 05:37:59.2   289°23'41"  18°14'00"  09h33m57s +26°18'17"  Leo 14.77   C    L   Omb 174.8    431.6    1116.8  077°43'06" -18°04'58"   005.2369 E  51.2371 N    336.2 (NNE)
+2023/03/06 05:38:55.8   288°16'49"  31°45'19"  10h23m50s +34°52'35"  LMi 20.00   C    L   Omb          431.6     762.0  077°54'24" -17°55'51"   016.6233 E  48.7187 N   1047.5 (ENE)
 
