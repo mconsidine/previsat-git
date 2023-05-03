@@ -1063,7 +1063,7 @@ void Outils::on_importerTLE_clicked()
     try {
 
         // Ouverture d'un fichier TLE
-        const QString fichier = QFileDialog::getOpenFileName(this, tr("Importe TLE..."),
+        const QString fichier = QFileDialog::getOpenFileName(this, tr("Importer TLE..."),
                                                              QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
                                                              tr("Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)"));
 

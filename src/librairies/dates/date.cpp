@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 avril 2023
+ * >    3 mai 2023
  *
  */
 
@@ -46,6 +46,7 @@
 
 
 QList<QPair<double, double> > Date::_ecartsTAI_UTC;
+std::array<std::array<double, DATE::NB_PARAM_TAIUTC>, DATE::NB_LIGNES_TAIUTC> Date::_tabEcartsTAI_UTC;
 
 
 /**********
@@ -348,18 +349,21 @@ Date Date::ConversionDateNasa(const QString &dateFormatNasa)
 
         const int an = anneeNbJours.first().toInt();
         const int nbJours = anneeNbJours.at(1).toInt();
-        const QStringList heures = dateNasa.at(1).mid(0, dateNasa.at(1).length() - 1).split(":", Qt::SkipEmptyParts);
 
-        if (heures.size() != 3) {
+        QString heures = dateNasa.at(1);
+        heures.chop(1);
+        const QTime hrs = QTime::fromString(heures, Qt::ISODateWithMs);
+
+        if (!hrs.isValid()) {
 #if (BUILD_TEST == false)
             qWarning() << QString("Date au format NASA invalide (%1)").arg(dateFormatNasa);
 #endif
             throw PreviSatException(QObject::tr("Date au format NASA invalide"), MessageType::WARNING);
         }
 
-        const int hr = heures.first().toInt();
-        const int mn = heures.at(1).toInt();
-        const double sec = heures.at(2).toDouble();
+        const int hr = hrs.hour();
+        const int mn = hrs.minute();
+        const double sec = hrs.second() + hrs.msec() * 1.e-3;
         const double jours = nbJours + hr * DATE::NB_JOUR_PAR_HEUR + mn * DATE::NB_JOUR_PAR_MIN + sec * DATE::NB_JOUR_PAR_SEC;
 
         const Date date1(an, 1, 1., 0.);
@@ -396,14 +400,27 @@ void Date::Initialisation(const QString &dirLocalData)
 
             QTextStream flux(&fi);
 
+            unsigned int i = 0;
             _ecartsTAI_UTC.clear();
             while (!flux.atEnd()) {
 
                 const QString ligne = flux.readLine();
 
                 if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
-                    const QPair<double, double> pair(ligne.mid(0, 10).toDouble(), ligne.mid(11, 5).toDouble());
-                    _ecartsTAI_UTC.append(pair);
+
+                    if (i < DATE::NB_LIGNES_TAIUTC) {
+
+                        const QStringList params = ligne.split(" ", Qt::SkipEmptyParts);
+
+                        for(unsigned int j=0; j<DATE::NB_PARAM_TAIUTC; j++) {
+                            _tabEcartsTAI_UTC[i][j] = params.at(j).toDouble();
+                        }
+                    } else {
+                        const QPair<double, double> pair(ligne.mid(0, 10).toDouble(), ligne.mid(11, 5).toDouble());
+                        _ecartsTAI_UTC.append(pair);
+                    }
+
+                    i++;
                 }
             }
         }
@@ -662,65 +679,17 @@ void Date::getDeltaAT()
         }
 
         if (_jourJulienUTC < (_ecartsTAI_UTC.first().first - DATE::TJ2000)) {
-#if (COVERAGE_TEST == false)
+
             const double mjd = _jourJulienUTC + 51544.5;
+            for(auto &params : _tabEcartsTAI_UTC) {
 
-            if ((mjd >= 37300.) && (mjd < 37512.)) {
-                // Intervalle 01/01/1961 - 01/08/1961
-                _deltaAT = 1.422818 + (mjd - 37300.) * 0.001296;
+                const double mjd1 = params[0];
+                const double mjd2 = params[1];
 
-            } else if ((mjd >= 37512.) && (mjd < 37665.)) {
-                // Intervalle 01/08/1961 - 01/01/1962
-                _deltaAT = 1.372818 + (mjd - 37300.) * 0.001296;
-
-            } else if ((mjd >= 37665.) && (mjd < 38334.)) {
-                // Intervalle 01/01/1962 - 01/11/1963
-                _deltaAT = 1.845858 + (mjd - 37665.) * 0.0011232;
-
-            } else if ((mjd >= 38334.) && (mjd < 38395.)) {
-                // Intervalle 01/11/1963 - 01/01/1964
-                _deltaAT = 1.945858 + (mjd - 37665.) * 0.0011232;
-
-            } else if ((mjd >= 38395.) && (mjd < 38486.)) {
-                // Intervalle 01/01/1964 - 01/04/1964
-                _deltaAT = 3.240130 + (mjd - 38761.) * 0.001296;
-
-            } else if ((mjd >= 38486.) && (mjd < 38639.)) {
-                // Intervalle 01/04/1964 - 01/09/1964
-                _deltaAT = 3.340130 + (mjd - 38761.) * 0.001296;
-
-            } else if ((mjd >= 38639.) && (mjd < 38761.)) {
-                // Intervalle 01/09/1964 - 01/01/1965
-                _deltaAT = 3.440130 + (mjd - 38761.) * 0.001296;
-
-            } else if ((mjd >= 38761.) && (mjd < 38820.)) {
-                // Intervalle 01/01/1965 - 01/03/1965
-                _deltaAT = 3.540130 + (mjd - 38761.) * 0.001296;
-
-            } else if ((mjd >= 38820.) && (mjd < 38942.)) {
-                // Intervalle 01/03/1965 - 01/07/1965
-                _deltaAT = 3.640130 + (mjd - 38761.) * 0.001296;
-
-            } else if ((mjd >= 38942.) && (mjd < 39004.)) {
-                // Intervalle 01/07/1965 - 01/09/1965
-                _deltaAT = 3.740130 + (mjd - 38761.) * 0.001296;
-
-            } else if ((mjd >= 39004.) && (mjd < 39126.)) {
-                // Intervalle 01/09/1965 - 01/01/1966
-                _deltaAT = 3.840130 + (mjd - 38761.) * 0.001296;
-
-            } else if ((mjd >= 39126.) && (mjd < 39887.)) {
-                // Intervalle 01/01/1966 - 01/02/1968
-                _deltaAT = 4.313170 + (mjd - 39126.) * 0.002592;
-
-            } else if ((mjd >= 39887.) && (mjd < 41317.)) {
-                // Intervalle 01/02/1968 - 01/01/1972
-                _deltaAT = 4.213170 + (mjd - 39126.) * 0.002592;
-
-            } else {
-                _deltaAT = 0.;
+                if ((mjd >= mjd1) && (mjd < mjd2)) {
+                    _deltaAT = params[2] + (mjd - params[3]) * params[4];
+                }
             }
-#endif
         } else {
 
             // Dates ulterieures au 1er janvier 1972

@@ -73,6 +73,9 @@ void Telechargement::TelechargementFichier(const QUrl &url, const bool alarme, c
     QNetworkAccessManager manager;
 
     /* Initialisations */
+#if (BUILD_TEST == true)
+    Q_UNUSED(logAlarme)
+#endif
     QNetworkReply *reponse = manager.get(QNetworkRequest(url));
     _tempsEcoule.restart();
 

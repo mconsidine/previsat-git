@@ -161,7 +161,7 @@
         <location filename="../src/interface/afficherresultats.cpp" line="147"/>
         <source>Date du maximum</source>
         <comment>Date and hour</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">最適日時</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="148"/>
@@ -573,7 +573,7 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
     <message>
         <location filename="../src/interface/onglets/telescope/ajustementdates.ui" line="29"/>
         <source>Ajuster les dates...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">日時を調整する...</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/ajustementdates.ui" line="93"/>
@@ -607,17 +607,17 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="35"/>
         <source>Adresse IP :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">IP アドレス :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="52"/>
         <source>Port :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ポート :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="84"/>
         <source>Données transmises</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">送信されたデータ</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="117"/>
@@ -643,40 +643,40 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="238"/>
         <source>Fréquence montante :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">アップリンク :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="248"/>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="395"/>
         <source>Fréquence réelle :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">実際の周波数 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="265"/>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="412"/>
         <source>Doppler :</source>
         <extracomment>Doppler effect</extracomment>
-        <translation type="unfinished">Doppler :</translation>
+        <translation type="unfinished">ドップラー :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="282"/>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="463"/>
         <source>Balise :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ビーコン :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="299"/>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="480"/>
         <source>Mode :</source>
         <extracomment>Beacon mode</extracomment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">モード :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="316"/>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="497"/>
         <source>Signal d&apos;appel :</source>
         <extracomment>Callsign</extracomment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">コールサイン :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="333"/>
@@ -694,13 +694,13 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="385"/>
         <source>Fréquence descendante :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ダウンリンク :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="524"/>
         <location filename="../src/interface/onglets/antenne/antenne.cpp" line="449"/>
         <source>Connecter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">接続する</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="546"/>
@@ -761,12 +761,12 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.cpp" line="397"/>
         <source>Déconnecter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">切断する</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.cpp" line="435"/>
         <source>Connexion en cours...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">接続中です...</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.cpp" line="484"/>
@@ -1501,7 +1501,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="343"/>
         <source>Les éléments orbitaux de l&apos;ISS sont vieux, il est conseillé de les mettre à jour</source>
-        <translation type="unfinished">ISSの軌道要素は古いので更新を考えてください。</translation>
+        <translation type="unfinished">ISSの軌道要素は古くなっているため更新することをお勧めします</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="381"/>
@@ -1849,19 +1849,19 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/general/general.ui" line="1328"/>
         <source>Lever :</source>
         <comment>Sun</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">日の出 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1341"/>
         <source>Méridien :</source>
         <comment>Sun</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">子午線 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1354"/>
         <source>Coucher :</source>
         <comment>Sun</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">日の入り :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1193"/>
@@ -1872,7 +1872,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/general/general.ui" line="575"/>
         <source>Diam. apparent :</source>
         <extracomment>Angular diameter</extracomment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">見かけの直径 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="997"/>
@@ -1889,7 +1889,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/general/general.ui" line="1016"/>
         <source>Diam. app. :</source>
         <extracomment>Angular diameter</extracomment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">見かけの直径 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1222"/>
@@ -1911,19 +1911,19 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/general/general.ui" line="1462"/>
         <source>Lever :</source>
         <comment>Moon</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">月の出 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1475"/>
         <source>Méridien :</source>
         <comment>Moon</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">子午線 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1488"/>
         <source>Coucher :</source>
         <comment>Moon</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">月の入り  :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1558"/>
@@ -2301,11 +2301,6 @@ PreviSatは、完全無料です!</translation>
         <translation>衛星名 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="831"/>
-        <source>Vitesse orbitale   : %1	%2  %3</source>
-        <translation type="unfinished">軌道速度   : %1	%2	%3</translation>
-    </message>
-    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="819"/>
         <source>Latitude  :  %1		Azimut (N) : %2	Déclinaison      : %3</source>
         <translation>緯度  :  %1		方位角 (北) : %2	赤緯      : %3</translation>
@@ -2347,19 +2342,19 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/general/general.cpp" line="889"/>
         <source>Lever    : %1</source>
         <comment>Moonrise</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">月の出    : %1</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="890"/>
         <source>Méridien : %1</source>
         <comment>Meridian pass for the Moon</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">子午線 : %1</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="891"/>
         <source>Coucher  : %1</source>
         <comment>Moonset</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">月の入り  : %1</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="878"/>
@@ -2397,22 +2392,27 @@ PreviSatは、完全無料です!</translation>
         <translation type="unfinished">経度 : %1		仰角    : %2	赤経 :  %3</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="831"/>
+        <source>Vitesse orbitale   : %1	%2  %3</source>
+        <translation type="unfinished">軌道速度   : %1	%2	%3</translation>
+    </message>
+    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="867"/>
         <source>Lever    : %1				Aube astronomique : %2		Crépuscule civil         : %3</source>
         <comment>Sunrise</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">日の出    : %1			Aube astronomique : %2		市民薄明         : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="869"/>
         <source>Méridien : %1				Aube nautique     : %2		Crépuscule nautique      : %3</source>
         <comment>Meridian pass for the Sun</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">子午線 : %1			Aube nautique     : %2		航海薄明      : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="871"/>
         <source>Coucher  : %1				Aube civile       : %2		Crépuscule astronomique  : %3</source>
         <comment>Sunset</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">日の入り  : %1			Aube civile       : %2		天文薄明  : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="881"/>
@@ -2520,18 +2520,18 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/donnees/informationsiss.ui" line="157"/>
         <source>Surface de traînée :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">抗力面積 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationsiss.ui" line="183"/>
         <source>Coefficient de traînée :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">抗力係数 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationsiss.ui" line="206"/>
         <source>Fichier d&apos;informations ISS absent :
 cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
-        <translation>ISS事象ファイルがありません :
+        <translation>ISS情報ファイルがありません :
 「ISSの情報を更新する」をクリックしてください</translation>
     </message>
     <message>
@@ -2590,7 +2590,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="288"/>
         <source>Téléchargement du fichier d&apos;informations ISS...</source>
-        <translation type="unfinished">ISS事象ファイルのダウンロード...</translation>
+        <translation type="unfinished">ISS情報ファイルのダウンロード...</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="290"/>
@@ -2801,7 +2801,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="282"/>
         <source>Inclinaison             : %1			Anomalie moyenne      : %2</source>
-        <translation type="unfinished">軌道傾斜角             : %1		平均近点角      : %2</translation>
+        <translation type="unfinished">軌道傾斜角          : %1	平均近点角                    : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="286"/>
@@ -2837,7 +2837,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/logging/logging.ui" line="29"/>
         <source>Gestion des fichiers de log</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ログファイルマネージャー</translation>
     </message>
     <message>
         <location filename="../src/interface/logging/logging.ui" line="86"/>
@@ -2848,42 +2848,42 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <location filename="../src/interface/logging/logging.ui" line="91"/>
         <source>Niveau</source>
         <extracomment>Error level</extracomment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">レベル</translation>
     </message>
     <message>
         <location filename="../src/interface/logging/logging.ui" line="96"/>
         <source>Nombre de messages</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">メッセージ数</translation>
     </message>
     <message>
         <location filename="../src/interface/logging/logging.cpp" line="156"/>
         <source>FATAL</source>
-        <translation type="unfinished">FATAL</translation>
+        <translation type="unfinished">致命的なエラー</translation>
     </message>
     <message>
         <location filename="../src/interface/logging/logging.cpp" line="162"/>
         <source>ERREUR</source>
-        <translation type="unfinished">ERREUR</translation>
+        <translation type="unfinished">エラー</translation>
     </message>
     <message>
         <location filename="../src/interface/logging/logging.cpp" line="168"/>
         <source>WARNING</source>
-        <translation type="unfinished">WARNING</translation>
+        <translation type="unfinished">ワーニング</translation>
     </message>
     <message>
         <location filename="../src/interface/logging/logging.cpp" line="174"/>
         <source>DEBUG</source>
-        <translation type="unfinished">DEBUG</translation>
+        <translation type="unfinished">デバッグ</translation>
     </message>
     <message>
         <location filename="../src/interface/logging/logging.cpp" line="179"/>
         <source>INFO</source>
-        <translation type="unfinished">INFO</translation>
+        <translation type="unfinished">情報</translation>
     </message>
     <message>
         <location filename="../src/interface/logging/logging.cpp" line="214"/>
         <source>Exporter ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">エクスポートする...</translation>
     </message>
     <message>
         <location filename="../src/interface/logging/logging.cpp" line="274"/>
@@ -2906,7 +2906,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/onglets/onglets.ui" line="266"/>
         <source>Antenne</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">アンテナ</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/onglets.ui" line="56"/>
@@ -2980,7 +2980,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="61"/>
         <source>Gestion et sélection des lieux d&apos;observation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">観測地管理と選択</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="70"/>
@@ -2990,7 +2990,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="73"/>
         <source>Configuration de l&apos;interface graphique</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">GUIセットアップ</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="82"/>
@@ -3000,7 +3000,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="85"/>
         <source>Paramètres d&apos;affichage du Wall Command Center</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ウォールコマンドセンターの表示設定</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="162"/>
@@ -3188,7 +3188,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="1268"/>
         <source>Affichage des planètes</source>
-        <translation>惑星の表示</translation>
+        <translation>惑星を表示する</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="1302"/>
@@ -3269,7 +3269,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="1599"/>
         <source>Affichage des frontières</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">国境線を表示する</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="1615"/>
@@ -3355,7 +3355,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="1968"/>
         <source>Nombre de fichiers log :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ログファイル数 :</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="2014"/>
@@ -3565,7 +3565,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.cpp" line="526"/>
         <source>Modifier</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">編集する</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.cpp" line="593"/>
@@ -3987,19 +3987,19 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="212"/>
         <source>x : %1		vx : %2</source>
         <comment>Position, velocity</comment>
-        <translation>x : %1		vx : %2</translation>
+        <translation type="unfinished">x : %1	vx : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="215"/>
         <source>y : %1		vy : %2</source>
         <comment>Position, velocity</comment>
-        <translation>y : %1		vy : %2</translation>
+        <translation type="unfinished">y : %1	vy : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="218"/>
         <source>z : %1		vz : %2</source>
         <comment>Position, velocity</comment>
-        <translation>z : %1		vz : %2</translation>
+        <translation type="unfinished">z : %1	vz : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="221"/>
@@ -4142,7 +4142,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="164"/>
         <source>Liste des fichiers d&apos;éléments orbitaux :</source>
-        <translation type="unfinished">軌道要素ファイルのリスト</translation>
+        <translation type="unfinished">軌道要素ファイルのリスト :</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="180"/>
@@ -4188,7 +4188,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="413"/>
         <source>Cocher un groupe pour activer sa mise à jour</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">グループをチェックして、更新を有効にします</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="464"/>
@@ -4249,17 +4249,18 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="936"/>
         <source>Liste de fichiers TLE :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">TLEファイルのリスト :</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="949"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1066"/>
         <source>Importer TLE...</source>
         <translation type="unfinished">TLEをインポートする...</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="146"/>
         <source>Créer un groupe d&apos;éléments orbitaux</source>
-        <translation type="unfinished">軌道要素のグループを作成する</translation>
+        <translation type="unfinished">軌道要素グループを作成する</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="148"/>
@@ -4269,7 +4270,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="163"/>
         <source>Aucun fichier TLE dans le répertoire d&apos;éléments orbitaux</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">軌道要素フォルダにTLEファイルがありません</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="219"/>
@@ -4371,7 +4372,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="715"/>
         <source>La liste de fichiers est vide</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ファイルリストが空です</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="933"/>
@@ -4402,11 +4403,6 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>ファイル「%1」が存在しません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1066"/>
-        <source>Importe TLE...</source>
-        <translation type="unfinished">TLEをインポートています...</translation>
-    </message>
-    <message>
         <location filename="../src/interface/outils/outils.cpp" line="1085"/>
         <source>Le fichier %1 existe déjà</source>
         <translation type="unfinished">ファイル「%1」は既に存在します</translation>
@@ -4424,7 +4420,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="1134"/>
         <source>Voulez-vous vraiment supprimer les fichiers TLE sélectionnés ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">選択したTLEファイルを本当に削除しますか ?</translation>
     </message>
 </context>
 <context>
@@ -4655,12 +4651,12 @@ le flux vidéo</source>
     <message>
         <location filename="../src/interface/previsat.ui" line="1093"/>
         <source>Partenaires ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">パートナー ...</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1103"/>
         <source>Exporter fichier log ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ログファイルをエクスポートする...</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1108"/>
@@ -4787,7 +4783,8 @@ le flux vidéo</source>
         <location filename="../src/interface/previsat.cpp" line="1128"/>
         <source>Cette version comporte %1 lignes de code,
 ce qui représente environ %2 pages.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">このバージョンには%1行のコードがあり、
+これは約%2ページです。</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1858"/>
@@ -4850,12 +4847,12 @@ ce qui représente environ %2 pages.</source>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2180"/>
         <source>Mise à jour du groupe d&apos;éléments orbitaux &quot;%1&quot;...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">軌道要素グループ「%1」を更新しています...</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2215"/>
         <source>Mise à jour du groupe d&apos;éléments orbitaux &quot;%1&quot; terminée</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">軌道要素グループ「%1」の更新が完了しました</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2477"/>
@@ -4934,7 +4931,8 @@ ce qui représente environ %2 pages.</source>
         <location filename="../src/interface/previsat.cpp" line="1131"/>
         <source>Vous venez de mettre à jour %1.
 %2Souhaitez-vous faire un don pour soutenir son auteur ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1を更新しました。
+作者を支援したい場合は寄付をご検討ください</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1742"/>
@@ -5057,14 +5055,14 @@ ce qui représente environ %2 pages.</source>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1138"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1240"/>
         <location filename="../src/librairies/corps/corps.cpp" line="671"/>
-        <location filename="../src/librairies/dates/date.cpp" line="415"/>
+        <location filename="../src/librairies/dates/date.cpp" line="432"/>
         <source>Erreur lors de la lecture du fichier %1, veuillez réinstaller %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ファイルの読み込み中にエラーが発生しましたので、「%2」を再インストールしてください</translation>
     </message>
     <message>
         <location filename="../src/configuration/configuration.cpp" line="953"/>
         <source>Le répertoire %1 n&apos;existe pas, veuillez réinstaller %2</source>
-        <translation type="unfinished">フォルダ「%1」が存在しません</translation>
+        <translation type="unfinished">フォルダ「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
         <location filename="../src/configuration/configuration.cpp" line="1014"/>
@@ -5241,7 +5239,7 @@ Voulez-vous ajouter ce TLE dans le fichier à mettre à jour ?</source>
         <source>Le fichier de configuration de %1 a évolué.
 Souhaitez-vous tenter de récupérer les lieux d&apos;observation ?</source>
         <translation type="unfinished">設定ファイル「%1」の形式が変更されました。
-観測地を回復してみますか ?</translation>
+観測地の回復を試みますか ?</translation>
     </message>
     <message>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1330"/>
@@ -5337,6 +5335,7 @@ Satellite %1 - numéro NORAD : %2</source>
     </message>
     <message>
         <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="274"/>
+        <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="119"/>
         <source>Nouvelle Lune</source>
         <translation>ニュームーン</translation>
     </message>
@@ -5347,6 +5346,7 @@ Satellite %1 - numéro NORAD : %2</source>
     </message>
     <message>
         <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="278"/>
+        <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="108"/>
         <source>Dernier croissant</source>
         <translation>バルサミックムーン</translation>
     </message>
@@ -5363,6 +5363,7 @@ Satellite %1 - numéro NORAD : %2</source>
     </message>
     <message>
         <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="286"/>
+        <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="97"/>
         <source>Gibbeuse croissante</source>
         <translation>ギバウスムーン</translation>
     </message>
@@ -5373,50 +5374,51 @@ Satellite %1 - numéro NORAD : %2</source>
     </message>
     <message>
         <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="290"/>
+        <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="130"/>
         <source>Pleine Lune</source>
         <translation>フルムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="486"/>
+        <location filename="../src/librairies/dates/date.cpp" line="503"/>
         <source>dd/MM/yyyy</source>
         <comment>Date format</comment>
         <translation>yyyy年MM月dd日</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="281"/>
+        <location filename="../src/librairies/dates/date.cpp" line="282"/>
         <source>Date au format ISO vide</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ISO形式の日時が空です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="290"/>
+        <location filename="../src/librairies/dates/date.cpp" line="291"/>
         <source>Date au format ISO invalide</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ISO形式の日時が無効です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="328"/>
+        <location filename="../src/librairies/dates/date.cpp" line="329"/>
         <source>Date au format NASA vide</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">NASA形式の日時が空です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="337"/>
-        <location filename="../src/librairies/dates/date.cpp" line="346"/>
-        <location filename="../src/librairies/dates/date.cpp" line="357"/>
+        <location filename="../src/librairies/dates/date.cpp" line="338"/>
+        <location filename="../src/librairies/dates/date.cpp" line="347"/>
+        <location filename="../src/librairies/dates/date.cpp" line="361"/>
         <source>Date au format NASA invalide</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">NASA形式の日時が無効です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="392"/>
+        <location filename="../src/librairies/dates/date.cpp" line="396"/>
         <source>Le fichier taiutc.dat n&apos;existe pas</source>
         <translation>taiutc.datファイルが存在しません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="444"/>
+        <location filename="../src/librairies/dates/date.cpp" line="461"/>
         <source>dddd dd MMMM yyyy HH:mm:ss</source>
         <comment>Date format</comment>
         <translation>yyyy年MM月dd日 (dddd)  HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="661"/>
+        <location filename="../src/librairies/dates/date.cpp" line="678"/>
         <source>Ecarts TAI-UTC non initialisés</source>
         <translation>TAIとUTCの差が初期化されていません</translation>
     </message>
@@ -6038,7 +6040,7 @@ Satellite %1 - numéro NORAD : %2</source>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="570"/>
         <source>Ajuster les dates...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">日時を調整する...</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="584"/>
@@ -6146,27 +6148,27 @@ Satellite %1 - numéro NORAD : %2</source>
 <context>
     <name>Telechargement</name>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="95"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="98"/>
         <source>Erreur lors du téléchargement du fichier %1</source>
         <translation>ファイル「%1」のダウンロード中にエラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="119"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="122"/>
         <source>Impossible d&apos;écrire le fichier %1 dans le répertoire %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ファイル「%1」をディレクトリ「%2」に書き込めません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="171"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="174"/>
         <source>o/s</source>
         <translation>B/s</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="174"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="177"/>
         <source>ko/s</source>
         <translation>KB/s</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="177"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="180"/>
         <source>Mo/s</source>
         <translation>MB/s</translation>
     </message>
@@ -6211,7 +6213,7 @@ Satellite %1 - numéro NORAD : %2</source>
     <message>
         <location filename="../src/interface/options/telechargementoptions.cpp" line="283"/>
         <source>Veuillez redémarrer %1 pour prendre en compte la mise à jour</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">更新を完了するために「%1」の再起動が必要です</translation>
     </message>
 </context>
 <context>

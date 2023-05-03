@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    3 mai 2023
  *
  */
 
@@ -98,6 +98,8 @@ static constexpr double NB_ANJ_PAR_JOURS = 1. / NB_JOURS_PAR_ANJ;
 static constexpr double NB_SIECJ_PAR_JOURS = 1. / NB_JOURS_PAR_SIECJ;
 static constexpr double NB_MILLJ_PAR_JOURS = 1. / NB_JOURS_PAR_MILLJ;
 
+static constexpr unsigned int NB_LIGNES_TAIUTC = 13;
+static constexpr unsigned int NB_PARAM_TAIUTC = 5;
 }
 
 #endif // DATESCONST_H
