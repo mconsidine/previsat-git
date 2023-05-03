@@ -100,6 +100,8 @@ void MathsTest::testMaths()
     QCOMPARE(Maths::ToSexagesimal(-0.123456789, AngleFormatType::DEGRE, 2, 4, false, false), "-07°04'24.7907\"");
     QCOMPARE(Maths::ToSexagesimal(1.23456789, AngleFormatType::HEURE1, 2, 0, false, false), " 04h42m57s");
     QCOMPARE(Maths::ToSexagesimal(0.26179211559393, AngleFormatType::HEURE1, 2, 0, false, false), " 01h00m00s");
+    QCOMPARE(Maths::ToSexagesimal(12.3456789, AngleFormatType::NO_TYPE, -2, -1, true, true), "+12° 20' 44\"");
+    QCOMPARE(Maths::ToSexagesimal(1.23456789, AngleFormatType::HEURE1, 3, 0, false, false), " 04h42m57s");
 }
 
 void MathsTest::testMatrice3D()
