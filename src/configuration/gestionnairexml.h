@@ -202,6 +202,7 @@ private:
      * @brief VerifieVersionXml Verification du numero de version du fichier xml
      * @param[in/out] fi1 fichier xml du repertoire commun
      * @param[in/out] fi2 fichier xml du repertoire local
+     * @param[out] version numero de version du fichier xml
      * @param[in] msg message a afficher
      */
     static void VerifieVersionXml(QFile &fi1, QFile &fi2, QString &version, const QString &msg = QString());

@@ -91,6 +91,7 @@ public:
      * Methodes publiques
      */
 
+
 public slots:
 
     void mouseMoveEvent(QMouseEvent *evt);
@@ -102,7 +103,6 @@ public slots:
      * @brief show Affichage des courbes sur la carte du monde
      */
     void show();
-
 
     /**
      * @brief AffichageSiteLancement Affichage de l'info bulle du site de lancement

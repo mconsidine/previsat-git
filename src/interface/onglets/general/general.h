@@ -73,6 +73,8 @@ public:
      */
     /**
      * @brief General Constructeur par defaut
+     * @param[in] flashs onglet flashs
+     * @param[in] osculateurs onglet osculateurs
      * @param[in] parent parent
      */
     explicit General(CalculsFlashs *flashs, Osculateurs *osculateurs, QWidget *parent = nullptr);
@@ -98,6 +100,10 @@ public:
 
     /*
      * Methodes publiques
+     */
+    /**
+     * @brief show Affichage des informations de l'onglet
+     * @param[in] date date
      */
     void show(const Date &date);
 

@@ -95,6 +95,10 @@ public:
     /*
      * Methodes publiques
      */
+    /**
+     * @brief show Affichage des informations de l'onglet
+     * @param[in] date date
+     */
     void show(const Date &date);
 
 
@@ -145,7 +149,7 @@ private:
 
     /**
      * @brief AffichageVecteurEtat Affichage du vecteur d'etat
-     * @param date date
+     * @param[in] date date
      */
     void AffichageVecteurEtat(const Date &date);
 

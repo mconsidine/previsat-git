@@ -128,6 +128,10 @@ public:
     /*
      * Methodes publiques
      */
+    /**
+     * @brief show Affichage des informations pour les onglets
+     * @param[in] date date
+     */
     void show(const Date &date);
 
 

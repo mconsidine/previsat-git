@@ -66,6 +66,10 @@ public:
     /*
      *  Constructeurs
      */
+    /**
+     * @brief Logging Constructeur par defaut
+     * @param[in] fenetreParent fenetre parent
+     */
     explicit Logging(QWidget *fenetreParent = nullptr);
 
 

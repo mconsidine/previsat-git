@@ -129,7 +129,7 @@ private:
      * @brief OuvertureInfo Ouverture du fichier d'informations
      * @param[in] nomfic nom du fichier
      * @param[in] onglet onglet
-     * @param[in] zoneTexte zone de texte
+     * @param[out] zoneTexte zone de texte
      */
     void OuvertureInfo(const QString &nomfic, QWidget *onglet, QTextBrowser *zoneTexte);
 

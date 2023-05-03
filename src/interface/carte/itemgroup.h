@@ -77,11 +77,19 @@ public:
     /*
      * Methodes publiques
      */
+    /**
+     * @brief setVisibleMin Positionnement du zoom minimum pour la visibilite des frontieres
+     * @param[in] min valeur minimum du zoom
+     */
     void setVisibleMin(const double min = 0.);
 
 
 public slots:
 
+    /**
+     * @brief CheckVisibleMin Verifie la valeur du zoom
+     * @param[in] v valeur du zoom
+     */
     void CheckVisibleMin(const double v);
 
 

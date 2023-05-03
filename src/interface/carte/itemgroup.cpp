@@ -64,11 +64,17 @@ ItemGroup::ItemGroup(QGraphicsItem *parent) :
 /*
  * Methodes publiques
  */
+/*
+ * Positionnement du zoom minimum pour la visibilite des frontieres
+ */
 void ItemGroup::setVisibleMin(const double min)
 {
     _minVisible = min;
 }
 
+/*
+ * Verifie la valeur du zoom
+ */
 void ItemGroup::CheckVisibleMin(const double v)
 {
     setVisible(v >= _minVisible);

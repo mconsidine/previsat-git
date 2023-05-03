@@ -88,6 +88,7 @@ public:
      * Methodes publiques
      */
 
+
 public slots:
 
     void changeEvent(QEvent *evt);

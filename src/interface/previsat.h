@@ -378,6 +378,10 @@ private slots:
      */
     void MettreAjourGroupeElem(const QString &groupe);
 
+    /**
+     * @brief ModificationDate Modification de la date en mode manuel
+     * @param[in] dt date et heure de l'onglet General ou Elements osculateurs
+     */
     void ModificationDate(const QDateTime &dt);
 
     // Raccourcis vers les fonctionnalites

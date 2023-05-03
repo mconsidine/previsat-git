@@ -117,6 +117,9 @@ Ui::CalculsFlashs *CalculsFlashs::ui() const
 /*
  * Methodes publiques
  */
+/*
+ * Affichage des informations de l'onglet
+ */
 void CalculsFlashs::show(const Date &date)
 {
     /* Declarations des variables locales */

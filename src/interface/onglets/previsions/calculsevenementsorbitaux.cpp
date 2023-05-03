@@ -117,6 +117,9 @@ CalculsEvenementsOrbitaux::~CalculsEvenementsOrbitaux()
 /*
  * Methodes publiques
  */
+/*
+ * Affichage des informations de l'onglet
+ */
 void CalculsEvenementsOrbitaux::show(const Date &date)
 {
     /* Declarations des variables locales */

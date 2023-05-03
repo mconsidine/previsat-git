@@ -96,6 +96,10 @@ public:
      */
     void InitAffichageFrequences();
 
+    /**
+     * @brief show Affichage des informations de l'onglet
+     * @param[in] date date
+     */
     void show(const Date &date);
 
 
@@ -139,6 +143,7 @@ private:
      * @brief Initialisation Initialisation de la classe Antenne
      */
     void Initialisation();
+
 
 private slots:
 

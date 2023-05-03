@@ -109,6 +109,9 @@ Ui::Osculateurs *Osculateurs::ui() const
 /*
  * Methodes publiques
  */
+/*
+ * Affichage des informations de l'onglet
+ */
 void Osculateurs::show(const Date &date)
 {
     /* Declarations des variables locales */
