@@ -51,6 +51,17 @@ using namespace TestTools;
 
 void SoleilTest::testAll()
 {
+    try {
+        Corps::Initialisation("empty");
+    } catch (std::exception &e) {
+    }
+
+    try {
+        Soleil soleil;
+        soleil.CalculCoordEquat(Observateur());
+    } catch (std::exception &e) {
+    }
+
     QDir dir = QDir::current();
     dir.cdUp();
     dir.cdUp();

@@ -52,7 +52,8 @@ public:
 
 private:
 
-    static void testDates();
+    static void testDates1();
+    static void testDates2();
     static void testCalculOffsetUTC();
     static void testConversionDateIso();
     static void testConversionDateNasa();

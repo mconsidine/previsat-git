@@ -51,6 +51,8 @@ using namespace TestTools;
 
 void DateTest::testAll()
 {
+    testDates1();
+
     QDir dir = QDir::current();
     dir.cdUp();
     dir.cdUp();
@@ -62,7 +64,7 @@ void DateTest::testAll()
     const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Date::Initialisation(dirLocalData);
 
-    testDates();
+    testDates2();
     testToLongDate();
     testToQDateTime();
     testToShortDate();
@@ -73,7 +75,41 @@ void DateTest::testAll()
     testConversionDateNasa();
 }
 
-void DateTest::testDates()
+void DateTest::testDates1()
+{
+    qInfo(Q_FUNC_INFO);
+
+    try {
+        const Date date;
+        Q_UNUSED(date)
+    } catch (PreviSatException &e) {
+    }
+
+    try {
+        const Date date(2006, 1, 15, 21, 24, 37.5, 1. / 24.);
+        Q_UNUSED(date)
+    } catch (PreviSatException &e) {
+    }
+
+    try {
+        const Date date(2206.3921006944444, 1. / 24.);
+        Q_UNUSED(date)
+    } catch (PreviSatException &e) {
+    }
+
+    try {
+        const Date date(2006, 1, 15.8921006944444, 1. / 24.);
+        Q_UNUSED(date)
+    } catch (PreviSatException &e) {
+    }
+
+    try {
+        Date::Initialisation("empty");
+    } catch (PreviSatException &e) {
+    }
+}
+
+void DateTest::testDates2()
 {
     qInfo(Q_FUNC_INFO);
 
@@ -94,6 +130,9 @@ void DateTest::testDates()
 
     const Date date3(2006, 1, 15.8921006944444, 1. / 24.);
     CompareDates(date3, date1);
+
+    const Date date4(1966, 1, 15, 21, 24, 37.5, 1. / 24.);
+    QCOMPARE(date4.jourJulienTT(), -12403.607476437845);
 }
 
 void DateTest::testToLongDate()
