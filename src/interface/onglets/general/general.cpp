@@ -151,6 +151,9 @@ Date General::dateEclipse()
 /*
  * Methodes publiques
  */
+/*
+ * Affichage des informations de l'onglet
+ */
 void General::show(const Date &date)
 {
     /* Declarations des variables locales */

@@ -92,6 +92,10 @@ public:
     /*
      * Methodes publiques
      */
+    /**
+     * @brief show Affichage des informations de l'onglet
+     * @param[in] satellite satellite
+     */
     void show(const Satellite &satellite);
 
 

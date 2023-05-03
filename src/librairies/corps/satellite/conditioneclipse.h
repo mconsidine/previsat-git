@@ -64,6 +64,9 @@ public:
     /*
      *  Constructeurs
      */
+    /**
+     * @brief ConditionEclipse Constructeur par defaut
+     */
     ConditionEclipse() {
         _eclipseTotale = false;
         _eclipsePartielle = false;

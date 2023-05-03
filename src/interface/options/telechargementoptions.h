@@ -67,7 +67,8 @@ public:
      *  Constructeurs
      */
     /**
-     * @brief Options Constructeur par defaut
+     * @brief TelechargementOptions Constructeur par defaut
+     * @param[in] type type de telechargement
      * @param[in] parent fenetre parent
      */
     explicit TelechargementOptions(const TypeTelechargement &type, QWidget *parent);

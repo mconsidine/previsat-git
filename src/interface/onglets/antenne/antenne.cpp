@@ -163,6 +163,9 @@ void Antenne::InitAffichageFrequences()
     return;
 }
 
+/*
+ * Affichage des informations de l'onglet
+ */
 void Antenne::show(const Date &date)
 {
     /* Declarations des variables locales */

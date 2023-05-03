@@ -98,6 +98,9 @@ Ui::InformationsSatellite *InformationsSatellite::ui() const
 /*
  * Methodes publiques
  */
+/*
+ * Affichage des informations de l'onglet
+ */
 void InformationsSatellite::show(const Satellite &satellite)
 {
     /* Declarations des variables locales */

@@ -192,6 +192,9 @@ void CalculsTransits::changeEvent(QEvent *evt)
     }
 }
 
+/*
+ * Affichage des informations de l'onglet
+ */
 void CalculsTransits::show(const Date &date)
 {
     /* Declarations des variables locales */

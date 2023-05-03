@@ -87,12 +87,12 @@ public:
 
     /**
      * @brief ToSexagesimal Conversion d'un angle sous forme decimale en chaine de caracteres formattee
-     * @param xdec[in] Valeur de l'angle
-     * @param typeAngle[in] Type de l'angle (DEGRE, HEURE1, HEURE2, RADIAN, ARCSEC, NO_TYPE)
-     * @param nbDeg[in] Nombre de chiffres pour les degres
-     * @param nbDecimales[in] Nombre de decimales a afficher
-     * @param signe[in] Affichage du signe +
-     * @param espace[in] Affichage d'un espace entre les composantes de l'angle
+     * @param[in] xdec Valeur de l'angle
+     * @param[in] typeAngle Type de l'angle (DEGRE, HEURE1, HEURE2, RADIAN, ARCSEC, NO_TYPE)
+     * @param[in] nbDeg Nombre de chiffres pour les degres
+     * @param[in] nbDecimales Nombre de decimales a afficher
+     * @param[in] signe Affichage du signe +
+     * @param[in] espace Affichage d'un espace entre les composantes de l'angle
      * @return chaine de caracteres contenant la valeur angulaire
      */
     static QString ToSexagesimal(const double xdec, const AngleFormatType &typeAngle, const int nbDeg, const int nbDecimales, const bool signe,

@@ -80,10 +80,6 @@ public:
     /**
      * @brief CalculLignesCst Calcul des lignes de constellations
      * @param[in] etoiles tableau d'etoiles
-     */
-    /**
-     * @brief CalculLignesCst Calcul des lignes de constellations
-     * @param[in] etoiles tableau d'etoiles
      * @param[out] lignesCst tableau de lignes de constellation
      */
     static void CalculLignesCst(const QList<Etoile> &etoiles, QList<LigneConstellation> &lignesCst);

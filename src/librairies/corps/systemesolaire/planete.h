@@ -121,8 +121,6 @@ private:
      */
     void CalculCoordonneesSpheriques();
 
-
-
 };
 
 

@@ -94,6 +94,10 @@ public:
     /*
      * Methodes publiques
      */
+    /**
+     * @brief show Affichage des informations de l'onglet
+     * @param[in] date date
+     */
     void show(const Date &date);
 
 

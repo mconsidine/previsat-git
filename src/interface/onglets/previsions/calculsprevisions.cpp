@@ -120,6 +120,9 @@ Ui::CalculsPrevisions *CalculsPrevisions::ui() const
 /*
  * Methodes publiques
  */
+/*
+ * Affichage des informations de l'onglet
+ */
 void CalculsPrevisions::show(const Date &date)
 {
     /* Declarations des variables locales */

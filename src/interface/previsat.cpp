@@ -2220,6 +2220,9 @@ void PreviSat::MettreAjourGroupeElem(const QString &groupe)
     return;
 }
 
+/*
+ * Modification de la date en mode manuel
+ */
 void PreviSat::ModificationDate(const QDateTime &dt)
 {
     /* Declarations des variables locales */

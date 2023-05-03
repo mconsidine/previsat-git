@@ -146,16 +146,16 @@ private:
      */
     /**
      * @brief AffichageDetailTransit Affichage du detail d'un transit
-     * @param observateur observateur
-     * @param lune lune
-     * @param list informations sur le transit
+     * @param[in] observateur observateur
+     * @param[in] lune lune
+     * @param[in] list informations sur le transit
      */
     void AffichageDetailTransit(const Observateur &observateur, const Lune &lune, const QList<ResultatPrevisions> &list);
 
     /**
      * @brief ChargementCarte Chargement de la carte representant la trace du maximum
-     * @param observateur observateur
-     * @param list informations sur le maximum
+     * @param[in] observateur observateur
+     * @param[in] list informations sur le maximum
      */
     void ChargementCarte(const Observateur &observateur, const QList<ResultatPrevisions> &list);
 
@@ -171,57 +171,57 @@ private:
 
     /**
      * @brief ElementsEvenements Elements des evenements a afficher dans la fenetre de resultats
-     * @param index indice de la liste d'evenements
-     * @param liste liste d'evenements
+     * @param[in] index indice de la liste d'evenements
+     * @param[in] liste liste d'evenements
      * @return elements des evenements
      */
     QStringList ElementsEvenements(const int index, const QList<ResultatPrevisions> &liste) const;
 
     /**
      * @brief ElementsDetailsEvenements Elements des evenements pour la sauvegarde dans un fichier texte
-     * @param res evenements
+     * @param[in] res evenements
      * @return detail des evenements
      */
     QStringList ElementsDetailsEvenements(const ResultatPrevisions &res) const;
 
     /**
      * @brief ElementsFlashs Elements des flashs a afficher dans la fenetre de resultats
-     * @param liste liste des flashs
+     * @param[in] liste liste des flashs
      * @return elements des flashs
      */
     QStringList ElementsFlashs(const QList<ResultatPrevisions> &liste) const;
 
     /**
      * @brief ElementsDetailsFlashs Elements des flashs pour la sauvegarde dans un fichier texte ou pour afficher des details
-     * @param res flashs
+     * @param[in] res flashs
      * @return detail des flashs
      */
     QStringList ElementsDetailsFlashs(const ResultatPrevisions &res) const;
 
     /**
      * @brief ElementsPrevisions Elements des previsions de passage a afficher dans la fenetre de resultats
-     * @param liste liste des previsions
+     * @param[in] liste liste des previsions
      * @return elements des previsions
      */
     QStringList ElementsPrevisions(const QList<ResultatPrevisions> &liste) const;
 
     /**
      * @brief ElementsDetailsPrevisions Elements des previsions de passage pour la sauvegarde dans un fichier texte ou pour afficher des details
-     * @param res previsions
+     * @param[in] res previsions
      * @return detail des previsions
      */
     QStringList ElementsDetailsPrevisions(const ResultatPrevisions &res) const;
 
     /**
      * @brief ElementsTransits Elements des transits a afficher dans la fenetre de resultats
-     * @param liste liste des transits
+     * @param[in] liste liste des transits
      * @return elements des transits
      */
     QStringList ElementsTransits(const QList<ResultatPrevisions> &liste) const;
 
     /**
      * @brief ElementsDetailsTransits Elements des transits pour la sauvegarde dans un fichier texte ou pour afficher des details
-     * @param res transits
+     * @param[in] res transits
      * @return detail des transits
      */
     QStringList ElementsDetailsTransits(const ResultatPrevisions &res) const;

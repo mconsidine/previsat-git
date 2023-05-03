@@ -63,6 +63,10 @@ public:
     /*
      *  Constructeurs
      */
+    /**
+     * @brief Apropos Constructeur par defaut
+     * @param[in] fenetreParent fenetre parent
+     */
     explicit Apropos(QWidget *fenetreParent = 0);
 
 

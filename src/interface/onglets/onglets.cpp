@@ -244,6 +244,9 @@ void Onglets::setInfo(const bool info)
 /*
  * Methodes publiques
  */
+/*
+ * Affichage des informations pour les onglets
+ */
 void Onglets::show(const Date &date)
 {
     /* Declarations des variables locales */
