@@ -4253,6 +4253,7 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="949"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1066"/>
         <source>Importer TLE...</source>
         <translation>Import TLE...</translation>
     </message>
@@ -4400,11 +4401,6 @@ click on &apos;Update ISS information&apos;</translation>
         <location filename="../src/interface/outils/outils.cpp" line="996"/>
         <source>Le fichier %1 n&apos;existe pas</source>
         <translation>The file %1 does not exist</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1066"/>
-        <source>Importe TLE...</source>
-        <translation>Import TLE...</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="1085"/>
@@ -5059,7 +5055,7 @@ which represents approximately %2 pages.</translation>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1138"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1240"/>
         <location filename="../src/librairies/corps/corps.cpp" line="671"/>
-        <location filename="../src/librairies/dates/date.cpp" line="415"/>
+        <location filename="../src/librairies/dates/date.cpp" line="432"/>
         <source>Erreur lors de la lecture du fichier %1, veuillez réinstaller %2</source>
         <translation>Error while reading file %1, please re-install %2</translation>
     </message>
@@ -5344,6 +5340,7 @@ Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
         <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="274"/>
+        <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="119"/>
         <source>Nouvelle Lune</source>
         <translation>New Moon</translation>
     </message>
@@ -5354,6 +5351,7 @@ Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
         <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="278"/>
+        <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="108"/>
         <source>Dernier croissant</source>
         <translation>Waning crescent</translation>
     </message>
@@ -5370,6 +5368,7 @@ Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
         <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="286"/>
+        <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="97"/>
         <source>Gibbeuse croissante</source>
         <translation>Waxing gibbous</translation>
     </message>
@@ -5380,50 +5379,51 @@ Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
         <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="290"/>
+        <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="130"/>
         <source>Pleine Lune</source>
         <translation>Full Moon</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="486"/>
+        <location filename="../src/librairies/dates/date.cpp" line="503"/>
         <source>dd/MM/yyyy</source>
         <comment>Date format</comment>
         <translation>MM/dd/yyyy</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="281"/>
+        <location filename="../src/librairies/dates/date.cpp" line="282"/>
         <source>Date au format ISO vide</source>
         <translation>Date with ISO format is empty</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="290"/>
+        <location filename="../src/librairies/dates/date.cpp" line="291"/>
         <source>Date au format ISO invalide</source>
         <translation>Date with ISO format is invalid</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="328"/>
+        <location filename="../src/librairies/dates/date.cpp" line="329"/>
         <source>Date au format NASA vide</source>
         <translation>Date with NASA format is empty</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="337"/>
-        <location filename="../src/librairies/dates/date.cpp" line="346"/>
-        <location filename="../src/librairies/dates/date.cpp" line="357"/>
+        <location filename="../src/librairies/dates/date.cpp" line="338"/>
+        <location filename="../src/librairies/dates/date.cpp" line="347"/>
+        <location filename="../src/librairies/dates/date.cpp" line="361"/>
         <source>Date au format NASA invalide</source>
         <translation>Date with NASA format is invalid</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="392"/>
+        <location filename="../src/librairies/dates/date.cpp" line="396"/>
         <source>Le fichier taiutc.dat n&apos;existe pas</source>
         <translation>The taiutc.dat file does not exist</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="444"/>
+        <location filename="../src/librairies/dates/date.cpp" line="461"/>
         <source>dddd dd MMMM yyyy HH:mm:ss</source>
         <comment>Date format</comment>
         <translation>dddd, MMMM dd yyyy  HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="661"/>
+        <location filename="../src/librairies/dates/date.cpp" line="678"/>
         <source>Ecarts TAI-UTC non initialisés</source>
         <translation>TAI-UTC offsets not initialized</translation>
     </message>
@@ -5508,7 +5508,7 @@ Satellite %1 - NORAD number : %2</translation>
     <message>
         <location filename="../src/previsions/evenementsorbitaux.cpp" line="306"/>
         <source>Ombre -&gt; Pénombre (Lune)</source>
-        <translation>Shadow -&gt; Penumbra (Moon)</translation>
+        <translation>Penumbra -&gt; Shadow (Moon)</translation>
     </message>
     <message>
         <location filename="../src/previsions/evenementsorbitaux.cpp" line="325"/>
@@ -6156,27 +6156,27 @@ Satellite %1 - NORAD number : %2</translation>
 <context>
     <name>Telechargement</name>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="95"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="98"/>
         <source>Erreur lors du téléchargement du fichier %1</source>
         <translation>Error while downloading file %1</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="119"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="122"/>
         <source>Impossible d&apos;écrire le fichier %1 dans le répertoire %2</source>
         <translation>Impossible to write the file %1 in the directory %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="171"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="174"/>
         <source>o/s</source>
         <translation>B/s</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="174"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="177"/>
         <source>ko/s</source>
         <translation>kB/s</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="177"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="180"/>
         <source>Mo/s</source>
         <translation>MB/s</translation>
     </message>

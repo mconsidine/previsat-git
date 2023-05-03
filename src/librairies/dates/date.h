@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    3 mai 2023
  *
  */
 
@@ -226,6 +226,7 @@ private:
 
     // Table des ecarts TAI-UTC
     static QList<QPair<double, double> > _ecartsTAI_UTC;
+    static std::array<std::array<double, DATE::NB_PARAM_TAIUTC>, DATE::NB_LIGNES_TAIUTC> _tabEcartsTAI_UTC;
 
 
     /*

@@ -1,4 +1,28 @@
 ######################################################
+# Ecart TAI-UTC en secondes pour la periode 1961-1972
+#
+# Description :
+# Colonne 1 : Jour julien modifie de depart
+# Colonne 2 : Jour julien modifie de fin
+# Colonnes 3-5 : parametres de calcul de l'ecart TAI-UTC (en secondes)
+# Colonne 6 : (commentaire) Intervalle de validite
+#
+# deltaT = col3 + (mjd - col4) * col5, si mjd appartient a l'intervalle [ col1; col2 ]
+######################################################
+37300. 37512. 1.422818 37300. 0.001296  # Intervalle 01/01/1961 - 01/08/1961
+37512. 37665. 1.372818 37300. 0.001296  # Intervalle 01/08/1961 - 01/01/1962
+37665. 38334. 1.845858 37665. 0.0011232 # Intervalle 01/01/1962 - 01/11/1963
+38334. 38395. 1.945858 37665. 0.0011232 # Intervalle 01/11/1963 - 01/01/1964
+38395. 38486. 3.240130 38761. 0.001296  # Intervalle 01/01/1964 - 01/04/1964
+38486. 38639. 3.340130 38761. 0.001296  # Intervalle 01/04/1964 - 01/09/1964
+38639. 38761. 3.440130 38761. 0.001296  # Intervalle 01/09/1964 - 01/01/1965
+38761. 38820. 3.540130 38761. 0.001296  # Intervalle 01/01/1965 - 01/03/1965
+38820. 38942. 3.640130 38761. 0.001296  # Intervalle 01/03/1965 - 01/07/1965
+38942. 39004. 3.740130 38761. 0.001296  # Intervalle 01/07/1965 - 01/09/1965
+39004. 39126. 3.840130 38761. 0.001296  # Intervalle 01/09/1965 - 01/01/1966
+39126. 39887. 4.313170 39126. 0.002592  # Intervalle 01/01/1966 - 01/02/1968
+39887. 41317. 4.213170 39126. 0.002592  # Intervalle 01/02/1968 - 01/01/1972
+######################################################
 # Ecart TAI-UTC en secondes en fonction du jour julien
 #
 # Description :
