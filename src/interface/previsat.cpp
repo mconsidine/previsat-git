@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er mai 2023
+ * >    7 mai 2023
  *
  */
 
@@ -358,6 +358,7 @@ void PreviSat::ChargementGP()
             Configuration::instance()->mapSatellitesFichierElem()[ff.fileName()] = listeSatellites;
 
             if (!listeSatellites.isEmpty()) {
+                Configuration::instance()->noradDefaut() =  listeSatellites.first();
                 GestionnaireXml::EcritureConfiguration();
             }
 
@@ -970,6 +971,9 @@ void PreviSat::Initialisation()
     _informationsSatellite = nullptr;
     _recherche = nullptr;
     _station = nullptr;
+    _captureEcran = nullptr;
+    _etapePrec = nullptr;
+    _etapeSuiv = nullptr;
 
     _messageStatut = nullptr;
     _messageStatut2 = nullptr;

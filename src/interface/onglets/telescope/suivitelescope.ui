@@ -131,22 +131,6 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="parametrageDefautSuivi">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>157</y>
-     <width>161</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font/>
-   </property>
-   <property name="text">
-    <string>Paramétrage par défaut</string>
-   </property>
-  </widget>
   <widget class="QFrame" name="frameSatSelectionne">
    <property name="geometry">
     <rect>
@@ -570,6 +554,22 @@
       <string>Ajuster les dates...</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="parametrageDefautSuivi">
+     <property name="geometry">
+      <rect>
+       <x>390</x>
+       <y>104</y>
+       <width>161</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font/>
+     </property>
+     <property name="text">
+      <string>Paramétrage par défaut</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QLabel" name="visibiliteSatSuivi">
     <property name="geometry">
@@ -737,12 +737,6 @@
     <bool>true</bool>
    </property>
   </widget>
-  <zorder>formLayoutWidget_55</zorder>
-  <zorder>listeTelescope</zorder>
-  <zorder>skywatcher</zorder>
-  <zorder>frameSatSelectionne</zorder>
-  <zorder>parametrageDefautSuivi</zorder>
-  <zorder>filtreSatellites</zorder>
  </widget>
  <resources>
   <include location="../../../../resources.qrc"/>

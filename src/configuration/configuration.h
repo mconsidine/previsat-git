@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    1er mai 2023
+ * >    7 mai 2023
  *
  */
 
@@ -164,7 +164,7 @@ public:
 
     // Lieux d'observation
     Observateur &observateur();
-    const QList<Observateur> &observateurs() const;
+    QList<Observateur> &observateurs();
     QMap<QString, Observateur> &mapObs();
 
     // Map des satellites de tous les fichiers d'elements orbitaux
