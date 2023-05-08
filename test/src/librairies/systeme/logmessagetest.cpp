@@ -82,7 +82,7 @@ void LogMessageTest::testLogMessage()
     qWarning() << "Message d'avertissement 2";
 
     // Ecriture de messages d'erreurs
-    qCritical() << "Message d'erreurs 1";
+    qCritical() << "\"Message d'erreurs 1\"";
     qCritical() << "Message d'erreurs 2";
 
     const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + qApp->applicationName() + ".log";

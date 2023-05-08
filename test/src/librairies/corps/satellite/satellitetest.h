@@ -57,6 +57,7 @@ private:
     static void testCalculCoordHoriz2();
     static void testCalculPosVit1();
     static void testCalculPosVit2();
+    static void testCalculPosVit3();
     static void testCalculPosVitECEF();
     static void testCalculElementsOsculateurs();
     static void testCalculTraceCiel();

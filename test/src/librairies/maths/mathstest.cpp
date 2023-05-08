@@ -141,6 +141,11 @@ void MathsTest::testMatrice3D()
     const Matrice3D mat9(vec10, vec11, vec12);
     CompareMatrices3D(mat8, mat9);
 
+    const Matrice3D mat8b(static_cast<AxeType> (4), MATHS::PI / 6.);
+    const Vecteur3D vec12b(0., 0., 0.);
+    const Matrice3D mat9b(vec12b, vec12b, vec12b);
+    CompareMatrices3D(mat8b, mat9b);
+
     const Vecteur3D vec13(1., 4., 7.);
     const Vecteur3D vec14(2., 5., 8.);
     const Vecteur3D vec15(3., 6., 9.);
@@ -225,4 +230,7 @@ void MathsTest::testVecteur3D()
 
     vec2 = Vecteur3D(1.8660254037844386467637231707529, 1.2320508075688772935274463415059, 3.);
     CompareVecteurs3D(vec1.Rotation(AxeType::AXE_Z, ang), vec2);
+
+    vec2 = Vecteur3D();
+    CompareVecteurs3D(vec1.Rotation(static_cast<AxeType> (4), ang), vec2);
 }

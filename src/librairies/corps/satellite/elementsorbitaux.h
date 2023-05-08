@@ -52,7 +52,7 @@ struct ElementsOrbitaux
 {
     QString nom;
     QString cospar;
-    Date epoque;
+    Date epoque {};
     double no;
     double ecco;
     double inclo;

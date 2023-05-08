@@ -56,6 +56,7 @@ private:
     static void testLectureFichier1();
     static void testLectureFichier2();
     static void testLectureFichier3();
+    static void testLectureFichier4();
     static void testLectureFichierListeGP1();
     static void testLectureFichierListeGP2();
     static void testRecupereNomsat();
