@@ -280,10 +280,10 @@ void Antenne::show(const Date &date)
         const QString chaine = tr("Prochain %1 dans %2", "Next AOS or LOS, and delay").arg(elementsAOS.typeAOS).arg(cDelaiAOS);
         _ui->prochainAOS->setText(chaine);
         _ui->prochainAOS->setToolTip((chaine.contains(tr("AOS"))) ? tr("Acquisition du signal") : tr("Perte du signal"));
-        _ui->prochainAOS->setVisible(true);
+        _ui->frameSatellite->setVisible(true);
 
     } else {
-        _ui->prochainAOS->setVisible(false);
+        _ui->frameSatellite->setVisible(false);
     }
 
     /* Retour */

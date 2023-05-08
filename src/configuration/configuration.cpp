@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    1er mai 2023
+ * >    7 mai 2023
  *
  */
 
@@ -407,7 +407,7 @@ Observateur &Configuration::observateur()
 }
 
 
-const QList<Observateur> &Configuration::observateurs() const
+QList<Observateur> &Configuration::observateurs()
 {
     return _observateurs;
 }

@@ -253,6 +253,8 @@ private slots:
     void on_creationLieu_clicked();
     void on_validerObs_clicked();
     void on_annulerObs_clicked();
+    void on_ajoutLieu_clicked();
+    void on_supprLieu_clicked();
 
     void on_listeMap_currentIndexChanged(int index);
     void on_listeSons_currentIndexChanged(int index);

@@ -385,7 +385,7 @@ void SuiviTelescope::CalculAos()
 
                 const QString chaine2 = tr("Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3");
                 _ui->leverSatSuivi2->setText(
-                            chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), AngleFormatType::DEGRE, 2, 0, false, true).mid(0, 8).trimmed())
+                            chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), AngleFormatType::DEGRE, 2, 0, false, true).mid(0, 9).trimmed())
                             .arg(Maths::ToSexagesimal(satSuivi.azimut(), AngleFormatType::DEGRE, 3, 0, false, true).mid(0, 9)).arg(ecl));
 
                 bld.setBold(true);
@@ -457,17 +457,17 @@ void SuiviTelescope::CalculAos()
             // Cas des satellites geostationnaires (10 minutes de suivi)
             if (satSuivi.hauteur() > 0.) {
 
-                _dateAosSuivi = _date;
+                EFFACE_OBJET(_dateAosSuivi);
+                _dateAosSuivi = new Date(*_date, _date->offsetUTC());
 
                 const QString chaine2 = tr("Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3");
                 _ui->leverSatSuivi->setText(
-                            chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), AngleFormatType::DEGRE, 2, 0, false, true).mid(0, 7).trimmed())
+                            chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), AngleFormatType::DEGRE, 2, 0, false, true).mid(0, 8).trimmed())
                             .arg(Maths::ToSexagesimal(satSuivi.azimut(), AngleFormatType::DEGRE, 3, 0, false, true).mid(0, 9)).arg(ecl));
 
                 bld.setBold(true);
                 _ui->leverSatSuivi->setFont(bld);
                 _ui->lbl_leverSatSuivi->setVisible(false);
-                _ui->leverSatSuivi->move(0, _ui->leverSatSuivi->y());
                 _ui->lbl_hauteurMaxSatSuivi->setVisible(false);
                 _ui->lbl_coucherSatSuivi->setVisible(false);
                 _ui->hauteurMaxSatSuivi->setVisible(false);

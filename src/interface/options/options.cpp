@@ -50,6 +50,7 @@
 #include "options.h"
 #include "telechargementoptions.h"
 #include "configuration/configuration.h"
+#include "configuration/gestionnairexml.h"
 #include "configuration/fichierobs.h"
 #include "librairies/exceptions/message.h"
 #include "librairies/exceptions/previsatexception.h"
@@ -1496,6 +1497,59 @@ void Options::on_annulerObs_clicked()
     _ui->outilsLieuxObservation->setVisible(false);
 }
 
+void Options::on_ajoutLieu_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        if (_ui->lieuxObs->currentRow() >= 0) {
+
+            const QString nomlieu = _ui->lieuxObs->currentItem()->text();
+
+            if (!_ui->selecLieux->findItems(nomlieu, Qt::MatchExactly).isEmpty()) {
+                throw PreviSatException(tr("Lieu d'observation déjà sélectionné"), MessageType::WARNING);
+            }
+
+            const Observateur obs = _mapObs[_ui->lieuxObs->currentItem()->text()];
+            Configuration::instance()->observateurs().append(obs);
+            GestionnaireXml::EcritureConfiguration();
+
+            AffichageLieuObs();
+            _ui->lieuxObs->setFocus();
+        }
+
+    } catch (PreviSatException &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void Options::on_supprLieu_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if ((_ui->selecLieux->currentRow() >= 0) && (_ui->selecLieux->count() > 1)) {
+
+        Configuration::instance()->observateurs().removeAt(_ui->selecLieux->currentRow());
+        AffichageLieuObs();
+        GestionnaireXml::EcritureConfiguration();
+        _ui->outilsLieuxObservation->setVisible(false);
+        AffichageLieuObs();
+    }
+
+    /* Retour */
+    return;
+}
+
+
 void Options::on_listeMap_currentIndexChanged(int index)
 {
     if (index == _ui->listeMap->count() - 1) {
@@ -1518,3 +1572,4 @@ void Options::on_listeSons_currentIndexChanged(int index)
         telechargementOptions->show();
     }
 }
+

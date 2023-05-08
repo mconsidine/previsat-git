@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    1er mai 2023
+ * >    7 mai 2023
  *
  */
 
@@ -506,11 +506,26 @@ void General::AffichageDonneesSatellite(const Date &date)
                     .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
         }
 
+        _ui->lbl_prochainAOS1->setVisible(true);
+        _ui->lbl_prochainAOS2->setVisible(true);
         _ui->dateAOS1->setText(chaine.arg(dateAOS.ToShortDate(DateFormat::FORMAT_COURT, syst).trimmed()).arg(cDelaiAOS));
+        _ui->dateAOS1->setVisible(true);
         _ui->dateAOS2->setText(_ui->dateAOS1->text());
+        _ui->dateAOS2->setVisible(true);
+
         _ui->lbl_azimut1->setText(tr("Azimut : %1").arg(Maths::ToSexagesimal(_elementsAOS->azimut, AngleFormatType::DEGRE, 3, 0, false, true).trimmed()
                                                         .mid(0, 8)));
+        _ui->lbl_azimut1->setVisible(true);
         _ui->lbl_azimut2->setText(_ui->lbl_azimut1->text());
+        _ui->lbl_azimut2->setVisible(true);
+
+    } else {
+        _ui->lbl_prochainAOS1->setVisible(false);
+        _ui->lbl_prochainAOS2->setVisible(false);
+        _ui->dateAOS1->setVisible(false);
+        _ui->dateAOS2->setVisible(false);
+        _ui->lbl_azimut1->setVisible(false);
+        _ui->lbl_azimut2->setVisible(false);
     }
 
     // Angle beta
