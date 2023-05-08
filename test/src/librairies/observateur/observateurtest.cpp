@@ -107,6 +107,13 @@ void ObservateurTest::testCalculCap()
     const Observateur obs2("Lyon", -4.85, 45.75, 175.);
     QCOMPARE(obs.CalculCap(obs2).first, "SE");
     QCOMPARE(obs.CalculCap(obs2).second, 2.6252070672262);
+
+    const Observateur obs1("Lieu", 0., 90., 0.);
+    QCOMPARE(obs1.CalculCap(obs).first, "S");
+    QCOMPARE(obs1.CalculCap(obs).second, MATHS::PI);
+
+    QCOMPARE(obs.CalculCap(obs1).first, "N");
+    QCOMPARE(obs.CalculCap(obs1).second, 0.);
 }
 
 void ObservateurTest::testCalculDistance()

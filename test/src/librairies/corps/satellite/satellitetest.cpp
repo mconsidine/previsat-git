@@ -45,6 +45,7 @@
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
+#include "librairies/exceptions/previsatexception.h"
 #include "librairies/maths/maths.h"
 #include "librairies/observateur/observateur.h"
 #include "satellitetest.h"
@@ -60,6 +61,7 @@ void SatelliteTest::testAll()
     testCalculCoordHoriz2();
     testCalculPosVit1();
     testCalculPosVit2();
+    testCalculPosVit3();
     testCalculPosVitECEF();
     testCalculElementsOsculateurs();
     testCalculTraceCiel();
@@ -241,6 +243,24 @@ void SatelliteTest::testCalculPosVit2()
     const Vecteur3D vit(-4.827118447150993, 0.9222014946152153, -5.8768841331293284);
     CompareVecteurs3D(sat.position(), pos);
     CompareVecteurs3D(sat.vitesse(), vit);
+}
+
+void SatelliteTest::testCalculPosVit3()
+{
+    qInfo(Q_FUNC_INFO);
+
+    ElementsOrbitaux elem {};
+    Satellite sat(elem);
+
+    Date date(2020, 1, 11, 21, 20, 0., 0.);
+
+    try {
+        sat.CalculPosVit(date);
+    } catch (PreviSatException &e) {
+    }
+
+    QCOMPARE(sat.position().Norme(), 0.);
+    QCOMPARE(sat.vitesse().Norme(), 0.);
 }
 
 void SatelliteTest::testCalculPosVitECEF()
