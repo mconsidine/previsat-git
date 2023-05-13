@@ -1,0 +1,239 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    26 avril 2023
+ *
+ */
+
+
+/**
+\page Infos Satellite par défaut
+
+L'onglet <b>Informations satellite</b> fournit les éléments orbitaux moyens du satellite.
+
+\image html informations.png
+
+Nous donnons tout d'abord le nom du satellite puis successivement :
+
+- Le <b>numéro NORAD</b> : numéro d'identification assigné séquentiellement par le North American Aerospace Defense Command qui fait référence à un objet unique (satellite, débris).
+
+- La <b>désignation COSPAR</b> (COmmittee on SPAce Research) : fournit l'année de lancement, le numéro du lancement dans l'année, ainsi qu'une à trois lettres désignant une pièce du lancement.
+
+- L’<b>époque des éléments orbitaux</b> est donnée dans un format particulier : les 4 premiers chiffres représentent l'année, les chiffres suivants sont le nombre de jours (avec décimales) écoulés depuis le 1er janvier. L'époque est donnée en Temps Universel Coordonné (UTC).
+
+- Le <b>coefficient pseudo-balistique</b> caractérise la traînée atmosphérique et sa dimension est donnée en inverse du rayon terrestre. Le modèle SGP4 utilise cette valeur pour estimer le freinage atmosphérique.
+
+- Le <b>moyen mouvement</b>, exprimé en nombre de révolutions par jour.
+
+- La <b>moitié de la dérivée première du moyen mouvement</b> exprimée en révolutions par jour au carré, elle représente l'accélération ou la décélération du satellite. Il s'agit le plus souvent d'une accélération, lorsque le satellite descend vers une orbite légèrement plus basse; une décélération peut avoir lieu lors d'une manœuvre du satellite (ce paramètre n'est pas utilisé dans le modèle SGP4).
+
+- Le <b>sixième de la dérivée seconde du moyen mouvement</b> est exprimé en révolutions par jour au cube (ce paramètre n'est pas utilisé dans le modèle SGP4).
+
+- Le <b>nombre d'orbites à l'époque</b> (le nombre fourni dans les éléments est modulo 100000, PreviSat affiche le nombre réel d'orbites à l'époque).
+
+- L’<b>inclinaison moyenne</b>.
+
+- L’<b>ascension droite moyenne du nœud ascendant</b>.
+
+- L’<b>excentricité moyenne</b>.
+
+- L’<b>argument du périgée moyen</b>.
+
+- L’<b>anomalie moyenne "moyenne"</b>.
+
+- La <b>magnitude standard</b> et la <b>magnitude maximale</b>. La magnitude standard est issue d'un fichier interne à PreviSat. La lettre qui suit sa valeur indique comment celle-ci a été déterminée : d elle est calculée en fonction des dimensions du satellite; v elle est estimée d'après des observations visuelles. La magnitude maximale est évaluée à partir de la magnitude standard, du demi-grand axe et de l'excentricité.
+
+- Le <b>modèle orbital</b> utilisé (SGP4). Pour les satellites dont la période est inférieure à 225 minutes, on précise "NE" (Near Earth); dans le cas contraire, on indique "DS" (Deep Space).
+
+- Les <b>dimensions de l'objet</b> et la <b>section équivalente radar</b> issues d'un fichier interne.
+
+- La <b>date de lancement</b> de l'objet.
+
+- La <b>catégorie de l'orbite</b> (cf. tableau 1 ci-dessous).
+
+- Le <b>pays</b> ou l'<b>organisation</b> propriétaire de l'objet (cf. tableau 2 ci-dessous).
+
+- Le <b>site de lancement</b> (cf. tableau 3 ci-dessous).
+
+Il est possible d'enregistrer dans un fichier texte les valeurs fournies dans cet onglet en cliquant sur le bouton <b>Enregistrer</b> dans le menu principal ou avec le raccourci Ctrl + S.
+
+<center>
+| Désignation<br /><br /> | Signification<br /><br /> | Période<br />h | Inclinaison<br />° | Excentricité<br /><br /> | Périgée<br />km | Apogée<br />km |
+|-------------|---------------|----------------|--------------------|--------------|-----------------|----------------|
+| ATM | Atmosphérique | - | 0.0 - 180.0 | 0.0 - 1.0 | <80 | 0 - 80 |
+| TAO | Trans-atmosphérique | - | 0.0 - 180.0 | 0.0 - 1.0 | 0-80 | >80 |
+| SO | Suborbital | - | 0.0 - 180.0 | 0.0 - 1.0 | <0 | >80 |
+| LEO/E | Equatorial basse orbite | 1:26 - 2:00 | 0.0 - 20.0 | 0.0 - 0.21 | 80 - 1682 | 80 - 3284 |
+| LEO/I | Intermédiaire | 1:26 - 2:00 | 20.0 - 85.0 | 0.0 - 0.21 | 80 - 1682 | 80 - 3284 |
+| LEO/P | Polaire | 1:26 - 2:00 | 85.0 - 95.0 | 0.0 - 0.21 | 80 - 1682 | 80 - 3284 |
+| LEO/S | Héliosynchrone | 1:26 - 2:00 | 95.0 - 104.0 | 0.0 - 0.21 | 80 - 1682 | 80 - 3284 |
+| LEO/R | Rétrograde | 1:26 - 2:00 | 104.0 - 180.0 | 0.0 - 0.21 | 80 - 1682 | 80 - 3284 |
+| MEO | Medium | 2:00 - 23:00 | 0.0 - 180.0 | 0.0 - 0.5 | 80 - 34680 | 1682 - 55209 |
+| HEO | Haute elliptique | 4:03 - 23:00 | 0.0 - 180.0 | 0.5 - 0.92 | 80 - 14331 | 13000 - 69280 |
+| HEO/M | Molniya | 11:30 - 12:30 | 62.0 - 64.0 | 0.5 - 0.77 | 80 - 7294 | 19489 - 41854 |
+| GTO | Transfert GEO | 10:00 - 12:30 | 0.0 - 85.0 | 0.5 - 0.77 | - | - |
+| GEO/S | Stationnaire géosynchrone | 23:55.5 - 23:56.5 | 0.0 - 2.0 | 0.0 - 0.01 | 35353 -  35795 | 35775 - 36217 |
+| GEO/I | GEO incliné | 23:55.5 - 23:56.5 | 0.0 - 20.0 | 0.0 - 0.05 | 33667 -  35795 | 35775 - 37903 |
+| GEO/T | Synchrone | 23:55.5 - 23:56.5 | 0.0 - 180.0 | 0.0 - 0.85 | 80 -  35795 | 35775 - 71510 |
+| GEO/D | GEO dérivant | 23:00 - 25:00 | 0.0 - 2.0 | 0.0 - 0.05 | 32628 -  37028 | 34681 -  39198 |
+| GEO/SI | GEO incliné | 23:55.5 - 23:56.5 | 3.0 - 25.0 | 0.00 - 0.05 | 33667 - 35795 | 35775 - 37903 |
+| GEO/ID | GEO dérivant incliné | 23:00 - 25:00 | 0.0 - 20.0 | 0.0 - 0.05 | 32628 -  37028 | 34681 -  39198 |
+| GEO/NS | Presque synchrone | 23:00 - 25:00 | 0.0 - 180.0 | 0.0 - 0.85 | 80 -  37028 | 34681 -  73976 |
+| VHEO | Très haute orbite terrestre | >25:00 | 0.0 - 180.0 | 0.50 - 1.00 |  |  |
+| DSO | Espace profond | >25:00 | 0.0 - 180.0 | 0.0 - 0.50 | >15325 | >37028 |
+| CLO | Lunaire |  | 0.0 - 180.0 | 0.0 - 1.00 |  | >318200 |
+| EEO | Libération terrestre |  |  |  |  |  |
+| HCO | Héliocentrique |  |  |  |  |  |
+| PCO | Planétocentrique |  |  |  |  |  |
+| PEO | Libération planétaire |  |  |  |  |  |
+| SSE | Libération système solaire |  |  |  |  |  |
+Tableau 1 : catégories d'orbite 
+(http://planet4589.org/space/log/orbits.html)
+<br /><br />
+
+| Désignation | Signification |
+|-------------|---------------|
+AB | Organisation arabe pour communications par satellite
+ABS | ABS Global Ltd
+AC | Asiatsat corp
+AGO | Angola
+ALG | Algérie
+ARGN | Argentine
+ASRA | Autriche
+AUS | Australie
+AZER | Azerbaïdjan
+BELA | Biélorussie
+BRAZ | Brésil
+CA | Canada
+CHBZ | République populaire de Chine/Brésil
+CHLE | Chili
+CIS | Communauté des états indépendants
+COL | Colombie
+CZCH | Tchécoslovaquie
+DEN | Danemark
+ECU | Equateur
+EGYP | Egypte
+ESA | Agence spatiale européenne
+ESRO | Organisation de recherche spatiale européenne
+EST | Estonie
+EUME | Organisation européenne pour l'exploitation des satellites météorologiques
+EUTE | Organisation européenne des satellites de télécommunication (EUTELSAT)
+FGER | France/Allemagne
+FR | France
+GER | Allemagne
+GLOB | Globalstar
+GREC | Grèce
+HUN | Hongrie
+IM | Organisation internationale des satellites maritimes (INMARSAT)
+IND | Inde
+INDO | Indonésie
+IRAN | Iran
+IRID | Iridium
+ISRA | Israël
+ISS | Station spatiale internationale
+IT | Italie
+ITSO | Organisation internationale des satellites de télécommunication (INTELSAT)
+JPN | Japon
+LUXE | Luxembourg
+MALA | Malaisie
+MEX | Mexique
+NATO | Organisation du traité Atlantique Nord (OTAN)
+NETH | Pays-Bas
+NICO | New Ico
+NIG | Nigéria
+NKOR | Corée du Nord
+NOR | Norvège
+O3B | O3B Networks
+ORB | Orbital telecommunications satellite (GLOBALSTAR)
+PAKI | Pakistan
+POL | Pologne
+POR | Portugal
+PRC | République populaire de Chine
+RASC | Organisation régionale des satellites de communication africain
+ROC | République de Chine (Taïwan)
+ROM | Roumanie
+RP | République des Philippines
+SAFR | Afrique du Sud
+SAUD | Arabie Saoudite
+SEAL | Sea Launch Demo
+SES | Société européenne des satellites
+SING | Singapour
+SKOR | Corée du Sud
+SPN | Espagne
+STCT | Singapour/Taïwan
+SWED | Suède
+SWTZ | Suisse
+THAI | Thaïlande
+TURK | Turquie
+UAE | Emirats arabes unis
+UK | Grande-Bretagne
+US | Etats-Unis
+USBZ | Etats-Unis/Brésil
+VENZ | Venezuela
+VTNM | Vietnam
+Tableau 2 : Pays ou organisations
+<br /><br />
+
+| Désignation | Signification |
+|-------------|---------------|
+AFETR | Air Force Eastern Test Range, Florida, USA
+AFWTR | Air Force Western Test Range, California, USA
+CAS | Canaries Airspace
+DLS | Dombarovskiy Launch Site, Russie
+ERAS | Eastern Range Airspace
+FRGUI | Europe's Spaceport, Kourou, Guyane Française
+HGSTR | Hammaguira Space Track Range, Algérie
+JSC | Jiuquan Space Center, République populaire de Chine
+KODAK | Kodiak Launch Complex, Alaska, USA
+KSCUT | Kagoshima Space Center, Université de Tokyo
+KWAJL | US Army Kwajalein Atoll (USAKA)
+KYMTR | Kapustin Yar Missile and Space Complex, Russie
+NSC | Naro Space Complex, Corée du Sud
+OREN | Orenbourg, Russie
+PKMTR | Plesetsk Missile and Space Complex, Russie
+PMRF | Pacific Missile Range Facility
+RLLC | Rocket Lab Launch Complex, Péninsule Mahia, Nouvelle Zélande
+SADOL | Submarine Launch from Barents Sea, Russie
+SEAL | Sea Launch Platform (mobile)
+SEM | Semnan Satellite Launch, Iran
+SNMLP | San Marco Launch Platform, Indian Ocean (Kenya)
+SRI | Satish Dhawan Space Center<br />anciennement Sriharikota Launching Range, (Inde), 
+SVOB | Svobodnyy Launch Complex, Russie
+SWAS | Spaceport Cornwall Air Space
+TNSTA | Tanegashima Space Center, Japon
+TSC | Taiyuan Space Center, République populaire de Chine
+TTMTR | Tyuratam missile and Space Center<br />connu aussi comme le cosmodrome de Baïkonour, Kazakhstan
+UNKN | Inconnu
+VOSTO | Vostochny cosmodrome, Russie
+VOWAS | Virgin Orbit Western Air Space
+WLPIS | Wallops Island, Virginie, USA
+WOMRA | Woomera, Australie
+WRAS | Western Range Air Space, USA
+WSC | Wenchang Satellite Launch Center
+XSC | Xichang Space Center, République populaire de Chine
+YAVNE | Yavne Launch Facility, Israel
+YUN | Yunsong, Corée du Nord
+Tableau 3 : Sites de lancement
+</center>
+
+*/
