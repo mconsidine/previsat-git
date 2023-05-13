@@ -1,3 +1,31 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    13 mai 2023
+ *
+ */
+
+
 /**
 \page Carte World map
 
@@ -5,26 +33,28 @@ When displayed, the world map is the main visual element of the graphic interfac
 
 \image html monde.png
 
-On this, many elements appear of which most important are the places of location, represented by a white cross, and the satellites, represented by a small coloured disc. Labels are assigned respectively with these two kinds of elements. The color of the disc representing the satellite varies according the illumination of the satellite :<br />
+On this, many elements appear of which most important are the places of location, represented by a white cross, and the satellites, represented by a small coloured disc, and they are both labeled with their respective names. The color of the disc representing the satellite varies according to the illumination of the satellite :<br />
 - the disc is yellow if the satellite is illuminated by the Sun,
 - the disc is green if the satellite is in the penumbra of the Earth (or the Moon),
 - the disc is red if the satellite is in the shadow of the Earth (or the Moon).
+
+For some famous satellites (ISS, Hubble space telescope), they are displayed with an icon.
 
 The white contour around the satellite represents the foot print, so the satellite is visible of the whole points of the globle located at the interior of this zone. In reality, the shape of the foot print is always a circle (abstraction made from the flatness of the terrestrial globe), but the projection on the planisphere can produce various forms.
 
 We also draw the ground track of the future orbits of the default satellite. The color of this curve is clear blue when the satellite is illuminated by the Sun, green when the satellite is in the penumbra of the Earth, and red when the satellite is in the shadow of the Earth.
 
-The <b>Sun</b> is drawn by a yellow disc on the maps. For a place of observation whose geographical coordinates merge with the center of the disc representing the Sun, this latter is found at the zenith of the considered place of location.
+The <b>Sun</b> is displayed by a yellow icon on the maps. For a place of observation whose geographical coordinates merge with the center of the disc representing the Sun, this latter is found at the zenith of the considered place of location.
 
-The <b>zone of shade</b> is the area of the globe located in the night. One can observe the evolution of the zone of shade during the day (day/night alternation) and of its shape during the year (seasons).
+The <b>zone of shade</b> is the area of the globe located in the night. One can observe the evolution of the zone of shade during the day (day/night alternation) and of its shape during the year (seasons). The color gradient, when it is displayed, shows the locations where the Sun is at the horizon and for the different twilights (-6°, -12° and -18°).
 
 The <b>Moon</b> is also displayed on the maps, and its phase is drawn as it appears in the sky of the observer.
 
-The size of the elements (Sun, Moon or satellites) is not representative of the reality.
+The size of the elements on the map (Sun, Moon or satellites) is not representative of the reality.
 
-Also displayed on the world map is the grid of the geographical coordinates graduated in steps of 30 degrees, and also the tropics. The meridian at the center of the world map is the meridian line of Greenwich.
+Also displayed on the world map is the grid of the geographical coordinates graduated in steps of 30 degrees, and also the tropics and the polar circles. The meridian at the center of the world map is the meridian line of Greenwich.
 
-All elements described above (except the default place of location) can be masked by de-selecting the boxes in the Options/Settings tab.	
+All elements described above (except the default place of location) can be masked by de-selecting the boxes in the Options window, in the \link Settings \endlink section.
 
 It is possible to select the default satellite by clicking on his disc on the maps or on the radar, or by right clicking on the list of satellites.
 

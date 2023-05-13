@@ -35,14 +35,14 @@
 | <b><center>F2</center></b> | Affiche la fenêtre d’informations |
 | <b><center>F3</center></b> | Affiche la fenêtre d’options |
 | <b><center>F4</center></b> | Affiche la fenêtre d’outils |
-| <b><center>F5</center></b> | Mise à jour du fichier TLE courant |
-| <b><center>Ctrl + F5</center></b> | Mise à jour des groupes de TLE communs |
-| <b><center>Maj + F5</center></b> | Mise à jour de tous les groupes de TLE |
+| <b><center>F5</center></b> | Mise à jour du fichier d'éléments orbitaux courant |
+| <b><center>Ctrl + F5</center></b> | Mise à jour des groupes d'éléments orbitaux communs |
+| <b><center>Maj + F5</center></b> | Mise à jour de tous les groupes d'éléments orbitaux |
 | <b><center>F8</center></b> | Capture d'écran de la fenêtre principale |
 | <b><center>F9</center></b> | Bascule carte du monde / carte du ciel |
 | <b><center>F10</center></b> | Bascule Temps réel / Mode manuel |
-| <b><center>F11 (F6 sur MacOS X)</center></b> | Étape précédente |
-| <b><center>F12 (F7 sur MacOS X)</center></b> | Étape suivante |
+| <b><center>F11 (F6 sur macOS)</center></b> | Étape précédente |
+| <b><center>F12 (F7 sur macOS)</center></b> | Étape suivante |
 | <b><center>Ctrl + M</center></b> | Agrandir ou réduire la carte |
 | <b><center>Ctrl + O</center></b> | Importer un fichier GP ou TLE |
 | <b><center>Ctrl + P</center></b> | Imprimer la carte |

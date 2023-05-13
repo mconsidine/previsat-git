@@ -1,20 +1,59 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    13 mai 2023
+ *
+ */
+
+
 /**
 \page Raccourcis Key shortcuts
 
 | Key | Shortcurs |
 |-----|-----------|
-| <b><center>F1</center></b> | Displays the help file. |
-| <b><center>F2</center></b> | Displays the information window. |
-| <b><center>F5</center></b> | Update the current TLE file. |
-| <b><center>Ctrl + F5</center></b> | Update the current group of TLE. |
-| <b><center>Alt + F5</center></b> | Update of common TLE groups. |
-| <b><center>Maj + F5</center></b> | Update of all TLE groups. |
-| <b><center>F8</center></b> | Screenshot of main window. |
-| <b><center>F9</center></b> | Toggle world map / sky map. |
-| <b><center>F10</center></b> | Toggle Real-time / Manual mode. |
-| <b><center>F11 (F6 sur MacOS X)</center></b> | Previous step. |
-| <b><center>F12 (F7 sur MacOS X)</center></b> | Next step. |
-| <b><center>Ctrl + S</center></b> | Save the tab data in a text file. |
-| <b><center>A…Z</center></b> | Allows to move in the list of satellites when this one is active. |
+| <b><center>F1</center></b> | Displays the help file |
+| <b><center>F2</center></b> | Displays the information window |
+| <b><center>F3</center></b> | Displays the Options window |
+| <b><center>F4</center></b> | Displays the Tools window |
+| <b><center>F5</center></b> | Update the current orbital elements file |
+| <b><center>Ctrl + F5</center></b> | Update the current group of orbital elements |
+| <b><center>Maj + F5</center></b> | Update of all orbital elements groups |
+| <b><center>F8</center></b> | Screenshot of main window |
+| <b><center>F9</center></b> | Toggle world map / sky map |
+| <b><center>F10</center></b> | Toggle Real-time / Manual mode |
+| <b><center>F11 (F6 on macOS)</center></b> | Previous step |
+| <b><center>F12 (F7 on macOS)</center></b> | Next step |
+| <b><center>Ctrl + M</center></b> | Maximise or minimise the map size |
+| <b><center>Ctrl + O</center></b> | Import a GP or TLE file |
+| <b><center>Ctrl + P</center></b> | Print the map |
+| <b><center>Ctrl + S</center></b> | Save the tab data in a text file |
+| <b><center>Alt + S</center></b> | Go to the Satellite information tab |
+| <b><center>Alt + R</center></b> | Go to the Data search tab |
+| <b><center>Alt + I</center></b> | Go to the ISS information tab |
+| <b><center>Alt + P</center></b> | Go to the Predictions tab |
+| <b><center>Alt + F</center></b> | Go to the Flares tab |
+| <b><center>Alt + T</center></b> | Go to the Transits tab |
+| <b><center>Alt + E</center></b> | Go to the Events tab |
+| <b><center>A…Z</center></b> | Allows to move in the list of satellites when this one is active |
 
 */

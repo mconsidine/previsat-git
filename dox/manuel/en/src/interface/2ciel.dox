@@ -1,3 +1,31 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    13 mai 2023
+ *
+ */
+
+
 /**
 \page Ciel Sky map
 
@@ -7,6 +35,6 @@ When they have a positive elevation, satellites, the Sun, the Moon, the main pla
 
 \image html ciel.png
 
-On this screenshot taken the July 19th, 2015, we can see the satellite ISS near the South-West horizon and it will across the sky. Along the ecliptic (in yellow), we can see Neptun in the Water Bearer constellation (Aqr) and Uranus in the Fishes constellation (Psc).
+On this screenshot taken the May 13th, 2023, we can see the satellite ISS near the South-West horizon and it will across the sky. The ecliptic, the course of the Sun during a year and around which we can see the planets and the Moon, is drawn in yellow on the sky map.
 
 */

@@ -1,3 +1,31 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    13 mai 2023
+ *
+ */
+
+
 /**
 \page General Main tab
 
@@ -12,7 +40,7 @@ First of all, the current date is indicated, which can be that of the system or 
 - Astronomical twilight (-18° < H<sub>S</sub> < -12°),
 - Night (H<sub>S</sub> < -18°).
 
-We then give the name of the default satellite, as well as the time elapsed since the epoch of the TLE. The color assigned to the age of the TLE give an approximative indication about its accuracy (the green color indicates a recent TLE, instead of the red color indicates an old TLE).
+We then give the name of the default satellite, as well as the time elapsed since the epoch of the orbital elements. The color assigned to the age of the orbital elements give an approximative indication about its accuracy (the green color indicates a recent element, instead of the red color indicates an old element).
 
 Then, we grouped the coordinates of the satellite in various reference frames :
 
@@ -28,11 +56,26 @@ We then display the next Day/Night transition (resp. Night/Day), that is to say 
 
 Finally, we show the next AOS date (Acquisition of signal), that is to say the next date when the selected satellite will be above the horizon of the location. The next LOS (Loss of signal) is the time when the satellite passes below the horizon. We also give the delay of the AOS (resp. LOS) relative to the current date, and the azimuth where the satellite will appear (resp. disappear).
 
-We then give the coordinates of the Sun and the Moon  in the following reference frames : 
+We then give many informations about the Sun :
 - Elevation, azimuth, range,
-- Right ascension, declination, constellation.
+- Right ascension, declination, constellation,
+- Longitude, latitude, apparent diameter.
 
-The range given here is the range to the observer, which is generally different from geocentric range. We also give the informations about the Moon phase, its illuminated fraction (in %) and its magnitude.
+And also for the Moon :
+- Elevation, azimuth, range,
+- Right ascension, declination, constellation,
+- Phase, magnitude (illumination), apparent diameter.
+
+The range given here is the range to the observer, which is generally different from geocentric range.
+
+We give the events about the Sun :
+- Sunrise, pass to the meridian, sunset,
+- Hours of dawns : astronomical (-18°), nautical (-12°), civil (-6°),
+- Hours of twilights : astronomical (-18°), nautical (-12°), civil (-6°).
+
+And then the events about the Moon :
+- Moonrise, pass to the meridian, moonset,
+- Dates and hours of the next Moon phases (hours rounded to the minute).
 
 It is possible to save in a text file the values provided in ths tab by clicking on the Save item in the main menu or with the shortcut Ctrl + S.
 
