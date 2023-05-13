@@ -27,10 +27,12 @@
 
 
 /**
-\page Wall Wall Command Center
+\page GestionnaireTLE TLE management
 
-This tab allows to manage the display options when the Wall Command Center visualization is activated (when the "ISS Live" box is checked).
+The <b>TLE Management</b> tool allows you to import or delete files in TLE format.
 
-\image html wcc-options.png
+\image html gestionnairetle.png
+
+The list contains the files in TLE format in the PreviSat orbital elements directory. A button allows the import of a TLE file. The 'Remove' button allows you to delete the TLE files selected in the list.
 
 */

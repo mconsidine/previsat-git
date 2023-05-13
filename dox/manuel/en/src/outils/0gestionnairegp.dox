@@ -1,0 +1,44 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    13 mai 2023
+ *
+ */
+
+
+/**
+\page GestionnaireGP Management of orbital elements
+
+This tool allows to update the orbital elements of satellites by downloading them from the dedicated servers.
+
+\image html majelem.png
+
+Updating orbital elements can be automated, so no file manipulation is required. It is necessary to check the groups of orbital elements which one wishes to update automatically. If the box 'Maximum age of orbital elements' is checked, then the update of the elements is done after the number of days indicated in front of this box. Otherwise, the update is performed each time the software is started.
+
+It is possible to create a group of orbital elements by clicking on the <b>+</b> button at the top of the list of element groups or by right-clicking in the list. You must then give it a name, indicate the domain (server) on which it will download recent orbital elements and the list of files contained in this group. If a file does not exist on the server, it will not be updated.
+
+It is also possible to add or remove files from a group by clicking on the <b>+</b> button at the top of the list of orbital element files or by right-clicking in the list.
+
+When you click on a satellite in the list, the detail of the orbital elements is displayed in the window. See the \ref Info "Satellite Information" page for element descriptions.
+
+*/

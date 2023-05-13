@@ -1,3 +1,31 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    13 mai 2023
+ *
+ */
+
+
 /**
 \page Caracteristiques Technical features
 
@@ -6,14 +34,14 @@
 
 | Software | Version | Comment |
 |----------|---------|---------|
-| PreviSat | VERSION_PREVISAT | NB_LIGNES_CODE lines of source code |
-| Qt Creator | VERSION_QTCREATOR | IDE |
-| Qt Library | VERSION_LIB_QT | GUI library |
-| CppCheck | VERSION_CPPCHECK | Checking and analyzing of source code |
-| Inno Setup Compiler | VERSION_INNOSETUP | Installation setup for Windows |
-| Tortoise Hg | VERSION_TORTOISEHG | Version control software |
-| UPX | VERSION_UPX | Version control software |
-| doxygen | VERSION_DOXYGEN | Documentation generator |
+| PreviSat | <center>VERSION_PREVISAT</center> | NB_LIGNES_CODE lines of source code |
+| Qt Creator | <center>VERSION_QTCREATOR</center> | IDE |
+| Qt Library | <center>VERSION_LIB_QT</center> | GUI library |
+| CppCheck | <center>VERSION_CPPCHECK</center> | Checking and analyzing of source code |
+| Inno Setup Compiler | <center>VERSION_INNOSETUP</center> | Installation setup for Windows |
+| Tortoise Hg | <center>VERSION_TORTOISEHG</center> | Version control software |
+| UPX | <center>VERSION_UPX</center> | Version control software |
+| doxygen | <center>VERSION_DOXYGEN</center> | Documentation generator |
 <br />
 
 <li>Used Models and constants
@@ -25,13 +53,14 @@
 | <center>Osculating elements</center> | <center>Fundamental of Astrodynamics and Application 2nd edition</center> | Vallado | |
 | <center>Atmospheric extinction</center> | <center>Magnitude corrections for atmospheric extinction, 1992</center>  | Green | |
 | <center>Catalog of main stars</center> | <center>Bright Star Catalog 5, 1991</center> | Hoffleit | |
+| <center>Satellite information</center> | <center>GCAT</center> | Jonathan C. McDowell | https://planet4589.org/space/gcat |
 <br />
 
 | Constant | Symbol | Value | Origin |
 |----------|--------|-------|--------|
-| Gravitational geocentric constant<br />Second zonal harmonic<br />Third zonal harmonic<br />Fourth zonal harmonic<br />Flatness of Earth globe<br />Terrestrial equatorial radius | GM<br />J2<br />J3<br />J4<br />f<br />Re | 398,600.8 km<sup>3</sup>.s<sup>-2</sup><br />0.001 082 6158<br />-0.000 002 538 81<br />-0.000 001 655 97<br />1/298.26<br />6378.135 km | WGS-72
-| Astronomical unit | AU | 149,597,870 km | IAU 1976 |
-| Solar equatorial radius<br />Lunar equatorial radius<br />Magnitude of solar disc center | R<sub>s</sub><br />R<sub>l</sub><br />M<sub>s</sub>| 696,342 km<br />1737.4 km<br />-26.98 | |
+| Gravitational geocentric constant<br />Second zonal harmonic<br />Third zonal harmonic<br />Fourth zonal harmonic<br />Flatness of Earth globe<br />Terrestrial equatorial radius | <center>GM<br />J2<br />J3<br />J4<br />f<br />Re</center> | 398,600.8 km<sup>3</sup>.s<sup>-2</sup><br />0.001 082 6158<br />-0.000 002 538 81<br />-0.000 001 655 97<br />1/298.26<br />6378.135 km | WGS-72
+| Astronomical unit | <center>AU</center> | 149,597,870 km | IAU 1976 |
+| Solar equatorial radius<br />Lunar equatorial radius<br />Magnitude of solar disc center | <center>R<sub>s</sub><br />R<sub>l</sub><br />M<sub>s</sub></center> | 696,342 km<br />1737.4 km<br />-26.98 | |
 </ol>
 
 */

@@ -1,0 +1,51 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    13 mai 2023
+ *
+ */
+
+
+/**
+\page Telescope Tracking with a telescope
+
+This feature, only available under Windows, allows to follow an artificial satellite be means of a telescope with a Sky-Watcher mount.
+
+\image html telescope.png
+
+On this tab, we display the next pass of the selected stallite in the main list :
+- The rising time and the corresponding azimuth (if the satellite is already in the sky, we display its elevation and its azimuth)
+- The maximum elevation of the pass
+- The setting time and the corresponding azimuth
+
+If we choose a minimum elevation different from 0°, rising and setting times will be the times for those the satellite is at the choosen elevation.
+
+It is possible to modify the start date and the finish date by clicking on the button 'Adjust the dates'.
+
+By clicking on the <b>Generate positions</b> button, PreviSat produces a file containing the positions of the satellite with the specified step. This file shall be opened with the software provided by Skywatcher to control the mount in order to follow the satellite.
+
+By clicking on the button 'Open Satellite Tracker', the produced file by PreviSat is automatically read by Satellite Tracker. It is also possible to define a delay to start the tracking, and to send data to the mount (button 'Start').
+
+For more information about the use of Satellite Tracker and also the compatible mounts, please refer to the user notice provided by Sky-Wtacher.
+
+*/

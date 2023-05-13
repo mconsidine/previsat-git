@@ -27,10 +27,21 @@
 
 
 /**
-\page Wall Wall Command Center
+\page Evenements Orbital events
 
-This tab allows to manage the display options when the Wall Command Center visualization is activated (when the "ISS Live" box is checked).
+The <b>Orbital events</b> tab allows to determine the orbital events of the selected satellites. We can choose the events :
+- The passes of the satellite to ascending and descending nodes (equatorial crosses),
+- The passes to quadrangles (at position = 90° and 270°), that is to say the passes to the maximal latitudes,
+- The passes to shadow/penumbra/light,
+- The passes to apogee/perigee,
+- And the terminator passes, that is to say the passes of the satellite over the day/night limit.
 
-\image html wcc-options.png
+\image html evenements.png
+
+The results are displayed on the following manner.
+
+\image html resultats-evenements.png
+
+It is possible to save the results in a text file.
 
 */

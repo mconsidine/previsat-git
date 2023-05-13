@@ -27,10 +27,14 @@
 
 
 /**
-\page Wall Wall Command Center
+\page Antenne Antenna tracking
 
-This tab allows to manage the display options when the Wall Command Center visualization is activated (when the "ISS Live" box is checked).
+This feature allows to follow an artificial satellite be means of an antenna dedicated to the radio, with the use of the CatRotator software.
 
-\image html wcc-options.png
+\image html antenne.png
+
+By clicking on the button 'Connect', PreviSat sends data by means of the UDP protocol to the address and the port provided by the user. The Cat Rotator software connects to this address and port to receive data (elevation and azimuth of satellite selected in the list).
+
+PreviSat displays in the dropdown lists the frequencies used by the satellite if they are known. The Doppler effect, the real frequency (uplink and downlink), the free-space path loss and the delay of transmission are calculated and displayed in the tab.
 
 */

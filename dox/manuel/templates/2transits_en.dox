@@ -1,11 +1,37 @@
-/**
-\page Transits ISS transits
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    13 mai 2023
+ *
+ */
 
-The <b>ISS transits</b> tab allows calculating the conjunctions and the transits of the ISS with the Sun and/or the Moon. It is necessary to give the initial and final dates and hours, the place of location and the TLE file containing the orbital elements of ISS. You have to specify which bodies you want to calculate the transits (Sun and/or Moon), the minimal elevation of satellite and the maximal elongation between ISS and the body.
+
+/**
+\page Transits Transits
+
+The <b>Transits</b> tab allows calculating the conjunctions and the transits of the satellites with the Sun and/or the Moon. It is necessary to give the initial and final dates and hours, and the place of location. You have to specify which bodies you want to calculate the transits (Sun and/or Moon), the minimal elevation of satellite and the maximal elongation between ISS and the body.
 
 \image html transits.png
-
-This tab also provides the informations about ISS mass evolution (before maneuver if there is one maneuver), the size of its orbit (apogee and perigee) and planned maneuvers (velocity variation ΔV and duration).
 
 <br />
 \image html resultats-transits.png
@@ -20,64 +46,130 @@ It is possible to save the selected transit (or conjunction) as an image, or sav
 <pre>
 PreviSat VERSION_PREVISAT / Astropedia (c) ANNEES_DEV
 
-Location                   : Paris 002°20'55" East 48°51'12" North 98 ft
-Timezone                   : UTC + 02:00
-Conditions of observations : Minimal elevation of the satellite = 10°
-Range unit                 : nmi
+Location                       : Paris      002°20'55" East    48°51'12" North   30 m
+Timezone                       : UTC + 02:00
+Conditions of observations     : Minimum elevation of the satellite = 5°
+Range unit                     : km
 
-Age of the most recent TLE : 0.19 days (at 14/04/2018 00:00:00)
-Age of the oldest TLE      : 0.19 days
-
-
-   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill Dur      Alt  Range   Sun Azim    Sun Elev     Max Long    Max Lat       Range
-2022/01/16 21:28:01.0   126°40'33"  69°45'16"  05h41m26s +34°47'08"  Aur 20.00   C    M   Sha        420.0   445.8  284°09'56" -39°33'14"   000.2990 W  49.1114 N    195.9 (W)
-2022/01/16 21:28:20.6   097°22'53"  58°17'15"  07h04m43s +36°35'44"  Aur 10.81   C    M   Sha 45.1   420.2   488.3  284°14'16" -39°36'21"   001.5495 E  49.6607 N    107.0 (NW)
-2022/01/16 21:28:46.1   084°05'10"  43°33'05"  08h27m47s +34°36'33"  Lyn 20.00   C    M   Sha        420.4   590.8  284°19'56" -39°40'25"   004.0258 E  50.3326 N    204.4 (NNE)
-
-2022/01/17 20:40:33.1   114°50'40"  43°30'45"  06h34m37s +18°32'26"  Gem 20.00   C    M   Sha        419.6   590.0  274°24'35" -31°39'58"   000.3415 W  47.3373 N    261.8 (SW)
-2022/01/17 20:41:09.2   094°42'19"  32°10'38"  07h57m19s +20°48'50"  Cnc  3.80   C    M   Sha 100.8  419.9   735.4  274°31'41" -31°45'53"   003.1576 E  48.5298 N     69.6 (ESE)
-2022/01/17 20:42:13.8   080°17'12"  17°57'01"  09h20m29s +19°44'10"  Leo 20.00   C    M   Sha        420.4  1103.0  274°44'23" -31°56'29"   009.6630 E  50.3683 N    554.6 (ENE)
-
-2022/01/18 01:30:32.6   214°22'05"  48°23'43"  06h59m33s +11°40'48"  Gem 20.00   C    M   Sha        422.1   551.4  014°30'05" -61°06'45"   000.1884 E  47.8045 N    198.1 (SW)
-2022/01/18 01:30:45.9   199°11'22"  48°00'26"  07h38m26s +08°16'28"  CMi 17.29   C    M   Sha 26.9   422.1   554.3  014°36'24" -61°06'12"   001.3344 E  47.3839 N    180.0 (SSW)
-2022/01/18 01:30:59.6   184°54'21"  45°37'10"  08h16m15s +04°34'11"  Hya 20.00   C    M   Sha        422.0   574.0  014°42'55" -61°05'38"   002.4989 E  46.9370 N    213.4 (SSE)
-
-2022/01/18 19:53:41.7   097°10'49"  21°48'21"  07h36m30s +11°44'02"  CMi 20.00   C    M   Sha        419.4   969.8  265°40'16" -23°46'29"   000.7375 W  45.2981 N    459.4 (SSW)
-2022/01/18 19:54:56.0   082°02'56"  11°52'13"  08h49m05s +14°07'15"  Cnc  8.21   C    M   Sha 232.1  420.0  1386.6  265°53'52" -23°58'40"   008.4628 E  48.4519 N    452.6 (E)
-2022/01/18 19:57:33.8   070°29'48"  00°03'01"  09h59m13s +12°43'44"  Leo 20.00   C    M   Sha        421.1  2415.6  266°22'48" -24°24'33"   026.9776 E  52.3538 N   1777.2 (ENE)
-
-2022/01/19 00:42:50.6   188°09'29"  69°26'18"  07h32m41s +28°26'38"  Gem 20.00   C    M   Sha        421.9   448.6  351°02'28" -61°17'49"   000.1430 E  49.2817 N    168.1 (W)
-2022/01/19 00:43:13.3   150°21'15"  58°01'53"  08h50m38s +19°38'11"  Cnc  2.62   C    M   Sha 53.3   421.8   491.4  351°13'27" -61°18'23"   002.2581 E  48.6482 N     23.8 (S)
-2022/01/19 00:43:44.0   134°00'15"  41°16'18"  09h59m14s +08°48'36"  Leo 20.00   C    M   Sha        421.8   615.7  351°28'20" -61°19'09"   005.0281 E  47.7296 N    234.8 (ESE)
-
-2022/01/19 20:42:15.1   067°30'52"  32°28'49"  09h16m07s +38°04'23"  LMi 20.00   C    M   Sha        420.4   731.2  274°57'46" -31°32'47"   016.5278 W  45.7768 N   1463.5 (WSW)
-2022/01/19 20:43:32.4   069°09'29"  15°08'04"  10h11m39s +24°59'53"  Leo  9.53   C    M   Sha 276.3  420.9  1222.1  275°13'01" -31°45'26"   001.8555 E  50.6511 N    203.1 (NNW)
-2022/01/19 20:46:51.4   070°40'29" -01°56'28"  10h57m12s +11°04'35"  Leo 20.00   C    M   Sha        421.6  2585.4  275°52'29" -32°17'59"   029.1883 E  52.5893 N   1928.4 (NE)
-
-2022/01/19 23:55:18.2   102°36'13"  63°04'04"  09h17m02s +37°19'28"  LMi 20.00   C    M   Sha        421.6   469.2  329°20'17" -58°24'45"   000.0401 E  50.1917 N    223.8 (WNW)
-2022/01/19 23:55:45.1   106°17'26"  45°00'40"  10h13m43s +23°42'32"  Leo  8.32   C    M   Sha 73.2   421.6   578.8  329°31'32" -58°26'59"   002.8052 E  49.5476 N     84.1 (NNE)
-2022/01/19 23:56:31.4   108°11'44"  26°58'07"  10h59m20s +09°06'46"  Leo 20.00   C    M   Sha        421.5   839.4  329°50'59" -58°30'50"   007.3400 E  48.2948 N    373.5 (E)
-
-2022/01/20 21:31:44.1   063°58'24"  21°59'27"  10h58m24s +33°20'45"  LMi 20.00   C    M   Sha        421.2   967.8  285°26'50" -39°20'14"
-2022/01/20 21:33:26.2   074°08'26"  08°14'34"  11h09m50s +16°36'49"  Leo  9.57   C    M   Sha 334.9  421.4  1621.7  285°49'47" -39°36'23"   008.6354 E  51.3693 N    529.4 (NE)
-2022/01/20 21:37:19.0   081°10'12" -06°35'38"  11h31m26s +00°47'40"  Vir 20.00   C    M   Sha        421.2  3203.3  286°42'36" -40°13'06"   037.4957 E  47.2183 N   2603.9 (ENE)
-
-2022/01/20 23:07:49.4   083°23'27"  41°55'18"  10h30m39s +34°01'06"  LMi 20.00   C    M   Sha        421.4   608.3  311°34'06" -53°12'23"   002.4714 W  50.5351 N    394.8 (WNW)
-2022/01/20 23:08:38.4   093°13'42"  25°12'55"  11h01m22s +16°41'43"  Leo  7.03   C    M   Sha 163.8  421.3   880.4  311°50'30" -53°18'24"   003.5962 E  49.6298 N    125.3 (NE)
-2022/01/20 23:10:33.3   099°54'41"  08°04'14"  11h30m01s -00°22'04"  Leo 20.00   C    M   Sha        421.1  1633.4  312°29'13" -53°32'23"   015.7753 E  46.5334 N   1038.8 (E)
-
-2022/01/21 22:20:25.6   078°41'23"  27°38'34"  10h49m17s +27°37'32"  LMi 20.00   C    M   Sha        421.1   823.9  297°29'36" -46°33'59"
-2022/01/21 22:22:04.8   089°54'12"  10°50'43"  11h07m54s +08°12'31"  Leo  3.30   C    M   Sha 376.1  421.1  1449.1  297°56'21" -46°48'25"   001.1631 W  47.9944 N    276.9 (WSW)
-2022/01/21 22:26:41.6   097°22'15" -07°30'52"  11h38m43s -10°29'45"  Crt 20.00   C    M   Sha        420.3  3333.9  299°11'57" -47°28'22"   034.0507 E  39.7788 N   2698.4 (E)
+Age of the most recent element : 19.90 days (at 06/01/2023 18:21:00)
+Age of the oldest element      : 19.90 days
 
 
-Temps écoulé : 0.22s
+CSS (TIANHE)
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/05 04:04:07.0   198°57'08"  05°41'47"  17h35m52s -32°59'26"  Sco  5.00   C    M   Sha          370.6    1672.5  031°45'00" -12°32'30"   000.3068 W  43.5015 N    629.1 (S)
+2023/06/05 04:04:16.1   197°08'45"  06°11'25"  17h44m54s -32°56'54"  Sco  4.61   C    M   Sha  18.0    370.6    1632.5  031°47'00" -12°31'42"   000.5514 E  43.9353 N    563.9 (S)
+2023/06/05 04:04:25.0   195°18'11"  06°39'58"  17h54m04s -32°53'06"  Sgr  5.00   C    M   Sha          370.6    1595.3  031°48'57" -12°30'56"   001.4037 E  44.3644 N    504.2 (S)
+
+CSS (TIANHE)
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/06 04:38:23.8   195°42'11"  14°58'02"  18h37m57s -24°40'27"  Sgr  5.00   C    M   Pen          371.3    1109.6  039°00'20" -09°11'33"   002.4619 E  52.3425 N    388.2 (N)
+2023/06/06 04:38:32.4   192°37'00"  15°32'31"  18h51m26s -24°38'10"  Sgr  3.96   C    M   Ill  16.9    371.3    1085.1  039°02'08" -09°10'39"   003.5157 E  52.7927 N    445.9 (N)
+2023/06/06 04:38:40.7   189°29'49"  16°02'54"  19h04m58s -24°33'05"  Sgr  5.00   C    M   Ill          371.3    1064.2  039°03'52" -09°09'48"   004.5705 E  53.2599 N    514.3 (N)
+
+CSS (TIANHE)
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/07 03:36:10.5   169°13'13"  13°51'44"  19h33m14s -26°33'36"  Sgr  5.00   C    M   Sha          371.0    1158.9  025°21'38" -14°34'11"   000.5752 E  49.6652 N    157.5 (WNW)
+2023/06/07 03:36:23.7   164°17'19"  13°59'31"  19h54m23s -25°37'43"  Sgr  1.30   C    M   Sha  26.4    371.1    1153.0  025°24'38" -14°33'15"   001.8693 E  49.9444 N    126.2 (NNW)
+2023/06/07 03:36:36.9   159°21'13"  13°57'30"  20h15m14s -24°34'35"  Cap  5.00   C    M   Sha          371.1    1154.6  025°27'37" -14°32'20"   003.1709 E  50.2143 N    162.6 (N)
+
+CSS (TIANHE)
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/07 06:47:46.9   209°59'36"  13°42'11"  19h52m07s -22°02'27"  Sgr  5.00   C    M   Ill          371.3    1167.3  063°44'45" +07°34'00"   004.8392 E  53.3440 N    529.1 (N)
+2023/06/07 06:47:56.2   206°36'23"  13°58'14"  20h06m04s -22°53'57"  Cap  3.74   C    M   Ill  18.5    371.3    1154.6  063°46'24" +07°35'22"   006.0652 E  53.4043 N    569.0 (NNE)
+2023/06/07 06:48:05.4   203°11'27"  14°09'39"  20h20m14s -23°43'01"  Cap  5.00   C    M   Ill          371.3    1145.8  063°48'03" +07°36'42"   007.3160 E  53.4882 N    621.4 (NNE)
+
+CSS (TIANHE)
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/08 02:34:14.0   141°38'00"  09°18'05"  20h34m46s -22°47'35"  Cap  5.00   C    M   Sha          370.9    1410.6  010°48'18" -17°39'17"
+2023/06/08 02:34:29.3   137°16'41"  08°49'26"  20h52m26s -21°13'58"  Cap  2.45   C    M   Sha  31.4    371.0    1442.1  010°51'58" -17°38'48"
+2023/06/08 02:34:45.3   132°57'09"  08°13'35"  21h09m50s -19°37'57"  Cap  5.00   C    M   Sha          371.0    1482.8  010°55'49" -17°38'18"
+
+CSS (TIANHE)
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/08 04:09:44.2   160°20'53"  18°50'41"  20h43m13s -20°04'22"  Cap  5.00   C    M   Ill          371.2     960.7  032°44'15" -11°48'43"   000.0591 E  51.1918 N    307.5 (NW)
+2023/06/08 04:09:52.0   156°54'38"  18°27'36"  20h57m09s -19°36'53"  Cap  3.77   C    M   Ill  15.7    371.2     973.8  032°45'56" -11°48'02"   000.9574 E  51.1491 N    274.1 (NNW)
+2023/06/08 04:10:00.0   153°30'18"  17°59'21"  21h10m59s -19°07'08"  Cap  5.00   C    M   Ill          371.2     990.4  032°47'40" -11°47'19"   001.8733 E  51.1041 N    252.7 (NNW)
+
+CSS (TIANHE)
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/08 05:45:29.0   184°38'59"  17°40'52"  20h40m41s -23°20'12"  Cap  5.00   C    M   Ill          371.0    1001.0  052°11'46" -01°10'54"   001.1650 E  48.6953 N     88.8 (WSW)
+2023/06/08 05:45:40.9   179°31'08"  17°21'57"  21h02m12s -23°46'45"  Cap  0.71   C    M   Ill  24.1    371.0    1012.5  052°14'01" -01°09'21"   002.3402 E  48.4942 N     39.9 (S)
+2023/06/08 05:45:53.1   174°25'25"  16°51'42"  21h23m47s -24°05'52"  Cap  5.00   C    M   Ill          371.0    1031.5  052°16'21" -01°07'46"   003.5381 E  48.2793 N    108.5 (ESE)
+
+CSS (TIANHE)
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/09 03:07:37.2   132°53'11"  12°22'05"  21h38m09s -16°01'41"  Cap  5.00   C    M   Pen          371.1    1233.4  018°38'49" -16°10'35"
+2023/06/09 03:07:49.4   129°30'44"  11°27'22"  21h52m04s -15°06'49"  Aqr  3.63   C    M   Pen  25.5    371.1    1282.5  018°41'41" -16°09'56"
+2023/06/09 03:08:02.7   126°11'17"  10°27'35"  22h05m53s -14°12'06"  Aqr  5.00   C    M   Pen          371.1    1339.7  018°44'46" -16°09'14"   004.9742 W  53.5836 N    733.2 (NW)
+
+CSS (TIANHE)
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/09 04:43:06.9   155°49'40"  16°59'56"  21h40m24s -20°43'37"  Cap  5.00   C    M   Ill          370.9    1026.0  039°44'19" -08°30'10"   001.6162 E  48.1007 N     99.7 (SSW)
+2023/06/09 04:43:19.5   151°17'41"  15°54'23"  21h59m43s -20°24'16"  Aqr  2.08   C    M   Ill  26.4    370.9    1069.0  039°46'56" -08°28'50"   003.0059 E  47.8728 N    119.4 (SE)
+2023/06/09 04:43:33.3   146°50'30"  14°39'33"  22h18m56s -20°01'11"  Aqr  5.00   C    M   Ill          370.8    1122.2  039°49'47" -08°27'23"   004.4910 E  47.6196 N    210.1 (ESE)
+
+CSS (TIANHE)
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/10 03:41:00.8   128°38'55"  10°42'58"  22h33m53s -15°17'34"  Aqr  5.00   C    M   Ill          370.8    1323.7  026°14'16" -14°00'36"   001.1056 E  48.1499 N    120.6 (SW)
+2023/06/10 03:41:22.5   124°30'22"  08°51'14"  22h52m37s -14°37'11"  Aqr  1.95   C    M   Ill  47.0    370.7    1439.7  026°19'09" -13°59'02"   004.6338 E  47.5676 N    222.0 (ESE)
+2023/06/10 03:41:47.8   120°30'03"  06°49'53"  23h11m15s -14°00'21"  Aqr  5.00   C    M   Ill          370.7    1583.8  026°24'51" -13°57'10"   008.2520 E  46.9624 N    488.7 (ESE)
+
+ISS
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/13 11:22:48.0   216°11'17"  42°20'33"  01h13m42s +06°35'10"  Psc  5.00   C    M   Ill          415.6     596.0  118°00'20" +51°16'12"   001.5601 E  48.6723 N     61.4 (WSW)
+2023/06/13 11:22:56.2   212°01'39"  46°14'07"  01h30m51s +09°05'21"  Psc  0.84   C    M   Ill  15.7    415.7     560.3  118°02'41" +51°17'24"   002.3270 E  48.9398 N      9.7 (NNW)
+2023/06/13 11:23:03.7   207°12'52"  49°56'26"  01h48m17s +11°31'23"  Ari  5.00   C    M   Ill          415.7     531.9  118°04'48" +51°18'29"   003.0234 E  49.1760 N     61.0 (NE)
+
+ISS
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/17 09:44:13.9   101°44'47"  44°16'37"  04h58m35s +25°27'18"  Tau  0.26   T    M   Ill          416.0     577.9  094°38'01" +35°45'42"   002.3620 E  48.8300 N      2.8 (SSE)
+2023/06/17 09:44:14.1   101°38'38"  44°12'34"  04h59m02s +25°27'37"  Tau  0.23   T    M   Ill   0.3    416.0     578.5  094°38'03" +35°45'43"   002.3772 E  48.8348 N      2.9 (ESE)
+2023/06/17 09:44:14.2   101°32'30"  44°08'32"  04h59m28s +25°27'55"  Tau  0.26   T    M   Ill          416.0     579.1  094°38'05" +35°45'45"   002.3924 E  48.8396 N      3.6 (ESE)
+
+ISS
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/19 12:55:46.9   116°01'22"  62°18'40"  06h53m05s +32°11'06"  Gem  5.00   C    M   Ill          415.3     465.2  151°26'37" +62°16'03"   002.0112 E  49.2045 N     46.2 (NW)
+2023/06/19 12:55:51.7   115°23'01"  58°31'03"  07h06m27s +29°39'42"  Gem  3.23   C    M   Ill  10.0    415.3     481.6  151°28'51" +62°16'26"   002.4759 E  49.0844 N     27.3 (N)
+2023/06/19 12:55:56.8   114°52'32"  54°43'33"  07h19m09s +27°03'38"  Gem  5.00   C    M   Ill          415.3     501.2  151°31'14" +62°16'50"   002.9717 E  48.9535 N     47.0 (ENE)
+
+ISS
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/21 09:42:10.7   067°56'36"  14°32'10"  08h16m11s +25°21'08"  Cnc  5.00   C    M   Ill          416.2    1238.9  094°00'05" +35°19'36"
+2023/06/21 09:42:30.9   069°29'10"  11°57'31"  08h19m13s +22°26'00"  Cnc  4.04   C    M   Ill  44.0    416.2    1371.7  094°04'04" +35°22'55"   000.9509 W  46.9511 N    324.9 (SW)
+2023/06/21 09:42:54.7   070°56'13"  09°22'23"  08h22m23s +19°33'10"  Cnc  5.00   C    M   Ill          416.1    1529.5  094°08'44" +35°26'49"   004.2889 E  48.1135 N    165.3 (ESE)
+
+ISS
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/21 11:17:55.5   079°24'38"  28°51'34"  08h33m12s +27°59'34"  Cnc  5.00   C    M   Ill          415.6     788.8  115°55'22" +50°28'57"   000.2498 E  48.9399 N    154.2 (W)
+2023/06/21 11:18:11.4   082°33'24"  24°45'34"  08h37m56s +23°07'39"  Cnc  0.42   C    M   Ill  35.5    415.5     880.5  115°59'44" +50°31'18"   002.2429 E  48.7938 N     10.2 (SW)
+2023/06/21 11:18:31.0   085°26'33"  20°34'18"  08h42m40s +18°16'24"  Cnc  5.00   C    M   Ill          415.4     999.9  116°05'09" +50°34'12"   004.6268 E  48.5586 N    170.8 (E)
+
+CSS (TIANHE)
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/28 18:35:53.7   140°10'40"  15°24'14"  13h51m53s -16°41'22"  Vir  5.00   C    M   Ill          374.6    1099.2  271°55'01" +29°58'26"   001.8123 E  47.9988 N    103.0 (SSW)
+2023/06/28 18:36:08.1   135°47'26"  14°04'29"  14h10m23s -15°55'26"  Vir  2.13   C    M   Ill  30.5    374.6    1158.3  271°57'41" +29°56'04"   003.5625 E  47.8502 N    143.3 (SE)
+2023/06/28 18:36:24.1   131°29'44"  12°35'43"  14h28m46s -15°08'41"  Lib  5.00   C    M   Ill          374.6    1230.6  272°00'39" +29°53'26"   005.4556 E  47.6795 N    265.0 (ESE)
+
+CSS (TIANHE)
+   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range
+2023/06/29 19:07:49.7   139°07'40"  11°05'55"  14h39m51s -20°04'39"  Lib  5.00   C    M   Ill          373.9    1309.8  277°37'36" +24°44'43"   001.2392 W  49.7008 N    277.5 (W)
+2023/06/29 19:08:12.2   134°33'55"  09°11'00"  15h00m54s -19°36'38"  Lib  0.48   C    M   Ill  49.0    373.7    1426.2  277°41'37" +24°41'03"   002.9173 E  48.4209 N     63.8 (SE)
+2023/06/29 19:08:38.7   130°09'05"  07°04'50"  15h21m49s -19°09'38"  Lib  5.00   C    M   Ill          373.6    1573.1  277°46'20" +24°36'44"   006.8458 E  47.2439 N    380.0 (ESE)
+
+
+Elapsed time : 1.86s
+
 </pre>
 </font>
 </div>
 \endhtmlonly
 
 <br />
-The file containing the results shows in its header the conditions of obsevations. he results are provided under the form of columns which contain the date and hour, and then the coordinates of ISS (azimuth, elevation, right ascension, declination and constellation). We then give the angular separation between ISS and the center of the considered body, the phenomenon type (C = Conjunction; T = Transit), the body (S = Sun; M = Moon), and also the illumination of ISS (Ill = Illuminated; Pen = Penumbra; Sha = Shadow). We finally give the altitude and the range of the satellite, and the topocentric coordinates of the Sun. Lunar conjunctions during daytime are not displayed, but solar conjunctions are indicated (these latter conjunctions are not visible but they allow to locate the places of observation where we can observe transit in front of the Sun).
+The file containing the results shows in its header the conditions of obsevations.
+
+The results are presented in the form of columns which contain the date and time and the coordinates of the satellite (azimuth and height, right ascension, declination and constellation). We then give the angular separation between the satellite and the center of the body considered, the type of event (C = Conjunction; T = Transit), the body (S = Sun; L = Moon), as well as the illumination of the satellite (Ill = Illuminated; Pen = Penumbra; Sha = Shadow).
+
+Finally, we provide the altitude and distance of the satellite, and the topocentric coordinates of the Sun. The conjunctions with the Sun are indicated (although not observable, they make it possible to locate the places where there is a transit in front of the Sun).
 
 */

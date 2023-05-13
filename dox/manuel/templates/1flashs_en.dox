@@ -1,3 +1,31 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    13 mai 2023
+ *
+ */
+
+
 /**
 \page Flashs Flares
 
@@ -5,7 +33,7 @@ The <b>Flares</b> tab allows to carry out the search of flares produced by MetOp
 
 \image html flashs.png
 
-MetOp satellites (for instance MetOp-A et MetOp-B are orbiting) are big size meteorological satellites (deployed dimensions : 17.6 x 6.6 x 5.0 m), developped by ESA and EUMETSAT. These satellites have an instrument named ASCAT (Advanced Scatterometer) which some antennas can produce flares. The ASCAT instrument measure wind speeds and their direction over oceans. There are 6 of these antennas, 3 pointing left to the ground track, and 3 pointing to right. Those pointing left to the ground track are never illuminated by the Sun and then can't produce flares. MetOp flares can reach a -5 magnitude. MetOp satellites are sun-synchronous, which implies some particularities :
+MetOp satellites are big size meteorological satellites (deployed dimensions : 17.6 x 6.6 x 5.0 m), developped by ESA and EUMETSAT. These satellites have an instrument named ASCAT (Advanced Scatterometer) which some antennas can produce flares. The ASCAT instrument measure wind speeds and their direction over oceans. There are 6 of these antennas, 3 pointing left to the ground track, and 3 pointing to right. Those pointing left to the ground track are never illuminated by the Sun and then can't produce flares. MetOp flares can reach a -5 magnitude. MetOp satellites are sun-synchronous, which implies some particularities :
 - There are no flares during winter (except for high latitudes),
 - Flares produced by central antenna are visible in early spring (and will be visible to the tropics during summer),
 - Flares produced by the forward surface of the left antenna are only visible from the Northern hemisphere, while those produced by the backward surface of the left antenna are visible from the Southern hemisphere.
@@ -31,7 +59,7 @@ https://directory.eoportal.org/web/eoportal/satellite-missions/c-missions/cosmo-
 \image html COSMO_SkyMed_satellite.png "COSMO-SkyMed satellite and its SAR antenna  (Source : www.e-geos.it)"
 <br />
 
-It is necessary to give the initial and final dates and hours, and also the location. You have to specify the path of the file containing MetOp and SkyMed satellites. By default, the used file is flares-spctrk.txt. Just like for the Predictions tab, it is necessary to indicate the minimal elevation of the satellite (by default 10°) and the elevation of the Sun, which will make possible to determine the day/night transition. By default, the maximum magnitude for a flare is equal to 2. We can choose to publish the results in the form of one line (the moment when the magnitude value passes by a minimum), or in three lines (the moment of the value of the minimum is surrounded by the dates corresponding to the limiting conditions imposed by the settings of calculation.
+It is necessary to give the initial and final dates and hours, and also the location. The file used is flares-spctrk.xml, containing the satellites which can produce flares. As for the Predictions tab, you must indicate the minimum height of the satellite (by default 10°) and the height of the Sun, which will determine the day/night transition. By default, the maximum magnitude for the detection of a flash is equal to 2. The results are sorted chronologically if the box is checked, otherwise they are sorted by satellite.
 
 \image html resultats-flashs.png
 
@@ -45,38 +73,39 @@ It is possible to save the selected flare as an image, or save all flares as a t
 <pre>
 PreviSat VERSION_PREVISAT / Astropedia (c) ANNEES_DEV
 
-Location                   : Paris 002°20'55" East 48°51'12" North 98 ft
-Timezone                   : UTC + 02:00
-Conditions of observations : Maximal elevation of the Sun = -6°
-                             Minimal elevation of the satellite = 10°
-Range unit                 : nmi
+Location                       : Paris      002°20'55" East    48°51'12" North   30 m
+Timezone                       : UTC + 02:00
+Conditions of observations     : Maximum elevation of the Sun = -6° / Minimum elevation of the satellite = 10°
+Range unit                     : km
 
-Age of the most recent TLE : 9.52 days (at 12/24/2018 07:08:00p)
-Age of the oldest TLE      : 9.81 days
+Age of the most recent element : 0.49 days (at 05/13/2023 18:07:00)
+Age of the oldest element      : 3.71 days
 
 
-Satellite  Date       Hour    Sat Azimuth Sat Elev    RA Sat   Decl Sat  Cst  Ang Mir Magn  Alt  Range  Sun Azim   Sun Elev  Max Long    Max Lat Range  Max Magn
-SkyMed3 2018/12/24 07:20:07.8p 231°55'15" 68°52'09" 23h22m35s +33°47'11" Peg 15.03 S  +2.0 340.0 362.1 259°19'18" -22°11'12"
-SkyMed3 2018/12/24 07:20:29.5p 217°26'14" 57°54'20" 23h21m46s +21°07'20" Peg 10.61 S  +0.7 339.9 394.4 259°23'07" -22°14'43" 000.5127 E 48.9514 N 135.0 (W) -2.6
-SkyMed3 2018/12/24 07:20:56.3p 210°08'13" 46°05'43" 23h20m48s +08°30'28" Peg 14.74 S  +2.0 339.7 453.4 259°27'49" -22°19'02"
+Satellite     Date       Hour     Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang   Mir Magn       Alt     Range  Sun Azim   Sun Elev     Max Long    Max Lat     Max Magn  Range
+MetOp-C    2023/05/13 22:28:11.1   069°12'24"  72°46'54"  13h49m52s +52°02'19"  UMa  7.00   F  +2.0     828.3     862.4  312°50'01" -09°30'14"
+MetOp-C    2023/05/13 22:28:28.6   042°30'47"  70°24'58"  13h53m29s +60°41'47"  UMa  0.47   F  -4.5     828.5     873.0  312°53'38" -09°32'21"   002.4439 E  48.8783 N     -5.0      7.5 (ENE)
+MetOp-C    2023/05/13 22:28:46.8   024°11'35"  65°09'05"  14h00m14s +69°18'50"  UMi  7.00   F  +2.0     828.7     902.2  312°57'24" -09°34'32"
 
-SkyMed1 2018/12/25 07:08:03.5p 160°24'03" 74°49'05" 00h58m43s +34°21'42" And 15.06 S  +2.0 340.1 351.3 257°08'19" -20°08'42"
-SkyMed1 2018/12/25 07:08:29.4p 178°22'39" 60°24'37" 00h38m06s +19°16'18" Psc  6.79 S  -0.5 340.0 385.4 257°12'51" -20°12'52" 003.4530 E 48.6459 N 84.4 (E) -2.6
-SkyMed1 2018/12/25 07:09:03.4p 184°59'18" 44°53'01" 00h21m07s +03°50'18" Psc 14.72 S  +2.0 339.7 461.4 257°18'48" -20°18'19"
+MetOp-B    2023/05/14 22:57:59.8   334°57'30"  27°34'05"  04h02m06s +61°16'38"  Cam 11.66   C  +2.0     829.2    1518.9  319°15'47" -12°41'27"
+MetOp-B    2023/05/14 22:59:14.8   339°00'18"  17°06'38"  03h00m25s +53°57'57"  Per  7.37   C  +1.1     830.0    1973.3  319°32'02" -12°49'28"
+MetOp-B    2023/05/14 23:01:05.3   342°13'10"  06°58'33"  02h22m23s +45°30'37"  And 11.66   C  +2.0     831.1    2685.0  319°56'01" -13°01'12"
 
-SkyMed1 2018/12/26 06:05:10.8a 181°22'25" 51°41'04" 11h29m44s +10°32'41" Leo 13.14 S  +2.0* 339.3 421.0 097°49'43" -24°44'46"
-SkyMed1 2018/12/26 06:05:38.1a 192°11'13" 65°13'26" 11h11m20s +24°28'04" Leo  5.07 S  +0.1* 339.5 370.4 097°54'35" -24°40'19" 001.5537 E 48.6964 N 61.0 (W) -1.5*
-SkyMed1 2018/12/26 06:05:53.7a 208°09'19" 73°20'25" 10h56m28s +33°43'05" LMi  9.75 S  +2.0* 339.6 353.1 097°57'21" -24°37'46"
+MetOp-C    2023/05/16 23:09:28.1   330°55'05"  22°36'33"  04h22m54s +55°07'07"  Cam 11.66   C  +2.0     829.7    1707.1  321°58'05" -13°27'49"
+MetOp-C    2023/05/16 23:10:58.9   337°00'43"  12°26'41"  03h19m34s +48°55'08"  Per  5.75   C  +0.6     830.5    2260.1  322°18'02" -13°36'58"
+MetOp-C    2023/05/16 23:11:26.8   338°16'38"  10°00'00"  03h07m41s +47°06'59"  Per  6.27   C  +0.8     830.7    2437.0  322°24'10" -13°39'46"
 
-SkyMed4 2018/12/27 05:59:05.9a 165°50'28" 53°27'55" 12h05m25s +13°01'03" Vir 12.67 S  +2.0* 339.3 412.4 096°37'35" -25°47'32"
-SkyMed4 2018/12/27 05:59:32.2a 166°16'57" 67°47'35" 11h54m36s +27°06'07" Com  4.27 S  +0.0* 339.5 364.0 096°42'17" -25°43'15" 003.0202 E 48.9465 N 50.3 (E) -1.3*
-SkyMed4 2018/12/27 05:59:46.6a 166°56'50" 76°58'15" 11h46m10s +36°05'44" Uma  8.89 S  +2.0* 339.6 347.7 096°44'51" -25°40'54"
+MetOp-C    2023/05/18 22:24:47.8   059°57'46"  68°03'34"  14h37m30s +55°14'26"  Boo  7.00   F  +2.0     827.8     884.2  312°42'56" -08°05'24"
+MetOp-C    2023/05/18 22:25:01.1   044°14'26"  66°03'01"  14h45m35s +61°35'17"  Dra  4.72   F  -0.3     827.9     895.9  312°45'40" -08°07'00"   003.3445 E  49.0648 N     -5.0     76.6 (ENE)
+MetOp-C    2023/05/18 22:25:15.0   031°28'55"  62°39'56"  14h58m11s +67°54'45"  UMi  7.00   F  +2.0     828.0     918.3  312°48'30" -08°08'41"
 
-SkyMed4 2018/12/27 07:20:05.3p 232°08'20" 69°03'48" 23h34m39s +33°59'13" And 15.03 S  +2.0 340.2 361.9 259°07'51" -21°52'05"
-SkyMed4 2018/12/27 07:20:27.7p 217°11'38" 57°44'37" 23h33m46s +20°55'13" Peg 10.24 S  +0.6 340.1 395.2 259°11'47" -21°55'42" 000.5701 E 48.9469 N 130.8 (W) -2.6
-SkyMed4 2018/12/27 07:20:55.6p 209°47'53" 45°30'13" 23h32m43s +07°52'16" Peg 14.73 S  +2.0 339.9 457.5 259°16'42" -22°00'13"
+MetOp-B    2023/05/19 22:54:34.2   337°41'30"  26°33'48"  03h56m41s +61°47'26"  Cam 11.66   C  +2.0     829.1    1553.4  319°01'22" -11°18'09"
+MetOp-B    2023/05/19 22:55:28.9   340°01'50"  18°44'49"  03h14m41s +55°51'23"  Cam  9.57   C  +1.6     829.8    1886.4  319°13'03" -11°24'03"
+MetOp-B    2023/05/19 22:56:42.5   342°01'51"  11°04'11"  02h46m00s +49°21'41"  Per 11.66   C  +2.0     830.5    2356.9  319°28'46" -11°31'55"
 
-Elapsed time : 0.11s
+
+Elapsed time : 0.21s
+
 </pre>
 </div>
 </font>
@@ -91,5 +120,7 @@ For MetOp flares, there are 3 antennas which can produce flares :
 - The backward left antenna "B".
 
 For SkyMed flares, the denomination of the antenna responsible of the flare is given by "S" letter (SAR).
+
+<b>Important</b>: the calculation assumes an accurate attitude of the satellites, so if the satellites are maneuvered, then the calculated flares do not occur.
 
 */

@@ -1,9 +1,37 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    13 mai 2023
+ *
+ */
+
+
 /**
 \page Configuration Settings
 
 \image html configuration.png
 
-This tab contains a list of checkboxes allowing to display (or not to display) elements in the graphic interface. Some checkboxes have 3 possible states :
+This set of tabs contains a list of checkboxes classified by themes allowing to display (or not to display) elements in the graphic interface. Some checkboxes have 3 possible states :
 <b>Name of satellites</b> box :
 - <b>Checked</b> : the names of selected satellites are displayed,
 - <b>Partially checked</b> (the display of the box varies with the system requirements) : the name of default satellite is displayed,
@@ -29,7 +57,7 @@ This tab contains a list of checkboxes allowing to display (or not to display) e
 - <b>Partially checked</b> : the name of the default location displays, the other locations are represented by a white cross,
 - <b>Unchecked</b> : the name of the default location displays.
 
-A first choice list makes it possible to choose the units displayed in PreviSat. For the satellites as well as the Moon, the unit can be either kilometers, or miles (1 mile = 1.609344 km); the altitude of the place of observation and dimensions of the satellite are then expressed respectively in meters or feet (1 foot = 0.3048 m). The distance from the Sun is always given in astronomical units (1 AU = 149,597,870 km = 92,955,807 miles).
+In the <b>System</b> tab, a first makes it possible to choose the range units displayed in PreviSat. For the satellites as well as the Moon, the unit can be either kilometers, or miles (1 mile = 1.609344 km); the altitude of the place of observation and dimensions of the satellite are then expressed respectively in meters or feet (1 foot = 0.3048 m). The distance from the Sun is always given in astronomical units (1 AU = 149,597,870 km = 92,955,807 miles).
 
 <b>Note</b> : After the entry of a new place of observation when the unit is the foot, the displayed altitude can slightly differ compared to the entered value, because PreviSat stores the altitude in meters and in a integer value. That does not affect any the calculations carried out by PreviSat.
 

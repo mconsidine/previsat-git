@@ -27,10 +27,17 @@
 
 
 /**
-\page Wall Wall Command Center
+\page MajTLE TLE update
 
-This tab allows to manage the display options when the Wall Command Center visualization is activated (when the "ISS Live" box is checked).
+Even if the orbital elements in TLE format are destined to disappear, PreviSat has a <b>TLE update</b> tool to update them.
 
-\image html wcc-options.png
+The <b>Auto TLE update</b> tab allows you to update the orbital elements of the satellites by downloading the files from the dedicated servers.
+
+\image html majtle.png
+
+<hr>
+The <b>Manual TLE update</b> tab allows you to update the orbital elements of the satellites from a file already present on the computer.
+
+\image html majtle2.png
 
 */

@@ -1,11 +1,44 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er mai 2022
+ *
+ * Date de revision
+ * >    13 mai 2023
+ *
+ */
+
+
 /**
 \page Lieu Location
 
 \image html observateur.png
 
-The first list in the Location tab contains the various categories of places of observation (initially France, World and My Favorites).
-- The category France comprises the main towns of Metropolitan France.
-- The category World contains the coordinates of almost 1700 cities in the world.
+In the options list, we can select <b>Name of location</b> which allows to define and select the places of location.
+
+The list <b>Category selection</b> contains the different categories of places of location (by default France, World and My Favorites).
+
+<ul>
+<li>The category France comprises the main towns of Metropolitan France.
+<li>The category World contains the coordinates of almost 1700 cities in the world.
+</ul>
 
 While clicking on an element of this first list, one reveals in the second list the names of the places of the category. When a place of observation is selected, its coordinates are displayed on the right-hand side of the tab. While clicking on the small arrows, one can select the locations for the application.
 
