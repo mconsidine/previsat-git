@@ -65,6 +65,10 @@
         <Description>Drift GEO</Description>
     </Categorie>
     <Categorie>
+        <Acronyme>GEO/SI</Acronyme>
+        <Description>Inclined GEO</Description>
+    </Categorie>
+    <Categorie>
         <Acronyme>GEO/ID</Acronyme>
         <Description>Inclined drift GEO</Description>
     </Categorie>
@@ -73,12 +77,12 @@
         <Description>Near-synchronous orbit</Description>
     </Categorie>
     <Categorie>
-        <Acronyme>DSO</Acronyme>
-        <Description>Deep Space orbit</Description>
+        <Acronyme>VHEO</Acronyme>
+        <Description>Very high Earth orbit</Description>
     </Categorie>
     <Categorie>
-        <Acronyme>DHEO</Acronyme>
-        <Description>Deep Eccentric orbit</Description>
+        <Acronyme>DSO</Acronyme>
+        <Description>Deep Space orbit</Description>
     </Categorie>
     <Categorie>
         <Acronyme>CLO</Acronyme>

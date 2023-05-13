@@ -5,8 +5,16 @@
         <Description>Arab satellite communications organization</Description>
     </Pays>
     <Pays>
+        <Acronyme>ABS</Acronyme>
+        <Description>ABS Global Ltd</Description>
+    </Pays>
+    <Pays>
         <Acronyme>AC</Acronyme>
         <Description>Asiatsat corp</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>AGO</Acronyme>
+        <Description>Republic of Angola</Description>
     </Pays>
     <Pays>
         <Acronyme>ALG</Acronyme>
@@ -29,8 +37,24 @@
         <Description>Azerbaijan</Description>
     </Pays>
     <Pays>
+        <Acronyme>BEL</Acronyme>
+        <Description>Belgium</Description>
+    </Pays>
+    <Pays>
         <Acronyme>BELA</Acronyme>
         <Description>Belarus</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>BGD</Acronyme>
+        <Description>Peoples republic of Bangladesh</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>BGR</Acronyme>
+        <Description>Republic of Bulgaria</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>BOL</Acronyme>
+        <Description>Bolivia</Description>
     </Pays>
     <Pays>
         <Acronyme>BRAZ</Acronyme>
@@ -54,7 +78,11 @@
     </Pays>
     <Pays>
         <Acronyme>COL</Acronyme>
-        <Description>Columbia</Description>
+        <Description>Colombia</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>CRI</Acronyme>
+        <Description>Republic of Costa Rica</Description>
     </Pays>
     <Pays>
         <Acronyme>CZCH</Acronyme>
@@ -101,8 +129,16 @@
         <Description>France</Description>
     </Pays>
     <Pays>
+        <Acronyme>FRIT</Acronyme>
+        <Description>France/Italy</Description>
+    </Pays>
+    <Pays>
         <Acronyme>GER</Acronyme>
         <Description>Germany</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>GHA</Acronyme>
+        <Description>Republic of Ghana</Description>
     </Pays>
     <Pays>
         <Acronyme>GLOB</Acronyme>
@@ -133,6 +169,10 @@
         <Description>Iran</Description>
     </Pays>
     <Pays>
+        <Acronyme>IRAQ</Acronyme>
+        <Description>Iraq</Description>
+    </Pays>
+    <Pays>
         <Acronyme>IRID</Acronyme>
         <Description>Iridium</Description>
     </Pays>
@@ -157,16 +197,60 @@
         <Description>Japan</Description>
     </Pays>
     <Pays>
+        <Acronyme>KAZ</Acronyme>
+        <Description>Kazakhstan</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>KEN</Acronyme>
+        <Description>Republic of Kenya</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>KWT</Acronyme>
+        <Description>Kuwait</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>LAOS</Acronyme>
+        <Description>Laos</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>LKA</Acronyme>
+        <Description>Democratic Socialist Republic of Sri Lanka</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>LTU</Acronyme>
+        <Description>Lithuania</Description>
+    </Pays>
+    <Pays>
         <Acronyme>LUXE</Acronyme>
         <Description>Luxembourg</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>MA</Acronyme>
+        <Description>Morocco</Description>
     </Pays>
     <Pays>
         <Acronyme>MALA</Acronyme>
         <Description>Malaysia</Description>
     </Pays>
     <Pays>
+        <Acronyme>MDA</Acronyme>
+        <Description>Republic of Moldavia</Description>
+    </Pays>
+    <Pays>
         <Acronyme>MEX</Acronyme>
         <Description>Mexico</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>MMR</Acronyme>
+        <Description>Republic of the Union of Myanmar</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>MNG</Acronyme>
+        <Description>Mongolia</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>MUS</Acronyme>
+        <Description>Mauritius</Description>
     </Pays>
     <Pays>
         <Acronyme>NATO</Acronyme>
@@ -193,6 +277,14 @@
         <Description>Norway</Description>
     </Pays>
     <Pays>
+        <Acronyme>NPL</Acronyme>
+        <Description>Federal Democratic Republic of Nepal</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>NZ</Acronyme>
+        <Description>New Zealand</Description>
+    </Pays>
+    <Pays>
         <Acronyme>O3B</Acronyme>
         <Description>O3B Networks</Description>
     </Pays>
@@ -203,6 +295,10 @@
     <Pays>
         <Acronyme>PAKI</Acronyme>
         <Description>Pakistan</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>PER</Acronyme>
+        <Description>Peru</Description>
     </Pays>
     <Pays>
         <Acronyme>POL</Acronyme>
@@ -217,12 +313,20 @@
         <Description>Peoples republic of China</Description>
     </Pays>
     <Pays>
-        <Acronyme>RASC</Acronyme>
-        <Description>Regional african satellite communications organization</Description>
+        <Acronyme>PRI</Acronyme>
+        <Description>Commonwealth of Puerto Rico</Description>
     </Pays>
     <Pays>
-        <Acronyme>ROC</Acronyme>
-        <Description>Republic of China (Taiwan)</Description>
+        <Acronyme>PRY</Acronyme>
+        <Description>Republic of Paraguay</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>QAT</Acronyme>
+        <Description>State of Qatar</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>RASC</Acronyme>
+        <Description>Regional african satellite communications organization</Description>
     </Pays>
     <Pays>
         <Acronyme>ROM</Acronyme>
@@ -231,6 +335,10 @@
     <Pays>
         <Acronyme>RP</Acronyme>
         <Description>Republic of Philippines</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>RWA</Acronyme>
+        <Description>Republic of Rwanda</Description>
     </Pays>
     <Pays>
         <Acronyme>SAFR</Acronyme>
@@ -265,6 +373,10 @@
         <Description>Singapore/Taiwan</Description>
     </Pays>
     <Pays>
+        <Acronyme>SVN</Acronyme>
+        <Description>Republic of Slovenia</Description>
+    </Pays>
+    <Pays>
         <Acronyme>SWED</Acronyme>
         <Description>Sweden</Description>
     </Pays>
@@ -277,8 +389,20 @@
         <Description>Thailand</Description>
     </Pays>
     <Pays>
+        <Acronyme>TMMC</Acronyme>
+        <Description>Turkmenistan/Monaco</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>TUN</Acronyme>
+        <Description>Republic of Tunisia</Description>
+    </Pays>
+    <Pays>
         <Acronyme>TURK</Acronyme>
         <Description>Turkey</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>TWN</Acronyme>
+        <Description>Taiwan</Description>
     </Pays>
     <Pays>
         <Acronyme>UAE</Acronyme>
@@ -287,6 +411,14 @@
     <Pays>
         <Acronyme>UK</Acronyme>
         <Description>United Kingdom</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>UKR</Acronyme>
+        <Description>Ukraine</Description>
+    </Pays>
+    <Pays>
+        <Acronyme>URY</Acronyme>
+        <Description>Uruguay</Description>
     </Pays>
     <Pays>
         <Acronyme>US</Acronyme>

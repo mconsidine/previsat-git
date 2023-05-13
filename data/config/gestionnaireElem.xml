@@ -136,6 +136,8 @@
                 <Fichier>goes.xml</Fichier>
                 <Fichier>gorizont.xml</Fichier>
                 <Fichier>gps-ops.xml</Fichier>
+                <Fichier>gpz.xml</Fichier>
+                <Fichier>gpz-plus.xml</Fichier>
                 <Fichier>intelsat.xml</Fichier>
                 <Fichier>iridium-33-debris.xml</Fichier>
                 <Fichier>iridium-NEXT.xml</Fichier>
@@ -214,6 +216,8 @@
                 <Fichier>oneweb.xml</Fichier>
                 <Fichier>orbcomm.xml</Fichier>
                 <Fichier>globalstar.xml</Fichier>
+                <Fichier>gpz.xml</Fichier>
+                <Fichier>gpz-plus.xml</Fichier>
                 <Fichier>amateur.xml</Fichier>
                 <Fichier>x-comm.xml</Fichier>
                 <Fichier>other-comm.xml</Fichier>
