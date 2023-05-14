@@ -106,7 +106,7 @@
     <widget class="QListWidget" name="selecLieux">
      <property name="geometry">
       <rect>
-       <x>367</x>
+       <x>368</x>
        <y>44</y>
        <width>171</width>
        <height>257</height>
@@ -667,7 +667,7 @@
     <widget class="QLabel" name="lbl_lieuxSelectionnes">
      <property name="geometry">
       <rect>
-       <x>379</x>
+       <x>380</x>
        <y>0</y>
        <width>151</width>
        <height>16</height>
@@ -846,7 +846,7 @@
     <widget class="QLineEdit" name="filtreSelecLieux">
      <property name="geometry">
       <rect>
-       <x>367</x>
+       <x>368</x>
        <y>20</y>
        <width>171</width>
        <height>22</height>

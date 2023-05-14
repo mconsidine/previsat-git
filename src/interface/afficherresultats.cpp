@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    1er mai 2023
+ * >    14 mai 2023
  *
  */
 
@@ -269,7 +269,7 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
     scene->setBackgroundBrush(Qt::white);
 
     // Affichage de la carte du ciel
-    const QRect rectangle(-lciel, -hciel, _ui->detailsTransit->width(), _ui->detailsTransit->height());
+    const QRectF rectangle(-lciel, -hciel, _ui->detailsTransit->width(), _ui->detailsTransit->height());
     scene->setSceneRect(rectangle);
 
     /* Corps de la methode */
@@ -328,7 +328,7 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
 
     double deltaAzimut;
     double deltaHauteur;
-    QList<QPair<double, double> > coord;
+    QList<QPointF> coord;
     QListIterator it(list);
     while (it.hasNext()) {
 
@@ -345,14 +345,12 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
             deltaHauteur = MATHS::RAD2DEG * (res.hauteur - lune.hauteur());
         }
 
-        const double lsat = static_cast<int> (180. * deltaAzimut);
-        const double hsat = -static_cast<int> (180. * deltaHauteur);
-        const QPair<double, double> xy(lsat, hsat);
-        coord.append(xy);
+        const QPointF pt(180. * deltaAzimut, -180. * deltaHauteur);
+        coord.append(pt);
     }
 
-    double lsat1 = coord.at(0).first;
-    double hsat1 = coord.at(0).second;
+    double lsat1 = coord.first().x();
+    double hsat1 = coord.first().y();
 
     QLineF lig1;
     QLineF lig2;
@@ -361,11 +359,12 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
     it2.next();
     while (it2.hasNext()) {
 
-        const QPair<double, double> xy = it2.next();
-        const QLineF lig(xy.first, xy.second, lsat1, hsat1);
+        const QPointF pt = it2.next();
+        const QLineF lig(pt.x(), pt.y(), lsat1, hsat1);
+
         scene->addLine(lig, couleur);
 
-        if ((fabs(xy.first - coord.last().first) < MATHS::EPSDBL100) && (fabs(xy.second - coord.last().second) < MATHS::EPSDBL100)) {
+        if ((fabs(pt.x() - coord.last().x()) < MATHS::EPSDBL100) && (fabs(pt.y() - coord.last().y()) < MATHS::EPSDBL100)) {
 
             lig1 = lig.normalVector();
             lig2 = lig1;
@@ -379,8 +378,8 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
             scene->addLine(lig2, couleur);
         }
 
-        lsat1 = xy.first;
-        hsat1 = xy.second;
+        lsat1 = pt.x();
+        hsat1 = pt.y();
     }
 
     _ui->detailsTransit->setScene(scene);
