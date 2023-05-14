@@ -92,10 +92,12 @@ Options::Options(QWidget *parent) :
         _modifierLieu = nullptr;
         _supprimerLieu = nullptr;
 
+        _ui->configuration->setCurrentIndex(0);
+        _ui->listeOptions->setCurrentRow(0);
+
         Initialisation();
 
         // Chargement des fichiers de preference
-        InitFicPref();
         ChargementPref();
 
         // Creation des menus contextuels
@@ -158,12 +160,10 @@ void Options::Initialisation()
     /* Corps de la methode */
     qInfo() << "Début Initialisation" << metaObject()->className();
 
-    _ui->listeOptions->setCurrentRow(0);
     _ui->enregistrerPref->setIcon(styleIcones->standardIcon(QStyle::SP_DialogSaveButton));
     _ui->ajoutLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowRight));
     _ui->supprLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowLeft));
     _ui->listeOptions->setFocus();
-    _ui->configuration->setCurrentIndex(0);
 
     const QIcon ajout(":/resources/interface/ajout.png");
     _ui->creationCategorie->setIcon(ajout);
@@ -221,6 +221,9 @@ void Options::Initialisation()
 
     // Affichage des lieux d'observation selectionnes
     AffichageLieuObs();
+
+    // Chargement des fichiers de preference
+    InitFicPref();
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
 
@@ -662,7 +665,7 @@ void Options::InitFicObs()
             elem = new QListWidgetItem(tr("Mes Préférés"));
             elem->setData(Qt::UserRole, nomFicObs);
             _ui->categoriesObs->insertItem(0, elem);
-            _ui->ajdfic->insertItem(0, elem->text());
+            _ui->ajdfic->insertItem(0, elem->text(), elem->data(Qt::UserRole));
 
         } else {
 
@@ -672,7 +675,7 @@ void Options::InitFicObs()
             elem = new QListWidgetItem(nomPays);
             elem->setData(Qt::UserRole, nomFicObs);
             _ui->categoriesObs->addItem(elem);
-            _ui->ajdfic->addItem(nomPays);
+            _ui->ajdfic->addItem(nomPays, elem->data(Qt::UserRole));
         }
     }
 

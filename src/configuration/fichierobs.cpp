@@ -113,66 +113,63 @@ QMap<QString, Observateur> FichierObs::Lecture(const QString &ficObsXml, const b
     /* Corps de la methode */
     QFile fi1(Configuration::instance()->dirCoord() + QDir::separator() + ficObsXml);
 
-    if (fi1.exists() && (fi1.size() != 0)) {
+    if (fi1.exists() && (fi1.size() != 0) && fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        if (fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QXmlStreamReader cfg(&fi1);
 
-            QXmlStreamReader cfg(&fi1);
+        cfg.readNextStartElement();
+        if (cfg.name().toString() == "PreviSatObservateurs") {
 
-            cfg.readNextStartElement();
-            if (cfg.name().toString() == "PreviSatObservateurs") {
+            QString nom;
+            double lon;
+            double lat;
+            double alt;
 
-                QString nom;
-                double lon;
-                double lat;
-                double alt;
+            while (cfg.readNextStartElement()) {
 
-                while (cfg.readNextStartElement()) {
+                if (cfg.name().toString() == "Observateur") {
 
-                    if (cfg.name().toString() == "Observateur") {
+                    nom = "";
+                    lon = 0.;
+                    lat = 0.;
+                    alt = 0.;
 
-                        nom = "";
-                        lon = 0.;
-                        lat = 0.;
-                        alt = 0.;
+                    while (cfg.readNextStartElement()) {
 
-                        while (cfg.readNextStartElement()) {
-
-                            if (cfg.name().toString() == "Nom") {
-                                nom = cfg.readElementText();
-                            } else if (cfg.name().toString() == "Longitude") {
-                                lon = cfg.readElementText().toDouble();
-                            } else if (cfg.name().toString() == "Latitude") {
-                                lat = cfg.readElementText().toDouble();
-                            } else if (cfg.name().toString() == "Altitude") {
-                                alt = cfg.readElementText().toDouble();
-                            } else {
-                                cfg.skipCurrentElement();
-                            }
+                        if (cfg.name().toString() == "Nom") {
+                            nom = cfg.readElementText();
+                        } else if (cfg.name().toString() == "Longitude") {
+                            lon = cfg.readElementText().toDouble();
+                        } else if (cfg.name().toString() == "Latitude") {
+                            lat = cfg.readElementText().toDouble();
+                        } else if (cfg.name().toString() == "Altitude") {
+                            alt = cfg.readElementText().toDouble();
+                        } else {
+                            cfg.skipCurrentElement();
                         }
-
-                        if (!nom.isEmpty()) {
-                            mapObs.insert(nom, Observateur(nom, lon, lat, alt));
-                        }
-                    } else {
-                        cfg.skipCurrentElement();
                     }
-                }
-            } else {
 
-                fi1.close();
-
-                qWarning() << "Le fichier ne contient pas de lieux d'observation";
-
-                if (alarme) {
-                    throw PreviSatException(QObject::tr("Le fichier ne contient pas de lieux d'observation"), MessageType::WARNING);
+                    if (!nom.isEmpty()) {
+                        mapObs.insert(nom, Observateur(nom, lon, lat, alt));
+                    }
                 } else {
-                    throw PreviSatException();
+                    cfg.skipCurrentElement();
                 }
             }
+        } else {
+
+            fi1.close();
+
+            qWarning() << "Le fichier ne contient pas de lieux d'observation";
+
+            if (alarme) {
+                throw PreviSatException(QObject::tr("Le fichier ne contient pas de lieux d'observation"), MessageType::WARNING);
+            } else {
+                throw PreviSatException();
+            }
         }
-        fi1.close();
     }
+    fi1.close();
 
     // Verifications
 

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    14 mai 2023
  *
  */
 
@@ -173,11 +173,12 @@ void Satellite::CalculPosVit(const Date &date)
             const double jjsav = _elementsOrbitaux.epoque.jourJulienUTC();
             _elementsOrbitaux = _listElements.first();
 
-            // Recherche du TLE le plus recent
+            // Recherche des elements orbitaux les plus recents
+            ElementsOrbitaux elem;
             QListIterator it(_listElements);
             while (it.hasNext()) {
 
-                const ElementsOrbitaux elem = it.next();
+                elem = it.next();
 
                 if (date.jourJulienUTC() >= elem.epoque.jourJulienUTC()) {
                     _elementsOrbitaux = elem;
@@ -186,7 +187,7 @@ void Satellite::CalculPosVit(const Date &date)
                 }
             }
 
-            // Reinitialisation des valeurs du modele SGP4 en cas de changement de TLE
+            // Reinitialisation des valeurs du modele SGP4 en cas de changement d'elements orbitaux
             if (fabs(_elementsOrbitaux.epoque.jourJulienUTC() - jjsav) > DATE::EPS_DATES) {
                 _sgp4.setInit(false);
             }

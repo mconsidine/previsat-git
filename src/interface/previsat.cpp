@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 mai 2023
+ * >    14 mai 2023
  *
  */
 
@@ -1809,6 +1809,11 @@ void PreviSat::ChargementTraduction(const QString &langue)
         _onglets->informationsSatellite()->ui()->retranslateUi(_onglets->informationsSatellite());
     }
     QEvent evt(QEvent::LanguageChange);
+
+    if (_options != nullptr) {
+        _options->changeEvent(&evt);
+        _options->Initialisation();
+    }
 
     if (_outils != nullptr) {
         _outils->changeEvent(&evt);
