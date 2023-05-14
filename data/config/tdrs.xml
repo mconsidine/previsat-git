@@ -3,71 +3,57 @@
     <TDRS>
         <Numero>6</Numero>
         <Denomination>T046W</Denomination>
-		<CouleurR>255</CouleurR>
-		<CouleurV>255</CouleurV>
-		<CouleurB>000</CouleurB>
-	</TDRS>
-    <TDRS>
-        <Numero>6</Numero>
-        <Denomination>T046W</Denomination>
-		<CouleurR>255</CouleurR>
-		<CouleurV>255</CouleurV>
-		<CouleurB>000</CouleurB>
-	</TDRS>
-    <TDRS>
-        <Numero>6</Numero>
-        <Denomination>T046W</Denomination>
-		<CouleurR>255</CouleurR>
-		<CouleurV>255</CouleurV>
-		<CouleurB>000</CouleurB>
-	</TDRS>
+        <CouleurR>255</CouleurR>
+        <CouleurV>255</CouleurV>
+        <CouleurB>000</CouleurB>
+    </TDRS>
     <TDRS>
         <Numero>7</Numero>
         <Denomination>T275W</Denomination>
-		<CouleurR>000</CouleurR>
-		<CouleurV>255</CouleurV>
-		<CouleurB>255</CouleurB>
-	</TDRS>
+        <CouleurR>000</CouleurR>
+        <CouleurV>255</CouleurV>
+        <CouleurB>255</CouleurB>
+    </TDRS>
     <TDRS>
         <Numero>8</Numero>
         <Denomination>T271W</Denomination>
-		<CouleurR>000</CouleurR>
-		<CouleurV>255</CouleurV>
-		<CouleurB>255</CouleurB>
-	</TDRS>
+        <CouleurR>000</CouleurR>
+        <CouleurV>255</CouleurV>
+        <CouleurB>255</CouleurB>
+    </TDRS>
     <TDRS>
         <Numero>9</Numero>
         <Denomination>T012W</Denomination>
-		<CouleurR>255</CouleurR>
-		<CouleurV>255</CouleurV>
-		<CouleurB>000</CouleurB>
-	</TDRS>
+        <CouleurR>255</CouleurR>
+        <CouleurV>255</CouleurV>
+        <CouleurB>000</CouleurB>
+    </TDRS>
     <TDRS>
         <Numero>10</Numero>
         <Denomination>T174W</Denomination>
-		<CouleurR>000</CouleurR>
-		<CouleurV>255</CouleurV>
-		<CouleurB>000</CouleurB>
-	</TDRS>
+        <CouleurR>000</CouleurR>
+        <CouleurV>255</CouleurV>
+        <CouleurB>000</CouleurB>
+    </TDRS>
     <TDRS>
         <Numero>11</Numero>
         <Denomination>T171W</Denomination>
-		<CouleurR>000</CouleurR>
-		<CouleurV>255</CouleurV>
-		<CouleurB>000</CouleurB>
-	</TDRS>
+        <CouleurR>000</CouleurR>
+        <CouleurV>255</CouleurV>
+        <CouleurB>000</CouleurB>
+    </TDRS>
     <TDRS>
         <Numero>12</Numero>
         <Denomination>T041W</Denomination>
-		<CouleurR>255</CouleurR>
-		<CouleurV>255</CouleurV>
-		<CouleurB>000</CouleurB>
-	</TDRS>
+        <CouleurR>255</CouleurR>
+        <CouleurV>255</CouleurV>
+        <CouleurB>000</CouleurB>
+    </TDRS>
     <TDRS>
         <Numero>13</Numero>
         <Denomination>T049W</Denomination>
-		<CouleurR>255</CouleurR>
-		<CouleurV>255</CouleurV>
-		<CouleurB>000</CouleurB>
-	</TDRS>
+        <CouleurR>255</CouleurR>
+        <CouleurV>255</CouleurV>
+        <CouleurB>000</CouleurB>
+    </TDRS>
 </PreviSatTDRS>

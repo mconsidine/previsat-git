@@ -3,78 +3,78 @@
     <Station>
         <Acronyme>DJSR</Acronyme>
         <Nom>Dzhusaly</Nom>
-		<Longitude>-064.078055556</Longitude>
-		<Latitude>+45.487777778</Latitude>
-		<Altitude>102</Altitude>
-	</Station>
+        <Longitude>-064.078055556</Longitude>
+        <Latitude>+45.487777778</Latitude>
+        <Altitude>102</Altitude>
+    </Station>
     <Station>
         <Acronyme>KLPR</Acronyme>
         <Nom>Kolpashevo</Nom>
-		<Longitude>-082.907222222</Longitude>
-		<Latitude>+58.304722222</Latitude>
-		<Altitude>30</Altitude>
-	</Station>
+        <Longitude>-082.907222222</Longitude>
+        <Latitude>+58.304722222</Latitude>
+        <Altitude>30</Altitude>
+    </Station>
     <Station>
         <Acronyme>PPKR</Acronyme>
         <Nom>Petropavlosk</Nom>
-		<Longitude>-158.346111111</Longitude>
-		<Latitude>+53.093333333</Latitude>
-		<Altitude>43</Altitude>
-	</Station>
+        <Longitude>-158.346111111</Longitude>
+        <Latitude>+53.093333333</Latitude>
+        <Altitude>43</Altitude>
+    </Station>
     <Station>
         <Acronyme>SHKR</Acronyme>
         <Nom>Shchelokovo</Nom>
-		<Longitude>-036.781111111</Longitude>
-		<Latitude>+50.844722222</Latitude>
-		<Altitude>145</Altitude>
-	</Station>
+        <Longitude>-036.781111111</Longitude>
+        <Latitude>+50.844722222</Latitude>
+        <Altitude>145</Altitude>
+    </Station>
     <Station>
         <Acronyme>ULDR</Acronyme>
         <Nom>Ulan-Ude</Nom>
-		<Longitude>-107.578611111</Longitude>
-		<Latitude>+51.843055556</Latitude>
-		<Altitude>553</Altitude>
-	</Station>
+        <Longitude>-107.578611111</Longitude>
+        <Latitude>+51.843055556</Latitude>
+        <Altitude>553</Altitude>
+    </Station>
     <Station>
         <Acronyme>USKR</Acronyme>
         <Nom>Ussuriysk</Nom>
-		<Longitude>-131.900000000</Longitude>
-		<Latitude>+43.783333333</Latitude>
-		<Altitude>100</Altitude>
-	</Station>
+        <Longitude>-131.900000000</Longitude>
+        <Latitude>+43.783333333</Latitude>
+        <Altitude>100</Altitude>
+    </Station>
     <Station>
         <Acronyme>CSG</Acronyme>
         <Nom>Kourou</Nom>
-		<Longitude>+052.765588900</Longitude>
-		<Latitude>+05.208117000</Latitude>
-		<Altitude>0</Altitude>
-	</Station>
+        <Longitude>+052.765588900</Longitude>
+        <Latitude>+05.208117000</Latitude>
+        <Altitude>0</Altitude>
+    </Station>
     <Station>
         <Acronyme>JSC</Acronyme>
         <Nom>Houston</Nom>
-		<Longitude>+095.081054000</Longitude>
-		<Latitude>+29.567775000</Latitude>
-		<Altitude>0</Altitude>
-	</Station>
+        <Longitude>+095.081054000</Longitude>
+        <Latitude>+29.567775000</Latitude>
+        <Altitude>0</Altitude>
+    </Station>
     <Station>
         <Acronyme>KSC</Acronyme>
         <Nom>Kennedy Space Center</Nom>
-		<Longitude>+080.650833333</Longitude>
-		<Latitude>+28.524166667</Latitude>
-		<Altitude>0</Altitude>
-	</Station>
+        <Longitude>+080.650833333</Longitude>
+        <Latitude>+28.524166667</Latitude>
+        <Altitude>0</Altitude>
+    </Station>
     <Station>
         <Acronyme>EDW</Acronyme>
         <Nom>Edwards Base</Nom>
-		<Longitude>+117.891666667</Longitude>
-		<Latitude>+34.915833333</Latitude>
-		<Altitude>702</Altitude>
-	</Station>
+        <Longitude>+117.891666667</Longitude>
+        <Latitude>+34.915833333</Latitude>
+        <Altitude>702</Altitude>
+    </Station>
     <Station>
         <Acronyme>WAL</Acronyme>
         <Nom>Wallops Island</Nom>
-		<Longitude>+075.466388889</Longitude>
-		<Latitude>+37.940000000</Latitude>
-		<Altitude>0</Altitude>
-	</Station>
+        <Longitude>+075.466388889</Longitude>
+        <Latitude>+37.940000000</Latitude>
+        <Altitude>0</Altitude>
+    </Station>
 </PreviSatStations>
