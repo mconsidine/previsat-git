@@ -2438,6 +2438,30 @@ bool PreviSat::eventFilter(QObject *watched, QEvent *event)
     return QMainWindow::eventFilter(watched, event);
 }
 
+void PreviSat::keyPressEvent(QKeyEvent *evt)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (evt->key() == Qt::Key_F10) {
+
+        // Bascule Temps reel/Mode manuel
+        if (_ui->tempsReel->isChecked()) {
+            _ui->modeManuel->setChecked(true);
+
+        } else if (_ui->modeManuel->isChecked()) {
+            _ui->tempsReel->setChecked(true);
+        }
+
+        GestionTempsReel();
+    }
+
+    /* Retour */
+    return;
+}
+
 void PreviSat::mousePressEvent(QMouseEvent *evt)
 {
     /* Declarations des variables locales */
@@ -2501,6 +2525,10 @@ void PreviSat::on_tempsReel_toggled(bool checked)
     qInfo() << "Fonction" << __FUNCTION__ << ":" << checked;
 
     /* Corps de la methode */
+    if (checked && (_chronometre != nullptr)) {
+        _chronometre->setInterval(_ui->pasReel->currentText().toInt() * 1000);
+    }
+
     _ui->pasManuel->setVisible(!checked);
     _ui->valManuel->setVisible(!checked);
     _ui->pasReel->setVisible(checked);
