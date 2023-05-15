@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    16 avril 2023
+ * >    15 mai 2023
  *
  */
 
@@ -93,6 +93,7 @@ Ciel::Ciel(QWidget *parent) :
 
     try {
 
+        resize(parent->height(), parent->height());
         Initialisation();
 
     } catch (PreviSatException &e) {

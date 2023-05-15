@@ -165,7 +165,7 @@
               </size>
              </property>
              <property name="shortcut">
-              <string notr="true">F10</string>
+              <string notr="true">F9</string>
              </property>
              <property name="autoRaise">
               <bool>true</bool>
