@@ -313,13 +313,6 @@ void Options::AppliquerPreferences()
         SauvePreferences(fichierPref);
     }
 
-    const QString langue = Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex());
-    Configuration::instance()->locale() = langue;
-
-    emit ChargementTraduction(langue);
-    emit ChargementCarteDuMonde();
-    emit RecalculerPositions();
-
     /* Retour */
     return;
 }
@@ -1222,8 +1215,12 @@ void Options::SupprimerLieu()
 
 void Options::closeEvent(QCloseEvent *evt)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
     Q_UNUSED(evt)
 
+    /* Corps de la methode */
     AppliquerPreferences();
     settings.setValue("fichier/listeMap", (_ui->listeMap->currentIndex() > 0) ?
                           Configuration::instance()->dirMap() + QDir::separator() +
@@ -1232,6 +1229,9 @@ void Options::closeEvent(QCloseEvent *evt)
     if (!_ui->verifMAJ->isChecked()) {
         settings.setValue("fichier/majPrevi", "0");
     }
+
+    /* Retour */
+    return;
 }
 
 void Options::on_listeOptions_currentRowChanged(int currentRow)
@@ -1241,7 +1241,22 @@ void Options::on_listeOptions_currentRowChanged(int currentRow)
 
 void Options::on_listeBoutonsOptions_accepted()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     AppliquerPreferences();
+
+    const QString langue = Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex());
+    Configuration::instance()->locale() = langue;
+
+    emit ChargementTraduction(langue);
+    emit ChargementCarteDuMonde();
+    emit RecalculerPositions();
+
+    /* Retour */
+    return;
 }
 
 void Options::on_listeBoutonsOptions_rejected()
