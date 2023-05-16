@@ -205,6 +205,7 @@ void PreviSat::ChargementConfiguration()
 
     _ciel = new Ciel(_ui->frameCarte);
     _ui->layoutCarte->addWidget(_ciel, 0, Qt::AlignVCenter);
+    _ciel->resize(_ui->frameCarte->height(), _ui->frameCarte->height());
     _ciel->setVisible(false);
 
     // Coordonnees de l'ISS
@@ -225,10 +226,7 @@ void PreviSat::ChargementConfiguration()
     _isCarteMonde = true;
     Configuration::instance()->issLive() = settings.value("affichage/issLive").toBool();
 
-    //on_pasReel_currentIndexChanged(0);
     _ui->pasReel->setCurrentIndex(settings.value("temps/pasreel", 1).toInt());
-
-    //on_pasManuel_currentIndexChanged(0);
     _ui->pasManuel->setCurrentIndex(settings.value("temps/pasmanuel", 1).toInt());
     _ui->valManuel->setCurrentIndex(settings.value("temps/valmanuel", 0).toInt());
     on_tempsReel_toggled(true);
