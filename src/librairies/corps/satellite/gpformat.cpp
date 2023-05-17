@@ -117,11 +117,11 @@ QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichi
                     gp.skipCurrentElement();
                 }
 
-                if ((listeSatellites.isEmpty() || listeSatellites.contains(elem.norad)) && !mapElem.contains(elem.norad) && ajoutDonnees) {
+                if ((listeSatellites.isEmpty() || listeSatellites.contains(elem.norad)) && !mapElem.contains(elem.norad)) {
 
                     // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
                     const int idx = lgRec * elem.norad.toInt();
-                    if ((idx >= 0) && (idx < donneesSat.size())) {
+                    if (ajoutDonnees && (idx >= 0) && (idx < donneesSat.size())) {
 
                         elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
 

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 mai 2023
+ * >    17 mai 2023
  *
  */
 
@@ -2073,7 +2073,8 @@ void PreviSat::InitFicGP()
             if (ff.suffix() == "xml") {
 
                 // Cas des fichiers GP
-                mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+                mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
+                                                   QStringList(), false);
 
                 ajout = !mapElem.isEmpty();
                 nomfic = ff.baseName();
@@ -2082,7 +2083,8 @@ void PreviSat::InitFicGP()
 
                 // Cas des fichiers TLE
                 ajout = (TLE::VerifieFichier(fic) > 0);
-                mapElem = TLE::LectureFichier(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+                mapElem = TLE::LectureFichier(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
+                                              QStringList(), false);
                 nomfic = ff.baseName() + " (TLE)";
             }
 
@@ -2130,7 +2132,7 @@ void PreviSat::InitFicGP()
     } catch (PreviSatException const &e) {
     }
 
-    qInfo() << "Début Fonction" << __FUNCTION__;
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
     return;
