@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    9 avril 2023
+ * >    19 mai 2023
  *
  */
 
@@ -161,6 +161,7 @@ private:
     double _stepMeridiens;
     double _stepParalleles;
 
+    bool _resize;
     QList<ItemGroup *> _groupes;
 
 
@@ -247,7 +248,7 @@ private:
      * @param[in] coordonnees coordonnees
      * @return Lignes de coordonnees
      */
-    QPainterPath LectureCoordonnees(const QString &coordonnees);
+    QPolygonF LectureCoordonnees(const QString &coordonnees);
 
     /**
      * @brief LectureFichierKml Lecture d'un fichier de coordonnees geographiques au format kml

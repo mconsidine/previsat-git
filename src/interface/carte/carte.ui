@@ -39,7 +39,14 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QGraphicsView" name="carte"/>
+    <widget class="QGraphicsView" name="carte">
+     <property name="minimumSize">
+      <size>
+       <width>799</width>
+       <height>0</height>
+      </size>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

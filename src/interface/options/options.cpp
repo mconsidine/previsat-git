@@ -324,6 +324,12 @@ void Options::changeEvent(QEvent *evt)
     }
 }
 
+void Options::show(QWidget *parent)
+{
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), parent->geometry()));
+    QDialog::show();
+}
+
 
 /*************
  * PROTECTED *
