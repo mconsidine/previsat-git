@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 mai 2023
+ * >    19 mai 2023
  *
  */
 
@@ -2487,8 +2487,7 @@ void PreviSat::on_configuration_clicked()
 {
     qInfo() << "Ouverture de la fenêtre de configuration";
     _options->Initialisation();
-    _options->setModal(true);
-    _options->show();
+    _options->show(this);
 }
 
 void PreviSat::on_outils_clicked()

@@ -106,6 +106,8 @@ public slots:
 
     void changeEvent(QEvent *evt);
 
+    void show(QWidget *parent = nullptr);
+
 
 signals:
 

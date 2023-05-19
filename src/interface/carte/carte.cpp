@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    26 avril 2023
+ * >    19 mai 2023
  *
  */
 
@@ -317,6 +317,7 @@ void Carte::resizeEvent(QResizeEvent *evt)
     const int lc = qMin(href, lref);
     const int hc = (lc + 1) / 2;
     _ui->carte->setGeometry((width() - lc) / 2, 0, lc, hc);
+    _resize = true;
 
     ChargementCarteDuMonde();
     show();
@@ -1710,6 +1711,8 @@ void Carte::Initialisation()
     _ui->carte->setCursor(Qt::ArrowCursor);
     _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
 
+    _resize = false;
+
     // Chargement de la carte du monde
     scene = new QGraphicsScene;
     ChargementCarteDuMonde();
@@ -1723,10 +1726,9 @@ void Carte::Initialisation()
 /*
  * Lecture des coordonnees dans le fichier de coordonnees geographiques
  */
-QPainterPath Carte::LectureCoordonnees(const QString &coordonnees)
+QPolygonF Carte::LectureCoordonnees(const QString &coordonnees)
 {
     /* Declarations des variables locales */
-    QPainterPath res;
     QPolygonF poly;
 
     /* Initialisations */
@@ -1741,10 +1743,8 @@ QPainterPath Carte::LectureCoordonnees(const QString &coordonnees)
         }
     }
 
-    res.addPolygon(poly);
-
     /* Retour */
-    return res;
+    return poly;
 }
 
 /*
@@ -1753,13 +1753,17 @@ QPainterPath Carte::LectureCoordonnees(const QString &coordonnees)
 void Carte::LectureFichierKml(const QString &fichier, const bool visible, const double echelleMin)
 {
     /* Declarations des variables locales */
-    static QStringList frontieres;
+    static QVector<QPolygonF> poly;
 
     /* Initialisations */
     ItemGroup *grp = new ItemGroup;
 
+    if ((_ui->carte->width() < _ui->carte->minimumWidth()) || _resize) {
+        poly.clear();
+    }
+
     /* Corps de la methode */
-    if (frontieres.isEmpty()) {
+    if (poly.isEmpty()) {
 
         QFileInfo ff(fichier);
         if (!ff.exists()) {
@@ -1782,37 +1786,39 @@ void Carte::LectureFichierKml(const QString &fichier, const bool visible, const 
 
                 if (token == QXmlStreamReader::StartElement) {
 
-                    if (kml.name().toString() == "name") {
-                        continue;
-                    }
-
-                    if (kml.name().toString() == "color") {
+                    if ((kml.name().toString() == "name") || (kml.name().toString() == "color")) {
                         continue;
                     }
 
                     if (kml.name().toString() == "coordinates") {
 
-                        frontieres.append(kml.readElementText());
+                        const QString frt = kml.readElementText();
+                        poly.append(LectureCoordonnees(frt));
                         continue;
                     }
                 }
             }
         }
 
+        _resize = false;
         fi.close();
     }
 
+    QPainterPath res;
     QPen pen;
     pen.setWidthF(1.);
     pen.setColor((echelleMin > 0.) ? QColor("#999999") :  QColor("#CCCCCC"));
     pen.setCosmetic(true);
 
-    QStringListIterator it(frontieres);
+    QVectorIterator it(poly);
     while (it.hasNext()) {
 
-        const QString frontiere = it.next();
+        const QPolygonF frontiere = it.next();
 
-        QGraphicsPathItem * const path = new QGraphicsPathItem(LectureCoordonnees(frontiere));
+        res.clear();
+        res.addPolygon(frontiere);
+
+        QGraphicsPathItem * const path = new QGraphicsPathItem(res);
         path->setPen(pen);
         grp->addToGroup(path);
     }
