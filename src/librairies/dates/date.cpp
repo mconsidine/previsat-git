@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 mai 2023
+ * >    20 mai 2023
  *
  */
 
@@ -70,17 +70,7 @@ Date::Date(const double offset)
     try {
 
         const QDateTime dateSysteme = QDateTime::currentDateTimeUtc();
-
-        _annee = dateSysteme.date().year();
-        _mois = dateSysteme.date().month();
-        _jour = dateSysteme.date().day();
-        _heure = dateSysteme.time().hour();
-        _minutes = dateSysteme.time().minute();
-        _secondes = dateSysteme.time().second();
-
-        _offsetUTC = offset;
-
-        CalculJourJulien();
+        *this = Date(dateSysteme.addSecs(static_cast<quint64> (floor(offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES))), offset);
 
     } catch (PreviSatException &e) {
         throw PreviSatException();
@@ -114,6 +104,29 @@ Date::Date(const Date &date, const double offset)
         _jourJulien = _jourJulienUTC + offset;
         getDeltaAT();
         _jourJulienTT = _jourJulienUTC + (DATE::NB_SEC_TT_TAI + _deltaAT) * DATE::NB_JOUR_PAR_SEC;
+
+    } catch (PreviSatException &e) {
+        throw PreviSatException();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Definition de la date a partir d'un objet QDateTime et de l'ecart heure legale - UTC
+ */
+Date::Date(const QDateTime &datetime, const double offset)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps du constructeur */
+    try {
+
+        const QDateTime dt = datetime.addSecs(static_cast<qint64> (-floor(offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES)));
+        *this = Date(dt.date().year(), dt.date().month(), dt.date().day(), dt.time().hour(), dt.time().minute(), dt.time().second(), offset);
 
     } catch (PreviSatException &e) {
         throw PreviSatException();

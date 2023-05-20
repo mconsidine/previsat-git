@@ -252,8 +252,7 @@ void CalculsPrevisions::CalculAgeElementsOrbitaux()
         const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialePrev->dateTime());
 
         // Date et heure initiales
-        const Date date1(_ui->dateInitialePrev->date().year(), _ui->dateInitialePrev->date().month(), _ui->dateInitialePrev->date().day(),
-                         _ui->dateInitialePrev->time().hour(), _ui->dateInitialePrev->time().minute(), _ui->dateInitialePrev->time().second(), 0.);
+        const Date date1(_ui->dateInitialePrev->dateTime(), 0.);
 
         // Jour julien initial
         const double jj1 = date1.jourJulien() - offset1;
@@ -414,15 +413,13 @@ void CalculsPrevisions::on_calculsPrev_clicked()
         const double offset2 = Date::CalculOffsetUTC(_ui->dateFinalePrev->dateTime());
 
         // Date et heure initiales
-        const Date date1(_ui->dateInitialePrev->date().year(), _ui->dateInitialePrev->date().month(), _ui->dateInitialePrev->date().day(),
-                         _ui->dateInitialePrev->time().hour(), _ui->dateInitialePrev->time().minute(), _ui->dateInitialePrev->time().second(), 0.);
+        const Date date1(_ui->dateInitialePrev->dateTime(), 0.);
 
         // Jour julien initial
         conditions.jj1 = date1.jourJulien() - offset1;
 
         // Date et heure finales
-        const Date date2(_ui->dateFinalePrev->date().year(), _ui->dateFinalePrev->date().month(), _ui->dateFinalePrev->date().day(),
-                         _ui->dateFinalePrev->time().hour(), _ui->dateFinalePrev->time().minute(), _ui->dateFinalePrev->time().second(), 0.);
+        const Date date2(_ui->dateFinalePrev->dateTime(), 0.);
 
         // Jour julien final
         conditions.jj2 = date2.jourJulien() - offset2;

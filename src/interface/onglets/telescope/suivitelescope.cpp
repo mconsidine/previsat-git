@@ -561,12 +561,10 @@ void SuiviTelescope::AjusterDates(const QDateTime &date1, const QDateTime &date2
 
     /* Corps de la methode */
     EFFACE_OBJET(_dateAosSuivi);
-    _dateAosSuivi = new Date(date1.date().year(), date1.date().month(), date1.date().day(), date1.time().hour(), date1.time().minute(),
-                             date1.time().second(), 0.);
+    _dateAosSuivi = new Date(date1, 0.);
 
     EFFACE_OBJET(_dateLosSuivi);
-    _dateLosSuivi = new Date(date2.date().year(), date2.date().month(), date2.date().day(), date2.time().hour(), date2.time().minute(),
-                             date2.time().second(), 0.);
+    _dateLosSuivi = new Date(date2, 0.);
 
     _ui->genererPositions->setDefault(true);
     _ui->afficherSuivi->setEnabled(false);

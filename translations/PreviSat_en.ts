@@ -901,55 +901,55 @@ PreviSat is free !</translation>
         <translation>Update orbital elements...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="308"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="307"/>
         <source>Aucun</source>
         <translation>None</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="311"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="310"/>
         <source>Tous</source>
         <translation>All</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="373"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="372"/>
         <source>Aucun satellite n&apos;est sélectionné dans la liste</source>
         <translation>None satellite selected in the list</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="405"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="402"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="405"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="402"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="440"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="437"/>
         <source>evenements</source>
         <comment>file name (without accent)</comment>
         <translation>events</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="450"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="447"/>
         <source>Calculs en cours...</source>
         <translation>Calculating...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="451"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="448"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="474"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="471"/>
         <source>Calculs terminés</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="477"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="474"/>
         <source>Aucun évènement n&apos;a été trouvé sur la période donnée</source>
         <translation>None event has been found during the given period</translation>
     </message>
@@ -1086,55 +1086,55 @@ PreviSat is free !</translation>
         <translation>Update flares-spctrk.xml...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="355"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="352"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="355"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="352"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="410"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="407"/>
         <source>Aucun satellite produisant des flashs n&apos;a été trouvé dans le fichier d&apos;éléments orbitaux</source>
         <translation>There is no satellites producing flares in the orbital element file</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="444"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="441"/>
         <source>flashs</source>
         <comment>file name (without accent)</comment>
         <translation>flares</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="454"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="451"/>
         <source>Calculs en cours...</source>
         <translation>Calculating...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="455"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="452"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="478"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="475"/>
         <source>Calculs terminés</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="482"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="479"/>
         <source>Aucun flash n&apos;a été trouvé sur la période donnée</source>
         <translation>None flare has been found during the given period</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="590"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="587"/>
         <source>Mise à jour du fichier GP %1 en cours...</source>
         <translation>Updating GP file %1...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="595"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="592"/>
         <source>Téléchargement terminé</source>
         <translation>Downloading finished</translation>
     </message>
@@ -1321,55 +1321,55 @@ PreviSat is free !</translation>
         <translation>Update orbital elements...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="338"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="337"/>
         <source>Aucun</source>
         <translation>None</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="341"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="340"/>
         <source>Tous</source>
         <translation>All</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="409"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="408"/>
         <source>Aucun satellite n&apos;est sélectionné dans la liste</source>
         <translation>None satellite selected in the list</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="452"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="449"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="452"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="449"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="523"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="520"/>
         <source>previsions</source>
         <comment>filename (without accent)</comment>
         <translation>predictions</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="533"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="530"/>
         <source>Calculs en cours...</source>
         <translation>Calculating...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="534"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="531"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="557"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="554"/>
         <source>Calculs terminés</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="561"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="558"/>
         <source>Aucun passage n&apos;a été trouvé sur la période donnée</source>
         <translation>None pass has been found during the given period</translation>
     </message>
@@ -1499,65 +1499,65 @@ PreviSat is free !</translation>
         <translation>Filter</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="346"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="343"/>
         <source>Les éléments orbitaux de l&apos;ISS sont vieux, il est conseillé de les mettre à jour</source>
         <translation>The orbital elements of ISS are old, it is recommended to update them</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="384"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="381"/>
         <source>Aucun</source>
         <translation>None</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="387"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="384"/>
         <source>Tous</source>
         <translation>All</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="479"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="473"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="479"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="473"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="535"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="529"/>
         <source>transits</source>
         <comment>file name (without accent)</comment>
         <translation>transits</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="545"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="539"/>
         <source>Calculs en cours...</source>
         <translation>Calculating...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="546"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="540"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="569"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="563"/>
         <source>Calculs terminés</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="572"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="566"/>
         <source>Aucun transit ISS n&apos;a été trouvé sur la période donnée</source>
         <translation>None transit has been found during the given period</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="665"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="659"/>
         <source>Téléchargement du fichier d&apos;élements orbitaux de l&apos;ISS...</source>
         <translation>Downloading ISS orbital elements file...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="669"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="663"/>
         <source>Téléchargement terminé</source>
         <translation>Downloading finished</translation>
     </message>
@@ -4479,8 +4479,8 @@ click on &apos;Update ISS information&apos;</translation>
     <message>
         <location filename="../src/interface/previsat.ui" line="543"/>
         <location filename="../src/interface/previsat.ui" line="617"/>
-        <location filename="../src/interface/previsat.cpp" line="2604"/>
-        <location filename="../src/interface/previsat.cpp" line="2621"/>
+        <location filename="../src/interface/previsat.cpp" line="2601"/>
+        <location filename="../src/interface/previsat.cpp" line="2618"/>
         <source>secondes</source>
         <translation>seconds</translation>
     </message>
@@ -4523,13 +4523,13 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="553"/>
-        <location filename="../src/interface/previsat.cpp" line="2333"/>
+        <location filename="../src/interface/previsat.cpp" line="2330"/>
         <source>Temps réel</source>
         <translation>Real time</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="563"/>
-        <location filename="../src/interface/previsat.cpp" line="2336"/>
+        <location filename="../src/interface/previsat.cpp" line="2333"/>
         <source>Mode manuel</source>
         <translation>Manual mode</translation>
     </message>
@@ -4545,19 +4545,19 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="622"/>
-        <location filename="../src/interface/previsat.cpp" line="2622"/>
+        <location filename="../src/interface/previsat.cpp" line="2619"/>
         <source>minutes</source>
         <translation>minutes</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="627"/>
-        <location filename="../src/interface/previsat.cpp" line="2623"/>
+        <location filename="../src/interface/previsat.cpp" line="2620"/>
         <source>heures</source>
         <translation>hours</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="632"/>
-        <location filename="../src/interface/previsat.cpp" line="2624"/>
+        <location filename="../src/interface/previsat.cpp" line="2621"/>
         <source>jours</source>
         <translation>days</translation>
     </message>
@@ -4745,13 +4745,13 @@ the video stream</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1066"/>
-        <location filename="../src/interface/previsat.cpp" line="2355"/>
+        <location filename="../src/interface/previsat.cpp" line="2352"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1072"/>
-        <location filename="../src/interface/previsat.cpp" line="2356"/>
+        <location filename="../src/interface/previsat.cpp" line="2353"/>
         <source>Heure</source>
         <translation>Hour</translation>
     </message>
@@ -4768,72 +4768,72 @@ the video stream</translation>
         <translation>PNG files (*.png);;JPEG files (*.jpg *.jpeg);;BMP files (*.bmp);;All files (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2352"/>
+        <location filename="../src/interface/previsat.cpp" line="2349"/>
         <source>dd/MM/yyyy</source>
         <comment>date format</comment>
         <translation>MM/dd/yyyy</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2604"/>
-        <location filename="../src/interface/previsat.cpp" line="2621"/>
+        <location filename="../src/interface/previsat.cpp" line="2601"/>
+        <location filename="../src/interface/previsat.cpp" line="2618"/>
         <source>seconde</source>
         <translation>second</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2622"/>
+        <location filename="../src/interface/previsat.cpp" line="2619"/>
         <source>minute</source>
         <translation>minute</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2623"/>
+        <location filename="../src/interface/previsat.cpp" line="2620"/>
         <source>heure</source>
         <translation>hour</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2624"/>
+        <location filename="../src/interface/previsat.cpp" line="2621"/>
         <source>jour</source>
         <translation>day</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2641"/>
+        <location filename="../src/interface/previsat.cpp" line="2638"/>
         <source>Agrandir</source>
         <translation>Maximize</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2650"/>
+        <location filename="../src/interface/previsat.cpp" line="2647"/>
         <source>Réduire</source>
         <translation>Minimize</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2674"/>
+        <location filename="../src/interface/previsat.cpp" line="2671"/>
         <source>Carte du monde</source>
         <translation>World map</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2682"/>
+        <location filename="../src/interface/previsat.cpp" line="2679"/>
         <source>Carte du ciel</source>
         <translation>Sky map</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2888"/>
+        <location filename="../src/interface/previsat.cpp" line="2885"/>
         <source>onglet_general</source>
         <comment>file name (without accent)</comment>
         <translation>main_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2889"/>
+        <location filename="../src/interface/previsat.cpp" line="2886"/>
         <source>onglet_elements</source>
         <comment>file name (without accent)</comment>
         <translation>elements_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2889"/>
+        <location filename="../src/interface/previsat.cpp" line="2886"/>
         <source>onglet_informations</source>
         <comment>file name (without accent)</comment>
         <translation>information_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2345"/>
+        <location filename="../src/interface/previsat.cpp" line="2342"/>
         <source>Jour julien</source>
         <translation>Julian day</translation>
     </message>
@@ -4916,7 +4916,7 @@ which represents approximately %2 pages.</translation>
         <translation>TLE file %1 OK</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2346"/>
+        <location filename="../src/interface/previsat.cpp" line="2343"/>
         <source>Jour</source>
         <translation>Day</translation>
     </message>
@@ -4931,85 +4931,85 @@ which represents approximately %2 pages.</translation>
         <translation>Update of orbital elements group &quot;%1&quot; done</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2515"/>
+        <location filename="../src/interface/previsat.cpp" line="2512"/>
         <source>Impossible d&apos;afficher l&apos;aide en ligne</source>
         <translation>Impossible to display online help</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="960"/>
-        <location filename="../src/interface/previsat.cpp" line="2783"/>
+        <location filename="../src/interface/previsat.cpp" line="2780"/>
         <source>Importer fichier GP / TLE...</source>
         <translation>Import GP / TLE file...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2785"/>
+        <location filename="../src/interface/previsat.cpp" line="2782"/>
         <source>Fichiers GP (*.xml);;Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)</source>
         <translation>GP files (*.xml);;TLE files (*.txt *.tle);;All files (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2803"/>
-        <location filename="../src/interface/previsat.cpp" line="2863"/>
+        <location filename="../src/interface/previsat.cpp" line="2800"/>
+        <location filename="../src/interface/previsat.cpp" line="2860"/>
         <source>Le fichier %1 ne contient pas d&apos;éléments orbitaux</source>
         <translation>The file %1 does not contain orbital elements</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2812"/>
-        <location filename="../src/interface/previsat.cpp" line="2842"/>
+        <location filename="../src/interface/previsat.cpp" line="2809"/>
+        <location filename="../src/interface/previsat.cpp" line="2839"/>
         <source>Le fichier %1 existe déjà</source>
         <translation>The file %1 already exists</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2895"/>
+        <location filename="../src/interface/previsat.cpp" line="2892"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*.*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3112"/>
+        <location filename="../src/interface/previsat.cpp" line="3109"/>
         <source>Commun</source>
         <comment>common orbital elements groups</comment>
         <translation>Common</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3117"/>
+        <location filename="../src/interface/previsat.cpp" line="3114"/>
         <source>Tous</source>
         <comment>all orbital elements groups</comment>
         <translation>All</translation>
     </message>
     <message>
+        <location filename="../src/interface/previsat.cpp" line="3193"/>
         <location filename="../src/interface/previsat.cpp" line="3196"/>
-        <location filename="../src/interface/previsat.cpp" line="3199"/>
         <source>Devise</source>
         <translation>Currency</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3197"/>
-        <location filename="../src/interface/previsat.cpp" line="3199"/>
+        <location filename="../src/interface/previsat.cpp" line="3194"/>
+        <location filename="../src/interface/previsat.cpp" line="3196"/>
         <source>Choisissez la devise :</source>
         <translation>Choose currency :</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3212"/>
+        <location filename="../src/interface/previsat.cpp" line="3209"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires</source>
         <translation>Be careful : it is possible to make a PayPal donation by means of Tipeee, but this will incur additional costs</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3276"/>
+        <location filename="../src/interface/previsat.cpp" line="3273"/>
         <source>Ouverture du fichier d&apos;éléments orbitaux %1 ...</source>
         <translation>Opening orbiral elements file %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3278"/>
+        <location filename="../src/interface/previsat.cpp" line="3275"/>
         <source>Fichier d&apos;éléments orbitaux de %1 satellites</source>
         <translation>Orbital elements file of %1 satellites</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3410"/>
+        <location filename="../src/interface/previsat.cpp" line="3407"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD number : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1746"/>
-        <location filename="../src/interface/previsat.cpp" line="2894"/>
+        <location filename="../src/interface/previsat.cpp" line="2891"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
@@ -5019,7 +5019,7 @@ which represents approximately %2 pages.</translation>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3009"/>
+        <location filename="../src/interface/previsat.cpp" line="3006"/>
         <source>Pas d&apos;informations à afficher</source>
         <translation>No available information</translation>
     </message>
@@ -5060,7 +5060,7 @@ which represents approximately %2 pages.</translation>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1138"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1240"/>
         <location filename="../src/librairies/corps/corps.cpp" line="671"/>
-        <location filename="../src/librairies/dates/date.cpp" line="432"/>
+        <location filename="../src/librairies/dates/date.cpp" line="445"/>
         <source>Erreur lors de la lecture du fichier %1, veuillez réinstaller %2</source>
         <translation>Error while reading file %1, please re-install %2</translation>
     </message>
@@ -5389,46 +5389,46 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Full Moon</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="503"/>
+        <location filename="../src/librairies/dates/date.cpp" line="516"/>
         <source>dd/MM/yyyy</source>
         <comment>Date format</comment>
         <translation>MM/dd/yyyy</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="282"/>
+        <location filename="../src/librairies/dates/date.cpp" line="295"/>
         <source>Date au format ISO vide</source>
         <translation>Date with ISO format is empty</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="291"/>
+        <location filename="../src/librairies/dates/date.cpp" line="304"/>
         <source>Date au format ISO invalide</source>
         <translation>Date with ISO format is invalid</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="329"/>
+        <location filename="../src/librairies/dates/date.cpp" line="342"/>
         <source>Date au format NASA vide</source>
         <translation>Date with NASA format is empty</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="338"/>
-        <location filename="../src/librairies/dates/date.cpp" line="347"/>
-        <location filename="../src/librairies/dates/date.cpp" line="361"/>
+        <location filename="../src/librairies/dates/date.cpp" line="351"/>
+        <location filename="../src/librairies/dates/date.cpp" line="360"/>
+        <location filename="../src/librairies/dates/date.cpp" line="374"/>
         <source>Date au format NASA invalide</source>
         <translation>Date with NASA format is invalid</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="396"/>
+        <location filename="../src/librairies/dates/date.cpp" line="409"/>
         <source>Le fichier taiutc.dat n&apos;existe pas</source>
         <translation>The taiutc.dat file does not exist</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="461"/>
+        <location filename="../src/librairies/dates/date.cpp" line="474"/>
         <source>dddd dd MMMM yyyy HH:mm:ss</source>
         <comment>Date format</comment>
         <translation>dddd, MMMM dd yyyy  HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="678"/>
+        <location filename="../src/librairies/dates/date.cpp" line="691"/>
         <source>Ecarts TAI-UTC non initialisés</source>
         <translation>TAI-UTC offsets not initialized</translation>
     </message>
@@ -6020,7 +6020,7 @@ Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="464"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="921"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="919"/>
         <source>Ouvrir Satellite Tracker</source>
         <translation>Open Satellite Tracker</translation>
     </message>
@@ -6127,33 +6127,33 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Satellite in the sky. Current elevation : %1. Azimuth : %2. %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="613"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="611"/>
         <source>Aucun satellite n&apos;est sélectionné dans la liste</source>
         <translation>None satellite selected in the list</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="638"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="636"/>
         <source>LOS</source>
         <comment>Loss of signal</comment>
         <translation>LOS</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="697"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="695"/>
         <source>Calculs en cours...</source>
         <translation>Calculating...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="698"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="696"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="727"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="725"/>
         <source>Calculs terminés</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="922"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="920"/>
         <source>Fichiers exécutables (*.exe)</source>
         <translation>Executable files (*.exe)</translation>
     </message>

@@ -210,8 +210,7 @@ void CalculsFlashs::CalculAgeElementsOrbitaux()
         const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialeMetOp->dateTime());
 
         // Date et heure initiales
-        const Date date1(_ui->dateInitialeMetOp->date().year(), _ui->dateInitialeMetOp->date().month(), _ui->dateInitialeMetOp->date().day(),
-                         _ui->dateInitialeMetOp->time().hour(), _ui->dateInitialeMetOp->time().minute(), _ui->dateInitialeMetOp->time().second(), 0.);
+        const Date date1(_ui->dateInitialeMetOp->dateTime(), 0.);
 
         // Jour julien initial
         const double jj1 = date1.jourJulien() - offset1;
@@ -325,15 +324,13 @@ void CalculsFlashs::on_calculsFlashs_clicked()
         const double offset2 = Date::CalculOffsetUTC(_ui->dateFinaleMetOp->dateTime());
 
         // Date et heure initiales
-        const Date date1(_ui->dateInitialeMetOp->date().year(), _ui->dateInitialeMetOp->date().month(), _ui->dateInitialeMetOp->date().day(),
-                         _ui->dateInitialeMetOp->time().hour(), _ui->dateInitialeMetOp->time().minute(), _ui->dateInitialeMetOp->time().second(), 0.);
+        const Date date1(_ui->dateInitialeMetOp->dateTime(), 0.);
 
         // Jour julien initial
         conditions.jj1 = date1.jourJulien() - offset1;
 
         // Date et heure finales
-        const Date date2(_ui->dateFinaleMetOp->date().year(), _ui->dateFinaleMetOp->date().month(), _ui->dateFinaleMetOp->date().day(),
-                         _ui->dateFinaleMetOp->time().hour(), _ui->dateFinaleMetOp->time().minute(), _ui->dateFinaleMetOp->time().second(), 0.);
+        const Date date2(_ui->dateFinaleMetOp->dateTime(), 0.);
 
         // Jour julien final
         conditions.jj2 = date2.jourJulien() - offset2;

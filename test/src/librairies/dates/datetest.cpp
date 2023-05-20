@@ -133,6 +133,11 @@ void DateTest::testDates2()
 
     const Date date4(1966, 1, 15, 21, 24, 37.5, 1. / 24.);
     QCOMPARE(date4.jourJulienTT(), -12403.607476437845);
+
+    const QDateTime dt(QDate(2006, 1, 15), QTime(21, 24, 37));
+    const Date date5(dt, 0.);
+    const Date date6(2006, 1, 15, 21, 24, 37., 0.);
+    CompareDates(date5, date6);
 }
 
 void DateTest::testToLongDate()

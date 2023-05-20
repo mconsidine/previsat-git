@@ -203,11 +203,8 @@ void AjustementDates::MajCoordHorizDebut()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QDateTime qdate = _ui->dateInitiale->dateTime();
-    const double jj = Date(qdate.date().year(), qdate.date().month(), qdate.date().day(), qdate.time().hour(), qdate.time().minute(),
-                           qdate.time().second(), 0.).jourJulienUTC();
-
-    const double offset = Date::CalculOffsetUTC(qdate);
+    const double jj = Date(_ui->dateInitiale->dateTime(), 0.).jourJulienUTC();
+    const double offset = Date::CalculOffsetUTC(_ui->dateInitiale->dateTime());
     const Date date(jj - offset, 0.);
 
     /* Corps de la methode */
@@ -232,11 +229,8 @@ void AjustementDates::MajCoordHorizFin()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QDateTime qdate = _ui->dateFinale->dateTime();
-    const double jj = Date(qdate.date().year(), qdate.date().month(), qdate.date().day(), qdate.time().hour(), qdate.time().minute(),
-                           qdate.time().second(), 0.).jourJulienUTC();
-
-    const double offset = Date::CalculOffsetUTC(qdate);
+    const double jj = Date(_ui->dateFinale->dateTime(), 0.).jourJulienUTC();
+    const double offset = Date::CalculOffsetUTC(_ui->dateFinale->dateTime());
     const Date date(jj - offset, 0.);
 
     /* Corps de la methode */

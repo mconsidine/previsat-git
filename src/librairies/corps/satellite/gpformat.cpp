@@ -309,8 +309,7 @@ int GPFormat::CalculNombreOrbitesEpoque(const ElementsOrbitaux &elements)
     /* Corps de la methode */
     if (!dateLancement.isEmpty()) {
 
-        const QDateTime dateTimeLct = QDateTime::fromString(dateLancement, Qt::ISODate);
-        const Date dateLct(dateTimeLct.date().year(), dateTimeLct.date().month(), dateTimeLct.date().day(), 0.);
+        const Date dateLct(QDateTime::fromString(dateLancement, Qt::ISODate), 0.);
 
         // Nombre theorique d'orbites a l'epoque
         const int nbOrbTheo = static_cast<int> (elements.no * (elements.epoque.jourJulienUTC() - dateLct.jourJulienUTC()));
