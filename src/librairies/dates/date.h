@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 mai 2023
+ * >    20 mai 2023
  *
  */
 
@@ -73,6 +73,13 @@ public:
      * @param[in] offset ecart heure legale - UTC
      */
     Date(const Date &date, const double offset = 0.);
+
+    /**
+     * @brief Date Definition de la date a partir d'un objet QDateTime et de l'ecart heure legale - UTC
+     * @param datetime date et heure
+     * @param offset ecart heure legale - UTC
+     */
+    Date(const QDateTime &datetime, const double offset = 0.);
 
     /**
      * @brief Date Definition de la date a partir d'un jour julien 2000 et de l'ecart heure legale - UTC
