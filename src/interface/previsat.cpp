@@ -2241,7 +2241,10 @@ void PreviSat::ModificationDate(const QDateTime &dt)
     /* Corps de la methode */
     const double offset = _dateCourante->offsetUTC();
     EFFACE_OBJET(_dateCourante);
-    _dateCourante = new Date(dt.date().year(), dt.date().month(), dt.date().day(), dt.time().hour(), dt.time().minute(), dt.time().second(), offset);
+
+    const QDateTime datetime = dt.addSecs(static_cast<qint64> (-floor(offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES)));
+    _dateCourante = new Date(datetime.date().year(), datetime.date().month(), datetime.date().day(),
+                             datetime.time().hour(), datetime.time().minute(), datetime.time().second(), offset);
 
     // Enchainement de l'ensemble des calculs
     EnchainementCalculs();
