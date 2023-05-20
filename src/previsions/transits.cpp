@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    20 mai 2023
  *
  */
 
@@ -440,11 +440,10 @@ int Transits::CalculTransits(int &nombre)
                         }
 
                         date = Date(jj2, 0., false);
-                    } else {
-                        if (sat.hauteur() < _conditions.hauteur) {
-                            date = Date(date.jourJulienUTC() + periode, 0., false);
-                        }
+                    } else if (sat.hauteur() < _conditions.hauteur) {
+                        date = Date(date.jourJulienUTC() + periode, 0., false);
                     }
+
                     date = Date(date.jourJulienUTC() + PAS0, 0., false);
 
                     // Recherche de la nouvelle date dans le tableau d'ephemerides

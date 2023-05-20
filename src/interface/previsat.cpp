@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 mai 2023
+ * >    20 mai 2023
  *
  */
 
@@ -519,9 +519,9 @@ void PreviSat::AffichageCartesRadar()
     }
 
     // Affichage du radar
-    const bool radarVisible = ((_options->ui()->affradar->checkState() == Qt::Checked)
-                               || ((_options->ui()->affradar->checkState() == Qt::PartiallyChecked)
-                                   && Configuration::instance()->listeSatellites().first().isVisible()));
+    const Qt::CheckState affradar = static_cast<Qt::CheckState> (settings.value("affichage/affradar", Qt::Checked).toUInt());
+    const bool radarVisible = ((affradar == Qt::Checked) ||
+                               ((affradar == Qt::PartiallyChecked) && Configuration::instance()->listeSatellites().first().isVisible()));
     if (radarVisible) {
         _radar->show();
     }
@@ -823,7 +823,7 @@ void PreviSat::EnchainementCalculs()
         if (_dateCourante->jour() != jour) {
 
             // Heures de lever/passage au meridien/coucher/crepuscules
-            const DateSysteme syst = (_options->ui()->syst12h->isChecked()) ? DateSysteme::SYSTEME_12H : DateSysteme::SYSTEME_24H;
+            const DateSysteme syst = (settings.value("affichage/systemeHoraire", true).toBool()) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H;
             soleil.CalculLeverMeridienCoucher(*_dateCourante, observateur, syst);
 
             // Heures de lever/passage au meridien/coucher
@@ -841,7 +841,7 @@ void PreviSat::EnchainementCalculs()
             /*
              * Calcul de la position des planetes
              */
-            if (_options->ui()->affplanetes->checkState() != Qt::Unchecked) {
+            if (static_cast<Qt::CheckState> (settings.value("affichage/affplanetes", Qt::Checked).toUInt()) != Qt::Unchecked) {
 
                 std::array<Planete, PLANETE::NB_PLANETES> &planetes = Configuration::instance()->planetes();
 
@@ -856,11 +856,11 @@ void PreviSat::EnchainementCalculs()
              * Calcul de la position du catalogue d'etoiles
              */
             Etoile::CalculPositionEtoiles(observateur, Configuration::instance()->etoiles());
-            if (_options->ui()->affconst->isChecked()) {
+            if (static_cast<Qt::CheckState> (settings.value("affichage/affconst", Qt::Checked).toUInt()) == Qt::Checked) {
                 Constellation::CalculConstellations(observateur, Configuration::instance()->constellations());
             }
 
-            if (_options->ui()->affconst->checkState() != Qt::Unchecked) {
+            if (static_cast<Qt::CheckState> (settings.value("affichage/affconst", Qt::Checked).toUInt()) != Qt::Unchecked) {
                 LigneConstellation::CalculLignesCst(Configuration::instance()->etoiles(), Configuration::instance()->lignesCst());
             }
         }
@@ -880,27 +880,32 @@ void PreviSat::EnchainementCalculs()
             const bool mcc = _ui->issLive->isChecked();
 
             // Nombre de traces au sol a afficher
-            int nbTraces = _options->ui()->nombreTrajectoires->value();
+            int nbTraces = settings.value("affichage/nombreTrajectoires", 2).toInt();
 
-            if (satellites.isEmpty() || !_options->ui()->afftraj->isChecked()) {
+            if (satellites.isEmpty() || !(settings.value("affichage/afftraj", true).toBool())) {
                 nbTraces = 1;
-            } else {
-                if (mcc && satellites.first().elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale()) {
-                    nbTraces = 3;
-                }
+            } else if (mcc && satellites.first().elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale()) {
+                nbTraces = 3;
             }
+
+            const bool eclipsesLune = settings.value("affichage/eclipsesLune", true).toBool();
+            const bool effetEclipsesMagnitude = settings.value("affichage/effetEclipsesMagnitude", true).toBool();
+            const bool extinctionAtmospherique = settings.value("affichage/extinction", true).toBool();
+            const bool refractionAtmospherique = settings.value("affichage/refractionAtmospherique", true).toBool();
+            const bool afftraceCiel = settings.value("affichage/afftraceCiel", true).toBool();
+            const bool affvisib = settings.value("affichage/affvisib", true).toBool();
 
             Satellite::CalculPosVitListeSatellites(*_dateCourante,
                                                    observateur,
                                                    soleil,
                                                    lune,
                                                    nbTraces,
-                                                   _options->ui()->eclipsesLune->isChecked(),
-                                                   _options->ui()->effetEclipsesMagnitude->isChecked(),
-                                                   _options->ui()->extinctionAtmospherique->isChecked(),
-                                                   _options->ui()->refractionAtmospherique->isChecked(),
-                                                   _options->ui()->afftraceCiel->isChecked(),
-                                                   _options->ui()->affvisib->isChecked(),
+                                                   eclipsesLune,
+                                                   effetEclipsesMagnitude,
+                                                   extinctionAtmospherique,
+                                                   refractionAtmospherique,
+                                                   afftraceCiel,
+                                                   affvisib,
                                                    satellites.first().elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale(),
                                                    mcc,
                                                    satellites);
@@ -1198,10 +1203,8 @@ void PreviSat::InstallationTraduction(const QString &langue, QTranslator &traduc
     qApp->removeTranslator(&traduction);
     if (traduction.load(langue, Configuration::instance()->dirLang())) {
         qApp->installTranslator(&traduction);
-    } else {
-        if (!langue.endsWith("_fr")) {
-            qWarning() << "Impossible de charger le fichier de traduction" << langue;
-        }
+    } else if (!langue.endsWith("_fr")) {
+        qWarning() << "Impossible de charger le fichier de traduction" << langue;
     }
 
     /* Retour */
@@ -1496,7 +1499,7 @@ void PreviSat::AfficherCoordIssGmt()
 
         // Coordonnees ISS
         _coordISS->setPolice();
-        if (_options->ui()->affNbOrbWCC->isChecked() && _options->ui()->affBetaWCC->isChecked()) {
+        if (settings.value("affichage/affNbOrbWCC", true).toBool() && settings.value("affichage/affBetaWCC", false).toBool()) {
 
             _coordISS->ui()->inclinaisonISS->move(5, 39);
             _coordISS->ui()->nextTransitionISS->move(112, 0);
@@ -1513,13 +1516,13 @@ void PreviSat::AfficherCoordIssGmt()
             _coordISS->ui()->orbiteISS->setVisible(false);
             _coordISS->ui()->betaISS->setVisible(false);
 
-            if (_options->ui()->affNbOrbWCC->isChecked()) {
+            if (settings.value("affichage/affNbOrbWCC", true).toBool()) {
 
                 _coordISS->ui()->orbiteISS->move(112, 26);
                 _coordISS->ui()->orbiteISS->setVisible(true);
                 _coordISS->ui()->betaISS->setVisible(false);
 
-            } else if (_options->ui()->affBetaWCC->isChecked()) {
+            } else if (settings.value("affichage/affBetaWCC", false).toBool()) {
 
                 _coordISS->ui()->betaISS->move(112, 26);
                 _coordISS->ui()->betaISS->setVisible(true);
@@ -1543,7 +1546,7 @@ void PreviSat::AfficherCoordIssGmt()
             chaine.arg(numJour, 3, 10, QChar('0')).arg(heure, 2, 10, QChar('0')).arg(min, 2, 10, QChar('0')).arg(sec, 2, 10, QChar('0'));
 
         QPalette coul;
-        coul.setColor(_gmt->foregroundRole(), _coulGmt[_options->ui()->coulGMT->currentIndex()]);
+        coul.setColor(_gmt->foregroundRole(), _coulGmt[settings.value("affichage/coulGMT", false).toUInt()]);
 
         _gmt->setText(texte);
         _gmt->setPalette(coul);
@@ -1594,7 +1597,7 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
                 .arg(nomsat).arg(norad).arg(it.value().donnees.cospar());
 
         // Affichage du numero NORAD
-        switch (_options->ui()->affNoradListes->checkState()) {
+        switch (static_cast<Qt::CheckState> (settings.value("affichage/affNoradListes", Qt::Unchecked).toUInt())) {
         default:
         case Qt::Unchecked:
             nomsatComplet = nomsat;
@@ -1934,7 +1937,7 @@ void PreviSat::GestionTempsReel()
         _onglets->show(*_dateCourante);
 
         // Notifications sonores
-        if (_options->ui()->affnotif->isChecked() && !Configuration::instance()->listeSatellites().isEmpty()) {
+        if (settings.value("affichage/affnotif", false).toBool() && !Configuration::instance()->listeSatellites().isEmpty()) {
 
             NotificationSonore &notif = Configuration::instance()->notifAOS();
             const Satellite sat = Configuration::instance()->listeSatellites().first();
@@ -2027,11 +2030,10 @@ void PreviSat::GestionTempsReel()
                 _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
                 _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
                 ChangementDate(_dateCourante->ToQDateTime(1));
-
-                _onglets->show(*_dateCourante);
-
-                AffichageCartesRadar();
             }
+
+            _onglets->show(*_dateCourante);
+            AffichageCartesRadar();
         }
     }
 
@@ -2119,10 +2121,8 @@ void PreviSat::InitFicGP()
 
         if (listeElem.count() == 0) {
             _ui->listeFichiersElem->addItem("");
-        } else {
-            if (defaut) {
-                Configuration::instance()->nomfic() = Configuration::instance()->dirElem() + QDir::separator() + listeElem.first();
-            }
+        } else if (defaut) {
+            Configuration::instance()->nomfic() = Configuration::instance()->dirElem() + QDir::separator() + listeElem.first();
         }
         _ui->listeFichiersElem->blockSignals(etat);
 
@@ -3002,10 +3002,8 @@ void PreviSat::on_actionInformations_triggered()
             settings.setValue("temps/lastInfos", _majInfosDate);
         }
 
-    } else {
-        if (!_majInfosDate.isEmpty()) {
-            Message::Afficher(tr("Pas d'informations à afficher"), MessageType::INFO);
-        }
+    } else if (!_majInfosDate.isEmpty()) {
+        Message::Afficher(tr("Pas d'informations à afficher"), MessageType::INFO);
     }
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;

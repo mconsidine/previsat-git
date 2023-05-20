@@ -642,14 +642,12 @@ void SuiviTelescope::on_genererPositions_clicked()
 
             nbIter = qRound((date2.jourJulienUTC() - date1.jourJulienUTC()) * DATE::NB_MILLISEC_PAR_JOUR + 10000.) / _ui->pasSuivi->value();
 
-        } else {
+        } else if (satSuivi.hauteur() > 0.) {
 
             // Cas des satellites geostationnaires (10 minutes de suivi)
-            if (satSuivi.hauteur() > 0.) {
-                date1 = date;
-                nbIter = 600000 / _ui->pasSuivi->value();
-                date2 = Date(date1.jourJulienUTC() + nbIter * DATE::NB_JOUR_PAR_MILLISEC, 0.);
-            }
+            date1 = date;
+            nbIter = 600000 / _ui->pasSuivi->value();
+            date2 = Date(date1.jourJulienUTC() + nbIter * DATE::NB_JOUR_PAR_MILLISEC, 0.);
         }
 
         if (nbIter > 0) {

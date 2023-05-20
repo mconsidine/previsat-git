@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    27 mars 2023
+ * >    20 mai 2023
  *
  */
 
@@ -187,13 +187,11 @@ void Radar::mouseMoveEvent(QMouseEvent *evt)
                     setToolTip(tr("Soleil"));
                     setCursor(Qt::CrossCursor);
                     asoleil = true;
-                } else {
-                    if (asoleil) {
-                        emit EffacerMessageStatut();
-                        setToolTip("");
-                        setCursor(Qt::ArrowCursor);
-                        asoleil = false;
-                    }
+                } else if (asoleil) {
+                    emit EffacerMessageStatut();
+                    setToolTip("");
+                    setCursor(Qt::ArrowCursor);
+                    asoleil = false;
                 }
             }
 
@@ -215,13 +213,11 @@ void Radar::mouseMoveEvent(QMouseEvent *evt)
                     setToolTip(tr("Lune"));
                     setCursor(Qt::CrossCursor);
                     alune = true;
-                } else {
-                    if (alune) {
-                        emit EffacerMessageStatut();
-                        setToolTip("");
-                        setCursor(Qt::ArrowCursor);
-                        alune = false;
-                    }
+                } else if (alune) {
+                    emit EffacerMessageStatut();
+                    setToolTip("");
+                    setCursor(Qt::ArrowCursor);
+                    alune = false;
                 }
             }
         } else {

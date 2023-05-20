@@ -442,7 +442,6 @@ void Options::ChargementPref()
                                || (item.first() == "affichage/affradar") || (item.first() == "affichage/affvisib")
                                || (item.first() == "affichage/intensiteOmbre") || (item.first() == "affichage/intensiteVision")) {
                         settings.setValue(item.first(), item.at(1).toUInt());
-                    } else {
                     }
                 }
             }
