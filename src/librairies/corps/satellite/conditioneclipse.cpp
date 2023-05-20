@@ -30,7 +30,7 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >    2 mars 2023
+ * >    20 mai 2023
  *
  */
 
@@ -164,10 +164,8 @@ ElementsEclipse ConditionEclipse::CalculEclipse(const Vecteur3D &position, const
     elements.phiSoleil = asin(SOLEIL::RAYON_SOLAIRE / distSatSol);
     if (std::isnan(elements.phiSoleil)) {
         elements.phiSoleil = MATHS::PI_SUR_DEUX;
-    } else {
-        if ((corpsOccultant == CorpsOccultant::TERRE) && refraction) {
-            elements.phiSoleil += TERRE::REFRACTION_HZ;
-        }
+    } else if ((corpsOccultant == CorpsOccultant::TERRE) && refraction) {
+        elements.phiSoleil += TERRE::REFRACTION_HZ;
     }
 
     const double distance = rho.Norme();

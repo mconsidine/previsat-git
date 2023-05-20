@@ -371,7 +371,6 @@ void CalculsFlashs::on_calculsFlashs_clicked()
             conditions.crepuscule = MATHS::PI_SUR_DEUX;
         } else if (_ui->hauteurSoleilMetOp->currentIndex() == 5) {
             conditions.crepuscule = MATHS::DEG2RAD * _ui->valHauteurSoleilMetOp->text().toInt();
-        } else {
         }
 
         // Tri par ordre chronologique

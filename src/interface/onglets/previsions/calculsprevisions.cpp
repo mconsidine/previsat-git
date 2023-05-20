@@ -468,7 +468,6 @@ void CalculsPrevisions::on_calculsPrev_clicked()
             conditions.crepuscule = MATHS::PI_SUR_DEUX;
         } else if (_ui->hauteurSoleilPrev->currentIndex() == 5) {
             conditions.crepuscule = MATHS::DEG2RAD * _ui->valHauteurSoleilPrev->text().toInt();
-        } else {
         }
 
         // Prise en compte de l'extinction atmospherique

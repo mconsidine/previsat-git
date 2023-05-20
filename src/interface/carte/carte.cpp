@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    19 mai 2023
+ * >    20 mai 2023
  *
  */
 
@@ -207,14 +207,12 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
             setCursor(Qt::CrossCursor);
             _ui->carte->viewport()->setCursor(Qt::CrossCursor);
             asoleil = true;
-        } else {
-            if (asoleil) {
-                emit EffacerMessageStatut();
-                setToolTip("");
-                setCursor(Qt::ArrowCursor);
-                _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
-                asoleil = false;
-            }
+        } else if (asoleil) {
+            emit EffacerMessageStatut();
+            setToolTip("");
+            setCursor(Qt::ArrowCursor);
+            _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
+            asoleil = false;
         }
     }
 
@@ -235,14 +233,13 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
             setCursor(Qt::CrossCursor);
             _ui->carte->viewport()->setCursor(Qt::CrossCursor);
             alune = true;
-        } else {
-            if (alune) {
-                emit EffacerMessageStatut();
-                setToolTip("");
-                setCursor(Qt::ArrowCursor);
-                _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
-                alune = false;
-            }
+
+        } else if (alune) {
+            emit EffacerMessageStatut();
+            setToolTip("");
+            setCursor(Qt::ArrowCursor);
+            _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
+            alune = false;
         }
     }
 

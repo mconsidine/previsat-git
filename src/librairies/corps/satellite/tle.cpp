@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 avril 2023
+ * >    20 mai 2023
  *
  */
 
@@ -308,10 +308,8 @@ QStringList TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, 
             listeNoradNew.removeOne(numeroNorad);
             listeNoradOld.removeOne(numeroNorad);
 
-        } else {
-            if (nomFicOld != nomFicNew) {
-                compteRendu.append(tleOld[numeroNorad].nom + "#" + tleOld[numeroNorad].norad);
-            }
+        } else if (nomFicOld != nomFicNew) {
+            compteRendu.append(tleOld[numeroNorad].nom + "#" + tleOld[numeroNorad].norad);
         }
     }
 
@@ -560,10 +558,8 @@ bool TLE::CheckSum(const QString &ligne)
         const int chr = ligne.at(i).digitValue();
         if ((chr >= 0) && (chr <= 9)) {
             check += chr;
-        } else {
-            if (ligne.at(i) == '-') {
-                check++;
-            }
+        } else if (ligne.at(i) == '-') {
+            check++;
         }
     }
 

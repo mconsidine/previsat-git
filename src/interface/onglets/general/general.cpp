@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    7 mai 2023
+ * >    20 mai 2023
  *
  */
 
@@ -354,7 +354,6 @@ void General::AffichageDonneesSatellite(const Date &date)
                         crep = 90.;
                     } else if (_flashs->ui()->hauteurSoleilMetOp->currentIndex() == 5) {
                         crep = _flashs->ui()->valHauteurSoleilMetOp->text().toInt();
-                    } else {
                     }
                     crep *= MATHS::DEG2RAD;
 

@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    15 mai 2023
+ * >    20 mai 2023
  *
  */
 
@@ -412,13 +412,11 @@ void Ciel::mouseMoveEvent(QMouseEvent *evt)
                             emit AfficherMessageStatut(_planetes.at(ipla).nom());
                             setToolTip(_planetes.at(ipla).nom());
                             setCursor(Qt::CrossCursor);
-                        } else {
-                            if (aplanete) {
-                                emit EffacerMessageStatut();
-                                setToolTip("");
-                                setCursor(Qt::ArrowCursor);
-                                aplanete = false;
-                            }
+                        } else if (aplanete) {
+                            emit EffacerMessageStatut();
+                            setToolTip("");
+                            setCursor(Qt::ArrowCursor);
+                            aplanete = false;
                         }
                     }
                 }
@@ -439,13 +437,12 @@ void Ciel::mouseMoveEvent(QMouseEvent *evt)
                         setToolTip(tr("Soleil"));
                         setCursor(Qt::CrossCursor);
                         asoleil = true;
-                    } else {
-                        if (asoleil) {
-                            emit EffacerMessageStatut();
-                            setToolTip("");
-                            setCursor(Qt::ArrowCursor);
-                            asoleil = false;
-                        }
+
+                    } else if (asoleil) {
+                        emit EffacerMessageStatut();
+                        setToolTip("");
+                        setCursor(Qt::ArrowCursor);
+                        asoleil = false;
                     }
                 }
 
@@ -465,13 +462,12 @@ void Ciel::mouseMoveEvent(QMouseEvent *evt)
                         setToolTip(tr("Lune"));
                         setCursor(Qt::CrossCursor);
                         alune = true;
-                    } else {
-                        if (alune) {
-                            emit EffacerMessageStatut();
-                            setToolTip("");
-                            setCursor(Qt::ArrowCursor);
-                            alune = false;
-                        }
+
+                    } else if (alune) {
+                        emit EffacerMessageStatut();
+                        setToolTip("");
+                        setCursor(Qt::ArrowCursor);
+                        alune = false;
                     }
                 }
             } else {

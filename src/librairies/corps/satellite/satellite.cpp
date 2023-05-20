@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 mai 2023
+ * >    20 mai 2023
  *
  */
 
@@ -354,10 +354,8 @@ void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, c
                 elem.eclipsePartielle = (sat._conditionEclipse.eclipseAnnulaire() || sat._conditionEclipse.eclipsePartielle());
                 _traceCiel.append(elem);
 
-            } else {
-                if (i > 0) {
-                    afin = true;
-                }
+            } else if (i > 0) {
+                afin = true;
             }
             i++;
         }
