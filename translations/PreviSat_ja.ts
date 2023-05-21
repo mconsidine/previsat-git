@@ -6012,7 +6012,7 @@ Satellite %1 - numéro NORAD : %2</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="464"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="919"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="920"/>
         <source>Ouvrir Satellite Tracker</source>
         <translation type="unfinished">Satellite Trackerを開く</translation>
     </message>
@@ -6145,7 +6145,7 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="920"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="921"/>
         <source>Fichiers exécutables (*.exe)</source>
         <translation>実行ファイル (*.exe)</translation>
     </message>
