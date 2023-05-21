@@ -380,7 +380,7 @@ void SuiviTelescope::CalculAos()
                                                                satSuivi, obs, SensCalcul::ANTI_CHRONOLOGIQUE, 0.);
 
                 EFFACE_OBJET(_dateAosSuivi);
-                _dateAosSuivi = new Date(elem.date, _date->offsetUTC());
+                _dateAosSuivi = new Date((elem.date.jourJulienUTC() < _date->jourJulienUTC()) ? *_date : elem.date, _date->offsetUTC());
                 azim = elemAos.azimut;
 
                 const QString chaine2 = tr("Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3");
@@ -880,11 +880,12 @@ void SuiviTelescope::on_ajusterDates_clicked()
     /* Initialisations */
     const Observateur observateur = Configuration::instance()->observateurs().at(_ui->lieuxObservation->currentIndex());
     const ElementsOrbitaux elements = Configuration::instance()->mapElementsOrbitaux()[_norad];
-
+    const double hauteur = MATHS::DEG2RAD * ((_ui->hauteurSatSuivi->currentIndex() == 5) ?
+                                                    abs(_ui->valHauteurSatSuivi->text().toInt()) : 5 * _ui->hauteurSatSuivi->currentIndex());
 
     /* Corps de la methode */
     AjustementDates * const ajustementDates = new AjustementDates(_dateAosSuivi->ToQDateTime(1), _dateLosSuivi->ToQDateTime(1), _ui->pasSuivi->value(),
-                                                                  observateur, elements, this);
+                                                                  observateur, elements, _date->offsetUTC(), hauteur, this);
 
     QEvent evt(QEvent::LanguageChange);
 

@@ -6020,7 +6020,7 @@ Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="464"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="919"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="920"/>
         <source>Ouvrir Satellite Tracker</source>
         <translation>Open Satellite Tracker</translation>
     </message>
@@ -6153,7 +6153,7 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="920"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="921"/>
         <source>Fichiers exécutables (*.exe)</source>
         <translation>Executable files (*.exe)</translation>
     </message>

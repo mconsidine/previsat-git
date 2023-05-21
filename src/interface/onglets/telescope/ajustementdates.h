@@ -76,7 +76,7 @@ public:
      * @param[in] parent fenetre parent
      */
     explicit AjustementDates(const QDateTime &dateInitiale, const QDateTime &dateFinale, const int pas, const Observateur &observateur,
-                             const ElementsOrbitaux &elements, QWidget *parent = nullptr);
+                             const ElementsOrbitaux &elements, const double offset, const double hauteur, QWidget *parent = nullptr);
 
 
     /*
@@ -137,6 +137,8 @@ private:
     QDateTime _date1;
     QDateTime _date2;
     int _pas;
+    double _offset;
+    double _hauteur;
     Observateur _observateur;
     ElementsOrbitaux _elements;
 
