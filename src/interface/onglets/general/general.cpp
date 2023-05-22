@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    20 mai 2023
+ * >    22 mai 2023
  *
  */
 
@@ -600,6 +600,18 @@ void General::AffichageDonneesSoleilLune()
     _ui->crepusculeNautique->setText(soleil.datesCrepuscules()[4]);
     _ui->crepusculeAstro->setText(soleil.datesCrepuscules()[5]);
 
+    _ui->leverSoleil->setAlignment((soleil.dateLever() == "-") ? Qt::AlignHCenter : Qt::AlignRight);
+    _ui->meridienSoleil->setAlignment((soleil.dateMeridien() == "-") ? Qt::AlignHCenter : Qt::AlignRight);
+    _ui->coucherSoleil->setAlignment((soleil.dateCoucher() == "-") ? Qt::AlignHCenter : Qt::AlignRight);
+
+    _ui->aubeAstro->setAlignment((soleil.datesCrepuscules()[2] == "-") ? Qt::AlignHCenter : Qt::AlignRight);
+    _ui->aubeNautique->setAlignment((soleil.datesCrepuscules()[1] == "-") ? Qt::AlignHCenter : Qt::AlignRight);
+    _ui->aubeCivile->setAlignment((soleil.datesCrepuscules()[0] == "-") ? Qt::AlignHCenter : Qt::AlignRight);
+
+    _ui->crepusculeCivil->setAlignment((soleil.datesCrepuscules()[3] == "-") ? Qt::AlignHCenter : Qt::AlignRight);
+    _ui->crepusculeNautique->setAlignment((soleil.datesCrepuscules()[4] == "-") ? Qt::AlignHCenter : Qt::AlignRight);
+    _ui->crepusculeAstro->setAlignment((soleil.datesCrepuscules()[5] == "-") ? Qt::AlignHCenter : Qt::AlignRight);
+
 
     /*
      * Lune
@@ -622,11 +634,16 @@ void General::AffichageDonneesSoleilLune()
     _ui->diametreApparentLune->setText(Maths::ToSexagesimal(2. * asin(LUNE::RAYON_LUNAIRE / lune.distance()), AngleFormatType::DEGRE, 0, 0, false, true)
                                        .section("°", 1));
 
-    // Lever/passage au meridien/coucher/phases
+    // Lever/passage au meridien/coucher
     _ui->leverLune->setText(lune.dateLever());
     _ui->meridienLune->setText(lune.dateMeridien());
     _ui->coucherLune->setText(lune.dateCoucher());
 
+    _ui->leverLune->setAlignment((lune.dateLever() == "-") ? Qt::AlignHCenter : Qt::AlignRight);
+    _ui->meridienLune->setAlignment((lune.dateMeridien() == "-") ? Qt::AlignHCenter : Qt::AlignRight);
+    _ui->coucherLune->setAlignment((lune.dateCoucher() == "-") ? Qt::AlignHCenter : Qt::AlignRight);
+
+    // Phases de la Lune
     _ui->nouvelleLune->setText(lune.datesPhases()[0]);
     _ui->premierQuartier->setText(lune.datesPhases()[1]);
     _ui->pleineLune->setText(lune.datesPhases()[2]);
