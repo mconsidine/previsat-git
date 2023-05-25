@@ -410,7 +410,7 @@
       <enum>Qt::CustomContextMenu</enum>
      </property>
      <property name="toolTip">
-      <string>Cocher un groupe pour activer sa mise à jour</string>
+      <string>Cocher un groupe pour activer sa mise à jour automatique</string>
      </property>
      <property name="horizontalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOff</enum>

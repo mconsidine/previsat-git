@@ -254,7 +254,7 @@ QString GPFormat::RecupereNomsat(const QString &lig0)
     }
 
     if (nomsat.startsWith("1 ")) {
-        nomsat = nomsat.mid(2, 5);
+        nomsat = nomsat.split(" ", Qt::SkipEmptyParts).at(1);
     }
 
     if (nomsat.toLower().trimmed() == "iss (zarya)") {
