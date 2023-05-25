@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 mai 2023
+ * >    25 mai 2023
  *
  */
 
@@ -1439,6 +1439,7 @@ bool PreviSat::VerifMajVersion(const QString &fichier)
     qInfo() << "Début Fonction" << __FUNCTION__;
 
     bool anew = false;
+    bool majPrevi = settings.value("fichier/majPreviSat", true).toBool();
     Telechargement tel(Configuration::instance()->dirTmp());
 
     /* Corps de la methode */
@@ -1456,7 +1457,7 @@ bool PreviSat::VerifMajVersion(const QString &fichier)
 
             anew = (!versionActuelle.isNull() && (QVersionNumber::compare(versionActuelle, versionNouvelle) < 0));
 
-            if (anew) {
+            if (anew && majPrevi) {
 
                 _ui->actionTelecharger_la_mise_a_jour->setVisible(true);
 
@@ -1464,6 +1465,7 @@ bool PreviSat::VerifMajVersion(const QString &fichier)
 
                 QMessageBox msgbox(QMessageBox::Question, tr("Information"), msg.arg(APP_NAME));
                 QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
+
                 msgbox.addButton(tr("Non"), QMessageBox::NoRole);
                 msgbox.setDefaultButton(oui);
                 msgbox.exec();
@@ -1474,12 +1476,22 @@ bool PreviSat::VerifMajVersion(const QString &fichier)
                     _ui->actionTelecharger_la_mise_a_jour->setVisible(false);
                 }
 
-                settings.setValue("fichier/majPrevi", "1");
+                majPrevi = false;
             } else {
-                _ui->actionTelecharger_la_mise_a_jour->setVisible(false);
+                majPrevi = true;
+            }
+
+            settings.setValue("fichier/majPreviSat", majPrevi);
+
+            if (!majPrevi) {
+                QFont police;
+                police.setBold(true);
+                _ui->actionTelecharger_la_mise_a_jour->setFont(police);
             }
         }
     }
+
+    _ui->actionTelecharger_la_mise_a_jour->setVisible(!majPrevi);
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
 
