@@ -1827,23 +1827,23 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1094"/>
         <source>Aube astronomique :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">天文明け方 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1107"/>
         <source>Aube nautique :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">航海明け方 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1120"/>
         <source>Aube civile :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">市民明け方 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1294"/>
         <location filename="../src/interface/onglets/general/general.cpp" line="900"/>
         <source>Évènements Soleil :</source>
-        <translation type="unfinished">太陽事象 :</translation>
+        <translation type="unfinished">太陽関連のイベント :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1328"/>
@@ -1855,7 +1855,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/general/general.ui" line="1341"/>
         <source>Méridien :</source>
         <comment>Sun</comment>
-        <translation type="unfinished">子午線 :</translation>
+        <translation type="unfinished">子午線越え :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1354"/>
@@ -1866,7 +1866,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1193"/>
         <source>Crépuscule civil :</source>
-        <translation>市民薄明 :</translation>
+        <translation>市民薄暮 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="575"/>
@@ -1894,18 +1894,18 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1222"/>
         <source>Crépuscule nautique :</source>
-        <translation>航海薄明 :</translation>
+        <translation>航海薄暮 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1251"/>
         <source>Crépuscule astronomique :</source>
-        <translation>天文薄明 :</translation>
+        <translation>天文薄暮 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1428"/>
         <location filename="../src/interface/onglets/general/general.cpp" line="922"/>
         <source>Évènements Lune :</source>
-        <translation type="unfinished">月事象 :</translation>
+        <translation type="unfinished">月関連のイベント :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1462"/>
@@ -1917,13 +1917,13 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/general/general.ui" line="1475"/>
         <source>Méridien :</source>
         <comment>Moon</comment>
-        <translation type="unfinished">子午線 :</translation>
+        <translation type="unfinished">子午線越え :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1488"/>
         <source>Coucher :</source>
         <comment>Moon</comment>
-        <translation type="unfinished">月の入り  :</translation>
+        <translation type="unfinished">月の入り :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1558"/>
@@ -2001,12 +2001,12 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="66"/>
         <source>Évènements Soleil</source>
-        <translation type="unfinished">太陽事象</translation>
+        <translation type="unfinished">太陽関連のイベント</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="67"/>
         <source>Évènements Lune</source>
-        <translation type="unfinished">月事象</translation>
+        <translation type="unfinished">月関連のイベント</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="230"/>
@@ -2348,7 +2348,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/general/general.cpp" line="924"/>
         <source>Méridien : %1</source>
         <comment>Meridian pass for the Moon</comment>
-        <translation type="unfinished">子午線 : %1</translation>
+        <translation type="unfinished">子午線越え : %1</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="925"/>
@@ -2400,19 +2400,19 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/general/general.cpp" line="901"/>
         <source>Lever    : %1				Aube astronomique : %2		Crépuscule civil         : %3</source>
         <comment>Sunrise</comment>
-        <translation type="unfinished">日の出    : %1			Aube astronomique : %2		市民薄明         : %3</translation>
+        <translation type="unfinished">日の出    : %1			天文明け方 : %2		市民薄暮         : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="903"/>
         <source>Méridien : %1				Aube nautique     : %2		Crépuscule nautique      : %3</source>
         <comment>Meridian pass for the Sun</comment>
-        <translation type="unfinished">子午線 : %1			Aube nautique     : %2		航海薄明      : %3</translation>
+        <translation type="unfinished">子午線越え : %1			航海明け方     : %2		航海薄暮      : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="905"/>
         <source>Coucher  : %1				Aube civile       : %2		Crépuscule astronomique  : %3</source>
         <comment>Sunset</comment>
-        <translation type="unfinished">日の入り  : %1			Aube civile       : %2		天文薄明  : %3</translation>
+        <translation type="unfinished">日の入り  : %1			市民明け方       : %2		天文薄暮  : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="915"/>
@@ -3689,7 +3689,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.cpp" line="1537"/>
         <source>Lieu d&apos;observation déjà sélectionné</source>
-        <translation type="unfinished">観測地は既に選択されています</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4193,7 +4193,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="413"/>
         <source>Cocher un groupe pour activer sa mise à jour automatique</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">グループをチェックして、自動更新を有効にします</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="464"/>
@@ -4937,7 +4937,7 @@ ce qui représente environ %2 pages.</source>
         <source>Vous venez de mettre à jour %1.
 %2Souhaitez-vous faire un don pour soutenir son auteur ?</source>
         <translation type="unfinished">%1を更新しました。
-作者を支援したい場合は寄付をご検討ください</translation>
+%2作者を支援したい場合は寄付をご検討ください</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1759"/>
@@ -5062,7 +5062,7 @@ ce qui représente environ %2 pages.</source>
         <location filename="../src/librairies/corps/corps.cpp" line="671"/>
         <location filename="../src/librairies/dates/date.cpp" line="445"/>
         <source>Erreur lors de la lecture du fichier %1, veuillez réinstaller %2</source>
-        <translation type="unfinished">ファイルの読み込み中にエラーが発生しましたので、「%2」を再インストールしてください</translation>
+        <translation type="unfinished">ファイル「%1」の読み込み中にエラーが発生しましたので、「%2」を再インストールしてください</translation>
     </message>
     <message>
         <location filename="../src/configuration/configuration.cpp" line="953"/>
