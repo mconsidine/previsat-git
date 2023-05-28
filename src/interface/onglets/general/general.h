@@ -36,7 +36,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    1er mai 2023
+ * >    28 mai 2023
  *
  */
 
@@ -128,6 +128,7 @@ signals:
 
     void ModificationDate(const QDateTime &date);
     void ModeManuel(const bool enable);
+    void RecalculerPositions();
 
 
 protected:
@@ -211,6 +212,7 @@ private slots:
     void mouseDoubleClickEvent(QMouseEvent *evt);
 
     void on_dateHeure2_dateTimeChanged(const QDateTime &dateTime);
+    void on_lieuObservation_currentIndexChanged(int index);
 
     void on_soleilLuneSuiv_clicked();
     void on_soleilLunePrec_clicked();

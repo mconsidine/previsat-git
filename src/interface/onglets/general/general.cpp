@@ -989,6 +989,14 @@ void General::on_dateHeure2_dateTimeChanged(const QDateTime &dateTime)
     }
 }
 
+void General::on_lieuObservation_currentIndexChanged(int index)
+{
+    if (index > 0) {
+        Configuration::instance()->setObservateurDefaut(index);
+        emit RecalculerPositions();
+    }
+}
+
 void General::on_soleilLunePrec_clicked()
 {
     _indexLuneSoleil = (_ui->stackedWidget_soleilLune->currentIndex() + _ui->stackedWidget_soleilLune->count() - 1)

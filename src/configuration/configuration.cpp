@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    7 mai 2023
+ * >    28 mai 2023
  *
  */
 
@@ -615,6 +615,13 @@ void Configuration::setMapElementsOrbitaux(const QMap<QString, ElementsOrbitaux>
 void Configuration::setListeFicElem(const QStringList &listeFic)
 {
     _listeFichiersElem = listeFic;
+}
+
+void Configuration::setObservateurDefaut(const int index)
+{
+    if ((index > 0) && (index < _observateurs.size())) {
+        _observateurs.swapItemsAt(index, 0);
+    }
 }
 
 
