@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 mai 2023
+ * >    28 mai 2023
  *
  */
 
@@ -198,6 +198,7 @@ private:
     Date *_dateCourante;
 
     bool _isCarteMonde;
+    bool _reinitJour;
 
 
     /*
@@ -392,6 +393,11 @@ private slots:
     void RaccourciInformations();
     void RaccourciRecherche();
     void RaccourciStation();
+
+    /**
+     * @brief ReinitCalculEvenementsSoleilLune Reinitialisation du calcul des evenements Soleil/Lune
+     */
+    void ReinitCalculEvenementsSoleilLune();
 
     /**
      * @brief TempsReel Affichage en temps reel

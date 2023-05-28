@@ -808,7 +808,7 @@ void General::SauveOngletGeneral(const QString &fichier)
             }
 
             QTextStream flux(&sw);
-            flux.setEncoding(QStringConverter::System);
+            flux.setEncoding(QStringConverter::Utf8);
 
 #if (BUILD_TEST == false)
             const QString titre = "%1 %2 / %3 (c) %4";
@@ -884,12 +884,14 @@ void General::SauveOngletGeneral(const QString &fichier)
 
             flux << tr("Évènements Soleil :") << Qt::endl;
             chaine = tr("Lever    : %1\t\t\t\tAube astronomique : %2\t\tCrépuscule civil         : %3", "Sunrise");
-            flux << chaine.arg(_ui->leverSoleil->text()).arg(_ui->aubeAstro->text()).arg(_ui->crepusculeCivil->text()) << Qt::endl;
+            flux << chaine.arg(_ui->leverSoleil->text().replace("  ", "")).arg(_ui->aubeAstro->text().replace("  ", ""))
+                        .arg(_ui->crepusculeCivil->text().replace("  ", "")) << Qt::endl;
             chaine = tr("Méridien : %1\t\t\t\tAube nautique     : %2\t\tCrépuscule nautique      : %3", "Meridian pass for the Sun");
-            flux << chaine.arg(_ui->meridienSoleil->text()).arg(_ui->aubeNautique->text()).arg(_ui->crepusculeNautique->text()) << Qt::endl;
+            flux << chaine.arg(_ui->meridienSoleil->text().replace("  ", "")).arg(_ui->aubeNautique->text().replace("  ", ""))
+                        .arg(_ui->crepusculeNautique->text().replace("  ", "")) << Qt::endl;
             chaine = tr("Coucher  : %1\t\t\t\tAube civile       : %2\t\tCrépuscule astronomique  : %3", "Sunset");
-            flux << chaine.arg(_ui->coucherSoleil->text()).arg(_ui->aubeCivile->text()).arg(_ui->crepusculeAstro->text())
-                 << Qt::endl << Qt::endl << Qt::endl;
+            flux << chaine.arg(_ui->coucherSoleil->text().replace("  ", "")).arg(_ui->aubeCivile->text().replace("  ", ""))
+                        .arg(_ui->crepusculeAstro->text().replace("  ", "")) << Qt::endl << Qt::endl << Qt::endl;
 
 
             // Donnees sur la Lune

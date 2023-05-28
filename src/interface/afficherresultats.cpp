@@ -165,7 +165,7 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const Conditi
 
         if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
             const QByteArray contenuFic = fi.readAll();
-            auto syst = QStringDecoder(QStringDecoder::System);
+            auto syst = QStringDecoder(QStringDecoder::Utf8);
             _ui->fichierTexte->setReadOnly(true);
             _ui->fichierTexte->setText(syst(contenuFic));
         }
@@ -597,7 +597,7 @@ void AfficherResultats::EcrireEntete() const
     if (fichier.open(QIODevice::WriteOnly | QIODevice::Text)) {
 
         QTextStream flux(&fichier);
-        flux.setEncoding(QStringConverter::System);
+        flux.setEncoding(QStringConverter::Utf8);
 
         // Ligne d'entete
 #if (BUILD_TEST == false)
@@ -1434,7 +1434,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
         if (fichier.open(QIODevice::Append | QIODevice::Text)) {
 
             QTextStream flux(&fichier);
-            flux.setEncoding(QStringConverter::System);
+            flux.setEncoding(QStringConverter::Utf8);
 
             bool ecr = true;
             int i;

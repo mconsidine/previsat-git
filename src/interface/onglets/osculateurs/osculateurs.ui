@@ -764,7 +764,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="kepleriens">
      <widget class="QWidget" name="formLayoutWidget_27">
@@ -955,6 +955,194 @@
      </widget>
     </widget>
     <widget class="QWidget" name="equatorial">
+     <widget class="QWidget" name="formLayoutWidget_28">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>0</y>
+        <width>171</width>
+        <height>52</height>
+       </rect>
+      </property>
+      <layout class="QFormLayout" name="formLayout_circ2">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetFixedSize</enum>
+       </property>
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="horizontalSpacing">
+        <number>2</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>1</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="lbl_ADNoeudAscendant2">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string extracomment="Right ascension of the ascending node">AD noeud ascendant :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="lbl_inclinaison2">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string>Inclinaison :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="lbl_positionSurOrbite">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string>Position sur orbite :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="ADNoeudAscendant2">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string notr="true">000.0000°</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="inclinaison2">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string notr="true">000.0000°</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="positionSurOrbite">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="toolTip">
+          <string>Somme de l'argument du périgée et de l'anomalie moyenne</string>
+         </property>
+         <property name="text">
+          <string notr="true">000.0000°</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="formLayoutWidget_29">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>181</width>
+        <height>53</height>
+       </rect>
+      </property>
+      <layout class="QFormLayout" name="formLayout_circ1">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetFixedSize</enum>
+       </property>
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="horizontalSpacing">
+        <number>3</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>1</number>
+       </property>
+       <item row="2" column="0">
+        <widget class="QLabel" name="lbl_ex1">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string extracomment="Component X of eccentricity vector">Ex :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="ex1">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string notr="true">0.0000000</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="lbl_ey1">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string extracomment="Component Y of eccentricity vector">Ey :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="ey1">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string notr="true">0.0000000</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="demiGrandAxeCirc">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string notr="true">36000.0 km</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="lbl_demiGrandAxeCirc">
+         <property name="text">
+          <string>Demi-grand axe :</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="circulaires">
      <widget class="QWidget" name="formLayoutWidget_33">
       <property name="geometry">
        <rect>
@@ -1130,194 +1318,6 @@
         <widget class="QLabel" name="anomalieMoyenne2">
          <property name="font">
           <font/>
-         </property>
-         <property name="text">
-          <string notr="true">000.0000°</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="circulaires">
-     <widget class="QWidget" name="formLayoutWidget_29">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>181</width>
-        <height>53</height>
-       </rect>
-      </property>
-      <layout class="QFormLayout" name="formLayout_circ1">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetFixedSize</enum>
-       </property>
-       <property name="labelAlignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-       <property name="horizontalSpacing">
-        <number>2</number>
-       </property>
-       <property name="verticalSpacing">
-        <number>1</number>
-       </property>
-       <item row="2" column="0">
-        <widget class="QLabel" name="lbl_ex1">
-         <property name="font">
-          <font/>
-         </property>
-         <property name="text">
-          <string extracomment="Component X of eccentricity vector">Ex :</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="ex1">
-         <property name="font">
-          <font/>
-         </property>
-         <property name="text">
-          <string notr="true">0.0000000</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="lbl_ey1">
-         <property name="font">
-          <font/>
-         </property>
-         <property name="text">
-          <string extracomment="Component Y of eccentricity vector">Ey :</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLabel" name="ey1">
-         <property name="font">
-          <font/>
-         </property>
-         <property name="text">
-          <string notr="true">0.0000000</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="demiGrandAxeCirc">
-         <property name="font">
-          <font/>
-         </property>
-         <property name="text">
-          <string notr="true">36000.0 km</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="lbl_demiGrandAxeCirc">
-         <property name="text">
-          <string>Demi-grand axe :</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="formLayoutWidget_28">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>0</y>
-        <width>171</width>
-        <height>52</height>
-       </rect>
-      </property>
-      <layout class="QFormLayout" name="formLayout_circ2">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetFixedSize</enum>
-       </property>
-       <property name="labelAlignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-       <property name="horizontalSpacing">
-        <number>2</number>
-       </property>
-       <property name="verticalSpacing">
-        <number>1</number>
-       </property>
-       <item row="0" column="0">
-        <widget class="QLabel" name="lbl_ADNoeudAscendant2">
-         <property name="font">
-          <font/>
-         </property>
-         <property name="text">
-          <string extracomment="Right ascension of the ascending node">AD noeud ascendant :</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="lbl_inclinaison2">
-         <property name="font">
-          <font/>
-         </property>
-         <property name="text">
-          <string>Inclinaison :</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="lbl_positionSurOrbite">
-         <property name="font">
-          <font/>
-         </property>
-         <property name="text">
-          <string>Position sur orbite :</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="ADNoeudAscendant2">
-         <property name="font">
-          <font/>
-         </property>
-         <property name="text">
-          <string notr="true">000.0000°</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="inclinaison2">
-         <property name="font">
-          <font/>
-         </property>
-         <property name="text">
-          <string notr="true">000.0000°</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="positionSurOrbite">
-         <property name="font">
-          <font/>
-         </property>
-         <property name="toolTip">
-          <string>Somme de l'argument du périgée et de l'anomalie moyenne</string>
          </property>
          <property name="text">
           <string notr="true">000.0000°</string>
