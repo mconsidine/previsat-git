@@ -117,7 +117,7 @@ void RechercheSatellite::SauveOngletRecherche(const QString &fichier)
             }
 
             QTextStream flux(&sw);
-            flux.setEncoding(QStringConverter::System);
+            flux.setEncoding(QStringConverter::Utf8);
 
 #if (BUILD_TEST == false)
             const QString titre = "%1 %2 / %3 (c) %4";

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 mai 2023
+ * >    28 mai 2023
  *
  */
 
@@ -626,6 +626,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_radar, &Radar::RecalculerPositions, this, &PreviSat::GestionTempsReel);
 
     // Connexions avec la fenetre Options
+    connect(_options, &Options::RecalculerPositions, this, &PreviSat::ReinitCalculEvenementsSoleilLune);
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::GestionTempsReel);
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::on_actionMode_sombre_triggered);
     connect(_options, &Options::RecalculerPositions, _coordISS, &CoordISS::setPolice);
@@ -770,6 +771,10 @@ void PreviSat::EnchainementCalculs()
     static int jour;
 
     /* Initialisations */
+    if (_reinitJour) {
+        jour = 0;
+        _reinitJour = false;
+    }
 
     /* Corps de la methode */
     try {
@@ -993,6 +998,8 @@ void PreviSat::Initialisation()
     _dateCourante = nullptr;
     _chronometre = nullptr;
     _chronometreMs = nullptr;
+
+    _reinitJour = false;
 
     /* Corps de la methode */
     try {
@@ -2327,6 +2334,14 @@ void PreviSat::RaccourciStation()
     _onglets->ui()->stackedWidget_informations->setCurrentWidget(_onglets->ui()->informationsStationSpatiale);
     const unsigned int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->informationsStationSpatiale);
     _onglets->setIndexInformations(index);
+}
+
+/*
+ * Reinitialisation du calcul des evenements Soleil/Lune
+ */
+void PreviSat::ReinitCalculEvenementsSoleilLune()
+{
+    _reinitJour = true;
 }
 
 void PreviSat::TempsReel()
