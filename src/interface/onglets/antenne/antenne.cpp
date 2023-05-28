@@ -290,6 +290,14 @@ void Antenne::show(const Date &date)
     return;
 }
 
+void Antenne::changeEvent(QEvent *evt)
+{
+    if (evt->type() == QEvent::LanguageChange) {
+        _ui->retranslateUi(this);
+    }
+}
+
+
 /*
  * Deconnecter le protocole UDP
  */

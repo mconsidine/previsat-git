@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    22 mai 2023
+ * >    28 mai 2023
  *
  */
 
@@ -588,29 +588,18 @@ void General::AffichageDonneesSoleilLune()
                                                            AngleFormatType::DEGRE, 0, 0, false, true).section("°", 1));
 
     // Heures de lever/passage au meridien/coucher/crepuscules
-    _ui->leverSoleil->setText(soleil.dateLever());
-    _ui->meridienSoleil->setText(soleil.dateMeridien());
-    _ui->coucherSoleil->setText(soleil.dateCoucher());
+    const QString chaine("    -");
+    _ui->leverSoleil->setText((soleil.dateLever() == "-") ? chaine : soleil.dateLever());
+    _ui->meridienSoleil->setText((soleil.dateMeridien() == "-") ? chaine : soleil.dateMeridien());
+    _ui->coucherSoleil->setText((soleil.dateCoucher() == "-") ? chaine : soleil.dateCoucher());
 
-    _ui->aubeAstro->setText(soleil.datesCrepuscules()[2]);
-    _ui->aubeNautique->setText(soleil.datesCrepuscules()[1]);
-    _ui->aubeCivile->setText(soleil.datesCrepuscules()[0]);
+    _ui->aubeAstro->setText((soleil.datesCrepuscules()[2] == "-") ? chaine : soleil.datesCrepuscules()[2]);
+    _ui->aubeNautique->setText((soleil.datesCrepuscules()[1] == "-") ? chaine : soleil.datesCrepuscules()[1]);
+    _ui->aubeCivile->setText((soleil.datesCrepuscules()[0] == "-") ? chaine : soleil.datesCrepuscules()[0]);
 
-    _ui->crepusculeCivil->setText(soleil.datesCrepuscules()[3]);
-    _ui->crepusculeNautique->setText(soleil.datesCrepuscules()[4]);
-    _ui->crepusculeAstro->setText(soleil.datesCrepuscules()[5]);
-
-    _ui->leverSoleil->setAlignment((soleil.dateLever() == "-") ? Qt::AlignHCenter : Qt::AlignRight);
-    _ui->meridienSoleil->setAlignment((soleil.dateMeridien() == "-") ? Qt::AlignHCenter : Qt::AlignRight);
-    _ui->coucherSoleil->setAlignment((soleil.dateCoucher() == "-") ? Qt::AlignHCenter : Qt::AlignRight);
-
-    _ui->aubeAstro->setAlignment((soleil.datesCrepuscules()[2] == "-") ? Qt::AlignHCenter : Qt::AlignRight);
-    _ui->aubeNautique->setAlignment((soleil.datesCrepuscules()[1] == "-") ? Qt::AlignHCenter : Qt::AlignRight);
-    _ui->aubeCivile->setAlignment((soleil.datesCrepuscules()[0] == "-") ? Qt::AlignHCenter : Qt::AlignRight);
-
-    _ui->crepusculeCivil->setAlignment((soleil.datesCrepuscules()[3] == "-") ? Qt::AlignHCenter : Qt::AlignRight);
-    _ui->crepusculeNautique->setAlignment((soleil.datesCrepuscules()[4] == "-") ? Qt::AlignHCenter : Qt::AlignRight);
-    _ui->crepusculeAstro->setAlignment((soleil.datesCrepuscules()[5] == "-") ? Qt::AlignHCenter : Qt::AlignRight);
+    _ui->crepusculeCivil->setText((soleil.datesCrepuscules()[3] == "-") ? chaine : soleil.datesCrepuscules()[3]);
+    _ui->crepusculeNautique->setText((soleil.datesCrepuscules()[4] == "-") ? chaine : soleil.datesCrepuscules()[4]);
+    _ui->crepusculeAstro->setText((soleil.datesCrepuscules()[5] == "-") ? chaine : soleil.datesCrepuscules()[5]);
 
 
     /*
@@ -635,13 +624,9 @@ void General::AffichageDonneesSoleilLune()
                                        .section("°", 1));
 
     // Lever/passage au meridien/coucher
-    _ui->leverLune->setText(lune.dateLever());
-    _ui->meridienLune->setText(lune.dateMeridien());
-    _ui->coucherLune->setText(lune.dateCoucher());
-
-    _ui->leverLune->setAlignment((lune.dateLever() == "-") ? Qt::AlignHCenter : Qt::AlignRight);
-    _ui->meridienLune->setAlignment((lune.dateMeridien() == "-") ? Qt::AlignHCenter : Qt::AlignRight);
-    _ui->coucherLune->setAlignment((lune.dateCoucher() == "-") ? Qt::AlignHCenter : Qt::AlignRight);
+    _ui->leverLune->setText((lune.dateLever() == "-") ? chaine : lune.dateLever());
+    _ui->meridienLune->setText((lune.dateMeridien() == "-") ? chaine : lune.dateMeridien());
+    _ui->coucherLune->setText((lune.dateCoucher() == "-") ? chaine : lune.dateCoucher());
 
     // Phases de la Lune
     _ui->nouvelleLune->setText(lune.datesPhases()[0]);

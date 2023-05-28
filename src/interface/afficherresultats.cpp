@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    14 mai 2023
+ * >    28 mai 2023
  *
  */
 
@@ -1242,7 +1242,7 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
         }
 
         int kmax;
-        int nmax;
+        int nmax = 0;
         QStringList elems;
         QTableWidgetItem * itm;
         QListIterator it(list);

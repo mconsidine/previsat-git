@@ -1065,14 +1065,11 @@
       <rect>
        <x>3</x>
        <y>72</y>
-       <width>181</width>
+       <width>201</width>
        <height>103</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout_aubes">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
-      </property>
       <property name="labelAlignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
@@ -1139,7 +1136,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1161,7 +1158,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1177,7 +1174,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1206,7 +1203,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1235,7 +1232,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1264,7 +1261,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1299,7 +1296,7 @@
       <rect>
        <x>3</x>
        <y>18</y>
-       <width>121</width>
+       <width>201</width>
        <height>52</height>
       </rect>
      </property>
@@ -1433,7 +1430,7 @@
       <rect>
        <x>3</x>
        <y>18</y>
-       <width>121</width>
+       <width>201</width>
        <height>52</height>
       </rect>
      </property>

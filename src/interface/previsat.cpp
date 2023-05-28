@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 mai 2023
+ * >    26 mai 2023
  *
  */
 
@@ -607,6 +607,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_carte, &Carte::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_carte, &Carte::AfficherMessageStatut2, this, &PreviSat::AfficherMessageStatut2);
     connect(_carte, &Carte::AfficherMessageStatut3, this, &PreviSat::AfficherMessageStatut3);
+    connect(_carte, &Carte::EffacerMessageStatut, this, &PreviSat::EffacerMessageStatut);
     connect(_carte, &Carte::ReinitFlags, _onglets, &Onglets::ReinitFlags);
     connect(_carte, &Carte::RecalculerPositions, this, &PreviSat::GestionTempsReel);
 
@@ -614,6 +615,8 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_ciel, &Ciel::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_ciel, &Ciel::AfficherMessageStatut2, this, &PreviSat::AfficherMessageStatut2);
     connect(_ciel, &Ciel::AfficherMessageStatut3, this, &PreviSat::AfficherMessageStatut3);
+    connect(_ciel, &Ciel::EffacerMessageStatut, this, &PreviSat::EffacerMessageStatut);
+    connect(_ciel, &Ciel::ReinitFlags, _onglets, &Onglets::ReinitFlags);
     connect(_ciel, &Ciel::RecalculerPositions, this, &PreviSat::GestionTempsReel);
 
     // Connexions avec l'instance de Radar
@@ -626,6 +629,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::GestionTempsReel);
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::on_actionMode_sombre_triggered);
     connect(_options, &Options::RecalculerPositions, _coordISS, &CoordISS::setPolice);
+    connect(_options, &Options::RecalculerPositions, _onglets, &Onglets::AffichageLieuObs);
     connect(_options, &Options::ChargementCarteDuMonde, _carte, &Carte::ChargementCarteDuMonde);
     connect(_options, &Options::ChargementTraduction, this, &PreviSat::ChargementTraduction);
     connect(this, &PreviSat::AppliquerPreferences, _options, &Options::AppliquerPreferences);
@@ -2664,6 +2668,8 @@ void PreviSat::on_zoomCarte_clicked()
     }
 
     Configuration::instance()->isCarteMaximisee() = !Configuration::instance()->isCarteMaximisee();
+
+    AffichageCartesRadar();
 
     /* Retour */
     return;
