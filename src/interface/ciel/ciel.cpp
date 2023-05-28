@@ -93,6 +93,7 @@ Ciel::Ciel(QWidget *parent) :
 
     try {
 
+        resize(parent->height(), parent->height());
         Initialisation();
 
     } catch (PreviSatException &e) {
@@ -160,14 +161,16 @@ void Ciel::show(const Observateur &observateur,
     _soleil = soleil;
     _lune = lune;
 
-    _ui->vueCiel->setGeometry(_ui->vueCiel->x(), _ui->vueCiel->y(), parentWidget()->height()-32, parentWidget()->height()-32);
-    setGeometry((parentWidget()->width() - width() - _ui->est->width()) / 2, 0, _ui->vueCiel->width() + 2 * _ui->est->width(),
-                parentWidget()->height());
+    if (!_labelHeure) {
+        _ui->vueCiel->setGeometry(_ui->vueCiel->x(), _ui->vueCiel->y(), parentWidget()->height()-32, parentWidget()->height()-32);
+        setGeometry((parentWidget()->width() - width() - _ui->est->width()) / 2, 0, _ui->vueCiel->width() + 2 * _ui->est->width(),
+                    parentWidget()->height());
 
-    _ui->est->setGeometry(_ui->est->x(), _ui->est->y(), _ui->est->width(), _ui->vueCiel->height());
-    _ui->ouest->setGeometry(_ui->est->width() + _ui->vueCiel->width(), _ui->ouest->y(), _ui->ouest->width(), _ui->vueCiel->height());
-    _ui->nord->setGeometry(_ui->nord->x(), _ui->nord->y(), 2 * _ui->est->width() + _ui->vueCiel->width(), _ui->nord->height());
-    _ui->sud->setGeometry(_ui->sud->x(), _ui->nord->height() + _ui->vueCiel->height(), _ui->nord->width(), _ui->sud->height());
+        _ui->est->setGeometry(_ui->est->x(), _ui->est->y(), _ui->est->width(), _ui->vueCiel->height());
+        _ui->ouest->setGeometry(_ui->est->width() + _ui->vueCiel->width(), _ui->ouest->y(), _ui->ouest->width(), _ui->vueCiel->height());
+        _ui->nord->setGeometry(_ui->nord->x(), _ui->nord->y(), 2 * _ui->est->width() + _ui->vueCiel->width(), _ui->nord->height());
+        _ui->sud->setGeometry(_ui->sud->x(), _ui->nord->height() + _ui->vueCiel->height(), _ui->nord->width(), _ui->sud->height());
+    }
 
     // Determination de la couleur du ciel
     const double hts = soleil.hauteur() * MATHS::RAD2DEG;
@@ -178,15 +181,22 @@ void Ciel::show(const Observateur &observateur,
 
     /* Corps de la methode */
     // Affichage de la carte du ciel
-    _rectangle = QRect(2, 2, _ui->vueCiel->width() - 4, _ui->vueCiel->height() - 4);
+    if (_labelHeure) {
+        _lciel = 260;
+        _hciel = 260;
+        _rectangle = QRect(2, 2, 516, 516);
+    } else {
+        _lciel = qRound(0.5 * height());
+        _hciel = qRound(0.5 * height());
+        _rectangle = QRect(2, 2, _ui->vueCiel->width() - 4, _ui->vueCiel->height() - 4);
+    }
     scene->setSceneRect(_rectangle);
 
     QPen pen(couleurCiel, Qt::SolidPattern);
     pen.setCosmetic(true);
 
     scene->addEllipse(_rectangle, pen, couleurCiel);
-    _lciel = qRound(0.5 * height());
-    _hciel = qRound(0.5 * height());
+
 
     // Affichage des constellations
     AffichageConstellations(lignesCst, constellations);
@@ -209,8 +219,13 @@ void Ciel::show(const Observateur &observateur,
     // Affichage des satellites
     AffichageSatellites(dateDeb, dateMax, dateFin, maxFlash);
 
-    scene->addEllipse(-20, -20, _ui->vueCiel->width() + 40, _ui->vueCiel->height() + 40, QPen(QBrush(palette().window().color()), 44));
-    scene->addEllipse(1, 1, _ui->vueCiel->width() - 3, _ui->vueCiel->height() - 3, QPen(QBrush(Qt::gray), 3));
+    if (_labelHeure) {
+        scene->addEllipse(-20, -20, 560, 560, QPen(QBrush(palette().window().color()), 44));
+        scene->addEllipse(1, 1, 517, 517, QPen(QBrush(Qt::gray), 3));
+    } else {
+        scene->addEllipse(-20, -20, _ui->vueCiel->width() + 40, _ui->vueCiel->height() + 40, QPen(QBrush(palette().window().color()), 44));
+        scene->addEllipse(1, 1, _ui->vueCiel->width() - 3, _ui->vueCiel->height() - 3, QPen(QBrush(Qt::gray), 3));
+    }
 
     _ui->vueCiel->setScene(scene);
     _ui->vueCiel->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
