@@ -1268,6 +1268,7 @@ void Options::on_listeBoutonsOptions_rejected()
 {
     // Rechargement du fichier de preferences si une option a ete modifiee et ne doit pas etre sauvegardee
     ChargementPref();
+    emit RecalculerPositions();
 }
 
 

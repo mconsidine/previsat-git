@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    20 mai 2023
+ * >    28 mai 2023
  *
  */
 
@@ -93,7 +93,6 @@ Ciel::Ciel(QWidget *parent) :
 
     try {
 
-        resize(parent->height(), parent->height());
         Initialisation();
 
     } catch (PreviSatException &e) {
@@ -161,7 +160,14 @@ void Ciel::show(const Observateur &observateur,
     _soleil = soleil;
     _lune = lune;
 
-    QWidget::show();
+    _ui->vueCiel->setGeometry(_ui->vueCiel->x(), _ui->vueCiel->y(), parentWidget()->height()-32, parentWidget()->height()-32);
+    setGeometry((parentWidget()->width() - width() - _ui->est->width()) / 2, 0, _ui->vueCiel->width() + 2 * _ui->est->width(),
+                parentWidget()->height());
+
+    _ui->est->setGeometry(_ui->est->x(), _ui->est->y(), _ui->est->width(), _ui->vueCiel->height());
+    _ui->ouest->setGeometry(_ui->est->width() + _ui->vueCiel->width(), _ui->ouest->y(), _ui->ouest->width(), _ui->vueCiel->height());
+    _ui->nord->setGeometry(_ui->nord->x(), _ui->nord->y(), 2 * _ui->est->width() + _ui->vueCiel->width(), _ui->nord->height());
+    _ui->sud->setGeometry(_ui->sud->x(), _ui->nord->height() + _ui->vueCiel->height(), _ui->nord->width(), _ui->sud->height());
 
     // Determination de la couleur du ciel
     const double hts = soleil.hauteur() * MATHS::RAD2DEG;
@@ -179,8 +185,8 @@ void Ciel::show(const Observateur &observateur,
     pen.setCosmetic(true);
 
     scene->addEllipse(_rectangle, pen, couleurCiel);
-    _lciel = qRound(0.5 * _ui->vueCiel->width());
-    _hciel = qRound(0.5 * _ui->vueCiel->height());
+    _lciel = qRound(0.5 * height());
+    _hciel = qRound(0.5 * height());
 
     // Affichage des constellations
     AffichageConstellations(lignesCst, constellations);
@@ -272,6 +278,7 @@ QBrush Ciel::CalculCouleurCiel(const double hauteurSoleil)
         } else {
             blue = static_cast<int> (qMax(273.1116 / (1. + 0.0281866 * exp(-0.282853 * hauteurSoleil)) - 1.46635, 0.));
         }
+
         couleurCiel = QBrush(QColor::fromRgb(red, green, blue));
     }
 
@@ -323,18 +330,16 @@ void Ciel::mouseMoveEvent(QMouseEvent *evt)
     /* Corps de la methode */
     if (_ui->vueCiel->underMouse()) {
 
-        const int lciel = qRound(0.5 * _ui->vueCiel->width());
-        const int hciel = qRound(0.5 * _ui->vueCiel->height());
-        const int x1 = static_cast<int> (evt->position().x() - lciel);
-        const int y1 = static_cast<int> (evt->position().y() - hciel);
+        const int x1 = static_cast<int> (evt->position().x() - _lciel);
+        const int y1 = static_cast<int> (evt->position().y() - _hciel);
 
         if (!_labelHeure) {
 
             // Le curseur est au-dessus de la carte du ciel
-            if ((x1 * x1 + y1 * y1) <= (hciel * lciel)) {
+            if ((x1 * x1 + y1 * y1) <= (_hciel * _lciel)) {
 
-                const double x2 = -x1 / (double) lciel;
-                const double y2 = -y1 / (double) hciel;
+                const double x2 = -x1 / (double) _lciel;
+                const double y2 = -y1 / (double) _hciel;
 
                 const double ht = MATHS::PI_SUR_DEUX * (1. - sqrt(x2 * x2 + y2 * y2));
                 double az = atan2(x2, y2);
@@ -357,7 +362,7 @@ void Ciel::mouseMoveEvent(QMouseEvent *evt)
 
                 // Affichage des coordonnees dans la barre de statut
                 emit AfficherMessageStatut2(tr("Ascension droite : %1")
-                                            .arg(Maths::ToSexagesimal(ad, AngleFormatType::HEURE1, 2, 0, false, false).mid(0, 7)));
+                                                .arg(Maths::ToSexagesimal(ad, AngleFormatType::HEURE1, 2, 0, false, false).mid(0, 7)));
                 emit AfficherMessageStatut3(tr("Déclinaison : %1").arg(Maths::ToSexagesimal(dec, AngleFormatType::DEGRE, 2, 0, true, false).mid(0, 7)));
 
                 // Survol d'un satellite avec le curseur
@@ -366,14 +371,14 @@ void Ciel::mouseMoveEvent(QMouseEvent *evt)
                 while (it.hasNext() && !atrouve) {
 
                     const Satellite sat = it.next();
-                    const int lsat = qRound(-0.5 * _ui->vueCiel->width() * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * sin(sat.azimut()));
-                    const int bsat = qRound(-0.5 * _ui->vueCiel->height() * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * cos(sat.azimut()));
+                    const int lsat = qRound(-_lciel * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * sin(sat.azimut()));
+                    const int bsat = qRound(-_hciel * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * cos(sat.azimut()));
 
                     // Distance au carre du satellite au curseur
                     const int dt = (x1 - lsat) * (x1 - lsat) + (y1 - bsat) * (y1 - bsat);
 
                     // Le curseur est au(dessus d'un satellite
-                    if ((dt <= 16) && (sat.altitude() > 0.)) {
+                    if ((dt <= 16) && (sat.hauteur() >= 0.)) {
                         atrouve = true;
                         setToolTip(tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>")
                                    .arg(sat.elementsOrbitaux().nom).arg(sat.elementsOrbitaux().norad).arg(sat.elementsOrbitaux().cospar));
@@ -395,11 +400,11 @@ void Ciel::mouseMoveEvent(QMouseEvent *evt)
 
                     bool atrouve2 = false;
                     static bool aplanete = false;
-                    for(unsigned int ipla=0; ipla<=PLANETE::NB_PLANETES && !atrouve2; ipla++) {
+                    for(unsigned int ipla=0; (ipla<PLANETE::NB_PLANETES) && !atrouve2; ipla++) {
 
-                        const int lpla = qRound(-0.5 * _ui->vueCiel->width() * (1. - _planetes.at(ipla).hauteur() * MATHS::DEUX_SUR_PI) *
-                                                sin(_planetes.at(ipla).azimut()));
-                        const int bpla = qRound(-0.5 * _ui->vueCiel->height() * (1. - _planetes.at(ipla).hauteur() * MATHS::DEUX_SUR_PI) *
+                        const int lpla = qRound(-_lciel * (1. - _planetes.at(ipla).hauteur() * MATHS::DEUX_SUR_PI) *
+                                                             sin(_planetes.at(ipla).azimut()));
+                        const int bpla = qRound(-_hciel * (1. - _planetes.at(ipla).hauteur() * MATHS::DEUX_SUR_PI) *
                                                 cos(_planetes.at(ipla).azimut()));
 
                         // Distance au carre de la planete au curseur
@@ -412,6 +417,7 @@ void Ciel::mouseMoveEvent(QMouseEvent *evt)
                             emit AfficherMessageStatut(_planetes.at(ipla).nom());
                             setToolTip(_planetes.at(ipla).nom());
                             setCursor(Qt::CrossCursor);
+
                         } else if (aplanete) {
                             emit EffacerMessageStatut();
                             setToolTip("");
@@ -425,8 +431,8 @@ void Ciel::mouseMoveEvent(QMouseEvent *evt)
                 if (settings.value("affichage/affsoleil").toBool()) {
 
                     static bool asoleil = false;
-                    const int lsol = qRound(-0.5 * _ui->vueCiel->width() * (1. - _soleil.hauteur() * MATHS::DEUX_SUR_PI) * sin(_soleil.azimut()));
-                    const int bsol = qRound(-0.5 * _ui->vueCiel->height() * (1. - _soleil.hauteur() * MATHS::DEUX_SUR_PI) * cos(_soleil.azimut()));
+                    const int lsol = qRound(-_lciel * (1. - _soleil.hauteur() * MATHS::DEUX_SUR_PI) * sin(_soleil.azimut()));
+                    const int bsol = qRound(-_hciel * (1. - _soleil.hauteur() * MATHS::DEUX_SUR_PI) * cos(_soleil.azimut()));
 
                     // Distance au carre du Soleil au curseur
                     const int dt = (x1 - lsol) * (x1 - lsol) + (y1 - bsol) * (y1 - bsol);
@@ -450,8 +456,8 @@ void Ciel::mouseMoveEvent(QMouseEvent *evt)
                 if (settings.value("affichage/afflune").toBool()) {
 
                     static bool alune = false;
-                    const int llun = qRound(-0.5 * _ui->vueCiel->width() * (1. - _lune.hauteur() * MATHS::DEUX_SUR_PI) * sin(_lune.azimut()));
-                    const int blun = qRound(-0.5 * _ui->vueCiel->height() * (1. - _lune.hauteur() * MATHS::DEUX_SUR_PI) * cos(_lune.azimut()));
+                    const int llun = qRound(-_lciel * (1. - _lune.hauteur() * MATHS::DEUX_SUR_PI) * sin(_lune.azimut()));
+                    const int blun = qRound(-_hciel * (1. - _lune.hauteur() * MATHS::DEUX_SUR_PI) * cos(_lune.azimut()));
 
                     // Distance au carre de la Lune au curseur
                     const int dt = (x1 - llun) * (x1 - llun) + (y1 - blun) * (y1 - blun);
@@ -496,24 +502,22 @@ void Ciel::mousePressEvent(QMouseEvent *evt)
         bool atrouve = false;
         int idx = 1;
 
-        const int lciel = qRound(0.5 * _ui->vueCiel->width());
-        const int hciel = qRound(0.5 * _ui->vueCiel->height());
-        const int x1 = static_cast<int> (evt->position().x() - lciel);
-        const int y1 = static_cast<int> (evt->position().y() - hciel);
+        const int x1 = static_cast<int> (evt->position().x() - _lciel);
+        const int y1 = static_cast<int> (evt->position().y() - _hciel);
 
         // Clic sur un satellite
         QListIterator it(Configuration::instance()->listeSatellites());
         while (it.hasNext() && !atrouve) {
 
             const Satellite sat = it.next();
-            const int lsat = qRound(-0.5 * _ui->vueCiel->width() * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * sin(sat.azimut()));
-            const int bsat = qRound(-0.5 * _ui->vueCiel->height() * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * cos(sat.azimut()));
+            const int lsat = qRound(-_lciel * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * sin(sat.azimut()));
+            const int bsat = qRound(-_hciel * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * cos(sat.azimut()));
 
             // Distance au carre du curseur au satellite
             const int dt = (x1 - lsat) * (x1 - lsat) + (y1 - bsat) * (y1 - bsat);
 
             // Le curseur est au-dessus d'un satellite
-            if ((dt <= 16) && (sat.altitude() > 0.)) {
+            if ((dt <= 16) && (sat.hauteur() > 0.)) {
 
                 atrouve = true;
                 Configuration::instance()->listeSatellites().move(--idx, 0);
@@ -527,6 +531,7 @@ void Ciel::mousePressEvent(QMouseEvent *evt)
                 emit RecalculerPositions();
                 GestionnaireXml::EcritureConfiguration();
             }
+
             idx++;
         }
     }
@@ -544,15 +549,6 @@ void Ciel::resizeEvent(QResizeEvent *evt)
 
     /* Corps de la methode */
     if (!_labelHeure) {
-
-        _ui->vueCiel->setGeometry(_ui->vueCiel->x(), _ui->vueCiel->y(), parentWidget()->height()-32, parentWidget()->height()-32);
-        setGeometry((parentWidget()->width() - width() - _ui->est->width()) / 2, 0, _ui->vueCiel->width() + 2 * _ui->est->width(),
-                    parentWidget()->height());
-
-        _ui->est->setGeometry(_ui->est->x(), _ui->est->y(), _ui->est->width(), _ui->vueCiel->height());
-        _ui->ouest->setGeometry(_ui->est->width() + _ui->vueCiel->width(), _ui->ouest->y(), _ui->ouest->width(), _ui->vueCiel->height());
-        _ui->nord->setGeometry(_ui->nord->x(), _ui->nord->y(), 2 * _ui->est->width() + _ui->vueCiel->width(), _ui->nord->height());
-        _ui->sud->setGeometry(_ui->sud->x(), _ui->nord->height() + _ui->vueCiel->height(), _ui->nord->width(), _ui->sud->height());
 
         show(Configuration::instance()->observateur(),
              Configuration::instance()->soleil(),
@@ -752,7 +748,7 @@ void Ciel::AffichageLune()
 
         QPixmap pixlun;
         pixlun.load(":/resources/interface/lune.png");
-        pixlun = pixlun.scaled(17, 17);
+        pixlun = pixlun.scaled(17, 17, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
         // Dessin de la Lune et rotations
         QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
@@ -762,6 +758,7 @@ void Ciel::AffichageLune()
         if (settings.value("affichage/rotationLune").toBool() && (_observateur.latitude() < 0.)) {
             transform.rotate(180.);
         }
+
         transform.translate(-7, -7);
         lun->setTransform(transform);
 
@@ -811,7 +808,8 @@ void Ciel::AffichagePlanetes1()
                     _rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
                     scene->addEllipse(_rectangle, QPen(couleurPlanetes[i]), coulPlanete);
 
-                    if ((Configuration::instance()->isCarteMaximisee() || _fenetreMax) && (static_cast<Qt::CheckState> (settings.value("affichage/affplanetes").toUInt()) == Qt::Checked)) {
+                    if ((Configuration::instance()->isCarteMaximisee() || _fenetreMax) &&
+                        (static_cast<Qt::CheckState> (settings.value("affichage/affplanetes").toUInt()) == Qt::Checked)) {
 
                         const int lpl = lpla - _lciel;
                         const int bpl = _hciel - bpla;
@@ -850,7 +848,6 @@ void Ciel::AffichagePlanetes2()
     /* Corps de la methode */
     if (static_cast<Qt::CheckState> (settings.value("affichage/affplanetes").toUInt()) != Qt::Unchecked) {
 
-
         // Calcul des coordonnees radar des planetes Mercure et Venus
         QGraphicsSimpleTextItem * txtPla;
         for(unsigned int i=0; i<PLANETE::NB_PLANETES; i++) {
@@ -866,7 +863,8 @@ void Ciel::AffichagePlanetes2()
                     _rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
                     scene->addEllipse(_rectangle, QPen(couleurPlanetes[i]), coulPlanete);
 
-                    if ((Configuration::instance()->isCarteMaximisee() || _fenetreMax) && (static_cast<Qt::CheckState> (settings.value("affichage/affplanetes").toUInt()) == Qt::Checked)) {
+                    if ((Configuration::instance()->isCarteMaximisee() || _fenetreMax)
+                        && (static_cast<Qt::CheckState> (settings.value("affichage/affplanetes").toUInt()) == Qt::Checked)) {
 
                         const int lpl = lpla - _lciel;
                         const int bpl = _hciel - bpla;
@@ -969,6 +967,7 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
                             crayon = QPen(QColor("cyan"));
                         }
                     }
+
                     crayon.setCosmetic(true);
 
                     const int lsat2 = qRound(_lciel - _lciel * (1. - ht2 * MATHS::DEUX_SUR_PI) * sin(az2));
@@ -1063,8 +1062,10 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
             if (!_labelHeure) {
 
                 // Calcul des coordonnees radar du satellite
-                const int lsat = qRound(_lciel - _lciel * (1. - _satellites.at(isat).hauteur() * MATHS::DEUX_SUR_PI) * sin(_satellites.at(isat).azimut()));
-                const int bsat = qRound(_hciel - _hciel * (1. - _satellites.at(isat).hauteur() * MATHS::DEUX_SUR_PI) * cos(_satellites.at(isat).azimut()));
+                const int lsat = qRound(_lciel - _lciel * (1. - _satellites.at(isat).hauteur() * MATHS::DEUX_SUR_PI)
+                                                     * sin(_satellites.at(isat).azimut()));
+                const int bsat = qRound(_hciel - _hciel * (1. - _satellites.at(isat).hauteur() * MATHS::DEUX_SUR_PI)
+                                                     * cos(_satellites.at(isat).azimut()));
 
                 _rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
 
@@ -1075,6 +1076,7 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
                 } else {
                     couleur = Qt::yellow;
                 }
+
                 scene->addEllipse(_rectangle, noir, QBrush(couleur, Qt::SolidPattern));
             }
         }
@@ -1152,7 +1154,7 @@ void Ciel::AffichageSoleil()
 
             QPixmap pixsol;
             pixsol.load(":/resources/interface/soleil.png");
-            pixsol = pixsol.scaled(17, 17);
+            pixsol = pixsol.scaled(17, 17, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
             QGraphicsPixmapItem * const sol = scene->addPixmap(pixsol);
             QTransform transform;

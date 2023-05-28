@@ -96,14 +96,17 @@ public:
      */
     void InitAffichageFrequences();
 
+
+public slots:
+
     /**
      * @brief show Affichage des informations de l'onglet
      * @param[in] date date
      */
     void show(const Date &date);
 
+    void changeEvent(QEvent *evt);
 
-public slots:
 
     /**
      * @brief DeconnecterUdp Deconnecter le protocole UDP
