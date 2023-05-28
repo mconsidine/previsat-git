@@ -426,7 +426,7 @@ void CalculsPrevisions::on_calculsPrev_clicked()
 
         // Cas ou la date finale precede la date initiale : on intervertit les dates
         if (conditions.jj1 > conditions.jj2) {
-            qSwap(conditions.jj1, conditions.jj2);
+            std::swap(conditions.jj1, conditions.jj2);
         }
 
         conditions.offset = offset1;

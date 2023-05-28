@@ -48,7 +48,8 @@
  * Constructeur par defaut
  */
 ItemGroup::ItemGroup(QGraphicsItem *parent) :
-    QGraphicsItemGroup(parent)
+    QGraphicsItemGroup(parent),
+    _minVisible(0.)
 {
 }
 
