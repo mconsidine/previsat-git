@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    7 mai 2023
+ * >    28 mai 2023
  *
  */
 
@@ -238,6 +238,7 @@ public:
     void setPoliceWcc(const QFont &p);
     void setMapElementsOrbitaux(const QMap<QString, ElementsOrbitaux> &map);
     void setListeFicElem(const QStringList &listeFic);
+    void setObservateurDefaut(const int index);
 
 
 protected:
