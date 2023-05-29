@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 mai 2023
+ * >    29 mai 2023
  *
  */
 
@@ -841,7 +841,7 @@ void PreviSat::EnchainementCalculs()
             lune.CalculLeverMeridienCoucher(*_dateCourante, observateur, syst);
 
             // Calcul des phases de la Lune
-            lune.CalculDatesPhases(*_dateCourante, syst);
+            lune.CalculDatesPhases(*_dateCourante);
 
             jour = _dateCourante->jour();
         }
@@ -1805,7 +1805,7 @@ void PreviSat::ChangementDate(const QDateTime &dt)
     _onglets->osculateurs()->ui()->dateHeure2->blockSignals(etat2);
 
     if (!_onglets->general()->ui()->pause->isEnabled()) {
-        GestionTempsReel();
+        EnchainementCalculs();
     }
 
     /* Retour */
@@ -2047,19 +2047,18 @@ void PreviSat::GestionTempsReel()
                 EFFACE_OBJET(_dateCourante);
                 _dateCourante = new Date(jd, offset);
 
-                // Enchainement de l'ensemble des calculs
-                EnchainementCalculs();
-
                 const QString fmt = tr("dddd dd MMMM yyyy  HH:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
 
                 _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
                 _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
-                ChangementDate(_dateCourante->ToQDateTime(1));
-            }
 
-            _onglets->show(*_dateCourante);
-            AffichageCartesRadar();
+            }
         }
+
+        ChangementDate(_dateCourante->ToQDateTime(1));
+
+        _onglets->show(*_dateCourante);
+        AffichageCartesRadar();
     }
 
     /* Retour */
