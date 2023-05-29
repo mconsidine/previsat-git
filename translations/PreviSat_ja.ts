@@ -5457,27 +5457,27 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="94"/>
+        <location filename="../src/main.cpp" line="96"/>
         <source>Une instance de %1 est déjà ouverte</source>
         <translation>%1のインスタンスは既に実行中です</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="110"/>
+        <location filename="../src/main.cpp" line="151"/>
         <source>Initialisation de la configuration...</source>
         <translation>構成を初期化しています...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="115"/>
+        <location filename="../src/main.cpp" line="165"/>
         <source>Ouverture du fichier GP...</source>
         <translation>GPファイルを読み込んでいます...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="120"/>
+        <location filename="../src/main.cpp" line="170"/>
         <source>Mise à jour des éléments orbitaux...</source>
         <translation>軌道要素を更新しています...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="125"/>
+        <location filename="../src/main.cpp" line="175"/>
         <source>Démarrage de l&apos;application...</source>
         <translation>アプリが起動しています...</translation>
     </message>
