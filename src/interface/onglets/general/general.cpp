@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    28 mai 2023
+ * >    29 mai 2023
  *
  */
 
@@ -423,7 +423,6 @@ void General::AffichageDonneesSatellite(const Date &date)
         _isEclipse = satellite.conditionEclipse().eclipseTotale();
     }
 
-    const DateSysteme syst = (settings.value("affichage/systemeHoraire").toBool()) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H;
     double delai = _dateEclipse->jourJulienUTC() - date.jourJulienUTC();
 
     if ((delai >= -DATE::EPS_DATES) && (_dateEclipse->jourJulienUTC() < satellite.traceAuSol().last().jourJulienUTC)) {
@@ -434,7 +433,7 @@ void General::AffichageDonneesSatellite(const Date &date)
         _ui->lbl_prochainJN->setToolTip(satellite.conditionEclipse().eclipseTotale() ? tr("Nuit > Jour") : tr("Jour > Nuit"));
 
         // Delai de l'evenement
-        transitionJN = tr("%1 (dans %2).", "Delay in hours, minutes or seconds");
+        transitionJN = tr("%1  (dans %2).", "Delay in hours, minutes or seconds");
         const Date delaiEcl = Date(delai - 0.5 + DATE::EPS_DATES, 0.);
         QString cDelaiEcl;
 
@@ -453,7 +452,7 @@ void General::AffichageDonneesSatellite(const Date &date)
                     .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
         }
 
-        _ui->dateJN->setText(transitionJN.arg(_dateEclipse->ToShortDate(DateFormat::FORMAT_COURT, syst)).arg(cDelaiEcl));
+        _ui->dateJN->setText(transitionJN.arg(_dateEclipse->ToQDateTime(1).toString(Qt::ISODate).replace("T", " ")).arg(cDelaiEcl));
         _ui->dateJN->adjustSize();
         _ui->dateJN->resize(_ui->dateJN->width(), 16);
         _ui->stackedWidget_aos->setCurrentIndex(0);
@@ -507,7 +506,7 @@ void General::AffichageDonneesSatellite(const Date &date)
 
         _ui->lbl_prochainAOS1->setVisible(true);
         _ui->lbl_prochainAOS2->setVisible(true);
-        _ui->dateAOS1->setText(chaine.arg(dateAOS.ToShortDate(DateFormat::FORMAT_COURT, syst).trimmed()).arg(cDelaiAOS));
+        _ui->dateAOS1->setText(chaine.arg(dateAOS.ToQDateTime(1).toString(Qt::ISODate).replace("T", " ")).arg(cDelaiAOS));
         _ui->dateAOS1->setVisible(true);
         _ui->dateAOS2->setText(_ui->dateAOS1->text());
         _ui->dateAOS2->setVisible(true);

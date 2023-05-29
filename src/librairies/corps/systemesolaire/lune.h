@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    29 mai 2023
  *
  */
 
@@ -70,7 +70,7 @@ public:
      * @brief CalculDatesPhases Calcul des dates des phases lunaires
      * @param[in] date date
      */
-    void CalculDatesPhases(const Date &date, const DateSysteme &syst);
+    void CalculDatesPhases(const Date &date);
 
     /**
      * @brief CalculLeverMeridienCoucher Calcul des heures de lever, passage au meridien et coucher

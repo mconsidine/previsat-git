@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    29 mai 2023
  *
  */
 
@@ -76,7 +76,7 @@ Lune::Lune()
 /*
  * Calcul des dates des phases lunaires
  */
-void Lune::CalculDatesPhases(const Date &date, const DateSysteme &syst)
+void Lune::CalculDatesPhases(const Date &date)
 {
     /* Declarations des variables locales */
     unsigned int iter;
@@ -147,7 +147,8 @@ void Lune::CalculDatesPhases(const Date &date, const DateSysteme &syst)
         }
 
         if (iter < MATHS::ITERATIONS_MAX) {
-            _datesPhases[i] = Date(dateEvt, date.offsetUTC()).ToShortDate(DateFormat::FORMAT_COURT, syst).remove(16, 3).replace(":", "h").trimmed();
+            _datesPhases[i] = Date(dateEvt, date.offsetUTC()).ToQDateTime(1).toString(Qt::ISODate).remove(16, 3).replace(":", "h").replace("T", " ")
+                                  .trimmed();
         }
     }
 
@@ -310,7 +311,8 @@ void Lune::CalculPosition(const Date &date)
     const double t = date.jourJulienTT() * DATE::NB_SIECJ_PAR_JOURS;
 
     // Longitude moyenne de la Lune
-    const double ll = MATHS::DEG2RAD * modulo(218.3164477 + t * (481267.88123421 - t * (0.0015786 + t * ((1. / 538841.) - t * (1. / 65194000.)))), MATHS::T360);
+    const double ll = MATHS::DEG2RAD * modulo(218.3164477 + t * (481267.88123421 - t * (0.0015786 + t * ((1. / 538841.) - t * (1. / 65194000.)))),
+                                              MATHS::T360);
 
     // Elongation moyenne de la Lune
     coef[0] = MATHS::DEG2RAD * modulo(297.8501921 + t * (445267.1114034 - t * (0.0018819 + t * ((1. / 545868.) - t * (1. / 113065000.)))), MATHS::T360);
