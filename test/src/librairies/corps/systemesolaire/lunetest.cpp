@@ -177,19 +177,19 @@ void LuneTest::testCalculDatesPhases()
 
     Date date(2022, 4, 1, 0, 0, 0., 2. / 24.);
     Lune lune;
-    lune.CalculDatesPhases(date, DateSysteme::SYSTEME_24H);
+    lune.CalculDatesPhases(date);
 
-    QCOMPARE(lune.datesPhases()[0], "01/04/2022 08h24");
-    QCOMPARE(lune.datesPhases()[1], "09/04/2022 08h47");
-    QCOMPARE(lune.datesPhases()[2], "16/04/2022 20h55");
-    QCOMPARE(lune.datesPhases()[3], "23/04/2022 13h56");
+    QCOMPARE(lune.datesPhases()[0], "2022-04-01 08h24");
+    QCOMPARE(lune.datesPhases()[1], "2022-04-09 08h47");
+    QCOMPARE(lune.datesPhases()[2], "2022-04-16 20h55");
+    QCOMPARE(lune.datesPhases()[3], "2022-04-23 13h56");
 
     // Lunaison suivante
     date = Date(2022, 4, 24, 0, 0, 0., 2. / 24.);
-    lune.CalculDatesPhases(date, DateSysteme::SYSTEME_24H);
+    lune.CalculDatesPhases(date);
 
-    QCOMPARE(lune.datesPhases()[0], "30/04/2022 22h27");
-    QCOMPARE(lune.datesPhases()[1], "09/05/2022 02h20");
-    QCOMPARE(lune.datesPhases()[2], "16/05/2022 06h13");
-    QCOMPARE(lune.datesPhases()[3], "22/05/2022 20h42");
+    QCOMPARE(lune.datesPhases()[0], "2022-04-30 22h27");
+    QCOMPARE(lune.datesPhases()[1], "2022-05-09 02h20");
+    QCOMPARE(lune.datesPhases()[2], "2022-05-16 06h13");
+    QCOMPARE(lune.datesPhases()[3], "2022-05-22 20h42");
 }

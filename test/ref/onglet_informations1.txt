@@ -1,11 +1,11 @@
 Nom du satellite : ISS
 
-Numéro NORAD            : 25544 			Moyen mouvement       : 15.49164079 rev/jour	 Date de lancement  : 1998-11-20
-Désignation COSPAR      : 1998-067A			n'/2                  :  0.00000494 rev/jour^2	 Catégorie d'orbite : LEO/I
-Époque (UTC)            : 15/08/2020 08:56:02 	n"/6                  :  0.00000000 rev/jour^3	 Pays/Organisation  : ISS
-Coeff pseudo-balistique : 1.7022e-05 (1/Re)	Nb orbites à l'époque : 124119			 Site de lancement  : TTMTR
+NumÃ©ro NORAD            : 25544 			Moyen mouvement       : 15.49164079 rev/jour	 Date de lancement  : 1998-11-20
+DÃ©signation COSPAR      : 1998-067A			n'/2                  :  0.00000494 rev/jour^2	 CatÃ©gorie d'orbite : LEO/I
+Ã‰poque (UTC)            : 15/08/2020 08:56:02 	n"/6                  :  0.00000000 rev/jour^3	 Pays/Organisation  : ISS
+Coeff pseudo-balistique : 1.7022e-05 (1/Re)	Nb orbites Ã  l'Ã©poque : 124119			 Site de lancement  : TTMTR
 
-Inclinaison             : 051.6460°			Anomalie moyenne      : 018.7733°
-AD noeud ascendant      : 055.5526°			Magnitude std/max     : -0.5v/-2.4
-Excentricité            : 0.0001465			Modèle orbital        : SGP4 (NE)
-Argument du périgée     : 045.7523°			Dimensions/Section    : Cylindrique. L=30.0 m, R=20.0 m / 399.00 m^2
+Inclinaison             : 051.6460Â°			Anomalie moyenne      : 018.7733Â°
+AD noeud ascendant      : 055.5526Â°			Magnitude std/max     : -0.5v/-2.4
+ExcentricitÃ©            : 0.0001465			ModÃ¨le orbital        : SGP4 (NE)
+Argument du pÃ©rigÃ©e     : 045.7523Â°			Dimensions/Section    : Cylindrique. L=30.0 m, R=20.0 m / 399.00 m^2

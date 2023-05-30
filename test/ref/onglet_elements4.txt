@@ -1,24 +1,24 @@
-Date : Samedi 15 août 2020 12:00:00  UTC + 02:00
+Date : Samedi 15 aoÃ»t 2020 12:00:00  UTC + 02:00
 
 Nom du satellite : ISS
 
-Vecteur d'état (ECI) :
+Vecteur d'Ã©tat (ECI) :
 x :  +5172.709 km		vx :  +0.583425 km/s
 y :  +1994.635 km		vy :  +6.469364 km/s
 z :  -3939.920 km		vz :  +4.046936 km/s
 
-Éléments osculateurs :
+Ã‰lÃ©ments osculateurs :
 Demi-grand axe       : 6797.3 km	Ix                          :  0.2754198
 Ex                   : -0.0006557	Iy                          :  0.3978666
-Ey                   :  0.0003512	Argument de longitude vraie : 007.6848°
+Ey                   :  0.0003512	Argument de longitude vraie : 007.6848Â°
 
-Anomalie vraie       : 215.8630°	Apogée  (Altitude) : 6802.3 km (424.2 km)
-Anomalie excentrique : 215.8880°	Périgée (Altitude) : 6792.2 km (414.1 km)
-Champ de vue         : ±20.48°  	Période orbitale   : 1h32m45s
+Anomalie vraie       : 215.8630Â°	ApogÃ©e  (Altitude) : 6802.3 km (424.2 km)
+Anomalie excentrique : 215.8880Â°	PÃ©rigÃ©e (Altitude) : 6792.2 km (414.1 km)
+Champ de vue         : Â±20.48Â°  	PÃ©riode orbitale   : 1h32m45s
 
 Divers :
 Doppler @ 100 MHz    : +1201 Hz
-Atténuation          : 153.55 dB
-Délai                : 37.88 ms
+AttÃ©nuation          : 153.55 dB
+DÃ©lai                : 37.88 ms
 
 Phasage              : [ 15; 1; 2 ] 31
