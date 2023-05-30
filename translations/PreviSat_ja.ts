@@ -2189,6 +2189,57 @@ PreviSatは、完全無料です!</translation>
         <translation>信号受信終了</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="872"/>
+        <source>Hauteur    : %1			Ascension droite  :  %2 	Longitude                : %3</source>
+        <translation>仰角        : %1	赤経 :  %2 		経度       : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="876"/>
+        <source>Azimut (N) : %1			Déclinaison       : %2 	Latitude                 : %3</source>
+        <comment>Azimuth from the North</comment>
+        <translation>方位角 (北) : %1 	赤緯 : %2 		緯度       : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="880"/>
+        <source>Distance   : %1   			Constellation     : %2			Diamètre apparent        : %3</source>
+        <translation>距離        : %1   	星座 : %2				見かけの直径 : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="885"/>
+        <source>Lever    : %1				Aube astronomique : %2			Crépuscule civil         : %3</source>
+        <comment>Sunrise</comment>
+        <translation>日の出     : %1			天文明け方 : %2			市民薄暮 : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="888"/>
+        <source>Méridien : %1				Aube nautique     : %2			Crépuscule nautique      : %3</source>
+        <comment>Meridian pass for the Sun</comment>
+        <translation>子午線越え : %1			航海明け方 : %2			航海薄暮 : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="891"/>
+        <source>Coucher  : %1				Aube civile       : %2			Crépuscule astronomique  : %3</source>
+        <comment>Sunset</comment>
+        <translation>日の入り   : %1			市民明け方 : %2			天文薄暮 : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="898"/>
+        <source>Hauteur    : %1			Ascension droite :  %2 	Phase                    : %3</source>
+        <comment>Moon phase</comment>
+        <translation>仰角        : %1	赤経 :  %2 		月相        : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="901"/>
+        <source>Azimut (N) : %1			Déclinaison      : %2 	Magnitude (Illumination) : %3</source>
+        <comment>Azimuth from the North</comment>
+        <translation>方位角 (北) : %1 	赤緯 : %2 		等級 (照射) : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="904"/>
+        <source>Distance   : %1  			Constellation    : %2 			Diamètre apparent        : %3</source>
+        <translation>距離        : %1   	星座 : %2				見かけの直径 : %3</translation>
+    </message>
+    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="436"/>
         <location filename="../src/interface/onglets/general/general.cpp" line="485"/>
         <source>%1  (dans %2).</source>
@@ -2301,10 +2352,9 @@ PreviSatは、完全無料です!</translation>
         <translation>緯度  :  %1		方位角 (北) : %2	赤緯 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="841"/>
         <source>Altitude  :  %1		Distance   : %2	Constellation    : %3</source>
         <comment>Altitude of satellite</comment>
-        <translation>高度  :  %1		距離        : %2	星座 : %3</translation>
+        <translation type="vanished">高度  :  %1		距離        : %2	星座 : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="845"/>
@@ -2318,20 +2368,17 @@ PreviSatは、完全無料です!</translation>
         <translation>レンジレート : %1  	%2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="872"/>
         <source>Hauteur    : %1		Ascension droite  :  %2 	Longitude                : %3</source>
-        <translation>仰角        : %1	赤経 :  %2 		経度       : %3</translation>
+        <translation type="vanished">仰角        : %1	赤経 :  %2 		経度       : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="876"/>
         <source>Azimut (N) : %1		Déclinaison       : %2 	Latitude                 : %3</source>
         <comment>Azimuth from the North</comment>
-        <translation>方位角 (北) : %1 	赤緯 : %2 		緯度       : %3</translation>
+        <translation type="vanished">方位角 (北) : %1 	赤緯 : %2 		緯度       : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="880"/>
         <source>Distance   : %1   		Constellation     : %2			Diamètre apparent        : %3</source>
-        <translation>距離        : %1   	星座 : %2				見かけの直径 : %3</translation>
+        <translation type="vanished">距離        : %1   	星座 : %2				見かけの直径 : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="909"/>
@@ -2352,10 +2399,9 @@ PreviSatは、完全無料です!</translation>
         <translation>月の入り    : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="898"/>
         <source>Hauteur    : %1		Ascension droite :  %2 	Phase                    : %3</source>
         <comment>Moon phase</comment>
-        <translation>仰角        : %1	赤経 :  %2 		月相        : %3</translation>
+        <translation type="vanished">仰角        : %1	赤経 :  %2 		月相        : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="555"/>
@@ -2387,38 +2433,39 @@ PreviSatは、完全無料です!</translation>
         <translation>経度  : %1		仰角        : %2	赤経 :  %3</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="841"/>
+        <source>Altitude  :  %1			Distance   : %2	Constellation    : %3</source>
+        <comment>Altitude of satellite</comment>
+        <translation>高度  :  %1		距離        : %2	星座 : %3</translation>
+    </message>
+    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="849"/>
         <source>Vitesse orbitale   : %1	%2  %3</source>
         <translation>軌道速度 : %1		%2 %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="885"/>
         <source>Lever    : %1				Aube astronomique : %2		Crépuscule civil         : %3</source>
         <comment>Sunrise</comment>
-        <translation>日の出     : %1			天文明け方 : %2			市民薄暮 : %3</translation>
+        <translation type="vanished">日の出     : %1			天文明け方 : %2			市民薄暮 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="888"/>
         <source>Méridien : %1				Aube nautique     : %2		Crépuscule nautique      : %3</source>
         <comment>Meridian pass for the Sun</comment>
-        <translation>子午線越え : %1			航海明け方 : %2			航海薄暮 : %3</translation>
+        <translation type="vanished">子午線越え : %1			航海明け方 : %2			航海薄暮 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="891"/>
         <source>Coucher  : %1				Aube civile       : %2		Crépuscule astronomique  : %3</source>
         <comment>Sunset</comment>
-        <translation>日の入り   : %1			市民明け方 : %2			天文薄暮 : %3</translation>
+        <translation type="vanished">日の入り   : %1			市民明け方 : %2			天文薄暮 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="901"/>
         <source>Azimut (N) : %1		Déclinaison      : %2 	Magnitude (Illumination) : %3</source>
         <comment>Azimuth from the North</comment>
-        <translation>方位角 (北) : %1 	赤緯 : %2 		等級 (照射) : %3</translation>
+        <translation type="vanished">方位角 (北) : %1 	赤緯 : %2 		等級 (照射) : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="904"/>
         <source>Distance   : %1  		Constellation    : %2 			Diamètre apparent        : %3</source>
-        <translation>距離        : %1		星座 : %2 				見かけの直径 : %3</translation>
+        <translation type="vanished">距離        : %1		星座 : %2 				見かけの直径 : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="913"/>
