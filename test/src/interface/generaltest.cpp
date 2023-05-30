@@ -104,7 +104,7 @@ void GeneralTest::testSauveOngletGeneral()
     lune.CalculCoordTerrestres(observateur);
     lune.CalculCoordEquat(observateur);
     lune.CalculLeverMeridienCoucher(date, observateur, DateSysteme::SYSTEME_24H);
-    lune.CalculDatesPhases(date, DateSysteme::SYSTEME_24H);
+    lune.CalculDatesPhases(date);
     Configuration::instance()->lune() = lune;
 
     const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";

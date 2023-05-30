@@ -1,10 +1,10 @@
 Nom                : ISS (ZARYA)
 
-Numéro NORAD       : 025544			Magnitude std/max  : -0.5v/-2.4
-Désignation COSPAR : 1998-067A		Modèle orbital     : SGP4 (NE)
+NumÃ©ro NORAD       : 025544			Magnitude std/max  : -0.5v/-2.4
+DÃ©signation COSPAR : 1998-067A		ModÃ¨le orbital     : SGP4 (NE)
 Dimensions/Section : Cylindrique. L=30.0 m, R=20.0 m / 399.00 m^2
 
-Date de lancement  : 1998-11-20		Apogée  (Altitude) : 6799 km (421 km)
-Catégorie d'orbite : LEO/I			Périgée (Altitude) : 6793 km (415 km)
-Pays/Organisation  : ISS			Période orbitale   : 1h 32m 56s
-Site de lancement  : TTMTR			Inclinaison        : 51.6°
+Date de lancement  : 1998-11-20		ApogÃ©e  (Altitude) : 6799 km (421 km)
+CatÃ©gorie d'orbite : LEO/I			PÃ©rigÃ©e (Altitude) : 6793 km (415 km)
+Pays/Organisation  : ISS			PÃ©riode orbitale   : 1h 32m 56s
+Site de lancement  : TTMTR			Inclinaison        : 51.6Â°

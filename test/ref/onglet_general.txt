@@ -1,43 +1,43 @@
-Date : Samedi 15 août 2020 12:00:00  UTC + 02:00
+Date : Samedi 15 aoÃ»t 2020 12:00:00  UTC + 02:00
 
 Lieu d'observation : Paris
-Longitude  :  002° 20' 55" Est	Latitude :  48° 51' 12" Nord	Altitude : 30 m
+Longitude  :  002Â° 20' 55" Est	Latitude :  48Â° 51' 12" Nord	Altitude : 30 m
 Conditions : Jour
 
 
 Nom du satellite : ISS
 
-Longitude : 093° 11' 15" Ouest  	Hauteur    : -58° 31' 33"	Ascension droite :  23h 03m 51s
-Latitude  :  35° 34' 14" Sud		Azimut (N) : 248° 32' 47"	Déclinaison      : -50° 09' 53"
-Altitude  :  430.4 km     		Distance   : 11355.5 km   	Constellation    : Gru
+Longitude : 093Â° 11' 15" Ouest  	Hauteur    : -58Â° 31' 33"	Ascension droite :  23h 03m 51s
+Latitude  :  35Â° 34' 14" Sud		Azimut (N) : 248Â° 32' 47"	DÃ©clinaison      : -50Â° 09' 53"
+Altitude  :  430.4 km     			Distance   : 11355.5 km   	Constellation    : Gru
 
-Direction          : Ascendant  	Orbite n°124119
-Vitesse orbitale   :  7.653 km/s	Prochain N>J : 15/08/2020 12:05:06  (dans 05min 06s).   Beta : -037° 48
-Variation distance : -3.601 km/s  	Prochain AOS : 15/08/2020 12:26:25  (dans 26min 25s). Azimut : 255° 01'
-
-
-Coordonnées du Soleil :
-Hauteur    : +47° 45' 52"		Ascension droite  :  09h 41m 28s 	Longitude                : 031° 06' 00" Est
-Azimut (N) : 136° 00' 03"		Déclinaison       : +13° 50' 59" 	Latitude                 : 13° 50' 15" Nord
-Distance   : 1.013 UA   		Constellation     : Leo			Diamètre apparent        : 31' 36"
-
-Évènements Soleil :
-Lever    : 06h45				Aube astronomique : 04h34		Crépuscule civil         : 21h40
-Méridien : 13h55				Aube nautique     : 05h25		Crépuscule nautique      : 22h24
-Coucher  : 21h04				Aube civile       : 06h09		Crépuscule astronomique  : 23h14
+Direction          : Ascendant  	Orbite nÂ°124119
+Vitesse orbitale   :  7.653 km/s	Prochain N>J : 2020-08-15 12:05:06  (dans 05min 06s).   Beta : -037Â° 48
+Variation distance : -3.601 km/s  	Prochain AOS : 2020-08-15 12:26:25  (dans 26min 25s). Azimut : 255Â° 01'
 
 
-Coordonnées de la Lune :
-Hauteur    : +59° 56' 36"		Ascension droite :  06h 23m 38s 	Phase                    : Dernier croissant
-Azimut (N) : 220° 19' 19"		Déclinaison      : +23° 36' 36" 	Magnitude (Illumination) : -7.77 (16%)
-Distance   : 379864 km  		Constellation    : Gem 			Diamètre apparent        : 31' 27"
+CoordonnÃ©es du Soleil :
+Hauteur    : +47Â° 45' 52"			Ascension droite  :  09h 41m 28s 	Longitude                : 031Â° 06' 00" Est
+Azimut (N) : 136Â° 00' 03"			DÃ©clinaison       : +13Â° 50' 59" 	Latitude                 : 13Â° 50' 15" Nord
+Distance   : 1.013 UA   			Constellation     : Leo			DiamÃ¨tre apparent        : 31' 36"
 
-Évènements Lune :
+Ã‰vÃ¨nements Soleil :
+Lever    : 06h45				Aube astronomique : 04h34			CrÃ©puscule civil         : 21h40
+MÃ©ridien : 13h55				Aube nautique     : 05h25			CrÃ©puscule nautique      : 22h24
+Coucher  : 21h04				Aube civile       : 06h09			CrÃ©puscule astronomique  : 23h14
+
+
+CoordonnÃ©es de la Lune :
+Hauteur    : +59Â° 56' 36"			Ascension droite :  06h 23m 38s 	Phase                    : Dernier croissant
+Azimut (N) : 220Â° 19' 19"			DÃ©clinaison      : +23Â° 36' 36" 	Magnitude (Illumination) : -7.77 (16%)
+Distance   : 379864 km  			Constellation    : Gem 			DiamÃ¨tre apparent        : 31' 27"
+
+Ã‰vÃ¨nements Lune :
 Lever    : 02h19
-Méridien : 10h35
+MÃ©ridien : 10h35
 Coucher  : 18h54
 
-Nouvelle Lune    : 19/08/2020 04h41
-Premier quartier : 25/08/2020 19h57
-Pleine Lune      : 02/09/2020 07h22
-Dernier quartier : 10/09/2020 11h26
+Nouvelle Lune    : 2020-08-19 04h41
+Premier quartier : 2020-08-25 19h57
+Pleine Lune      : 2020-09-02 07h22
+Dernier quartier : 2020-09-10 11h26
