@@ -1208,7 +1208,7 @@ void Carte::AffichageZoneOmbre()
     /* Corps de la methode */
     if (settings.value("affichage/affnuit") != QVariant(Qt::Unchecked)) {
 
-        double beta = MATHS::PI_SUR_DEUX - TERRE::REFRACTION_HZ;
+        double beta = MATHS::PI_SUR_DEUX;
         const int imax = ((settings.value("affichage/affnuit") == QVariant(Qt::PartiallyChecked)) || _mcc) ? 1 : 4;
 
         const QBrush alpha1 = QBrush(QColor::fromRgb(0, 0, 0, static_cast<int> (2.55 * settings.value("affichage/intensiteOmbre").toDouble())));
@@ -1401,7 +1401,7 @@ void Carte::AffichageZoneOmbre()
                 }
             }
 
-            beta += 6. * MATHS::DEG2RAD;
+            beta += (6. * MATHS::DEG2RAD);
         }
     }
 

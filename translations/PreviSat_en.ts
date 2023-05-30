@@ -2189,6 +2189,57 @@ PreviSat is free !</translation>
         <translation>Loss of signal</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="872"/>
+        <source>Hauteur    : %1			Ascension droite  :  %2 	Longitude                : %3</source>
+        <translation>Elevation   : %1		Right ascension   :  %2 	Longitude                : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="876"/>
+        <source>Azimut (N) : %1			Déclinaison       : %2 	Latitude                 : %3</source>
+        <comment>Azimuth from the North</comment>
+        <translation>Azimuth (N) : %1 		Declination       : %2 	Latitude                 : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="880"/>
+        <source>Distance   : %1   			Constellation     : %2			Diamètre apparent        : %3</source>
+        <translation>Range       : %1   		Constellation     : %2			Apparent diameter        : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="885"/>
+        <source>Lever    : %1				Aube astronomique : %2			Crépuscule civil         : %3</source>
+        <comment>Sunrise</comment>
+        <translation>Sunrise  : %1				Astronomical dawn : %2		Civil twilight           : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="888"/>
+        <source>Méridien : %1				Aube nautique     : %2			Crépuscule nautique      : %3</source>
+        <comment>Meridian pass for the Sun</comment>
+        <translation>Meridian : %1				Nautical dawn     : %2		Nautical twilight        : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="891"/>
+        <source>Coucher  : %1				Aube civile       : %2			Crépuscule astronomique  : %3</source>
+        <comment>Sunset</comment>
+        <translation>Sunset   : %1				Civil dawn        : %2		Astronomical twilight    : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="898"/>
+        <source>Hauteur    : %1			Ascension droite :  %2 	Phase                    : %3</source>
+        <comment>Moon phase</comment>
+        <translation>Elevation   : %1		Right ascension   :  %2 	Phase                    : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="901"/>
+        <source>Azimut (N) : %1			Déclinaison      : %2 	Magnitude (Illumination) : %3</source>
+        <comment>Azimuth from the North</comment>
+        <translation>Azimuth (N) : %1		Declination       : %2 	Magnitude (Illumination) : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="904"/>
+        <source>Distance   : %1  			Constellation    : %2 			Diamètre apparent        : %3</source>
+        <translation>Range       : %1   		Constellation     : %2			Apparent diameter        : %3</translation>
+    </message>
+    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="436"/>
         <location filename="../src/interface/onglets/general/general.cpp" line="485"/>
         <source>%1  (dans %2).</source>
@@ -2296,6 +2347,12 @@ PreviSat is free !</translation>
         <translation>Name of satellite :</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="841"/>
+        <source>Altitude  :  %1			Distance   : %2	Constellation    : %3</source>
+        <comment>Altitude of satellite</comment>
+        <translation>Altitude  :  %1		Range       : %2	Constellation    : %3</translation>
+    </message>
+    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="849"/>
         <source>Vitesse orbitale   : %1	%2  %3</source>
         <translation>Orbital velocity : %1	%2   %3</translation>
@@ -2306,10 +2363,9 @@ PreviSat is free !</translation>
         <translation>Latitude  :  %1	Azimuth (N) : %2	Declination      : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="841"/>
         <source>Altitude  :  %1		Distance   : %2	Constellation    : %3</source>
         <comment>Altitude of satellite</comment>
-        <translation>Altitude  :  %1		Range       : %2	Constellation    : %3</translation>
+        <translation type="vanished">Altitude  :  %1		Range       : %2	Constellation    : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="845"/>
@@ -2323,32 +2379,27 @@ PreviSat is free !</translation>
         <translation>Range rate       : %1  	%2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="872"/>
         <source>Hauteur    : %1		Ascension droite  :  %2 	Longitude                : %3</source>
-        <translation>Elevation   : %1		Right ascension   :  %2 	Longitude                : %3</translation>
+        <translation type="vanished">Elevation   : %1		Right ascension   :  %2 	Longitude                : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="876"/>
         <source>Azimut (N) : %1		Déclinaison       : %2 	Latitude                 : %3</source>
         <comment>Azimuth from the North</comment>
-        <translation>Azimuth (N) : %1 		Declination       : %2 	Latitude                 : %3</translation>
+        <translation type="vanished">Azimuth (N) : %1 		Declination       : %2 	Latitude                 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="880"/>
         <source>Distance   : %1   		Constellation     : %2			Diamètre apparent        : %3</source>
-        <translation>Range       : %1   		Constellation     : %2			Apparent diameter        : %3</translation>
+        <translation type="vanished">Range       : %1   		Constellation     : %2			Apparent diameter        : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="888"/>
         <source>Méridien : %1				Aube nautique     : %2		Crépuscule nautique      : %3</source>
         <comment>Meridian pass for the Sun</comment>
-        <translation>Meridian : %1				Nautical dawn     : %2		Nautical twilight        : %3</translation>
+        <translation type="vanished">Meridian : %1				Nautical dawn     : %2		Nautical twilight        : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="901"/>
         <source>Azimut (N) : %1		Déclinaison      : %2 	Magnitude (Illumination) : %3</source>
         <comment>Azimuth from the North</comment>
-        <translation>Azimuth (N) : %1		Declination       : %2 	Magnitude (Illumination) : %3</translation>
+        <translation type="vanished">Azimuth (N) : %1		Declination       : %2 	Magnitude (Illumination) : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="909"/>
@@ -2369,10 +2420,9 @@ PreviSat is free !</translation>
         <translation>Moonset  : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="898"/>
         <source>Hauteur    : %1		Ascension droite :  %2 	Phase                    : %3</source>
         <comment>Moon phase</comment>
-        <translation>Elevation   : %1		Right ascension   :  %2 	Phase                    : %3</translation>
+        <translation type="vanished">Elevation   : %1		Right ascension   :  %2 	Phase                    : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="555"/>
@@ -2404,21 +2454,18 @@ PreviSat is free !</translation>
         <translation>Longitude : %1  	Elevation   : %2	Right ascension  :  %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="885"/>
         <source>Lever    : %1				Aube astronomique : %2		Crépuscule civil         : %3</source>
         <comment>Sunrise</comment>
-        <translation>Sunrise  : %1				Astronomical dawn : %2		Civil twilight           : %3</translation>
+        <translation type="vanished">Sunrise  : %1				Astronomical dawn : %2		Civil twilight           : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="891"/>
         <source>Coucher  : %1				Aube civile       : %2		Crépuscule astronomique  : %3</source>
         <comment>Sunset</comment>
-        <translation>Sunset   : %1				Civil dawn        : %2		Astronomical twilight    : %3</translation>
+        <translation type="vanished">Sunset   : %1				Civil dawn        : %2		Astronomical twilight    : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="904"/>
         <source>Distance   : %1  		Constellation    : %2 			Diamètre apparent        : %3</source>
-        <translation>Range       : %1  		Constellation     : %2 		Apparent diameter        : %3</translation>
+        <translation type="vanished">Range       : %1  		Constellation     : %2 		Apparent diameter        : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="913"/>
