@@ -30,7 +30,7 @@
 \page Historique Historique des versions
 
 <b><span style="color:red;">Version 6.0 (révision 0) :</span><br />
-Juillet 2022 - Mai 2023 :</b>
+Juillet 2022 - Juin 2023 :</b>
 <ul>
 <li>Migration du code de Qt5 vers Qt6.
 <li>Refonte partielle du code pour l'interface graphique.
