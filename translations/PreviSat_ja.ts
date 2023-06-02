@@ -2352,11 +2352,6 @@ PreviSatは、完全無料です!</translation>
         <translation>緯度  :  %1		方位角 (北) : %2	赤緯 : %3</translation>
     </message>
     <message>
-        <source>Altitude  :  %1		Distance   : %2	Constellation    : %3</source>
-        <comment>Altitude of satellite</comment>
-        <translation type="vanished">高度  :  %1		距離        : %2	星座 : %3</translation>
-    </message>
-    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="845"/>
         <source>Direction          : %1  	%2      		%3</source>
         <translation>方向     : %1      	%2      		%3</translation>
@@ -2366,19 +2361,6 @@ PreviSatは、完全無料です!</translation>
         <source>Variation distance : %1  	%2</source>
         <comment>Range rate</comment>
         <translation>レンジレート : %1  	%2</translation>
-    </message>
-    <message>
-        <source>Hauteur    : %1		Ascension droite  :  %2 	Longitude                : %3</source>
-        <translation type="vanished">仰角        : %1	赤経 :  %2 		経度       : %3</translation>
-    </message>
-    <message>
-        <source>Azimut (N) : %1		Déclinaison       : %2 	Latitude                 : %3</source>
-        <comment>Azimuth from the North</comment>
-        <translation type="vanished">方位角 (北) : %1 	赤緯 : %2 		緯度       : %3</translation>
-    </message>
-    <message>
-        <source>Distance   : %1   		Constellation     : %2			Diamètre apparent        : %3</source>
-        <translation type="vanished">距離        : %1   	星座 : %2				見かけの直径 : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="909"/>
@@ -2397,11 +2379,6 @@ PreviSatは、完全無料です!</translation>
         <source>Coucher  : %1</source>
         <comment>Moonset</comment>
         <translation>月の入り    : %1</translation>
-    </message>
-    <message>
-        <source>Hauteur    : %1		Ascension droite :  %2 	Phase                    : %3</source>
-        <comment>Moon phase</comment>
-        <translation type="vanished">仰角        : %1	赤経 :  %2 		月相        : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="555"/>
@@ -2442,30 +2419,6 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/general/general.cpp" line="849"/>
         <source>Vitesse orbitale   : %1	%2  %3</source>
         <translation>軌道速度 : %1		%2 %3</translation>
-    </message>
-    <message>
-        <source>Lever    : %1				Aube astronomique : %2		Crépuscule civil         : %3</source>
-        <comment>Sunrise</comment>
-        <translation type="vanished">日の出     : %1			天文明け方 : %2			市民薄暮 : %3</translation>
-    </message>
-    <message>
-        <source>Méridien : %1				Aube nautique     : %2		Crépuscule nautique      : %3</source>
-        <comment>Meridian pass for the Sun</comment>
-        <translation type="vanished">子午線越え : %1			航海明け方 : %2			航海薄暮 : %3</translation>
-    </message>
-    <message>
-        <source>Coucher  : %1				Aube civile       : %2		Crépuscule astronomique  : %3</source>
-        <comment>Sunset</comment>
-        <translation type="vanished">日の入り   : %1			市民明け方 : %2			天文薄暮 : %3</translation>
-    </message>
-    <message>
-        <source>Azimut (N) : %1		Déclinaison      : %2 	Magnitude (Illumination) : %3</source>
-        <comment>Azimuth from the North</comment>
-        <translation type="vanished">方位角 (北) : %1 	赤緯 : %2 		等級 (照射) : %3</translation>
-    </message>
-    <message>
-        <source>Distance   : %1  		Constellation    : %2 			Diamètre apparent        : %3</source>
-        <translation type="vanished">距離        : %1		星座 : %2 				見かけの直径 : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="913"/>
