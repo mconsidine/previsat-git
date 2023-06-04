@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    28 mai 2023
+ * >    4 juin 2023
  *
  */
 
@@ -924,17 +924,25 @@ void Configuration::VerificationArborescences()
 
         const QStringList listeDirOrig(QStringList () << _dirCommonData + QDir::separator() + "coordinates"
                                        << _dirCommonData + QDir::separator() + "html"
-                                       << _dirCommonData + QDir::separator() + "preferences"
-                                       << _dirCommonData + QDir::separator() + ".." + QDir::separator() + "elem");
+                                       << _dirCommonData + QDir::separator() + "preferences");
 
         foreach(QString orig, listeDirOrig) {
             QDir dir(orig);
             const QString dest = orig.replace(_dirCommonData, _dirLocalData);
-            dir.rename(dir.path(), dest);
+            if (!QDir(dest).exists()) {
+                dir.rename(dir.path(), dest);
+            }
         }
 
-        const QStringList listeFics(QStringList () << _dirCommonData + QDir::separator() + "donnees.bin"
+        QDir dirElm(_dirExe + QDir::separator() + "elem");
+        if (!QDir(_dirElem).exists()) {
+            dirElm.rename(dirElm.path(), _dirElem);
+        }
+
+        const QStringList listeFics(QStringList ()
+                                    << _dirCommonData + QDir::separator() + "donnees.bin"
                                     << _dirCommonData + QDir::separator() + _nomFichierEvenementsStationSpatiale
+                                    << _dirCommonData + QDir::separator() + "radio.xml"
                                     << _dirCommonData + QDir::separator() + "taiutc.dat");
 
         foreach(QString fic, listeFics) {
@@ -962,8 +970,12 @@ void Configuration::VerificationArborescences()
             }
         }
 
-        const QStringList listeDir(QStringList () << _dirCfg << _dirElem << _dirLog << _dirMap << _dirOut << _dirPref << _dirRsc << _dirSon
-                                   << _dirTmp);
+        const QStringList listeDir(QStringList ()
+#if defined (Q_OS_LINUX)
+                                   << _dirElem
+#endif
+                                   << _dirCfg << _dirLog << _dirMap << _dirOut << _dirPref << _dirRsc << _dirSon << _dirTmp);
+
         foreach(const QString dir, listeDir) {
             const QDir direc = QDir(dir);
             if (!direc.exists()) {
