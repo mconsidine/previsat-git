@@ -177,7 +177,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
         out << QString("%1 : %2 : ").arg(fic, -45).arg(nomFonction, -45);
     }
 
-    if (message.startsWith("\"") && message.endsWith("\"")) {
+    if (message.startsWith(R"(")") && message.endsWith(R"(")")) {
         message.remove(0, 1).chop(1);
     }
 

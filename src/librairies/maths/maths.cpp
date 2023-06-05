@@ -170,8 +170,8 @@ QString Maths::ToSexagesimal(const double xdec, const AngleFormatType &typeAngle
     const QString signe0 = (sgn(xval) >= 0) ? ((signe && tst1) ? "+" : " ") : "-";
 
     const QString unite1 = (tst1) ? "°" : (tst2) ? QObject::tr("h", "hour (angle)") : ":";
-    const QString unite2 = (tst1) ? "\'" : (tst2) ? QObject::tr("m", "minute (angle)") : ":";
-    const QString unite3 = (tst1) ? "\"" : (tst2) ? QObject::tr("s", "second (angle)") : "";
+    const QString unite2 = (tst1) ? R"(')" : (tst2) ? QObject::tr("m", "minute (angle)") : ":";
+    const QString unite3 = (tst1) ? R"(")" : (tst2) ? QObject::tr("s", "second (angle)") : "";
 
     /* Corps de la methode */
     int deg = static_cast<int> (y);

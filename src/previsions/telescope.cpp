@@ -102,7 +102,7 @@ int Telescope::CalculSuiviTelescope(int &nombre)
             // Satellite
             Satellite sat(tabElem.first());
 
-            const QString entete("\"Time (UTCG)\",\"Range (km)\",\"Right Ascen (deg)\",\"Declination (deg)\"");
+            const QString entete(R"&("Time (UTCG)","Range (km)","Right Ascen (deg)","Declination (deg)")&");
 
             QTextStream flux(&fi);
             flux << entete << Qt::endl;

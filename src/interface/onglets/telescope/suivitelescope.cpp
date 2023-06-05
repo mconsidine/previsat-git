@@ -768,7 +768,7 @@ void SuiviTelescope::on_parametrageDefautSuivi_clicked()
 void SuiviTelescope::on_afficherSuivi_clicked()
 {
     if (!_ficSuivi.isEmpty()) {
-        QDesktopServices::openUrl(QUrl(_ficSuivi.replace("\\", "/")));
+        QDesktopServices::openUrl(QUrl(_ficSuivi.replace(R"(\)", "/")));
     }
 }
 
