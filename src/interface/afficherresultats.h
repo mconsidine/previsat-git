@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 avril 2023
+ * >    8 juin 2023
  *
  */
 
@@ -147,10 +147,11 @@ private:
     /**
      * @brief AffichageDetailTransit Affichage du detail d'un transit
      * @param[in] observateur observateur
+     * @param[in] soleil soleil
      * @param[in] lune lune
      * @param[in] list informations sur le transit
      */
-    void AffichageDetailTransit(const Observateur &observateur, const Lune &lune, const QList<ResultatPrevisions> &list);
+    void AffichageDetailTransit(const Observateur &observateur, const Soleil &soleil, const Lune &lune, const QList<ResultatPrevisions> &list);
 
     /**
      * @brief ChargementCarte Chargement de la carte representant la trace du maximum

@@ -567,7 +567,7 @@ void CalculsTransits::on_calculsTransit_clicked()
             } else {
                 EFFACE_OBJET(_afficherResultats);
                 _afficherResultats = new AfficherResultats(TypeCalcul::TRANSITS, conditions, Transits::donnees(), Transits::resultats(),
-                                                           settings.value("affichage/valeurZoomMap").toInt());
+                                                           settings.value("affichage/valeurZoomMap", 9).toInt());
                 _afficherResultats->show();
             }
         }

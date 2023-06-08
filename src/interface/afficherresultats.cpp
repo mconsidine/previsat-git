@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    28 mai 2023
+ * >    8 juin 2023
  *
  */
 
@@ -256,9 +256,11 @@ AfficherResultats::~AfficherResultats()
 /*
  * Affichage du detail d'un transit
  */
-void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, const Lune &lune, const QList<ResultatPrevisions> &list)
+void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, const Soleil &soleil, const Lune &lune,
+                                               const QList<ResultatPrevisions> &list)
 {
     /* Declarations des variables locales */
+    double diamApparent;
     QPen couleur(Qt::black);
 
     /* Initialisations */
@@ -276,6 +278,8 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
     // Dessin de la Lune ou du Soleil
     if (list.at(0).typeCorps == CorpsTransit::CORPS_SOLEIL) {
 
+        diamApparent = 2. * asin(SOLEIL::RAYON_SOLAIRE / soleil.distance()) * MATHS::RAD2DEG;
+
         QPixmap pixsol;
         pixsol.load(":/resources/interface/soleil.png");
         pixsol = pixsol.scaled(100, 100);
@@ -285,6 +289,8 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
         sol->setTransform(transform);
 
     } else {
+
+        diamApparent = 2. * asin(LUNE::RAYON_LUNAIRE / lune.distance()) * MATHS::RAD2DEG;
 
         // Angle horaire
         const double angleHoraire = observateur.tempsSideralGreenwich() - observateur.longitude() - lune.ascensionDroite();
@@ -326,6 +332,8 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
         couleur = QPen((lune.fractionIlluminee() < 0.5) ? Qt::lightGray : Qt::black);
     }
 
+    const double fact = 50. / diamApparent;
+
     double deltaAzimut;
     double deltaHauteur;
     QList<QPointF> coord;
@@ -345,7 +353,7 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
             deltaHauteur = MATHS::RAD2DEG * (res.hauteur - lune.hauteur());
         }
 
-        const QPointF pt(180. * deltaAzimut, -180. * deltaHauteur);
+        const QPointF pt(fact * deltaAzimut, -fact * deltaHauteur);
         coord.append(pt);
     }
 
@@ -1734,7 +1742,7 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
         _ui->detailsTransit->setVisible(list.at(2).transit);
 
         if (list.at(2).transit) {
-            AffichageDetailTransit(observateur, lune, list);
+            AffichageDetailTransit(observateur, soleil, lune, list);
         }
     }
 
