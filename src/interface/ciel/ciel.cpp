@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    28 mai 2023
+ * >    8 juin 2023
  *
  */
 
@@ -160,6 +160,8 @@ void Ciel::show(const Observateur &observateur,
     _planetes = planetes;
     _soleil = soleil;
     _lune = lune;
+
+    QWidget::show();
 
     if (!_labelHeure) {
         _ui->vueCiel->setGeometry(_ui->vueCiel->x(), _ui->vueCiel->y(), parentWidget()->height()-32, parentWidget()->height()-32);
