@@ -48,7 +48,7 @@
 
 | Component | Reference | Author | Comments |
 |-----------|-----------|--------|----------|
-| <center>Propagation model</center> | <center>SGP4, Spacetrack report n°3,<br />Models for propagation of<br />NORAD Element Sets<br />Revisiting Spacetrack Report #3, Rev2</center> | Hoots, Roehrich<br /><br /><br />Vallado | 1980<br /><br /><br />2006 |
+| <center>Propagation model</center> | <center>SGP4, Spacetrack report n°3,<br />Models for propagation of<br />NORAD Element Sets<br />Revisiting Spacetrack Report #3, Rev3</center> | Hoots, Roehrich<br /><br /><br />Vallado | 1980<br /><br /><br />2006 |
 | <center>Sun position<br />Moon position<br />Planets position<br />Greenwich sidereal time</center> | <center>Astronomical Algorithms 2nd edition</center> | Meeus | Simplified model. pp163-164<br />Simplified model. pp337-342<br />Simplified model. pp209-216<br />From the formula p88 |
 | <center>Osculating elements</center> | <center>Fundamental of Astrodynamics and Application 2nd edition</center> | Vallado | |
 | <center>Atmospheric extinction</center> | <center>Magnitude corrections for atmospheric extinction, 1992</center>  | Green | |
