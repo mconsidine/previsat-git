@@ -48,7 +48,7 @@
 
 | Composant | Référence | Auteur | Commentaires |
 |-----------|-----------|--------|--------------|
-| <center>Modèle orbital</center> | <center>SGP4, Spacetrack report n°3,<br />Models for propagation of<br />NORAD Element Sets<br />Revisiting Spacetrack Report #3, Rev2</center> | Hoots, Roehrich<br /><br /><br />Vallado | 1980<br /><br /><br />2006 |
+| <center>Modèle orbital</center> | <center>SGP4, Spacetrack report n°3,<br />Models for propagation of<br />NORAD Element Sets<br />Revisiting Spacetrack Report #3, Rev3</center> | Hoots, Roehrich<br /><br /><br />Vallado | 1980<br /><br /><br />2006 |
 | <center>Position du Soleil<br />Position de la Lune<br />Position des planètes<br />Temps sidéral de Greenwich</center> | <center>Astronomical Algorithms 2nd edition</center> | Meeus | Modèle simplifié. pp163-164<br />Modèle simplifié. pp337-342<br />Modèle simplifié. pp209-216<br />D'après la formule p88 |
 | <center>Éléments osculateurs</center> | <center>Fundamental of Astrodynamics and Application 2nd edition</center> | Vallado | |
 | <center>Extinction atmosphérique</center> | <center>Magnitude corrections for atmospheric extinction, 1992</center>  | Green | |

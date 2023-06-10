@@ -36,7 +36,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    10 juin 2023
  *
  */
 
@@ -215,7 +215,7 @@ void Informations::OuvertureInfo(const QString &nomfic, QWidget *onglet, QTextBr
     /* Corps de la methode */
     try {
 
-        const QString url = QString("%1/data/informations/").arg(DOMAIN_NAME) + nomfic;
+        const QString url = QString(DOMAIN_NAME) + "informations/" + nomfic;
 
         if (UrlExiste(url)) {
 

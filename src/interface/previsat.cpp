@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 mai 2023
+ * >    10 juin 2023
  *
  */
 
@@ -59,6 +59,7 @@
 #include "ui_carte.h"
 #include "ui_coordiss.h"
 #include "ui_general.h"
+#include "ui_informations.h"
 #include "ui_informationssatellite.h"
 #include "ui_onglets.h"
 #include "ui_osculateurs.h"
@@ -431,16 +432,6 @@ void PreviSat::DemarrageApplication()
 
     AffichageCartesRadar();
 
-    // Affichage de la fenetre d'informations
-    const QUrl urlLastNews(QString("%1%2/Qt/informations/").arg(DOMAIN_NAME).arg(QString(APP_NAME).toLower())
-                           + "last_news_" + Configuration::instance()->locale() + ".html");
-
-    if (settings.value("affichage/informationsDemarrage", true).toBool() && Informations::UrlExiste(urlLastNews)) {
-        on_actionInformations_triggered();
-        const QRect tailleEcran = QApplication::primaryScreen()->availableGeometry();
-        _informations->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, _informations->size(), tailleEcran));
-    }
-
     // Lancement du chronometre
     if (_chronometre == nullptr) {
         _chronometre = new QTimer(this);
@@ -459,8 +450,18 @@ void PreviSat::DemarrageApplication()
         _chronometreMs->start();
     }
 
+    // Mode sombre
     _ui->actionMode_sombre->setChecked(settings.value("affichage/modeSombre", false).toBool());
     on_actionMode_sombre_triggered();
+
+    // Affichage de la fenetre d'informations
+    const QUrl urlLastNews(QString("%1informations/").arg(DOMAIN_NAME) + "last_news_" + Configuration::instance()->locale() + ".html");
+
+    if (settings.value("affichage/informationsDemarrage", true).toBool() && Informations::UrlExiste(urlLastNews)) {
+        on_actionInformations_triggered();
+        const QRect tailleEcran = QApplication::primaryScreen()->availableGeometry();
+        _informations->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, _informations->size(), tailleEcran));
+    }
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
 
@@ -3021,7 +3022,7 @@ void PreviSat::on_actionInformations_triggered()
     /* Corps de la methode */
     qInfo() << "Début Fonction" << __FUNCTION__;
 
-    const QUrl urlLastNews(QString("%1/data/informations/").arg(DOMAIN_NAME) + "last_news_" + Configuration::instance()->locale() + ".html");
+    const QUrl urlLastNews(QString("%1informations/").arg(DOMAIN_NAME) + "last_news_" + Configuration::instance()->locale() + ".html");
 
     if (Informations::UrlExiste(urlLastNews)) {
 
