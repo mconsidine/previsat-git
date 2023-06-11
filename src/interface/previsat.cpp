@@ -3215,25 +3215,29 @@ void PreviSat::on_actionExporter_fichier_log_triggered()
 void PreviSat::on_actionPayPal_triggered()
 {
     /* Declarations des variables locales */
-    bool ok;
 
     /* Initialisations */
-    const int idx = static_cast<int> (Configuration::instance()->listeFicLang().indexOf(settings.value("affichage/langue").toString()));
-
-    QVector<QString> devises(QVector<QString>() << "Euro (€)" << "USD ($)" << "JPY (¥)");
-    devises.resize(Configuration::instance()->listeFicLang().size());
     const QStringList listeDon = settings.value("fichier/dirHttpPreviDon", "").toString().split("\n", Qt::SkipEmptyParts);
 
     /* Corps de la methode */
-    QInputDialog input(this);
-    input.setWindowTitle(tr("Devise"));
-    input.setLabelText(tr("Choisissez la devise :"));
+    if (!listeDon.isEmpty()) {
 
-    const QString item = input.getItem(this, tr("Devise"), tr("Choisissez la devise :"), devises.toList(), idx, false, &ok,
-                                       Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+        bool ok;
+        const int idx = static_cast<int> (Configuration::instance()->listeFicLang().indexOf(settings.value("affichage/langue").toString()));
 
-    if (ok && !item.isEmpty()) {
-        QDesktopServices::openUrl(QUrl(listeDon.at(devises.indexOf(item))));
+        QVector<QString> devises(QVector<QString>() << "Euro (€)" << "USD ($)" << "JPY (¥)");
+        devises.resize(Configuration::instance()->listeFicLang().size());
+
+        QInputDialog input(this);
+        input.setWindowTitle(tr("Devise"));
+        input.setLabelText(tr("Choisissez la devise :"));
+
+        const QString item = input.getItem(this, tr("Devise"), tr("Choisissez la devise :"), devises.toList(), idx, false, &ok,
+                                           Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+
+        if (ok && !item.isEmpty()) {
+            QDesktopServices::openUrl(QUrl(listeDon.at(devises.indexOf(item))));
+        }
     }
 
     /* Retour */
