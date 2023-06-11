@@ -2111,9 +2111,11 @@ void PreviSat::InitFicGP()
 
                 // Cas des fichiers TLE
                 ajout = (TLE::VerifieFichier(fic) > 0);
-                mapElem = TLE::LectureFichier(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
-                                              QStringList(), false);
-                nomfic = ff.baseName() + " (TLE)";
+                if (ajout) {
+                    mapElem = TLE::LectureFichier(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
+                                                  QStringList(), false);
+                    nomfic = ff.baseName() + " (TLE)";
+                }
             }
 
             if (ajout) {
@@ -3164,20 +3166,21 @@ void PreviSat::on_actionMettre_a_jour_les_fichiers_de_donnees_triggered()
     /* Initialisations */
     qInfo() << "Début Fonction" << __FUNCTION__;
 
-    Telechargement tel(Configuration::instance()->dirLocalData());
+    Telechargement tel(Configuration::instance()->dirTmp());
 
     /* Corps de la methode */
     foreach (const QString &fic, Configuration::instance()->listeFicLocalData()) {
 
         if (!fic.contains("preferences", Qt::CaseInsensitive)) {
+
             const QString fichier = QString("%1data/%2").arg(DOMAIN_NAME).arg(fic).replace(QDir::separator(), "/");
             const QUrl url(fichier);
             tel.TelechargementFichier(url, false, false);
 
-            const QString file = QFileInfo(url.path()).fileName();
-            if (!fic.startsWith(file)) {
+            fi.setFileName(Configuration::instance()->dirTmp() + QDir::separator() + fic);
 
-                fi.setFileName(Configuration::instance()->dirLocalData() + QDir::separator() + file);
+            if (fi.exists() && (fi.size() > 0)) {
+
                 fi2.setFileName(Configuration::instance()->dirLocalData() + QDir::separator() + fic);
                 fi2.remove();
                 fi.rename(fi2.fileName());
