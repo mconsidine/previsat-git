@@ -86,7 +86,9 @@ SuiviTelescope::SuiviTelescope(QWidget *parent) :
 
         _afficherResultats = nullptr;
         _date = nullptr;
+        _dateAos = nullptr;
         _dateAosSuivi = nullptr;
+        _dateLos = nullptr;
         _dateLosSuivi = nullptr;
 
         Initialisation();
@@ -112,7 +114,9 @@ SuiviTelescope::~SuiviTelescope()
 
     EFFACE_OBJET(_afficherResultats);
     EFFACE_OBJET(_date);
+    EFFACE_OBJET(_dateAos);
     EFFACE_OBJET(_dateAosSuivi);
+    EFFACE_OBJET(_dateLos);
     EFFACE_OBJET(_dateLosSuivi);
 
     delete _ui;
@@ -276,6 +280,7 @@ void SuiviTelescope::CalculAos()
     /* Corps de la methode */
     try {
 
+        Date date1;
         const double hauteurMin = MATHS::DEG2RAD * ((_ui->hauteurSatSuivi->currentIndex() == 5) ?
                                                         abs(_ui->valHauteurSatSuivi->text().toInt()) : 5 * _ui->hauteurSatSuivi->currentIndex());
 
@@ -327,6 +332,7 @@ void SuiviTelescope::CalculAos()
 
         EFFACE_OBJET(_dateAosSuivi);
         _dateAosSuivi = new Date(elemAos.date.jourJulienUTC(), _date->offsetUTC());
+        date1 = *_dateAosSuivi;
 
         if (elemAos.aos) {
 
@@ -392,6 +398,7 @@ void SuiviTelescope::CalculAos()
                 EFFACE_OBJET(_dateAosSuivi);
                 _dateAosSuivi = new Date((elem.date.jourJulienUTC() < _date->jourJulienUTC()) ? *_date : elem.date, _date->offsetUTC());
                 azim = elemAos.azimut;
+                date1 = Date(elem.date.jourJulienUTC(), 0.);
 
                 const QString chaine2 = tr("Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3");
                 _ui->leverSatSuivi2->setText(
@@ -432,7 +439,7 @@ void SuiviTelescope::CalculAos()
             std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
             QPair<double, double> minmax;
 
-            double jj0 = 0.5 * (_dateAosSuivi->jourJulienUTC() + _dateLosSuivi->jourJulienUTC());
+            double jj0 = 0.5 * (date1.jourJulienUTC() + _dateLosSuivi->jourJulienUTC());
             double pas = _dateLosSuivi->jourJulienUTC() - jj0;
 
             jjm[0] = jj0 - pas;
@@ -504,24 +511,25 @@ void SuiviTelescope::CalculAos()
 /*
  * Calcul de la hauteur maximale d'un satellite dans le ciel
  */
-QPair<double, double> SuiviTelescope::CalculHauteurMax(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, Observateur &obs,
+QPair<double, double> SuiviTelescope::CalculHauteurMax(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, const Observateur &obs,
                                                        Satellite &satSuivi) const
 {
     /* Declarations des variables locales */
     std::array<double, 3> ht;
 
     /* Initialisations */
+    Observateur observateur = obs;
 
     /* Corps de la methode */
     for (unsigned int i=0; i<MATHS::DEGRE_INTERPOLATION; i++) {
 
         const Date date(jjm[i], 0., false);
 
-        obs.CalculPosVit(date);
+        observateur.CalculPosVit(date);
 
         // Position du satellite
         satSuivi.CalculPosVit(date);
-        satSuivi.CalculCoordHoriz(obs);
+        satSuivi.CalculCoordHoriz(observateur);
 
         // Hauteur
         ht[i] = satSuivi.hauteur();
@@ -573,11 +581,11 @@ void SuiviTelescope::AjusterDates(const QDateTime &date1, const QDateTime &date2
     /* Initialisations */
 
     /* Corps de la methode */
-    EFFACE_OBJET(_dateAosSuivi);
-    _dateAosSuivi = new Date(date1, 0.);
+    EFFACE_OBJET(_dateAos);
+    _dateAos = new Date(date1, 0.);
 
-    EFFACE_OBJET(_dateLosSuivi);
-    _dateLosSuivi = new Date(date2, 0.);
+    EFFACE_OBJET(_dateLos);
+    _dateLos = new Date(date2, 0.);
 
     _ui->genererPositions->setDefault(true);
     _ui->afficherSuivi->setEnabled(false);
@@ -629,8 +637,8 @@ void SuiviTelescope::on_genererPositions_clicked()
 
         int nbIter = 0;
         const ElementsAOS elementsAos = Evenements::CalculAOS(date, satSuivi, obs, SensCalcul::CHRONOLOGIQUE, hauteurMin);
-        Date date1 = *_dateAosSuivi;
-        Date date2 = *_dateLosSuivi;
+        Date date1 = (_dateAos == nullptr) ? *_dateAosSuivi : *_dateAos;
+        Date date2 = (_dateLos == nullptr) ? *_dateLosSuivi : *_dateLos;
 
         if (elementsAos.aos) {
 
@@ -679,7 +687,7 @@ void SuiviTelescope::on_genererPositions_clicked()
                        .arg(conditions.observateur.latitude() * MATHS::RAD2DEG, 0, 'f', 9)
                        .arg(conditions.observateur.altitude() * 1.e3);
 
-            qInfo() << "Satellite sélectionné =" << conditions.listeSatellites;
+            qInfo() << "Satellite sélectionné =" << conditions.tabElem.first().norad;
 
             qInfo() << "--";
 
@@ -794,6 +802,8 @@ void SuiviTelescope::on_listeTelescope_itemClicked(QListWidgetItem *item)
 
     if (_date != nullptr) {
         CalculAos();
+        EFFACE_OBJET(_dateAos);
+        EFFACE_OBJET(_dateLos);
     }
 
     _ui->genererPositions->setDefault(true);
@@ -815,6 +825,8 @@ void SuiviTelescope::on_listeTelescope_currentRowChanged(int currentRow)
 
         if (_date != nullptr) {
             CalculAos();
+            EFFACE_OBJET(_dateAos);
+            EFFACE_OBJET(_dateLos);
         }
 
         _ui->genererPositions->setDefault(true);
@@ -837,6 +849,8 @@ void SuiviTelescope::on_lieuxObservation_currentIndexChanged(int index)
 
         if (_date != nullptr) {
             CalculAos();
+            EFFACE_OBJET(_dateAos);
+            EFFACE_OBJET(_dateLos);
         }
 
         _ui->genererPositions->setDefault(true);
@@ -865,6 +879,8 @@ void SuiviTelescope::on_hauteurSatSuivi_currentIndexChanged(int index)
 
     if (_date != nullptr) {
         CalculAos();
+        EFFACE_OBJET(_dateAos);
+        EFFACE_OBJET(_dateLos);
     }
 
     _ui->genererPositions->setDefault(true);
@@ -886,7 +902,7 @@ void SuiviTelescope::on_ajusterDates_clicked()
 
     /* Corps de la methode */
     AjustementDates * const ajustementDates = new AjustementDates(_dateAosSuivi->ToQDateTime(1), _dateLosSuivi->ToQDateTime(1), observateur, elements,
-                                                                 _date->offsetUTC(), hauteur, this);
+                                                                  _date->offsetUTC(), hauteur, this);
 
     QEvent evt(QEvent::LanguageChange);
 
