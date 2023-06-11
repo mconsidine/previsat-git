@@ -92,9 +92,13 @@ Antenne::Antenne(QWidget *parent) :
  */
 Antenne::~Antenne()
 {
+    settings.setValue("previsions/adresse", _ui->adresse->text());
+    settings.setValue("previsions/port", _ui->port->value());
+
     EFFACE_OBJET(_chronometreUdp);
     EFFACE_OBJET(_udpSocket);
     EFFACE_OBJET(_date);
+
     delete _ui;
 }
 
@@ -408,14 +412,6 @@ void Antenne::ReceptionUdp()
     _ui->connexion->setText(tr("Déconnecter"));
     _ui->adresse->setReadOnly(true);
     _ui->port->setReadOnly(true);
-}
-
-void Antenne::closeEvent(QCloseEvent *evt)
-{
-    Q_UNUSED(evt)
-
-    settings.setValue("previsions/adresse", _ui->adresse->text());
-    settings.setValue("previsions/port", _ui->port->value());
 }
 
 void Antenne::on_connexion_clicked()

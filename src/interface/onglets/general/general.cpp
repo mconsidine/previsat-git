@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    29 mai 2023
+ * >    11 juin 2023
  *
  */
 
@@ -261,7 +261,7 @@ void General::AffichageDonneesSatellite(const Date &date)
     // Nom du satellite
     _ui->nomsat->setText(satellite.elementsOrbitaux().nom);
 
-    // Age du TLE
+    // Age des elements orbitaux
     QPalette palette;
     QBrush couleur;
     const double age = fabs(satellite.ageElementsOrbitaux());
@@ -667,7 +667,7 @@ void General::EcritureInformationsEclipse(const QString &corpsOccultant, const d
 /*
  * Affichage des vitesses (par seconde ou par heure)
  */
-void General::AffichageVitesses(const Date &date)
+void General::AffichageVitesses(const Date &date, const bool enable)
 {
     /* Declarations des variables locales */
     QString text;
@@ -675,6 +675,10 @@ void General::AffichageVitesses(const Date &date)
     Vecteur3D vitesse;
 
     /* Initialisations */
+    if (enable) {
+        _uniteVitesse = !_uniteVitesse;
+    }
+
     const Satellite satellite = Configuration::instance()->listeSatellites().first();
     if (_osculateurs->ui()->typeRepere->currentIndex() == 0) {
         vitesse = satellite.vitesse();
@@ -733,6 +737,12 @@ void General::mouseDoubleClickEvent(QMouseEvent *evt)
 
         // Passage en mode manuel
         emit ModeManuel(true);
+
+    } else if (_ui->vitesseSat->underMouse() || _ui->rangeRate->underMouse()) {
+
+        // Changement des unites de vitesse
+        _uniteVitesse = !_uniteVitesse;
+        emit RecalculerPositions();
     }
 
     /* Retour */

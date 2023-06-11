@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    1er mai 2023
+ * >    11 juin 2023
  *
  */
 
@@ -378,12 +378,15 @@ void Onglets::AffichageOngletInformations()
     /* Corps de la methode */
     if (isInfo) {
 
-        setTabText(indexOf(_ui->informations), tr("Informations satellite"));
+        if (_ui->informations->isVisible()) {
 
-        _ui->infoPrec->setToolTip(tr("Informations ISS"));
-        _ui->infoPrec->setVisible(true);
-        _ui->infoSuiv->setToolTip(tr("Recherche données"));
-        _ui->infoSuiv->setVisible(true);
+            setTabText(indexOf(_ui->informations), tr("Informations satellite"));
+
+            _ui->infoPrec->setToolTip(tr("Informations ISS"));
+            _ui->infoPrec->setVisible(true);
+            _ui->infoSuiv->setToolTip(tr("Recherche données"));
+                _ui->infoSuiv->setVisible(true);
+        }
 
     } else {
         setTabText(indexOf(_ui->informations), tr("Recherche données"));

@@ -97,9 +97,19 @@ CalculsPrevisions::CalculsPrevisions(QWidget *parent) :
  */
 CalculsPrevisions::~CalculsPrevisions()
 {
+    settings.setValue("previsions/pasGeneration", _ui->pasGeneration->currentIndex());
+    settings.setValue("previsions/lieuxObservationPrev", _ui->lieuxObservation->currentIndex());
+    settings.setValue("previsions/hauteurSatPrev", _ui->hauteurSatPrev->currentIndex());
+    settings.setValue("previsions/valHauteurSatPrev", _ui->valHauteurSatPrev->text().toInt());
+    settings.setValue("previsions/hauteurSoleilPrev", _ui->hauteurSoleilPrev->currentIndex());
+    settings.setValue("previsions/valHauteurSoleilPrev", _ui->valHauteurSoleilPrev->text().toInt());
+    settings.setValue("previsions/illuminationPrev", _ui->illuminationPrev->isChecked());
+    settings.setValue("previsions/magnitudeMaxPrev", _ui->magnitudeMaxPrev->isChecked());
+
     EFFACE_OBJET(_afficherResultats);
     EFFACE_OBJET(_aucun);
     EFFACE_OBJET(_tous);
+
     delete _ui;
 }
 
@@ -358,20 +368,6 @@ void CalculsPrevisions::Tous()
     for(int i=0; i<_ui->listePrevisions->count(); i++) {
         _ui->listePrevisions->item(i)->setCheckState(Qt::Checked);
     }
-}
-
-void CalculsPrevisions::closeEvent(QCloseEvent *evt)
-{
-    Q_UNUSED(evt)
-
-    settings.setValue("previsions/pasGeneration", _ui->pasGeneration->currentIndex());
-    settings.setValue("previsions/lieuxObservationPrev", _ui->lieuxObservation->currentIndex());
-    settings.setValue("previsions/hauteurSatPrev", _ui->hauteurSatPrev->currentIndex());
-    settings.setValue("previsions/valHauteurSatPrev", _ui->valHauteurSatPrev->text().toInt());
-    settings.setValue("previsions/hauteurSoleilPrev", _ui->hauteurSoleilPrev->currentIndex());
-    settings.setValue("previsions/valHauteurSoleilPrev", _ui->valHauteurSoleilPrev->text().toInt());
-    settings.setValue("previsions/illuminationPrev", _ui->illuminationPrev->isChecked());
-    settings.setValue("previsions/magnitudeMaxPrev", _ui->magnitudeMaxPrev->isChecked());
 }
 
 void CalculsPrevisions::on_calculsPrev_clicked()

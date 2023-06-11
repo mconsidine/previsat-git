@@ -88,7 +88,11 @@ Osculateurs::Osculateurs(QWidget *parent) :
  */
 Osculateurs::~Osculateurs()
 {
+    settings.setValue("affichage/typeParametres", _ui->typeParametres->currentIndex());
+    settings.setValue("affichage/typeRepere", _ui->typeRepere->currentIndex());
+
     EFFACE_OBJET(_date);
+
     delete _ui;
 }
 
@@ -470,14 +474,6 @@ void Osculateurs::Initialisation()
     return;
 }
 
-void Osculateurs::closeEvent(QCloseEvent *evt)
-{
-    Q_UNUSED(evt)
-
-    settings.setValue("affichage/typeParametres", _ui->typeParametres->currentIndex());
-    settings.setValue("affichage/typeRepere", _ui->typeRepere->currentIndex());
-}
-
 void Osculateurs::mouseDoubleClickEvent(QMouseEvent *evt)
 {
     /* Declarations des variables locales */
@@ -490,6 +486,11 @@ void Osculateurs::mouseDoubleClickEvent(QMouseEvent *evt)
 
         // Passage en mode manuel
         emit ModeManuel(true);
+
+    } else if (_ui->vxsat->underMouse() || _ui->vysat->underMouse() || _ui->vzsat->underMouse()) {
+
+        // Changement des unites de vitesse
+        emit AffichageVitesses(*_date, true);
     }
 
     /* Retour */

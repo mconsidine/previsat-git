@@ -199,7 +199,6 @@ private slots:
      */
     void AjusterDates(const QDateTime &date1, const QDateTime &date2);
 
-    void closeEvent(QCloseEvent *evt);
     void on_genererPositions_clicked();
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();
