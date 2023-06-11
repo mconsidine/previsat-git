@@ -70,12 +70,11 @@ public:
      * @brief AjustementDates Constructeur par defaut
      * @param[in] dateInitiale date initiale
      * @param[in] dateFinale date finale
-     * @param[in] pas pas de generation
      * @param[in] observateur observateur
      * @param[in] elements elements orbitaux
      * @param[in] parent fenetre parent
      */
-    explicit AjustementDates(const QDateTime &dateInitiale, const QDateTime &dateFinale, const int pas, const Observateur &observateur,
+    explicit AjustementDates(const QDateTime &dateInitiale, const QDateTime &dateFinale, const Observateur &observateur,
                              const ElementsOrbitaux &elements, const double offset, const double hauteur, QWidget *parent = nullptr);
 
 
@@ -136,7 +135,6 @@ private:
 
     QDateTime _date1;
     QDateTime _date2;
-    int _pas;
     double _offset;
     double _hauteur;
     Observateur _observateur;

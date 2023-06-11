@@ -160,7 +160,6 @@ private slots:
      */
     void ReceptionUdp();
 
-    void closeEvent(QCloseEvent *evt);
     void on_connexion_clicked();
     void on_ouvrirCatRotator_clicked();
     void on_frequenceMontante_currentIndexChanged(int index);

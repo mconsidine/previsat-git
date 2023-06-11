@@ -52,13 +52,12 @@
 /*
  * Constructeur par defaut
  */
-AjustementDates::AjustementDates(const QDateTime &dateInitiale, const QDateTime &dateFinale, const int pas, const Observateur &observateur,
+AjustementDates::AjustementDates(const QDateTime &dateInitiale, const QDateTime &dateFinale, const Observateur &observateur,
                                  const ElementsOrbitaux &elements, const double offset, const double hauteur, QWidget *parent) :
     QDialog(parent),
     _ui(new Ui::AjustementDates),
     _date1(dateInitiale),
     _date2(dateFinale),
-    _pas(pas),
     _offset(offset),
     _hauteur(hauteur),
     _observateur(observateur),
@@ -168,7 +167,7 @@ void AjustementDates::Initialisation()
     /* Corps de la methode */
     qInfo() << "Début Initialisation" << metaObject()->className();
 
-    const Date dateInit(_date1, _offset);
+    const Date dateInit(_date1.addSecs(-10), _offset);
     Satellite sat(_elements);
     const ElementsAOS elementsAos1 = Evenements::CalculAOS(dateInit, sat, _observateur, SensCalcul::CHRONOLOGIQUE, _hauteur);
     QDateTime dt1 = elementsAos1.date.ToQDateTime(1).addSecs(static_cast<quint64> (floor(_offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES)));
@@ -177,7 +176,7 @@ void AjustementDates::Initialisation()
     }
 
     _ui->dateInitiale->setMinimumDateTime(_date1);
-    _ui->dateInitiale->setMaximumDateTime(_date2.addSecs(-_pas));
+    _ui->dateInitiale->setMaximumDateTime(_date2.addSecs(-1));
     _ui->dateInitiale->setDateTime(dt1);
 
     const Date dateFin(_date2, _offset);
@@ -187,21 +186,21 @@ void AjustementDates::Initialisation()
         dt2 = _date2;
     }
 
-    _ui->dateFinale->setMinimumDateTime(_date1.addSecs(_pas));
+    _ui->dateFinale->setMinimumDateTime(_date1.addSecs(1));
     _ui->dateFinale->setMaximumDateTime(_date2);
     _ui->dateFinale->setDateTime(dt2);
 
     const int ecart = static_cast<int> (_date1.secsTo(_date2));
 
     const bool etat1 = _ui->ajustementDateInitiale->blockSignals(true);
-    _ui->ajustementDateInitiale->setMinimum(ecart + 1);
-    _ui->ajustementDateInitiale->setMaximum(ecart - _pas);
+    _ui->ajustementDateInitiale->setMinimum(1);
+    _ui->ajustementDateInitiale->setMaximum(ecart - 1);
     _ui->ajustementDateInitiale->setValue(static_cast<int> (_date1.secsTo(dt1)));
     _ui->ajustementDateInitiale->setTickInterval(ecart / 10);
     _ui->ajustementDateInitiale->blockSignals(etat1);
 
     const bool etat2 = _ui->ajustementDateFinale->blockSignals(true);
-    _ui->ajustementDateFinale->setMinimum(_pas);
+    _ui->ajustementDateFinale->setMinimum(1);
     _ui->ajustementDateFinale->setMaximum(ecart - 1);
     _ui->ajustementDateFinale->setValue(ecart - static_cast<int> (dt2.secsTo(_date2)));
     _ui->ajustementDateFinale->setTickInterval(ecart / 10);

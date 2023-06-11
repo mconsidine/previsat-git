@@ -113,7 +113,7 @@ public slots:
 
 signals:
 
-    void AffichageVitesses(const Date &date);
+    void AffichageVitesses(const Date &date, const bool enable = false);
     void ModeManuel(const bool enable);
     void ModificationDate(const QDateTime &date);
 
@@ -161,11 +161,9 @@ private:
 
 private slots:
 
-    void closeEvent(QCloseEvent *evt);
     void mouseDoubleClickEvent(QMouseEvent *evt);
 
     void on_dateHeure2_dateTimeChanged(const QDateTime &dateTime);
-
     void on_typeRepere_currentIndexChanged(int index);
     void on_typeParametres_currentIndexChanged(int index);
 

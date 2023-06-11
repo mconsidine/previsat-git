@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 juin 2023
+ * >    11 juin 2023
  *
  */
 
@@ -438,7 +438,6 @@ void PreviSat::DemarrageApplication()
         _chronometre->setInterval(_ui->pasReel->currentText().toInt() * 1000);
         _chronometre->setTimerType(Qt::PreciseTimer);
         connect(_chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
-        _chronometre->start();
     }
 
     // Lancement du chronometreMs
@@ -457,11 +456,13 @@ void PreviSat::DemarrageApplication()
     // Affichage de la fenetre d'informations
     const QUrl urlLastNews(QString("%1informations/").arg(DOMAIN_NAME) + "last_news_" + Configuration::instance()->locale() + ".html");
 
-    if (settings.value("affichage/informationsDemarrage", true).toBool() && Informations::UrlExiste(urlLastNews)) {
+    if (!_chronometre->isActive() && settings.value("affichage/informationsDemarrage", true).toBool() && Informations::UrlExiste(urlLastNews)) {
         on_actionInformations_triggered();
         const QRect tailleEcran = QApplication::primaryScreen()->availableGeometry();
         _informations->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, _informations->size(), tailleEcran));
     }
+
+    _chronometre->start();
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
 

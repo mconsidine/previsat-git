@@ -103,6 +103,13 @@ SuiviTelescope::SuiviTelescope(QWidget *parent) :
  */
 SuiviTelescope::~SuiviTelescope()
 {
+    settings.setValue("previsions/hauteurSatSuivi", _ui->hauteurSatSuivi->currentIndex());
+    settings.setValue("previsions/lieuxObservationTelescope", _ui->lieuxObservation->currentIndex());
+    settings.setValue("previsions/pasSuivi", _ui->pasSuivi->value());
+    settings.setValue("previsions/pecDelai", _ui->pecDelai->isChecked());
+    settings.setValue("previsions/delaiTelescope", _ui->delaiTelescope->value());
+    settings.setValue("previsions/demarrerSuiviTelescope", _ui->demarrerSuiviTelescope->isChecked());
+
     EFFACE_OBJET(_afficherResultats);
     EFFACE_OBJET(_date);
     EFFACE_OBJET(_dateAosSuivi);
@@ -268,6 +275,9 @@ void SuiviTelescope::CalculAos()
 
     /* Corps de la methode */
     try {
+
+        const double hauteurMin = MATHS::DEG2RAD * ((_ui->hauteurSatSuivi->currentIndex() == 5) ?
+                                                        abs(_ui->valHauteurSatSuivi->text().toInt()) : 5 * _ui->hauteurSatSuivi->currentIndex());
 
         const bool systeme = settings.value("affichage/systemeHoraire").toBool();
 
@@ -445,6 +455,7 @@ void SuiviTelescope::CalculAos()
             _ui->hauteurMaxSatSuivi->setText(QString("%1").arg(Maths::ToSexagesimal(minmax.second, AngleFormatType::DEGRE, 2, 0, false, true).mid(0, 8)
                                                                .trimmed()));
 
+            _ui->ajusterDates->setEnabled(minmax.second >= hauteurMin);
             _ui->lbl_hauteurMaxSatSuivi->setVisible(true);
             _ui->lbl_coucherSatSuivi->setVisible(true);
             _ui->hauteurMaxSatSuivi->setVisible(true);
@@ -467,6 +478,8 @@ void SuiviTelescope::CalculAos()
 
                 bld.setBold(true);
                 _ui->leverSatSuivi->setFont(bld);
+
+                _ui->ajusterDates->setEnabled(satSuivi.hauteur() >= hauteurMin);
                 _ui->lbl_leverSatSuivi->setVisible(false);
                 _ui->lbl_hauteurMaxSatSuivi->setVisible(false);
                 _ui->lbl_coucherSatSuivi->setVisible(false);
@@ -571,18 +584,6 @@ void SuiviTelescope::AjusterDates(const QDateTime &date1, const QDateTime &date2
 
     /* Retour */
     return;
-}
-
-void SuiviTelescope::closeEvent(QCloseEvent *evt)
-{
-    Q_UNUSED(evt)
-
-    settings.setValue("previsions/hauteurSatSuivi", _ui->hauteurSatSuivi->currentIndex());
-    settings.setValue("previsions/lieuxObservationTelescope", _ui->lieuxObservation->currentIndex());
-    settings.setValue("previsions/pasSuivi", _ui->pasSuivi->value());
-    settings.setValue("previsions/pecDelai", _ui->pecDelai->isChecked());
-    settings.setValue("previsions/delaiTelescope", _ui->delaiTelescope->value());
-    settings.setValue("previsions/demarrerSuiviTelescope", _ui->demarrerSuiviTelescope->isChecked());
 }
 
 void SuiviTelescope::on_genererPositions_clicked()
@@ -884,8 +885,8 @@ void SuiviTelescope::on_ajusterDates_clicked()
                                                     abs(_ui->valHauteurSatSuivi->text().toInt()) : 5 * _ui->hauteurSatSuivi->currentIndex());
 
     /* Corps de la methode */
-    AjustementDates * const ajustementDates = new AjustementDates(_dateAosSuivi->ToQDateTime(1), _dateLosSuivi->ToQDateTime(1), _ui->pasSuivi->value(),
-                                                                  observateur, elements, _date->offsetUTC(), hauteur, this);
+    AjustementDates * const ajustementDates = new AjustementDates(_dateAosSuivi->ToQDateTime(1), _dateLosSuivi->ToQDateTime(1), observateur, elements,
+                                                                 _date->offsetUTC(), hauteur, this);
 
     QEvent evt(QEvent::LanguageChange);
 

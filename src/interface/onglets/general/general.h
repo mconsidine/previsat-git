@@ -36,7 +36,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    28 mai 2023
+ * >    11 juin 2023
  *
  */
 
@@ -207,7 +207,7 @@ private slots:
      * @brief AffichageVitesses Affichage des vitesses (par seconde ou par heure)
      * @param[in] date date
      */
-    void AffichageVitesses(const Date &date);
+    void AffichageVitesses(const Date &date, const bool enable = false);
 
     void mouseDoubleClickEvent(QMouseEvent *evt);
 

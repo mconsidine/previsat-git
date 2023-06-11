@@ -97,9 +97,16 @@ CalculsEvenementsOrbitaux::CalculsEvenementsOrbitaux(QWidget *parent) :
  */
 CalculsEvenementsOrbitaux::~CalculsEvenementsOrbitaux()
 {
+    settings.setValue("previsions/passageApogee", _ui->passageApogee->isChecked());
+    settings.setValue("previsions/passageNoeuds", _ui->passageNoeuds->isChecked());
+    settings.setValue("previsions/passageOmbre", _ui->passageOmbre->isChecked());
+    settings.setValue("previsions/passageQuadrangles", _ui->passageQuadrangles->isChecked());
+    settings.setValue("previsions/transitionJourNuit", _ui->transitionJourNuit->isChecked());
+
     EFFACE_OBJET(_afficherResultats);
     EFFACE_OBJET(_aucun);
     EFFACE_OBJET(_tous);
+
     delete _ui;
 }
 
@@ -328,17 +335,6 @@ void CalculsEvenementsOrbitaux::Tous()
     for(int i=0; i<_ui->listeEvenements->count(); i++) {
         _ui->listeEvenements->item(i)->setCheckState(Qt::Checked);
     }
-}
-
-void CalculsEvenementsOrbitaux::closeEvent(QCloseEvent *evt)
-{
-    Q_UNUSED(evt)
-
-    settings.setValue("previsions/passageApogee", _ui->passageApogee->isChecked());
-    settings.setValue("previsions/passageNoeuds", _ui->passageNoeuds->isChecked());
-    settings.setValue("previsions/passageOmbre", _ui->passageOmbre->isChecked());
-    settings.setValue("previsions/passageQuadrangles", _ui->passageQuadrangles->isChecked());
-    settings.setValue("previsions/transitionJourNuit", _ui->transitionJourNuit->isChecked());
 }
 
 void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
