@@ -886,7 +886,7 @@ le flux vidéo</string>
       <x>339</x>
       <y>102</y>
       <width>259</width>
-      <height>558</height>
+      <height>536</height>
      </rect>
     </property>
     <property name="title">
@@ -894,7 +894,6 @@ le flux vidéo</string>
     </property>
     <addaction name="actionImporter_fichier_TLE_GP"/>
     <addaction name="actionEnregistrer"/>
-    <addaction name="actionImprimer_carte"/>
     <addaction name="separator"/>
     <addaction name="actionFichier_d_aide"/>
     <addaction name="actionInformations"/>
@@ -987,18 +986,6 @@ le flux vidéo</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
-   </property>
-  </action>
-  <action name="actionImprimer_carte">
-   <property name="icon">
-    <iconset resource="../../resources.qrc">
-     <normaloff>:/resources/interface/print.png</normaloff>:/resources/interface/print.png</iconset>
-   </property>
-   <property name="text">
-    <string>Imprimer carte</string>
-   </property>
-   <property name="shortcut">
-    <string notr="true">Ctrl+P</string>
    </property>
   </action>
   <action name="actionMettre_a_jour_GP_courant">
