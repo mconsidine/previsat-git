@@ -430,7 +430,6 @@ private slots:
     // Menu deroulant
     void on_actionImporter_fichier_TLE_GP_triggered();
     void on_actionEnregistrer_triggered();
-    void on_actionImprimer_carte_triggered();
 
     void on_actionFichier_d_aide_triggered();
     void on_actionInformations_triggered();

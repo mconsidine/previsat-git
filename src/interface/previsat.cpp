@@ -2967,50 +2967,6 @@ void PreviSat::on_actionEnregistrer_triggered()
     return;
 }
 
-void PreviSat::on_actionImprimer_carte_triggered()
-{
-    /* Declarations des variables locales */
-    QPrinter printer;
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    qInfo() << "Début Fonction" << __FUNCTION__;
-
-    printer.setPageOrientation((_carte->isVisible()) ? QPageLayout::Landscape : QPageLayout::Portrait);
-    QPrintDialog dial(&printer, this);
-
-    if (dial.exec() == QDialog::Accepted) {
-
-        printer.newPage();
-        QPainter p(&printer);
-
-        QRect rect;
-
-        if (_carte->isVisible()) {
-            rect = _carte->rect();
-            rect.moveTo(6, 6);
-        } else {
-            rect = _ciel->rect();
-            rect.moveTo((_ui->frameCarte->width() - _ciel->width()) / 2 - 20, 6);
-        }
-
-        const QPixmap pixmap = QWidget::grab(rect);
-        const QPixmap pixscl = (pixmap.width() > printer.pageRect(QPrinter::DevicePixel).width()) ?
-                    pixmap.scaledToWidth(static_cast<int> (printer.pageRect(QPrinter::DevicePixel).width())) : pixmap;
-        const int xPrt = static_cast<int> ((pixscl.width() == pixmap.width()) ?
-                                               (printer.pageRect(QPrinter::DevicePixel).width() - pixscl.width()) / 2 : 50);
-
-        p.drawPixmap(xPrt, 50, pixscl);
-        p.end();
-    }
-
-    qInfo() << "Début Fonction" << __FUNCTION__;
-
-    /* Retour */
-    return;
-}
-
 void PreviSat::on_actionFichier_d_aide_triggered()
 {
     on_aide_clicked();
