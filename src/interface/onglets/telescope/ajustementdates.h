@@ -124,6 +124,7 @@ private slots:
     void on_ajustementDateInitiale_valueChanged(int value);
     void on_ajustementDateFinale_valueChanged(int value);
     void on_buttonBox_accepted();
+    void on_buttonBox_rejected();
 
 
 private:
