@@ -1514,6 +1514,9 @@ bool PreviSat::VerifMajVersion(const QString &fichier)
     return anew;
 }
 
+/*
+ * Afficher les coordonnees ISS et le label GMT
+ */
 void PreviSat::AfficherCoordIssGmt()
 {
     /* Declarations des variables locales */

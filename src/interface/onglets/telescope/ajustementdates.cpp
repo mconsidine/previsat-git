@@ -155,6 +155,12 @@ void AjustementDates::on_buttonBox_accepted()
     emit AjusterDates(_ui->dateInitiale->dateTime(), _ui->dateFinale->dateTime());
 }
 
+void AjustementDates::on_buttonBox_rejected()
+{
+    emit AjusterDates(_date1, _date2);
+}
+
+
 /*
  * Initialisation de la classe AjustementDates
  */
