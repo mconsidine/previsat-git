@@ -420,7 +420,6 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
                     } else {
                         listIdx[5+i] = idx;
                     }
-
                 }
             }
         }
