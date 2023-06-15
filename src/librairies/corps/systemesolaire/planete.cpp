@@ -30,7 +30,7 @@
  * >    28 janvier 2012
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    15 juin 2023
  *
  */
 
@@ -57,7 +57,7 @@
  */
 Planete::Planete()
 {
-    _iplanete = IndicePlanete::MERCURE;
+    _indice = IndicePlanete::MERCURE;
     _elem.fill(0.);
 }
 
@@ -68,7 +68,7 @@ Planete::Planete(const IndicePlanete &iplanete)
     /* Initialisations */
 
     /* Corps du constructeur */
-    _iplanete = iplanete;
+    _indice = iplanete;
     _elem.fill(0.);
 
     /* Retour */
@@ -123,7 +123,12 @@ void Planete::CalculPosition(const Date &date, const Soleil &soleil)
  */
 QString Planete::nom() const
 {
-    return QCoreApplication::translate("planet", nomPlanetes[_iplanete]);
+    return QCoreApplication::translate("planet", nomPlanetes[_indice]);
+}
+
+IndicePlanete Planete::indice() const
+{
+    return _indice;
 }
 
 
@@ -162,7 +167,7 @@ void Planete::CalculElements(const Date &date)
     for(unsigned int i=0; i<PLANETE::NB_ELEMENTS; i++) {
         _elem[i] = 0.;
         for(unsigned int j=0; j<PLANETE::NB_DEGRES; j++) {
-            _elem[i] += tabPlanetes[static_cast<int> (_iplanete)][i][j] * tt[j];
+            _elem[i] += tabPlanetes[static_cast<int> (_indice)][i][j] * tt[j];
         }
     }
 

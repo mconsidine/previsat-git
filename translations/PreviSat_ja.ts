@@ -1617,31 +1617,31 @@ PreviSatは、完全無料です!</translation>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1432"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1438"/>
         <source>W</source>
         <comment>Symbol for West</comment>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1438"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1444"/>
         <source>E</source>
         <comment>Symbol for East</comment>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1466"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1472"/>
         <source>N</source>
         <comment>Symbol for North</comment>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1472"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1478"/>
         <source>S</source>
         <comment>Symbol for South</comment>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1768"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1774"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
@@ -1669,39 +1669,39 @@ PreviSatは、完全無料です!</translation>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="1043"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="1068"/>
         <source>Flash %1</source>
         <translation>フレア %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="381"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="387"/>
         <source>Ascension droite : %1</source>
         <translation>赤経 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="383"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="389"/>
         <source>Déclinaison : %1</source>
         <translation>赤緯 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="400"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="406"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="403"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="409"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="459"/>
-        <location filename="../src/interface/ciel/ciel.cpp" line="460"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="465"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="466"/>
         <source>Soleil</source>
         <translation>太陽</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="484"/>
-        <location filename="../src/interface/ciel/ciel.cpp" line="485"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="490"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="491"/>
         <source>Lune</source>
         <translation>月</translation>
     </message>
@@ -5033,7 +5033,7 @@ ce qui représente environ %2 pages.</source>
         <location filename="../src/configuration/gestionnairexml.cpp" line="993"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1082"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1175"/>
-        <location filename="../src/librairies/corps/corps.cpp" line="681"/>
+        <location filename="../src/librairies/corps/corps.cpp" line="680"/>
         <source>Le fichier %1 n&apos;existe pas ou est vide, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないまたはファイルが空ので、「%2」を再インストールしてください</translation>
     </message>
@@ -5049,7 +5049,7 @@ ce qui représente environ %2 pages.</source>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1045"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1138"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1240"/>
-        <location filename="../src/librairies/corps/corps.cpp" line="671"/>
+        <location filename="../src/librairies/corps/corps.cpp" line="670"/>
         <location filename="../src/librairies/dates/date.cpp" line="445"/>
         <source>Erreur lors de la lecture du fichier %1, veuillez réinstaller %2</source>
         <translation>ファイル「%1」の読み込み中にエラーが発生しましたので、「%2」を再インストールしてください</translation>

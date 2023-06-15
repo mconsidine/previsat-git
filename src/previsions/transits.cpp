@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 mai 2023
+ * >    15 juin 2023
  *
  */
 
@@ -498,7 +498,7 @@ QPair<double, double> Transits::CalculAngleMin(const std::array<double, MATHS::D
     /* Initialisations */
 
     /* Corps de la methode */
-    for (int i=0; i<3; i++) {
+    for(unsigned int i=0; i<MATHS::DEGRE_INTERPOLATION; i++) {
 
         const Date date(jjm[i], 0., false);
 
@@ -545,7 +545,7 @@ double Transits::CalculDate(const std::array<double, MATHS::DEGRE_INTERPOLATION>
     /* Initialisations */
 
     /* Corps de la methode */
-    for(int i=0; i<3; i++) {
+    for(unsigned int i=0; i<MATHS::DEGRE_INTERPOLATION; i++) {
 
         const Date date(jjm[i], 0., false);
 

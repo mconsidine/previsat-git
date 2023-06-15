@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    20 mai 2023
+ * >    15 juin 2023
  *
  */
 
@@ -627,10 +627,12 @@ void Carte::AffichageLieuxObservation()
     QGraphicsSimpleTextItem * txtObs;
     const int nbMax = static_cast<int> ((settings.value("affichage/affnomlieu") == QVariant(Qt::Unchecked)) ?
                                             0 : Configuration::instance()->observateurs().size() - 1);
+    const QList<Observateur> &observateurs = Configuration::instance()->observateurs();
+
     for(int j=nbMax; j>=0; j--) {
 
-        const int lobs = qRound(DEG2PX(180. - Configuration::instance()->observateurs().at(j).longitude() * MATHS::RAD2DEG))+1;
-        const int bobs = qRound(DEG2PX(90. - Configuration::instance()->observateurs().at(j).latitude() * MATHS::RAD2DEG))+1;
+        const int lobs = qRound(DEG2PX(180. - observateurs.at(j).longitude() * MATHS::RAD2DEG))+1;
+        const int bobs = qRound(DEG2PX(90. - observateurs.at(j).latitude() * MATHS::RAD2DEG))+1;
 
         scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
         scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
@@ -790,18 +792,22 @@ void Carte::AffichageSatellites()
     const QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
 
     /* Corps de la methode */
-    for(int isat=static_cast<int> (satellites.size()-1); isat>=0; isat--) {
+    QListIterator it(satellites);
+    it.toBack();
+    while (it.hasPrevious()) {
 
-        if (satellites.at(isat).altitude() >= 0.) {
+        const Satellite sat = it.previous();
 
-            const int lsat = qRound(DEG2PX(180. - satellites.at(isat).longitude() * MATHS::RAD2DEG))+1;
-            const int bsat = qRound(DEG2PX(90. - satellites.at(isat).latitude() * MATHS::RAD2DEG))+1;
+        if (sat.altitude() >= 0.) {
+
+            const int lsat = qRound(DEG2PX(180. - sat.longitude() * MATHS::RAD2DEG))+1;
+            const int bsat = qRound(DEG2PX(90. - sat.latitude() * MATHS::RAD2DEG))+1;
 
             if (_mcc || settings.value("affichage/afficone").toBool()) {
 
                 // Affichage de l'icone du satellite a partir du numero NORAD ou du nom
-                const QString norad = satellites.at(isat).elementsOrbitaux().norad;
-                const QString nomsat = satellites.at(isat).elementsOrbitaux().nom.section(" ", 0, 0);
+                const QString norad = sat.elementsOrbitaux().norad;
+                const QString nomsat = sat.elementsOrbitaux().nom.section(" ", 0, 0);
 
                 const QDir di(Configuration::instance()->dirRsc());
                 const QDir di2(":/resources/icones");
@@ -818,7 +824,7 @@ void Carte::AffichageSatellites()
                 if (listeIcones.isEmpty()) {
 
                     // L'icone du satellite n'a pas ete trouvee, affichage par defaut
-                    AffichageSatelliteDefaut(satellites.at(isat), lsat, bsat);
+                    AffichageSatelliteDefaut(sat, lsat, bsat);
 
                 } else {
 
@@ -835,11 +841,11 @@ void Carte::AffichageSatellites()
                     // Rotation de l'icone de l'ISS
                     angle = 0.;
                     if (settings.value("affichage/rotationIconeISS").toBool() &&
-                            (satellites.at(isat).elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale())) {
+                            (sat.elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale())) {
 
-                        const double vxsat = satellites.at(isat).vitesse().x();
-                        const double vysat = satellites.at(isat).vitesse().y();
-                        const double vzsat = satellites.at(isat).vitesse().z();
+                        const double vxsat = sat.vitesse().x();
+                        const double vysat = sat.vitesse().y();
+                        const double vzsat = sat.vitesse().z();
 
                         angle = MATHS::RAD2DEG * (-atan(vzsat / sqrt(vxsat * vxsat + vysat * vysat)));
                         transform.rotate(angle);
@@ -863,7 +869,7 @@ void Carte::AffichageSatellites()
                     pm2->setTransform(transform);
                 }
             } else {
-                AffichageSatelliteDefaut(satellites.at(isat), lsat, bsat);
+                AffichageSatelliteDefaut(sat, lsat, bsat);
             }
         }
     }

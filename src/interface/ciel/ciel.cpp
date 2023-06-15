@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    8 juin 2023
+ * >    15 juin 2023
  *
  */
 
@@ -58,8 +58,14 @@ static QSettings settings(ORG_NAME, APP_NAME);
 
 
 // Couleur des planetes
-static const std::array<QColor, PLANETE::NB_PLANETES> couleurPlanetes = {
-    Qt::gray, Qt::white, Qt::red, QColor("orange"), Qt::darkYellow, Qt::green, Qt::blue
+static const QHash<IndicePlanete, QColor> couleurPlanetes = {
+    { IndicePlanete::MERCURE, Qt::gray         },
+    { IndicePlanete::VENUS,   Qt::white        },
+    { IndicePlanete::MARS,    Qt::red          },
+    { IndicePlanete::JUPITER, QColor("orange") },
+    { IndicePlanete::SATURNE, Qt::darkYellow   },
+    { IndicePlanete::URANUS,  Qt::green        },
+    { IndicePlanete::NEPTUNE, Qt::blue         }
 };
 
 // Ecliptique
@@ -810,27 +816,33 @@ void Ciel::AffichagePlanetes1()
 
         // Calcul des coordonnees radar des planetes
         QGraphicsSimpleTextItem * txtPla;
-        for(unsigned int i=0; i<PLANETE::NB_PLANETES; i++) {
+        QList<Planete> planetes;
+        planetes.reserve(_planetes.size());
+        std::copy(_planetes.begin(), _planetes.end(), std::back_inserter(planetes));
+        QListIterator it(planetes);
 
-            const IndicePlanete iplanete = static_cast<IndicePlanete> (i);
-            if (_planetes.at(i).hauteur() >= 0.) {
+        while (it.hasNext()) {
 
-                if ((((iplanete == IndicePlanete::MERCURE) || (iplanete == IndicePlanete::VENUS))
-                     && (_planetes.at(i).distance() > _soleil.distance())) || (iplanete >= IndicePlanete::MARS)) {
+            const Planete planete = it.next();
 
-                    const int lpla = qRound(_lciel - _lciel * (1. - _planetes.at(i).hauteur() * MATHS::DEUX_SUR_PI) * sin(_planetes.at(i).azimut()));
-                    const int bpla = qRound(_hciel - _hciel * (1. - _planetes.at(i).hauteur() * MATHS::DEUX_SUR_PI) * cos(_planetes.at(i).azimut()));
+            if (planete.hauteur() >= 0.) {
 
-                    const QBrush coulPlanete(QBrush(couleurPlanetes[i], Qt::SolidPattern));
+                if ((((planete.indice() == IndicePlanete::MERCURE) || (planete.indice() == IndicePlanete::VENUS))
+                     && (planete.distance() > _soleil.distance())) || (planete.indice() >= IndicePlanete::MARS)) {
+
+                    const int lpla = qRound(_lciel - _lciel * (1. - planete.hauteur() * MATHS::DEUX_SUR_PI) * sin(planete.azimut()));
+                    const int bpla = qRound(_hciel - _hciel * (1. - planete.hauteur() * MATHS::DEUX_SUR_PI) * cos(planete.azimut()));
+
+                    const QBrush coulPlanete(QBrush(couleurPlanetes[planete.indice()], Qt::SolidPattern));
                     _rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
-                    scene->addEllipse(_rectangle, QPen(couleurPlanetes[i]), coulPlanete);
+                    scene->addEllipse(_rectangle, QPen(couleurPlanetes[planete.indice()]), coulPlanete);
 
                     if ((Configuration::instance()->isCarteMaximisee() || _fenetreMax) &&
                         (static_cast<Qt::CheckState> (settings.value("affichage/affplanetes").toUInt()) == Qt::Checked)) {
 
                         const int lpl = lpla - _lciel;
                         const int bpl = _hciel - bpla;
-                        const QString nompla = _planetes.at(i).nom();
+                        const QString nompla = planete.nom();
                         txtPla = new QGraphicsSimpleTextItem(nompla);
                         const int lng = static_cast<int> (txtPla->boundingRect().width());
 
@@ -867,25 +879,33 @@ void Ciel::AffichagePlanetes2()
 
         // Calcul des coordonnees radar des planetes Mercure et Venus
         QGraphicsSimpleTextItem * txtPla;
-        for(unsigned int i=0; i<PLANETE::NB_PLANETES; i++) {
 
-            if (_planetes.at(i).hauteur() >= 0.) {
+        QList<Planete> planetes;
+        planetes.reserve(_planetes.size());
+        std::copy(_planetes.begin(), _planetes.end(), std::back_inserter(planetes));
+        QListIterator it(planetes);
 
-                if (_planetes.at(i).distance() < _soleil.distance()) {
+        while (it.hasNext()) {
 
-                    const int lpla = qRound(_lciel - _lciel * (1. - _planetes.at(i).hauteur() * MATHS::DEUX_SUR_PI) * sin(_planetes.at(i).azimut()));
-                    const int bpla = qRound(_hciel - _hciel * (1. - _planetes.at(i).hauteur() * MATHS::DEUX_SUR_PI) * cos(_planetes.at(i).azimut()));
+            const Planete planete = it.next();
 
-                    const QBrush coulPlanete(QBrush(couleurPlanetes[i], Qt::SolidPattern));
+            if (planete.hauteur() >= 0.) {
+
+                if (planete.distance() < _soleil.distance()) {
+
+                    const int lpla = qRound(_lciel - _lciel * (1. - planete.hauteur() * MATHS::DEUX_SUR_PI) * sin(planete.azimut()));
+                    const int bpla = qRound(_hciel - _hciel * (1. - planete.hauteur() * MATHS::DEUX_SUR_PI) * cos(planete.azimut()));
+
+                    const QBrush coulPlanete(QBrush(couleurPlanetes[planete.indice()], Qt::SolidPattern));
                     _rectangle = QRect(lpla - 2, bpla - 2, 4, 4);
-                    scene->addEllipse(_rectangle, QPen(couleurPlanetes[i]), coulPlanete);
+                    scene->addEllipse(_rectangle, QPen(couleurPlanetes[planete.indice()]), coulPlanete);
 
                     if ((Configuration::instance()->isCarteMaximisee() || _fenetreMax)
                         && (static_cast<Qt::CheckState> (settings.value("affichage/affplanetes").toUInt()) == Qt::Checked)) {
 
                         const int lpl = lpla - _lciel;
                         const int bpl = _hciel - bpla;
-                        const QString nompla = _planetes.at(i).nom();
+                        const QString nompla = planete.nom();
                         txtPla = new QGraphicsSimpleTextItem(nompla);
                         const int lng = static_cast<int> (txtPla->boundingRect().width());
 
@@ -935,12 +955,17 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
     const QBrush couleurEtoiles = (_soleil.hauteur() > -0.08) ? QBrush(Qt::black) : QBrush(Qt::white);
 
     /* Corps de la methode */
-    for(int isat=static_cast<int> (_satellites.size()-1); isat>=0; isat--) {
+    QListIterator it(_satellites);
+    it.toBack();
 
-        if (_satellites.at(isat).isVisible() && (_satellites.at(isat).altitude() >= 0.)) {
+    while (it.hasPrevious()) {
+
+        const Satellite sat = it.previous();
+
+        if (sat.isVisible() && (sat.altitude() >= 0.)) {
 
             // Affichage de la trace dans le ciel
-            const QList<ElementsTraceCiel> trace = _satellites.at(isat).traceCiel();
+            const QList<ElementsTraceCiel> trace = sat.traceCiel();
             if (settings.value("affichage/afftraceCiel").toBool() && !trace.isEmpty()) {
 
                 const double ht1 = trace.first().hauteur;
@@ -1079,16 +1104,14 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
             if (!_labelHeure) {
 
                 // Calcul des coordonnees radar du satellite
-                const int lsat = qRound(_lciel - _lciel * (1. - _satellites.at(isat).hauteur() * MATHS::DEUX_SUR_PI)
-                                                     * sin(_satellites.at(isat).azimut()));
-                const int bsat = qRound(_hciel - _hciel * (1. - _satellites.at(isat).hauteur() * MATHS::DEUX_SUR_PI)
-                                                     * cos(_satellites.at(isat).azimut()));
+                const int lsat = qRound(_lciel - _lciel * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * sin(sat.azimut()));
+                const int bsat = qRound(_hciel - _hciel * (1. - sat.hauteur() * MATHS::DEUX_SUR_PI) * cos(sat.azimut()));
 
                 _rectangle = QRect(lsat - 3, bsat - 3, 6, 6);
 
-                if (_satellites.at(isat).conditionEclipse().eclipseTotale()) {
+                if (sat.conditionEclipse().eclipseTotale()) {
                     couleur = crimson;
-                } else if (_satellites.at(isat).conditionEclipse().eclipsePartielle() || _satellites.at(isat).conditionEclipse().eclipseAnnulaire()) {
+                } else if (sat.conditionEclipse().eclipsePartielle() || sat.conditionEclipse().eclipseAnnulaire()) {
                     couleur = Qt::green;
                 } else {
                     couleur = Qt::yellow;

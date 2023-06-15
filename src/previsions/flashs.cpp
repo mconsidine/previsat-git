@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    16 avril 2023
+ * >    15 juin 2023
  *
  */
 
@@ -424,7 +424,7 @@ QPair<double, double> Flashs::CalculAngleMin(const std::array<double, MATHS::DEG
     /* Initialisations */
 
     /* Corps de la methode */
-    for (int i=0; i<3; i++) {
+    for(unsigned int i=0; i<MATHS::DEGRE_INTERPOLATION; i++) {
 
         const Date date(jjm[i], 0., false);
 
@@ -821,7 +821,7 @@ void Flashs::LimiteFlash(const double mgn0, const std::array<double, MATHS::DEGR
     /* Initialisations */
 
     /* Corps de la methode */
-    for (int i=0; i<3; i++) {
+    for(unsigned int i=0; i<MATHS::DEGRE_INTERPOLATION; i++) {
 
         const Date date(jjm[i], 0., false);
 
