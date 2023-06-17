@@ -184,7 +184,7 @@ private:
      * @param[in/out] satSuivi satellite suivi
      * @return jour et hauteur maximale
      */
-    QPair<double, double> CalculHauteurMax(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, const Observateur &obs, Satellite &satSuivi) const;
+    QPointF CalculHauteurMax(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, const Observateur &obs, Satellite &satSuivi) const;
 
     /**
      * @brief Initialisation Initialisation de la classe SuiviTelescope

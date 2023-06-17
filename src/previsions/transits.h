@@ -121,8 +121,7 @@ private:
      * @param[in/out] satellite satellite
      * @return tableau de la date et de l'angle minimum
      */
-    static QPair<double, double> CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps,
-                                                Satellite &satellite);
+    static QPointF CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps, Satellite &satellite);
 
     /**
      * @brief CalculDate Calcul de la date ou la distance angulaire est minimale

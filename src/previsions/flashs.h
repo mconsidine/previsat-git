@@ -126,7 +126,7 @@ private:
      * @param[in/out] soleil Soleil
      * @return tableau de la date et de l'angle minimum
      */
-    static QPair<double, double> CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil);
+    static QPointF CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil);
 
     /**
      * @brief CalculEphemSoleilObservateur Calcul des ephemerides du Soleil et de l'observateur
@@ -151,7 +151,7 @@ private:
      * @param[in/out] sat satellite
      * @param[in/out] soleil Soleil
      */
-    static void DeterminationFlash(const QPair<double, double> minmax, double &temp, Satellite &sat, Soleil &soleil);
+    static void DeterminationFlash(const QPointF minmax, double &temp, Satellite &sat, Soleil &soleil);
 
     /**
      * @brief LimiteFlash Calcul d'une limite du flash

@@ -344,10 +344,10 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                     evt[1] = eph2.rayon;
                     evt[2] = eph3.rayon;
 
-                    const QPair<double, double> minmax = Maths::CalculExtremumInterpolation3(jjm, evt);
+                    const QPointF minmax = Maths::CalculExtremumInterpolation3(jjm, evt);
 
                     res.nom = sat.elementsOrbitaux().nom;
-                    res.date = Date(minmax.first, 0.);
+                    res.date = Date(minmax.x(), 0.);
 
                     // Calcul de la position du satellite
                     sat.CalculPosVit(res.date);
@@ -361,14 +361,14 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                     res.longitude = sat.longitude();
                     res.latitude = sat.latitude();
 
-                    rayonVecteur = minmax.second;
-                    altitude = minmax.second - TERRE::RAYON_TERRESTRE;
+                    rayonVecteur = minmax.y();
+                    altitude = minmax.y() - TERRE::RAYON_TERRESTRE;
                     if (_conditions.unite == QObject::tr("nmi", "nautical mile")) {
                         rayonVecteur *= TERRE::MILE_PAR_KM;
                         altitude *= TERRE::MILE_PAR_KM;
                     }
 
-                    const QString typeEvt = (evt.at(2) >= minmax.second) ? QObject::tr("Périgée : %1%2 (%3%2)") : QObject::tr("Apogée : %1%2 (%3%2)");
+                    const QString typeEvt = (evt.at(2) >= minmax.y()) ? QObject::tr("Périgée : %1%2 (%3%2)") : QObject::tr("Apogée : %1%2 (%3%2)");
                     res.typeEvenement = typeEvt.arg(rayonVecteur, 0, 'f', 1).arg(_conditions.unite).arg(altitude, 0, 'f', 1);
 
                     result.append(res);
