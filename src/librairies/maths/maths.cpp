@@ -57,11 +57,11 @@
 /*
  * Calcul d'un extremum par interpolation a l'ordre 3
  */
-QPair<double, double> Maths::CalculExtremumInterpolation3(const std::array<double, MATHS::DEGRE_INTERPOLATION> &xtab,
-                                                          const std::array<double, MATHS::DEGRE_INTERPOLATION> &ytab)
+QPointF Maths::CalculExtremumInterpolation3(const std::array<double, MATHS::DEGRE_INTERPOLATION> &xtab,
+                                            const std::array<double, MATHS::DEGRE_INTERPOLATION> &ytab)
 {
     /* Declarations des variables locales */
-    QPair<double, double> res;
+    QPointF res;
 
     /* Initialisations */
     const double a = ytab[1] - ytab[0];
@@ -69,8 +69,8 @@ QPair<double, double> Maths::CalculExtremumInterpolation3(const std::array<doubl
     const double ci = (a + b) / (b - a);
 
     /* Corps de la methode */
-    res.first = xtab[1] - 0.5 * (xtab[1] - xtab[0]) * ci;
-    res.second = ytab[1] - 0.125 * (a + b) * ci;
+    res.setX(xtab[1] - 0.5 * (xtab[1] - xtab[0]) * ci);
+    res.setY(ytab[1] - 0.125 * (a + b) * ci);
 
     /* Retour */
     return res;
@@ -118,6 +118,35 @@ double Maths::CalculValeurXInterpolation3(const std::array<double, MATHS::DEGRE_
 
     /* Retour */
     return (xtab[1] + n0 * (xtab[1] - xtab[0]));
+}
+
+/*
+ * Interpolation pau polynome de Lagrange
+ */
+double Maths::InterpolationLagrange(const QVector<QPointF> &table, const double xval)
+{
+    /* Declarations des variables locales */
+    double c;
+
+    /* Initialisations */
+    double res = 0.;
+
+    /* Corps de la methode */
+    for(unsigned int i=0; i<table.size(); i++) {
+
+        c = 1.;
+        for(unsigned int j=0; j<table.size(); j++) {
+
+            if (j != i) {
+                c *= ((xval - table[j].x()) / (table[i].x() - table[j].x()));
+            }
+        }
+
+        res += (c * table[i].y());
+    }
+
+    /* Retour */
+    return res;
 }
 
 /*

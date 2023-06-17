@@ -43,6 +43,8 @@
 #ifndef LUNECONST_H
 #define LUNECONST_H
 
+#include <QPointF>
+#include <QVector>
 #include <cmath>
 #include "librairies/maths/mathsconst.h"
 
@@ -63,7 +65,6 @@ static constexpr unsigned int NB_TERMES_PERIODIQUES = 60;
 static constexpr double RAYON_LUNAIRE = 1737.4;
 
 // Pour le calcul de la magnitude
-static constexpr double THETA = 20. * MATHS::DEG2RAD;
 static constexpr double B0 = 2.01;
 static constexpr double H = 0.07;
 static constexpr double P0 = 1.68;
@@ -71,11 +72,51 @@ static constexpr double W0 = 0.21;
 
 static constexpr double GA = sqrt(1. - W0);
 static constexpr double R0 = (1. - GA) / (1. + GA);
-static constexpr double R2 = R0 * R0;
 static constexpr double R0S2 = 0.5 * R0;
 static constexpr double W0S8 = 0.125 * W0;
+static constexpr double R2S6 = R0 * R0 / 6.;
+static constexpr double P = W0S8 * ((1. + B0) * P0 - 1.) + R0S2 + R2S6;
+static constexpr double B = 0.29;
+static constexpr double C = 0.39;
 
 }
+
+static const QVector<QPointF> _tableKappa1 = {
+    { 0., 1. },
+    { 2., 0.991 },
+    { 5., 0.981 },
+    { 10., 0.970 },
+    { 20., 0.957 },
+    { 30., 0.947 },
+    { 40., 0.938 },
+    { 50., 0.926 },
+    { 60., 0.911 },
+    { 70., 0.891 },
+    { 80., 0.864 }
+};
+
+static const QVector<QPointF> _tableKappa2 = {
+    { 80., 0.864 },
+    { 90., 0.827 },
+    { 100., 0.777 },
+    { 110., 0.708 },
+    { 120., 0.617 },
+    { 130., 0.503 },
+    { 140., 0.374 }
+};
+
+static const QVector<QPointF> _tableKappa3 = {
+    { 140., 0.374 },
+    { 150., 0.244 },
+    { 160., 0.127 }
+};
+
+static const QVector<QPointF> _tableKappa4 = {
+    { 160., 0.127 },
+    { 170., 0.037 },
+    { 180., 0. }
+};
+
 
 static constexpr std::array<double, LUNE::NB_TERMES_PERIODIQUES> _tabLon = {
     6288774., 1274027., 658314., 213618., -185116., -114332., 58793., 57066., 53322., 45758., -40923., -34720., -30383., 15327., -12528., 10980., 10675.,

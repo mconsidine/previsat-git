@@ -92,6 +92,7 @@ void PlaneteTest::testCalculPosition()
         planete.CalculPosition(date, soleil);
 
         QCOMPARE(planete.nom(), nomPlanetes[idx]);
+        QCOMPARE(planete.indice(), idx);
         CompareVecteurs3D(planete.position(), posRef[idx]);
     }
 }
