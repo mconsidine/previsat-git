@@ -1808,7 +1808,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="731"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="907"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="908"/>
         <source>Coordonnées de la Lune :</source>
         <translation>Moon coordinates :</translation>
     </message>
@@ -1903,7 +1903,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1425"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="918"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="919"/>
         <source>Évènements Lune :</source>
         <translation>Lunar events :</translation>
     </message>
@@ -2189,57 +2189,6 @@ PreviSat is free !</translation>
         <translation>Loss of signal</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="882"/>
-        <source>Hauteur    : %1			Ascension droite  :  %2 	Longitude                : %3</source>
-        <translation>Elevation   : %1		Right ascension   :  %2 	Longitude                : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="886"/>
-        <source>Azimut (N) : %1			Déclinaison       : %2 	Latitude                 : %3</source>
-        <comment>Azimuth from the North</comment>
-        <translation>Azimuth (N) : %1 		Declination       : %2 	Latitude                 : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="890"/>
-        <source>Distance   : %1   			Constellation     : %2			Diamètre apparent        : %3</source>
-        <translation>Range       : %1   		Constellation     : %2			Apparent diameter        : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="895"/>
-        <source>Lever    : %1				Aube astronomique : %2			Crépuscule civil         : %3</source>
-        <comment>Sunrise</comment>
-        <translation>Sunrise  : %1				Astronomical dawn : %2		Civil twilight           : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="898"/>
-        <source>Méridien : %1				Aube nautique     : %2			Crépuscule nautique      : %3</source>
-        <comment>Meridian pass for the Sun</comment>
-        <translation>Meridian : %1				Nautical dawn     : %2		Nautical twilight        : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="901"/>
-        <source>Coucher  : %1				Aube civile       : %2			Crépuscule astronomique  : %3</source>
-        <comment>Sunset</comment>
-        <translation>Sunset   : %1				Civil dawn        : %2		Astronomical twilight    : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="908"/>
-        <source>Hauteur    : %1			Ascension droite :  %2 	Phase                    : %3</source>
-        <comment>Moon phase</comment>
-        <translation>Elevation   : %1		Right ascension   :  %2 	Phase                    : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="911"/>
-        <source>Azimut (N) : %1			Déclinaison      : %2 	Magnitude (Illumination) : %3</source>
-        <comment>Azimuth from the North</comment>
-        <translation>Azimuth (N) : %1		Declination       : %2 	Magnitude (Illumination) : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="914"/>
-        <source>Distance   : %1  			Constellation    : %2 			Diamètre apparent        : %3</source>
-        <translation>Range       : %1   		Constellation     : %2			Apparent diameter        : %3</translation>
-    </message>
-    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="436"/>
         <location filename="../src/interface/onglets/general/general.cpp" line="485"/>
         <source>%1  (dans %2).</source>
@@ -2347,25 +2296,19 @@ PreviSat is free !</translation>
         <translation>Name of satellite :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="851"/>
-        <source>Altitude  :  %1			Distance   : %2	Constellation    : %3</source>
-        <comment>Altitude of satellite</comment>
-        <translation>Altitude  :  %1		Range       : %2	Constellation    : %3</translation>
-    </message>
-    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="859"/>
         <source>Vitesse orbitale   : %1	%2  %3</source>
-        <translation>Orbital velocity : %1	%2   %3</translation>
+        <translation>Orbital velocity : %1  	%2   %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="847"/>
         <source>Latitude  :  %1		Azimut (N) : %2	Déclinaison      : %3</source>
-        <translation>Latitude  :  %1	Azimuth (N) : %2	Declination      : %3</translation>
+        <translation>Latitude  :  %1  	Azimuth (N) : %2		Declination      : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="855"/>
         <source>Direction          : %1  	%2      		%3</source>
-        <translation>Direction        : %1  	%2      		%3</translation>
+        <translation>Direction        : %1    	%2      		%3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="869"/>
@@ -2374,19 +2317,19 @@ PreviSat is free !</translation>
         <translation>Range rate       : %1  	%2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="919"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="920"/>
         <source>Lever    : %1</source>
         <comment>Moonrise</comment>
         <translation>Moonrise : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="920"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="921"/>
         <source>Méridien : %1</source>
         <comment>Meridian pass for the Moon</comment>
         <translation>Meridian : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="921"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="922"/>
         <source>Coucher  : %1</source>
         <comment>Moonset</comment>
         <translation>Moonset  : %1</translation>
@@ -2418,25 +2361,82 @@ PreviSat is free !</translation>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="843"/>
         <source>Longitude : %1  	Hauteur    : %2	Ascension droite :  %3</source>
-        <translation>Longitude : %1  	Elevation   : %2	Right ascension  :  %3</translation>
+        <translation>Longitude : %1   	Elevation   : %2		Right ascension  :  %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="923"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="851"/>
+        <source>Altitude  :  %1		Distance   : %2	Constellation    : %3</source>
+        <comment>Altitude of satellite</comment>
+        <translation>Altitude  :  %1		Range       : %2		Constellation    : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="882"/>
+        <source>Hauteur    : %1		Ascension droite  :  %2 	Longitude                : %3</source>
+        <translation>Elevation   : %1		Right ascension   :  %2 	Longitude                : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="886"/>
+        <source>Azimut (N) : %1		Déclinaison       : %2 	Latitude                 : %3</source>
+        <comment>Azimuth from the North</comment>
+        <translation>Azimuth (N) : %1 		Declination       : %2 	Latitude                 : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="890"/>
+        <source>Distance   : %1   		Constellation     : %2			Diamètre apparent        : %3</source>
+        <translation>Range       : %1   		Constellation     : %2			Apparent diameter        : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="895"/>
+        <source>Lever    : %1			Aube astronomique : %2		Crépuscule civil         : %3</source>
+        <comment>Sunrise</comment>
+        <translation>Sunrise  : %1			Astronomical dawn : %2		Civil twilight           : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="898"/>
+        <source>Méridien : %1			Aube nautique     : %2		Crépuscule nautique      : %3</source>
+        <comment>Meridian pass for the Sun</comment>
+        <translation>Meridian : %1			Nautical dawn     : %2		Nautical twilight        : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="902"/>
+        <source>Coucher  : %1			Aube civile       : %2		Crépuscule astronomique  : %3</source>
+        <comment>Sunset</comment>
+        <translation>Sunset   : %1			Civil dawn        : %2		Astronomical twilight    : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="909"/>
+        <source>Hauteur    : %1		Ascension droite :  %2 	Phase                    : %3</source>
+        <comment>Moon phase</comment>
+        <translation>Elevation   : %1		Right ascension   :  %2 	Phase                    : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="912"/>
+        <source>Azimut (N) : %1		Déclinaison      : %2 	Magnitude (Illumination) : %3</source>
+        <comment>Azimuth from the North</comment>
+        <translation>Azimuth (N) : %1		Declination       : %2 	Magnitude (Illumination) : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="915"/>
+        <source>Distance   : %1  		Constellation    : %2 			Diamètre apparent        : %3</source>
+        <translation>Range       : %1   		Constellation     : %2			Apparent diameter        : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="924"/>
         <source>Nouvelle Lune    : %1</source>
         <translation>New Moon      : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="924"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="925"/>
         <source>Premier quartier : %1</source>
         <translation>First quarter : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="925"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="926"/>
         <source>Pleine Lune      : %1</source>
         <translation>Full Moon     : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="926"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="927"/>
         <source>Dernier quartier : %1</source>
         <translation>Last quarter  : %1</translation>
     </message>
@@ -2783,48 +2783,48 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="269"/>
-        <source>Numéro NORAD            : %1 			Moyen mouvement       : %2 rev/jour	 Date de lancement  : %3</source>
+        <source>Numéro NORAD            : %1 		Moyen mouvement       : %2 rev/jour	 Date de lancement  : %3</source>
         <comment>revolution per day</comment>
-        <translation>NORAD number           : %1 			Mean motion      : %2 rev/day	Launch date          : %3</translation>
+        <translation>NORAD number           : %1 			Mean motion        : %2 rev/day	Launch date          : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="273"/>
-        <source>Désignation COSPAR      : %1			n&apos;/2                  : %2 rev/jour^2	 Catégorie d&apos;orbite : %3</source>
+        <source>Désignation COSPAR      : %1		n&apos;/2                  : %2 rev/jour^2	 Catégorie d&apos;orbite : %3</source>
         <comment>n&apos;/2 = derivative of the mean motion divided by two (in revolution per day square)</comment>
-        <translation>COSPAR designation     : %1			n&apos;/2             : %2 rev/day^2	Orbital category     : %3</translation>
+        <translation>COSPAR designation     : %1			n&apos;/2               : %2 rev/day^2	Orbital category     : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="285"/>
-        <source>Inclinaison             : %1			Anomalie moyenne      : %2</source>
+        <source>Inclinaison             : %1		Anomalie moyenne      : %2</source>
         <translation>Inclination            : %1			Mean anomaly       : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="289"/>
-        <source>AD noeud ascendant      : %1			Magnitude std/max     : %2</source>
+        <source>AD noeud ascendant      : %1		Magnitude std/max     : %2</source>
         <comment>Right ascension of the ascending node, Standard/Maximum magnitude</comment>
         <translation>RA of ascending node   : %1			Std/max magnitude  : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="293"/>
-        <source>Excentricité            : %1			Modèle orbital        : %2</source>
+        <source>Excentricité            : %1		Modèle orbital        : %2</source>
         <translation>Eccentricity           : %1			Propagation model  : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="296"/>
-        <source>Argument du périgée     : %1			Dimensions/Section    : %2%3</source>
+        <source>Argument du périgée     : %1		Dimensions/Section    : %2%3</source>
         <translation>Argument of perigee    : %1			Dimensions/Section : %2%3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="277"/>
         <source>Époque (UTC)            : %1	n&quot;/6                  : %2 rev/jour^3	 Pays/Organisation  : %3</source>
         <comment>n&quot;/6 = second derivative of the mean motion divided by six (in revolution per day cube)</comment>
-        <translation>Epoch (UTC)            : %1	n&quot;/6             : %2 rev/day^3	Country/Organization : %3</translation>
+        <translation>Epoch (UTC)            : %1		n&quot;/6               : %2 rev/day^3	Country/Organization : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="281"/>
         <source>Coeff pseudo-balistique : %1 (1/Re)	Nb orbites à l&apos;époque : %2			 Site de lancement  : %3</source>
         <comment>Pseudo-ballistic coefficient in 1/Earth radius</comment>
-        <translation>Pseudo-ballistic coeff : %1 (1/Re)	Orbit # at epoch : %2			Launch site          : %3</translation>
+        <translation>Pseudo-ballistic coeff : %1 (1/Re)		Orbit # at epoch   : %2			Launch site          : %3</translation>
     </message>
 </context>
 <context>
@@ -3985,21 +3985,21 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="219"/>
-        <source>x : %1		vx : %2</source>
+        <source>x : %1			vx : %2</source>
         <comment>Position, velocity</comment>
-        <translation>x : %1		vx : %2</translation>
+        <translation>x : %1			vx : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="222"/>
-        <source>y : %1		vy : %2</source>
+        <source>y : %1			vy : %2</source>
         <comment>Position, velocity</comment>
-        <translation>y : %1		vy : %2</translation>
+        <translation>y : %1			vy : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="225"/>
-        <source>z : %1		vz : %2</source>
+        <source>z : %1			vz : %2</source>
         <comment>Position, velocity</comment>
-        <translation>z : %1		vz : %2</translation>
+        <translation>z : %1			vz : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="228"/>
@@ -4010,79 +4010,79 @@ click on &apos;Update ISS information&apos;</translation>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="233"/>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="246"/>
         <source>Demi-grand axe       : %1	Ascension droite du noeud ascendant : %2</source>
-        <translation>Semi-major axis     : %1 	Right ascension of the ascending node : %2</translation>
+        <translation>Semi-major axis   : %1 		Right ascension of the ascending node : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="236"/>
         <source>Excentricité         : %1	Argument du périgée                 : %2</source>
-        <translation>Eccentricity        : %1 	Argument of perigee                   : %2</translation>
+        <translation>Eccentricity      : %1 		Argument of perigee                   : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="239"/>
         <source>Inclinaison          : %1	Anomalie moyenne                    : %2</source>
-        <translation>Inclination         : %1	Mean anomaly                          : %2</translation>
+        <translation>Inclination       : %1		Mean anomaly                          : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="249"/>
         <source>Ex                   : %1	Inclinaison                         : %2</source>
         <comment>Ex = Component X of eccentricity vector</comment>
-        <translation>Ex                  : %1 	Inclination                           : %2</translation>
+        <translation>Ex                : %1 		Inclination                           : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="252"/>
         <source>Ey                   : %1	Position sur orbite                 : %2</source>
         <comment>Ey = Component Y of eccentricity vector</comment>
-        <translation>Ey                  : %1 	In orbit position                     : %2</translation>
+        <translation>Ey                : %1 		In orbit position                     : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="259"/>
         <source>Demi-grand axe       : %1	Ix                 : %2</source>
         <comment>Ix = Component X of inclination vector</comment>
-        <translation>Semi-major axis     : %1 	Ix                 : %2</translation>
+        <translation>Semi-major axis      : %1 	Ix                 : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="262"/>
         <source>Excentricité         : %1	Iy                 : %2</source>
         <comment>Iy = Component Y of inclination vector</comment>
-        <translation>Eccentricity        : %1 	Iy                 : %2</translation>
+        <translation>Eccentricity         : %1 	Iy                 : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="265"/>
         <source>Longitude du périgée : %1	Anomalie moyenne   : %2</source>
-        <translation>Longitude of perigee: %1	Mean anomaly       : %2</translation>
+        <translation>Longitude of perigee : %1	Mean anomaly       : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="272"/>
         <source>Demi-grand axe       : %1	Ix                          : %2</source>
         <comment>Ix = Component X of inclination vector</comment>
-        <translation>Semi-major axis     : %1 	Ix                       : %2</translation>
+        <translation>Semi-major axis   : %1   	Ix                       : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="275"/>
         <source>Ex                   : %1	Iy                          : %2</source>
         <comment>Ex = Component X of eccentricity vector, Iy = Component Y of inclination vector</comment>
-        <translation>Ex                  : %1 	Iy                       : %2</translation>
+        <translation>Ex                : %1  	Iy                       : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="279"/>
         <source>Ey                   : %1	Argument de longitude vraie : %2</source>
         <comment>Ey = Component Y of eccentricity vector</comment>
-        <translation>Ey                  : %1 	True longtitude argument : %2</translation>
+        <translation>Ey                : %1  	True longtitude argument : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="288"/>
         <source>Anomalie vraie       : %1	Apogée  (Altitude) : %2</source>
-        <translation>True anomaly        : %1	Apogee  (Altitude) : %2</translation>
+        <translation>True anomaly      : %1		Apogee  (Altitude) : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="291"/>
         <source>Anomalie excentrique : %1	Périgée (Altitude) : %2</source>
-        <translation>Eccentric anomaly   : %1	Perigee (Altitude) : %2</translation>
+        <translation>Eccentric anomaly : %1		Perigee (Altitude) : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="294"/>
         <source>Champ de vue         : %1  	Période orbitale   : %2</source>
-        <translation>Field of view       : %1   	Orbital period     : %2</translation>
+        <translation>Field of view     : %1   		Orbital period     : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="298"/>
@@ -4093,23 +4093,23 @@ click on &apos;Update ISS information&apos;</translation>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="299"/>
         <source>Doppler @ 100 MHz    : %1</source>
         <comment>Doppler effect at 100 MegaHertz</comment>
-        <translation>Doppler @ 100 MHz   : %1</translation>
+        <translation>Doppler @ 100 MHz : %1</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="302"/>
         <source>Atténuation          : %1</source>
-        <translation>Free-space loss     : %1</translation>
+        <translation>Free-space loss   : %1</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="305"/>
         <source>Délai                : %1</source>
         <comment>Delay of signal at light speed</comment>
-        <translation>Delay               : %1</translation>
+        <translation>Delay             : %1</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="308"/>
         <source>Phasage              : %1</source>
-        <translation>Phasing             : %1</translation>
+        <translation>Phasing           : %1</translation>
     </message>
 </context>
 <context>
@@ -5334,46 +5334,46 @@ Satellite %1 - numéro NORAD : %2</source>
 Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="275"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="267"/>
         <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="119"/>
         <source>Nouvelle Lune</source>
         <translation>New Moon</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="279"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="271"/>
         <source>Premier croissant</source>
         <translation>Waxing crescent</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="279"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="271"/>
         <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="108"/>
         <source>Dernier croissant</source>
         <translation>Waning crescent</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="283"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="275"/>
         <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="86"/>
         <source>Premier quartier</source>
         <translation>First quarter</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="283"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="275"/>
         <source>Dernier quartier</source>
         <translation>Last quarter</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="287"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="279"/>
         <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="97"/>
         <source>Gibbeuse croissante</source>
         <translation>Waxing gibbous</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="287"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="279"/>
         <source>Gibbeuse décroissante</source>
         <translation>Waning gibbous</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="291"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="283"/>
         <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="130"/>
         <source>Pleine Lune</source>
         <translation>Full Moon</translation>
@@ -5548,21 +5548,21 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Pass to position = %1°</translation>
     </message>
     <message>
-        <location filename="../src/librairies/maths/maths.cpp" line="172"/>
+        <location filename="../src/librairies/maths/maths.cpp" line="201"/>
         <source>h</source>
         <comment>hour (angle)</comment>
         <translatorcomment>Symbol for hour (angle)</translatorcomment>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../src/librairies/maths/maths.cpp" line="173"/>
+        <location filename="../src/librairies/maths/maths.cpp" line="202"/>
         <source>m</source>
         <comment>minute (angle)</comment>
         <translatorcomment>Symbol for minute (angle)</translatorcomment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/librairies/maths/maths.cpp" line="174"/>
+        <location filename="../src/librairies/maths/maths.cpp" line="203"/>
         <source>s</source>
         <comment>second (angle)</comment>
         <translatorcomment>Symbol for second (angle)</translatorcomment>
@@ -5770,6 +5770,12 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Name                 :</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="130"/>
+        <source>Numéro NORAD       : %1		Magnitude std/max  : %2</source>
+        <comment>Standard/Maximum magnitude</comment>
+        <translation>NORAD number         : %1			Std/max magnitude  : %2</translation>
+    </message>
+    <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="133"/>
         <source>Désignation COSPAR : %1		Modèle orbital     : %2</source>
         <translation>COSPAR designation   : %1		Propagation model  : %2</translation>
@@ -5791,9 +5797,26 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Launch date          : %1		Apogee  (Altitude) : %2</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="143"/>
+        <source>Date de rentrée    : %1		</source>
+        <translation>Decay date    : %1			</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="144"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="147"/>
+        <source>Catégorie d&apos;orbite : %1		</source>
+        <translation>Orbital category     : %1			</translation>
+    </message>
+    <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="145"/>
         <source>Périgée (Altitude) : %1</source>
         <translation>Perigee (Altitude) : %1</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="148"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="151"/>
+        <source>Pays/Organisation  : %1		</source>
+        <translation>Country/Organization : %1			</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="149"/>
@@ -5801,31 +5824,8 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Orbital period     : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="130"/>
-        <source>Numéro NORAD       : %1			Magnitude std/max  : %2</source>
-        <comment>Standard/Maximum magnitude</comment>
-        <translation>NORAD number         : %1			Std/max magnitude  : %2</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="143"/>
-        <source>Date de rentrée    : %1			</source>
-        <translation>Decay date    : %1			</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="144"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="147"/>
-        <source>Catégorie d&apos;orbite : %1			</source>
-        <translation>Orbital category     : %1			</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="148"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="151"/>
-        <source>Pays/Organisation  : %1			</source>
-        <translation>Country/Organization : %1			</translation>
-    </message>
-    <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="152"/>
-        <source>Site de lancement  : %1			</source>
+        <source>Site de lancement  : %1		</source>
         <translation>Launch site          : %1			</translation>
     </message>
     <message>
@@ -6010,7 +6010,7 @@ Satellite %1 - NORAD number : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="464"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="937"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="936"/>
         <source>Ouvrir Satellite Tracker</source>
         <translation>Open Satellite Tracker</translation>
     </message>
@@ -6117,33 +6117,33 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Satellite in the sky. Current elevation : %1. Azimuth : %2. %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="620"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="619"/>
         <source>Aucun satellite n&apos;est sélectionné dans la liste</source>
         <translation>None satellite selected in the list</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="645"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="644"/>
         <source>LOS</source>
         <comment>Loss of signal</comment>
         <translation>LOS</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="704"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="703"/>
         <source>Calculs en cours...</source>
         <translation>Calculating...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="705"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="704"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="734"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="733"/>
         <source>Calculs terminés</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="938"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="937"/>
         <source>Fichiers exécutables (*.exe)</source>
         <translation>Executable files (*.exe)</translation>
     </message>

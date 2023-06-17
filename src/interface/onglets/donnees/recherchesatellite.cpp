@@ -127,7 +127,7 @@ void RechercheSatellite::SauveOngletRecherche(const QString &fichier)
             // Donnees sur le satellite
             flux << tr("Nom                :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
-            QString chaine = tr("Numéro NORAD       : %1\t\t\tMagnitude std/max  : %2", "Standard/Maximum magnitude");
+            QString chaine = tr("Numéro NORAD       : %1\t\tMagnitude std/max  : %2", "Standard/Maximum magnitude");
             flux << chaine.arg(_ui->numNorad->text()).arg(_ui->magnitudeStdMaxDonneesSat->text()) << Qt::endl;
 
             chaine = tr("Désignation COSPAR : %1\t\tModèle orbital     : %2");
@@ -140,16 +140,16 @@ void RechercheSatellite::SauveOngletRecherche(const QString &fichier)
             chaine = tr("Date de lancement  : %1\t\tApogée  (Altitude) : %2");
             flux << chaine.arg(_ui->dateLancementDonneesSat->text()).arg(_ui->apogeeDonneesSat->text()) << Qt::endl;
 
-            chaine = (_ui->dateRentree->isVisible()) ? tr("Date de rentrée    : %1\t\t\t").arg(_ui->dateRentree->text()) :
-                                                       tr("Catégorie d'orbite : %1\t\t\t").arg(_ui->categorieOrbiteDonneesSat->text());
+            chaine = (_ui->dateRentree->isVisible()) ? tr("Date de rentrée    : %1\t\t").arg(_ui->dateRentree->text()) :
+                                                       tr("Catégorie d'orbite : %1\t\t").arg(_ui->categorieOrbiteDonneesSat->text());
             flux << chaine + tr("Périgée (Altitude) : %1").arg(_ui->perigeeDonneesSat->text()) << Qt::endl;
 
-            chaine = (_ui->dateRentree->isVisible()) ? tr("Catégorie d'orbite : %1\t\t\t").arg(_ui->categorieOrbiteDonneesSat->text()) :
-                                                       tr("Pays/Organisation  : %1\t\t\t").arg(_ui->paysDonneesSat->text());
+            chaine = (_ui->dateRentree->isVisible()) ? tr("Catégorie d'orbite : %1\t\t").arg(_ui->categorieOrbiteDonneesSat->text()) :
+                                                       tr("Pays/Organisation  : %1\t\t").arg(_ui->paysDonneesSat->text());
             flux << chaine + tr("Période orbitale   : %1").arg(_ui->periodeDonneesSat->text()) << Qt::endl;
 
-            chaine = (_ui->dateRentree->isVisible()) ? tr("Pays/Organisation  : %1\t\t\t").arg(_ui->paysDonneesSat->text()) :
-                                                       tr("Site de lancement  : %1\t\t\t").arg(_ui->siteLancementDonneesSat->text());
+            chaine = (_ui->dateRentree->isVisible()) ? tr("Pays/Organisation  : %1\t\t").arg(_ui->paysDonneesSat->text()) :
+                                                       tr("Site de lancement  : %1\t\t").arg(_ui->siteLancementDonneesSat->text());
             flux << chaine + tr("Inclinaison        : %1").arg(_ui->inclinaisonDonneesSat->text()) << Qt::endl;
 
             if (_ui->dateRentree->isVisible()) {

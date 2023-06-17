@@ -1808,7 +1808,7 @@ PreviSatは、完全無料です!</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="731"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="907"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="908"/>
         <source>Coordonnées de la Lune :</source>
         <translation>月の座標 :</translation>
     </message>
@@ -1903,7 +1903,7 @@ PreviSatは、完全無料です!</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1425"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="918"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="919"/>
         <source>Évènements Lune :</source>
         <translation>月関連のイベント :</translation>
     </message>
@@ -2189,57 +2189,6 @@ PreviSatは、完全無料です!</translation>
         <translation>信号受信終了</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="882"/>
-        <source>Hauteur    : %1			Ascension droite  :  %2 	Longitude                : %3</source>
-        <translation>仰角        : %1	赤経 :  %2 		経度       : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="886"/>
-        <source>Azimut (N) : %1			Déclinaison       : %2 	Latitude                 : %3</source>
-        <comment>Azimuth from the North</comment>
-        <translation>方位角 (北) : %1 	赤緯 : %2 		緯度       : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="890"/>
-        <source>Distance   : %1   			Constellation     : %2			Diamètre apparent        : %3</source>
-        <translation>距離        : %1   	星座 : %2				見かけの直径 : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="895"/>
-        <source>Lever    : %1				Aube astronomique : %2			Crépuscule civil         : %3</source>
-        <comment>Sunrise</comment>
-        <translation>日の出     : %1			天文明け方 : %2			市民薄暮 : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="898"/>
-        <source>Méridien : %1				Aube nautique     : %2			Crépuscule nautique      : %3</source>
-        <comment>Meridian pass for the Sun</comment>
-        <translation>子午線越え : %1			航海明け方 : %2			航海薄暮 : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="901"/>
-        <source>Coucher  : %1				Aube civile       : %2			Crépuscule astronomique  : %3</source>
-        <comment>Sunset</comment>
-        <translation>日の入り   : %1			市民明け方 : %2			天文薄暮 : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="908"/>
-        <source>Hauteur    : %1			Ascension droite :  %2 	Phase                    : %3</source>
-        <comment>Moon phase</comment>
-        <translation>仰角        : %1	赤経 :  %2 		月相        : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="911"/>
-        <source>Azimut (N) : %1			Déclinaison      : %2 	Magnitude (Illumination) : %3</source>
-        <comment>Azimuth from the North</comment>
-        <translation>方位角 (北) : %1 	赤緯 : %2 		等級 (照射) : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="914"/>
-        <source>Distance   : %1  			Constellation    : %2 			Diamètre apparent        : %3</source>
-        <translation>距離        : %1   	星座 : %2				見かけの直径 : %3</translation>
-    </message>
-    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="436"/>
         <location filename="../src/interface/onglets/general/general.cpp" line="485"/>
         <source>%1  (dans %2).</source>
@@ -2352,30 +2301,87 @@ PreviSatは、完全無料です!</translation>
         <translation>緯度  :  %1		方位角 (北) : %2	赤緯 : %3</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="851"/>
+        <source>Altitude  :  %1		Distance   : %2	Constellation    : %3</source>
+        <comment>Altitude of satellite</comment>
+        <translation>高度  :  %1		距離        : %2	星座 : %3</translation>
+    </message>
+    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="855"/>
         <source>Direction          : %1  	%2      		%3</source>
-        <translation>方向     : %1      	%2      		%3</translation>
+        <translation>方向     : %1      		%2      		%3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="869"/>
         <source>Variation distance : %1  	%2</source>
         <comment>Range rate</comment>
-        <translation>レンジレート : %1  	%2</translation>
+        <translation>レンジレート : %1  		%2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="919"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="882"/>
+        <source>Hauteur    : %1		Ascension droite  :  %2 	Longitude                : %3</source>
+        <translation>仰角        : %1	赤経 :  %2 		経度       : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="886"/>
+        <source>Azimut (N) : %1		Déclinaison       : %2 	Latitude                 : %3</source>
+        <comment>Azimuth from the North</comment>
+        <translation>方位角 (北) : %1 	赤緯 : %2 		緯度       : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="890"/>
+        <source>Distance   : %1   		Constellation     : %2			Diamètre apparent        : %3</source>
+        <translation>距離        : %1   	星座 : %2			見かけの直径 : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="895"/>
+        <source>Lever    : %1			Aube astronomique : %2		Crépuscule civil         : %3</source>
+        <comment>Sunrise</comment>
+        <translation>日の出    : %1			天文明け方 : %2		市民薄暮 : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="898"/>
+        <source>Méridien : %1			Aube nautique     : %2		Crépuscule nautique      : %3</source>
+        <comment>Meridian pass for the Sun</comment>
+        <translation>子午線越え : %1		航海明け方 : %2		航海薄暮 : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="902"/>
+        <source>Coucher  : %1			Aube civile       : %2		Crépuscule astronomique  : %3</source>
+        <comment>Sunset</comment>
+        <translation>日の入り   : %1			市民明け方 : %2		天文薄暮 : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="909"/>
+        <source>Hauteur    : %1		Ascension droite :  %2 	Phase                    : %3</source>
+        <comment>Moon phase</comment>
+        <translation>仰角        : %1	赤経 :  %2 		月相        : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="912"/>
+        <source>Azimut (N) : %1		Déclinaison      : %2 	Magnitude (Illumination) : %3</source>
+        <comment>Azimuth from the North</comment>
+        <translation>方位角 (北) : %1 	赤緯 : %2 		等級 (照射) : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="915"/>
+        <source>Distance   : %1  		Constellation    : %2 			Diamètre apparent        : %3</source>
+        <translation>距離        : %1   	星座 : %2			見かけの直径 : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="920"/>
         <source>Lever    : %1</source>
         <comment>Moonrise</comment>
         <translation>月の出     : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="920"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="921"/>
         <source>Méridien : %1</source>
         <comment>Meridian pass for the Moon</comment>
         <translation>子午線越え : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="921"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="922"/>
         <source>Coucher  : %1</source>
         <comment>Moonset</comment>
         <translation>月の入り    : %1</translation>
@@ -2410,33 +2416,27 @@ PreviSatは、完全無料です!</translation>
         <translation>経度  : %1		仰角        : %2	赤経 :  %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="851"/>
-        <source>Altitude  :  %1			Distance   : %2	Constellation    : %3</source>
-        <comment>Altitude of satellite</comment>
-        <translation>高度  :  %1		距離        : %2	星座 : %3</translation>
-    </message>
-    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="859"/>
         <source>Vitesse orbitale   : %1	%2  %3</source>
         <translation>軌道速度 : %1		%2 %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="923"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="924"/>
         <source>Nouvelle Lune    : %1</source>
-        <translation>ニュームーン      : %1</translation>
+        <translation>ニュームーン     : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="924"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="925"/>
         <source>Premier quartier : %1</source>
         <translation>ファーストクォーター : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="925"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="926"/>
         <source>Pleine Lune      : %1</source>
-        <translation>フルムーン       : %1</translation>
+        <translation>フルムーン      : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="926"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="927"/>
         <source>Dernier quartier : %1</source>
         <translation>サードクォーター   : %1</translation>
     </message>
@@ -2783,35 +2783,35 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="269"/>
-        <source>Numéro NORAD            : %1 			Moyen mouvement       : %2 rev/jour	 Date de lancement  : %3</source>
+        <source>Numéro NORAD            : %1 		Moyen mouvement       : %2 rev/jour	 Date de lancement  : %3</source>
         <comment>revolution per day</comment>
-        <translation>NORAD番号       : %1 				平均運動     : %2 回転/day	 	打ち上げ日  : %3</translation>
+        <translation>NORAD番号       : %1 				平均運動     : %2 回転/day	打ち上げ日  : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="273"/>
-        <source>Désignation COSPAR      : %1			n&apos;/2                  : %2 rev/jour^2	 Catégorie d&apos;orbite : %3</source>
+        <source>Désignation COSPAR      : %1		n&apos;/2                  : %2 rev/jour^2	 Catégorie d&apos;orbite : %3</source>
         <comment>n&apos;/2 = derivative of the mean motion divided by two (in revolution per day square)</comment>
         <translation>国際衛星識別符号 : %1				n&apos;/2         : %2 回転/day^2	軌道種類 : %3</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="285"/>
-        <source>Inclinaison             : %1			Anomalie moyenne      : %2</source>
+        <source>Inclinaison             : %1		Anomalie moyenne      : %2</source>
         <translation>軌道傾斜角       : %1				平均近点角     : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="289"/>
-        <source>AD noeud ascendant      : %1			Magnitude std/max     : %2</source>
+        <source>AD noeud ascendant      : %1		Magnitude std/max     : %2</source>
         <comment>Right ascension of the ascending node, Standard/Maximum magnitude</comment>
         <translation>昇交点赤経       : %1				標準・最大等級  : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="293"/>
-        <source>Excentricité            : %1			Modèle orbital        : %2</source>
+        <source>Excentricité            : %1		Modèle orbital        : %2</source>
         <translation>離心率           : %1				軌道モデル      : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="296"/>
-        <source>Argument du périgée     : %1			Dimensions/Section    : %2%3</source>
+        <source>Argument du périgée     : %1		Dimensions/Section    : %2%3</source>
         <translation>近地点引数       : %1				大きさ・断面積   : %2%3</translation>
     </message>
     <message>
@@ -2824,7 +2824,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="281"/>
         <source>Coeff pseudo-balistique : %1 (1/Re)	Nb orbites à l&apos;époque : %2			 Site de lancement  : %3</source>
         <comment>Pseudo-ballistic coefficient in 1/Earth radius</comment>
-        <translation>大気抵抗係数項   : %1 (1/Re)			元期での周回数 : %2				発射場  : %3</translation>
+        <translation>大気抵抗係数項   : %1 (1/Re)			元期での周回数 : %2			発射場  : %3</translation>
     </message>
 </context>
 <context>
@@ -3985,19 +3985,19 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="219"/>
-        <source>x : %1		vx : %2</source>
+        <source>x : %1			vx : %2</source>
         <comment>Position, velocity</comment>
         <translation>x : %1 	vx : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="222"/>
-        <source>y : %1		vy : %2</source>
+        <source>y : %1			vy : %2</source>
         <comment>Position, velocity</comment>
         <translation>y : %1 	vy : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="225"/>
-        <source>z : %1		vz : %2</source>
+        <source>z : %1			vz : %2</source>
         <comment>Position, velocity</comment>
         <translation>z : %1 	vz : %2</translation>
     </message>
@@ -4015,24 +4015,24 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="236"/>
         <source>Excentricité         : %1	Argument du périgée                 : %2</source>
-        <translation>離心率     : %1		近地点引数    : %2</translation>
+        <translation>離心率     : %1	近地点引数    : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="239"/>
         <source>Inclinaison          : %1	Anomalie moyenne                    : %2</source>
-        <translation>軌道傾斜角 : %1		平均近点角    : %2</translation>
+        <translation>軌道傾斜角 : %1	平均近点角    : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="249"/>
         <source>Ex                   : %1	Inclinaison                         : %2</source>
         <comment>Ex = Component X of eccentricity vector</comment>
-        <translation>Ex        : %1		軌道傾斜角    : %2</translation>
+        <translation>Ex        : %1	軌道傾斜角    : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="252"/>
         <source>Ey                   : %1	Position sur orbite                 : %2</source>
         <comment>Ey = Component Y of eccentricity vector</comment>
-        <translation>Ey        : %1		軌道上の位置  : %2</translation>
+        <translation>Ey        : %1	軌道上の位置  : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="259"/>
@@ -4044,7 +4044,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="262"/>
         <source>Excentricité         : %1	Iy                 : %2</source>
         <comment>Iy = Component Y of inclination vector</comment>
-        <translation>離心率     : %1   	Iy        : %2</translation>
+        <translation>離心率     : %1   Iy        : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="265"/>
@@ -4061,28 +4061,28 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="275"/>
         <source>Ex                   : %1	Iy                          : %2</source>
         <comment>Ex = Component X of eccentricity vector, Iy = Component Y of inclination vector</comment>
-        <translation>Ex        : %1   	Iy     : %2</translation>
+        <translation>Ex        : %1  Iy     : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="279"/>
         <source>Ey                   : %1	Argument de longitude vraie : %2</source>
         <comment>Ey = Component Y of eccentricity vector</comment>
-        <translation>Ey        : %1   	真黄経 : %2</translation>
+        <translation>Ey        : %1  真黄経 : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="288"/>
         <source>Anomalie vraie       : %1	Apogée  (Altitude) : %2</source>
-        <translation>真近点角   : %1		遠地点 (高度) : %2</translation>
+        <translation>真近点角   : %1	遠地点 (高度) : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="291"/>
         <source>Anomalie excentrique : %1	Périgée (Altitude) : %2</source>
-        <translation>離心近点角 : %1		近地点 (高度) : %2</translation>
+        <translation>離心近点角 : %1	近地点 (高度) : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="294"/>
         <source>Champ de vue         : %1  	Période orbitale   : %2</source>
-        <translation>視野       : %1  		軌道周期      : %2</translation>
+        <translation>視野       : %1  	軌道周期      : %2</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="298"/>
@@ -5329,46 +5329,46 @@ Satellite %1 - numéro NORAD : %2</source>
 衛星「%1」 - NORAD番号 : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="275"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="267"/>
         <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="119"/>
         <source>Nouvelle Lune</source>
         <translation>ニュームーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="279"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="271"/>
         <source>Premier croissant</source>
         <translation>クレセントムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="279"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="271"/>
         <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="108"/>
         <source>Dernier croissant</source>
         <translation>バルサミックムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="283"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="275"/>
         <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="86"/>
         <source>Premier quartier</source>
         <translation>ファーストクォーター</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="283"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="275"/>
         <source>Dernier quartier</source>
         <translation>サードクォーター</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="287"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="279"/>
         <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="97"/>
         <source>Gibbeuse croissante</source>
         <translation>ギバウスムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="287"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="279"/>
         <source>Gibbeuse décroissante</source>
         <translation>ディセミネイティングムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="291"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="283"/>
         <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="130"/>
         <source>Pleine Lune</source>
         <translation>フルムーン</translation>
@@ -5434,19 +5434,19 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../src/librairies/maths/maths.cpp" line="172"/>
+        <location filename="../src/librairies/maths/maths.cpp" line="201"/>
         <source>h</source>
         <comment>hour (angle)</comment>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../src/librairies/maths/maths.cpp" line="173"/>
+        <location filename="../src/librairies/maths/maths.cpp" line="202"/>
         <source>m</source>
         <comment>minute (angle)</comment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/librairies/maths/maths.cpp" line="174"/>
+        <location filename="../src/librairies/maths/maths.cpp" line="203"/>
         <source>s</source>
         <comment>second (angle)</comment>
         <translation>s</translation>
@@ -5762,6 +5762,12 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>名称 :</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="130"/>
+        <source>Numéro NORAD       : %1		Magnitude std/max  : %2</source>
+        <comment>Standard/Maximum magnitude</comment>
+        <translation>NORAD番号       : %1			標準・最大等級  : %2</translation>
+    </message>
+    <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="133"/>
         <source>Désignation COSPAR : %1		Modèle orbital     : %2</source>
         <translation>国際衛星識別符号 : %1		軌道モデル      : %2</translation>
@@ -5783,9 +5789,26 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>打ち上げ日 : %1			遠地点 (高度) : %2</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="143"/>
+        <source>Date de rentrée    : %1		</source>
+        <translation>再突入日付    : %1			</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="144"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="147"/>
+        <source>Catégorie d&apos;orbite : %1		</source>
+        <translation>軌道種類  : %1				</translation>
+    </message>
+    <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="145"/>
         <source>Périgée (Altitude) : %1</source>
         <translation>近地点 (高度) : %1</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="148"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="151"/>
+        <source>Pays/Organisation  : %1		</source>
+        <translation>国/組織   : %1				</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="149"/>
@@ -5793,32 +5816,9 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>軌道周期      : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="130"/>
-        <source>Numéro NORAD       : %1			Magnitude std/max  : %2</source>
-        <comment>Standard/Maximum magnitude</comment>
-        <translation>NORAD番号       : %1			標準・最大等級  : %2</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="143"/>
-        <source>Date de rentrée    : %1			</source>
-        <translation>再突入日付    : %1			</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="144"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="147"/>
-        <source>Catégorie d&apos;orbite : %1			</source>
-        <translation>軌道種類  : %1				</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="148"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="151"/>
-        <source>Pays/Organisation  : %1			</source>
-        <translation>国/組織   : %1				</translation>
-    </message>
-    <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="152"/>
-        <source>Site de lancement  : %1			</source>
-        <translation>発射場    : %1				</translation>
+        <source>Site de lancement  : %1		</source>
+        <translation>発射場    : %1			</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="153"/>
@@ -6002,7 +6002,7 @@ Satellite %1 - numéro NORAD : %2</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="464"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="937"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="936"/>
         <source>Ouvrir Satellite Tracker</source>
         <translation>Satellite Trackerを開く</translation>
     </message>
@@ -6109,33 +6109,33 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>衛星が上空を通過している。 現在の仰角 : %1。 方位角 : %2。 %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="620"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="619"/>
         <source>Aucun satellite n&apos;est sélectionné dans la liste</source>
         <translation>リストで衛星が選択されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="645"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="644"/>
         <source>LOS</source>
         <comment>Loss of signal</comment>
         <translation>LOS</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="704"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="703"/>
         <source>Calculs en cours...</source>
         <translation>進行中の計算...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="705"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="704"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="734"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="733"/>
         <source>Calculs terminés</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="938"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="937"/>
         <source>Fichiers exécutables (*.exe)</source>
         <translation>実行ファイル (*.exe)</translation>
     </message>
