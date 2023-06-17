@@ -44,7 +44,9 @@
 #define MATHS_H
 
 #include <cmath>
-#include <QPair>
+#pragma GCC diagnostic ignored "-Wconversion"
+#include <QPointF>
+#pragma GCC diagnostic ignored "-Wconversion"
 #include "mathsconst.h"
 
 
@@ -68,8 +70,8 @@ public:
      * @param[in] ytab Tableau des ordonnees
      * @return Coordonnees de l'extremum
      */
-    static QPair<double, double> CalculExtremumInterpolation3(const std::array<double, MATHS::DEGRE_INTERPOLATION> &xtab,
-                                                              const std::array<double, MATHS::DEGRE_INTERPOLATION> &ytab);
+    static QPointF CalculExtremumInterpolation3(const std::array<double, MATHS::DEGRE_INTERPOLATION> &xtab,
+                                                const std::array<double, MATHS::DEGRE_INTERPOLATION> &ytab);
 
     /**
      * @brief CalculValeurXInterpolation3 Calcul d'une valeur x pour une valeur y donnee, par interpolation a l'ordre 3,
@@ -84,6 +86,14 @@ public:
                                               const std::array<double, MATHS::DEGRE_INTERPOLATION> &ytab,
                                               const double yval,
                                               const double epsilon);
+
+    /**
+     * @brief InterpolationLagrange Interpolation pau polynome de Lagrange
+     * @param table tableau des coordonnees
+     * @param xval valeur de l'abscisse
+     * @return valeur de l'ordonnee interpolee
+     */
+    static double InterpolationLagrange(const QVector<QPointF> &table, const double xval);
 
     /**
      * @brief ToSexagesimal Conversion d'un angle sous forme decimale en chaine de caracteres formattee

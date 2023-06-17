@@ -84,7 +84,7 @@ void LuneTest::testCalculMagnitudePhase()
     QCOMPARE(lune.luneCroissante(), true);
     QCOMPARE(lune.anglePhase(), 1.20559128682);
     QCOMPARE(lune.phase(), QObject::tr("Premier quartier"));
-    QCOMPARE(lune.magnitude(), -10.543566245403385);
+    QCOMPARE(lune.magnitude(), -10.653131295908128);
 
     const Date date2(2023, 5, 3, 0, 0, 0., 0.);
     soleil.CalculPosition(date2);
@@ -95,7 +95,7 @@ void LuneTest::testCalculMagnitudePhase()
     QCOMPARE(lune.luneCroissante(), true);
     QCOMPARE(lune.anglePhase(), 0.5756672283689478);
     QCOMPARE(lune.phase(), QObject::tr("Gibbeuse croissante"));
-    QCOMPARE(lune.magnitude(), -11.471450490424276);
+    QCOMPARE(lune.magnitude(), -11.570426292922612);
 
     const Date date3(2023, 5, 16, 12, 0, 0., 0.);
     soleil.CalculPosition(date3);
@@ -106,7 +106,7 @@ void LuneTest::testCalculMagnitudePhase()
     QCOMPARE(lune.luneCroissante(), false);
     QCOMPARE(lune.anglePhase(), 2.454708350973763);
     QCOMPARE(lune.phase(), QObject::tr("Dernier croissant"));
-    QCOMPARE(lune.magnitude(), -7.1695418130823105);
+    QCOMPARE(lune.magnitude(), -6.837637841365922);
 
     const Date date4(2023, 5, 19, 17, 50, 0., 0.);
     soleil.CalculPosition(date4);
@@ -117,7 +117,7 @@ void LuneTest::testCalculMagnitudePhase()
     QCOMPARE(lune.luneCroissante(), true);
     QCOMPARE(lune.anglePhase(), 3.098576198262582);
     QCOMPARE(lune.phase(), QObject::tr("Nouvelle Lune"));
-    QCOMPARE(lune.magnitude(), 3.2116961570653686);
+    QCOMPARE(lune.magnitude(), -2.4973832095108968);
 
     const Date date5(2023, 5, 5, 0, 0, 0., 0.);
     soleil.CalculPosition(date5);
@@ -128,7 +128,7 @@ void LuneTest::testCalculMagnitudePhase()
     QCOMPARE(lune.luneCroissante(), true);
     QCOMPARE(lune.anglePhase(), 0.1578384341715419);
     QCOMPARE(lune.phase(), QObject::tr("Pleine Lune"));
-    QCOMPARE(lune.magnitude(), -12.204066719969774);
+    QCOMPARE(lune.magnitude(), -12.221111842128456);
 }
 
 void LuneTest::testCalculLeverMeridienCoucher()

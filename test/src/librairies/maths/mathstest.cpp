@@ -95,6 +95,17 @@ void MathsTest::testMaths()
     const std::array<double, 3> ytab2 = { -1693.4, 406.3, 2303.2 };
     QCOMPARE(Maths::CalculValeurXInterpolation3(xtab2, ytab2, 0., MATHS::EPSDBL), 26.798732704968522);
 
+    // Calcul d'interpolation par polynome de Lagrange
+    const QVector<QPointF> table = {
+        { 29.43, 0.4913598528 },
+        { 30.97, 0.5145891926 },
+        { 27.69, 0.4646875083 },
+        { 28.11, 0.4711658342 },
+        { 31.58, 0.5236885653 },
+        { 33.05, 0.5453707057 }
+    };
+    QCOMPARE(arrondi(Maths::InterpolationLagrange(table, 30.), 10), 0.5);
+
     // Affichage en sexagesimal
     QCOMPARE(Maths::ToSexagesimal(12.3456789, AngleFormatType::NO_TYPE, 2, 4, true, true), R"(+12° 20' 44.4440")");
     QCOMPARE(Maths::ToSexagesimal(-0.123456789, AngleFormatType::DEGRE, 2, 4, false, false), R"(-07°04'24.7907")");

@@ -203,44 +203,36 @@ void Lune::CalculMagnitude(const Soleil &soleil)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    double kappa = 1.;
+    const double ang = _anglePhase * MATHS::RAD2DEG;
+    const double cosi = cos(_anglePhase);
+    const double cos2i = cosi * cosi;
+    const double sini2 = sin(0.5 * _anglePhase);
+    const double tani2 = tan(0.5 * _anglePhase);
 
     /* Corps de la methode */
-    const double cosang = cos(_anglePhase);
-    const double angs2 = 0.5 * _anglePhase;
-    const double tanAngs2 = tan(angs2);
-    const double b = LUNE::B0 / (1. + tanAngs2 / LUNE::H);
-
-    const double z = tan(LUNE::THETA) * tanAngs2;
-    double fCorr = 1.;
-    if (_anglePhase < 1.45) {
-        fCorr = (((((0.4619942495 * _anglePhase - 1.9799023103) * _anglePhase + 3.2706222793) * _anglePhase - 2.3757732575) * _anglePhase +
-                  0.7066275224) * _anglePhase - 0.2148362906) * _anglePhase + 1.0037993467;
-
-    } else if ((_anglePhase >= 1.45) && (_anglePhase < 2.4)) {
-        fCorr = (((((62.0366249494 * _anglePhase - 685.3561374672) * _anglePhase + 3125.5094770692) * _anglePhase - 7538.4095328747) * _anglePhase +
-                  10151.6795059045) * _anglePhase - 7242.8081201613) * _anglePhase + 2140.9898221829;
-
-    } else if ((_anglePhase >= 2.4) && (_anglePhase < 2.88)) {
-        fCorr = (((((-1.2780230784 * _anglePhase + 20.9856806508) * _anglePhase - 139.5520707759) * _anglePhase + 474.9063054183) * _anglePhase -
-                  851.1923961614) * _anglePhase + 720.4059560648) * _anglePhase - 187.0773024225;
-
+    if (ang < 80.) {
+        kappa = Maths::InterpolationLagrange(_tableKappa1, ang);
+    } else if (ang < 140.) {
+        kappa = Maths::InterpolationLagrange(_tableKappa2, ang);
+    } else if (ang < 160.) {
+        kappa = Maths::InterpolationLagrange(_tableKappa3, ang);
     } else {
-        fCorr = (((((194.303476382 * _anglePhase - 3472.9895343356) * _anglePhase + 25865.444540608) * _anglePhase - 102742.044141574) * _anglePhase +
-                  229573.277184166) * _anglePhase - 273606.243897778) * _anglePhase + 135882.646837775;
+        kappa = Maths::InterpolationLagrange(_tableKappa4, ang);
     }
 
-    const double kappa = exp(-LUNE::THETA * (0.32 * sqrt(z) + 0.52 * z)) * fCorr;
+    const double b = LUNE::B0 / (1. + tani2 / LUNE::H);
+    const double p = 1. + LUNE::B * cosi + LUNE::C * (1.5 * cos2i - 0.5);
 
-    const double p = LUNE::W0S8 * ((1. + LUNE::B0) * LUNE::P0 - 1.) + LUNE::R0S2 + LUNE::R2 * (1. / 6.);
-    const double ppi = 1. + 0.29 * cosang + 0.39 * (1.5 * cosang * cosang - 0.5);
-
-    const double phi = (LUNE::W0S8 * ((1. + b) * ppi - 1.) + LUNE::R0S2 * (1. - LUNE::R0) * (1. + sin(angs2) * tanAngs2 * log(tan(0.5 * angs2))) +
-                        MATHS::DEUX_TIERS * LUNE::R2 / MATHS::PI * (sin(_anglePhase) + (MATHS::PI - _anglePhase) * cosang)) / p;
+    const double tmp1 = LUNE::W0S8 * ((1. + b) * p - 1.);
+    const double tmp2 = LUNE::R0S2 * (1. - LUNE::R0) * (1. + sini2 * tani2 * log(tan(0.25 * _anglePhase)));
+    const double tmp3 = 4. * LUNE::R2S6 * (sin(_anglePhase) + (MATHS::PI - _anglePhase) * cosi) / MATHS::PI;
+    const double phi = (tmp1 + tmp2 + tmp3) / LUNE::P;
 
     const double dm = kappa * phi;
     const double distlune = _position.Norme() * SOLEIL::KM2UA;
 
-    _magnitude = 0.21 + 5. * log10(distlune * soleil.distanceUA()) - 2.5 * log10(dm);
+    _magnitude = LUNE::W0 + 5. * log10(distlune * soleil.distanceUA()) - 2.5 * log10(dm);
 
     /* Retour */
     return;
