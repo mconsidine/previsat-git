@@ -216,13 +216,13 @@ void Osculateurs::SauveOngletElementsOsculateurs(const QString &fichier)
             flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
             flux << tr("Vecteur d'état") << " (" << _ui->typeRepere->currentText() << ") :" << Qt::endl;
-            QString chaine = tr("x : %1\t\tvx : %2", "Position, velocity");
+            QString chaine = tr("x : %1\t\t\tvx : %2", "Position, velocity");
             flux << chaine.arg(_ui->xsat->text().rightJustified(13, ' ')).arg(_ui->vxsat->text().rightJustified(15, ' ')) << Qt::endl;
 
-            chaine = tr("y : %1\t\tvy : %2", "Position, velocity");
+            chaine = tr("y : %1\t\t\tvy : %2", "Position, velocity");
             flux << chaine.arg(_ui->ysat->text().rightJustified(13, ' ')).arg(_ui->vysat->text().rightJustified(15, ' ')) << Qt::endl;
 
-            chaine = tr("z : %1\t\tvz : %2", "Position, velocity");
+            chaine = tr("z : %1\t\t\tvz : %2", "Position, velocity");
             flux << chaine.arg(_ui->zsat->text().rightJustified(13, ' ')).arg(_ui->vzsat->text().rightJustified(15, ' ')) << Qt::endl << Qt::endl;
 
             flux << tr("Éléments osculateurs :") << Qt::endl;
