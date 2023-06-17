@@ -81,18 +81,15 @@ void MathsTest::testMaths()
     QCOMPARE(modulo(-450., 360.), 270.);
 
     // Extremum par interpolation
-    const std::array<double, 3> xtab1 = { 12., 16., 20. };
-    const std::array<double, 3> ytab1 = { 1.3814294, 1.3812213, 1.3812453 };
-    const QPair<double, double> extremum(17.5863851788, 1.38120304665537);
-    QPair<double, double> val;
-
-    val = Maths::CalculExtremumInterpolation3(xtab1, ytab1);
-    QCOMPARE(val.first, extremum.first);
-    QCOMPARE(val.second, extremum.second);
+    const std::array<double, MATHS::DEGRE_INTERPOLATION> xtab1 = { 12., 16., 20. };
+    const std::array<double, MATHS::DEGRE_INTERPOLATION> ytab1 = { 1.3814294, 1.3812213, 1.3812453 };
+    const QPointF extremum(17.5863851788, 1.38120304665537);
+    const QPointF val = Maths::CalculExtremumInterpolation3(xtab1, ytab1);
+    QCOMPARE(val, extremum);
 
     // Determination abscisse par interpolation
-    const std::array<double, 3> xtab2 = { 26., 27., 28. };
-    const std::array<double, 3> ytab2 = { -1693.4, 406.3, 2303.2 };
+    const std::array<double, MATHS::DEGRE_INTERPOLATION> xtab2 = { 26., 27., 28. };
+    const std::array<double, MATHS::DEGRE_INTERPOLATION> ytab2 = { -1693.4, 406.3, 2303.2 };
     QCOMPARE(Maths::CalculValeurXInterpolation3(xtab2, ytab2, 0., MATHS::EPSDBL), 26.798732704968522);
 
     // Calcul d'interpolation par polynome de Lagrange

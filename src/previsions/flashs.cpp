@@ -186,7 +186,7 @@ int Flashs::CalculFlashs(int &nombre)
     Satellite sat;
     ConditionEclipse condEcl;
     std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
-    QPair<double, double> minmax;
+    QPointF minmax;
 
     // Boucle sur les satellites
     QListIterator it4(sats);
@@ -253,15 +253,15 @@ int Flashs::CalculFlashs(int &nombre)
                             pasInt = PAS_INT0;
                             for (int it=0; it<4; it++) {
 
-                                jjm[0] = minmax.first - pasInt;
-                                jjm[1] = minmax.first;
-                                jjm[2] = minmax.first + pasInt;
+                                jjm[0] = minmax.x() - pasInt;
+                                jjm[1] = minmax.x();
+                                jjm[2] = minmax.x() + pasInt;
 
                                 minmax = CalculAngleMin(jjm, sat, soleil);
                                 pasInt *= 0.5;
                             }
 
-                            if (fabs(minmax.first - temp) > pasmax) {
+                            if (fabs(minmax.x() - temp) > pasmax) {
                                 DeterminationFlash(minmax, temp, sat, soleil);
                             }
 
@@ -416,7 +416,7 @@ double Flashs::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
 /*
  * Calcul de l'angle minimum du panneau
  */
-QPair<double, double> Flashs::CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil)
+QPointF Flashs::CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil)
 {
     /* Declarations des variables locales */
     std::array<double, MATHS::DEGRE_INTERPOLATION> ang;
@@ -592,22 +592,22 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Sa
     jjm[1] = 0.5 * (dateInf + dateSup);
     jjm[2] = dateSup;
 
-    QPair<double, double> minmax;
+    QPointF minmax;
     minmax = CalculAngleMin(jjm, satellite, soleil);
 
     // Iterations supplementaires pour affiner la date du maximum
     pasInt = PAS_INT0;
     for (int i=0; i<4; i++) {
 
-        jjm[0] = minmax.first - pasInt;
-        jjm[1] = minmax.first;
-        jjm[2] = minmax.first + pasInt;
+        jjm[0] = minmax.x() - pasInt;
+        jjm[1] = minmax.x();
+        jjm[2] = minmax.x() + pasInt;
 
         minmax = CalculAngleMin(jjm, satellite, soleil);
         pasInt *= 0.5;
     }
 
-    dateMax = minmax.first;
+    dateMax = minmax.x();
 
     if ((dateInf < (dateSup - DATE::EPS_DATES)) && (fabs(dateInf) < DATE::DATE_INFINIE) && (fabs(dateSup) < DATE::DATE_INFINIE)) {
 
@@ -634,12 +634,12 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Sa
 /*
  * Determination du flash
  */
-void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp, Satellite &sat, Soleil &soleil)
+void Flashs::DeterminationFlash(const QPointF minmax, double &temp, Satellite &sat, Soleil &soleil)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const Date date = Date(minmax.first, 0., false);
+    const Date date = Date(minmax.x(), 0., false);
 
     /* Corps de la methode */
     // Position de l'observateur
@@ -671,19 +671,19 @@ void Flashs::DeterminationFlash(const QPair<double, double> minmax, double &temp
             condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
 
             // Magnitude du flash
-            double mag = MagnitudeFlash(minmax.second, condEcl, sat);
+            double mag = MagnitudeFlash(minmax.y(), condEcl, sat);
 
             if (mag <= mgn0) {
 
                 std::array<Date, 3> dates;
 
                 // Calcul des limites du flash
-                CalculLimitesFlash(mgn0, minmax.first, sat, soleil, dates);
+                CalculLimitesFlash(mgn0, minmax.x(), sat, soleil, dates);
                 const double pasmax = 3. * PAS1;
 
                 if ((dates[1].jourJulienUTC() < DATE::DATE_INFINIE) && (fabs(dates[1].jourJulienUTC() - temp) > pasmax)) {
 
-                    temp = minmax.first;
+                    temp = minmax.x();
 
                     // Calcul des valeurs exactes pour les differentes dates
                     Observateur obsmax;

@@ -177,7 +177,7 @@ int Transits::CalculTransits(int &nombre)
     Satellite sat;
     std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
     QList<Date> dates;
-    QPair<double, double> minmax;
+    QPointF minmax;
     ResultatPrevisions res;
     QList<ResultatPrevisions> result;
     QList<QList<ResultatPrevisions> > resultatSat;
@@ -273,19 +273,19 @@ int Transits::CalculTransits(int &nombre)
 
                         it = 0;
                         pasInt = PAS_INT0;
-                        while ((fabs(ang - minmax.second) > 1.e-5) && (it < 10)) {
+                        while ((fabs(ang - minmax.y()) > 1.e-5) && (it < 10)) {
 
-                            ang = minmax.second;
-                            jjm[0] = minmax.first - pasInt;
-                            jjm[1] = minmax.first;
-                            jjm[2] = minmax.first + pasInt;
+                            ang = minmax.y();
+                            jjm[0] = minmax.x() - pasInt;
+                            jjm[1] = minmax.x();
+                            jjm[2] = minmax.x() + pasInt;
 
                             minmax = CalculAngleMin(jjm, typeCorps, sat);
                             pasInt *= 0.5;
                             it++;
                         }
 
-                        date2 = Date(minmax.first, 0., false);
+                        date2 = Date(minmax.x(), 0., false);
 
                         _conditions.observateur.CalculPosVit(date2);
 
@@ -293,7 +293,7 @@ int Transits::CalculTransits(int &nombre)
                         sat.CalculPosVit(date2);
                         sat.CalculCoordHoriz(_conditions.observateur, false);
 
-                        if ((sat.hauteur() >= _conditions.hauteur) && (minmax.second <= _conditions.seuilConjonction)) {
+                        if ((sat.hauteur() >= _conditions.hauteur) && (minmax.y() <= _conditions.seuilConjonction)) {
 
                             dates.clear();
                             for(int i=0; i<5; i++) {
@@ -334,7 +334,7 @@ int Transits::CalculTransits(int &nombre)
 
                                 // Calcul des dates extremes de la conjonction ou du transit
                                 dates[2] = date2;
-                                dates = CalculElements(minmax.first, typeCorps, itr, sat);
+                                dates = CalculElements(minmax.x(), typeCorps, itr, sat);
 
                                 // Recalcul de la position pour chacune des dates
                                 result.clear();
@@ -486,8 +486,8 @@ int Transits::CalculTransits(int &nombre)
 /*
  * Calcul de l'angle minimum du panneau
  */
-QPair<double, double> Transits::CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps,
-                                               Satellite &satellite)
+QPointF Transits::CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps,
+                                 Satellite &satellite)
 {
     /* Declarations des variables locales */
     Corps corps;

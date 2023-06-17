@@ -437,7 +437,7 @@ void SuiviTelescope::CalculAos()
 
             // Hauteur max
             std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
-            QPair<double, double> minmax;
+            QPointF minmax;
 
             double jj0 = 0.5 * (date1.jourJulienUTC() + _dateLosSuivi->jourJulienUTC());
             double pas = _dateLosSuivi->jourJulienUTC() - jj0;
@@ -451,18 +451,18 @@ void SuiviTelescope::CalculAos()
 
             for(int i=0; i<4; i++) {
 
-                jjm[0] = minmax.first - pas;
-                jjm[1] = minmax.first;
-                jjm[2] = minmax.first + pas;
+                jjm[0] = minmax.x() - pas;
+                jjm[1] = minmax.x();
+                jjm[2] = minmax.x() + pas;
 
                 minmax = CalculHauteurMax(jjm, obs, satSuivi);
                 pas *= 0.5;
             }
 
-            _ui->hauteurMaxSatSuivi->setText(QString("%1").arg(Maths::ToSexagesimal(minmax.second, AngleFormatType::DEGRE, 2, 0, false, true).mid(0, 8)
+            _ui->hauteurMaxSatSuivi->setText(QString("%1").arg(Maths::ToSexagesimal(minmax.y(), AngleFormatType::DEGRE, 2, 0, false, true).mid(0, 8)
                                                                .trimmed()));
 
-            _ui->ajusterDates->setEnabled(minmax.second >= hauteurMin);
+            _ui->ajusterDates->setEnabled(minmax.y() >= hauteurMin);
             _ui->lbl_hauteurMaxSatSuivi->setVisible(true);
             _ui->lbl_coucherSatSuivi->setVisible(true);
             _ui->hauteurMaxSatSuivi->setVisible(true);
@@ -511,11 +511,10 @@ void SuiviTelescope::CalculAos()
 /*
  * Calcul de la hauteur maximale d'un satellite dans le ciel
  */
-QPair<double, double> SuiviTelescope::CalculHauteurMax(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, const Observateur &obs,
-                                                       Satellite &satSuivi) const
+QPointF SuiviTelescope::CalculHauteurMax(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, const Observateur &obs, Satellite &satSuivi) const
 {
     /* Declarations des variables locales */
-    std::array<double, 3> ht;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> ht;
 
     /* Initialisations */
     Observateur observateur = obs;
