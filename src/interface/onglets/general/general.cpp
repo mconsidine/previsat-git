@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    11 juin 2023
+ * >    19 juin 2023
  *
  */
 
@@ -456,6 +456,7 @@ void General::AffichageDonneesSatellite(const Date &date)
         _ui->dateJN->adjustSize();
         _ui->dateJN->resize(_ui->dateJN->width(), 16);
         _ui->stackedWidget_aos->setCurrentIndex(0);
+
     } else {
         _ui->stackedWidget_aos->setCurrentIndex(1);
     }
@@ -528,7 +529,8 @@ void General::AffichageDonneesSatellite(const Date &date)
 
     // Angle beta
     const QString angleBeta = tr("Beta : %1", "Beta angle (angle between orbit plane and direction of Sun)");
-    _ui->lbl_beta1->setText(angleBeta.arg(Maths::ToSexagesimal(satellite.beta(), AngleFormatType::DEGRE, 3, 0, false, true).trimmed().mid(0, 8)));
+    _ui->lbl_beta1->setText(angleBeta.arg(Maths::ToSexagesimal(satellite.beta(), AngleFormatType::DEGRE, 3, 0, false, true).trimmed().mid(0, 9)
+                                          .trimmed()));
     _ui->lbl_beta2->setText(_ui->lbl_beta1->text());
 
     /* Retour */

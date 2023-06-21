@@ -12,7 +12,7 @@ Latitude  :  35° 34' 14" Sud		Azimut (N) : 248° 32' 47"	Déclinaison      : -5
 Altitude  :  430.4 km     		Distance   : 11355.5 km   	Constellation    : Gru
 
 Direction          : Ascendant  	Orbite n°124119
-Vitesse orbitale   :  7.653 km/s	Prochain N>J : 2020-08-15 12:05:06  (dans 05min 06s).   Beta : -037° 48
+Vitesse orbitale   :  7.653 km/s	Prochain N>J : 2020-08-15 12:05:06  (dans 05min 06s).   Beta : -037° 48'
 Variation distance : -3.601 km/s  	Prochain AOS : 2020-08-15 12:26:25  (dans 26min 25s). Azimut : 255° 01'
 
 

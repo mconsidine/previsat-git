@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 mai 2023
+ * >    21 juin 2023
  *
  */
 
@@ -177,8 +177,8 @@ int main(int argc, char *argv[])
         w.DemarrageApplication();
 
         // Affichage de la fenetre principale et fermeture du splashscreen
-        splash->close();
         w.show();
+        splash->close();
 
         /* Retour */
         return a.exec();
