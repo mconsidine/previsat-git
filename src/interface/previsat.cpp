@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    11 juin 2023
+ * >    22 juin 2023
  *
  */
 
@@ -1831,6 +1831,7 @@ void PreviSat::ChargementTraduction(const QString &langue)
     /* Corps de la methode */
     InstallationTraduction(QString("%1_%2").arg(APP_NAME).arg(langue), _appTraduction);
     InstallationTraduction(QString("qt_%1").arg(langue), _qtTraduction);
+    Configuration::instance()->locale() = settings.value("affichage/langue", "en").toString();
 
     _ui->retranslateUi(this);
     if (_onglets != nullptr) {
@@ -1840,6 +1841,7 @@ void PreviSat::ChargementTraduction(const QString &langue)
         _onglets->osculateurs()->ui()->retranslateUi(_onglets->osculateurs());
         _onglets->informationsSatellite()->ui()->retranslateUi(_onglets->informationsSatellite());
     }
+
     QEvent evt(QEvent::LanguageChange);
 
     if (_options != nullptr) {
@@ -1849,6 +1851,10 @@ void PreviSat::ChargementTraduction(const QString &langue)
 
     if (_outils != nullptr) {
         _outils->changeEvent(&evt);
+    }
+
+    if (_informations != nullptr) {
+        _informations->changeEvent(&evt);
     }
 
     /* Retour */

@@ -36,7 +36,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    10 juin 2023
+ * >    22 juin 2023
  *
  */
 
@@ -149,6 +149,8 @@ void Informations::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
         _ui->retranslateUi(this);
+
+        Initialisation();
     }
 }
 
