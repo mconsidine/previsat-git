@@ -121,7 +121,7 @@ double Maths::CalculValeurXInterpolation3(const std::array<double, MATHS::DEGRE_
 }
 
 /*
- * Interpolation pau polynome de Lagrange
+ * Interpolation par polynome de Lagrange
  */
 double Maths::InterpolationLagrange(const QVector<QPointF> &table, const double xval)
 {

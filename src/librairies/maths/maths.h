@@ -88,7 +88,7 @@ public:
                                               const double epsilon);
 
     /**
-     * @brief InterpolationLagrange Interpolation pau polynome de Lagrange
+     * @brief InterpolationLagrange Interpolation par polynome de Lagrange
      * @param table tableau des coordonnees
      * @param xval valeur de l'abscisse
      * @return valeur de l'ordonnee interpolee
