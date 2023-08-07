@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    4 juin 2023
+ * >    7 aout 2023
  *
  */
 
@@ -670,7 +670,7 @@ void Configuration::DefinitionArborescences()
 #if defined (Q_OS_WIN)
     const QString dirCommon = listeGenericDir.at(1) + dirAstr;
 #elif defined (Q_OS_LINUX)
-    const QString dirCommon = ((listeGenericDir.at(2).contains("local")) ? listeGenericDir.at(3) : listeGenericDir.at(2)) + dirAstr;
+    const QString dirCommon = QString("/usr/share") + QDir::separator() + dirAstr;
 #elif defined (Q_OS_MAC)
     const QString dirCommon = _dirExe;
     _dirLocalData = dirCommon + QDir::separator() + "data";
