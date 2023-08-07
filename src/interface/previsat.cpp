@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 juin 2023
+ * >    7 aout 2023
  *
  */
 
@@ -631,6 +631,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_radar, &Radar::RecalculerPositions, this, &PreviSat::GestionTempsReel);
 
     // Connexions avec la fenetre Options
+    connect(_options, &Options::ChangementFuseauHoraire, this, &PreviSat::ChangementFuseauHoraire);
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::ReinitCalculEvenementsSoleilLune);
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::GestionTempsReel);
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::on_actionMode_sombre_triggered);
@@ -1813,6 +1814,24 @@ void PreviSat::ChangementDate(const QDateTime &dt)
     if (!_onglets->general()->ui()->pause->isEnabled()) {
         EnchainementCalculs();
     }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Changement du fuseau horaire
+ */
+void PreviSat::ChangementFuseauHoraire(const int offset)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const double jjutc = _dateCourante->jourJulienUTC();
+
+    /* Corps de la methode */
+    EFFACE_OBJET(_dateCourante);
+    _dateCourante = new Date(jjutc, offset * DATE::NB_JOUR_PAR_SEC);
 
     /* Retour */
     return;

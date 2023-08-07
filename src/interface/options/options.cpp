@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >
+ * >    7 aout 2023
  *
  */
 
@@ -196,6 +196,9 @@ void Options::Initialisation()
     _ui->outilsLieuxObservation->setVisible(false);
     _ui->modeSombre->setVisible(false);
 
+    const int offset = static_cast<int> (Date::CalculOffsetUTC(QDateTime::currentDateTime()) * DATE::NB_SEC_PAR_JOUR);
+    _ui->updown->setValue(settings.value("affichage/updown", offset).toInt());
+
     // Affichage de la liste des fichiers sons
     InitFicSon();
 
@@ -278,6 +281,7 @@ void Options::AppliquerPreferences()
     settings.setValue("affichage/rotationLune", _ui->rotationLune->isChecked());
     settings.setValue("affichage/systemeHoraire", _ui->syst24h->isChecked());
     settings.setValue("affichage/unite", _ui->unitesKm->isChecked());
+    settings.setValue("affichage/updown", _ui->updown->value());
     settings.setValue("affichage/utc", _ui->utc->isChecked());
     settings.setValue("affichage/utcAuto", _ui->utcAuto->isChecked());
     settings.setValue("affichage/valeurZoomMap", _ui->valeurZoomMap->value());
@@ -482,6 +486,7 @@ void Options::ChargementPref()
         _ui->rotationIconeISS->setChecked(settings.value("affichage/rotationIconeISS", true).toBool());
         _ui->affNoradListes->setChecked(settings.value("affichage/affNoradListes", 0).toInt());
         _ui->rotationLune->setChecked(settings.value("affichage/rotationLune", false).toBool());
+        _ui->utc->setChecked(settings.value("affichage/utc", false).toBool());
         _ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
         _ui->verifMAJ->setChecked(settings.value("affichage/verifMAJ", false).toBool());
     }
@@ -1258,6 +1263,7 @@ void Options::on_listeBoutonsOptions_accepted()
 
     emit ChargementTraduction(langue);
     emit ChargementCarteDuMonde();
+    emit ChangementFuseauHoraire((_ui->utc->isChecked()) ? 0 : _ui->updown->value());
     emit RecalculerPositions();
 
     /* Retour */
@@ -1597,3 +1603,49 @@ void Options::on_listeSons_currentIndexChanged(int index)
     }
 }
 
+void Options::on_updown_valueChanged(int arg1)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QTime heur(0, 0);
+    heur = heur.addSecs(abs(arg1));
+    const QString sgnh = (arg1 >= 0) ? " + " : " - ";
+    _ui->tuc->setText(tr("UTC", "Universal Time Coordinated") + sgnh + heur.toString("hh:mm"));
+
+    const int offset = static_cast<int> (Date::CalculOffsetUTC(QDateTime::currentDateTime()) * DATE::NB_SEC_PAR_JOUR);
+    if (_ui->utcAuto->isChecked() && (offset != arg1)) {
+        _ui->utcAuto->setChecked(false);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Options::on_utcAuto_toggled(bool checked)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (checked) {
+        const int offset = static_cast<int> (Date::CalculOffsetUTC(QDateTime::currentDateTime()) * DATE::NB_SEC_PAR_JOUR);
+        _ui->updown->setValue(offset);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Options::on_heureLegale_toggled(bool checked)
+{
+    _ui->utc->setChecked(!checked);
+}
+
+void Options::on_utc_toggled(bool checked)
+{
+    _ui->heureLegale->setChecked(!checked);
+}

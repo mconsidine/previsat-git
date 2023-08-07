@@ -36,7 +36,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >
+ * >    7 aout 2023
  *
  */
 
@@ -111,6 +111,7 @@ public slots:
 
 signals:
 
+    void ChangementFuseauHoraire(const int offset);
     void ChargementCarteDuMonde();
     void ChargementTraduction(const QString &langue);
     void RecalculerPositions();
@@ -260,6 +261,11 @@ private slots:
 
     void on_listeMap_currentIndexChanged(int index);
     void on_listeSons_currentIndexChanged(int index);
+
+    void on_updown_valueChanged(int arg1);
+    void on_utcAuto_toggled(bool checked);
+    void on_heureLegale_toggled(bool checked);
+    void on_utc_toggled(bool checked);
 
 };
 
