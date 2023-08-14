@@ -30,7 +30,7 @@
  * >    20 novembre 2019
  *
  * Date de revision
- * >
+ * >    14 aout 2023
  *
  */
 
@@ -77,21 +77,24 @@ Donnees::Donnees(const QString &donnee)
     /* Corps du constructeur */
     if (!donnee.isEmpty()) {
 
+        _norad = donnee.mid(0, 6);
         _cospar = donnee.mid(7, 11).trimmed();
         _t1 = donnee.mid(19, 5).toDouble();
         _t2 = donnee.mid(25, 4).toDouble();
         _t3 = donnee.mid(30, 4).toDouble();
-        _magnitudeStandard = donnee.mid(35, 4).toDouble();
-        _methMagnitude = donnee.at(40).toLatin1();
-        _section = donnee.mid(42, 6).toDouble();
-        _dateLancement = donnee.mid(49, 10);
-        _periode = donnee.mid(71, 10).trimmed();
-        _perigee = donnee.mid(82, 7).trimmed();
-        _apogee = donnee.mid(90, 7).trimmed();
-        _inclinaison = donnee.mid(98, 6).trimmed();
-        _categorieOrbite = donnee.mid(105, 6).trimmed();
-        _pays = donnee.mid(112, 5).trimmed();
-        _siteLancement = donnee.mid(118, 5).trimmed();
+        _magnitudeStandard = donnee.mid(35, 5).toDouble();
+        _methMagnitude = donnee.at(41).toLatin1();
+        _section = donnee.mid(43, 6).toDouble();
+        _dateLancement = donnee.mid(50, 10);
+        _dateRentree = donnee.mid(61, 10).trimmed();
+        _periode = donnee.mid(72, 10).trimmed();
+        _perigee = donnee.mid(83, 7).trimmed();
+        _apogee = donnee.mid(91, 7).trimmed();
+        _inclinaison = donnee.mid(99, 6).trimmed();
+        _categorieOrbite = donnee.mid(106, 6).trimmed();
+        _pays = donnee.mid(113, 5).trimmed();
+        _siteLancement = donnee.mid(119, 5).trimmed();
+        _nom = donnee.mid(125).trimmed();
     }
 
     /* Retour */
@@ -136,6 +139,11 @@ double Donnees::t3() const
     return _t3;
 }
 
+QString Donnees::norad() const
+{
+    return _norad;
+}
+
 const QString &Donnees::cospar() const
 {
     return _cospar;
@@ -144,6 +152,11 @@ const QString &Donnees::cospar() const
 const QString &Donnees::dateLancement() const
 {
     return _dateLancement;
+}
+
+const QString &Donnees::dateRentree() const
+{
+    return _dateRentree;
 }
 
 const QString &Donnees::periode() const
@@ -179,6 +192,11 @@ const QString &Donnees::pays() const
 const QString &Donnees::siteLancement() const
 {
     return _siteLancement;
+}
+
+QString Donnees::nom() const
+{
+    return _nom;
 }
 
 
