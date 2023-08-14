@@ -6,6 +6,6 @@ Désignation COSPAR      : 1998-067A		n'/2                  :  0.00000494 rev/jo
 Coeff pseudo-balistique : 1.7022e-05 (1/Re)	Nb orbites à l'époque : 124119			 Site de lancement  : TTMTR
 
 Inclinaison             : 051.6460°		Anomalie moyenne      : 018.7733°
-AD noeud ascendant      : 055.5526°		Magnitude std/max     : -0.5v/-2.4
+AD noeud ascendant      : 055.5526°		Magnitude std/max     : -0.43v/-2.3
 Excentricité            : 0.0001465		Modèle orbital        : SGP4 (NE)
 Argument du périgée     : 045.7523°		Dimensions/Section    : Cylindrique. L=30.0 m, R=20.0 m / 399.00 m^2

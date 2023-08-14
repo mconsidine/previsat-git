@@ -36,7 +36,7 @@
  * >    20 novembre 2019
  *
  * Date de revision
- * >
+ * >    14 aout 2023
  *
  */
 
@@ -78,8 +78,10 @@ public:
     double t1() const;
     double t2() const;
     double t3() const;
+    QString norad() const;
     const QString &cospar() const;
     const QString &dateLancement() const;
+    const QString &dateRentree() const;
     const QString &periode() const;
     const QString &perigee() const;
     const QString &apogee() const;
@@ -87,6 +89,7 @@ public:
     const QString &categorieOrbite() const;
     const QString &pays() const;
     const QString &siteLancement() const;
+    QString nom() const;
 
 
 protected:
@@ -111,8 +114,10 @@ private:
     double _t1;
     double _t2;
     double _t3;
+    QString _norad;
     QString _cospar;
     QString _dateLancement;
+    QString _dateRentree;
     QString _periode;
     QString _perigee;
     QString _apogee;
@@ -120,6 +125,8 @@ private:
     QString _categorieOrbite;
     QString _pays;
     QString _siteLancement;
+    QString _nom;
+
 
     /*
      * Methodes privees

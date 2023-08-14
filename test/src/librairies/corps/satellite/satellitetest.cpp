@@ -374,7 +374,7 @@ void SatelliteTest::testCalculPosVitListeSatellites()
     QCOMPARE(satellites.first().signal().attenuation(), 137.4342178796233);
     QCOMPARE(satellites.first().altitude(), 424.52109699485754);
     QCOMPARE(satellites.first().rangeRate(), -6.853740793330628);
-    QCOMPARE(satellites.first().magnitude().magnitude(), 4.801106983557947);
+    QCOMPARE(satellites.first().magnitude().magnitude(), 4.871106983557947);
     QCOMPARE(satellites.first().ascensionDroite(), 1.2459691983080656);
     QCOMPARE(satellites.first().declinaison(), 0.308777949256643);
     QCOMPARE(satellites.first().constellation(), "Tau");

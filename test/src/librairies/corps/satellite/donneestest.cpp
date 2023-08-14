@@ -57,24 +57,27 @@ void DonneesTest::testDonnees()
 {
     qInfo(Q_FUNC_INFO);
 
-    const QString donnees = "025544 1998-067A    30.0 20.0  0.0 -0.5 v 399.00 1998-11-20                 92.90     412     421  51.64 LEO/I  ISS   " \
-            "TTMTR ISS (ZARYA)";
+    const QString donnees = "025544 1998-067A    30.0 20.0  0.0 -0.43 v 399.00 1998-11-20                 92.95     417     421  51.64 LEO/I  ISS   " \
+        "TTMTR ISS (ZARYA)";
 
     const Donnees donneeIss(donnees);
 
+    QCOMPARE(donneeIss.norad(), "025544");
     QCOMPARE(donneeIss.cospar(), "1998-067A");
     QCOMPARE(donneeIss.t1(), 30.);
     QCOMPARE(donneeIss.t2(), 20.);
     QCOMPARE(donneeIss.t3(), 0.);
-    QCOMPARE(donneeIss.magnitudeStandard(), -0.5);
+    QCOMPARE(donneeIss.magnitudeStandard(), -0.43);
     QCOMPARE(donneeIss.methMagnitude(), 'v');
     QCOMPARE(donneeIss.section(), 399.);
     QCOMPARE(donneeIss.dateLancement(), "1998-11-20");
-    QCOMPARE(donneeIss.periode(), "92.90");
-    QCOMPARE(donneeIss.perigee(), "412");
+    QCOMPARE(donneeIss.dateRentree(), "");
+    QCOMPARE(donneeIss.periode(), "92.95");
+    QCOMPARE(donneeIss.perigee(), "417");
     QCOMPARE(donneeIss.apogee(), "421");
     QCOMPARE(donneeIss.inclinaison(), "51.64");
     QCOMPARE(donneeIss.categorieOrbite(), "LEO/I");
     QCOMPARE(donneeIss.pays(), "ISS");
     QCOMPARE(donneeIss.siteLancement(), "TTMTR");
+    QCOMPARE(donneeIss.nom(), "ISS (ZARYA)");
 }

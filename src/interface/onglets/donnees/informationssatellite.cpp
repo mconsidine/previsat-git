@@ -30,7 +30,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >
+ * >    7 aout 2023
  *
  */
 
@@ -181,7 +181,7 @@ void InformationsSatellite::show(const Satellite &satellite)
         const ElementsOsculateurs elements = sat.elementsOsculateurs();
         const double magMax = donnee.magnitudeStandard() - 15.75 + 5. * log10(1.45 * (elements.demiGrandAxe() * (1. - elements.excentricite())
                                                                                       - TERRE::RAYON_TERRESTRE));
-        _ui->magnitudeStdMax->setText(text.asprintf("%+.1f%c/%+.1f", donnee.magnitudeStandard(), donnee.methMagnitude(), magMax));
+        _ui->magnitudeStdMax->setText(text.asprintf("%+.2f%c/%+.1f", donnee.magnitudeStandard(), donnee.methMagnitude(), magMax));
 
     } else {
         _ui->magnitudeStdMax->setText("?/?");
