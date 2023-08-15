@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    7 aout 2023
+ * >    14 aout 2023
  *
  */
 
@@ -1314,7 +1314,7 @@ void Options::on_categoriesObs_customContextMenuRequested(const QPoint &pos)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QListWidgetItem *item = _ui->categoriesObs->itemAt(pos);
+    QListWidgetItem const *item = _ui->categoriesObs->itemAt(pos);
 
     /* Corps de la methode */
     QMenu menu(this);
@@ -1405,7 +1405,7 @@ void Options::on_lieuxObs_customContextMenuRequested(const QPoint &pos)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QListWidgetItem *item = _ui->lieuxObs->itemAt(pos);
+    QListWidgetItem const *item = _ui->lieuxObs->itemAt(pos);
 
     /* Corps de la methode */
     QMenu menu(this);
@@ -1552,7 +1552,7 @@ void Options::on_ajoutLieu_clicked()
             _ui->lieuxObs->setFocus();
         }
 
-    } catch (PreviSatException &e) {
+    } catch (PreviSatException const &e) {
     }
 
     /* Retour */
