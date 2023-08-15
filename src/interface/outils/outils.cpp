@@ -30,7 +30,7 @@
  * >    14 aout 2022
  *
  * Date de revision
- * >
+ * >    15 aout 2023
  *
  */
 
@@ -562,7 +562,7 @@ void Outils::on_listeGroupeElem_customContextMenuRequested(const QPoint &pos)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QListWidgetItem *item = _ui->listeGroupeElem->itemAt(pos);
+    QListWidgetItem const *item = _ui->listeGroupeElem->itemAt(pos);
 
     /* Corps de la methode */
     QMenu menu(this);
@@ -583,7 +583,7 @@ void Outils::on_listeFichiersElem_customContextMenuRequested(const QPoint &pos)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QListWidgetItem *item = _ui->listeFichiersElem->itemAt(pos);
+    QListWidgetItem const *item = _ui->listeFichiersElem->itemAt(pos);
 
     /* Corps de la methode */
     QMenu menu(this);

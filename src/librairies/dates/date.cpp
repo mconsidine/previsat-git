@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 mai 2023
+ * >    14 aout 2023
  *
  */
 
@@ -694,7 +694,7 @@ void Date::getDeltaAT()
         if (_jourJulienUTC < (_ecartsTAI_UTC.first().first - DATE::TJ2000)) {
 
             const double mjd = _jourJulienUTC + 51544.5;
-            for(auto &params : _tabEcartsTAI_UTC) {
+            for(const auto &params : _tabEcartsTAI_UTC) {
 
                 const double mjd1 = params[0];
                 const double mjd2 = params[1];
