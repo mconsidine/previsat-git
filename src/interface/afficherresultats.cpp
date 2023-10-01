@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    8 juin 2023
+ * >    1er octobre 2023
  *
  */
 
@@ -262,6 +262,7 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
     /* Declarations des variables locales */
     double diamApparent;
     QPen couleur(Qt::black);
+    couleur.setCosmetic(true);
 
     /* Initialisations */
     const int lciel = qRound(0.5 * _ui->detailsTransit->width());
@@ -282,7 +283,7 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
 
         QPixmap pixsol;
         pixsol.load(":/resources/interface/soleil.png");
-        pixsol = pixsol.scaled(100, 100);
+        pixsol = pixsol.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
         QGraphicsPixmapItem * const sol = scene->addPixmap(pixsol);
         const QTransform transform = QTransform().translate(-pixsol.width() / 2, -pixsol.height() / 2);
@@ -301,7 +302,7 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
 
         QPixmap pixlun;
         pixlun.load(":/resources/interface/lune.png");
-        pixlun = pixlun.scaled(100, 100);
+        pixlun = pixlun.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
         // Dessin de la Lune et rotations
         QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
@@ -318,7 +319,8 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
         if (settings.value("affichage/affphaselune").toBool()) {
 
             const QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, 160));
-            const QPen stylo(Qt::NoBrush, 0);
+            QPen stylo(Qt::NoBrush, 0);
+            stylo.setCosmetic(true);
             const QPolygonF poly = Ciel::AffichagePhaseLune(lune, 50);
 
             QGraphicsPolygonItem * const omb = scene->addPolygon(poly, stylo, alpha);
