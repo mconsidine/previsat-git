@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    15 juin 2023
+ * >    1er octobre 2023
  *
  */
 
@@ -1010,8 +1010,6 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
                         }
                     }
 
-                    crayon.setCosmetic(true);
-
                     const int lsat2 = qRound(_lciel - _lciel * (1. - ht2 * MATHS::DEUX_SUR_PI) * sin(az2));
                     const int bsat2 = qRound(_lciel - _lciel * (1. - ht2 * MATHS::DEUX_SUR_PI) * cos(az2));
 
@@ -1043,7 +1041,6 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
                             if (dateTrace.jourJulienUTC() >= dateDeb.jourJulienUTC() &&
                                     dateTrace.jourJulienUTC() <= dateFin.jourJulienUTC()) {
                                 crayon = QPen(crayon.color(), 4);
-                                crayon.setCosmetic(true);
                             }
                         }
 
@@ -1094,6 +1091,7 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
                         }
                     }
 
+                    crayon.setCosmetic(true);
                     scene->addLine(lig, crayon);
 
                     lsat1 = lsat2;
