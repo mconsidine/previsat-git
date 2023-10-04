@@ -36,7 +36,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >
+ * >    4 octobre 2023
  *
  */
 
@@ -45,6 +45,7 @@
 
 #include <QMap>
 #include "categorieelementsorbitaux.h"
+#include "satellitesstarlink.h"
 #include "satellitetdrs.h"
 #include "librairies/exceptions/message.h"
 #include "librairies/observateur/observateur.h"
@@ -80,6 +81,10 @@ public:
      */
     static void EcritureGestionnaireElementsOrbitaux();
 
+    /**
+     * @brief EcriturePreLaunchStarlink Ecriture du fichier Pre-Launch Starlink
+     */
+    static void EcriturePreLaunchStarlink();
 
     /*
      * Accesseurs
@@ -165,6 +170,12 @@ private:
      * @return map contenant les pays et organisations
      */
     static QMap<QString, QString> LecturePays();
+
+    /**
+     * @brief LecturePreLaunchStarlink Lecture du fichier Pre-Launch Starlink
+     * @return map contenant les informations pre-launch des satellites Starlink
+     */
+    static QMap<QString, SatellitesStarlink> LecturePreLaunchStarlink(QString &version);
 
     /**
      * @brief LectureSatellitesTDRS Lecture du fichier de satellites TDRS

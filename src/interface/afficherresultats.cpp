@@ -152,6 +152,12 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const Conditi
         }
         break;
 
+    case TypeCalcul::STARLINK:
+        setWindowTitle(tr("Passages des Starlink"));
+        titres << tr("Satellite") << tr("Date de début", "Date and hour") << tr("Date de fin", "Date and hour")
+               << tr("Hauteur max", "Maximum elevation") << tr("Magnitude") << tr("Hauteur Soleil");
+        break;
+
     case TypeCalcul::TELESCOPE:
     default:
         break;
@@ -195,6 +201,7 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const Conditi
             break;
 
         case TypeCalcul::PREVISIONS:
+        case TypeCalcul::STARLINK:
         case TypeCalcul::EVENEMENTS:
         case TypeCalcul::TELESCOPE:
         default:
@@ -485,6 +492,7 @@ void AfficherResultats::ChargementResultats()
             switch (_typeCalcul) {
 
             case TypeCalcul::PREVISIONS:
+            case TypeCalcul::STARLINK:
                 elems = ElementsPrevisions(list);
                 break;
 
@@ -514,6 +522,10 @@ void AfficherResultats::ChargementResultats()
                 // Ajout d'une ligne dans le tableau de resultats
                 _ui->resultatsPrevisions->insertRow(j);
                 _ui->resultatsPrevisions->setRowHeight(j, 16);
+
+                if (_typeCalcul == TypeCalcul::STARLINK) {
+                    elems[0] = elems[0].remove("STACK").trimmed();
+                }
 
                 for(int k=0; k<elems.count(); k++) {
 
@@ -1161,6 +1173,7 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
         switch (_typeCalcul) {
 
         case TypeCalcul::PREVISIONS:
+        case TypeCalcul::STARLINK:
             _tableDetail->setColumnCount(12);
             _tableDetail->setHorizontalHeaderLabels(QStringList() << tr("Satellite") << tr("Date", "Date and hour")
                                                     << tr("Azimut Sat", "Satellite azimuth") << tr("Hauteur Sat", "Satellite elevation")
@@ -1214,6 +1227,7 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
         switch (_typeCalcul) {
 
         case TypeCalcul::PREVISIONS:
+        case TypeCalcul::STARLINK:
             _tableDetail->horizontalHeaderItem(7)->setToolTip(tr("Magnitude"));
             _tableDetail->horizontalHeaderItem(10)->setToolTip(tr("Azimut Soleil"));
             _tableDetail->horizontalHeaderItem(11)->setToolTip(tr("Hauteur Soleil"));
@@ -1263,6 +1277,7 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
 
             switch (_typeCalcul) {
             case TypeCalcul::PREVISIONS:
+            case TypeCalcul::STARLINK:
                 elems = ElementsDetailsPrevisions(res);
                 break;
 
@@ -1296,6 +1311,10 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
                     } else {
                         kmax = qMin(kmax - 4, static_cast<int> (elems.count()));
                     }
+                }
+
+                if (_typeCalcul == TypeCalcul::STARLINK) {
+                    elems[0] = elems[0].remove("STACK").trimmed();
                 }
 
                 for(int k=0; k<kmax; k++) {
@@ -1343,6 +1362,7 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
         switch (_typeCalcul) {
 
         case TypeCalcul::PREVISIONS:
+        case TypeCalcul::STARLINK:
             _afficherDetail->setWindowTitle(tr("Détail du passage"));
             break;
 
@@ -1500,6 +1520,15 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
                          << Qt::endl;
                     break;
 
+                case TypeCalcul::STARLINK:
+                    flux << nomsat.remove("STACK").trimmed() << Qt::endl;
+                    flux << tr("   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  " \
+                               "Haut Soleil",
+                               "Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, " \
+                               "Constellation, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation")
+                         << Qt::endl;
+                    break;
+
                 case TypeCalcul::EVENEMENTS:
                     flux << nomsat << Qt::endl;
                     flux << tr("   Date      Heure     PSO    Longitude  Latitude  Évènements",
@@ -1525,6 +1554,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
 
                         switch (_typeCalcul) {
                         case TypeCalcul::PREVISIONS:
+                        case TypeCalcul::STARLINK:
                             elems = ElementsDetailsPrevisions(res);
                             break;
 

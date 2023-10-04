@@ -1,0 +1,79 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er octobre 2023
+ *
+ * Date de revision
+ * >
+ *
+ */
+
+
+/**
+\page Previsions Prediction of passes of Starlink trains
+
+The <b>Starlink</b> tab allows to make predictions of passes for a Starlink train above a given place of observation.
+
+\image html starlink.png
+
+The predictions are made for the period between 5 minutes after launch and 7 days following launch. The generation step is initially set at one minute.
+
+Then, it is possible to regulate the minimal elevation which the satellite must have for the calculation of the predictions (for example, if the horizon of your place of observation is masked by a building, a mountain or luminous urban pollution). If you choose 'Other' in the drop-down list, you are then invited to select a positive integer value in the adjacent text field.
+
+In the same way, you can parameterize the elevation of the Sun following the criteria below : 
+<ul>
+<li>Horizon (0°),
+<li>Civil twilight (-6°), default value,
+<li>Nautical twilight (-12°),
+<li>Astronomical twilight (-18°),
+<li>Indifferent, all passes will be displayed, including those of day,
+<li>Other..., you are then invited to select an integer value ranging between -90° and +90° in the adjacent text field.
+</ul>
+
+Once calculations are finished, an explicit message appears in the task bar and the results window displays.
+
+\image html resultats-starlink.png
+
+The table summarizes each pass of a Starlink train with the most important informations. By clicking on a row of the table, we display the corresponding pass on the sky map. By double-clicking on a row, a small window displays more informations of the pass.
+
+It is possible to save the selected pass as an image, or save all passes as a text file under the following form.
+
+\htmlonly
+<div style="border: 1px solid grey; padding: 10px">
+
+<font size="2">
+<pre>
+
+
+
+</pre>
+</font>
+</div>
+\endhtmlonly
+
+We point out in the header of the results file the place of location, the time zone, as well as the conditions of observation (here, conditions by default).
+
+We then display for each the list of passes), separated one from another by a line jump. Each pass is made up, as we can see, from date and hour, followed by its characteristics. First of all, the azimuth and the elevation of the satellite train, then the right ascension, the declination, the constellation and the magnitude estimation.
+
+Next are given the altitude and the range to the satellite, then horizontal coordinates of the Sun (azimuth and elevation).
+
+Finally the time necessary to carry out the search is specified. This time depends in particuliar on the machine and the availability of its resources, as well as quality of search algorithm. This time is lenghtened if one chooses a long time interval and/or a short calculation step and/or a great number of satellites.
+
+*/

@@ -30,7 +30,7 @@
  * >    10 mars 2012
  *
  * Date de revision
- * >    7 avril 2023
+ * >    1er octobre 2023
  *
  */
 
@@ -113,7 +113,7 @@ void Apropos::show()
     QGraphicsScene * const scene = new QGraphicsScene;
     scene->setSceneRect(_ui->imagePreviSat->rect());
     scene->setBackgroundBrush(QBrush(palette().window().color()));
-    scene->addPixmap(QPixmap(":/resources/interface/apropos.png").scaled(_ui->imagePreviSat->size()));
+    scene->addPixmap(QPixmap(":/resources/interface/apropos.png").scaled(_ui->imagePreviSat->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
     _ui->imagePreviSat->setScene(scene);
     QGraphicsView view(scene);

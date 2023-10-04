@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    11 juin 2023
+ * >    1er octobre 2023
  *
  */
 
@@ -56,6 +56,7 @@
 #include "previsions/calculsevenementsorbitaux.h"
 #include "previsions/calculsflashs.h"
 #include "previsions/calculsprevisions.h"
+#include "previsions/calculsstarlink.h"
 #include "previsions/calculstransits.h"
 #if defined (Q_OS_WIN)
 #include "telescope/suivitelescope.h"
@@ -69,7 +70,8 @@ static const char* _titresPrevisions[] = {
     QT_TRANSLATE_NOOP("Onglets", "Prévisions"),
     QT_TRANSLATE_NOOP("Onglets", "Flashs"),
     QT_TRANSLATE_NOOP("Onglets", "Transits"),
-    QT_TRANSLATE_NOOP("Onglets", "Évènements orbitaux")
+    QT_TRANSLATE_NOOP("Onglets", "Évènements orbitaux"),
+    QT_TRANSLATE_NOOP("Onglets", "Starlink")
 };
 
 
@@ -103,6 +105,7 @@ Onglets::Onglets(QWidget *parent) :
         _previsions = nullptr;
         _flashs = nullptr;
         _transits = nullptr;
+        _starlink = nullptr;
         _evenements = nullptr;
 
 #if defined (Q_OS_WIN)
@@ -132,6 +135,7 @@ Onglets::~Onglets()
     EFFACE_OBJET(_previsions);
     EFFACE_OBJET(_flashs);
     EFFACE_OBJET(_transits);
+    EFFACE_OBJET(_starlink);
     EFFACE_OBJET(_evenements);
 
 #if defined (Q_OS_WIN)
@@ -190,6 +194,11 @@ CalculsFlashs *Onglets::flashs() const
 CalculsTransits *Onglets::transits() const
 {
     return _transits;
+}
+
+CalculsStarlink *Onglets::starlink() const
+{
+    return _starlink;
 }
 
 CalculsEvenementsOrbitaux *Onglets::evenements() const
@@ -463,6 +472,7 @@ void Onglets::Initialisation()
     // Calculs de previsions
     _previsions = new CalculsPrevisions(_ui->prevision);
     _transits = new CalculsTransits(_ui->transits);
+    _starlink = new CalculsStarlink(_ui->starlink);
     _evenements = new CalculsEvenementsOrbitaux(_ui->evenementsOrbitaux);
 
 #if defined (Q_OS_WIN)
@@ -481,13 +491,13 @@ void Onglets::Initialisation()
     connect(this, &Onglets::AffichageLieuObs, _previsions, &CalculsPrevisions::AffichageLieuObs);
     connect(this, &Onglets::AffichageLieuObs, _flashs, &CalculsFlashs::AffichageLieuObs);
     connect(this, &Onglets::AffichageLieuObs, _transits, &CalculsTransits::AffichageLieuObs);
+    connect(this, &Onglets::AffichageLieuObs, _starlink, &CalculsStarlink::AffichageLieuObs);
 #if defined (Q_OS_WIN)
     connect(this, &Onglets::AffichageLieuObs, _suiviTelescope, &SuiviTelescope::AffichageLieuObs);
 #endif
     AffichageLieuObservation();
 
     _ui->stackedWidget_informations->setCurrentIndex(_indexInformations);
-
     _ui->stackedWidget_previsions->setCurrentIndex(_indexPrevisions);
 
     _ui->previsionPrec->setToolTip(
@@ -528,7 +538,7 @@ void Onglets::on_infoSuiv_clicked()
 void Onglets::on_previsionPrec_clicked()
 {
     _indexPrevisions = (_ui->stackedWidget_previsions->currentIndex() + _ui->stackedWidget_previsions->count() - 1)
-            % _ui->stackedWidget_previsions->count();
+                       % _ui->stackedWidget_previsions->count();
     _ui->stackedWidget_previsions->setCurrentIndex(_indexPrevisions);
     setTabText(indexOf(_ui->previsions), QCoreApplication::translate("Onglets", _titresPrevisions[_indexPrevisions]));
 }
@@ -542,11 +552,13 @@ void Onglets::on_previsionSuiv_clicked()
 
 void Onglets::on_stackedWidget_previsions_currentChanged(int arg1)
 {
-    Q_UNUSED(arg1)
+    if (static_cast<unsigned int> (arg1) != _indexPrevisions) {
+        _indexPrevisions = arg1;
+    }
 
-    _ui->previsionPrec->setToolTip(
-                QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)
-                % _ui->stackedWidget_previsions->count()]));
-    _ui->previsionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + 1) %
-                                   _ui->stackedWidget_previsions->count()]));
+    const unsigned int ind1 = (_indexPrevisions + _ui->stackedWidget_previsions->count() - 1) % _ui->stackedWidget_previsions->count();
+    const unsigned int ind2 = (_indexPrevisions + 1) % _ui->stackedWidget_previsions->count();
+
+    _ui->previsionPrec->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[ind1]));
+    _ui->previsionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[ind2]));
 }

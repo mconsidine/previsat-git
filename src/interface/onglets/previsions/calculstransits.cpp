@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >
+ * >    1er octobre 2023
  *
  */
 
@@ -653,7 +653,7 @@ void CalculsTransits::on_majElementsOrbitauxIss_clicked()
 
         // Mise a jour du fichier d'elements orbitaux
         emit AfficherMessageStatut(tr("Téléchargement du fichier d'élements orbitaux de l'ISS..."), -1);
-        const QString ficElem = Configuration::instance()->adresseCelestrakSupplementalNorad().arg("iss");
+        const QString ficElem = Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg("iss");
         Telechargement tel(Configuration::instance()->dirTmp());
         tel.TelechargementFichier(ficElem);
         emit AfficherMessageStatut(tr("Téléchargement terminé"), 5);

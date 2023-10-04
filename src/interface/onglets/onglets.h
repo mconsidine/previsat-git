@@ -36,7 +36,7 @@
  * >    25 fevrier 2023
  *
  * Date de revision
- * >    7 avril 2023
+ * >    1er octobre 2023
  *
  */
 
@@ -64,6 +64,7 @@ class InformationsISS;
 class CalculsPrevisions;
 class CalculsFlashs;
 class CalculsTransits;
+class CalculsStarlink;
 class CalculsEvenementsOrbitaux;
 
 class SuiviTelescope;
@@ -108,6 +109,7 @@ public:
     CalculsPrevisions *previsions() const;
     CalculsFlashs *flashs() const;
     CalculsTransits *transits() const;
+    CalculsStarlink *starlink() const;
     CalculsEvenementsOrbitaux *evenements() const;
 #if defined (Q_OS_WIN)
     SuiviTelescope *suiviTelescope() const;
@@ -181,6 +183,7 @@ private:
     CalculsPrevisions *_previsions;
     CalculsFlashs *_flashs;
     CalculsTransits *_transits;
+    CalculsStarlink *_starlink;
     CalculsEvenementsOrbitaux *_evenements;
 
 #if defined (Q_OS_WIN)

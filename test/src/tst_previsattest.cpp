@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    1er octobre 2023
  *
  */
 
@@ -68,6 +68,7 @@
 #include "test/src/previsions/evenementsorbitauxtest.h"
 #include "test/src/previsions/flashstest.h"
 #include "test/src/previsions/previsiontest.h"
+#include "test/src/previsions/starlinktest.h"
 #include "test/src/previsions/telescopetest.h"
 #include "test/src/previsions/transitstest.h"
 
@@ -124,6 +125,7 @@ void PreviSatTest::testAll()
     FlashsTest::testAll();
     TransitsTest::testAll();
     EvenementsOrbitauxTest::testAll();
+    StarlinkTest::testAll();
     TelescopeTest::testAll();
 
     // Informations sur le satellite

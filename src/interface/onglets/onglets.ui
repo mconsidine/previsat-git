@@ -223,7 +223,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="prevision">
      <property name="autoFillBackground">
@@ -245,6 +245,7 @@
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="QWidget" name="starlink"/>
    </widget>
    <zorder>stackedWidget_previsions</zorder>
    <zorder>previsionSuiv</zorder>

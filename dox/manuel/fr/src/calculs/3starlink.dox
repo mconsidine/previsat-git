@@ -1,0 +1,118 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * Date de creation
+ * >    1er octobre 2023
+ *
+ * Date de revision
+ * >
+ *
+ */
+
+
+/**
+\page Starlink Prévisions de passage des trains Starlink
+
+L'onglet <b>Starlink</b> permet d'effectuer les prévisions de passage d'un train de satellites Starlink. Ceux-ci sont visibles après un lancement.
+
+\image html starlink.png
+
+Les prévisions s'effectuent sur la période entre 5 minutes après le lancement et 7 jours suivant le lancement. Le pas de génération est initialement fixé à une minute.
+
+Ensuite, il est possible de régler la hauteur minimale que doit avoir le satellite pour le calcul des prévisions de passages (par exemple, si l'horizon de votre lieu d'observation est masqué par un bâtiment, une montagne ou la pollution lumineuse urbaine). Si vous choisissez 'Autre' dans la liste déroulante, vous êtes alors invité à saisir une valeur entière positive dans le champ texte adjacent.	
+
+De même, il est possible de paramétrer la hauteur du Soleil suivant les critères suivants : 
+<ul>
+<li>Horizon (0°),
+<li>Crépuscule civil (-6°), valeur par défaut,
+<li>Crépuscule nautique (-12°),
+<li>Crépuscule astronomique (-18°),
+<li>Indifférent, tous les passages seront affichés, y compris ceux de jour,
+<li>Autre..., vous êtes alors invité à saisir une valeur entière comprise entre -90° et +90° dans la zone de texte adjacente.
+</ul>
+
+Une fois les calculs terminés, un message explicite apparaît dans la barre des tâches et la fenêtre de résultats apparaît.
+
+\image html resultats-starlink.png
+
+Le tableau à gauche résume chaque passage du train Starlink avec les informations les plus importantes. En cliquant sur une ligne du tableau, on affiche le passage correspondant sur la carte du ciel. En double cliquant sur une ligne du tableau, une petite fenêtre avec davantage d'informations apparaît.
+
+Il est possible de sauvegarder un passage sous forme d'image (passage sélectionné avec la carte du ciel associée), ou bien de sauvegarder tous les passages calculés sous forme de fichier texte, présenté de la manière suivante.
+
+\htmlonly
+<div style="border: 1px solid grey; padding: 10px">
+<font size="2">
+<pre>
+PreviSat 6.1.0.2 / Astropedia (c) 2005-2023
+
+Lieu d'observation              : Toulouse      001°26'37" Est    43°36'15" Nord   146 m
+Fuseau horaire                  : UTC + 02:00
+Conditions d'observations       : Hauteur maximale du Soleil = -6° / Hauteur minimale du satellite = 0°
+Unité de distance               : km
+
+Age de l'élément                : 0.04 jours (au 30/09/2023 04:05:00)
+
+
+STARLINK-G6-19
+   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  Haut Soleil
+2023/09/30 20:27:00   270°58'47"  07°04'58"  13h27m38s +05°35'07"  Vir  +7.7     296.3    1340.5  275°18'12" -09°45'00"
+2023/09/30 20:28:00   262°50'17"  14°10'30"  14h11m25s +04°40'00"  Vir  +5.9     296.1     951.5  275°28'43" -09°55'49"
+2023/09/30 20:29:00   242°52'57"  26°00'05"  15h39m14s +00°19'33"  Ser  +4.5     295.9     621.8  275°39'14" -10°06'39"
+2023/09/30 20:30:00   191°10'09"  35°04'39"  18h35m38s -10°39'47"  Sct  +3.8     295.5     493.0  275°49'46" -10°17'28"
+2023/09/30 20:31:00   147°37'39"  22°36'15"  21h18m35s -17°25'42"  Cap  +4.7     295.1     689.3  276°00'19" -10°28'17"
+2023/09/30 20:32:00   131°52'53"  12°05'09"  22h36m27s -19°09'56"  Aqr  +7.7*    294.6    1040.2  276°10'52" -10°39'06"
+
+2023/09/30 22:02:00   248°48'13"  04°38'09"  15h58m09s -11°50'33"  Sco  +9.0*    294.7    1527.0  293°10'40" -26°23'34"
+
+2023/10/01 20:31:00   269°11'52"  04°40'12"  13h33m27s +02°38'21"  Vir  +8.9     296.0    1528.7  275°46'40" -10°47'55"
+2023/10/01 20:32:00   259°54'31"  09°51'30"  14h14m59s -00°23'49"  Vir  +6.8     295.8    1161.1  275°57'13" -10°58'44"
+2023/10/01 20:33:00   242°16'49"  16°41'44"  15h24m52s -07°09'05"  Lib  +5.5     295.5     855.1  276°07'46" -11°09'33"
+2023/10/01 20:34:00   209°46'56"  22°09'53"  17h24m27s -18°46'28"  Oph  +4.8     295.1     699.3  276°18'20" -11°20'21"
+2023/10/01 20:35:00   173°41'42"  18°42'04"  19h48m38s -27°25'36"  Sgr  +5.1     294.7     789.2  276°28'55" -11°31'10"
+2023/10/01 20:36:00   152°17'37"  11°34'19"  21h28m42s -29°19'19"  PsA  +6.6*    294.2    1063.8  276°39'31" -11°41'58"
+
+2023/10/02 20:36:00   256°28'40"  06°22'57"  14h22m38s -05°15'20"  Vir  +8.0     295.4    1388.4  276°25'47" -12°01'31"
+2023/10/02 20:37:00   240°35'22"  10°31'26"  15h21m43s -12°55'23"  Lib  +6.6     295.0    1121.3  276°36'23" -12°12'20"
+2023/10/02 20:38:00   217°10'17"  13°23'24"  16h48m58s -23°40'43"  Oph  +6.0     294.6     980.2  276°47'00" -12°23'08"
+2023/10/02 20:39:00   191°02'01"  12°29'10"  18h38m10s -33°00'43"  Sgr  +6.1     294.1    1019.5  276°57'37" -12°33'56"
+2023/10/02 20:40:00   170°42'39"  08°43'08"  20h16m46s -37°00'01"  Sgr  +6.9     293.7    1221.6  277°08'15" -12°44'43"
+
+2023/10/03 20:40:00   252°55'52"  03°20'57"  14h32m05s -09°53'52"  Lib  +9.8     294.8    1644.5  276°54'28" -13°04'12"
+2023/10/03 20:41:00   238°42'45"  05°52'32"  15h23m02s -17°40'01"  Lib  +8.1     294.5    1424.0  277°05'07" -13°14'59"
+2023/10/03 20:42:00   220°37'34"  07°21'44"  16h30m28s -27°10'24"  Sco  +7.5     294.0    1312.6  277°15'46" -13°25'47"
+2023/10/03 20:43:00   201°17'05"  06°58'11"  17h52m01s -35°52'38"  Sgr  +7.5     293.6    1338.4  277°26'26" -13°36'34"
+2023/10/03 20:44:00   184°27'57"  04°56'19"  19h14m56s -41°17'24"  Sgr  +8.4     293.1    1494.0  277°37'07" -13°47'21"
+
+
+Temps écoulé : 0.02s
+</pre>
+</font>
+</div>
+\endhtmlonly
+
+Nous rappelons en tête du fichier de résultat le lieu d'observation, le fuseau horaire, ainsi que les conditions d'observation choisies (ici, les conditions par défaut).
+
+Nous affichons ensuite la liste des passages, séparés les uns des autres par un saut de ligne. Chaque passage est constitué comme nous pouvons le voir de la date et de l'heure, suivies de ses caractéristiques. Tout d'abord, l'azimut et la hauteur du train de satellites, puis l'ascension droite, la déclinaison, la constellation et l'estimation de la magnitude.
+
+Sont ensuite données l'altitude et la distance du satellite, puis les coordonnées horizontales du Soleil (azimut et hauteur).
+
+Il est enfin précisé le temps nécessaire pour effectuer la recherche. Ce temps dépend notamment de la machine et de la disponibilité de ses ressources, ainsi que de l'algorithme de recherche. Il est allongé si l'on choisit pour la recherche un intervalle de temps long et/ou un pas de calcul court et/ou un grand nombre de satellites.
+
+
+*/

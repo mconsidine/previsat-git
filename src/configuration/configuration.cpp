@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    7 aout 2023
+ * >    1er octobre 2023
  *
  */
 
@@ -135,12 +135,16 @@ void Configuration::Chargement()
         Corps::Initialisation(_dirCommonData);
 
         _adresseCelestrakNorad = _adresseCelestrak + "NORAD/elements/gp.php?GROUP=%1&FORMAT=xml";
-        _adresseCelestrakSupplementalNorad = _adresseCelestrak + "NORAD/elements/supplemental/sup-gp.php?FILE=%1&FORMAT=xml";
+        _adresseCelestrakSupplementalNorad = _adresseCelestrak + "NORAD/elements/supplemental/";
+        _adresseCelestrakSupplementalNoradFichier = _adresseCelestrakSupplementalNorad + "sup-gp.php?FILE=%1&FORMAT=xml";
 
         const QString httpDir = QString("%1data/").arg(DOMAIN_NAME);
         _mapAdressesTelechargement.insert(TypeTelechargement::COORDONNEES, httpDir + "coordinates/");
         _mapAdressesTelechargement.insert(TypeTelechargement::CARTES, httpDir + "map/");
         _mapAdressesTelechargement.insert(TypeTelechargement::NOTIFICATIONS, httpDir + "sound/");
+
+        // Lecture du fichier Pre-Launch Starlink
+        _satellitesStarlink = GestionnaireXml::LecturePreLaunchStarlink(_versionStarlink);
 
         // Initialisation de la liste de fichiers d'elements orbitaux
         InitListeFichiersElem();
@@ -315,6 +319,11 @@ const QString &Configuration::dirSon() const
     return _dirSon;
 }
 
+const QString &Configuration::dirStarlink() const
+{
+    return _dirStarlink;
+}
+
 const QString &Configuration::dirTmp() const
 {
     return _dirTmp;
@@ -383,6 +392,11 @@ const QString &Configuration::adresseCelestrakNorad() const
 const QString &Configuration::adresseCelestrakSupplementalNorad() const
 {
     return _adresseCelestrakSupplementalNorad;
+}
+
+const QString &Configuration::adresseCelestrakSupplementalNoradFichier() const
+{
+    return _adresseCelestrakSupplementalNoradFichier;
 }
 
 const QMap<QString, QString> &Configuration::mapCategoriesOrbite() const
@@ -593,6 +607,23 @@ NotificationSonore &Configuration::notifFlashs()
     return _notifFlashs;
 }
 
+QString Configuration::versionStarlink() const
+{
+    return _versionStarlink;
+}
+
+QMap<QString, SatellitesStarlink> Configuration::satellitesStarlink() const
+{
+    return _satellitesStarlink;
+}
+
+void Configuration::AjoutDonneesSatellitesStarlink(const QString &groupe, const QString &fichier, const QString &lancement, const QString &deploiement)
+{
+    if (!_satellitesStarlink.keys().contains(groupe)) {
+        _satellitesStarlink.insert(groupe, { fichier, lancement, deploiement });
+    }
+}
+
 
 /*
  * Modificateurs
@@ -659,6 +690,7 @@ void Configuration::DefinitionArborescences()
     _dirLocalData = dir + "data";
     _dirElem = dir + "elem";
     _dirLog = dir + "log";
+    _dirStarlink = dir + "starlink";
 
     _dirOut = QStandardPaths::locate(QStandardPaths::DocumentsLocation, QString(), QStandardPaths::LocateDirectory) + dirAstr;
     _dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
@@ -974,7 +1006,7 @@ void Configuration::VerificationArborescences()
 #if defined (Q_OS_LINUX)
                                    << _dirElem
 #endif
-                                   << _dirCfg << _dirLog << _dirMap << _dirOut << _dirPref << _dirRsc << _dirSon << _dirTmp);
+                                   << _dirCfg << _dirLog << _dirMap << _dirOut << _dirPref << _dirRsc << _dirSon << _dirStarlink << _dirTmp);
 
         foreach(const QString dir, listeDir) {
             const QDir direc = QDir(dir);
