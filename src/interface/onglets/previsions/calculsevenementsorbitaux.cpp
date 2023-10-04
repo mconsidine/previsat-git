@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >
+ * >    4 octobre 2023
  *
  */
 
@@ -521,7 +521,7 @@ void CalculsEvenementsOrbitaux::on_satellitesChoisis_toggled(bool checked)
     if (checked) {
         _ui->filtreSatellites->clear();
         for(int i=0; i<_ui->listeEvenements->count(); i++) {
-            const bool chk = !(_ui->listeEvenements->item(i)->data(Qt::CheckStateRole) == QVariant(Qt::Checked));
+            const bool chk = !(_ui->listeEvenements->item(i)->data(Qt::CheckStateRole).toUInt() == Qt::Checked);
             _ui->listeEvenements->item(i)->setHidden(chk);
         }
     } else {

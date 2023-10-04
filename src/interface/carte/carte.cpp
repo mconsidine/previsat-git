@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    15 juin 2023
+ * >    4 octobre 2023
  *
  */
 
@@ -625,7 +625,7 @@ void Carte::AffichageLieuxObservation()
 
     /* Corps de la methode */
     QGraphicsSimpleTextItem * txtObs;
-    const int nbMax = static_cast<int> ((settings.value("affichage/affnomlieu") == QVariant(Qt::Unchecked)) ?
+    const int nbMax = static_cast<int> ((settings.value("affichage/affnomlieu").toUInt() == Qt::Unchecked) ?
                                             0 : Configuration::instance()->observateurs().size() - 1);
     const QList<Observateur> &observateurs = Configuration::instance()->observateurs();
 
@@ -637,7 +637,7 @@ void Carte::AffichageLieuxObservation()
         scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
         scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
 
-        if ((j == 0) || (settings.value("affichage/affnomlieu") == QVariant(Qt::Checked))) {
+        if ((j == 0) || (settings.value("affichage/affnomlieu").toUInt() == Qt::Checked)) {
 
             txtObs = new QGraphicsSimpleTextItem(Configuration::instance()->observateurs().at(j).nomlieu());
             const int lng = static_cast<int> (txtObs->boundingRect().width());
@@ -753,12 +753,12 @@ void Carte::AffichageSatelliteDefaut(const Satellite &satellite, const int lsat,
     scene->addEllipse(rectangle, noir, QBrush(couleur, Qt::SolidPattern));
 
     // Nom des satellites
-    if (settings.value("affichage/affnomsat") != QVariant(Qt::Unchecked)) {
+    if (settings.value("affichage/affnomsat").toUInt() != Qt::Unchecked) {
 
-        const QVariant etat = settings.value("affichage/affnomsat");
-        if (((etat == QVariant(Qt::PartiallyChecked)) &&
+        const Qt::CheckState etat = static_cast<Qt::CheckState> (settings.value("affichage/affnomsat").toUInt());
+        if (((etat == Qt::PartiallyChecked) &&
              (satellite.elementsOrbitaux().norad == Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad)) ||
-                (etat == QVariant(Qt::Checked))) {
+                (etat == Qt::Checked)) {
 
             QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(satellite.elementsOrbitaux().nom);
             const int lng = static_cast<int> (txtSat->boundingRect().width());
@@ -1212,10 +1212,10 @@ void Carte::AffichageZoneOmbre()
     Soleil &soleil = Configuration::instance()->soleil();
 
     /* Corps de la methode */
-    if (settings.value("affichage/affnuit") != QVariant(Qt::Unchecked)) {
+    if (settings.value("affichage/affnuit").toUInt() != Qt::Unchecked) {
 
         double beta = MATHS::PI_SUR_DEUX;
-        const int imax = ((settings.value("affichage/affnuit") == QVariant(Qt::PartiallyChecked)) || _mcc) ? 1 : 4;
+        const int imax = ((settings.value("affichage/affnuit").toUInt() == Qt::PartiallyChecked) || _mcc) ? 1 : 4;
 
         const QBrush alpha1 = QBrush(QColor::fromRgb(0, 0, 0, static_cast<int> (2.55 * settings.value("affichage/intensiteOmbre").toDouble())));
         const QBrush alpha = (_mcc) ? QBrush(QColor::fromRgb(0, 0, 0, qMin(255, 2 * alpha1.color().alpha()))) : alpha1;
@@ -1550,11 +1550,11 @@ void Carte::AffichageZoneVisibilite()
     const QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
 
     /* Corps de la methode */
-    if (!satellites.isEmpty() && ((settings.value("affichage/affvisib") != QVariant(Qt::Unchecked)) || _mcc)) {
+    if (!satellites.isEmpty() && ((settings.value("affichage/affvisib").toUInt() != Qt::Unchecked) || _mcc)) {
 
         QPen pen;
         QPainterPath res;
-        const unsigned int nbMax = static_cast<int> (settings.value("affichage/affvisib") == QVariant(Qt::PartiallyChecked) ? 1 : satellites.size());
+        const unsigned int nbMax = static_cast<int> ((settings.value("affichage/affvisib").toUInt() == Qt::PartiallyChecked) ? 1 : satellites.size());
 
         for(unsigned int isat=0; isat<nbMax; isat++) {
 

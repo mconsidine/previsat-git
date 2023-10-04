@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    4 octobre 2023
  *
  */
 
@@ -613,7 +613,7 @@ void CalculsTransits::on_satellitesChoisis_toggled(bool checked)
     if (checked) {
         _ui->filtreSatellites->clear();
         for(int i=0; i<_ui->listeTransits->count(); i++) {
-            const bool chk = !(_ui->listeTransits->item(i)->data(Qt::CheckStateRole) == QVariant(Qt::Checked));
+            const bool chk = !(_ui->listeTransits->item(i)->data(Qt::CheckStateRole).toUInt() == Qt::Checked);
             _ui->listeTransits->item(i)->setHidden(chk);
         }
     } else {

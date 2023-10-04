@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    4 octobre 2023
  *
  */
 
@@ -195,6 +195,7 @@ void PreviSat::ChargementConfiguration()
     /* Corps de la methode */
     qInfo() << "Début Fonction" << __FUNCTION__;
 
+    // Chargement des elements des differentes fenetres
     _informations = new Informations(this);
     _onglets = new Onglets();
     _ui->layoutOnglets->addWidget(_onglets);
@@ -216,7 +217,10 @@ void PreviSat::ChargementConfiguration()
     _gmt = new QLabel("", _carte->ui()->carte);
     _gmt->setVisible(false);
 
+    // Creation des menus
     CreationMenus();
+
+    // Creation des raccourcis clavier
     CreationRaccourcis();
 
     // Connexions signaux-slots
@@ -271,6 +275,7 @@ void PreviSat::MajGP()
             const int ageMax = settings.value("temps/ageMax", 15).toInt();
             const QString noradDefaut = Configuration::instance()->noradDefaut();
 
+            // Mise ajour des elements orbitaux anciens
             if ((fabs(_dateCourante->jourJulienUTC() - lastUpdate) > ageMax) ||
                     ((_dateCourante->jourJulienUTC() - Configuration::instance()->mapElementsOrbitaux()[noradDefaut].epoque.jourJulienUTC()) > ageMax)) {
                 MajWebGP();
@@ -305,6 +310,7 @@ void PreviSat::ChargementGP()
 
         qInfo() << "Début Fonction" << __FUNCTION__;
 
+        // Nom du fichier d'elements orbitaux
         QString nomfic = Configuration::instance()->dirElem() + QDir::separator() + Configuration::instance()->nomfic();
         QFileInfo ff(nomfic);
 
@@ -434,6 +440,7 @@ void PreviSat::DemarrageApplication()
 
     _ui->issLive->setChecked(settings.value("affichage/issLive", false).toBool());
 
+    // Affichage des elements sur les cartes et le radar
     AffichageCartesRadar();
 
     // Lancement du chronometre
@@ -1305,9 +1312,11 @@ void PreviSat::TelechargementGroupesStarlink()
 
         qInfo() << "Telechargement des groupes Starlink";
 
+        // Telechargement du verrou Starlink (si ce fichier n'existe pas, l'onglet Starlink ne s'affiche pas)
         Telechargement tel1(Configuration::instance()->dirTmp());
         tel1.TelechargementFichier(QString(DOMAIN_NAME) + "maj/verrouStarlink", false);
 
+        // Telechargement des informations generales des pre-launch Starlink
         Telechargement tel2(Configuration::instance()->dirStarlink());
         tel2.TelechargementFichier(QUrl(Configuration::instance()->adresseCelestrakSupplementalNorad() + "index.php"));
 
@@ -1329,12 +1338,13 @@ void PreviSat::TelechargementGroupesStarlink()
                 const unsigned int fing = static_cast<unsigned int> (contenu.indexOf("<", indg));
                 const unsigned int indl = static_cast<unsigned int> (contenu.indexOf("Launch: ", debl));
 
+                // Informations Starlink
                 const QString fichier = contenu.mid(indf, finf - indf);
                 const QString groupe = contenu.mid(indg, fing - indg);
                 const QString lancement = contenu.mid(contenu.indexOf("Launch: ", indl) + 8, 19);
                 const QString deploiement = contenu.mid(contenu.indexOf("Deployment: ", indl) + 12, 19);
 
-                // Telechargement du fichier d'elements orbitaux
+                // Telechargement du fichier d'elements orbitaux correspondant
                 const QUrl url(Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg(fichier));
                 Telechargement tel3(Configuration::instance()->dirStarlink());
                 tel3.TelechargementFichier(url);
@@ -1380,6 +1390,7 @@ void PreviSat::VerifAgeGP()
         const int ageMax = settings.value("temps/ageMax", 15).toInt();
         const QString noradDefaut = Configuration::instance()->noradDefaut();
 
+        // Verification de l'age des elements orbitaux
         if ((fabs(_dateCourante->jourJulienUTC() - Configuration::instance()->mapElementsOrbitaux()[noradDefaut].epoque.jourJulienUTC()) > ageMax) &&
                 _ui->tempsReel->isChecked()) {
 
@@ -1443,6 +1454,7 @@ bool PreviSat::VerifMajDate(const QString &fichier, const QStringList &listeFich
                             const QString fich = Configuration::instance()->dirLocalData() + QDir::separator() + fic;
                             const QFileInfo ff(fich);
 
+                            // Comparaison de la nouvelle date avec celle des fichiers du repertoire local
                             if (ff.lastModified().date() > dateMax) {
                                 dateMax = QDate(ff.lastModified().date());
                             }
@@ -3472,7 +3484,7 @@ void PreviSat::on_satellitesChoisis_toggled(bool checked)
     if (checked) {
         _ui->filtreSatellites->clear();
         for(int i=0; i<_ui->listeSatellites->count(); i++) {
-            const bool chk = !(_ui->listeSatellites->item(i)->data(Qt::CheckStateRole) == QVariant(Qt::Checked));
+            const bool chk = !(_ui->listeSatellites->item(i)->data(Qt::CheckStateRole).toUInt() == Qt::Checked);
             _ui->listeSatellites->item(i)->setHidden(chk);
         }
     } else {

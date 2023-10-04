@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    4 octobre 2023
  *
  */
 
@@ -1722,7 +1722,7 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
 
     // Calcul de la position du catalogue d'etoiles
     Etoile::CalculPositionEtoiles(observateur, etoiles);
-    if (settings.value("affichage/affconst") != QVariant(Qt::Unchecked)) {
+    if (settings.value("affichage/affconst").toUInt() != Qt::Unchecked) {
         Constellation::CalculConstellations(observateur, constellations);
         LigneConstellation::CalculLignesCst(etoiles, lignesCst);
     }
