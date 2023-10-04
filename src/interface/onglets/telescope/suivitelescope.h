@@ -204,6 +204,7 @@ private slots:
     void on_genererPositions_clicked();
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();
+    void on_satellitesChoisis_toggled(bool checked);
     void on_parametrageDefautSuivi_clicked();
     void on_afficherSuivi_clicked();
     void on_listeTelescope_itemClicked(QListWidgetItem *item);
