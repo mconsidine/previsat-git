@@ -30,7 +30,7 @@
  * >    25 septembre 2023
  *
  * Date de revision
- * >
+ * >    4 octobre 2023
  *
  */
 
@@ -135,6 +135,8 @@ void CalculsStarlink::show()
         const QString groupe = it.next();
 
         const SatellitesStarlink starlink = Configuration::instance()->satellitesStarlink()[groupe];
+
+        // Dates de lancement et de deploiement
         lancement = starlink.lancement;
         deploiement = starlink.deploiement;
 
@@ -308,8 +310,10 @@ void CalculsStarlink::on_calculs_clicked()
 
         qInfo() << "Lancement des calculs de prévisions des trains de Starlink";
 
+        // Groupe Starlink selectionne dans la liste deroulante
         const QString fichier = Configuration::instance()->satellitesStarlink()[_ui->groupe->currentText()].fichier;
 
+        // Elements orbitaux du train de satellites
         const QMap<QString, ElementsOrbitaux> tabElem =
             GPFormat::LectureFichier(Configuration::instance()->dirStarlink() + QDir::separator() + fichier + ".xml", "", -1, QStringList(), true, true);
 
@@ -383,7 +387,7 @@ void CalculsStarlink::on_calculs_clicked()
         conditions.tabElem.first().donnees.setMagnitudeStandard(STARLINK::MAGNITUDE_STANDARD);
 
 
-        // Ecriture des informations de prévisions des trains Starlink dans le fichier de log
+        // Ecriture des informations de previsions des trains Starlink dans le fichier de log
         qInfo() << "--";
         qInfo() << "Calcul des prévisions de passage des trains Starlink :";
 

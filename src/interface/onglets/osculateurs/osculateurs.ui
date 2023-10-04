@@ -282,7 +282,7 @@
     <rect>
      <x>2</x>
      <y>65</y>
-     <width>151</width>
+     <width>148</width>
      <height>141</height>
     </rect>
    </property>
@@ -559,7 +559,7 @@
   <widget class="QGroupBox" name="grpElementsOsculateurs">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>154</x>
      <y>65</y>
      <width>441</width>
      <height>141</height>
@@ -1523,9 +1523,9 @@
   <widget class="QGroupBox" name="grpSignal">
    <property name="geometry">
     <rect>
-     <x>608</x>
+     <x>599</x>
      <y>65</y>
-     <width>181</width>
+     <width>171</width>
      <height>141</height>
     </rect>
    </property>
@@ -1537,7 +1537,7 @@
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>171</width>
+      <width>161</width>
       <height>52</height>
      </rect>
     </property>

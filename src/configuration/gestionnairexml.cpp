@@ -241,19 +241,20 @@ void GestionnaireXml::EcriturePreLaunchStarlink()
     /* Initialisations */
 
     /* Corps de la methode */
-    QFile fi(Configuration::instance()->dirCfg() + QDir::separator() + "pre-launch.xml");
+    QFile fi1(Configuration::instance()->dirCfg() + QDir::separator() + "pre-launch.xml");
 
-    if (fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    if (fi1.open(QIODevice::WriteOnly | QIODevice::Text)) {
 
+        QFile fi2;
         const Date aujourdhui;
-        QXmlStreamWriter cfg(&fi);
+        QXmlStreamWriter cfg(&fi1);
 
         cfg.setAutoFormatting(true);
         cfg.writeStartDocument();
         cfg.writeStartElement("PreviSatStarlink");
         cfg.writeAttribute("version", Configuration::instance()->versionStarlink());
 
-        // Categories
+        // Groupes Starlink
         QMapIterator it(Configuration::instance()->satellitesStarlink());
         while (it.hasNext()) {
             it.next();
@@ -261,21 +262,31 @@ void GestionnaireXml::EcriturePreLaunchStarlink()
             const QString groupe = it.key();
             const SatellitesStarlink starlink = it.value();
 
+            // Ecriture des informations pour les fichiers pre-launch recents
             const Date dateLancement = Date::ConversionDateIso(starlink.lancement);
             if ((dateLancement.jourJulienUTC() - aujourdhui.jourJulienUTC()) < STARLINK::AGE_MAXIMAL_ELEM) {
 
                 cfg.writeStartElement("Starlink");
 
+                // Informations du groupe Starlink
                 cfg.writeTextElement("Fichier", starlink.fichier);
                 cfg.writeTextElement("Groupe", groupe);
                 cfg.writeTextElement("Lancement", starlink.lancement);
                 cfg.writeTextElement("Deploiement", starlink.deploiement);
                 cfg.writeEndElement();
+
+            } else {
+
+                // Suppression des fichiers trop anciens
+                fi2.setFileName(Configuration::instance()->dirStarlink() + QDir::separator() + starlink.fichier + ".xml");
+                if (fi2.exists()) {
+                    fi2.remove();
+                }
             }
         }
 
         cfg.writeEndDocument();
-        fi.close();
+        fi1.close();
     }
 
     /* Retour */
@@ -981,9 +992,8 @@ QMap<QString, SatellitesStarlink> GestionnaireXml::LecturePreLaunchStarlink(QStr
                             }
                         }
 
-                        const Date dateLancement = Date::ConversionDateIso(lancement);
-
-                        if (!groupe.isEmpty() && ((dateLancement.jourJulienUTC() - aujourdhui.jourJulienUTC()) < STARLINK::AGE_MAXIMAL_ELEM)) {
+                        // Recuperation des informations Starlink
+                        if (!groupe.isEmpty()) {
                             mapSatellitesStarlink.insert(groupe, { fichier, lancement, deploiement });
                         }
                     }

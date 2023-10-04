@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >
+ * >    4 octobre 2023
  *
  */
 
@@ -604,7 +604,7 @@ void CalculsPrevisions::on_satellitesChoisis_toggled(bool checked)
     if (checked) {
         _ui->filtreSatellites->clear();
         for(int i=0; i<_ui->listePrevisions->count(); i++) {
-            const bool chk = !(_ui->listePrevisions->item(i)->data(Qt::CheckStateRole) == QVariant(Qt::Checked));
+            const bool chk = !(_ui->listePrevisions->item(i)->data(Qt::CheckStateRole).toUInt() == Qt::Checked);
             _ui->listePrevisions->item(i)->setHidden(chk);
         }
     } else {
