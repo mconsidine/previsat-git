@@ -743,16 +743,52 @@ void SuiviTelescope::on_genererPositions_clicked()
 
 void SuiviTelescope::on_filtreSatellites_textChanged(const QString &arg1)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (!arg1.isEmpty()) {
+        const bool etat = _ui->satellitesChoisis->blockSignals(true);
+        _ui->satellitesChoisis->setChecked(false);
+        _ui->satellitesChoisis->blockSignals(etat);
+    }
+
     for(int i=0; i<_ui->listeTelescope->count(); i++) {
         const QString elem = _ui->listeTelescope->item(i)->text();
         _ui->listeTelescope->item(i)->setHidden(!elem.contains(arg1, Qt::CaseInsensitive));
     }
+
+    /* Retour */
+    return;
 }
 
 void SuiviTelescope::on_filtreSatellites_returnPressed()
 {
     _ui->filtreSatellites->clear();
     TriAffichageListeSatellites();
+}
+
+void SuiviTelescope::on_satellitesChoisis_toggled(bool checked)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (checked) {
+        _ui->filtreSatellites->clear();
+        for(int i=0; i<_ui->listeTelescope->count(); i++) {
+            const bool chk = !(_ui->listeTelescope->item(i)->data(Qt::CheckStateRole) == QVariant(Qt::Checked));
+            _ui->listeTelescope->item(i)->setHidden(chk);
+        }
+    } else {
+        on_filtreSatellites_textChanged("");
+        on_filtreSatellites_returnPressed();
+    }
+
+    /* Retour */
+    return;
 }
 
 void SuiviTelescope::on_parametrageDefautSuivi_clicked()

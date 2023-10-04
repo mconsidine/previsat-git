@@ -183,6 +183,7 @@ private slots:
     void on_calculsPrev_clicked();
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();
+    void on_satellitesChoisis_toggled(bool checked);
     void on_parametrageDefautPrev_clicked();
     void on_listePrevisions_customContextMenuRequested(const QPoint &pos);
     void on_effacerHeuresPrev_clicked();

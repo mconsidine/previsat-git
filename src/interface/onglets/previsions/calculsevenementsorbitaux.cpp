@@ -485,16 +485,52 @@ void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
 
 void CalculsEvenementsOrbitaux::on_filtreSatellites_textChanged(const QString &arg1)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (!arg1.isEmpty()) {
+        const bool etat = _ui->satellitesChoisis->blockSignals(true);
+        _ui->satellitesChoisis->setChecked(false);
+        _ui->satellitesChoisis->blockSignals(etat);
+    }
+
     for(int i=0; i<_ui->listeEvenements->count(); i++) {
         const QString elem = _ui->listeEvenements->item(i)->text();
         _ui->listeEvenements->item(i)->setHidden(!elem.contains(arg1, Qt::CaseInsensitive));
     }
+
+    /* Retour */
+    return;
 }
 
 void CalculsEvenementsOrbitaux::on_filtreSatellites_returnPressed()
 {
     _ui->filtreSatellites->clear();
     TriAffichageListeSatellites();
+}
+
+void CalculsEvenementsOrbitaux::on_satellitesChoisis_toggled(bool checked)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (checked) {
+        _ui->filtreSatellites->clear();
+        for(int i=0; i<_ui->listeEvenements->count(); i++) {
+            const bool chk = !(_ui->listeEvenements->item(i)->data(Qt::CheckStateRole) == QVariant(Qt::Checked));
+            _ui->listeEvenements->item(i)->setHidden(chk);
+        }
+    } else {
+        on_filtreSatellites_textChanged("");
+        on_filtreSatellites_returnPressed();
+    }
+
+    /* Retour */
+    return;
 }
 
 void CalculsEvenementsOrbitaux::on_parametrageDefautEvt_clicked()
@@ -555,4 +591,3 @@ void CalculsEvenementsOrbitaux::on_majElementsOrbitaux_clicked()
     emit MajFichierGP();
     CalculAgeElementsOrbitaux();
 }
-

@@ -642,7 +642,7 @@
               <rect>
                <x>1</x>
                <y>171</y>
-               <width>230</width>
+               <width>211</width>
                <height>22</height>
               </rect>
              </property>
@@ -657,6 +657,19 @@
              </property>
              <property name="clearButtonEnabled">
               <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="satellitesChoisis">
+             <property name="geometry">
+              <rect>
+               <x>216</x>
+               <y>172</y>
+               <width>21</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
              </property>
             </widget>
            </widget>

@@ -710,7 +710,7 @@
     <rect>
      <x>566</x>
      <y>27</y>
-     <width>210</width>
+     <width>191</width>
      <height>22</height>
     </rect>
    </property>
@@ -802,6 +802,19 @@
    </property>
    <property name="text">
     <string>Mettre à jour les éléments orbitaux...</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="satellitesChoisis">
+   <property name="geometry">
+    <rect>
+     <x>762</x>
+     <y>30</y>
+     <width>21</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

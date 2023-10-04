@@ -176,6 +176,7 @@ private slots:
     void on_calculsEvt_clicked();
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();
+    void on_satellitesChoisis_toggled(bool checked);
     void on_parametrageDefautEvt_clicked();
     void on_effacerHeuresEvt_clicked();
     void on_listeEvenements_customContextMenuRequested(const QPoint &pos);

@@ -476,6 +476,7 @@ private slots:
     // Filtre sur les satellites
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();
+    void on_satellitesChoisis_toggled(bool checked);
 
     void on_listeSatellites_itemClicked(QListWidgetItem *item);
     void on_listeSatellites_itemEntered(QListWidgetItem *item);

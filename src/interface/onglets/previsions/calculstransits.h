@@ -187,6 +187,7 @@ private slots:
     void on_calculsTransit_clicked();
     void on_filtreSatellites_textChanged(const QString &arg1);
     void on_filtreSatellites_returnPressed();
+    void on_satellitesChoisis_toggled(bool checked);
     void on_parametrageDefautTransit_clicked();
     void on_effacerHeuresTransit_clicked();
     void on_hauteurSatTransit_currentIndexChanged(int index);

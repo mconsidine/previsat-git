@@ -3373,6 +3373,9 @@ void PreviSat::on_actionApropos_triggered()
     Apropos * const apropos = new Apropos(this);
     QEvent evt(QEvent::LanguageChange);
 
+    disconnect(apropos, &Apropos::VerifMajVersion, this, &PreviSat::VerifMajVersion);
+    connect(apropos, &Apropos::VerifMajVersion, this, &PreviSat::VerifMajVersion);
+
     apropos->changeEvent(&evt);
     apropos->setWindowModality(Qt::ApplicationModal);
     apropos->show();
@@ -3432,10 +3435,24 @@ void PreviSat::on_listeFichiersElem_currentIndexChanged(int index)
 
 void PreviSat::on_filtreSatellites_textChanged(const QString &arg1)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (!arg1.isEmpty()) {
+        const bool etat = _ui->satellitesChoisis->blockSignals(true);
+        _ui->satellitesChoisis->setChecked(false);
+        _ui->satellitesChoisis->blockSignals(etat);
+    }
+
     for(int i=0; i<_ui->listeSatellites->count(); i++) {
         const QString elem = _ui->listeSatellites->item(i)->text();
         _ui->listeSatellites->item(i)->setHidden(!elem.contains(arg1, Qt::CaseInsensitive));
     }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_filtreSatellites_returnPressed()
@@ -3443,6 +3460,28 @@ void PreviSat::on_filtreSatellites_returnPressed()
     _ui->filtreSatellites->clear();
     _ui->listeSatellites->sortItems();
     _ui->listeSatellites->scrollToItem(_ui->listeSatellites->currentItem(), QAbstractItemView::PositionAtTop);
+}
+
+void PreviSat::on_satellitesChoisis_toggled(bool checked)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (checked) {
+        _ui->filtreSatellites->clear();
+        for(int i=0; i<_ui->listeSatellites->count(); i++) {
+            const bool chk = !(_ui->listeSatellites->item(i)->data(Qt::CheckStateRole) == QVariant(Qt::Checked));
+            _ui->listeSatellites->item(i)->setHidden(chk);
+        }
+    } else {
+        on_filtreSatellites_textChanged("");
+        on_filtreSatellites_returnPressed();
+    }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
