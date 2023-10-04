@@ -69,6 +69,7 @@ class AfficherResultats : public QMainWindow
     friend class EvenementsOrbitauxTest;
     friend class FlashsTest;
     friend class PrevisionTest;
+    friend class StarlinkTest;
     friend class TransitsTest;
 #endif
 public:

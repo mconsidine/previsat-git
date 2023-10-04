@@ -30,7 +30,7 @@
  * >    20 novembre 2019
  *
  * Date de revision
- * >    14 aout 2023
+ * >    1er octobre 2023
  *
  */
 
@@ -197,6 +197,15 @@ const QString &Donnees::siteLancement() const
 QString Donnees::nom() const
 {
     return _nom;
+}
+
+
+/*
+ * Modificateurs
+ */
+void Donnees::setMagnitudeStandard(const double m)
+{
+    _magnitudeStandard = m;
 }
 
 

@@ -36,7 +36,7 @@
  * >    20 novembre 2019
  *
  * Date de revision
- * >    14 aout 2023
+ * >    1er octobre 2023
  *
  */
 
@@ -90,6 +90,12 @@ public:
     const QString &pays() const;
     const QString &siteLancement() const;
     QString nom() const;
+
+
+    /*
+     * Modificateurs
+     */
+    void setMagnitudeStandard(const double m);
 
 
 protected:

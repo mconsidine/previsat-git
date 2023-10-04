@@ -30,7 +30,7 @@
  * >    16 juin 2022
  *
  * Date de revision
- * >
+ * >    1er octobre 2023
  *
  */
 
@@ -96,6 +96,8 @@ void Telechargement::TelechargementFichier(const QUrl &url, const bool alarme, c
 #endif
         if (alarme) {
             throw PreviSatException(tr("Erreur lors du téléchargement du fichier %1").arg(fic), MessageType::WARNING);
+        } else {
+            throw PreviSatException();
         }
 
     } else {
@@ -120,6 +122,8 @@ void Telechargement::TelechargementFichier(const QUrl &url, const bool alarme, c
 
             if (alarme) {
                 throw PreviSatException(tr("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn), MessageType::WARNING);
+            } else {
+                throw PreviSatException();
             }
 #endif
         }

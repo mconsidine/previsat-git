@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreviSatStarlink version="">
+    <Starlink>
+        <Fichier>starlink-g6-21</Fichier>
+        <Groupe>Starlink G6-21 Pre-Launch</Groupe>
+        <Lancement>2023-10-05T02:45:00</Lancement>
+        <Deploiement>2023-10-05T03:50:23</Deploiement>
+    </Starlink>
+    <Starlink>
+        <Fichier>starlink-g6-21b1</Fichier>
+        <Groupe>Starlink G6-21B1 Pre-Launch</Groupe>
+        <Lancement>2023-10-05T03:38:50</Lancement>
+        <Deploiement>2023-10-05T04:44:13</Deploiement>
+    </Starlink>
+    <Starlink>
+        <Fichier>starlink-g6-21b2</Fichier>
+        <Groupe>Starlink G6-21B2 Pre-Launch</Groupe>
+        <Lancement>2023-10-05T04:48:00</Lancement>
+        <Deploiement>2023-10-05T05:53:23</Deploiement>
+    </Starlink>
+    <Starlink>
+        <Fichier>starlink-g6-21b3</Fichier>
+        <Groupe>Starlink G6-21B3 Pre-Launch</Groupe>
+        <Lancement>2023-10-05T05:36:30</Lancement>
+        <Deploiement>2023-10-05T06:41:53</Deploiement>
+    </Starlink>
+    <Starlink>
+        <Fichier>starlink-g6-21b4</Fichier>
+        <Groupe>Starlink G6-21B4 Pre-Launch</Groupe>
+        <Lancement>2023-10-05T05:57:00</Lancement>
+        <Deploiement>2023-10-05T07:02:23</Deploiement>
+    </Starlink>
+</PreviSatStarlink>

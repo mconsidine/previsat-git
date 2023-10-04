@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    26 avril 2023
+ * >    1er octobre 2023
  *
  */
 
@@ -53,6 +53,7 @@
 | <b><center>Alt + F</center></b> | Aller à l'onglet Flashs |
 | <b><center>Alt + T</center></b> | Aller à l'onglet Transits |
 | <b><center>Alt + E</center></b> | Aller à l'onglet Evènements |
+| <b><center>Alt + K</center></b> | Aller à l'onglet Starlink |
 | <b><center>A…Z</center></b> | Permet de se déplacer dans la liste des satellites lorsque celle-ci est active |
 
 */

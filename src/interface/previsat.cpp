@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2023
+ * >    1er octobre 2023
  *
  */
 
@@ -81,6 +81,7 @@
 #include "onglets/previsions/calculsevenementsorbitaux.h"
 #include "onglets/previsions/calculsflashs.h"
 #include "onglets/previsions/calculsprevisions.h"
+#include "onglets/previsions/calculsstarlink.h"
 #include "onglets/previsions/calculstransits.h"
 #include "onglets/telescope/suivitelescope.h"
 #include "options/options.h"
@@ -419,6 +420,9 @@ void PreviSat::DemarrageApplication()
         }
     }
 
+    // Telechargement des groupes Starlink
+    TelechargementGroupesStarlink();
+
     // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
     EnchainementCalculs();
 
@@ -574,6 +578,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_onglets->previsions(), &CalculsPrevisions::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->flashs(), &CalculsFlashs::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->transits(), &CalculsTransits::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+    connect(_onglets->starlink(), &CalculsStarlink::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->evenements(), &CalculsEvenementsOrbitaux::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->general(), &General::RecalculerPositions, _onglets, &Onglets::AffichageLieuObs);
     connect(_onglets->general(), &General::RecalculerPositions, this, &PreviSat::ReinitCalculEvenementsSoleilLune);
@@ -711,6 +716,12 @@ void PreviSat::CreationRaccourcis()
     _transits->setShortcut(Qt::ALT | Qt::Key_T);
     connect(_transits, &QAction::triggered, this, &PreviSat::RaccourciTransits);
     this->addAction(_transits);
+
+    // Raccourci Onglet Starlink
+    _starlink = new QAction(this);
+    _starlink->setShortcut(Qt::ALT | Qt::Key_K);
+    connect(_starlink, &QAction::triggered, this, &PreviSat::RaccourciStarlink);
+    this->addAction(_starlink);
 
     // Raccourci Onglet Evenements
     _evenements = new QAction(this);
@@ -905,7 +916,7 @@ void PreviSat::EnchainementCalculs()
 
             const bool eclipsesLune = settings.value("affichage/eclipsesLune", true).toBool();
             const bool effetEclipsesMagnitude = settings.value("affichage/effetEclipsesMagnitude", true).toBool();
-            const bool extinctionAtmospherique = settings.value("affichage/extinction", true).toBool();
+            const bool extinctionAtmospherique = settings.value("affichage/extinctionAtmospherique", true).toBool();
             const bool refractionAtmospherique = settings.value("affichage/refractionAtmospherique", true).toBool();
             const bool afftraceCiel = settings.value("affichage/afftraceCiel", true).toBool();
             const bool affvisib = settings.value("affichage/affvisib", true).toBool();
@@ -985,6 +996,7 @@ void PreviSat::Initialisation()
     _previsions = nullptr;
     _flashs = nullptr;
     _transits = nullptr;
+    _starlink = nullptr;
     _evenements = nullptr;
     _informationsSatellite = nullptr;
     _recherche = nullptr;
@@ -1280,6 +1292,78 @@ void PreviSat::MajWebGP()
 }
 
 /*
+ * Telechargement des groupes Starlink
+ */
+void PreviSat::TelechargementGroupesStarlink()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        qInfo() << "Telechargement des groupes Starlink";
+
+        Telechargement tel1(Configuration::instance()->dirTmp());
+        tel1.TelechargementFichier(QString(DOMAIN_NAME) + "maj/verrouStarlink", false);
+
+        Telechargement tel2(Configuration::instance()->dirStarlink());
+        tel2.TelechargementFichier(QUrl(Configuration::instance()->adresseCelestrakSupplementalNorad() + "index.php"));
+
+        // Recuperation des nouveaux groupes de lancement
+        QFile fi(Configuration::instance()->dirStarlink() + QDir::separator() + "index.php");
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+            unsigned int debf = 0;
+            unsigned int debl = 0;
+
+            const QString contenu = fi.readAll();
+            const unsigned int nb = static_cast<unsigned int> (contenu.count("sup-gp.php?FILE=starlink-"));
+
+            for(unsigned int i=0; i<nb; i++) {
+
+                const unsigned int indf = static_cast<unsigned int> (contenu.indexOf("sup-gp.php?FILE=starlink-", debf)) + 16;
+                const unsigned int finf = static_cast<unsigned int> (contenu.indexOf("&FORMAT", indf));
+                const unsigned int indg = static_cast<unsigned int> (contenu.indexOf(">", indf) + 1);
+                const unsigned int fing = static_cast<unsigned int> (contenu.indexOf("<", indg));
+                const unsigned int indl = static_cast<unsigned int> (contenu.indexOf("Launch: ", debl));
+
+                const QString fichier = contenu.mid(indf, finf - indf);
+                const QString groupe = contenu.mid(indg, fing - indg);
+                const QString lancement = contenu.mid(contenu.indexOf("Launch: ", indl) + 8, 19);
+                const QString deploiement = contenu.mid(contenu.indexOf("Deployment: ", indl) + 12, 19);
+
+                // Telechargement du fichier d'elements orbitaux
+                const QUrl url(Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg(fichier));
+                Telechargement tel3(Configuration::instance()->dirStarlink());
+                tel3.TelechargementFichier(url);
+
+                // Ajout du groupe dans la liste
+                Configuration::instance()->AjoutDonneesSatellitesStarlink(groupe, fichier, lancement, deploiement);
+
+                debf = finf + 1;
+                debl = indl + 1;
+            }
+
+            fi.close();
+
+            if (Configuration::instance()->satellitesStarlink().isEmpty()) {
+                throw PreviSatException();
+            }
+
+            _onglets->starlink()->show();
+        }
+
+    } catch (PreviSatException const &e) {
+        _onglets->ui()->stackedWidget_previsions->removeWidget(_onglets->ui()->starlink);
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Verification de l'age des elements orbitaux d'un satellite
  */
 void PreviSat::VerifAgeGP()
@@ -1327,50 +1411,54 @@ bool PreviSat::VerifMajDate(const QString &fichier, const QStringList &listeFich
     /* Declarations des variables locales */
 
     /* Initialisations */
-    qInfo() << "Début Fonction" << __FUNCTION__;
-
     bool anew = false;
-    Telechargement tel(Configuration::instance()->dirTmp());
 
     /* Corps de la methode */
-    tel.TelechargementFichier(QString("%1/maj/%2").arg(DOMAIN_NAME).arg(fichier), false);
+    try {
 
-    QFile fi(tel.dirDwn() + QDir::separator() + fichier);
-    if (fi.exists() && (fi.size() != 0)) {
+        qInfo() << "Début Fonction" << __FUNCTION__;
 
-        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        Telechargement tel(Configuration::instance()->dirTmp());
+        tel.TelechargementFichier(QString("%1/maj/%2").arg(DOMAIN_NAME).arg(fichier), false);
 
-            const QString ligne = fi.readLine().trimmed();
-            const QDate nouvelleDate = QDate::fromString(ligne, "yyyy-MM-dd");
-            fi.close();
+        QFile fi(tel.dirDwn() + QDir::separator() + fichier);
+        if (fi.exists() && (fi.size() != 0)) {
 
-            if (!listeFichierMaj.isEmpty()) {
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-                QDate dateMax;
-                QStringListIterator it(listeFichierMaj);
-                while (it.hasNext()) {
+                const QString ligne = fi.readLine().trimmed();
+                const QDate nouvelleDate = QDate::fromString(ligne, "yyyy-MM-dd");
+                fi.close();
 
-                    const QString fic = it.next();
+                if (!listeFichierMaj.isEmpty()) {
 
-                    if (!fic.contains("preferences")) {
+                    QDate dateMax;
+                    QStringListIterator it(listeFichierMaj);
+                    while (it.hasNext()) {
 
-                        const QString fich = Configuration::instance()->dirLocalData() + QDir::separator() + fic;
-                        const QFileInfo ff(fich);
+                        const QString fic = it.next();
 
-                        if (ff.lastModified().date() > dateMax) {
-                            dateMax = QDate(ff.lastModified().date());
+                        if (!fic.contains("preferences")) {
+
+                            const QString fich = Configuration::instance()->dirLocalData() + QDir::separator() + fic;
+                            const QFileInfo ff(fich);
+
+                            if (ff.lastModified().date() > dateMax) {
+                                dateMax = QDate(ff.lastModified().date());
+                            }
                         }
                     }
+
+                    anew = (nouvelleDate > dateMax);
                 }
 
-                anew = (nouvelleDate > dateMax);
-            }
-
-            if (dateMaj.isValid()) {
-                anew = (nouvelleDate > dateMaj);
-                _majInfosDate = ligne;
+                if (dateMaj.isValid()) {
+                    anew = (nouvelleDate > dateMaj);
+                    _majInfosDate = ligne;
+                }
             }
         }
+    } catch (PreviSatException const &e) {
     }
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
@@ -2338,6 +2426,16 @@ void PreviSat::RaccourciTransits()
     _onglets->setIndexPrevisions(index);
 }
 
+void PreviSat::RaccourciStarlink()
+{
+    const int index = _onglets->ui()->stackedWidget_previsions->indexOf(_onglets->ui()->starlink);
+    if (index != -1) {
+        _onglets->setCurrentWidget(_onglets->ui()->previsions);
+        _onglets->ui()->stackedWidget_previsions->setCurrentWidget(_onglets->ui()->starlink);
+        _onglets->setIndexPrevisions(index);
+    }
+}
+
 void PreviSat::RaccourciEvenements()
 {
     _onglets->setCurrentWidget(_onglets->ui()->previsions);
@@ -2434,7 +2532,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     const QDir di = QDir(Configuration::instance()->dirTmp());
     const QStringList listeFic = di.entryList(QDir::Files);
     foreach(const QString fic, listeFic) {
-        if (!(_options->ui()->verifMAJ->isChecked() && (fic == "versionPreviSat" || fic == "majFicInt"))) {
+        if (!(_options->ui()->verifMAJ->isChecked() && (fic == "versionPreviSat" || fic == "majFichiersInternes"))) {
             QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + fic);
             fi.remove();
         }
@@ -2452,6 +2550,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
 
     emit AppliquerPreferences();
     GestionnaireXml::EcritureConfiguration();
+    GestionnaireXml::EcriturePreLaunchStarlink();
 
     /* Retour */
     return;

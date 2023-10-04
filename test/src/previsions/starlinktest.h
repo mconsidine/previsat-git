@@ -17,23 +17,43 @@
  *
  * _______________________________________________________________________________________________________
  *
+ * Nom du fichier
+ * >    starlinktest.h
+ *
+ * Localisation
+ * >    test.previsions
+ *
+ * Heritage
+ * >
+ *
+ * Description
+ * >    Tests des previsions Starlink
+ *
+ * Auteur
+ * >    Astropedia
+ *
  * Date de creation
- * >    1er mai 2022
+ * >    1er octobre 2023
  *
  * Date de revision
- * >    1er octobre 2023
+ * >
  *
  */
 
+#ifndef STARLINKTEST_H
+#define STARLINKTEST_H
 
-/** \page Calculs Calculs de prévisions
 
-- \subpage Previsions
-- \subpage Flashs
-- \subpage Transits
-- \subpage Starlink
-- \subpage Evenements
-- \subpage Telescope
-- \subpage Antenne
+class StarlinkTest
+{
+public:
 
-*/
+    static void testAll();
+
+private:
+
+    static void testStarlink1();
+
+};
+
+#endif // STARLINKTEST_H

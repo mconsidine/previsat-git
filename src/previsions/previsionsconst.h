@@ -36,7 +36,7 @@
  * >    15 aout 2020
  *
  * Date de revision
- * >    2 avril 2023
+ * >    1er octobre 2023
  *
  */
 
@@ -52,9 +52,10 @@
 /* Enumerations */
 enum class TypeCalcul {
     PREVISIONS,
-    EVENEMENTS,
     FLASHS,
     TRANSITS,
+    EVENEMENTS,
+    STARLINK,
     TELESCOPE
 };
 

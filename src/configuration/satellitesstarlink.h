@@ -17,23 +17,47 @@
  *
  * _______________________________________________________________________________________________________
  *
+ * Nom du fichier
+ * >    satellitesstarlink.h
+ *
+ * Localisation
+ * >    configuration
+ *
+ * Heritage
+ * >
+ *
+ * Description
+ * >    Informations sur les satellites Starlink
+ *
+ * Auteur
+ * >    Astropedia
+ *
  * Date de creation
- * >    1er mai 2022
+ * >    1er octobre 2023
  *
  * Date de revision
- * >    1er octobre 2023
+ * >
  *
  */
 
+#ifndef SATELLITESSTARLINK_H
+#define SATELLITESSTARLINK_H
 
-/** \page Calculs Calculs de prévisions
+#include <QString>
 
-- \subpage Previsions
-- \subpage Flashs
-- \subpage Transits
-- \subpage Starlink
-- \subpage Evenements
-- \subpage Telescope
-- \subpage Antenne
+namespace STARLINK {
 
-*/
+static constexpr double AGE_MAXIMAL_ELEM = 60.;
+static constexpr double MAGNITUDE_LIMITE = 10.;
+static constexpr double MAGNITUDE_STANDARD = 5.;
+
+}
+
+struct SatellitesStarlink
+{
+    QString fichier;
+    QString lancement;
+    QString deploiement;
+};
+
+#endif // SATELLITESSTARLINK_H

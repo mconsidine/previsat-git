@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    28 mai 2023
+ * >    1er octobre 2023
  *
  */
 
@@ -60,6 +60,7 @@
 #include "evenementsstation.h"
 #include "frequencesradio.h"
 #include "satellitesflashs.h"
+#include "satellitesstarlink.h"
 #include "satellitetdrs.h"
 
 
@@ -74,6 +75,7 @@ class Configuration
     friend class OsculateursTest;
     friend class PrevisionTest;
     friend class SatelliteTest;
+    friend class StarlinkTest;
     friend class TelescopeTest;
     friend class TransitsTest;
     friend class TLETest;
@@ -130,6 +132,7 @@ public:
     const QString &dirPref() const;
     const QString &dirRsc() const;
     const QString &dirSon() const;
+    const QString &dirStarlink() const;
     const QString &dirTmp() const;
 
     // Locale
@@ -154,6 +157,7 @@ public:
     const QString &adresseCelestrak() const;
     const QString &adresseCelestrakNorad() const;
     const QString &adresseCelestrakSupplementalNorad() const;
+    const QString &adresseCelestrakSupplementalNoradFichier() const;
 
     // Categories d'orbite
     const QMap<QString, QString> &mapCategoriesOrbite() const;
@@ -230,6 +234,11 @@ public:
     NotificationSonore &notifAOS();
     NotificationSonore &notifFlashs();
 
+    // Satellites Starlink
+    QString versionStarlink() const;
+    QMap<QString, SatellitesStarlink> satellitesStarlink() const;
+    void AjoutDonneesSatellitesStarlink(const QString &groupe, const QString &fichier, const QString &lancement, const QString &deploiement);
+
 
     /*
      * Modificateurs
@@ -292,6 +301,7 @@ private:
     QString _dirPref;
     QString _dirRsc;
     QString _dirSon;
+    QString _dirStarlink;
     QString _dirTmp;
 
     // Locale
@@ -318,6 +328,7 @@ private:
     QString _adresseCelestrak;
     QString _adresseCelestrakNorad;
     QString _adresseCelestrakSupplementalNorad;
+    QString _adresseCelestrakSupplementalNoradFichier;
 
     // Categories d'orbite
     QMap<QString, QString> _mapCategoriesOrbite;
@@ -416,6 +427,10 @@ private:
     // Notifications sonores
     NotificationSonore _notifAOS;
     NotificationSonore _notifFlashs;
+
+    // Satellites Starlink
+    QString _versionStarlink;
+    QMap<QString, SatellitesStarlink> _satellitesStarlink;
 
 
     /*

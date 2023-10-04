@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2023
+ * >    1er octobre 2023
  *
  */
 
@@ -175,6 +175,7 @@ private:
     QAction *_previsions;
     QAction *_flashs;
     QAction *_transits;
+    QAction *_starlink;
     QAction *_evenements;
     QAction *_informationsSatellite;
     QAction *_recherche;
@@ -265,6 +266,11 @@ private:
      * @brief MajWebGP Mise a jour automatique des elements orbitaux
      */
     void MajWebGP();
+
+    /**
+     * @brief TelechargementGroupesStarlink Telechargement des groupes Starlink
+     */
+    void TelechargementGroupesStarlink();
 
     /**
      * @brief VerifAgeGP Verification de l'age des elements orbitaux d'un satellite
@@ -395,6 +401,7 @@ private slots:
     void RaccourciPrevisions();
     void RaccourciFlashs();
     void RaccourciTransits();
+    void RaccourciStarlink();
     void RaccourciEvenements();
     void RaccourciInformations();
     void RaccourciRecherche();

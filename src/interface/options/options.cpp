@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    14 aout 2023
+ * >    1er octobre 2023
  *
  */
 
@@ -267,7 +267,7 @@ void Options::AppliquerPreferences()
     settings.setValue("affichage/calJulien", _ui->calJulien->isChecked());
     settings.setValue("affichage/eclipsesLune", _ui->eclipsesLune->isChecked());
     settings.setValue("affichage/effetEclipsesMagnitude", _ui->effetEclipsesMagnitude->isChecked());
-    settings.setValue("affichage/extinction", _ui->extinctionAtmospherique->isChecked());
+    settings.setValue("affichage/extinctionAtmospherique", _ui->extinctionAtmospherique->isChecked());
     settings.setValue("affichage/intensiteOmbre", _ui->intensiteOmbre->value());
     settings.setValue("affichage/langue", Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex()));
     settings.setValue("affichage/modeSombre", _ui->modeSombre->isChecked());
@@ -472,7 +472,7 @@ void Options::ChargementPref()
         _ui->afftraj->setChecked(settings.value("affichage/afftraj", true).toBool());
         _ui->affvisib->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affvisib", Qt::Checked).toUInt()));
         _ui->calJulien->setChecked(settings.value("affichage/calJulien", false).toBool());
-        _ui->extinctionAtmospherique->setChecked(settings.value("affichage/extinction", true).toBool());
+        _ui->extinctionAtmospherique->setChecked(settings.value("affichage/extinctionAtmospherique", true).toBool());
         _ui->refractionAtmospherique->setChecked(settings.value("affichage/refractionAtmospherique", true).toBool());
         _ui->effetEclipsesMagnitude->setChecked(settings.value("affichage/effetEclipsesMagnitude", true).toBool());
         _ui->eclipsesLune->setChecked(settings.value("affichage/eclipsesLune", true).toBool());
@@ -869,7 +869,7 @@ void Options::SauvePreferences(const QString &fichierPref)
                  << "affichage/calJulien " << QVariant(_ui->calJulien->isChecked()).toString() << Qt::endl
                  << "affichage/eclipsesLune " << QVariant(_ui->eclipsesLune->isChecked()).toString() << Qt::endl
                  << "affichage/effetEclipsesMagnitude " << QVariant(_ui->effetEclipsesMagnitude->isChecked()).toString() << Qt::endl
-                 << "affichage/extinction " << QVariant(_ui->extinctionAtmospherique->isChecked()).toString() << Qt::endl
+                 << "affichage/extinctionAtmospherique " << QVariant(_ui->extinctionAtmospherique->isChecked()).toString() << Qt::endl
                  << "affichage/intensiteOmbre " << _ui->intensiteOmbre->value() << Qt::endl
                  << "affichage/modeSombre " << QVariant(_ui->modeSombre->isChecked()).toString() << Qt::endl
                  << "affichage/magnitudeEtoiles " << _ui->magnitudeEtoiles->value() << Qt::endl
