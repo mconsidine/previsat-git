@@ -95,6 +95,11 @@ public slots:
     void show();
 
 
+signals:
+
+    bool VerifMajVersion(const QString &);
+
+
 protected:
 
     /*
@@ -121,7 +126,7 @@ private:
 private slots:
 
     void on_ok_clicked();
-
+    void on_verifierMisesAJour_clicked();
 
 };
 

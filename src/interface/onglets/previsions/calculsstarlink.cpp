@@ -177,6 +177,7 @@ void CalculsStarlink::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
         _ui->retranslateUi(this);
+        show();
     }
 }
 
