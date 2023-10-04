@@ -37,6 +37,7 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDate>
+#include <QMessageBox>
 #include <QStyle>
 #include <QSettings>
 #include "ui_apropos.h"
@@ -155,3 +156,13 @@ void Apropos::on_ok_clicked()
 {
     close();
 }
+
+void Apropos::on_verifierMisesAJour_clicked()
+{
+    const bool anew = emit VerifMajVersion(QString("version%1").arg(APP_NAME));
+
+    if (!anew) {
+        QMessageBox::information(0, tr("Information"), tr("Vous utilisez la dernière version de %1").arg(APP_NAME));
+    }
+}
+
