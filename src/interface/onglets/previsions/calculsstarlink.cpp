@@ -30,7 +30,7 @@
  * >    25 septembre 2023
  *
  * Date de revision
- * >    4 octobre 2023
+ * >
  *
  */
 
@@ -133,17 +133,17 @@ void CalculsStarlink::show()
     while (it.hasNext()) {
 
         const QString groupe = it.next();
-
-        const SatellitesStarlink starlink = Configuration::instance()->satellitesStarlink()[groupe];
-
-        // Dates de lancement et de deploiement
-        lancement = starlink.lancement;
-        deploiement = starlink.deploiement;
-
         _ui->groupe->addItem(groupe);
-        _ui->lancement->setText(lancement.replace("T", " ") + " " + tr("UTC"));
-        _ui->deploiement->setText(deploiement.replace("T", " ") + " " + tr("UTC"));
     }
+
+    const SatellitesStarlink starlink = Configuration::instance()->satellitesStarlink()[_ui->groupe->currentText()];
+
+    // Dates de lancement et de deploiement
+    lancement = starlink.lancement;
+    deploiement = starlink.deploiement;
+
+    _ui->lancement->setText(lancement.replace("T", " ") + " " + tr("UTC"));
+    _ui->deploiement->setText(deploiement.replace("T", " ") + " " + tr("UTC"));
 
     _ui->frame_starlink->setVisible(_ui->groupe->count() > 0);
     _ui->groupe->blockSignals(etat);
@@ -228,9 +228,14 @@ void CalculsStarlink::Initialisation()
 void CalculsStarlink::on_groupe_currentTextChanged(const QString &arg1)
 {
     if (!arg1.isEmpty()) {
+
         const SatellitesStarlink starlink = Configuration::instance()->satellitesStarlink()[arg1];
-        _ui->lancement->setText(starlink.lancement);
-        _ui->deploiement->setText(starlink.deploiement);
+
+        QString lancement = starlink.lancement;
+        QString deploiement = starlink.deploiement;
+
+        _ui->lancement->setText(lancement.replace("T", " ") + " " + tr("UTC"));
+        _ui->deploiement->setText(deploiement.replace("T", " ") + " " + tr("UTC"));
     }
 }
 

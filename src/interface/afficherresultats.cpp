@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    4 octobre 2023
+ * >    5 octobre 2023
  *
  */
 
@@ -558,7 +558,7 @@ void AfficherResultats::ChargementResultats()
                                             "font-size: 12px;" \
                                             "font-weight: 600 }");
 
-    if (_typeCalcul == TypeCalcul::TRANSITS) {
+    if ((_typeCalcul == TypeCalcul::TRANSITS) || (_typeCalcul == TypeCalcul::STARLINK)) {
         _ui->resultatsPrevisions->setColumnWidth(0, 140);
     }
 
