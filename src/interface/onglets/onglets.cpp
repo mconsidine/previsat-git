@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    5 octobre 2023
  *
  */
 
@@ -339,6 +339,9 @@ void Onglets::ReinitFlags()
 void Onglets::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
+
+        // Titre de l'onglet Previsions
+        setTabText(indexOf(_ui->previsions), QCoreApplication::translate("Onglets", _titresPrevisions[_indexPrevisions]));
 
         _ui->previsionPrec->setToolTip(
                     QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)

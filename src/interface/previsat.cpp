@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 octobre 2023
+ * >    6 octobre 2023
  *
  */
 
@@ -1366,7 +1366,11 @@ void PreviSat::TelechargementGroupesStarlink()
         }
 
     } catch (PreviSatException const &e) {
-        _onglets->ui()->stackedWidget_previsions->removeWidget(_onglets->ui()->starlink);
+        if (Configuration::instance()->satellitesStarlink().isEmpty()) {
+            _onglets->ui()->stackedWidget_previsions->removeWidget(_onglets->ui()->starlink);
+        } else {
+            _onglets->starlink()->show();
+        }
     }
 
     /* Retour */
@@ -1556,59 +1560,64 @@ bool PreviSat::VerifMajVersion(const QString &fichier)
     qInfo() << "Début Fonction" << __FUNCTION__;
 
     bool anew = false;
-    bool majPrevi = settings.value("fichier/majPreviSat", true).toBool();
-    Telechargement tel(Configuration::instance()->dirTmp());
 
     /* Corps de la methode */
-    tel.TelechargementFichier(QString("%1/maj/%2").arg(DOMAIN_NAME).arg(fichier), false, false);
+    try {
 
-    QFile fi(tel.dirDwn() + QDir::separator() + fichier);
-    if (fi.exists() && (fi.size() != 0)) {
+        bool majPrevi = settings.value("fichier/majPreviSat", true).toBool();
+        Telechargement tel(Configuration::instance()->dirTmp());
+        tel.TelechargementFichier(QString("%1/maj/%2").arg(DOMAIN_NAME).arg(fichier), false, false);
 
-        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QFile fi(tel.dirDwn() + QDir::separator() + fichier);
+        if (fi.exists() && (fi.size() != 0)) {
 
-            // Verification du numero de version
-            const QVersionNumber versionActuelle = QVersionNumber::fromString(settings.value("fichier/version", "").toString());
-            const QVersionNumber versionNouvelle = QVersionNumber::fromString(fi.readLine());
-            fi.close();
+            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-            anew = (!versionActuelle.isNull() && (QVersionNumber::compare(versionActuelle, versionNouvelle) < 0));
+                // Verification du numero de version
+                const QVersionNumber versionActuelle = QVersionNumber::fromString(settings.value("fichier/version", "").toString());
+                const QVersionNumber versionNouvelle = QVersionNumber::fromString(fi.readLine());
+                fi.close();
 
-            if (anew && majPrevi) {
+                anew = (!versionActuelle.isNull() && (QVersionNumber::compare(versionActuelle, versionNouvelle) < 0));
 
-                _ui->actionTelecharger_la_mise_a_jour->setVisible(true);
+                if (anew && majPrevi) {
 
-                const QString msg = tr("Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?");
+                    _ui->actionTelecharger_la_mise_a_jour->setVisible(true);
 
-                QMessageBox msgbox(QMessageBox::Question, tr("Information"), msg.arg(APP_NAME));
-                QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
+                    const QString msg = tr("Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?");
 
-                msgbox.addButton(tr("Non"), QMessageBox::NoRole);
-                msgbox.setDefaultButton(oui);
-                msgbox.exec();
+                    QMessageBox msgbox(QMessageBox::Question, tr("Information"), msg.arg(APP_NAME));
+                    QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
 
-                if (msgbox.clickedButton() == oui) {
+                    msgbox.addButton(tr("Non"), QMessageBox::NoRole);
+                    msgbox.setDefaultButton(oui);
+                    msgbox.exec();
 
-                    on_actionTelecharger_la_mise_a_jour_triggered();
-                    _ui->actionTelecharger_la_mise_a_jour->setVisible(false);
+                    if (msgbox.clickedButton() == oui) {
+
+                        on_actionTelecharger_la_mise_a_jour_triggered();
+                        _ui->actionTelecharger_la_mise_a_jour->setVisible(false);
+                    }
+
+                    majPrevi = false;
+                } else {
+                    majPrevi = true;
                 }
 
-                majPrevi = false;
-            } else {
-                majPrevi = true;
-            }
+                settings.setValue("fichier/majPreviSat", majPrevi);
 
-            settings.setValue("fichier/majPreviSat", majPrevi);
-
-            if (!majPrevi) {
-                QFont police;
-                police.setBold(true);
-                _ui->actionTelecharger_la_mise_a_jour->setFont(police);
+                if (!majPrevi) {
+                    QFont police;
+                    police.setBold(true);
+                    _ui->actionTelecharger_la_mise_a_jour->setFont(police);
+                }
             }
         }
-    }
 
-    _ui->actionTelecharger_la_mise_a_jour->setVisible(!majPrevi);
+        _ui->actionTelecharger_la_mise_a_jour->setVisible(!majPrevi);
+
+    } catch (PreviSatException const &e) {
+    }
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
 
@@ -1959,6 +1968,10 @@ void PreviSat::ChargementTraduction(const QString &langue)
         _onglets->general()->ui()->retranslateUi(_onglets->general());
         _onglets->osculateurs()->ui()->retranslateUi(_onglets->osculateurs());
         _onglets->informationsSatellite()->ui()->retranslateUi(_onglets->informationsSatellite());
+    }
+
+    if ((_carte != nullptr) && (_ciel != nullptr) && (_radar != nullptr)) {
+        AffichageCartesRadar();
     }
 
     QEvent evt(QEvent::LanguageChange);
