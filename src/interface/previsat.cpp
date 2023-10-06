@@ -1330,6 +1330,10 @@ void PreviSat::TelechargementGroupesStarlink()
             const QString contenu = fi.readAll();
             const unsigned int nb = static_cast<unsigned int> (contenu.count("sup-gp.php?FILE=starlink-"));
 
+            if (nb > 0) {
+                Configuration::instance()->satellitesStarlink().clear();
+            }
+
             for(unsigned int i=0; i<nb; i++) {
 
                 const unsigned int indf = static_cast<unsigned int> (contenu.indexOf("sup-gp.php?FILE=starlink-", debf)) + 16;
@@ -1366,6 +1370,7 @@ void PreviSat::TelechargementGroupesStarlink()
         }
 
     } catch (PreviSatException const &e) {
+
         if (Configuration::instance()->satellitesStarlink().isEmpty()) {
             _onglets->ui()->stackedWidget_previsions->removeWidget(_onglets->ui()->starlink);
         } else {

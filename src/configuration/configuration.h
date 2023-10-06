@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    6 octobre 2023
  *
  */
 
@@ -236,7 +236,7 @@ public:
 
     // Satellites Starlink
     QString versionStarlink() const;
-    QMap<QString, SatellitesStarlink> satellitesStarlink() const;
+    QMap<QString, SatellitesStarlink> &satellitesStarlink();
     void AjoutDonneesSatellitesStarlink(const QString &groupe, const QString &fichier, const QString &lancement, const QString &deploiement);
 
 

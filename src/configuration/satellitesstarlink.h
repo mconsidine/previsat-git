@@ -47,7 +47,6 @@
 
 namespace STARLINK {
 
-static constexpr double AGE_MAXIMAL_ELEM = 60.;
 static constexpr double MAGNITUDE_LIMITE = 10.;
 static constexpr double MAGNITUDE_STANDARD = 5.;
 
