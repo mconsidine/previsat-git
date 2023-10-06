@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    6 octobre 2023
  *
  */
 
@@ -612,7 +612,7 @@ QString Configuration::versionStarlink() const
     return _versionStarlink;
 }
 
-QMap<QString, SatellitesStarlink> Configuration::satellitesStarlink() const
+QMap<QString, SatellitesStarlink> &Configuration::satellitesStarlink()
 {
     return _satellitesStarlink;
 }

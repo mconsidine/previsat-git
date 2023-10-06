@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    4 octobre 2023
+ * >    6 octobre 2023
  *
  */
 
@@ -239,14 +239,16 @@ void GestionnaireXml::EcriturePreLaunchStarlink()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    // Liste des fichiers d'elements orbitaux a supprimer
+    const QDir di(Configuration::instance()->dirStarlink());
+    const QStringList filtres(QStringList () << "*.xml");
+    QStringList listeElem = di.entryList(filtres, QDir::Files);
 
     /* Corps de la methode */
     QFile fi1(Configuration::instance()->dirCfg() + QDir::separator() + "pre-launch.xml");
 
     if (fi1.open(QIODevice::WriteOnly | QIODevice::Text)) {
 
-        QFile fi2;
-        const Date aujourdhui;
         QXmlStreamWriter cfg(&fi1);
 
         cfg.setAutoFormatting(true);
@@ -262,31 +264,33 @@ void GestionnaireXml::EcriturePreLaunchStarlink()
             const QString groupe = it.key();
             const SatellitesStarlink starlink = it.value();
 
-            // Ecriture des informations pour les fichiers pre-launch recents
-            const Date dateLancement = Date::ConversionDateIso(starlink.lancement);
-            if ((dateLancement.jourJulienUTC() - aujourdhui.jourJulienUTC()) < STARLINK::AGE_MAXIMAL_ELEM) {
+            // Ecriture des informations pour les fichiers pre-launch
+            cfg.writeStartElement("Starlink");
 
-                cfg.writeStartElement("Starlink");
+            // Informations du groupe Starlink
+            cfg.writeTextElement("Fichier", starlink.fichier);
+            cfg.writeTextElement("Groupe", groupe);
+            cfg.writeTextElement("Lancement", starlink.lancement);
+            cfg.writeTextElement("Deploiement", starlink.deploiement);
+            cfg.writeEndElement();
 
-                // Informations du groupe Starlink
-                cfg.writeTextElement("Fichier", starlink.fichier);
-                cfg.writeTextElement("Groupe", groupe);
-                cfg.writeTextElement("Lancement", starlink.lancement);
-                cfg.writeTextElement("Deploiement", starlink.deploiement);
-                cfg.writeEndElement();
-
-            } else {
-
-                // Suppression des fichiers trop anciens
-                fi2.setFileName(Configuration::instance()->dirStarlink() + QDir::separator() + starlink.fichier + ".xml");
-                if (fi2.exists()) {
-                    fi2.remove();
-                }
-            }
+            listeElem.removeOne(starlink.fichier + ".xml");
         }
 
         cfg.writeEndDocument();
-        fi1.close();
+    }
+
+    fi1.close();
+
+    // Suppression des fichiers d'elements orbitaux inutiles
+    QFile fi2;
+    QStringListIterator it2(listeElem);
+    while (it2.hasNext()) {
+
+        fi2.setFileName(Configuration::instance()->dirStarlink() + QDir::separator() + it2.next());
+        if (fi2.exists()) {
+            fi2.remove();
+        }
     }
 
     /* Retour */
@@ -966,7 +970,6 @@ QMap<QString, SatellitesStarlink> GestionnaireXml::LecturePreLaunchStarlink(QStr
                 QString fichier;
                 QString lancement;
                 QString deploiement;
-                const Date aujourdhui;
 
                 while (cfg.readNextStartElement()) {
 
