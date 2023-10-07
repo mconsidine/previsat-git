@@ -21,13 +21,25 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    9 mai 2023
+ * >    7 octobre 2023
  *
  */
 
 
 /**
+
 \page Historique Historique des versions
+
+
+<b><span style="color:red;">Version 6.1 (révision 0) :</span><br />
+Septembre - Octobre 2023 :</b>
+<ul>
+<li>Ajout des prévisions Starlink
+<li>Ajout des cases à cocher pour filtrer les satellites choisis dans les listes
+<li>Petites améliorations dans l'affichage
+</ul>
+
+<hr />
 
 <b><span style="color:red;">Version 6.0 (révision 1) :</span><br />
 Juillet 2022 - Août 2023 :</b>
