@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    7 octobre 2023
  *
  */
 
@@ -268,11 +268,6 @@ private:
     void MajWebGP();
 
     /**
-     * @brief TelechargementGroupesStarlink Telechargement des groupes Starlink
-     */
-    void TelechargementGroupesStarlink();
-
-    /**
      * @brief VerifAgeGP Verification de l'age des elements orbitaux d'un satellite
      */
     void VerifAgeGP();
@@ -411,6 +406,11 @@ private slots:
      * @brief ReinitCalculEvenementsSoleilLune Reinitialisation du calcul des evenements Soleil/Lune
      */
     void ReinitCalculEvenementsSoleilLune();
+
+    /**
+     * @brief TelechargementGroupesStarlink Telechargement des groupes Starlink
+     */
+    void TelechargementGroupesStarlink();
 
     /**
      * @brief TempsReel Affichage en temps reel

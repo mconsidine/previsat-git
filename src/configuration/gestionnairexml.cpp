@@ -949,7 +949,6 @@ QMap<QString, SatellitesStarlink> GestionnaireXml::LecturePreLaunchStarlink(QStr
     QMap<QString, SatellitesStarlink> mapSatellitesStarlink;
 
     /* Initialisations */
-
     try {
 
         const QString nomficXml = "pre-launch.xml";
