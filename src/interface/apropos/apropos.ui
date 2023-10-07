@@ -139,7 +139,7 @@
       <x>610</x>
       <y>240</y>
       <width>75</width>
-      <height>23</height>
+      <height>24</height>
      </rect>
     </property>
     <property name="text">
@@ -203,7 +203,7 @@ PreviSat est entièrement gratuit!</string>
       <x>270</x>
       <y>240</y>
       <width>261</width>
-      <height>23</height>
+      <height>24</height>
      </rect>
     </property>
     <property name="text">
