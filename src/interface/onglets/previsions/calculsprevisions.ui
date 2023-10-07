@@ -103,7 +103,7 @@
      <x>566</x>
      <y>51</y>
      <width>210</width>
-     <height>158</height>
+     <height>160</height>
     </rect>
    </property>
    <property name="font">
@@ -283,7 +283,7 @@
      <x>460</x>
      <y>188</y>
      <width>101</width>
-     <height>23</height>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
@@ -695,7 +695,7 @@
      <x>20</x>
      <y>188</y>
      <width>161</width>
-     <height>23</height>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
@@ -797,7 +797,7 @@
      <x>190</x>
      <y>188</y>
      <width>261</width>
-     <height>23</height>
+     <height>24</height>
     </rect>
    </property>
    <property name="text">

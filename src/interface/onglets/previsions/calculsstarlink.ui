@@ -56,7 +56,7 @@
       <x>0</x>
       <y>128</y>
       <width>161</width>
-      <height>23</height>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -72,7 +72,7 @@
       <x>440</x>
       <y>128</y>
       <width>101</width>
-      <height>23</height>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -565,7 +565,7 @@
       <x>170</x>
       <y>128</y>
       <width>261</width>
-      <height>23</height>
+      <height>24</height>
      </rect>
     </property>
     <property name="text">
