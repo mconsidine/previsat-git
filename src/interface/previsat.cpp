@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    6 octobre 2023
+ * >    7 octobre 2023
  *
  */
 
@@ -586,6 +586,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_onglets->flashs(), &CalculsFlashs::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->transits(), &CalculsTransits::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->starlink(), &CalculsStarlink::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+    connect(_onglets->starlink(), &CalculsStarlink::MajElementsOrbitaux, this, &PreviSat::TelechargementGroupesStarlink);
     connect(_onglets->evenements(), &CalculsEvenementsOrbitaux::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->general(), &General::RecalculerPositions, _onglets, &Onglets::AffichageLieuObs);
     connect(_onglets->general(), &General::RecalculerPositions, this, &PreviSat::ReinitCalculEvenementsSoleilLune);
@@ -1292,90 +1293,6 @@ void PreviSat::MajWebGP()
             }
         }
     } catch (PreviSatException const &e) {
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Telechargement des groupes Starlink
- */
-void PreviSat::TelechargementGroupesStarlink()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    try {
-
-        qInfo() << "Telechargement des groupes Starlink";
-
-        // Telechargement du verrou Starlink (si ce fichier n'existe pas, l'onglet Starlink ne s'affiche pas)
-        Telechargement tel1(Configuration::instance()->dirTmp());
-        tel1.TelechargementFichier(QString(DOMAIN_NAME) + "maj/verrouStarlink", false);
-
-        // Telechargement des informations generales des pre-launch Starlink
-        Telechargement tel2(Configuration::instance()->dirStarlink());
-        tel2.TelechargementFichier(QUrl(Configuration::instance()->adresseCelestrakSupplementalNorad() + "index.php"));
-
-        // Recuperation des nouveaux groupes de lancement
-        QFile fi(Configuration::instance()->dirStarlink() + QDir::separator() + "index.php");
-        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-
-            unsigned int debf = 0;
-            unsigned int debl = 0;
-
-            const QString contenu = fi.readAll();
-            const unsigned int nb = static_cast<unsigned int> (contenu.count("sup-gp.php?FILE=starlink-"));
-
-            if (nb > 0) {
-                Configuration::instance()->satellitesStarlink().clear();
-            }
-
-            for(unsigned int i=0; i<nb; i++) {
-
-                const unsigned int indf = static_cast<unsigned int> (contenu.indexOf("sup-gp.php?FILE=starlink-", debf)) + 16;
-                const unsigned int finf = static_cast<unsigned int> (contenu.indexOf("&FORMAT", indf));
-                const unsigned int indg = static_cast<unsigned int> (contenu.indexOf(">", indf) + 1);
-                const unsigned int fing = static_cast<unsigned int> (contenu.indexOf("<", indg));
-                const unsigned int indl = static_cast<unsigned int> (contenu.indexOf("Launch: ", debl));
-
-                // Informations Starlink
-                const QString fichier = contenu.mid(indf, finf - indf);
-                const QString groupe = contenu.mid(indg, fing - indg);
-                const QString lancement = contenu.mid(contenu.indexOf("Launch: ", indl) + 8, 19);
-                const QString deploiement = contenu.mid(contenu.indexOf("Deployment: ", indl) + 12, 19);
-
-                // Telechargement du fichier d'elements orbitaux correspondant
-                const QUrl url(Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg(fichier));
-                Telechargement tel3(Configuration::instance()->dirStarlink());
-                tel3.TelechargementFichier(url);
-
-                // Ajout du groupe dans la liste
-                Configuration::instance()->AjoutDonneesSatellitesStarlink(groupe, fichier, lancement, deploiement);
-
-                debf = finf + 1;
-                debl = indl + 1;
-            }
-
-            fi.close();
-
-            if (Configuration::instance()->satellitesStarlink().isEmpty()) {
-                throw PreviSatException();
-            }
-
-            _onglets->starlink()->show();
-        }
-
-    } catch (PreviSatException const &e) {
-
-        if (Configuration::instance()->satellitesStarlink().isEmpty()) {
-            _onglets->ui()->stackedWidget_previsions->removeWidget(_onglets->ui()->starlink);
-        } else {
-            _onglets->starlink()->show();
-        }
     }
 
     /* Retour */
@@ -2504,6 +2421,90 @@ void PreviSat::RaccourciStation()
 void PreviSat::ReinitCalculEvenementsSoleilLune()
 {
     _reinitJour = true;
+}
+
+/*
+ * Telechargement des groupes Starlink
+ */
+void PreviSat::TelechargementGroupesStarlink()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        qInfo() << "Telechargement des groupes Starlink";
+
+        // Telechargement du verrou Starlink (si ce fichier n'existe pas, l'onglet Starlink ne s'affiche pas)
+        Telechargement tel1(Configuration::instance()->dirTmp());
+        tel1.TelechargementFichier(QString(DOMAIN_NAME) + "maj/verrouStarlink", false);
+
+        // Telechargement des informations generales des pre-launch Starlink
+        Telechargement tel2(Configuration::instance()->dirStarlink());
+        tel2.TelechargementFichier(QUrl(Configuration::instance()->adresseCelestrakSupplementalNorad() + "index.php"));
+
+        // Recuperation des nouveaux groupes de lancement
+        QFile fi(Configuration::instance()->dirStarlink() + QDir::separator() + "index.php");
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+            unsigned int debf = 0;
+            unsigned int debl = 0;
+
+            const QString contenu = fi.readAll();
+            const unsigned int nb = static_cast<unsigned int> (contenu.count("sup-gp.php?FILE=starlink-"));
+
+            if (nb > 0) {
+                Configuration::instance()->satellitesStarlink().clear();
+            }
+
+            for(unsigned int i=0; i<nb; i++) {
+
+                const unsigned int indf = static_cast<unsigned int> (contenu.indexOf("sup-gp.php?FILE=starlink-", debf)) + 16;
+                const unsigned int finf = static_cast<unsigned int> (contenu.indexOf("&FORMAT", indf));
+                const unsigned int indg = static_cast<unsigned int> (contenu.indexOf(">", indf) + 1);
+                const unsigned int fing = static_cast<unsigned int> (contenu.indexOf("<", indg));
+                const unsigned int indl = static_cast<unsigned int> (contenu.indexOf("Launch: ", debl));
+
+                // Informations Starlink
+                const QString fichier = contenu.mid(indf, finf - indf);
+                const QString groupe = contenu.mid(indg, fing - indg);
+                const QString lancement = contenu.mid(contenu.indexOf("Launch: ", indl) + 8, 19);
+                const QString deploiement = contenu.mid(contenu.indexOf("Deployment: ", indl) + 12, 19);
+
+                // Telechargement du fichier d'elements orbitaux correspondant
+                const QUrl url(Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg(fichier));
+                Telechargement tel3(Configuration::instance()->dirStarlink());
+                tel3.TelechargementFichier(url);
+
+                // Ajout du groupe dans la liste
+                Configuration::instance()->AjoutDonneesSatellitesStarlink(groupe, fichier, lancement, deploiement);
+
+                debf = finf + 1;
+                debl = indl + 1;
+            }
+
+            fi.close();
+
+            if (Configuration::instance()->satellitesStarlink().isEmpty()) {
+                throw PreviSatException();
+            }
+
+            _onglets->starlink()->show();
+        }
+
+    } catch (PreviSatException const &e) {
+
+        if (Configuration::instance()->satellitesStarlink().isEmpty()) {
+            _onglets->ui()->stackedWidget_previsions->removeWidget(_onglets->ui()->starlink);
+        } else {
+            _onglets->starlink()->show();
+        }
+    }
+
+    /* Retour */
+    return;
 }
 
 void PreviSat::TempsReel()

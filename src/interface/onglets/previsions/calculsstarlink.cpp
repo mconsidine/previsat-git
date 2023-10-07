@@ -125,16 +125,30 @@ void CalculsStarlink::show()
     QString deploiement;
 
     /* Initialisations */
+    bool affMaj = false;
+    const Date aujourdhui;
+
     const bool etat = _ui->groupe->blockSignals(true);
     _ui->groupe->clear();
 
-    /* Corps de la methode */
-    QListIterator it(Configuration::instance()->satellitesStarlink().keys());
+    /* Corps de la methode */   
+    QMapIterator it(Configuration::instance()->satellitesStarlink());
     while (it.hasNext()) {
+        it.next();
 
-        const QString groupe = it.next();
-        _ui->groupe->addItem(groupe);
+        // Remplissage de la liste deroulante
+        _ui->groupe->addItem(it.key());
+
+        // Visibilite du bouton de mise a jour des elements orbitaux
+        const SatellitesStarlink sat = it.value();
+        if (sat.fichier.split("-").last().contains("b")) {
+
+            const Date dateLancement = Date::ConversionDateIso(sat.lancement);
+            affMaj = (aujourdhui.jourJulienUTC() > dateLancement.jourJulienUTC());
+        }
     }
+
+    _ui->majElementsOrbitaux->setVisible(affMaj);
 
     const SatellitesStarlink starlink = Configuration::instance()->satellitesStarlink()[_ui->groupe->currentText()];
 
@@ -469,4 +483,9 @@ void CalculsStarlink::on_calculs_clicked()
 
     /* Retour */
     return;
+}
+
+void CalculsStarlink::on_majElementsOrbitaux_clicked()
+{
+    emit MajElementsOrbitaux();
 }
