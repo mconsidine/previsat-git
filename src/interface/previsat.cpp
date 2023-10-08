@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 octobre 2023
+ * >    8 octobre 2023
  *
  */
 
@@ -2454,6 +2454,7 @@ void PreviSat::TelechargementGroupesStarlink()
 
             const QString contenu = fi.readAll();
             const unsigned int nb = static_cast<unsigned int> (contenu.count("sup-gp.php?FILE=starlink-"));
+            const QMap<QString, SatellitesStarlink> satellitesStarlink = Configuration::instance()->satellitesStarlink();
 
             if (nb > 0) {
                 Configuration::instance()->satellitesStarlink().clear();
@@ -2486,6 +2487,19 @@ void PreviSat::TelechargementGroupesStarlink()
             }
 
             fi.close();
+
+            if (nb > 0) {
+
+                QMapIterator it(satellitesStarlink);
+                while (it.hasNext()) {
+                    it.next();
+
+                    const SatellitesStarlink starlink = it.value();
+                    if (!starlink.fichier.split("-").last().contains("b")) {
+                        Configuration::instance()->AjoutDonneesSatellitesStarlink(it.key(), starlink.fichier, starlink.lancement, starlink.deploiement);
+                    }
+                }
+            }
 
             if (Configuration::instance()->satellitesStarlink().isEmpty()) {
                 throw PreviSatException();

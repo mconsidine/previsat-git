@@ -46,12 +46,17 @@
 #include <QString>
 
 
+/*
+ * Definitions des structures
+ */
 struct EvenementsStation {
-    QString dateDebutEvenementsStationSpatiale;
-    QString dateFinEvenementsStationSpatiale;
+
     double masseStationSpatiale;
     double surfaceTraineeAtmospherique;
     double coefficientTraineeAtmospherique;
+
+    QString dateDebutEvenementsStationSpatiale;
+    QString dateFinEvenementsStationSpatiale;
     QStringList evenementsStationSpatiale;
 };
 

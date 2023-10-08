@@ -123,6 +123,7 @@ void CalculsStarlink::show()
     /* Declarations des variables locales */
     QString lancement;
     QString deploiement;
+    QStringList grp;
 
     /* Initialisations */
     bool affMaj = false;
@@ -136,16 +137,25 @@ void CalculsStarlink::show()
     while (it.hasNext()) {
         it.next();
 
-        // Remplissage de la liste deroulante
-        _ui->groupe->addItem(it.key());
+        const SatellitesStarlink sat = it.value();
+        const Date dateLancement = Date::ConversionDateIso(sat.lancement);
+
+        if (aujourdhui.jourJulienUTC() < dateLancement.jourJulienUTC()) {
+            // Remplissage de la liste deroulante
+            _ui->groupe->addItem(it.key());
+        } else {
+            grp.append(it.key());
+        }
 
         // Visibilite du bouton de mise a jour des elements orbitaux
-        const SatellitesStarlink sat = it.value();
         if (sat.fichier.split("-").last().contains("b")) {
-
-            const Date dateLancement = Date::ConversionDateIso(sat.lancement);
             affMaj = (aujourdhui.jourJulienUTC() > dateLancement.jourJulienUTC());
         }
+    }
+
+    QStringListIterator it2(grp);
+    while (it2.hasNext()) {
+        _ui->groupe->addItem(it2.next());
     }
 
     _ui->majElementsOrbitaux->setVisible(affMaj);
