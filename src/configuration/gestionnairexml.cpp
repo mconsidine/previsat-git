@@ -237,6 +237,7 @@ void GestionnaireXml::EcritureGestionnaireElementsOrbitaux()
 void GestionnaireXml::EcriturePreLaunchStarlink()
 {
     /* Declarations des variables locales */
+    const Date aujourdhui;
 
     /* Initialisations */
     // Liste des fichiers d'elements orbitaux a supprimer
@@ -263,18 +264,23 @@ void GestionnaireXml::EcriturePreLaunchStarlink()
 
             const QString groupe = it.key();
             const SatellitesStarlink starlink = it.value();
+            const Date dateLancement = Date::ConversionDateIso(starlink.lancement);
 
-            // Ecriture des informations pour les fichiers pre-launch
-            cfg.writeStartElement("Starlink");
+            // Sauvegarde des elements starlink recents
+            if (fabs(dateLancement.jourJulienUTC() - aujourdhui.jourJulienUTC()) < STARLINK::AGE_MAXIMAL_ELEM) {
 
-            // Informations du groupe Starlink
-            cfg.writeTextElement("Fichier", starlink.fichier);
-            cfg.writeTextElement("Groupe", groupe);
-            cfg.writeTextElement("Lancement", starlink.lancement);
-            cfg.writeTextElement("Deploiement", starlink.deploiement);
-            cfg.writeEndElement();
+                // Ecriture des informations pour les fichiers pre-launch
+                cfg.writeStartElement("Starlink");
 
-            listeElem.removeOne(starlink.fichier + ".xml");
+                // Informations du groupe Starlink
+                cfg.writeTextElement("Fichier", starlink.fichier);
+                cfg.writeTextElement("Groupe", groupe);
+                cfg.writeTextElement("Lancement", starlink.lancement);
+                cfg.writeTextElement("Deploiement", starlink.deploiement);
+                cfg.writeEndElement();
+
+                listeElem.removeOne(starlink.fichier + ".xml");
+            }
         }
 
         cfg.writeEndDocument();
@@ -287,9 +293,13 @@ void GestionnaireXml::EcriturePreLaunchStarlink()
     QStringListIterator it2(listeElem);
     while (it2.hasNext()) {
 
-        fi2.setFileName(Configuration::instance()->dirStarlink() + QDir::separator() + it2.next());
-        if (fi2.exists()) {
-            fi2.remove();
+        const QString fic = it2.next();
+
+        if (fic.split("-").last().contains("b")) {
+            fi2.setFileName(Configuration::instance()->dirStarlink() + QDir::separator() + fic);
+            if (fi2.exists()) {
+                fi2.remove();
+            }
         }
     }
 

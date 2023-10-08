@@ -70,6 +70,7 @@ enum class NotificationSonore {
     ATTENTE_LOS
 };
 
+
 /*
  * Definitions des constantes
  */

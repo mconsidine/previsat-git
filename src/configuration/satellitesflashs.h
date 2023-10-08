@@ -46,6 +46,9 @@
 #include <QList>
 
 
+/*
+ * Definitions des structures
+ */
 struct SatellitesFlashs
 {
     QString nomsat;

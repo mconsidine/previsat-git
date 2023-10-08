@@ -46,6 +46,9 @@
 #include <QString>
 
 
+/*
+ * Definitions des structures
+ */
 struct FrequenceRadio {
     QString nom;
     QStringList frequenceMontante;

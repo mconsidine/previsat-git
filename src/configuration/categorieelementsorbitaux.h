@@ -46,6 +46,9 @@
 #include <QMap>
 
 
+/*
+ * Definitions des structures
+ */
 struct CategorieElementsOrbitaux {
     Qt::CheckState miseAjour;
     QMap<QString, QString> nom;
