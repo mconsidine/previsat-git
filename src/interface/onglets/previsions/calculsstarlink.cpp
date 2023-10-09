@@ -137,19 +137,28 @@ void CalculsStarlink::show()
     while (it.hasNext()) {
         it.next();
 
+        const QString groupe = it.key();
         const SatellitesStarlink sat = it.value();
-        const Date dateLancement = Date::ConversionDateIso(sat.lancement);
 
-        if (aujourdhui.jourJulienUTC() < dateLancement.jourJulienUTC()) {
-            // Remplissage de la liste deroulante
-            _ui->groupe->addItem(it.key());
-        } else {
+        const Date dateLancement = Date::ConversionDateIso(sat.lancement);
+        const bool isBackup = sat.fichier.split("-").last().contains("b");
+        const bool isLancement = (dateLancement.jourJulienUTC() < aujourdhui.jourJulienUTC());
+
+        const bool old = (Configuration::instance()->satellitesStarlink().keys()
+                              .indexOf(QRegularExpression(".*" + groupe.split(" ").at(1) + ".*"), 1) == -1);
+
+        if (!isBackup && isLancement && old) {
             grp.append(it.key());
         }
 
+        // Remplissage de la liste deroulante
+        if ((!isBackup && !isLancement) || !old) {
+            _ui->groupe->addItem(groupe);
+        }
+
         // Visibilite du bouton de mise a jour des elements orbitaux
-        if (sat.fichier.split("-").last().contains("b")) {
-            affMaj = (aujourdhui.jourJulienUTC() > dateLancement.jourJulienUTC());
+        if (isBackup) {
+            affMaj = isLancement;
         }
     }
 

@@ -1202,23 +1202,28 @@ void PreviSat::InitVerificationsMAJ()
     }
 #endif
 
-    const QString liens = settings.value("fichier/dirHttpPreviDon", "").toString();
+    try {
 
-    if (liens.isEmpty() || (liens.count('\n') <= 1)) {
+        const QString liens = settings.value("fichier/dirHttpPreviDon", "").toString();
 
-        const QUrl url(QString("%1/maj/don").arg(DOMAIN_NAME));
-        Telechargement tel(Configuration::instance()->dirTmp());
-        tel.TelechargementFichier(url, false, false);
+        if (liens.isEmpty() || (liens.count('\n') <= 1)) {
 
-        QFile fi(tel.dirDwn() + QDir::separator() + QFileInfo(url.path()).fileName());
+            const QUrl url(QString("%1/maj/don").arg(DOMAIN_NAME));
+            Telechargement tel(Configuration::instance()->dirTmp());
+            tel.TelechargementFichier(url, false, false);
 
-        if (fi.exists() && (fi.size() != 0)) {
+            QFile fi(tel.dirDwn() + QDir::separator() + QFileInfo(url.path()).fileName());
 
-            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                settings.setValue("fichier/dirHttpPreviDon", QString(fi.readAll()));
+            if (fi.exists() && (fi.size() != 0)) {
+
+                if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                    settings.setValue("fichier/dirHttpPreviDon", QString(fi.readAll()));
+                }
+
+                fi.close();
             }
-            fi.close();
         }
+    } catch (PreviSatException const &e) {
     }
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
