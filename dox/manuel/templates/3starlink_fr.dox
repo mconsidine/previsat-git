@@ -33,6 +33,8 @@ L'onglet <b>Starlink</b> permet d'effectuer les prévisions de passage d'un trai
 
 \image html starlink.png
 
+Il faut sélectionner dans la liste déroulante le groupe de satellites Starlink. Les groupes se terminant par "B1", "B2", etc. (par exemple G6-22B1) correspondent à des éléments orbitaux suite à un report du tir (report à cause de la météo, une défaillance du lanceur ou autre). Il faut sélectionner le bon groupe d'éléments en fonction de l'heure effective du tir, information que l'on peut rettrouver sur <a href="https://www.spacex.com">SpaceX</a> ou sur <a href= "https://www.rocketlaunch.live/?includePast=1&tag=series-spacex-starlink&filter=spacex">RocketLaunch.Live</a>.
+
 Les prévisions s'effectuent sur la période entre 5 minutes après le lancement et 7 jours suivant le lancement. Le pas de génération est initialement fixé à une minute.
 
 Ensuite, il est possible de régler la hauteur minimale que doit avoir le satellite pour le calcul des prévisions de passages (par exemple, si l'horizon de votre lieu d'observation est masqué par un bâtiment, une montagne ou la pollution lumineuse urbaine). Si vous choisissez 'Autre' dans la liste déroulante, vous êtes alors invité à saisir une valeur entière positive dans le champ texte adjacent.	
@@ -51,7 +53,7 @@ Une fois les calculs terminés, un message explicite apparaît dans la barre des
 
 \image html resultats-starlink.png
 
-Le tableau à gauche résume chaque passage du train Starlink avec les informations les plus importantes. En cliquant sur une ligne du tableau, on affiche le passage correspondant sur la carte du ciel. En double cliquant sur une ligne du tableau, une petite fenêtre avec davantage d'informations apparaît.
+Le tableau à gauche résume chaque passage du train Starlink avec les informations les plus importantes. En cliquant sur une ligne du tableau, on affiche le passage correspondant sur la carte du ciel. En double cliquant sur une ligne du tableau, une petite fenêtre avec davantage d'informations apparaît. En se basant sur les éléments orbitaux préalables au lancement, il est possible que les passages aient un décalage de plusieurs minutes les jours suivant le lancement (les satellites migrent vers leur orbite définitive, les éléments orbitaux étant donnés pour un satellite fictif au milieu de l'ensemble des satellites).
 
 Il est possible de sauvegarder un passage sous forme d'image (passage sélectionné avec la carte du ciel associée), ou bien de sauvegarder tous les passages calculés sous forme de fichier texte, présenté de la manière suivante.
 

@@ -27,11 +27,13 @@
 
 
 /**
-\page Previsions Prediction of passes of Starlink trains
+\page Starlink Prediction of passes of Starlink trains
 
 The <b>Starlink</b> tab allows to make predictions of passes for a Starlink train above a given place of observation.
 
 \image html starlink.png
+
+You must select the Starlink satellite group from the drop-down list. Groups ending with "B1", "B2", etc. (for example G6-22B1) correspond to orbital elements following a postponement of the launch (postponement due to weather, launcher failure or other). You must select the correct group of elements according to the actual time of the launch, information that can be found on <a href="https://www.spacex.com">SpaceX</a> or on <a href= "https://www.rocketlaunch.live/?includePast=1&tag=series-spacex-starlink&filter=spacex">RocketLaunch.Live</a>.
 
 The predictions are made for the period between 5 minutes after launch and 7 days following launch. The generation step is initially set at one minute.
 
@@ -51,7 +53,7 @@ Once calculations are finished, an explicit message appears in the task bar and 
 
 \image html resultats-starlink.png
 
-The table summarizes each pass of a Starlink train with the most important informations. By clicking on a row of the table, we display the corresponding pass on the sky map. By double-clicking on a row, a small window displays more informations of the pass.
+The table summarizes each pass of a Starlink train with the most important informations. By clicking on a row of the table, we display the corresponding pass on the sky map. By double-clicking on a row, a small window displays more informations of the pass. Based on the orbital elements prior to launch, it is possible that the passes have a difference of several minutes in the days following launch (the satellites migrate to their final orbit, the orbital elements being given for a fictitious satellite in the middle of the launch of all satellites).
 
 It is possible to save the selected pass as an image, or save all passes as a text file under the following form.
 
