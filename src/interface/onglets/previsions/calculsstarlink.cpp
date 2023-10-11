@@ -147,6 +147,7 @@ void CalculsStarlink::show()
         const bool old = (Configuration::instance()->satellitesStarlink().keys()
                               .indexOf(QRegularExpression(".*" + groupe.split(" ").at(1) + ".*"), 1) == -1);
 
+        // Groupes plus anciens
         if (!isBackup && isLancement && old) {
             grp.append(it.key());
         }
@@ -506,5 +507,14 @@ void CalculsStarlink::on_calculs_clicked()
 
 void CalculsStarlink::on_majElementsOrbitaux_clicked()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     emit MajElementsOrbitaux();
+    _ui->majElementsOrbitaux->setVisible(false);
+
+    /* Retour */
+    return;
 }
