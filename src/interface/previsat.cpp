@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 octobre 2023
+ * >    16 octobre 2023
  *
  */
 
@@ -1430,27 +1430,23 @@ void PreviSat::VerifMajPreviSat()
         // Fichiers internes
         if (VerifMajDate("majFichiersInternes", Configuration::instance()->listeFicLocalData())) {
 
-            if (_ui->actionMettre_a_jour_les_fichiers_de_donnees->isVisible()) {
+            _ui->actionMettre_a_jour_les_fichiers_de_donnees->setVisible(true);
+
+            const QString msg = tr("Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?");
+
+            QMessageBox msgbox(QMessageBox::Question, tr("Information"), msg.arg(tr("des fichiers internes")));
+            QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
+            msgbox.addButton(tr("Non"), QMessageBox::NoRole);
+            msgbox.setDefaultButton(oui);
+            msgbox.exec();
+
+            if (msgbox.clickedButton() == oui) {
+
+                on_actionMettre_a_jour_les_fichiers_de_donnees_triggered();
                 _ui->actionMettre_a_jour_les_fichiers_de_donnees->setVisible(false);
-
-            } else {
-
-                _ui->actionMettre_a_jour_les_fichiers_de_donnees->setVisible(true);
-
-                const QString msg = tr("Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?");
-
-                QMessageBox msgbox(QMessageBox::Question, tr("Information"), msg.arg(tr("des fichiers internes")));
-                QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
-                msgbox.addButton(tr("Non"), QMessageBox::NoRole);
-                msgbox.setDefaultButton(oui);
-                msgbox.exec();
-
-                if (msgbox.clickedButton() == oui) {
-
-                    on_actionMettre_a_jour_les_fichiers_de_donnees_triggered();
-                    _ui->actionMettre_a_jour_les_fichiers_de_donnees->setVisible(false);
-                }
             }
+        } else {
+            _ui->actionMettre_a_jour_les_fichiers_de_donnees->setVisible(false);
         }
 
         // Fichiers d'informations
