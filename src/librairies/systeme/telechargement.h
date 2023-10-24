@@ -36,7 +36,7 @@
  * >    16 juin 2022
  *
  * Date de revision
- * >
+ * >    24 octobre 2023
  *
  */
 
@@ -80,6 +80,13 @@ public:
      * @param[in] logAlarme affichage d'un message d'erreur dans le fichier de log
      */
     void TelechargementFichier(const QUrl &url, const bool alarme = true, const bool logAlarme = true);
+
+    /**
+     * @brief UrlExiste Verification de l'existence d'une adresse
+     * @param[in] url url
+     * @return vrai si l'url existe
+     */
+    static bool UrlExiste(const QUrl &url);
 
 
     /*
