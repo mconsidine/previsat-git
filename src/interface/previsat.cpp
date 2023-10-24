@@ -2438,9 +2438,17 @@ void PreviSat::TelechargementGroupesStarlink()
 
         qInfo() << "Telechargement des groupes Starlink";
 
-        // Telechargement du verrou Starlink (si ce fichier n'existe pas, l'onglet Starlink ne s'affiche pas)
+        if (!settings.value("affichage/verifMAJ").toBool()) {
+            throw PreviSatException();
+        }
+
+        // Telechargement du verrou Starlink
         Telechargement tel1(Configuration::instance()->dirTmp());
         tel1.TelechargementFichier(QString(DOMAIN_NAME) + "maj/verrouStarlink", false);
+
+        if (VerifieDateExpirationStarlink()) {
+            throw PreviSatException();
+        }
 
         // Telechargement des informations generales des pre-launch Starlink
         Telechargement tel2(Configuration::instance()->dirStarlink());
@@ -2513,7 +2521,8 @@ void PreviSat::TelechargementGroupesStarlink()
 
         if (Configuration::instance()->satellitesStarlink().isEmpty()) {
             _onglets->ui()->stackedWidget_previsions->removeWidget(_onglets->ui()->starlink);
-        } else {
+
+        } else if (!VerifieDateExpirationStarlink()) {
             _onglets->starlink()->show();
         }
     }
@@ -2566,6 +2575,34 @@ void PreviSat::TempsReel()
     return;
 }
 
+/*
+ * Verification de la date d'expiration Starlink
+ */
+bool PreviSat::VerifieDateExpirationStarlink()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    bool res = false;
+
+    /* Corps de la methode */
+    QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + "verrouStarlink");
+    if (fi.exists() && (fi.size() != 0)) {
+
+        fi.open(QIODevice::ReadOnly | QIODevice::Text);
+        const QDate date = QDate::fromString(fi.readAll(), Qt::ISODate);
+        fi.close();
+
+        if (QDate::currentDate() >= date) {
+            Configuration::instance()->satellitesStarlink().clear();
+            res = true;
+        }
+    }
+
+    /* Retour */
+    return res;
+}
+
 void PreviSat::closeEvent(QCloseEvent *evt)
 {
     /* Declarations des variables locales */
@@ -2578,7 +2615,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     const QDir di = QDir(Configuration::instance()->dirTmp());
     const QStringList listeFic = di.entryList(QDir::Files);
     foreach(const QString fic, listeFic) {
-        if (!(_options->ui()->verifMAJ->isChecked() && (fic == "versionPreviSat" || fic == "majFichiersInternes"))) {
+        if (!(_options->ui()->verifMAJ->isChecked() && ((fic == "versionPreviSat") || (fic == "majFichiersInternes") || (fic == "verrouStarlink")))) {
             QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + fic);
             fi.remove();
         }

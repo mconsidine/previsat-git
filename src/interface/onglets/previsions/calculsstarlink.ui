@@ -559,19 +559,6 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="majElementsOrbitaux">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>128</y>
-      <width>261</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Mettre à jour les éléments orbitaux...</string>
-    </property>
-   </widget>
   </widget>
  </widget>
  <resources/>
