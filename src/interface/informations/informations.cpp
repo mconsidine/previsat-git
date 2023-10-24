@@ -36,7 +36,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    22 juin 2023
+ * >    24 octobre 2023
  *
  */
 
@@ -117,34 +117,6 @@ Ui::Informations *Informations::ui() const
 /*
  * Methodes publiques
  */
-/*
- * Verification de l'existence d'une adresse
- */
-bool Informations::UrlExiste(const QUrl &url)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    QTcpSocket socket;
-    socket.connectToHost(url.host(), 80);
-    if (socket.waitForConnected()) {
-        socket.write("HEAD " + url.path().toUtf8() + " HTTP/1.1\r\n"
-                                                     "Host: " + url.host().toUtf8() + "\r\n"
-                                                                                      "\r\n");
-        if (socket.waitForReadyRead()) {
-            QByteArray bytes = socket.readAll();
-            if (bytes.contains("200 OK")) {
-                return true;
-            }
-        }
-    }
-
-    /* Retour */
-    return false;
-}
-
 void Informations::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
@@ -219,7 +191,7 @@ void Informations::OuvertureInfo(const QString &nomfic, QWidget *onglet, QTextBr
 
         const QString url = QString(DOMAIN_NAME) + "informations/" + nomfic;
 
-        if (UrlExiste(url)) {
+        if (Telechargement::UrlExiste(url)) {
 
             Telechargement telechargement(Configuration::instance()->dirTmp());
             telechargement.TelechargementFichier(url);

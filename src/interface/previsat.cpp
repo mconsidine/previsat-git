@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 octobre 2023
+ * >    24 octobre 2023
  *
  */
 
@@ -467,7 +467,7 @@ void PreviSat::DemarrageApplication()
     // Affichage de la fenetre d'informations
     const QUrl urlLastNews(QString("%1informations/").arg(DOMAIN_NAME) + "last_news_" + Configuration::instance()->locale() + ".html");
 
-    if (!_chronometre->isActive() && settings.value("affichage/informationsDemarrage", true).toBool() && Informations::UrlExiste(urlLastNews)) {
+    if (!_chronometre->isActive() && settings.value("affichage/informationsDemarrage", true).toBool() && Telechargement::UrlExiste(urlLastNews)) {
         on_actionInformations_triggered();
         const QRect tailleEcran = QApplication::primaryScreen()->availableGeometry();
         _informations->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, _informations->size(), tailleEcran));
@@ -3157,7 +3157,7 @@ void PreviSat::on_actionInformations_triggered()
 
     const QUrl urlLastNews(QString("%1informations/").arg(DOMAIN_NAME) + "last_news_" + Configuration::instance()->locale() + ".html");
 
-    if (Informations::UrlExiste(urlLastNews)) {
+    if (Telechargement::UrlExiste(urlLastNews)) {
 
         _informations->setWindowModality(Qt::ApplicationModal);
         _informations->show();

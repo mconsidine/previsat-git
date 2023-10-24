@@ -30,7 +30,7 @@
  * >    16 juin 2022
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    24 octobre 2023
  *
  */
 
@@ -131,6 +131,37 @@ void Telechargement::TelechargementFichier(const QUrl &url, const bool alarme, c
 
     /* Retour */
     return;
+}
+
+/*
+ * Verification de l'existence d'une adresse
+ */
+bool Telechargement::UrlExiste(const QUrl &url)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    bool res = false;
+
+    /* Corps de la methode */
+    QTcpSocket socket;
+    socket.connectToHost(url.host(), 80);
+
+    if (socket.waitForConnected()) {
+
+        socket.write("HEAD " + url.path().toUtf8() + " HTTP/1.1\r\nHost: " + url.host().toUtf8() + "\r\n\r\n");
+
+        if (socket.waitForReadyRead()) {
+
+            const QByteArray bytes = socket.readAll();
+            if (bytes.contains("200 OK")) {
+                res = true;
+            }
+        }
+    }
+
+    /* Retour */
+    return res;
 }
 
 

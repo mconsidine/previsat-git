@@ -33,7 +33,7 @@
  * >    1er mai 2019
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    24 octobre 2023
  *
  */
 
@@ -82,19 +82,11 @@ public:
     Ui::Informations *ui() const;
 
 
+public slots:
+
     /*
      * Methodes publiques
      */
-    /**
-     * @brief UrlExiste Verification de l'existence d'une adresse
-     * @param[in] url url
-     * @return vrai si l'url existe
-     */
-    static bool UrlExiste(const QUrl &url);
-
-
-public slots:
-
     void changeEvent(QEvent *evt);
 
 
