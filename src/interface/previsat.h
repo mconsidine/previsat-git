@@ -417,6 +417,12 @@ private slots:
      */
     void TempsReel();
 
+    /**
+     * @brief VerifieDateVerrouStarlink Verification de la date d'expiration Starlink
+     * @return vrai si la date est expiree
+     */
+    bool VerifieDateExpirationStarlink();
+
     void closeEvent(QCloseEvent *evt);
     bool eventFilter(QObject *watched, QEvent *event);
     void keyPressEvent(QKeyEvent *evt);

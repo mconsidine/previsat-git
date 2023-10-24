@@ -124,51 +124,51 @@ void CalculsStarlink::show()
     QString lancement;
     QString deploiement;
     QStringList grp;
+    QMap<QString, QString> mapDates;
 
     /* Initialisations */
-    bool affMaj = false;
-    const Date aujourdhui;
-
     const bool etat = _ui->groupe->blockSignals(true);
     _ui->groupe->clear();
 
-    /* Corps de la methode */   
+    /* Corps de la methode */
+    // Creation d'une map des dates de lancement
     QMapIterator it(Configuration::instance()->satellitesStarlink());
     while (it.hasNext()) {
         it.next();
 
         const QString groupe = it.key();
-        const SatellitesStarlink sat = it.value();
+        mapDates.insert(it.value().lancement, groupe);
+    }
 
-        const Date dateLancement = Date::ConversionDateIso(sat.lancement);
-        const bool isBackup = sat.fichier.split("-").last().contains("b");
-        const bool isLancement = (dateLancement.jourJulienUTC() < aujourdhui.jourJulienUTC());
+    // Classement des groupes en ordre decroissant des dates de lancement
+    QMapIterator it2(mapDates);
+    it2.toBack();
+    while (it2.hasPrevious()) {
+        it2.previous();
 
-        const bool old = (Configuration::instance()->satellitesStarlink().keys()
-                              .indexOf(QRegularExpression(".*" + groupe.split(" ").at(1) + ".*"), 1) == -1);
-
-        // Groupes plus anciens
-        if (!isBackup && isLancement && old) {
-            grp.append(it.key());
-        }
-
-        // Remplissage de la liste deroulante
-        if ((!isBackup && !isLancement) || !old) {
-            _ui->groupe->addItem(groupe);
-        }
-
-        // Visibilite du bouton de mise a jour des elements orbitaux
+        const bool isBackup = it2.value().split(" ").at(1).contains("B");
         if (isBackup) {
-            affMaj = isLancement;
+            grp.append(it2.value());
+        } else {
+            _ui->groupe->addItem(it2.value());
         }
     }
 
-    QStringListIterator it2(grp);
-    while (it2.hasNext()) {
-        _ui->groupe->addItem(it2.next());
-    }
+    // Gestion des backup (affichage apres les dates nominales de tir)
+    QString nom;
+    QStringListIterator it3(grp);
+    while (it3.hasNext()) {
 
-    _ui->majElementsOrbitaux->setVisible(affMaj);
+        const QString groupe = it3.next();
+        nom = groupe;
+
+        const QString nomGroupeBackup = groupe.split(" ").at(1);
+        const QString nomGroupe = nomGroupeBackup.mid(0, nomGroupeBackup.lastIndexOf("B"));
+        nom.replace(nomGroupeBackup, nomGroupe);
+        const int idx = _ui->groupe->findText(nom) + 1;
+
+        _ui->groupe->insertItem(idx, groupe);
+    }
 
     const SatellitesStarlink starlink = Configuration::instance()->satellitesStarlink()[_ui->groupe->currentText()];
 
@@ -500,20 +500,6 @@ void CalculsStarlink::on_calculs_clicked()
 
     } catch (PreviSatException const &e) {
     }
-
-    /* Retour */
-    return;
-}
-
-void CalculsStarlink::on_majElementsOrbitaux_clicked()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    emit MajElementsOrbitaux();
-    _ui->majElementsOrbitaux->setVisible(false);
 
     /* Retour */
     return;
