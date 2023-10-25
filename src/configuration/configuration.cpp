@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    6 octobre 2023
+ * >    25 octobre 2023
  *
  */
 
@@ -81,9 +81,6 @@ void Configuration::Chargement()
 
         qInfo() << "--";
         qInfo() << "Début Chargement Configuration";
-
-        // Verification des arborescences
-        VerificationArborescences();
 
         // Lecture du fichier de configuration generale
         GestionnaireXml::LectureConfiguration(_nomFichierEvenementsStationSpatiale,
@@ -203,6 +200,9 @@ void Configuration::Initialisation()
 
     // Determination de la locale et liste des langues disponibles
     DeterminationLocale();
+
+    // Verification des arborescences
+    VerificationArborescences();
 
     /* Retour */
     return;
