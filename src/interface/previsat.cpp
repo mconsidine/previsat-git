@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 octobre 2023
+ * >    25 octobre 2023
  *
  */
 
@@ -2119,6 +2119,8 @@ void PreviSat::GestionTempsReel()
                 _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
                 _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
 
+                // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
+                EnchainementCalculs();
             }
         }
 
@@ -2773,6 +2775,8 @@ void PreviSat::on_tempsReel_toggled(bool checked)
     /* Corps de la methode */
     if (checked && (_chronometre != nullptr)) {
         _chronometre->setInterval(_ui->pasReel->currentText().toInt() * 1000);
+        TempsReel();
+        GestionTempsReel();
     }
 
     _ui->pasManuel->setVisible(!checked);
