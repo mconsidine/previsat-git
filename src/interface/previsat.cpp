@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 octobre 2023
+ * >    26 octobre 2023
  *
  */
 
@@ -2510,10 +2510,10 @@ void PreviSat::TelechargementGroupesStarlink()
                         Configuration::instance()->AjoutDonneesSatellitesStarlink(it.key(), starlink.fichier, starlink.lancement, starlink.deploiement);
                     }
                 }
-            }
 
-            if (Configuration::instance()->satellitesStarlink().isEmpty()) {
-                throw PreviSatException();
+                if (Configuration::instance()->satellitesStarlink().isEmpty()) {
+                    throw PreviSatException();
+                }
             }
 
             _onglets->starlink()->show();

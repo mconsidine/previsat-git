@@ -1554,48 +1554,48 @@ PreviSat is free !</translation>
         <translation>Deployment :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="179"/>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="180"/>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="271"/>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="272"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="181"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="182"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="274"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="275"/>
         <source>UTC</source>
         <translation>UTC</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="391"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="394"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="391"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="394"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="455"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="458"/>
         <source>starlink</source>
         <comment>filename (without accent)</comment>
         <translation>starlink</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="465"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="468"/>
         <source>Calculs en cours...</source>
         <translation>Calculating...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="466"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="469"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="489"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="492"/>
         <source>Calculs terminés</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="493"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="496"/>
         <source>Aucun passage n&apos;a été trouvé sur la période donnée</source>
         <translation>None pass has been found during the given period</translation>
     </message>
@@ -5261,15 +5261,15 @@ which represents approximately %2 pages.</translation>
     <message>
         <location filename="../src/configuration/configuration.cpp" line="870"/>
         <location filename="../src/configuration/configuration.cpp" line="909"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="359"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="450"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="579"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="691"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="895"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1051"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1144"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1233"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1326"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="364"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="455"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="584"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="696"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="900"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1056"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1149"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1238"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1331"/>
         <location filename="../src/librairies/corps/corps.cpp" line="680"/>
         <source>Le fichier %1 n&apos;existe pas ou est vide, veuillez réinstaller %2</source>
         <translation>The file %1 does not exist or is empty, please re-install %2</translation>
@@ -5278,14 +5278,14 @@ which represents approximately %2 pages.</translation>
         <location filename="../src/configuration/configuration.cpp" line="882"/>
         <location filename="../src/configuration/configuration.cpp" line="923"/>
         <location filename="../src/configuration/evenementsstationspatiale.cpp" line="116"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="403"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="546"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="807"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="939"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1107"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1196"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1289"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1391"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="408"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="551"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="812"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="944"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1112"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1201"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1294"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1396"/>
         <location filename="../src/librairies/corps/corps.cpp" line="670"/>
         <location filename="../src/librairies/dates/date.cpp" line="445"/>
         <source>Erreur lors de la lecture du fichier %1, veuillez réinstaller %2</source>
@@ -5298,7 +5298,7 @@ which represents approximately %2 pages.</translation>
     </message>
     <message>
         <location filename="../src/configuration/configuration.cpp" line="1065"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1423"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1428"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>The file %1 does not exist, please re-install %2</translation>
     </message>
@@ -5472,14 +5472,14 @@ Do you want to add this TLE in the file to update?</translation>
         <translation>Add of the new TLE</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="440"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="445"/>
         <source>Le fichier de configuration de %1 a évolué.
 Souhaitez-vous tenter de récupérer les lieux d&apos;observation ?</source>
         <translation>The configuration file of %1 has evolved.
 Do you want to try to recover the places of location ?</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1481"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1486"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="337"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="370"/>
         <source>Oui</source>
@@ -5492,7 +5492,7 @@ Do you want to try to recover the places of location ?</translation>
         <translation>Yes to all</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1482"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1487"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="339"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="372"/>
         <source>Non</source>
@@ -5665,7 +5665,7 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1480"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1485"/>
         <location filename="../src/librairies/exceptions/message.cpp" line="80"/>
         <source>Avertissement</source>
         <translation>Warning</translation>

@@ -170,14 +170,17 @@ void CalculsStarlink::show()
         _ui->groupe->insertItem(idx, groupe);
     }
 
-    const SatellitesStarlink starlink = Configuration::instance()->satellitesStarlink()[_ui->groupe->currentText()];
+    if (_ui->groupe->count() > 0) {
 
-    // Dates de lancement et de deploiement
-    lancement = starlink.lancement;
-    deploiement = starlink.deploiement;
+        const SatellitesStarlink starlink = Configuration::instance()->satellitesStarlink()[_ui->groupe->currentText()];
 
-    _ui->lancement->setText(lancement.replace("T", " ") + " " + tr("UTC"));
-    _ui->deploiement->setText(deploiement.replace("T", " ") + " " + tr("UTC"));
+        // Dates de lancement et de deploiement
+        lancement = starlink.lancement;
+        deploiement = starlink.deploiement;
+
+        _ui->lancement->setText(lancement.replace("T", " ") + " " + tr("UTC"));
+        _ui->deploiement->setText(deploiement.replace("T", " ") + " " + tr("UTC"));
+    }
 
     _ui->frame_starlink->setVisible(_ui->groupe->count() > 0);
     _ui->groupe->blockSignals(etat);
