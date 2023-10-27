@@ -30,7 +30,7 @@
  * >    16 juin 2022
  *
  * Date de revision
- * >
+ * >    27 octobre 2023
  *
  */
 
@@ -53,6 +53,7 @@ using namespace TestTools;
 void TelechargementTest::testAll()
 {
     testTelechargementFichier();
+    testUrlExiste();
 }
 
 void TelechargementTest::testTelechargementFichier()
@@ -84,4 +85,12 @@ void TelechargementTest::testTelechargementFichier()
         dwn.TelechargementFichier(url2);
     } catch (PreviSatException &e) {
     }
+}
+
+void TelechargementTest::testUrlExiste()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const QUrl urlLastNews(QString("%1informations/").arg(DOMAIN_NAME) + "last_news_fr.html");
+    QCOMPARE(Telechargement::UrlExiste(urlLastNews), true);
 }
