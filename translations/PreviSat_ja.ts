@@ -1556,46 +1556,51 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="181"/>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="182"/>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="274"/>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="275"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="278"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="279"/>
         <source>UTC</source>
         <translation>UTC</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="394"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="186"/>
+        <source>Aucun groupe Starlink trouvé</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="398"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="394"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="398"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="458"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="462"/>
         <source>starlink</source>
         <comment>filename (without accent)</comment>
         <translation>starlink</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="468"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="472"/>
         <source>Calculs en cours...</source>
         <translation>進行中の計算...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="469"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="473"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="492"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="496"/>
         <source>Calculs terminés</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="496"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="500"/>
         <source>Aucun passage n&apos;a été trouvé sur la période donnée</source>
         <translation>指定された期間に通過が見つかりませんでした</translation>
     </message>
