@@ -36,7 +36,7 @@
  * >    16 juin 2022
  *
  * Date de revision
- * >
+ * >    27 octobre 2023
  *
  */
 
@@ -53,6 +53,7 @@ public:
 private:
 
     static void testTelechargementFichier();
+    static void testUrlExiste();
 
 };
 
