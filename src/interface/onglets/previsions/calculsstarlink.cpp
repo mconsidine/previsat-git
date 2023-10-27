@@ -180,6 +180,10 @@ void CalculsStarlink::show()
 
         _ui->lancement->setText(lancement.replace("T", " ") + " " + tr("UTC"));
         _ui->deploiement->setText(deploiement.replace("T", " ") + " " + tr("UTC"));
+        _ui->groupe->setPlaceholderText("");
+
+    } else {
+        _ui->groupe->setPlaceholderText(tr("Aucun groupe Starlink trouvé"));
     }
 
     _ui->frame_starlink->setVisible(_ui->groupe->count() > 0);
