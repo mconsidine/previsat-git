@@ -36,7 +36,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    4 octobre 2023
+ * >    27 octobre 2023
  *
  */
 
@@ -175,7 +175,7 @@ private:
      * @brief LecturePreLaunchStarlink Lecture du fichier Pre-Launch Starlink
      * @return map contenant les informations pre-launch des satellites Starlink
      */
-    static QMap<QString, SatellitesStarlink> LecturePreLaunchStarlink(QString &version);
+    static QMap<QString, SatellitesStarlink> LecturePreLaunchStarlink();
 
     /**
      * @brief LectureSatellitesTDRS Lecture du fichier de satellites TDRS

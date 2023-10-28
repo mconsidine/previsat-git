@@ -5264,13 +5264,13 @@ ce qui représente environ %2 pages.</source>
         <translation>ファイルには観測地が含まれていません</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="870"/>
-        <location filename="../src/configuration/configuration.cpp" line="909"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="364"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="455"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="584"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="696"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="900"/>
+        <location filename="../src/configuration/configuration.cpp" line="866"/>
+        <location filename="../src/configuration/configuration.cpp" line="905"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="363"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="454"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="583"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="695"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="899"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1056"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1149"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1238"/>
@@ -5280,13 +5280,13 @@ ce qui représente environ %2 pages.</source>
         <translation>ファイル「%1」が存在しないまたはファイルが空ので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="882"/>
-        <location filename="../src/configuration/configuration.cpp" line="923"/>
+        <location filename="../src/configuration/configuration.cpp" line="878"/>
+        <location filename="../src/configuration/configuration.cpp" line="919"/>
         <location filename="../src/configuration/evenementsstationspatiale.cpp" line="116"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="408"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="551"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="812"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="944"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="407"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="550"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="811"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="943"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1112"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1201"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1294"/>
@@ -5297,18 +5297,18 @@ ce qui représente environ %2 pages.</source>
         <translation>ファイル「%1」の読み込み中にエラーが発生しましたので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1000"/>
+        <location filename="../src/configuration/configuration.cpp" line="996"/>
         <source>Le répertoire %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>フォルダ「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1065"/>
+        <location filename="../src/configuration/configuration.cpp" line="1061"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1428"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1072"/>
+        <location filename="../src/configuration/configuration.cpp" line="1068"/>
         <source>Le fichier %1 est vide, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が空なので、「%2」を再インストールしてください</translation>
     </message>
@@ -5472,7 +5472,7 @@ Voulez-vous ajouter ce TLE dans le fichier à mettre à jour ?</source>
         <translation>新しいTLEを追加する</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="445"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="444"/>
         <source>Le fichier de configuration de %1 a évolué.
 Souhaitez-vous tenter de récupérer les lieux d&apos;observation ?</source>
         <translation>設定ファイル「%1」の形式が変更されました。
