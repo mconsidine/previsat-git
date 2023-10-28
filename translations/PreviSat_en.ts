@@ -5264,13 +5264,13 @@ which represents approximately %2 pages.</translation>
         <translation>The file does not contain locations</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="870"/>
-        <location filename="../src/configuration/configuration.cpp" line="909"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="364"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="455"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="584"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="696"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="900"/>
+        <location filename="../src/configuration/configuration.cpp" line="866"/>
+        <location filename="../src/configuration/configuration.cpp" line="905"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="363"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="454"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="583"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="695"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="899"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1056"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1149"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1238"/>
@@ -5280,13 +5280,13 @@ which represents approximately %2 pages.</translation>
         <translation>The file %1 does not exist or is empty, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="882"/>
-        <location filename="../src/configuration/configuration.cpp" line="923"/>
+        <location filename="../src/configuration/configuration.cpp" line="878"/>
+        <location filename="../src/configuration/configuration.cpp" line="919"/>
         <location filename="../src/configuration/evenementsstationspatiale.cpp" line="116"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="408"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="551"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="812"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="944"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="407"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="550"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="811"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="943"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1112"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1201"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1294"/>
@@ -5297,18 +5297,18 @@ which represents approximately %2 pages.</translation>
         <translation>Error while reading file %1, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1000"/>
+        <location filename="../src/configuration/configuration.cpp" line="996"/>
         <source>Le répertoire %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>The directory %1 does not exist, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1065"/>
+        <location filename="../src/configuration/configuration.cpp" line="1061"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1428"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>The file %1 does not exist, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1072"/>
+        <location filename="../src/configuration/configuration.cpp" line="1068"/>
         <source>Le fichier %1 est vide, veuillez réinstaller %2</source>
         <translation>The file %1 is empty, please re-install %2</translation>
     </message>
@@ -5477,7 +5477,7 @@ Do you want to add this TLE in the file to update?</translation>
         <translation>Add of the new TLE</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="445"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="444"/>
         <source>Le fichier de configuration de %1 a évolué.
 Souhaitez-vous tenter de récupérer les lieux d&apos;observation ?</source>
         <translation>The configuration file of %1 has evolved.

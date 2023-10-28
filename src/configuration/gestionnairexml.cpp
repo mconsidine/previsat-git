@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    26 octobre 2023
+ * >    27 octobre 2023
  *
  */
 
@@ -259,7 +259,6 @@ void GestionnaireXml::EcriturePreLaunchStarlink()
             cfg.setAutoFormatting(true);
             cfg.writeStartDocument();
             cfg.writeStartElement("PreviSatStarlink");
-            cfg.writeAttribute("version", Configuration::instance()->versionStarlink());
 
             // Groupes Starlink
             QMapIterator it(Configuration::instance()->satellitesStarlink());
@@ -958,7 +957,7 @@ QMap<QString, QString> GestionnaireXml::LecturePays()
 /*
  * Lecture du fichier Pre-Launch Starlink
  */
-QMap<QString, SatellitesStarlink> GestionnaireXml::LecturePreLaunchStarlink(QString &version)
+QMap<QString, SatellitesStarlink> GestionnaireXml::LecturePreLaunchStarlink()
 {
     /* Declarations des variables locales */
     QMap<QString, SatellitesStarlink> mapSatellitesStarlink;
@@ -966,6 +965,7 @@ QMap<QString, SatellitesStarlink> GestionnaireXml::LecturePreLaunchStarlink(QStr
     /* Initialisations */
     try {
 
+        QString version;
         const QString nomficXml = "pre-launch.xml";
 
         VerifieFichierXml(nomficXml, version);

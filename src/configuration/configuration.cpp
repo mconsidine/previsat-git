@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    25 octobre 2023
+ * >    27 octobre 2023
  *
  */
 
@@ -141,7 +141,7 @@ void Configuration::Chargement()
         _mapAdressesTelechargement.insert(TypeTelechargement::NOTIFICATIONS, httpDir + "sound/");
 
         // Lecture du fichier Pre-Launch Starlink
-        _satellitesStarlink = GestionnaireXml::LecturePreLaunchStarlink(_versionStarlink);
+        _satellitesStarlink = GestionnaireXml::LecturePreLaunchStarlink();
 
         // Initialisation de la liste de fichiers d'elements orbitaux
         InitListeFichiersElem();
@@ -607,10 +607,6 @@ NotificationSonore &Configuration::notifFlashs()
     return _notifFlashs;
 }
 
-QString Configuration::versionStarlink() const
-{
-    return _versionStarlink;
-}
 
 QMap<QString, SatellitesStarlink> &Configuration::satellitesStarlink()
 {
