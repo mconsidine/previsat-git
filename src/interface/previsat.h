@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 octobre 2023
+ * >    29 octobre 2023
  *
  */
 
@@ -340,7 +340,7 @@ private slots:
 
     /**
      * @brief ChangementFuseauHoraire Changement du fuseau horaire
-     * @param offset ecart heure locale - UTC (en secondes)
+     * @param[in] offset ecart heure locale - UTC (en secondes)
      */
     void ChangementFuseauHoraire(const int offset);
 

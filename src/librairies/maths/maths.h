@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    29 octobre 2023
  *
  */
 
@@ -89,8 +89,8 @@ public:
 
     /**
      * @brief InterpolationLagrange Interpolation par polynome de Lagrange
-     * @param table tableau des coordonnees
-     * @param xval valeur de l'abscisse
+     * @param[in] table tableau des coordonnees
+     * @param[in] xval valeur de l'abscisse
      * @return valeur de l'ordonnee interpolee
      */
     static double InterpolationLagrange(const QVector<QPointF> &table, const double xval);
