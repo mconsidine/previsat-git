@@ -525,7 +525,7 @@
       <x>440</x>
       <y>0</y>
       <width>271</width>
-      <height>51</height>
+      <height>41</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout_lancement">
@@ -558,6 +558,19 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QPushButton" name="ouvrirRocketLaunchLive">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>49</y>
+      <width>171</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ouvrir RocketLaunch.Live</string>
+    </property>
    </widget>
   </widget>
  </widget>

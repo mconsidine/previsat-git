@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreviSatConfiguration version="1.2">
+<PreviSatConfiguration version="1.3">
     <NoradStationSpatiale>025544</NoradStationSpatiale>
     <AdresseCelestrak>https://celestrak.org/</AdresseCelestrak>
+    <AdresseRocketLaunchLive>https://www.rocketlaunch.live/?includePast=1&amp;tag=series-spacex-starlink&amp;filter=spacex</AdresseRocketLaunchLive>
     <NomFichierEvenementsStationSpatiale>ISS.OEM_J2K_EPH.xml</NomFichierEvenementsStationSpatiale>
     <Observateurs>
         <Observateur>

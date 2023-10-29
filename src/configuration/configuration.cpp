@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    27 octobre 2023
+ * >    29 octobre 2023
  *
  */
 
@@ -87,6 +87,7 @@ void Configuration::Chargement()
                                               _noradStationSpatiale,
                                               _versionCfg,
                                               _adresseCelestrak,
+                                              _adresseRocketLaunchLive,
                                               _nomfic,
                                               _noradDefaut,
                                               _observateurs,
@@ -397,6 +398,11 @@ const QString &Configuration::adresseCelestrakSupplementalNorad() const
 const QString &Configuration::adresseCelestrakSupplementalNoradFichier() const
 {
     return _adresseCelestrakSupplementalNoradFichier;
+}
+
+const QString Configuration::adresseRocketLaunchLive() const
+{
+    return _adresseRocketLaunchLive;
 }
 
 const QMap<QString, QString> &Configuration::mapCategoriesOrbite() const

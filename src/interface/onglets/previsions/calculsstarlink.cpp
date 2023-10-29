@@ -37,6 +37,7 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #pragma GCC diagnostic ignored "-Wshadow"
+#include <QDesktopServices>
 #include <QDir>
 #include <QFutureWatcher>
 #include <QProgressBar>
@@ -270,6 +271,7 @@ void CalculsStarlink::Initialisation()
     _ui->hauteurSat->setCurrentIndex(settings.value("previsions/hauteurSatStarlink", 0).toInt());
     _ui->valHauteurSoleil->setVisible(false);
     _ui->hauteurSoleil->setCurrentIndex(settings.value("previsions/hauteurSoleilStarlink", 1).toInt());
+    _ui->ouvrirRocketLaunchLive->setVisible(!Configuration::instance()->adresseRocketLaunchLive().isEmpty());
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
 
@@ -521,4 +523,9 @@ void CalculsStarlink::on_calculs_clicked()
 
     /* Retour */
     return;
+}
+
+void CalculsStarlink::on_ouvrirRocketLaunchLive_clicked()
+{
+    QDesktopServices::openUrl(QUrl(Configuration::instance()->adresseRocketLaunchLive()));
 }

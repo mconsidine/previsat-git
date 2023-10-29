@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    27 octobre 2023
+ * >    29 octobre 2023
  *
  */
 
@@ -91,6 +91,9 @@ void GestionnaireXml::EcritureConfiguration()
 
         // Adresse du site Celestrak
         cfg.writeTextElement("AdresseCelestrak", Configuration::instance()->adresseCelestrak());
+
+        // Adresse du site RocketLaunchLive
+        cfg.writeTextElement("AdresseRocketLaunchLive", Configuration::instance()->adresseRocketLaunchLive());
 
         // Nom du fichier d'evenements de la Station Spatiale
         cfg.writeTextElement("NomFichierEvenementsStationSpatiale", Configuration::instance()->nomFichierEvenementsStationSpatiale());
@@ -399,6 +402,7 @@ QMap<QString, QString> GestionnaireXml::LectureCategoriesOrbite()
                 }
             }
         }
+
         fi.close();
 
         // Verifications
@@ -425,6 +429,7 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
                                            QString &noradStationSpatiale,
                                            QString &versionCfg,
                                            QString &adresseCelestrak,
+                                           QString &adresseRocketLaunchLive,
                                            QString &nomfic,
                                            QString &noradDefaut,
                                            QList<Observateur> &observateurs,
@@ -475,6 +480,10 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
 
                         adresseCelestrak = cfg.readElementText();
 
+                    } else if (cfg.name().toString() == "AdresseRocketLaunchLive") {
+
+                        adresseRocketLaunchLive = cfg.readElementText();
+
                     } else if (cfg.name().toString() == "NomFichierEvenementsStationSpatiale") {
 
                         nomFichierEvenementsStationSpatiale = cfg.readElementText();
@@ -520,6 +529,7 @@ void GestionnaireXml::LectureConfiguration(QString &nomFichierEvenementsStationS
                 }
             }
         }
+
         fi.close();
 
         // Verifications
@@ -935,6 +945,7 @@ QMap<QString, QString> GestionnaireXml::LecturePays()
                 }
             }
         }
+
         fi.close();
 
         // Verifications
@@ -1104,6 +1115,7 @@ QMap<int, SatelliteTDRS> GestionnaireXml::LectureSatellitesTDRS()
                 }
             }
         }
+
         fi.close();
 
         // Verifications
@@ -1193,6 +1205,7 @@ QMap<QString, Observateur> GestionnaireXml::LectureSitesLancement()
                 }
             }
         }
+
         fi.close();
 
         // Verifications
@@ -1286,6 +1299,7 @@ QMap<QString, Observateur> GestionnaireXml::LectureStations()
                 }
             }
         }
+
         fi.close();
 
         // Verifications
@@ -1388,6 +1402,7 @@ QMap<QString, SatellitesFlashs> GestionnaireXml::LectureStatutSatellitesFlashs()
                 }
             }
         }
+
         fi.close();
 
         // Verifications
