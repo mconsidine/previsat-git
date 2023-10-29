@@ -1537,6 +1537,11 @@ PreviSatは、完全無料です!</translation>
         <translation>すべての仰角</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.ui" line="572"/>
+        <source>Ouvrir RocketLaunch.Live</source>
+        <translation type="unfinished">RocketLaunch.Liveを開く</translation>
+    </message>
+    <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.ui" line="206"/>
         <source>Nombre de jours de génération :</source>
         <translation type="unfinished"></translation>
@@ -1554,53 +1559,53 @@ PreviSatは、完全無料です!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="191"/>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="192"/>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="289"/>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="290"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="193"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="291"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="292"/>
         <source>UTC</source>
         <translation>UTC</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="196"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="197"/>
         <source>Aucun groupe Starlink trouvé</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="409"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="411"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="409"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="411"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="473"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="475"/>
         <source>starlink</source>
         <comment>filename (without accent)</comment>
         <translation>starlink</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="483"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="485"/>
         <source>Calculs en cours...</source>
         <translation>進行中の計算...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="484"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="486"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="507"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="509"/>
         <source>Calculs terminés</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="511"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="513"/>
         <source>Aucun passage n&apos;a été trouvé sur la période donnée</source>
         <translation>指定された期間に通過が見つかりませんでした</translation>
     </message>
@@ -5264,51 +5269,51 @@ ce qui représente environ %2 pages.</source>
         <translation>ファイルには観測地が含まれていません</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="866"/>
-        <location filename="../src/configuration/configuration.cpp" line="905"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="363"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="454"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="583"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="695"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="899"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1056"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1149"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1238"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1331"/>
+        <location filename="../src/configuration/configuration.cpp" line="872"/>
+        <location filename="../src/configuration/configuration.cpp" line="911"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="366"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="459"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="593"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="705"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="909"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1067"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1161"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1251"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1345"/>
         <location filename="../src/librairies/corps/corps.cpp" line="680"/>
         <source>Le fichier %1 n&apos;existe pas ou est vide, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないまたはファイルが空ので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="878"/>
-        <location filename="../src/configuration/configuration.cpp" line="919"/>
+        <location filename="../src/configuration/configuration.cpp" line="884"/>
+        <location filename="../src/configuration/configuration.cpp" line="925"/>
         <location filename="../src/configuration/evenementsstationspatiale.cpp" line="116"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="407"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="550"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="811"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="943"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1112"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1201"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1294"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1396"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="411"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="560"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="821"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="954"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1124"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1214"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1308"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1411"/>
         <location filename="../src/librairies/corps/corps.cpp" line="670"/>
         <location filename="../src/librairies/dates/date.cpp" line="445"/>
         <source>Erreur lors de la lecture du fichier %1, veuillez réinstaller %2</source>
         <translation>ファイル「%1」の読み込み中にエラーが発生しましたので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="996"/>
+        <location filename="../src/configuration/configuration.cpp" line="1002"/>
         <source>Le répertoire %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>フォルダ「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1061"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1428"/>
+        <location filename="../src/configuration/configuration.cpp" line="1067"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1443"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1068"/>
+        <location filename="../src/configuration/configuration.cpp" line="1074"/>
         <source>Le fichier %1 est vide, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が空なので、「%2」を再インストールしてください</translation>
     </message>
@@ -5472,14 +5477,14 @@ Voulez-vous ajouter ce TLE dans le fichier à mettre à jour ?</source>
         <translation>新しいTLEを追加する</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="444"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="449"/>
         <source>Le fichier de configuration de %1 a évolué.
 Souhaitez-vous tenter de récupérer les lieux d&apos;observation ?</source>
         <translation>設定ファイル「%1」の形式が変更されました。
 観測地の回復を試みますか ?</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1486"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1501"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="337"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="370"/>
         <source>Oui</source>
@@ -5492,7 +5497,7 @@ Souhaitez-vous tenter de récupérer les lieux d&apos;observation ?</source>
         <translation>すべてにはい</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1487"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1502"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="339"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="372"/>
         <source>Non</source>
@@ -5665,7 +5670,7 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1485"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1500"/>
         <location filename="../src/librairies/exceptions/message.cpp" line="80"/>
         <source>Avertissement</source>
         <translation>警告</translation>

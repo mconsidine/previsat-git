@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    27 octobre 2023
+ * >    29 octobre 2023
  *
  */
 
@@ -158,6 +158,7 @@ public:
     const QString &adresseCelestrakNorad() const;
     const QString &adresseCelestrakSupplementalNorad() const;
     const QString &adresseCelestrakSupplementalNoradFichier() const;
+    const QString adresseRocketLaunchLive() const;
 
     // Categories d'orbite
     const QMap<QString, QString> &mapCategoriesOrbite() const;
@@ -328,6 +329,7 @@ private:
     QString _adresseCelestrakNorad;
     QString _adresseCelestrakSupplementalNorad;
     QString _adresseCelestrakSupplementalNoradFichier;
+    QString _adresseRocketLaunchLive;
 
     // Categories d'orbite
     QMap<QString, QString> _mapCategoriesOrbite;

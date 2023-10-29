@@ -36,7 +36,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    27 octobre 2023
+ * >    29 octobre 2023
  *
  */
 
@@ -129,6 +129,7 @@ private:
      * @param[out] noradStationSpatiale numero NORAD de la Station Spatiale
      * @param[out] versionCfg version du fichier de configuration
      * @param[out] adresseCelestrak adresse du site Celestrak
+     * @param[out] adresseRocketLaunchLive adresse du site RocketLaunchLive
      * @param[out] nomfic nomdu fichier d'elements orbitaux par defaut
      * @param[out] noradDefaut numero NORAD par defaut
      * @param[out] observateurs liste des lieux d'observation
@@ -138,6 +139,7 @@ private:
                                      QString &noradStationSpatiale,
                                      QString &versionCfg,
                                      QString &adresseCelestrak,
+                                     QString &adresseRocketLaunchLive,
                                      QString &nomfic,
                                      QString &noradDefaut,
                                      QList<Observateur> &observateurs,

@@ -150,6 +150,7 @@ private slots:
     void on_hauteurSoleil_currentIndexChanged(int index);
     void on_hauteurSat_currentIndexChanged(int index);
     void on_calculs_clicked();
+    void on_ouvrirRocketLaunchLive_clicked();
 
 };
 
