@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 octobre 2023
+ * >    29 octobre 2023
  *
  */
 
@@ -2543,7 +2543,7 @@ void PreviSat::TempsReel()
     if (_ui->tempsReel->isChecked()) {
 
         // Date actuelle
-        const double offset = _dateCourante->offsetUTC();
+        const double offset = (_options->ui()->utcAuto->isChecked()) ? Date::CalculOffsetUTC(QDateTime::currentDateTime()) : _dateCourante->offsetUTC();
         EFFACE_OBJET(_dateCourante);
 
         _dateCourante = new Date(offset);
