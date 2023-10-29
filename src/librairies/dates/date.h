@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 aout 2023
+ * >    29 octobre 2023
  *
  */
 
@@ -76,8 +76,8 @@ public:
 
     /**
      * @brief Date Definition de la date a partir d'un objet QDateTime et de l'ecart heure legale - UTC
-     * @param datetime date et heure
-     * @param offset ecart heure legale - UTC
+     * @param[in] datetime date et heure
+     * @param[in] offset ecart heure legale - UTC
      */
     explicit Date(const QDateTime &datetime, const double offset = 0.);
 
