@@ -95,6 +95,16 @@ CalculsStarlink::CalculsStarlink(QWidget *parent) :
  */
 CalculsStarlink::~CalculsStarlink()
 {
+    settings.setValue("previsions/nbJoursGeneration", _ui->nbJoursGeneration->value());
+    settings.setValue("previsions/pasGenerationStarlink", _ui->pasGeneration->currentIndex());
+    settings.setValue("previsions/lieuxObservationStarlink", _ui->lieuxObservation->currentIndex());
+    settings.setValue("previsions/hauteurSatStarlink", _ui->hauteurSat->currentIndex());
+    settings.setValue("previsions/valHauteurSatPrev", _ui->valHauteurSat->text());
+    settings.setValue("previsions/hauteurSoleilStarlink", _ui->hauteurSoleil->currentIndex());
+    settings.setValue("previsions/valHauteurSoleilStarlink", _ui->valHauteurSoleil->text());
+
+    EFFACE_OBJET(_afficherResultats);
+
     delete _ui;
 }
 
@@ -253,6 +263,7 @@ void CalculsStarlink::Initialisation()
     /* Corps de la methode */
     qInfo() << "Début Initialisation" << metaObject()->className();
 
+    _ui->nbJoursGeneration->setValue(settings.value("previsions/nbJoursGeneration", 7).toInt());
     _ui->pasGeneration->setCurrentIndex(settings.value("previsions/pasGenerationStarlink", 5).toInt());
     _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservationStarlink", 0).toInt());
     _ui->valHauteurSat->setVisible(false);
