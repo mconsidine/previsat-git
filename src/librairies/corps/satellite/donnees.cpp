@@ -30,10 +30,13 @@
  * >    20 novembre 2019
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    31 octobre 2023
  *
  */
 
+#pragma GCC diagnostic ignored "-Wswitch-default"
+#include <QObject>
+#pragma GCC diagnostic warning "-Wswitch-default"
 #include "donnees.h"
 
 
@@ -79,19 +82,28 @@ Donnees::Donnees(const QString &donnee)
 
         _norad = donnee.mid(0, 6);
         _cospar = donnee.mid(7, 11).trimmed();
+        if (_cospar.isEmpty()) {
+            _cospar = QObject::tr("N/A");
+        }
+
         _t1 = donnee.mid(19, 5).toDouble();
         _t2 = donnee.mid(25, 4).toDouble();
         _t3 = donnee.mid(30, 4).toDouble();
+
         _magnitudeStandard = donnee.mid(35, 5).toDouble();
         _methMagnitude = donnee.at(41).toLatin1();
         _section = donnee.mid(43, 6).toDouble();
+
         _dateLancement = donnee.mid(50, 10);
         _dateRentree = donnee.mid(61, 10).trimmed();
+
         _periode = donnee.mid(72, 10).trimmed();
         _perigee = donnee.mid(83, 7).trimmed();
         _apogee = donnee.mid(91, 7).trimmed();
+
         _inclinaison = donnee.mid(99, 6).trimmed();
         _categorieOrbite = donnee.mid(106, 6).trimmed();
+
         _pays = donnee.mid(113, 5).trimmed();
         _siteLancement = donnee.mid(119, 5).trimmed();
         _nom = donnee.mid(125).trimmed();

@@ -5838,6 +5838,11 @@ Satellite %1 - NORAD number : %2</translation>
         <comment>Front, Central, Backward panels of MetOp satellite</comment>
         <translation>FCB</translation>
     </message>
+    <message>
+        <location filename="../src/librairies/corps/satellite/donnees.cpp" line="84"/>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
 </context>
 <context>
     <name>Radar</name>
