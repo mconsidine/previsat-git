@@ -4993,12 +4993,12 @@ le flux vidéo</source>
         <translation>時刻</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="335"/>
+        <location filename="../src/interface/previsat.cpp" line="338"/>
         <source>Vérification du fichier TLE %1 ...</source>
         <translation>TLEファイル「%1」をチェックしています...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="340"/>
+        <location filename="../src/interface/previsat.cpp" line="343"/>
         <source>Fichier TLE %1 OK</source>
         <translation>TLEファイル「%1」は大丈夫です</translation>
     </message>
@@ -5831,7 +5831,7 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>AOS</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/donnees.cpp" line="84"/>
+        <location filename="../src/librairies/corps/satellite/donnees.cpp" line="86"/>
         <source>N/A</source>
         <translation>該当なし</translation>
     </message>
