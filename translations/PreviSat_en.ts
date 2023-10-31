@@ -5143,12 +5143,12 @@ which represents approximately %2 pages.</translation>
         <translation>The orbital elements are older than %1 day(s). Do you want to update them?</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="335"/>
+        <location filename="../src/interface/previsat.cpp" line="338"/>
         <source>Vérification du fichier TLE %1 ...</source>
         <translation>Checking TLE file %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="340"/>
+        <location filename="../src/interface/previsat.cpp" line="343"/>
         <source>Fichier TLE %1 OK</source>
         <translation>TLE file %1 OK</translation>
     </message>
@@ -5839,7 +5839,7 @@ Satellite %1 - NORAD number : %2</translation>
         <translation>FCB</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/donnees.cpp" line="84"/>
+        <location filename="../src/librairies/corps/satellite/donnees.cpp" line="86"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>

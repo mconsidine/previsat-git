@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 octobre 2023
+ * >    31 octobre 2023
  *
  */
 
@@ -290,6 +290,9 @@ void PreviSat::MajGP()
         VerifAgeGP();
     }
 
+    // Telechargement des groupes Starlink
+    TelechargementGroupesStarlink();
+
     qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
@@ -426,9 +429,6 @@ void PreviSat::DemarrageApplication()
         }
     }
 
-    // Telechargement des groupes Starlink
-    TelechargementGroupesStarlink();
-
     // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
     EnchainementCalculs();
 
@@ -449,6 +449,10 @@ void PreviSat::DemarrageApplication()
         _chronometre->setInterval(_ui->pasReel->currentText().toInt() * 1000);
         _chronometre->setTimerType(Qt::PreciseTimer);
         connect(_chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
+
+        // Mode sombre
+        _ui->actionMode_sombre->setChecked(settings.value("affichage/modeSombre", false).toBool());
+        on_actionMode_sombre_triggered();
     }
 
     // Lancement du chronometreMs
@@ -459,10 +463,6 @@ void PreviSat::DemarrageApplication()
         connect(_chronometreMs, SIGNAL(timeout()), this, SLOT(TempsReel()));
         _chronometreMs->start();
     }
-
-    // Mode sombre
-    _ui->actionMode_sombre->setChecked(settings.value("affichage/modeSombre", false).toBool());
-    on_actionMode_sombre_triggered();
 
     // Affichage de la fenetre d'informations
     const QUrl urlLastNews(QString("%1informations/").arg(DOMAIN_NAME) + "last_news_" + Configuration::instance()->locale() + ".html");
