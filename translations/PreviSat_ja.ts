@@ -5830,6 +5830,11 @@ Satellite %1 - numéro NORAD : %2</source>
         <comment>Acquisition of signal</comment>
         <translation>AOS</translation>
     </message>
+    <message>
+        <location filename="../src/librairies/corps/satellite/donnees.cpp" line="84"/>
+        <source>N/A</source>
+        <translation>該当なし</translation>
+    </message>
 </context>
 <context>
     <name>Radar</name>
