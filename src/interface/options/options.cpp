@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    1er novembre 2023
  *
  */
 
@@ -526,6 +526,7 @@ void Options::CreerMenus()
 
     _ajouterLieuMesPreferes = new QAction(tr("Ajouter à Mes Préférés"), this);
     _ajouterLieuMesPreferes->setIcon(QIcon(":/resources/interface/pref.png"));
+    connect(_ajouterLieuMesPreferes, &QAction::triggered, this, &Options::AjouterLieuMesPreferes);
 
     _renommerLieu = new QAction(tr("Renommer"), this);
     connect(_renommerLieu, &QAction::triggered, this, &Options::RenommerLieu);
@@ -1060,8 +1061,9 @@ void Options::AjouterLieuMesPreferes()
     /* Corps de la methode */
     try {
 
-        Configuration::instance()->mapObs() = FichierObs::Lecture(_ui->categoriesObs->currentItem()->data(Qt::UserRole).toString(), false);
-        const Observateur lieu = Configuration::instance()->mapObs().value(_ui->lieuxObs->currentItem()->text());
+        const QMap<QString, Observateur> mapObs = Configuration::instance()->mapObs();
+        const QMap<QString, Observateur> mapObsFic = FichierObs::Lecture(_ui->categoriesObs->currentItem()->data(Qt::UserRole).toString(), false);
+        const Observateur lieu = mapObsFic.value(_ui->lieuxObs->currentItem()->text());
 
         QMap<QString, Observateur> mapObsPref = FichierObs::Lecture("preferes.xml", false);
 
@@ -1073,8 +1075,10 @@ void Options::AjouterLieuMesPreferes()
 
         } else {
 
-            Configuration::instance()->mapObs().insert(nomlieu, lieu);
+            mapObsPref.insert(nomlieu, lieu);
+            Configuration::instance()->mapObs() = mapObsPref;
             FichierObs::Ecriture("preferes.xml");
+            Configuration::instance()->mapObs() = mapObs;
 
             InitFicObs();
             _ui->categoriesObs->setCurrentRow(0);
