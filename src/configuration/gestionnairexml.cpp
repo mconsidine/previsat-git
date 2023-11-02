@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    29 octobre 2023
+ * >    2 novembre 2023
  *
  */
 
@@ -789,7 +789,7 @@ QMap<QString, QList<CategorieElementsOrbitaux> > GestionnaireXml::LectureGestion
                                         if (!nomCategorie.isEmpty()) {
                                             listeCategories.append({ miseAjour, nomCategorie, fichiers });
 
-                                            if (miseAjour) {
+                                            if (miseAjour == Qt::Checked) {
                                                 listeCategoriesMaj.append({ miseAjour, nomCategorie, fichiers });
                                             }
                                         }

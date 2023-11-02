@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    31 octobre 2023
+ * >    2 novembre 2023
  *
  */
 
@@ -267,7 +267,11 @@ void PreviSat::MajGP()
 
     /* Corps de la methode */
     // Mise a jour des elements orbitaux si necessaire
-    if (Configuration::instance()->mapCategoriesElementsOrbitaux().size() > 0) {
+    if (Configuration::instance()->mapCategoriesMajElementsOrbitaux().isEmpty()) {
+
+        VerifAgeGP();
+
+    } else {
 
         if (settings.value("temps/ageMaxElementsOrbitaux", true).toBool()) {
 
@@ -278,16 +282,16 @@ void PreviSat::MajGP()
             // Mise ajour des elements orbitaux anciens
             if ((fabs(_dateCourante->jourJulienUTC() - lastUpdate) > ageMax) ||
                     ((_dateCourante->jourJulienUTC() - Configuration::instance()->mapElementsOrbitaux()[noradDefaut].epoque.jourJulienUTC()) > ageMax)) {
+
                 MajWebGP();
                 settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
             }
         } else {
+
             emit AfficherMessageStatut(tr("Mise à jour automatique des éléments orbitaux"), 10);
             MajWebGP();
             settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
         }
-    } else {
-        VerifAgeGP();
     }
 
     // Telechargement des groupes Starlink
@@ -1316,7 +1320,7 @@ void PreviSat::VerifAgeGP()
     /* Corps de la methode */
     qInfo() << "Début Fonction" << __FUNCTION__;
 
-    if (Configuration::instance()->mapElementsOrbitaux().count() > 0) {
+    if (!Configuration::instance()->mapElementsOrbitaux().isEmpty()) {
 
         const int ageMax = settings.value("temps/ageMax", 15).toInt();
         const QString noradDefaut = Configuration::instance()->noradDefaut();
