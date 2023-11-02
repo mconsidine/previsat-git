@@ -4721,8 +4721,8 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/previsat.ui" line="543"/>
         <location filename="../src/interface/previsat.ui" line="617"/>
-        <location filename="../src/interface/previsat.cpp" line="2852"/>
-        <location filename="../src/interface/previsat.cpp" line="2869"/>
+        <location filename="../src/interface/previsat.cpp" line="2856"/>
+        <location filename="../src/interface/previsat.cpp" line="2873"/>
         <source>secondes</source>
         <translation>秒</translation>
     </message>
@@ -4759,19 +4759,19 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="485"/>
-        <location filename="../src/interface/previsat.cpp" line="1097"/>
+        <location filename="../src/interface/previsat.cpp" line="1101"/>
         <source>Mode de fonctionnement</source>
         <translation>モード</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="553"/>
-        <location filename="../src/interface/previsat.cpp" line="2550"/>
+        <location filename="../src/interface/previsat.cpp" line="2554"/>
         <source>Temps réel</source>
         <translation>リアルタイム</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="563"/>
-        <location filename="../src/interface/previsat.cpp" line="2553"/>
+        <location filename="../src/interface/previsat.cpp" line="2557"/>
         <source>Mode manuel</source>
         <translation>手動モード</translation>
     </message>
@@ -4787,19 +4787,19 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="622"/>
-        <location filename="../src/interface/previsat.cpp" line="2870"/>
+        <location filename="../src/interface/previsat.cpp" line="2874"/>
         <source>minutes</source>
         <translation>分</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="627"/>
-        <location filename="../src/interface/previsat.cpp" line="2871"/>
+        <location filename="../src/interface/previsat.cpp" line="2875"/>
         <source>heures</source>
         <translation>時</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="632"/>
-        <location filename="../src/interface/previsat.cpp" line="2872"/>
+        <location filename="../src/interface/previsat.cpp" line="2876"/>
         <source>jours</source>
         <translation>日</translation>
     </message>
@@ -4976,287 +4976,287 @@ le flux vidéo</source>
         <translation>データファイルを更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1079"/>
+        <location filename="../src/interface/previsat.cpp" line="1083"/>
         <source>Messages</source>
         <translation>メッセージ</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1103"/>
-        <location filename="../src/interface/previsat.cpp" line="2572"/>
+        <location filename="../src/interface/previsat.cpp" line="1107"/>
+        <location filename="../src/interface/previsat.cpp" line="2576"/>
         <source>Date</source>
         <translation>日付</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1109"/>
-        <location filename="../src/interface/previsat.cpp" line="2573"/>
+        <location filename="../src/interface/previsat.cpp" line="1113"/>
+        <location filename="../src/interface/previsat.cpp" line="2577"/>
         <source>Heure</source>
         <translation>時刻</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="338"/>
+        <location filename="../src/interface/previsat.cpp" line="342"/>
         <source>Vérification du fichier TLE %1 ...</source>
         <translation>TLEファイル「%1」をチェックしています...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="343"/>
+        <location filename="../src/interface/previsat.cpp" line="347"/>
         <source>Fichier TLE %1 OK</source>
         <translation>TLEファイル「%1」は大丈夫です</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1435"/>
-        <location filename="../src/interface/previsat.cpp" line="1510"/>
+        <location filename="../src/interface/previsat.cpp" line="1439"/>
+        <location filename="../src/interface/previsat.cpp" line="1514"/>
         <source>Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?</source>
         <translation>%1更新が利用可能です。ダウンロードしますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1176"/>
-        <location filename="../src/interface/previsat.cpp" line="1330"/>
-        <location filename="../src/interface/previsat.cpp" line="1437"/>
-        <location filename="../src/interface/previsat.cpp" line="1512"/>
+        <location filename="../src/interface/previsat.cpp" line="1180"/>
+        <location filename="../src/interface/previsat.cpp" line="1334"/>
+        <location filename="../src/interface/previsat.cpp" line="1441"/>
+        <location filename="../src/interface/previsat.cpp" line="1516"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="285"/>
+        <location filename="../src/interface/previsat.cpp" line="291"/>
         <source>Mise à jour automatique des éléments orbitaux</source>
         <translation>軌道要素の自動更新</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1172"/>
+        <location filename="../src/interface/previsat.cpp" line="1176"/>
         <source>Cette version comporte %1 lignes de code,
 ce qui représente environ %2 pages.</source>
         <translation>このバージョンには%1行のコードがあり、
 これは約%2ページです。</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1960"/>
-        <location filename="../src/interface/previsat.cpp" line="1999"/>
-        <location filename="../src/interface/previsat.cpp" line="2117"/>
+        <location filename="../src/interface/previsat.cpp" line="1964"/>
+        <location filename="../src/interface/previsat.cpp" line="2003"/>
+        <location filename="../src/interface/previsat.cpp" line="2121"/>
         <source>dddd dd MMMM yyyy  HH:mm:ss</source>
         <translation>yyyy年MM月dd日 (dddd)  HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2253"/>
+        <location filename="../src/interface/previsat.cpp" line="2257"/>
         <source>Mise à jour du fichier GP %1 en cours...</source>
         <translation>GPファイル「%1」を更新しています...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2259"/>
+        <location filename="../src/interface/previsat.cpp" line="2263"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1331"/>
-        <location filename="../src/interface/previsat.cpp" line="1438"/>
-        <location filename="../src/interface/previsat.cpp" line="1513"/>
+        <location filename="../src/interface/previsat.cpp" line="1335"/>
+        <location filename="../src/interface/previsat.cpp" line="1442"/>
+        <location filename="../src/interface/previsat.cpp" line="1517"/>
         <source>Oui</source>
         <translation>はい</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1437"/>
+        <location filename="../src/interface/previsat.cpp" line="1441"/>
         <source>des fichiers internes</source>
         <translation>内部ファイルの</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1180"/>
-        <location filename="../src/interface/previsat.cpp" line="1332"/>
-        <location filename="../src/interface/previsat.cpp" line="1439"/>
-        <location filename="../src/interface/previsat.cpp" line="1515"/>
+        <location filename="../src/interface/previsat.cpp" line="1184"/>
+        <location filename="../src/interface/previsat.cpp" line="1336"/>
+        <location filename="../src/interface/previsat.cpp" line="1443"/>
+        <location filename="../src/interface/previsat.cpp" line="1519"/>
         <source>Non</source>
         <translation>いいえ</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1328"/>
+        <location filename="../src/interface/previsat.cpp" line="1332"/>
         <source>Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?</source>
         <translation>軌道要素の年齢は%1日以上です。それらを更新しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2562"/>
+        <location filename="../src/interface/previsat.cpp" line="2566"/>
         <source>Jour julien</source>
         <translation>ユリウス通日</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2563"/>
+        <location filename="../src/interface/previsat.cpp" line="2567"/>
         <source>Jour</source>
         <translation>日</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2569"/>
+        <location filename="../src/interface/previsat.cpp" line="2573"/>
         <source>dd/MM/yyyy</source>
         <comment>date format</comment>
         <translation>yyyy年MM月dd日</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2284"/>
+        <location filename="../src/interface/previsat.cpp" line="2288"/>
         <source>Mise à jour du groupe d&apos;éléments orbitaux &quot;%1&quot;...</source>
         <translation>軌道要素グループ「%1」を更新しています...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2319"/>
+        <location filename="../src/interface/previsat.cpp" line="2323"/>
         <source>Mise à jour du groupe d&apos;éléments orbitaux &quot;%1&quot; terminée</source>
         <translation>軌道要素グループ「%1」の更新が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2761"/>
+        <location filename="../src/interface/previsat.cpp" line="2765"/>
         <source>Impossible d&apos;afficher l&apos;aide en ligne</source>
         <translation>オンラインヘルプを表示できません</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="972"/>
-        <location filename="../src/interface/previsat.cpp" line="3033"/>
+        <location filename="../src/interface/previsat.cpp" line="3037"/>
         <source>Importer fichier GP / TLE...</source>
         <translation>GP・TLEファイルをインポートする...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3035"/>
+        <location filename="../src/interface/previsat.cpp" line="3039"/>
         <source>Fichiers GP (*.xml);;Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)</source>
         <translation>GPファイル (*.xml);;TLEファイル (*.txt *.tle);;すべてのファイル (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3053"/>
-        <location filename="../src/interface/previsat.cpp" line="3113"/>
+        <location filename="../src/interface/previsat.cpp" line="3057"/>
+        <location filename="../src/interface/previsat.cpp" line="3117"/>
         <source>Le fichier %1 ne contient pas d&apos;éléments orbitaux</source>
         <translation>ファイル「%1」に軌道要素が含まれていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3062"/>
-        <location filename="../src/interface/previsat.cpp" line="3092"/>
+        <location filename="../src/interface/previsat.cpp" line="3066"/>
+        <location filename="../src/interface/previsat.cpp" line="3096"/>
         <source>Le fichier %1 existe déjà</source>
         <translation>ファイル「%1」は既に存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3145"/>
+        <location filename="../src/interface/previsat.cpp" line="3149"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*.*)</source>
         <translation>テキストファイル (*.txt);;すべてのファイル (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3318"/>
+        <location filename="../src/interface/previsat.cpp" line="3322"/>
         <source>Commun</source>
         <comment>common orbital elements groups</comment>
         <translation>一般的</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3323"/>
+        <location filename="../src/interface/previsat.cpp" line="3327"/>
         <source>Tous</source>
         <comment>all orbital elements groups</comment>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3406"/>
-        <location filename="../src/interface/previsat.cpp" line="3409"/>
+        <location filename="../src/interface/previsat.cpp" line="3410"/>
+        <location filename="../src/interface/previsat.cpp" line="3413"/>
         <source>Devise</source>
         <translation>通貨</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3407"/>
-        <location filename="../src/interface/previsat.cpp" line="3409"/>
+        <location filename="../src/interface/previsat.cpp" line="3411"/>
+        <location filename="../src/interface/previsat.cpp" line="3413"/>
         <source>Choisissez la devise :</source>
         <translation>通貨を選んでください ：</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3423"/>
+        <location filename="../src/interface/previsat.cpp" line="3427"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires</source>
         <translation>ご注意 : Tipeeeでペイパルのご寄付をすることは可能ですが、これには追加料金がかかります</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3490"/>
+        <location filename="../src/interface/previsat.cpp" line="3494"/>
         <source>Ouverture du fichier d&apos;éléments orbitaux %1 ...</source>
         <translation>軌道要素ファイル「%1」を読み込んでいます ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3138"/>
+        <location filename="../src/interface/previsat.cpp" line="3142"/>
         <source>onglet_general</source>
         <comment>file name (without accent)</comment>
         <translation>main_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1175"/>
+        <location filename="../src/interface/previsat.cpp" line="1179"/>
         <source>Vous venez de mettre à jour %1.
 %2Souhaitez-vous faire un don pour soutenir son auteur ?</source>
         <translation>%1を更新しました。
 %2作者を支援したい場合は寄付をご検討ください</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1811"/>
+        <location filename="../src/interface/previsat.cpp" line="1815"/>
         <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;Tous les fichiers (*.*)</source>
         <translation>PNGファイル (*.png);;JPEGファイル (*.jpg *.jpeg);;BMPファイル (*.bmp);;すべてのファイル (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2852"/>
-        <location filename="../src/interface/previsat.cpp" line="2869"/>
+        <location filename="../src/interface/previsat.cpp" line="2856"/>
+        <location filename="../src/interface/previsat.cpp" line="2873"/>
         <source>seconde</source>
         <translation>秒</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2870"/>
+        <location filename="../src/interface/previsat.cpp" line="2874"/>
         <source>minute</source>
         <translation>分</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2871"/>
+        <location filename="../src/interface/previsat.cpp" line="2875"/>
         <source>heure</source>
         <translation>時</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2872"/>
+        <location filename="../src/interface/previsat.cpp" line="2876"/>
         <source>jour</source>
         <translation>日</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2889"/>
+        <location filename="../src/interface/previsat.cpp" line="2893"/>
         <source>Agrandir</source>
         <translation>拡大する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2898"/>
+        <location filename="../src/interface/previsat.cpp" line="2902"/>
         <source>Réduire</source>
         <translation>縮小する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2924"/>
+        <location filename="../src/interface/previsat.cpp" line="2928"/>
         <source>Carte du monde</source>
         <translation>世界地図</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2932"/>
+        <location filename="../src/interface/previsat.cpp" line="2936"/>
         <source>Carte du ciel</source>
         <translation>星図</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3139"/>
+        <location filename="../src/interface/previsat.cpp" line="3143"/>
         <source>onglet_elements</source>
         <comment>file name (without accent)</comment>
         <translation>elements_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3139"/>
+        <location filename="../src/interface/previsat.cpp" line="3143"/>
         <source>onglet_informations</source>
         <comment>file name (without accent)</comment>
         <translation>information_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1810"/>
-        <location filename="../src/interface/previsat.cpp" line="3144"/>
+        <location filename="../src/interface/previsat.cpp" line="1814"/>
+        <location filename="../src/interface/previsat.cpp" line="3148"/>
         <source>Enregistrer sous...</source>
         <translation>名前を付けて保存...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1660"/>
+        <location filename="../src/interface/previsat.cpp" line="1664"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3215"/>
+        <location filename="../src/interface/previsat.cpp" line="3219"/>
         <source>Pas d&apos;informations à afficher</source>
         <translation>表示する情報がありません</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3492"/>
+        <location filename="../src/interface/previsat.cpp" line="3496"/>
         <source>Fichier d&apos;éléments orbitaux de %1 satellites</source>
         <translation>%1基衛星の軌道要素が含まれているファイル</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3660"/>
+        <location filename="../src/interface/previsat.cpp" line="3664"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>
