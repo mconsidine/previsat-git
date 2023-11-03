@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    29 octobre 2023
+ * >    3 novembre 2023
  *
  */
 
@@ -131,6 +131,13 @@ void Configuration::Chargement()
 
         // Lecture du fichier de constellations
         Corps::Initialisation(_dirCommonData);
+
+        // Initialisation du tableau d'etoiles
+        Etoile::Initialisation(_dirCommonData, _etoiles);
+
+        // Initialisation des tableaux de constellations
+        Constellation::Initialisation(_dirCommonData, _constellations);
+        LigneConstellation::Initialisation(_dirCommonData);
 
         _adresseCelestrakNorad = _adresseCelestrak + "NORAD/elements/gp.php?GROUP=%1&FORMAT=xml";
         _adresseCelestrakSupplementalNorad = _adresseCelestrak + "NORAD/elements/supplemental/";

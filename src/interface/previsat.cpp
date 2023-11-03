@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 novembre 2023
+ * >    3 novembre 2023
  *
  */
 
@@ -399,17 +399,6 @@ void PreviSat::DemarrageApplication()
 
     /* Corps de la methode */
     qInfo() << "Début Fonction" << __FUNCTION__;
-
-    // Initialisation du tableau d'etoiles
-    if (Configuration::instance()->etoiles().isEmpty()) {
-        Etoile::Initialisation(Configuration::instance()->dirCommonData(), Configuration::instance()->etoiles());
-    }
-
-    // Initialisation des constellations
-    if (Configuration::instance()->constellations().isEmpty()) {
-        Constellation::Initialisation(Configuration::instance()->dirCommonData(), Configuration::instance()->constellations());
-        LigneConstellation::Initialisation(Configuration::instance()->dirCommonData());
-    }
 
     // Construction de la liste de satellites
     const QString noradDefaut = Configuration::instance()->noradDefaut();
@@ -2989,9 +2978,11 @@ void PreviSat::on_meteo_clicked()
         QFile fi(fic);
 
         if (fi.exists() && (fi.size() != 0)) {
+
             if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
                 map0 = fi.readAll();
             }
+
             fi.close();
         }
     }
@@ -3769,9 +3760,11 @@ void PreviSat::on_lancementVideoNasa_clicked()
             QFile fi(ficHtml);
 
             if (fi.exists() && (fi.size() != 0)) {
+
                 if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
                     html0 = fi.readAll();
                 }
+
                 fi.close();
             }
         }
