@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    3 novembre 2023
  *
  */
 
@@ -137,6 +137,7 @@ void Etoile::Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles
             double dec;
             double mag;
             QString nomEtoile;
+            etoiles.clear();
 
             while (!flux.atEnd()) {
 
@@ -162,9 +163,11 @@ void Etoile::Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles
                     mag = ligne.mid(31, 5).toDouble();
                     nomEtoile = (ligne.length() > 37) ? ligne.mid(37, ligne.length()) : "";
                 }
+
                 etoiles.append(Etoile(nomEtoile, ascDte, dec, mag));
             }
         }
+
         fi.close();
 
         qInfo() << "Lecture fichier etoiles.dat OK";

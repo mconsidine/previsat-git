@@ -30,7 +30,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    3 novembre 2023
  *
  */
 
@@ -128,6 +128,7 @@ void Constellation::Initialisation(const QString &dirCommonData, QList<Constella
 
         if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
+            constellations.clear();
             QTextStream flux(&fi);
 
             while (!flux.atEnd()) {
@@ -138,6 +139,7 @@ void Constellation::Initialisation(const QString &dirCommonData, QList<Constella
                 constellations.append(Constellation(ligne.mid(15, 3), asc, dec));
             }
         }
+
         fi.close();
 
         qInfo() << "Lecture fichier constlabel.dat OK";
