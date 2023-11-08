@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2023
+ * >    8 novembre 2023
  *
  */
 
@@ -874,6 +874,7 @@ void PreviSat::EnchainementCalculs()
 
                 for(unsigned int i=0; i<PLANETE::NB_PLANETES; i++) {
 
+                    planetes[i] = Planete(static_cast<IndicePlanete> (i));
                     planetes[i].CalculPosition(*_dateCourante, soleil);
                     planetes[i].CalculCoordHoriz(observateur);
                 }
