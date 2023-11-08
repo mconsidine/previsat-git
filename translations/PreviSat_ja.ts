@@ -178,7 +178,7 @@
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="156"/>
         <source>Passages des Starlink</source>
-        <translation type="unfinished"></translation>
+        <translation>Starlinkの通過</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="190"/>
@@ -814,7 +814,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/apropos/apropos.ui" line="210"/>
         <source>Vérifier les mises à jour...</source>
-        <translation type="unfinished"></translation>
+        <translation>更新の確認...</translation>
     </message>
     <message>
         <location filename="../src/interface/apropos/apropos.cpp" line="110"/>
@@ -840,7 +840,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/apropos/apropos.cpp" line="165"/>
         <source>Vous utilisez la dernière version de %1</source>
-        <translation type="unfinished"></translation>
+        <translation>最新バージョンの「%1」を使用しています</translation>
     </message>
 </context>
 <context>
@@ -1407,7 +1407,7 @@ PreviSatは、完全無料です!</translation>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.ui" line="29"/>
         <source>Groupe :</source>
         <extracomment>Starlink group</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>グループ :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.ui" line="272"/>
@@ -1539,24 +1539,24 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.ui" line="572"/>
         <source>Ouvrir RocketLaunch.Live</source>
-        <translation type="unfinished">RocketLaunch.Liveを開く</translation>
+        <translation>RocketLaunch.Liveを開く</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.ui" line="206"/>
         <source>Nombre de jours de génération :</source>
-        <translation type="unfinished"></translation>
+        <translation>生成日数 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.ui" line="535"/>
         <source>Lancement :</source>
         <extracomment>Starlink launch</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>打ち上げ :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.ui" line="549"/>
         <source>Déploiement :</source>
         <extracomment>Starlink deployment</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>展開 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="192"/>
@@ -1569,7 +1569,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="197"/>
         <source>Aucun groupe Starlink trouvé</source>
-        <translation type="unfinished"></translation>
+        <translation>Starlinkグループが見つかりませんでした</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="411"/>
