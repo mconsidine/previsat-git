@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    8 novembre 2023
  *
  */
 
@@ -1052,7 +1052,7 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
                             // Dessin d'une petite ligne correspondant a la date
                             lig2 = QLineF(lsat2, bsat2, lsat3, bsat3).normalVector();
                             lig2.setLength(4);
-                            scene->addLine(lig2, QPen(couleurEtoiles, 1.));
+                            scene->addLine(lig2, QPen(crayon.color(), 1.));
 
                             sdate = "";
                             if (amax) {
