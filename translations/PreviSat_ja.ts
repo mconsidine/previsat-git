@@ -5709,17 +5709,17 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>構成を初期化しています...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="165"/>
+        <location filename="../src/main.cpp" line="167"/>
         <source>Ouverture du fichier GP...</source>
         <translation>GPファイルを読み込んでいます...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="170"/>
+        <location filename="../src/main.cpp" line="173"/>
         <source>Mise à jour des éléments orbitaux...</source>
         <translation>軌道要素を更新しています...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="175"/>
+        <location filename="../src/main.cpp" line="179"/>
         <source>Démarrage de l&apos;application...</source>
         <translation>アプリが起動しています...</translation>
     </message>
