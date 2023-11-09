@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    21 juin 2023
+ * >    9 novembre 2023
  *
  */
 
@@ -158,20 +158,24 @@ int main(int argc, char *argv[])
         splash->show();
 
         // Initialisation de la configuration
+        qInfo() << "Initialisation de la configuration";
         a.processEvents();
         w.ChargementConfiguration();
 
         // Ouverture du fichier d'elements orbitaux par defaut
+        qInfo() << "Ouverture du fichier GP";
         message->setText(QObject::tr("Ouverture du fichier GP..."));
         a.processEvents();
         w.ChargementGP();
 
         // Mise a jour eventuelle des fichiers d'elements orbitaux
+        qInfo() << "Mise a jour des elements orbitaux";
         message->setText(QObject::tr("Mise à jour des éléments orbitaux..."));
         a.processEvents();
         w.MajGP();
 
         // Demarrage de l'application en mode temps reel
+        qInfo() << "Demarrage de l'application";
         message->setText(QObject::tr("Démarrage de l'application..."));
         a.processEvents();
         w.DemarrageApplication();
