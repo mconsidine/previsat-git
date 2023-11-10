@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    14 mai 2023
+ * >    10 novembre 2023
  *
  */
 
@@ -30,8 +30,8 @@
 \page Remerciements Thanks
 
 I would like to thank :
-- <b>T.S. Kelso</b> for the information he communicated to me and numerous information available on his site www.celestrak.com,
-- <b>David Vallado</b> for the publication of corrected model SGP4 (2006) and the calculation methods present in his Fundamental of Astrodynamics and Applications (consult the site www.celestrak.com to buy it),
+- <b>T.S. Kelso</b> for the information he communicated to me and numerous information available on his site https://celestrak.org/,
+- <b>David Vallado</b> for the publication of corrected model SGP4 (2006) and the calculation methods present in his Fundamental of Astrodynamics and Applications (consult the site https://celestrak.org/ to buy it),
 - <b>Jean Meeus</b>, where the Astronomical Algorithms supplied the essential astronomical calculations (calculation of the julian day, Sun's position, sidereal time...),
 - <b>Michel Casabonne</b>, whose support and contributions helped to bring new features and significant improvements to PreviSat,
 - and people who contributed and helped me in the development of PreviSat, for their advice and their software tests (thanks Claudia, Yannis, Rémi, JB, Benoît, Maurice, Jean-Louis, Georges !).
