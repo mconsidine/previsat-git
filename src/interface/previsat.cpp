@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 novembre 2023
+ * >    10 novembre 2023
  *
  */
 
@@ -1880,11 +1880,15 @@ void PreviSat::ChargementTraduction(const QString &langue)
 
     _ui->retranslateUi(this);
     if (_onglets != nullptr) {
+
         _onglets->ReinitFlags();
         _onglets->ui()->retranslateUi(_onglets);
+
         _onglets->general()->ui()->retranslateUi(_onglets->general());
         _onglets->osculateurs()->ui()->retranslateUi(_onglets->osculateurs());
         _onglets->informationsSatellite()->ui()->retranslateUi(_onglets->informationsSatellite());
+
+        _onglets->show(*_dateCourante);
     }
 
     if ((_carte != nullptr) && (_ciel != nullptr) && (_radar != nullptr)) {
