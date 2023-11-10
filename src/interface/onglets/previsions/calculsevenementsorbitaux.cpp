@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    4 octobre 2023
+ * >    10 novembre 2023
  *
  */
 
@@ -306,7 +306,7 @@ void CalculsEvenementsOrbitaux::Initialisation()
     _ui->passageQuadrangles->setChecked(settings.value("previsions/passageQuadrangles", true).toBool());
     _ui->transitionJourNuit->setChecked(settings.value("previsions/transitionJourNuit", true).toBool());
 
-    QAction* effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
+    QAction const * effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
     if (effacerFiltre) {
         connect(effacerFiltre, &QAction::triggered, this, &CalculsEvenementsOrbitaux::on_filtreSatellites_returnPressed);
     }

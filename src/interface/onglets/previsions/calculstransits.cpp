@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    4 octobre 2023
+ * >    10 novembre 2023
  *
  */
 
@@ -377,7 +377,7 @@ void CalculsTransits::Initialisation()
     _ui->lieuxObservation->setCurrentIndex(settings.value("previsions/lieuxObservationTransit", 0).toInt());
     _ui->elongationMaxCorps->setValue(settings.value("previsions/elongationMaxCorps", 5.).toDouble());
 
-    QAction* effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
+    QAction const * effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
     if (effacerFiltre) {
         connect(effacerFiltre, &QAction::triggered, this, &CalculsTransits::on_filtreSatellites_returnPressed);
     }
