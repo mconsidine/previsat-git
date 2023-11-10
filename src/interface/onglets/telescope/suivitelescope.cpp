@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    4 octobre 2023
+ * >    10 novembre 2023
  *
  */
 
@@ -559,7 +559,7 @@ void SuiviTelescope::Initialisation()
     _ui->delaiTelescope->setEnabled(_ui->pecDelai->isChecked());
     _ui->demarrerSuiviTelescope->setChecked(settings.value("previsions/demarrerSuiviTelescope", false).toBool());
 
-    QAction* effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
+    QAction const * effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
     if (effacerFiltre) {
         connect(effacerFiltre, &QAction::triggered, this, &SuiviTelescope::on_filtreSatellites_returnPressed);
     }

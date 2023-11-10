@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    4 octobre 2023
+ * >    10 novembre 2023
  *
  */
 
@@ -339,7 +339,7 @@ void CalculsPrevisions::Initialisation()
     _ui->magnitudeMaxPrev->setChecked(settings.value("previsions/magnitudeMaxPrev", false).toBool());
     _ui->valMagnitudeMaxPrev->setVisible(_ui->magnitudeMaxPrev->isChecked());
 
-    QAction* effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
+    QAction const * effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
     if (effacerFiltre) {
         connect(effacerFiltre, &QAction::triggered, this, &CalculsPrevisions::on_filtreSatellites_returnPressed);
     }

@@ -550,7 +550,7 @@ void PreviSat::ConnexionsSignauxSlots()
     /* Corps de la methode */
     qInfo() << "Début Fonction" << __FUNCTION__;
 
-    QAction* effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
+    QAction const * effacerFiltre = _ui->filtreSatellites->findChild<QAction*>();
     if (effacerFiltre) {
         connect(effacerFiltre, &QAction::triggered, this, &PreviSat::on_filtreSatellites_returnPressed);
     }
