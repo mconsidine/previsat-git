@@ -30,7 +30,7 @@
  * >    25 septembre 2023
  *
  * Date de revision
- * >
+ * >    12 novembre 2023
  *
  */
 
@@ -132,6 +132,7 @@ Ui::CalculsStarlink *CalculsStarlink::ui() const
 void CalculsStarlink::show()
 {
     /* Declarations des variables locales */
+    QString groupe;
     QString lancement;
     QString deploiement;
     QStringList grp;
@@ -142,12 +143,14 @@ void CalculsStarlink::show()
     _ui->groupe->clear();
 
     /* Corps de la methode */
+    QMap<QString, SatellitesStarlink> &mapStarlink = Configuration::instance()->satellitesStarlink();
+
     // Creation d'une map des dates de lancement
-    QMapIterator it(Configuration::instance()->satellitesStarlink());
+    QMapIterator it(mapStarlink);
     while (it.hasNext()) {
         it.next();
 
-        const QString groupe = it.key();
+        groupe = it.key();
         mapDates.insert(it.value().lancement, groupe);
     }
 
@@ -157,11 +160,26 @@ void CalculsStarlink::show()
     while (it2.hasPrevious()) {
         it2.previous();
 
-        const bool isBackup = it2.value().split(" ").at(1).contains("B");
+        groupe = it2.value();
+
+        const bool isBackup = groupe.split(" ").at(1).contains("B");
         if (isBackup) {
-            grp.append(it2.value());
+            grp.append(groupe);
         } else {
-            _ui->groupe->addItem(it2.value());
+
+            const QString nomGroupe = groupe.split(" ", Qt::SkipEmptyParts).at(1);
+            if (Configuration::instance()->groupesStarlink().keys().contains(nomGroupe)) {
+
+                const QString nvgroupe = groupe.split(" ", Qt::SkipEmptyParts).first() + " " + nomGroupe;
+                if (nvgroupe != groupe) {
+                    mapStarlink.insert(nvgroupe, mapStarlink[groupe]);
+                    mapStarlink[nvgroupe].fichier = "starlink";
+                    mapStarlink.remove(groupe);
+                    groupe = nvgroupe;
+                }
+            }
+
+            _ui->groupe->addItem(groupe);
         }
     }
 
@@ -170,7 +188,7 @@ void CalculsStarlink::show()
     QStringListIterator it3(grp);
     while (it3.hasNext()) {
 
-        const QString groupe = it3.next();
+        groupe = it3.next();
         nom = groupe;
 
         const QString nomGroupeBackup = groupe.split(" ").at(1);
@@ -183,7 +201,7 @@ void CalculsStarlink::show()
 
     if (_ui->groupe->count() > 0) {
 
-        const SatellitesStarlink starlink = Configuration::instance()->satellitesStarlink()[_ui->groupe->currentText()];
+        const SatellitesStarlink starlink = mapStarlink[_ui->groupe->currentText()];
 
         // Dates de lancement et de deploiement
         lancement = starlink.lancement;
@@ -372,9 +390,53 @@ void CalculsStarlink::on_calculs_clicked()
         // Groupe Starlink selectionne dans la liste deroulante
         const QString fichier = Configuration::instance()->satellitesStarlink()[_ui->groupe->currentText()].fichier;
 
+        QStringList listeStarlink;
+        if (fichier == "starlink") {
+            const QString grp = _ui->groupe->currentText().split(" ", Qt::SkipEmptyParts).last();
+            listeStarlink = Configuration::instance()->groupesStarlink()[grp];
+        }
+
         // Elements orbitaux du train de satellites
-        const QMap<QString, ElementsOrbitaux> tabElem =
-            GPFormat::LectureFichier(Configuration::instance()->dirStarlink() + QDir::separator() + fichier + ".xml", "", -1, QStringList(), true, true);
+        QMap<QString, ElementsOrbitaux> tabElem =
+            GPFormat::LectureFichier(Configuration::instance()->dirStarlink() + QDir::separator() + fichier + ".xml", "", -1, listeStarlink, true, true);
+
+        // Cas ou les elements orbitaux des satellites sont connus
+        if (fichier == "starlink") {
+
+            const Date aujourdhui;
+            Satellite sat;
+            QString norad;
+            ElementsOrbitaux elem;
+            double argumentLongitudeVraie = 0.;
+            double arg = 0.;
+
+            QMapIterator it(tabElem);
+            while (it.hasNext()) {
+                it.next();
+
+                sat = Satellite(it.value());
+
+                sat.CalculPosVit(aujourdhui);
+                sat.CalculElementsOsculateurs(aujourdhui);
+                argumentLongitudeVraie = sat.elementsOsculateurs().argumentLongitudeVraie();
+
+                if (((argumentLongitudeVraie - MATHS::DEUX_PI) * (arg - MATHS::DEUX_PI)) < 0.) {
+                    argumentLongitudeVraie += MATHS::DEUX_PI;
+                }
+
+                if (argumentLongitudeVraie > arg) {
+
+                    arg = argumentLongitudeVraie;
+                    norad = it.key();
+                    elem = it.value();
+                }
+            }
+
+            if (!norad.isEmpty()) {
+                tabElem.clear();
+                tabElem.insert(norad, elem);
+            }
+        }
 
         // Date et heure initiales
         QString lancement = Configuration::instance()->satellitesStarlink()[_ui->groupe->currentText()].lancement;
@@ -528,4 +590,9 @@ void CalculsStarlink::on_calculs_clicked()
 void CalculsStarlink::on_ouvrirRocketLaunchLive_clicked()
 {
     QDesktopServices::openUrl(QUrl(Configuration::instance()->adresseRocketLaunchLive()));
+}
+
+void CalculsStarlink::on_verifGpDisponibles_clicked()
+{
+    emit MajElementsOrbitaux();
 }

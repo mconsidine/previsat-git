@@ -572,6 +572,19 @@
      <string>Ouvrir RocketLaunch.Live</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="verifGpDisponibles">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>128</y>
+      <width>261</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Vérifier les éléments orbitaux disponibles...</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

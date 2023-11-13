@@ -36,7 +36,7 @@
  * >    5 juin 2022
  *
  * Date de revision
- * >
+ * >    11 novembre 2023
  *
  */
 
@@ -79,7 +79,7 @@ public:
      * @param[in] fichier nom du fichier d'elements orbitaux
      * @param[in] donneesSat donnees satellites
      * @param[in] lgRec longueur d'une ligne dans les donnees satellite
-     * @param[in] listeSatellites liste des numeros NORAD (si elle est vide on recupere tous les elements orbitaux)
+     * @param[in] listeSatellites liste des numeros NORAD ou COSPAR (si elle est vide on recupere tous les elements orbitaux du fichier)
      * @param[in] ajoutDonnees ajout des donnees satellite
      * @param[in] alarme affichage des messages d'erreurs ou de warnings
      * @return tableau d'elements orbitaux

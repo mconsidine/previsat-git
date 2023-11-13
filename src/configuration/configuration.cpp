@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    3 novembre 2023
+ * >    12 novembre 2023
  *
  */
 
@@ -624,6 +624,11 @@ NotificationSonore &Configuration::notifFlashs()
 QMap<QString, SatellitesStarlink> &Configuration::satellitesStarlink()
 {
     return _satellitesStarlink;
+}
+
+QMap<QString, QStringList> &Configuration::groupesStarlink()
+{
+    return _groupesStarlink;
 }
 
 void Configuration::AjoutDonneesSatellitesStarlink(const QString &groupe, const QString &fichier, const QString &lancement, const QString &deploiement)
