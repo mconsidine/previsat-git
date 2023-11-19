@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    5 octobre 2023
+ * >    19 novembre 2023
  *
  */
 
@@ -473,6 +473,7 @@ void AfficherResultats::ChargementResultats()
     QStringList elems;
 
     /* Initialisations */
+    bool alternance = true;
     int j = 0;
     int imax = 1;
     const bool etat = _ui->resultatsPrevisions->blockSignals(true);
@@ -539,6 +540,10 @@ void AfficherResultats::ChargementResultats()
                         item->setData(Qt::UserRole, QVariant::fromValue<QList<ResultatPrevisions> > (list));
                     }
 
+                    if ((_typeCalcul == TypeCalcul::STARLINK) && (elems[0].contains("First") || elems[0].contains("Last"))) {
+                        alternance = false;
+                    }
+
                     _ui->resultatsPrevisions->setItem(j, k, item);
                     if ((k > 0) || (_typeCalcul == TypeCalcul::TRANSITS)) {
                         _ui->resultatsPrevisions->resizeColumnToContents(k);
@@ -559,7 +564,7 @@ void AfficherResultats::ChargementResultats()
                                             "font-weight: 600 }");
 
     if ((_typeCalcul == TypeCalcul::TRANSITS) || (_typeCalcul == TypeCalcul::STARLINK)) {
-        _ui->resultatsPrevisions->setColumnWidth(0, 140);
+        _ui->resultatsPrevisions->setColumnWidth(0, 120);
     }
 
     _ui->resultatsPrevisions->horizontalHeader()->setStretchLastSection(true);
@@ -568,7 +573,7 @@ void AfficherResultats::ChargementResultats()
     }
 
     _ui->resultatsPrevisions->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    _ui->resultatsPrevisions->setAlternatingRowColors(true);
+    _ui->resultatsPrevisions->setAlternatingRowColors(alternance);
 
     if (_typeCalcul == TypeCalcul::FLASHS) {
 
@@ -584,6 +589,21 @@ void AfficherResultats::ChargementResultats()
                 _ui->resultatsPrevisions->removeRow(i);
             } else {
                 i++;
+            }
+        }
+    } else if (_typeCalcul == TypeCalcul::STARLINK) {
+
+        _ui->resultatsPrevisions->sortItems(1);
+
+        for(j=0; j<_ui->resultatsPrevisions->rowCount(); j++) {
+            for(int k=0; k<_ui->resultatsPrevisions->columnCount(); k++) {
+
+                item = _ui->resultatsPrevisions->item(j, k);
+                const QString txt = _ui->resultatsPrevisions->item(j, 0)->text();
+
+                if ((txt.contains("First") || txt.contains("Last")) && ((j % 4) > 1)) {
+                    item->setBackground(QBrush(QColor::fromRgb(240, 240, 240)));
+                }
             }
         }
     }
@@ -1730,6 +1750,7 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
     // Calcul de la position des planetes
     for(unsigned int i=0; i<PLANETE::NB_PLANETES; i++) {
 
+        planetes[i] = Planete(static_cast<IndicePlanete> (i));
         planetes[i].CalculPosition(dateDeb, soleil);
         planetes[i].CalculCoordHoriz(observateur);
     }
