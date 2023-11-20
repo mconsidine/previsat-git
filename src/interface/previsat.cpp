@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 novembre 2023
+ * >    20 novembre 2023
  *
  */
 
@@ -149,6 +149,7 @@ PreviSat::~PreviSat()
     EFFACE_OBJET(_flashs);
     EFFACE_OBJET(_transits);
     EFFACE_OBJET(_evenements);
+    EFFACE_OBJET(_starlink);
     EFFACE_OBJET(_informationsSatellite);
     EFFACE_OBJET(_recherche);
     EFFACE_OBJET(_station);
@@ -1695,6 +1696,7 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
     ListWidgetItem *elem;
 
     /* Initialisations */
+    _ui->satellitesChoisis->setChecked(false);
     _ui->listeSatellites->clear();
     _ui->listeSatellites->scrollToTop();
     emit InitAffichageListeSatellites();
