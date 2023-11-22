@@ -1620,7 +1620,7 @@ PreviSat is free !</translation>
         <translation>Updating orbital elements...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="635"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="636"/>
         <source>Téléchargement terminé</source>
         <translation>Downloading finished</translation>
     </message>

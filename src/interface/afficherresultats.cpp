@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    21 novembre 2023
+ * >    22 novembre 2023
  *
  */
 
@@ -592,11 +592,7 @@ void AfficherResultats::ChargementResultats()
                 item = _ui->resultatsPrevisions->item(j, k);
                 nom = _ui->resultatsPrevisions->item(j, 0)->text();
 
-                if (nom.contains("STACK")) {
-
-                    item->setText(nom.remove("STACK").trimmed());
-
-                } else {
+                if (!nom.contains("STACK")) {
 
                     if (k == 0) {
                         item->setText(nom + (((j % 2) == 0) ? " First" : " Last"));
@@ -607,6 +603,10 @@ void AfficherResultats::ChargementResultats()
                         alternance = false;
                     }
                 }
+            }
+
+            if (nom.contains("STACK")) {
+                _ui->resultatsPrevisions->item(j, 0)->setText(nom.remove("STACK").trimmed());
             }
         }
 
