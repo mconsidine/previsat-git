@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    22 novembre 2023
+ * >    25 novembre 2023
  *
  */
 
@@ -595,7 +595,9 @@ void AfficherResultats::ChargementResultats()
                 if (!nom.contains("STACK")) {
 
                     if (k == 0) {
-                        item->setText(nom + (((j % 2) == 0) ? " First" : " Last"));
+                        const QString nvNom = nom + (((j % 2) == 0) ? " First" : " Last");
+                        item->setText(nvNom);
+                        item->setToolTip(nvNom);
                     }
 
                     if ((j % 4) > 1) {
