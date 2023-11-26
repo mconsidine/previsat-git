@@ -587,28 +587,12 @@ void AfficherResultats::ChargementResultats()
 
         for(j=0; j<_ui->resultatsPrevisions->rowCount(); j++) {
 
-            for(int k=0; k<_ui->resultatsPrevisions->columnCount(); k++) {
-
-                item = _ui->resultatsPrevisions->item(j, k);
-                nom = _ui->resultatsPrevisions->item(j, 0)->text();
-
-                if (!nom.contains("STACK")) {
-
-                    if (k == 0) {
-                        const QString nvNom = nom + (((j % 2) == 0) ? " First" : " Last");
-                        item->setText(nvNom);
-                        item->setToolTip(nvNom);
-                    }
-
-                    if ((j % 4) > 1) {
-                        item->setBackground(QBrush(QColor::fromRgb(240, 240, 240)));
-                        alternance = false;
-                    }
-                }
-            }
+            nom = _ui->resultatsPrevisions->item(j, 0)->text();
 
             if (nom.contains("STACK")) {
-                _ui->resultatsPrevisions->item(j, 0)->setText(nom.remove("STACK").trimmed());
+                nom = nom.remove("STACK").trimmed();
+                _ui->resultatsPrevisions->item(j, 0)->setText(nom);
+                _ui->resultatsPrevisions->item(j, 0)->setToolTip(nom);
             }
         }
 

@@ -375,17 +375,18 @@ void CalculsStarlink::on_hauteurSat_currentIndexChanged(int index)
 
 void CalculsStarlink::on_calculs_clicked()
 {
-    /* Declarations des variables locales */
-    ConditionsPrevisions conditions;
-    QVector<int> vecSat;
-    QMap<QString, ElementsOrbitaux> tabElements;
-
-    /* Initialisations */
-    vecSat.append(0);
-
-    /* Corps de la methode */
     try {
 
+        /* Declarations des variables locales */
+        Date date1;
+        ConditionsPrevisions conditions;
+        QVector<int> vecSat;
+        QMap<QString, ElementsOrbitaux> tabElements;
+
+        /* Initialisations */
+        vecSat.append(0);
+
+        /* Corps de la methode */
         qInfo() << "Lancement des calculs de prévisions des trains de Starlink";
 
         // Groupe Starlink selectionne dans la liste deroulante
@@ -404,70 +405,27 @@ void CalculsStarlink::on_calculs_clicked()
         // Cas ou les elements orbitaux des satellites sont connus
         if (fichier == "starlink") {
 
-            const Date aujourdhui;
-            Satellite sat;
-            QString norad1;
-            QString norad2;
-            ElementsOrbitaux elem1;
-            ElementsOrbitaux elem2;
-            double argumentLongitudeVraie = 0.;
-            double arg1 = 0.;
-            double arg2 = MATHS::DEUX_PI;
+            tabElements = tabElem;
 
-            QMapIterator it(tabElem);
-            while (it.hasNext()) {
-                it.next();
+            // Date et heure initiales
+            date1 = Date(floor(date1.jourJulienUTC() * DATE::NB_MIN_PAR_JOUR + 0.5) * DATE::NB_JOUR_PAR_MIN + DATE::EPS_DATES, 0.);
 
-                sat = Satellite(it.value());
+            // Ecart heure locale - UTC
+            conditions.offset = Date::CalculOffsetUTC(date1.ToQDateTime(1));
 
-                sat.CalculPosVit(aujourdhui);
-                sat.CalculElementsOsculateurs(aujourdhui);
-                argumentLongitudeVraie = sat.elementsOsculateurs().argumentLongitudeVraie();
-
-                if (((argumentLongitudeVraie - MATHS::DEUX_PI) * (arg1 - MATHS::DEUX_PI)) < 0.) {
-                    argumentLongitudeVraie += MATHS::DEUX_PI;
-                }
-
-                if (argumentLongitudeVraie > arg1) {
-
-                    arg1 = argumentLongitudeVraie;
-                    norad1 = it.key();
-                    elem1 = it.value();
-                }
-
-                if (((argumentLongitudeVraie - MATHS::DEUX_PI) * (arg2 - MATHS::DEUX_PI)) < 0.) {
-                    argumentLongitudeVraie += MATHS::DEUX_PI;
-                }
-
-                if (argumentLongitudeVraie < arg2) {
-
-                    arg2 = argumentLongitudeVraie;
-                    norad2 = it.key();
-                    elem2 = it.value();
-                }
-            }
-
-            if (!norad1.isEmpty()) {
-                elem1.nom = _ui->groupe->currentText();
-                tabElements.insert(norad1, elem1);
-            }
-
-            if (!norad2.isEmpty()) {
-                elem2.nom = _ui->groupe->currentText();
-                tabElements.insert(norad2, elem2);
-            }
         } else {
+
             tabElements[tabElem.firstKey()] = tabElem[tabElem.firstKey()];
+
+            // Date et heure initiales
+            QString lancement = Configuration::instance()->satellitesStarlink()[_ui->groupe->currentText()].lancement;
+            const Date dateLancement = Date::ConversionDateIso(lancement.replace(" ", "T"));
+            date1 = Date(floor(dateLancement.jourJulienUTC() * DATE::NB_MIN_PAR_JOUR + 0.5) * DATE::NB_JOUR_PAR_MIN + 5. * DATE::NB_JOUR_PAR_MIN +
+                                 DATE::EPS_DATES, 0.);
+
+            // Ecart heure locale - UTC
+            conditions.offset = Date::CalculOffsetUTC(dateLancement.ToQDateTime(1));
         }
-
-        // Date et heure initiales
-        QString lancement = Configuration::instance()->satellitesStarlink()[_ui->groupe->currentText()].lancement;
-        const Date dateLancement = Date::ConversionDateIso(lancement.replace(" ", "T"));
-        const Date date1(floor(dateLancement.jourJulienUTC() * DATE::NB_MIN_PAR_JOUR + 0.5) * DATE::NB_JOUR_PAR_MIN + 5. * DATE::NB_JOUR_PAR_MIN +
-                             DATE::EPS_DATES, 0.);
-
-        // Ecart heure locale - UTC
-        conditions.offset = Date::CalculOffsetUTC(dateLancement.ToQDateTime(1));
 
         // Jour julien initial
         conditions.jj1 = date1.jourJulienUTC();
