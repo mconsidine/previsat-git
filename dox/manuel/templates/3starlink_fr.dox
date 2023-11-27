@@ -21,7 +21,7 @@
  * >    1er octobre 2023
  *
  * Date de revision
- * >    12 novembre 2023
+ * >    19 novembre 2023
  *
  */
 
@@ -33,7 +33,7 @@ L'onglet <b>Starlink</b> permet d'effectuer les prévisions de passage d'un trai
 
 \image html starlink.png
 
-Il faut sélectionner dans la liste déroulante le groupe de satellites Starlink. Les groupes se terminant par "B1", "B2", etc. (par exemple G6-22B1) correspondent à des éléments orbitaux suite à un report du tir (report à cause de la météo, une défaillance du lanceur ou autre). Il faut sélectionner le bon groupe d'éléments en fonction de l'heure effective du tir, information que l'on peut rettrouver sur <a href="https://www.spacex.com">SpaceX</a> ou sur <a href= "https://www.rocketlaunch.live/?includePast=1&tag=series-spacex-starlink&filter=spacex">RocketLaunch.Live</a>. Une fois que les satellites ont été identifiés, le mot "Pre-Launch" est effacé du nom du groupe et les prévisions se font sur le satellite en tête du groupe.
+Il faut sélectionner dans la liste déroulante le groupe de satellites Starlink. Les groupes se terminant par "B1", "B2", etc. (par exemple G6-22B1) correspondent à des éléments orbitaux suite à un report du tir (report à cause de la météo, une défaillance du lanceur ou autre). Il faut sélectionner le bon groupe d'éléments en fonction de l'heure effective du tir, information que l'on peut rettrouver sur <a href="https://www.spacex.com">SpaceX</a> ou sur <a href= "https://www.rocketlaunch.live/?includePast=1&tag=series-spacex-starlink&filter=spacex">RocketLaunch.Live</a>. Une fois que les satellites ont été identifiés, le mot "Pre-Launch" est effacé du nom du groupe et les prévisions se font sur le premier et le dernier satellite du groupe.
 
 Les prévisions s'effectuent sur la période entre 5 minutes après le lancement et 7 jours suivant le lancement. Le pas de génération est initialement fixé à une minute.
 
