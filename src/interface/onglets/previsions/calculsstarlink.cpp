@@ -30,7 +30,7 @@
  * >    25 septembre 2023
  *
  * Date de revision
- * >    12 novembre 2023
+ * >    19 novembre 2023
  *
  */
 
@@ -378,6 +378,7 @@ void CalculsStarlink::on_calculs_clicked()
     /* Declarations des variables locales */
     ConditionsPrevisions conditions;
     QVector<int> vecSat;
+    QMap<QString, ElementsOrbitaux> tabElements;
 
     /* Initialisations */
     vecSat.append(0);
@@ -397,7 +398,7 @@ void CalculsStarlink::on_calculs_clicked()
         }
 
         // Elements orbitaux du train de satellites
-        QMap<QString, ElementsOrbitaux> tabElem =
+        const QMap<QString, ElementsOrbitaux> tabElem =
             GPFormat::LectureFichier(Configuration::instance()->dirStarlink() + QDir::separator() + fichier + ".xml", "", -1, listeStarlink, true, true);
 
         // Cas ou les elements orbitaux des satellites sont connus
@@ -405,10 +406,13 @@ void CalculsStarlink::on_calculs_clicked()
 
             const Date aujourdhui;
             Satellite sat;
-            QString norad;
-            ElementsOrbitaux elem;
+            QString norad1;
+            QString norad2;
+            ElementsOrbitaux elem1;
+            ElementsOrbitaux elem2;
             double argumentLongitudeVraie = 0.;
-            double arg = 0.;
+            double arg1 = 0.;
+            double arg2 = MATHS::DEUX_PI;
 
             QMapIterator it(tabElem);
             while (it.hasNext()) {
@@ -420,28 +424,47 @@ void CalculsStarlink::on_calculs_clicked()
                 sat.CalculElementsOsculateurs(aujourdhui);
                 argumentLongitudeVraie = sat.elementsOsculateurs().argumentLongitudeVraie();
 
-                if (((argumentLongitudeVraie - MATHS::DEUX_PI) * (arg - MATHS::DEUX_PI)) < 0.) {
+                if (((argumentLongitudeVraie - MATHS::DEUX_PI) * (arg1 - MATHS::DEUX_PI)) < 0.) {
                     argumentLongitudeVraie += MATHS::DEUX_PI;
                 }
 
-                if (argumentLongitudeVraie > arg) {
+                if (argumentLongitudeVraie > arg1) {
 
-                    arg = argumentLongitudeVraie;
-                    norad = it.key();
-                    elem = it.value();
+                    arg1 = argumentLongitudeVraie;
+                    norad1 = it.key();
+                    elem1 = it.value();
+                }
+
+                if (((argumentLongitudeVraie - MATHS::DEUX_PI) * (arg2 - MATHS::DEUX_PI)) < 0.) {
+                    argumentLongitudeVraie += MATHS::DEUX_PI;
+                }
+
+                if (argumentLongitudeVraie < arg2) {
+
+                    arg2 = argumentLongitudeVraie;
+                    norad2 = it.key();
+                    elem2 = it.value();
                 }
             }
 
-            if (!norad.isEmpty()) {
-                tabElem.clear();
-                tabElem.insert(norad, elem);
+            if (!norad1.isEmpty()) {
+                elem1.nom = _ui->groupe->currentText() + " First";
+                tabElements.insert(norad1, elem1);
             }
+
+            if (!norad2.isEmpty()) {
+                elem2.nom = _ui->groupe->currentText() + " Last";
+                tabElements.insert(norad2, elem2);
+            }
+        } else {
+            tabElements[tabElem.firstKey()] = tabElem[tabElem.firstKey()];
         }
 
         // Date et heure initiales
         QString lancement = Configuration::instance()->satellitesStarlink()[_ui->groupe->currentText()].lancement;
         const Date dateLancement = Date::ConversionDateIso(lancement.replace(" ", "T"));
-        const Date date1(dateLancement.jourJulienUTC() + 5. * DATE::NB_JOUR_PAR_MIN, 0.);
+        const Date date1(floor(dateLancement.jourJulienUTC() * DATE::NB_MIN_PAR_JOUR + 0.5) * DATE::NB_JOUR_PAR_MIN + 5. * DATE::NB_JOUR_PAR_MIN +
+                             DATE::EPS_DATES, 0.);
 
         // Ecart heure locale - UTC
         conditions.offset = Date::CalculOffsetUTC(dateLancement.ToQDateTime(1));
@@ -504,9 +527,14 @@ void CalculsStarlink::on_calculs_clicked()
         conditions.calcEclipseLune = settings.value("affichage/eclipsesLune").toBool();
 
         // Elements orbitaux du train
-        conditions.tabElem[tabElem.firstKey()] = tabElem[tabElem.firstKey()];
-        conditions.tabElem.first().donnees.setMagnitudeStandard(STARLINK::MAGNITUDE_STANDARD);
+        conditions.tabElem = tabElements;
+        QMapIterator it2(tabElements);
+        while (it2.hasNext()) {
+            it2.next();
 
+            const QString norad = it2.key();
+            conditions.tabElem[norad].donnees.setMagnitudeStandard(STARLINK::MAGNITUDE_STANDARD);
+        }
 
         // Ecriture des informations de previsions des trains Starlink dans le fichier de log
         qInfo() << "--";
@@ -594,5 +622,17 @@ void CalculsStarlink::on_ouvrirRocketLaunchLive_clicked()
 
 void CalculsStarlink::on_verifGpDisponibles_clicked()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    emit AfficherMessageStatut(tr("Mise à jour des éléments orbitaux..."), 10);
+    _ui->groupe->setEnabled(false);
     emit MajElementsOrbitaux();
+    emit AfficherMessageStatut(tr("Téléchargement terminé"), 10);
+    _ui->groupe->setEnabled(true);
+
+    /* Retour */
+    return;
 }
