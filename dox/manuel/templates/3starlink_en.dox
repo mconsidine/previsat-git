@@ -21,7 +21,7 @@
  * >    1er octobre 2023
  *
  * Date de revision
- * >
+ * >    12 novembre 2023
  *
  */
 
@@ -33,7 +33,7 @@ The <b>Starlink</b> tab allows to make predictions of passes for a Starlink trai
 
 \image html starlink.png
 
-You must select the Starlink satellite group from the drop-down list. Groups ending with "B1", "B2", etc. (for example G6-22B1) correspond to orbital elements following a postponement of the launch (postponement due to weather, launcher failure or other). You must select the correct group of elements according to the actual time of the launch, information that can be found on <a href="https://www.spacex.com">SpaceX</a> or on <a href= "https://www.rocketlaunch.live/?includePast=1&tag=series-spacex-starlink&filter=spacex">RocketLaunch.Live</a>.
+You must select the Starlink satellite group from the drop-down list. Groups ending with "B1", "B2", etc. (for example G6-22B1) correspond to orbital elements following a postponement of the launch (postponement due to weather, launcher failure or other). You must select the correct group of elements according to the actual time of the launch, information that can be found on <a href="https://www.spacex.com">SpaceX</a> or on <a href= "https://www.rocketlaunch.live/?includePast=1&tag=series-spacex-starlink&filter=spacex">RocketLaunch.Live</a>. Once the satellites have been identified, the word "Pre-Launch" is deleted from the group name and the predictions are made for the satellite at the head of the group.
 
 The predictions are made for the period between 5 minutes after launch and 7 days following launch. The generation step is initially set at one minute.
 
