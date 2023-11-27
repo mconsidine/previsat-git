@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    10 novembre 2023
+ * >    20 novembre 2023
  *
  */
 
@@ -181,6 +181,7 @@ void CalculsTransits::InitAffichageListeSatellites()
 {
     _ui->listeTransits->clear();
     _ui->listeTransits->scrollToTop();
+    _ui->satellitesChoisis->setChecked(false);
 }
 
 /*

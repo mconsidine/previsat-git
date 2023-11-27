@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    10 novembre 2023
+ * >    20 novembre 2023
  *
  */
 
@@ -231,6 +231,7 @@ void SuiviTelescope::InitAffichageListeSatellites()
 {
     _ui->listeTelescope->clear();
     _ui->listeTelescope->scrollToTop();
+    _ui->satellitesChoisis->setChecked(false);
 }
 
 /*
