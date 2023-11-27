@@ -36,7 +36,7 @@
  * >    25 septembre 2023
  *
  * Date de revision
- * >
+ * >    12 novembre 2023
  *
  */
 
@@ -151,6 +151,7 @@ private slots:
     void on_hauteurSat_currentIndexChanged(int index);
     void on_calculs_clicked();
     void on_ouvrirRocketLaunchLive_clicked();
+    void on_verifGpDisponibles_clicked();
 
 };
 

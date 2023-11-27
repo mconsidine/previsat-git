@@ -30,7 +30,7 @@
  * >    5 juin 2022
  *
  * Date de revision
- * >
+ * >    11 novembre 2023
  *
  */
 
@@ -117,7 +117,8 @@ QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichi
                     gp.skipCurrentElement();
                 }
 
-                if ((listeSatellites.isEmpty() || listeSatellites.contains(elem.norad)) && !mapElem.contains(elem.norad)) {
+                if ((listeSatellites.isEmpty() || listeSatellites.contains(elem.norad) || listeSatellites.contains(elem.cospar))
+                        && !mapElem.keys().contains(elem.norad)) {
 
                     // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
                     const int idx = lgRec * elem.norad.toInt();

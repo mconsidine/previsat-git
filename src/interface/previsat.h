@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 octobre 2023
+ * >    12 novembre 2023
  *
  */
 
@@ -261,6 +261,11 @@ private:
      * @param[out] traduction traduction
      */
     void InstallationTraduction(const QString &langue, QTranslator &traduction);
+
+    /**
+     * @brief LectureGroupesStarlink Lecture du fichier identifiant les groupes Starlink
+     */
+    void LectureGroupesStarlink();
 
     /**
      * @brief MajWebGP Mise a jour automatique des elements orbitaux
