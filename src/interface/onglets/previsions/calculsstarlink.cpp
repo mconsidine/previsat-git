@@ -30,7 +30,7 @@
  * >    25 septembre 2023
  *
  * Date de revision
- * >    21 novembre 2023
+ * >    22 novembre 2023
  *
  */
 
@@ -630,11 +630,13 @@ void CalculsStarlink::on_verifGpDisponibles_clicked()
     emit AfficherMessageStatut(tr("Mise à jour des éléments orbitaux..."), 10);
     _ui->groupe->setEnabled(false);
     _ui->verifGpDisponibles->setEnabled(false);
+    _ui->calculs->setEnabled(false);
 
     emit MajElementsOrbitaux();
     emit AfficherMessageStatut(tr("Téléchargement terminé"), 10);
     _ui->groupe->setEnabled(true);
     _ui->verifGpDisponibles->setEnabled(true);
+    _ui->calculs->setEnabled(true);
 
     /* Retour */
     return;

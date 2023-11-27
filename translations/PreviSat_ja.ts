@@ -1620,7 +1620,7 @@ PreviSatは、完全無料です!</translation>
         <translation>軌道要素を更新しています...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="635"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="636"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
     </message>
