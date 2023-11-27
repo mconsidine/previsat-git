@@ -30,7 +30,7 @@
  * >    25 septembre 2023
  *
  * Date de revision
- * >    19 novembre 2023
+ * >    21 novembre 2023
  *
  */
 
@@ -448,12 +448,12 @@ void CalculsStarlink::on_calculs_clicked()
             }
 
             if (!norad1.isEmpty()) {
-                elem1.nom = _ui->groupe->currentText() + " First";
+                elem1.nom = _ui->groupe->currentText();
                 tabElements.insert(norad1, elem1);
             }
 
             if (!norad2.isEmpty()) {
-                elem2.nom = _ui->groupe->currentText() + " Last";
+                elem2.nom = _ui->groupe->currentText();
                 tabElements.insert(norad2, elem2);
             }
         } else {
@@ -629,9 +629,12 @@ void CalculsStarlink::on_verifGpDisponibles_clicked()
     /* Corps de la methode */
     emit AfficherMessageStatut(tr("Mise à jour des éléments orbitaux..."), 10);
     _ui->groupe->setEnabled(false);
+    _ui->verifGpDisponibles->setEnabled(false);
+
     emit MajElementsOrbitaux();
     emit AfficherMessageStatut(tr("Téléchargement terminé"), 10);
     _ui->groupe->setEnabled(true);
+    _ui->verifGpDisponibles->setEnabled(true);
 
     /* Retour */
     return;
