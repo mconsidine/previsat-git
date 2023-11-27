@@ -1544,7 +1544,7 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.ui" line="585"/>
         <source>Vérifier les éléments orbitaux disponibles...</source>
-        <translation type="unfinished"></translation>
+        <translation>利用可能な軌道要素を確認する...</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.ui" line="206"/>
