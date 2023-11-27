@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    10 novembre 2023
+ * >    20 novembre 2023
  *
  */
 
@@ -204,6 +204,7 @@ void CalculsPrevisions::InitAffichageListeSatellites()
 {
     _ui->listePrevisions->clear();
     _ui->listePrevisions->scrollToTop();
+    _ui->satellitesChoisis->setChecked(false);
 }
 
 /*

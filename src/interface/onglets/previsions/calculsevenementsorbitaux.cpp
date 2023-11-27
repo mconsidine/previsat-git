@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    10 novembre 2023
+ * >    20 novembre 2023
  *
  */
 
@@ -175,6 +175,7 @@ void CalculsEvenementsOrbitaux::InitAffichageListeSatellites()
 {
     _ui->listeEvenements->clear();
     _ui->listeEvenements->scrollToTop();
+    _ui->satellitesChoisis->setChecked(false);
 }
 
 /*
