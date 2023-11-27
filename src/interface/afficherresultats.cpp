@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    19 novembre 2023
+ * >    21 novembre 2023
  *
  */
 
@@ -524,10 +524,6 @@ void AfficherResultats::ChargementResultats()
                 _ui->resultatsPrevisions->insertRow(j);
                 _ui->resultatsPrevisions->setRowHeight(j, 16);
 
-                if (_typeCalcul == TypeCalcul::STARLINK) {
-                    elems[0] = elems[0].remove("STACK").trimmed();
-                }
-
                 for(int k=0; k<elems.count(); k++) {
 
                     // Remplissage des elements d'une ligne
@@ -538,10 +534,6 @@ void AfficherResultats::ChargementResultats()
                     if (k == 0) {
                         item->setToolTip(elems.at(0));
                         item->setData(Qt::UserRole, QVariant::fromValue<QList<ResultatPrevisions> > (list));
-                    }
-
-                    if ((_typeCalcul == TypeCalcul::STARLINK) && (elems[0].contains("First") || elems[0].contains("Last"))) {
-                        alternance = false;
                     }
 
                     _ui->resultatsPrevisions->setItem(j, k, item);
@@ -572,9 +564,6 @@ void AfficherResultats::ChargementResultats()
         _ui->resultatsPrevisions->setToolTip(tr("Double-cliquez sur une ligne pour afficher plus de détails"));
     }
 
-    _ui->resultatsPrevisions->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    _ui->resultatsPrevisions->setAlternatingRowColors(alternance);
-
     if (_typeCalcul == TypeCalcul::FLASHS) {
 
         if (_conditions.chrono) {
@@ -593,21 +582,42 @@ void AfficherResultats::ChargementResultats()
         }
     } else if (_typeCalcul == TypeCalcul::STARLINK) {
 
+        QString nom;
         _ui->resultatsPrevisions->sortItems(1);
 
         for(j=0; j<_ui->resultatsPrevisions->rowCount(); j++) {
+
             for(int k=0; k<_ui->resultatsPrevisions->columnCount(); k++) {
 
                 item = _ui->resultatsPrevisions->item(j, k);
-                const QString txt = _ui->resultatsPrevisions->item(j, 0)->text();
+                nom = _ui->resultatsPrevisions->item(j, 0)->text();
 
-                if ((txt.contains("First") || txt.contains("Last")) && ((j % 4) > 1)) {
-                    item->setBackground(QBrush(QColor::fromRgb(240, 240, 240)));
+                if (nom.contains("STACK")) {
+
+                    item->setText(nom.remove("STACK").trimmed());
+
+                } else {
+
+                    if (k == 0) {
+                        item->setText(nom + (((j % 2) == 0) ? " First" : " Last"));
+                    }
+
+                    if ((j % 4) > 1) {
+                        item->setBackground(QBrush(QColor::fromRgb(240, 240, 240)));
+                        alternance = false;
+                    }
                 }
             }
         }
+
+        const int idx = _ui->resultatsPrevisions->rowCount() - 1;
+        if (_ui->resultatsPrevisions->item(idx, 0)->text().contains("First")) {
+            _ui->resultatsPrevisions->removeRow(idx);
+        }
     }
 
+    _ui->resultatsPrevisions->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    _ui->resultatsPrevisions->setAlternatingRowColors(alternance);
     _ui->resultatsPrevisions->blockSignals(etat);
     _ui->resultatsPrevisions->selectRow(0);
 
