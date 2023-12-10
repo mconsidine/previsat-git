@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 novembre 2023
+ * >    10 decembre 2023
  *
  */
 
@@ -3429,7 +3429,7 @@ void PreviSat::on_actionMettre_a_jour_les_fichiers_de_donnees_triggered()
             const QUrl url(fichier);
             tel.TelechargementFichier(url, false, false);
 
-            fi.setFileName(Configuration::instance()->dirTmp() + QDir::separator() + fic);
+            fi.setFileName(Configuration::instance()->dirTmp() + QDir::separator() + QFileInfo(fic).fileName());
 
             if (fi.exists() && (fi.size() > 0)) {
 
