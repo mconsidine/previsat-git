@@ -3440,6 +3440,8 @@ void PreviSat::on_actionMettre_a_jour_les_fichiers_de_donnees_triggered()
         }
     }
 
+    Configuration::instance()->Chargement();
+
     qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
