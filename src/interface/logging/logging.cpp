@@ -30,7 +30,7 @@
  * >    11 novembre 2022
  *
  * Date de revision
- * >
+ * >    23 decembre 2023
  *
  */
 
@@ -125,9 +125,10 @@ void Logging::show()
     const QStringList listeFichiersLog = di.entryList(filtre, QDir::Files);
 
     QStringListIterator it(listeFichiersLog);
-    while (it.hasNext()) {
+    it.toBack();
+    while (it.hasPrevious()) {
 
-        const QString fic = it.next();
+        const QString fic = it.previous();
 
         ff = QFileInfo(Configuration::instance()->dirLog() + QDir::separator() + fic);
         if (QDir::toNativeSeparators(ff.absoluteFilePath()) != LogMessage::nomFicLog()) {
