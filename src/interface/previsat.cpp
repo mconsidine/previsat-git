@@ -640,13 +640,8 @@ void PreviSat::ConnexionsSignauxSlots()
 
     // Connexions avec la fenetre Options
     connect(_options, &Options::ChangementFuseauHoraire, this, &PreviSat::ChangementFuseauHoraire);
-    connect(_options, &Options::RecalculerPositions, this, &PreviSat::ReinitCalculEvenementsSoleilLune);
     connect(_options, &Options::AfficherListeSatellites, this, &PreviSat::AfficherListeSatellites);
     connect(_options, &Options::AfficherListeSatellites, this, &PreviSat::AffichageCartesRadar);
-    connect(_options, &Options::RecalculerPositions, this, &PreviSat::GestionTempsReel);
-    connect(_options, &Options::RecalculerPositions, this, &PreviSat::on_actionMode_sombre_triggered);
-    connect(_options, &Options::RecalculerPositions, _coordISS, &CoordISS::setPolice);
-    connect(_options, &Options::RecalculerPositions, _onglets, &Onglets::AffichageLieuObs);
     connect(_options, &Options::ChargementCarteDuMonde, _carte, &Carte::ChargementCarteDuMonde);
     connect(_options, &Options::ChargementTraduction, this, &PreviSat::ChargementTraduction);
     connect(this, &PreviSat::AppliquerPreferences, _options, &Options::AppliquerPreferences);
@@ -3380,7 +3375,6 @@ void PreviSat::on_actionMode_sombre_triggered()
                 palette.setColor(QPalette::Disabled, QPalette::HighlightedText, QColor(127, 127, 127));
 
                 qApp->setPalette(palette);
-
                 qApp->setStyleSheet(QString(fi.readAll()));
             }
         }
@@ -3394,6 +3388,8 @@ void PreviSat::on_actionMode_sombre_triggered()
         qApp->setStyleSheet("QTabBar { qproperty-drawBase: 0; }");
     }
 
+    on_zoomCarte_clicked();
+    on_zoomCarte_clicked();
     GestionTempsReel();
 
     /* Retour */
