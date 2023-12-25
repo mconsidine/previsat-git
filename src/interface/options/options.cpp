@@ -317,6 +317,13 @@ void Options::AppliquerPreferences()
         SauvePreferences(fichierPref);
     }
 
+    const QString langue = Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex());
+    Configuration::instance()->locale() = langue;
+
+    emit ChargementTraduction(langue);
+    emit ChargementCarteDuMonde();
+
+    emit ChangementFuseauHoraire((_ui->utc->isChecked()) ? 0 : _ui->updown->value());
     emit AfficherListeSatellites(Configuration::instance()->nomfic());
     emit AffichageLieuObs();
 
@@ -1267,22 +1274,7 @@ void Options::on_listeOptions_currentRowChanged(int currentRow)
 
 void Options::on_listeBoutonsOptions_accepted()
 {
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
     AppliquerPreferences();
-
-    const QString langue = Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex());
-    Configuration::instance()->locale() = langue;
-
-    emit ChargementTraduction(langue);
-    emit ChargementCarteDuMonde();
-    emit ChangementFuseauHoraire((_ui->utc->isChecked()) ? 0 : _ui->updown->value());
-
-    /* Retour */
-    return;
 }
 
 void Options::on_listeBoutonsOptions_rejected()
