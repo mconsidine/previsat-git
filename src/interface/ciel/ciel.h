@@ -55,6 +55,9 @@
 #include "librairies/corps/systemesolaire/planete.h"
 #include "librairies/corps/systemesolaire/soleil.h"
 
+#define TOPO2X(lciel, ht, az, xf) qRound(lciel - lciel * xf * (1. - ht * MATHS::DEUX_SUR_PI) * sin(az))
+#define TOPO2Y(hciel, ht, az, yf) qRound(hciel - hciel * yf * (1. - ht * MATHS::DEUX_SUR_PI) * cos(az))
+
 
 class QPolygonF;
 class QGraphicsScene;
@@ -189,7 +192,6 @@ private:
 
     int _lciel;
     int _hciel;
-    QRect _rectangle;
 
 
     /*
