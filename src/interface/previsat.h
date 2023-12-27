@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 novembre 2023
+ * >    27 decembre 2023
  *
  */
 
@@ -129,7 +129,7 @@ public slots:
 signals:
 
     void AffichageListeSatellites(const QString &, const QString &, const QString &, const QString &, const bool);
-    void AppliquerPreferences();
+    void EcritureRegistre();
     void DeconnecterUdp();
     void InitAffichageListeSatellites();
     void SauveOngletGeneral(const QString &);

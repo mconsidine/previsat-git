@@ -647,7 +647,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_options, &Options::AfficherListeSatellites, this, &PreviSat::AffichageCartesRadar);
     connect(_options, &Options::ChargementCarteDuMonde, _carte, &Carte::ChargementCarteDuMonde);
     connect(_options, &Options::ChargementTraduction, this, &PreviSat::ChargementTraduction);
-    connect(this, &PreviSat::AppliquerPreferences, _options, &Options::AppliquerPreferences);
+    connect(this, &PreviSat::EcritureRegistre, _options, &Options::EcritureRegistre);
 
     // Connexions avec la fenetre Outils
     connect(_outils, &Outils::ChargementGP, this, &PreviSat::ChargementGP);
@@ -2699,6 +2699,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
 
     /* Initialisations */
     Q_UNUSED(evt)
+    qInfo() << "Début Fonction" << __FUNCTION__;
 
     /* Corps de la methode */
     // Suppression des fichiers du cache
@@ -2721,9 +2722,11 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     settings.setValue("affichage/etat", saveState());
     settings.setValue("affichage/issLive", _ui->issLive->isChecked());
 
-    emit AppliquerPreferences();
+    emit EcritureRegistre();
     GestionnaireXml::EcritureConfiguration();
     GestionnaireXml::EcriturePreLaunchStarlink();
+
+    qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
     return;
