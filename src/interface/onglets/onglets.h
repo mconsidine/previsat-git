@@ -36,7 +36,7 @@
  * >    25 fevrier 2023
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    27 decembre 2023
  *
  */
 
@@ -190,9 +190,6 @@ private:
     SuiviTelescope *_suiviTelescope;
 #endif
     Antenne *_antenne;
-
-    bool _acalcAOS;
-    bool _acalcDN;
     bool _info;
 
 

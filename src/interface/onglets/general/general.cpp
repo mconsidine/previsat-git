@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    19 juin 2023
+ * >    27 decembre 2023
  *
  */
 
@@ -146,6 +146,16 @@ Date General::dateEclipse()
 /*
  * Modificateurs
  */
+void General::setAcalcAOS(const bool acalc)
+{
+    _acalcAOS = acalc;
+    _htSat = 0.;
+}
+
+void General::setAcalcDN(const bool acalc)
+{
+    _acalcDN = acalc;
+}
 
 
 /*
