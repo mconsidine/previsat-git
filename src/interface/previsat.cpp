@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 decembre 2023
+ * >    28 decembre 2023
  *
  */
 
@@ -1345,7 +1345,7 @@ void PreviSat::MajWebGP()
                     adresse = QString(DOMAIN_NAME) + "elem/%1";
                 }
 
-                foreach (const QString fic, categorie.fichiers) {
+                foreach (const QString &fic, categorie.fichiers) {
 
                     const QString fichier = (adresse.contains("celestrak")) ? QFileInfo(fic).baseName() : fic;
                     tel.TelechargementFichier(QUrl(adresse.arg(fichier)));
@@ -2368,7 +2368,7 @@ void PreviSat::MettreAjourGroupeElem(const QString &groupe)
             const CategorieElementsOrbitaux categorie = it2.next();
             if (groupe.contains(categorie.nom[Configuration::instance()->locale()], Qt::CaseInsensitive)) {
 
-                foreach (const QString fic, categorie.fichiers) {
+                foreach (const QString &fic, categorie.fichiers) {
 
                     const QString fichier = (adresse.contains("celestrak")) ? QFileInfo(fic).baseName() : fic;
                     tel.TelechargementFichier(QUrl(adresse.arg(fichier)));
@@ -2705,7 +2705,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     // Suppression des fichiers du cache
     const QDir di = QDir(Configuration::instance()->dirTmp());
     const QStringList listeFic = di.entryList(QDir::Files);
-    foreach(const QString fic, listeFic) {
+    foreach(const QString &fic, listeFic) {
         if (!(_options->ui()->verifMAJ->isChecked() && ((fic == "versionPreviSat") || (fic == "majFichiersInternes") || (fic == "verrouStarlink")))) {
             QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + fic);
             fi.remove();
@@ -3693,7 +3693,7 @@ void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
             item->setData(Qt::BackgroundRole, QColor(Qt::transparent));
 
             QList<Satellite> &listeSatellites = Configuration::instance()->listeSatellites();
-            const auto sat = std::find_if(listeSatellites.begin(), listeSatellites.end(), [norad](Satellite s) {
+            const auto sat = std::find_if(listeSatellites.begin(), listeSatellites.end(), [norad](Satellite &s) {
                     return (s.elementsOrbitaux().norad == norad);
             });
 
@@ -3800,7 +3800,7 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
 
         // Le satellite fait partie de la liste de satellites, on intervertit
         QList<Satellite> &listeSatellites = Configuration::instance()->listeSatellites();
-        const auto sat = std::find_if(listeSatellites.begin(), listeSatellites.end(), [norad](Satellite s) {
+        const auto sat = std::find_if(listeSatellites.begin(), listeSatellites.end(), [norad](Satellite &s) {
                 return (s.elementsOrbitaux().norad == norad);
         });
 
