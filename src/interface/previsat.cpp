@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 decembre 2023
+ * >    29 decembre 2023
  *
  */
 
@@ -334,8 +334,8 @@ void PreviSat::ChargementGP()
             if (ff.suffix() == "xml") {
 
                 // Cas d'un fichier au format GP
-                Configuration::instance()->setMapElementsOrbitaux(GPFormat::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
-                                                                                           Configuration::instance()->lgRec()));
+                Configuration::instance()->mapElementsOrbitaux() = GPFormat::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
+                                                                                            Configuration::instance()->lgRec());
 
                 qInfo() << QString("Lecture du fichier GP %1 OK (%2 satellites)").arg(ff.fileName())
                                .arg(Configuration::instance()->mapElementsOrbitaux().size());
@@ -349,8 +349,8 @@ void PreviSat::ChargementGP()
                 if (TLE::VerifieFichier(nomfic, true) > 0) {
 
                     // Lecture du fichier TLE en entier
-                    Configuration::instance()->setMapElementsOrbitaux(TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
-                                                                                          Configuration::instance()->lgRec()));
+                    Configuration::instance()->mapElementsOrbitaux() = TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
+                                                                                           Configuration::instance()->lgRec());
 
                     qInfo() << QString("Lecture du fichier TLE %1 OK (%2 satellites)").arg(ff.fileName())
                                    .arg(Configuration::instance()->mapElementsOrbitaux().size());
@@ -971,7 +971,7 @@ void PreviSat::GestionPolice()
 #endif
 
     setFont(police);
-    Configuration::instance()->setPolice(police);
+    Configuration::instance()->police() = police;
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
 
@@ -2285,7 +2285,7 @@ void PreviSat::InitFicGP()
         _ui->listeFichiersElem->blockSignals(etat);
 
         // Mise a jour de la liste de fichiers d'elements orbitaux
-        Configuration::instance()->setListeFicElem(listeElem);
+        Configuration::instance()->listeFichiersElem() = listeElem;
 
     } catch (PreviSatException const &e) {
     }
@@ -2621,6 +2621,9 @@ void PreviSat::TelechargementGroupesStarlink()
     return;
 }
 
+/*
+ * Affichage en temps reel
+ */
 void PreviSat::TempsReel()
 {
     /* Declarations des variables locales */
