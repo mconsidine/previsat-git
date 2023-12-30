@@ -33,11 +33,11 @@
 # >    11 juillet 2011
 #
 # Date de revision
-# >    15 decembre 2023
+# >    23 decembre 2023
 
 #-------------------------------------------------
 VER_MAJ      = 6.1
-VERSION      = 6.1.2.3
+VERSION      = 6.1.3.2
 ANNEES_DEV   = 2005-2023
 TRANSLATIONS = translations/PreviSat_en.ts translations/PreviSat_ja.ts
 !defined(BUILD_TEST,   var):BUILD_TEST   = false
