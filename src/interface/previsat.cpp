@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 decembre 2023
+ * >    23 decembre 2023
  *
  */
 
@@ -2376,6 +2376,11 @@ void PreviSat::MettreAjourGroupeElem(const QString &groupe)
     Configuration::instance()->InitListeFichiersElem();
     InitFicGP();
     AfficherMessageStatut(tr("Mise à jour du groupe d'éléments orbitaux \"%1\" terminée").arg(groupe), 5);
+
+    // Rechargement du fichier courant (qui a ete mis a jour)
+    ChargementGP();
+    _onglets->ReinitFlags();
+    DemarrageApplication();
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
 
