@@ -36,7 +36,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    23 decembre 2023
+ * >    27 decembre 2023
  *
  */
 
@@ -100,9 +100,9 @@ public:
 public slots:
 
     /**
-     * @brief AppliquerPreferences Appliquer les preferences d'affichage et enregistrer le fichier de preferences
+     * @brief EcritureRegistre Ecriture en base de registre
      */
-    void AppliquerPreferences();
+    void EcritureRegistre();
 
     void changeEvent(QEvent *evt);
 
@@ -164,6 +164,11 @@ private:
      * @param[in] obs
      */
     void AfficherLieu(const Observateur &obs);
+
+    /**
+     * @brief AppliquerPreferences Appliquer les preferences d'affichage et enregistrer le fichier de preferences
+     */
+    void AppliquerPreferences();
 
     /**
      * @brief ChargementPref Chargement du fichier de preferences
