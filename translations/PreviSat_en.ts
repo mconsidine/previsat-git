@@ -5472,14 +5472,17 @@ which represents approximately %2 pages.</translation>
         <translation>The file %1 is empty</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="87"/>
-        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="177"/>
+        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="119"/>
+        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="199"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="156"/>
         <source>Le fichier %1 n&apos;existe pas ou est vide</source>
         <translation>The file %1 does not exist or is empty</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="143"/>
+        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="130"/>
+        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="142"/>
+        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="210"/>
+        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="222"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="505"/>
         <source>Le fichier %1 ne contient aucun satellite</source>
         <translation>The file %1 does not contain satellites</translation>

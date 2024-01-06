@@ -30,7 +30,7 @@
  * >    5 juin 2022
  *
  * Date de revision
- * >    11 novembre 2023
+ * >    15 decembre 2023
  *
  */
 
@@ -38,7 +38,7 @@
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFile>
 #include <QFileInfo>
-#include <QXmlStreamReader>
+#include <QtXml>
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #pragma GCC diagnostic ignored "-Wconversion"
 #include "librairies/exceptions/previsatexception.h"
@@ -65,21 +65,53 @@ GPFormat::GPFormat(const ElementsOrbitaux &elem) :
  * Methodes publiques
  */
 /*
+ * Calcul du nombre d'orbites a l'epoque (cas depassant 100000 orbites)
+ */
+int GPFormat::CalculNombreOrbitesEpoque(const ElementsOrbitaux &elements)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    int nbOrbitesEpoque = elements.nbOrbitesEpoque;
+    const QString dateLancement = elements.donnees.dateLancement();
+
+    /* Corps de la methode */
+    if (!dateLancement.isEmpty()) {
+
+        const Date dateLct(QDateTime::fromString(dateLancement, Qt::ISODate), 0.);
+
+        // Nombre theorique d'orbites a l'epoque
+        const int nbOrbTheo = static_cast<int> (elements.no * (elements.epoque.jourJulienUTC() - dateLct.jourJulienUTC()));
+        int resteOrb = nbOrbTheo % 100000;
+
+        resteOrb += (((elements.nbOrbitesEpoque > 50000) && (resteOrb < 50000)) ? 100000 : 0);
+        resteOrb -= (((elements.nbOrbitesEpoque < 50000) && (resteOrb > 50000)) ? 100000 : 0);
+        const int deltaNbOrb = nbOrbTheo - resteOrb;
+
+        nbOrbitesEpoque = elements.nbOrbitesEpoque + deltaNbOrb;
+    }
+
+    /* Retour */
+    return nbOrbitesEpoque;
+}
+
+/*
  * Lecture d'un fichier au format GP
  */
 QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
                                                          const QStringList &listeSatellites, const bool ajoutDonnees, const bool alarme)
 {
     /* Declarations des variables locales */
+    QDomDocument document;
     QMap<QString, ElementsOrbitaux> mapElem;
 
     /* Initialisations */
 
     /* Corps de la methode */
     QFile fi(nomFichier);
+    const QFileInfo ff(fi.fileName());
     if (!fi.exists() || (fi.size() == 0)) {
 
-        const QFileInfo ff(fi.fileName());
 #if (BUILD_TEST == false)
         qWarning() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
 #endif
@@ -88,63 +120,54 @@ QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichi
         }
     }
 
-    if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-
-        QXmlStreamReader gp(&fi);
-        gp.readNextStartElement();
-
-        if (gp.name().toString() == "ndm") {
-
-            ElementsOrbitaux elem;
-
-            while (gp.readNextStartElement()) {
-
-                if (gp.name().toString() == "omm") {
-
-                    elem.norad.clear();
-
-                    while (gp.readNextStartElement()) {
-
-                        if (gp.name().toString() == "body") {
-
-                            LectureSectionBody(gp, elem);
-
-                        } else {
-                            gp.skipCurrentElement();
-                        }
-                    }
-                } else {
-                    gp.skipCurrentElement();
-                }
-
-                if ((listeSatellites.isEmpty() || listeSatellites.contains(elem.norad) || listeSatellites.contains(elem.cospar))
-                        && !mapElem.keys().contains(elem.norad)) {
-
-                    // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
-                    const int idx = lgRec * elem.norad.toInt();
-                    if (ajoutDonnees && (idx >= 0) && (idx < donneesSat.size())) {
-
-                        elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
-
-                        // Correction eventuelle du nombre d'orbites a l'epoque
-                        elem.nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
-                    }
-
-                    mapElem.insert(elem.norad, elem);
-                }
-            }
-        } else {
+    if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
 #if (BUILD_TEST == false)
-            qWarning() << QString("Le fichier %1 ne contient aucun satellite").arg(nomFichier);
+        qWarning() << QString("Le fichier %1 ne contient aucun satellite").arg(ff.fileName());
 #endif
-            if (alarme) {
-                fi.close();
-                throw PreviSatException(QObject::tr("Le fichier %1 ne contient aucun satellite").arg(nomFichier), MessageType::WARNING);
-            }
+#if (COVERAGE_TEST == false)
+        if (alarme) {
+            throw PreviSatException(QObject::tr("Le fichier %1 ne contient aucun satellite").arg(ff.fileName()), MessageType::WARNING);
         }
+#endif
+    }
 
-        fi.close();
+    // Chargement du fichier xml
+    if (!document.setContent(&fi)) {
+
+#if (BUILD_TEST == false)
+        qWarning() << QString("Le fichier %1 ne contient aucun satellite").arg(ff.fileName());
+#endif
+        if (alarme) {
+            throw PreviSatException(QObject::tr("Le fichier %1 ne contient aucun satellite").arg(ff.fileName()), MessageType::WARNING);
+        }
+    }
+
+    fi.close();
+
+    ElementsOrbitaux elem;
+    const QDomElement root = document.firstChildElement();
+    const QDomNodeList sats = root.elementsByTagName("omm");
+
+    for(int i=0; i<sats.count(); i++) {
+
+        elem = LectureElements(sats.at(i));
+
+        if ((listeSatellites.isEmpty() || listeSatellites.contains(elem.norad) || listeSatellites.contains(elem.cospar))
+            && !mapElem.contains(elem.norad)) {
+
+            // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
+            const int idx = lgRec * elem.norad.toInt();
+            if (ajoutDonnees && (idx >= 0) && (idx < donneesSat.size())) {
+
+                elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
+
+                // Correction eventuelle du nombre d'orbites a l'epoque
+                elem.nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
+            }
+
+            mapElem.insert(elem.norad, elem);
+        }
     }
 
     /* Retour */
@@ -158,18 +181,17 @@ QList<ElementsOrbitaux> GPFormat::LectureFichierListeGP(const QString &nomFichie
                                                         const bool alarme)
 {
     /* Declarations des variables locales */
-    QString norad;
-    Donnees donnees;
+    QDomDocument document;
+    QList<ElementsOrbitaux> listeElem;
 
     /* Initialisations */
     int nbOrbitesEpoque = 0;
-    QList<ElementsOrbitaux> listeElem;
 
     /* Corps de la methode */
     QFile fi(nomFichier);
+    const QFileInfo ff(fi.fileName());
     if (!fi.exists() || (fi.size() == 0)) {
 
-        const QFileInfo ff(fi.fileName());
 #if (BUILD_TEST == false)
         qWarning() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
 #endif
@@ -178,57 +200,61 @@ QList<ElementsOrbitaux> GPFormat::LectureFichierListeGP(const QString &nomFichie
         }
     }
 
-    if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        QXmlStreamReader gp(&fi);
-        gp.readNextStartElement();
+#if (BUILD_TEST == false)
+        qWarning() << QString("Le fichier %1 ne contient aucun satellite").arg(ff.fileName());
+#endif
+#if (COVERAGE_TEST == false)
+        if (alarme) {
+            throw PreviSatException(QObject::tr("Le fichier %1 ne contient aucun satellite").arg(ff.fileName()), MessageType::WARNING);
+        }
+#endif
+    }
 
-        if (gp.name().toString() == "ndm") {
+    // Chargement du fichier xml
+    if (!document.setContent(&fi)) {
 
-            ElementsOrbitaux elem;
+#if (BUILD_TEST == false)
+        qWarning() << QString("Le fichier %1 ne contient aucun satellite").arg(ff.fileName());
+#endif
+        if (alarme) {
+            throw PreviSatException(QObject::tr("Le fichier %1 ne contient aucun satellite").arg(ff.fileName()), MessageType::WARNING);
+        }
+    }
 
-            while (gp.readNextStartElement()) {
+    fi.close();
 
-                if (gp.name().toString() == "omm") {
+    QString norad;
+    Donnees donnees;
+    ElementsOrbitaux elem;
 
-                    elem.norad.clear();
+    const QDomElement root = document.firstChildElement();
+    const QDomNodeList elems = root.elementsByTagName("omm");
 
-                    while (gp.readNextStartElement()) {
+    for(int i=0; i<elems.count(); i++) {
 
-                        if (gp.name().toString() == "body") {
+        elem = LectureElements(elems.at(i));
 
-                            LectureSectionBody(gp, elem);
+        if (norad.isEmpty()) {
 
-                        } else {
-                            gp.skipCurrentElement();
-                        }
-                    }
-                }
+            norad = elem.norad;
 
-                if (norad.isEmpty()) {
+            // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
+            const int idx = lgRec * elem.norad.toInt();
+            if ((idx >= 0) && (idx < donneesSat.size())) {
 
-                    norad = elem.norad;
+                elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
 
-                    // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
-                    const int idx = lgRec * elem.norad.toInt();
-                    if ((idx >= 0) && (idx < donneesSat.size())) {
-
-                        donnees = Donnees(donneesSat.mid(idx, lgRec));
-                        elem.donnees = donnees;
-
-                        // Correction eventuelle du nombre d'orbites a l'epoque
-                        nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
-                    }
-                }
-
-                elem.donnees = donnees;
-                elem.nbOrbitesEpoque = nbOrbitesEpoque;
-
-                listeElem.append(elem);
+                // Correction eventuelle du nombre d'orbites a l'epoque
+                nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
             }
         }
 
-        fi.close();
+        elem.donnees = donnees;
+        elem.nbOrbitesEpoque = nbOrbitesEpoque;
+
+        listeElem.append(elem);
     }
 
     /* Retour */
@@ -297,224 +323,44 @@ const ElementsOrbitaux &GPFormat::elements() const
  * Methodes privees
  */
 /*
- * Calcul du nombre d'orbites a l'epoque (cas depassant 100000 orbites)
+ * Lecture des elements orbitaux
  */
-int GPFormat::CalculNombreOrbitesEpoque(const ElementsOrbitaux &elements)
+ElementsOrbitaux GPFormat::LectureElements(const QDomNode &sat)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    int nbOrbitesEpoque = elements.nbOrbitesEpoque;
-    const QString dateLancement = elements.donnees.dateLancement();
+    ElementsOrbitaux elem {};
 
     /* Corps de la methode */
-    if (!dateLancement.isEmpty()) {
+    if (!sat.isNull()) {
 
-        const Date dateLct(QDateTime::fromString(dateLancement, Qt::ISODate), 0.);
+        // Lecture section metadata
+        const QDomNode metadata = sat.toElement().elementsByTagName("metadata").at(0);
+        const QString nomsat = metadata.firstChildElement("OBJECT_NAME").text();
+        elem.nom = RecupereNomsat(nomsat);
+        elem.cospar = metadata.firstChildElement("OBJECT_ID").text();
 
-        // Nombre theorique d'orbites a l'epoque
-        const int nbOrbTheo = static_cast<int> (elements.no * (elements.epoque.jourJulienUTC() - dateLct.jourJulienUTC()));
-        int resteOrb = nbOrbTheo % 100000;
-        resteOrb += (((elements.nbOrbitesEpoque > 50000) && (resteOrb < 50000)) ? 100000 : 0);
-        resteOrb -= (((elements.nbOrbitesEpoque < 50000) && (resteOrb > 50000)) ? 100000 : 0);
-        const int deltaNbOrb = nbOrbTheo - resteOrb;
+        // Lecture section meanElements
+        const QDomNode meanElements = sat.toElement().elementsByTagName("meanElements").at(0);
+        elem.epoque = Date::ConversionDateIso(meanElements.firstChildElement("EPOCH").text());
+        elem.no = meanElements.firstChildElement("MEAN_MOTION").text().toDouble();
+        elem.ecco = meanElements.firstChildElement("ECCENTRICITY").text().toDouble();
+        elem.inclo = meanElements.firstChildElement("INCLINATION").text().toDouble();
+        elem.omegao = meanElements.firstChildElement("RA_OF_ASC_NODE").text().toDouble();
+        elem.argpo = meanElements.firstChildElement("ARG_OF_PERICENTER").text().toDouble();
+        elem.mo = meanElements.firstChildElement("MEAN_ANOMALY").text().toDouble();
 
-        nbOrbitesEpoque = elements.nbOrbitesEpoque + deltaNbOrb;
+        // Lecture section tleParameters
+        const QDomNode tleParameters = sat.toElement().elementsByTagName("tleParameters").at(0);
+        //elem.norad = tleParameters.firstChildElement("NORAD_CAT_ID").text();
+        elem.norad = QString("%1").arg(tleParameters.firstChildElement("NORAD_CAT_ID").text(), 6, QChar('0'));
+        elem.nbOrbitesEpoque = tleParameters.firstChildElement("REV_AT_EPOCH").text().toUInt();
+        elem.bstar = tleParameters.firstChildElement("BSTAR").text().toDouble();
+        elem.ndt20 = tleParameters.firstChildElement("MEAN_MOTION_DOT").text().toDouble();
+        elem.ndd60 = tleParameters.firstChildElement("MEAN_MOTION_DDOT").text().toDouble();
     }
 
     /* Retour */
-    return nbOrbitesEpoque;
-}
-
-/*
- * Lecture de la section Body du fichier d'elements orbitaux
- */
-void GPFormat::LectureSectionBody(QXmlStreamReader &gp, ElementsOrbitaux &elem)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    while (gp.readNextStartElement()) {
-
-        if (gp.name().toString() == "segment") {
-
-            while (gp.readNextStartElement()) {
-
-                if (gp.name().toString() == "metadata") {
-
-                    LectureSectionMetaData(gp, elem);
-
-                } else if (gp.name().toString() == "data") {
-
-                    LectureSectionData(gp, elem);
-                }
-            }
-        }
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Lecture de la section Data du fichier d'elements orbitaux
- */
-void GPFormat::LectureSectionData(QXmlStreamReader &gp, ElementsOrbitaux &elem)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    while (gp.readNextStartElement()) {
-
-        if (gp.name().toString() == "meanElements") {
-
-            LectureSectionMeanElements(gp, elem);
-
-        } else if (gp.name().toString() == "tleParameters") {
-
-            LectureSectionTleParameters(gp, elem);
-
-        } else {
-            gp.skipCurrentElement();
-        }
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Lecture de la section MeanElements du fichier d'elements orbitaux
- */
-void GPFormat::LectureSectionMeanElements(QXmlStreamReader &gp, ElementsOrbitaux &elem)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    while (gp.readNextStartElement()) {
-
-        if (gp.name().toString() == "EPOCH") {
-
-            // Epoque des elements orbitaux
-            elem.epoque = Date::ConversionDateIso(gp.readElementText());
-
-        } else if (gp.name().toString() == "MEAN_MOTION") {
-
-            // Moyen mouvement
-            elem.no = gp.readElementText().toDouble();
-
-        } else if (gp.name().toString() == "ECCENTRICITY") {
-
-            // Excentricite
-            elem.ecco = gp.readElementText().toDouble();
-
-        } else if (gp.name().toString() == "INCLINATION") {
-
-            // Inclinaison
-            elem.inclo = gp.readElementText().toDouble();
-
-        } else if (gp.name().toString() == "RA_OF_ASC_NODE") {
-
-            // Ascension droite du noeud ascendant
-            elem.omegao = gp.readElementText().toDouble();
-
-        } else if (gp.name().toString() == "ARG_OF_PERICENTER") {
-
-            // Argument du pericentre
-            elem.argpo = gp.readElementText().toDouble();
-
-        } else if (gp.name().toString() == "MEAN_ANOMALY") {
-
-            // Anomalie moyenne
-            elem.mo = gp.readElementText().toDouble();
-
-        }
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Lecture de la section MetaData du fichier d'elements orbitaux
- */
-void GPFormat::LectureSectionMetaData(QXmlStreamReader &gp, ElementsOrbitaux &elem)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    while (gp.readNextStartElement()) {
-
-        if (gp.name().toString() == "OBJECT_NAME") {
-
-            // Nom de l'objet
-            const QString nomsat = gp.readElementText();
-            elem.nom = RecupereNomsat(nomsat);
-
-        } else if (gp.name().toString() == "OBJECT_ID") {
-
-            // Designation COSPAR
-            elem.cospar = gp.readElementText();
-
-        } else {
-            gp.skipCurrentElement();
-        }
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Lecture de la section TleParameters du fichier d'elements orbitaux
- */
-void GPFormat::LectureSectionTleParameters(QXmlStreamReader &gp, ElementsOrbitaux &elem)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    while (gp.readNextStartElement()) {
-
-        if (gp.name().toString() == "NORAD_CAT_ID") {
-
-            // Numero NORAD
-            elem.norad = QString("%1").arg(gp.readElementText(), 6, QChar('0'));
-
-        } else if (gp.name().toString() == "REV_AT_EPOCH") {
-
-            // Nombre d'orbites a l'epoque
-            elem.nbOrbitesEpoque = gp.readElementText().toInt();
-
-        } else if (gp.name().toString() == "BSTAR") {
-
-            // Coefficient pseudo-balistique
-            elem.bstar = gp.readElementText().toDouble();
-
-        } else if (gp.name().toString() == "MEAN_MOTION_DOT") {
-
-            // Derivee du moyen mouvement / 2
-            elem.ndt20 = gp.readElementText().toDouble();
-
-        } else if (gp.name().toString() == "MEAN_MOTION_DDOT") {
-
-            // Derivee seconde du moyen mouvement / 6
-            elem.ndd60 = gp.readElementText().toDouble();
-
-        } else {
-            gp.skipCurrentElement();
-        }
-    }
-
-    /* Retour */
-    return;
+    return elem;
 }

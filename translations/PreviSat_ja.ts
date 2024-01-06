@@ -5467,14 +5467,17 @@ ce qui représente environ %2 pages.</source>
         <translation>ファイル「%1」が空です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="87"/>
-        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="177"/>
+        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="119"/>
+        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="199"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="156"/>
         <source>Le fichier %1 n&apos;existe pas ou est vide</source>
         <translation>ファイル「%1」が存在しないまたはファイルが空です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="143"/>
+        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="130"/>
+        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="142"/>
+        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="210"/>
+        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="222"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="505"/>
         <source>Le fichier %1 ne contient aucun satellite</source>
         <translation>ファイル「%1」には衛星が含まれていません</translation>

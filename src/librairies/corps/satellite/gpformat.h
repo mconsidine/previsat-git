@@ -36,7 +36,7 @@
  * >    5 juin 2022
  *
  * Date de revision
- * >    11 novembre 2023
+ * >    15 decembre 2023
  *
  */
 
@@ -48,7 +48,7 @@
 #include "elementsorbitaux.h"
 
 
-class QXmlStreamReader;
+class QDomNode;
 
 class GPFormat
 {
@@ -137,39 +137,11 @@ private:
      * Methodes privees
      */
     /**
-     * @brief LectureSectionBody Lecture de la section Body du fichier d'elements orbitaux
-     * @param[in/out] gp contenu du fichier
-     * @param[in/out] elem elements orbitaux
+     * @brief LectureElements Lecture des elements orbitaux
+     * @param sat noeud du fichier xml correspondant a un satellite
+     * @return elements orbitaux
      */
-    static void LectureSectionBody(QXmlStreamReader &gp, ElementsOrbitaux &elem);
-
-    /**
-     * @brief LectureSectionData Lecture de la section Data du fichier d'elements orbitaux
-     * @param[in/out] gp contenu du fichier
-     * @param[in/out] elem elements orbitaux
-     */
-    static void LectureSectionData(QXmlStreamReader &gp, ElementsOrbitaux &elem);
-
-    /**
-     * @brief LectureSectionMeanElements Lecture de la section MeanElements du fichier d'elements orbitaux
-     * @param[in/out] gp contenu du fichier
-     * @param[in/out] elem elements orbitaux
-     */
-    static void LectureSectionMeanElements(QXmlStreamReader &gp, ElementsOrbitaux &elem);
-
-    /**
-     * @brief LectureSectionMetaData Lecture de la section MetaData du fichier d'elements orbitaux
-     * @param[in/out] gp contenu du fichier
-     * @param[in/out] elem elements orbitaux
-     */
-    static void LectureSectionMetaData(QXmlStreamReader &gp, ElementsOrbitaux &elem);
-
-    /**
-     * @brief LectureSectionTleParameters Lecture de la section TleParameters du fichier d'elements orbitaux
-     * @param[in/out] gp contenu du fichier
-     * @param[in/out] elem elements orbitaux
-     */
-    static void LectureSectionTleParameters(QXmlStreamReader &gp, ElementsOrbitaux &elem);
+    static ElementsOrbitaux LectureElements(const QDomNode &sat);
 
 };
 
