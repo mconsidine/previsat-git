@@ -1920,7 +1920,7 @@ PreviSatは、完全無料です!</translation>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="1065"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="1069"/>
         <source>Flash %1</source>
         <translation>フレア %1</translation>
     </message>
@@ -1945,14 +1945,14 @@ PreviSatは、完全無料です!</translation>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="465"/>
-        <location filename="../src/interface/ciel/ciel.cpp" line="466"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="468"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="469"/>
         <source>Soleil</source>
         <translation>太陽</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="490"/>
-        <location filename="../src/interface/ciel/ciel.cpp" line="491"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="495"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="496"/>
         <source>Lune</source>
         <translation>月</translation>
     </message>
@@ -5853,29 +5853,29 @@ Satellite %1 - numéro NORAD : %2</source>
     <name>Radar</name>
     <message>
         <location filename="../src/interface/radar/radar.ui" line="52"/>
-        <location filename="../src/interface/radar/radar.cpp" line="341"/>
-        <location filename="../src/interface/radar/radar.cpp" line="344"/>
+        <location filename="../src/interface/radar/radar.cpp" line="347"/>
+        <location filename="../src/interface/radar/radar.cpp" line="350"/>
         <source>Nord</source>
         <translation>北</translation>
     </message>
     <message>
         <location filename="../src/interface/radar/radar.ui" line="67"/>
-        <location filename="../src/interface/radar/radar.cpp" line="351"/>
-        <location filename="../src/interface/radar/radar.cpp" line="354"/>
+        <location filename="../src/interface/radar/radar.cpp" line="357"/>
+        <location filename="../src/interface/radar/radar.cpp" line="360"/>
         <source>Ouest</source>
         <translation>西</translation>
     </message>
     <message>
         <location filename="../src/interface/radar/radar.ui" line="108"/>
-        <location filename="../src/interface/radar/radar.cpp" line="350"/>
-        <location filename="../src/interface/radar/radar.cpp" line="355"/>
+        <location filename="../src/interface/radar/radar.cpp" line="356"/>
+        <location filename="../src/interface/radar/radar.cpp" line="361"/>
         <source>Est</source>
         <translation>東</translation>
     </message>
     <message>
         <location filename="../src/interface/radar/radar.ui" line="120"/>
-        <location filename="../src/interface/radar/radar.cpp" line="340"/>
-        <location filename="../src/interface/radar/radar.cpp" line="345"/>
+        <location filename="../src/interface/radar/radar.cpp" line="346"/>
+        <location filename="../src/interface/radar/radar.cpp" line="351"/>
         <source>Sud</source>
         <translation>南</translation>
     </message>
@@ -5900,14 +5900,14 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/interface/radar/radar.cpp" line="186"/>
-        <location filename="../src/interface/radar/radar.cpp" line="187"/>
+        <location filename="../src/interface/radar/radar.cpp" line="188"/>
+        <location filename="../src/interface/radar/radar.cpp" line="189"/>
         <source>Soleil</source>
         <translation>太陽</translation>
     </message>
     <message>
-        <location filename="../src/interface/radar/radar.cpp" line="212"/>
-        <location filename="../src/interface/radar/radar.cpp" line="213"/>
+        <location filename="../src/interface/radar/radar.cpp" line="215"/>
+        <location filename="../src/interface/radar/radar.cpp" line="216"/>
         <source>Lune</source>
         <translation>月</translation>
     </message>
