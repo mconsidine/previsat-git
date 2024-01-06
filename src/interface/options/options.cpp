@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    1er novembre 2023
+ * >    23 decembre 2023
  *
  */
 
@@ -277,7 +277,7 @@ void Options::AppliquerPreferences()
     settings.setValue("affichage/affichageFrontieres", _ui->affichageFrontieres->isChecked());
     settings.setValue("affichage/refractionAtmospherique", _ui->refractionAtmospherique->isChecked());
     settings.setValue("affichage/rotationIconeISS", _ui->rotationIconeISS->isChecked());
-    settings.setValue("affichage/affNoradListes", _ui->affNoradListes->isChecked());
+    settings.setValue("affichage/affNoradListes", _ui->affNoradListes->checkState());
     settings.setValue("affichage/rotationLune", _ui->rotationLune->isChecked());
     settings.setValue("affichage/systemeHoraire", _ui->syst24h->isChecked());
     settings.setValue("affichage/unite", _ui->unitesKm->isChecked());
@@ -316,6 +316,8 @@ void Options::AppliquerPreferences()
 
         SauvePreferences(fichierPref);
     }
+
+    emit AfficherListeSatellites(Configuration::instance()->nomfic());
 
     /* Retour */
     return;
@@ -484,7 +486,7 @@ void Options::ChargementPref()
         _ui->nombreTrajectoires->setValue(settings.value("affichage/nombreTrajectoires", 2).toInt());
         _ui->affichageFrontieres->setChecked(settings.value("affichage/affichageFrontieres", true).toBool());
         _ui->rotationIconeISS->setChecked(settings.value("affichage/rotationIconeISS", true).toBool());
-        _ui->affNoradListes->setChecked(settings.value("affichage/affNoradListes", 0).toInt());
+        _ui->affNoradListes->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affNoradListes", 0).toUInt()));
         _ui->rotationLune->setChecked(settings.value("affichage/rotationLune", false).toBool());
         _ui->utc->setChecked(settings.value("affichage/utc", false).toBool());
         _ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
@@ -1268,7 +1270,6 @@ void Options::on_listeBoutonsOptions_accepted()
     emit ChargementTraduction(langue);
     emit ChargementCarteDuMonde();
     emit ChangementFuseauHoraire((_ui->utc->isChecked()) ? 0 : _ui->updown->value());
-    emit RecalculerPositions();
 
     /* Retour */
     return;
@@ -1278,7 +1279,6 @@ void Options::on_listeBoutonsOptions_rejected()
 {
     // Rechargement du fichier de preferences si une option a ete modifiee et ne doit pas etre sauvegardee
     ChargementPref();
-    emit RecalculerPositions();
 }
 
 
@@ -1581,6 +1581,12 @@ void Options::on_supprLieu_clicked()
 
     /* Retour */
     return;
+}
+
+
+void Options::on_afficone_toggled(bool checked)
+{
+    _ui->rotationIconeISS->setEnabled(checked);
 }
 
 

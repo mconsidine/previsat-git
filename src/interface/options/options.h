@@ -36,7 +36,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    7 aout 2023
+ * >    23 decembre 2023
  *
  */
 
@@ -111,6 +111,7 @@ public slots:
 
 signals:
 
+    void AfficherListeSatellites(const QString &nomfic, const bool majListesOnglets = true);
     void ChangementFuseauHoraire(const int offset);
     void ChargementCarteDuMonde();
     void ChargementTraduction(const QString &langue);
@@ -258,6 +259,8 @@ private slots:
     void on_annulerObs_clicked();
     void on_ajoutLieu_clicked();
     void on_supprLieu_clicked();
+
+    void on_afficone_toggled(bool checked);
 
     void on_listeMap_currentIndexChanged(int index);
     void on_listeSons_currentIndexChanged(int index);

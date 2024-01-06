@@ -640,6 +640,8 @@ void PreviSat::ConnexionsSignauxSlots()
     // Connexions avec la fenetre Options
     connect(_options, &Options::ChangementFuseauHoraire, this, &PreviSat::ChangementFuseauHoraire);
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::ReinitCalculEvenementsSoleilLune);
+    connect(_options, &Options::AfficherListeSatellites, this, &PreviSat::AfficherListeSatellites);
+    connect(_options, &Options::AfficherListeSatellites, this, &PreviSat::AffichageCartesRadar);
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::GestionTempsReel);
     connect(_options, &Options::RecalculerPositions, this, &PreviSat::on_actionMode_sombre_triggered);
     connect(_options, &Options::RecalculerPositions, _coordISS, &CoordISS::setPolice);
