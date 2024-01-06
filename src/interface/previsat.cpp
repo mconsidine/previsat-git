@@ -334,7 +334,9 @@ void PreviSat::ChargementGP()
                 // Cas d'un fichier au format GP
                 Configuration::instance()->setMapElementsOrbitaux(GPFormat::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
                                                                                            Configuration::instance()->lgRec()));
-                qInfo() << "Lecture du fichier GP" << ff.fileName() << "OK";
+
+                qInfo() << QString("Lecture du fichier GP %1 OK (%2 satellites)").arg(ff.fileName())
+                               .arg(Configuration::instance()->mapElementsOrbitaux().size());
 
             } else {
 
@@ -344,13 +346,12 @@ void PreviSat::ChargementGP()
 
                 if (TLE::VerifieFichier(nomfic, true) > 0) {
 
-                    qInfo() << QString("Fichier TLE %1 OK").arg(ff.fileName());
-                    AfficherMessageStatut(tr("Fichier TLE %1 OK").arg(ff.fileName()));
-
                     // Lecture du fichier TLE en entier
                     Configuration::instance()->setMapElementsOrbitaux(TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(),
                                                                                           Configuration::instance()->lgRec()));
-                    qInfo() << "Lecture du fichier TLE" << ff.fileName() << "OK";
+
+                    qInfo() << QString("Lecture du fichier TLE %1 OK (%2 satellites)").arg(ff.fileName())
+                                   .arg(Configuration::instance()->mapElementsOrbitaux().size());
 
                 } else {
                     qWarning() << QString("Fichier TLE %1 KO").arg(ff.fileName());
@@ -2764,7 +2765,10 @@ bool PreviSat::eventFilter(QObject *watched, QEvent *event)
         setCursor(Qt::ArrowCursor);
         setToolTip("");
 
-        EffacerMessageStatut();
+        if (_ui->listeFichiersElem->view()->isVisible()) {
+            EffacerMessageStatut();
+        }
+
         AfficherMessageStatut2("");
         AfficherMessageStatut3("");
     }
