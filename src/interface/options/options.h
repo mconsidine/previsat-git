@@ -115,7 +115,6 @@ signals:
     void ChangementFuseauHoraire(const int offset);
     void ChargementCarteDuMonde();
     void ChargementTraduction(const QString &langue);
-    void RecalculerPositions();
 
 
 protected:
