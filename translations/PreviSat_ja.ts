@@ -1868,31 +1868,31 @@ PreviSatは、完全無料です!</translation>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1438"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1446"/>
         <source>W</source>
         <comment>Symbol for West</comment>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1444"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1452"/>
         <source>E</source>
         <comment>Symbol for East</comment>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1472"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1480"/>
         <source>N</source>
         <comment>Symbol for North</comment>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1478"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1486"/>
         <source>S</source>
         <comment>Symbol for South</comment>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1774"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1782"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>

@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    20 mai 2023
+ * >    26 decembre 2023
  *
  */
 
@@ -377,7 +377,7 @@ void Radar::show()
         QGraphicsPixmapItem * const sol = scene->addPixmap(pixsol);
         QTransform transform;
         transform.translate(lsol, bsol);
-        transform.translate(-7, -7);
+        transform.translate(-8, -8);
         sol->setTransform(transform);
     }
 
@@ -404,7 +404,7 @@ void Radar::show()
             transform.rotate(180.);
         }
 
-        transform.translate(-7, -7);
+        transform.translate(-8, -8);
         lun->setTransform(transform);
 
         if (settings.value("affichage/affphaselune").toBool()) {
