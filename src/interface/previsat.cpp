@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 decembre 2023
+ * >    30 decembre 2023
  *
  */
 
@@ -425,6 +425,10 @@ void PreviSat::DemarrageApplication()
             }
         }
     }
+
+    // Reinitialisation de la date courante
+    EFFACE_OBJET(_dateCourante);
+    InitDate();
 
     // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
     EnchainementCalculs();
