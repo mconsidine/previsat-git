@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 decembre 2023
+ * >    27 decembre 2023
  *
  */
 
@@ -274,23 +274,25 @@ void PreviSat::MajGP()
 
     } else {
 
-        if (settings.value("temps/ageMaxElementsOrbitaux", true).toBool()) {
+        if (settings.value("temps/ageMaxElementsOrbitaux", false).toBool()) {
 
             const double lastUpdate = settings.value("temps/lastUpdate", 0.).toDouble();
             const int ageMax = settings.value("temps/ageMax", 15).toInt();
             const QString noradDefaut = Configuration::instance()->noradDefaut();
 
-            // Mise ajour des elements orbitaux anciens
+            // Mise a jour des elements orbitaux anciens
             if ((fabs(_dateCourante->jourJulienUTC() - lastUpdate) > ageMax) ||
                     ((_dateCourante->jourJulienUTC() - Configuration::instance()->mapElementsOrbitaux()[noradDefaut].epoque.jourJulienUTC()) > ageMax)) {
 
                 MajWebGP();
+                ChargementGP();
                 settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
             }
         } else {
 
             emit AfficherMessageStatut(tr("Mise à jour automatique des éléments orbitaux"), 10);
             MajWebGP();
+            ChargementGP();
             settings.setValue("temps/lastUpdate", _dateCourante->jourJulienUTC());
         }
     }

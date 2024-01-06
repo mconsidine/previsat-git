@@ -36,7 +36,7 @@
  * >    14 aout 2022
  *
  * Date de revision
- * >
+ * >    27 decembre 2023
  *
  */
 
@@ -211,6 +211,7 @@ private slots:
     void on_creationGroupe_clicked();
     void on_ajoutFichiersElem_clicked();
     void on_majGroupe_clicked();
+    void on_ageMaxElementsOrbitaux_toggled(bool checked);
     void on_valider_clicked();
     void on_annuler_clicked();
     void on_listeFichiersElem_currentRowChanged(int currentRow);

@@ -30,7 +30,7 @@
  * >    14 aout 2022
  *
  * Date de revision
- * >    15 aout 2023
+ * >    27 decembre 2023
  *
  */
 
@@ -686,6 +686,11 @@ void Outils::on_majGroupe_clicked()
 
     /* Retour */
     return;
+}
+
+void Outils::on_ageMaxElementsOrbitaux_toggled(bool checked)
+{
+    settings.setValue("temps/ageMaxElementsOrbitaux", checked);
 }
 
 void Outils::on_valider_clicked()
