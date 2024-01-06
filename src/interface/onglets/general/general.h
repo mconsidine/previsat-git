@@ -36,7 +36,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    11 juin 2023
+ * >    27 decembre 2023
  *
  */
 
@@ -97,6 +97,9 @@ public:
     /*
      * Modificateurs
      */
+    static void setAcalcAOS(const bool acalc);
+    static void setAcalcDN(const bool acalc);
+
 
     /*
      * Methodes publiques
