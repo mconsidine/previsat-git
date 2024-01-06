@@ -318,6 +318,7 @@ void Options::AppliquerPreferences()
     }
 
     emit AfficherListeSatellites(Configuration::instance()->nomfic());
+    emit AffichageLieuObs();
 
     /* Retour */
     return;

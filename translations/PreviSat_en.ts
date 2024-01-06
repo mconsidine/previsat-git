@@ -3224,7 +3224,7 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="58"/>
-        <location filename="../src/interface/options/options.cpp" line="1113"/>
+        <location filename="../src/interface/options/options.cpp" line="1114"/>
         <source>Lieu d&apos;observation</source>
         <translation>Name of location</translation>
     </message>
@@ -3291,8 +3291,8 @@ click on &apos;Update ISS information&apos;</translation>
     <message>
         <location filename="../src/interface/options/options.ui" line="309"/>
         <location filename="../src/interface/options/options.ui" line="374"/>
-        <location filename="../src/interface/options/options.cpp" line="956"/>
-        <location filename="../src/interface/options/options.cpp" line="1118"/>
+        <location filename="../src/interface/options/options.cpp" line="957"/>
+        <location filename="../src/interface/options/options.cpp" line="1119"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
@@ -3304,27 +3304,27 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="515"/>
-        <location filename="../src/interface/options/options.cpp" line="394"/>
+        <location filename="../src/interface/options/options.cpp" line="395"/>
         <source>Nord</source>
         <translation>North</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="520"/>
-        <location filename="../src/interface/options/options.cpp" line="394"/>
-        <location filename="../src/interface/options/options.cpp" line="1519"/>
+        <location filename="../src/interface/options/options.cpp" line="395"/>
+        <location filename="../src/interface/options/options.cpp" line="1520"/>
         <source>Sud</source>
         <translation>South</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="532"/>
-        <location filename="../src/interface/options/options.cpp" line="393"/>
-        <location filename="../src/interface/options/options.cpp" line="1517"/>
+        <location filename="../src/interface/options/options.cpp" line="394"/>
+        <location filename="../src/interface/options/options.cpp" line="1518"/>
         <source>Est</source>
         <translation>East</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="537"/>
-        <location filename="../src/interface/options/options.cpp" line="393"/>
+        <location filename="../src/interface/options/options.cpp" line="394"/>
         <source>Ouest</source>
         <translation>West</translation>
     </message>
@@ -3750,30 +3750,30 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.cpp" line="170"/>
-        <location filename="../src/interface/options/options.cpp" line="519"/>
+        <location filename="../src/interface/options/options.cpp" line="520"/>
         <source>Créer une catégorie</source>
         <translation>Create a category</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.cpp" line="172"/>
-        <location filename="../src/interface/options/options.cpp" line="534"/>
+        <location filename="../src/interface/options/options.cpp" line="535"/>
         <source>Créer un nouveau lieu</source>
         <translation>Create a new location</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.cpp" line="182"/>
-        <location filename="../src/interface/options/options.cpp" line="401"/>
-        <location filename="../src/interface/options/options.cpp" line="1055"/>
-        <location filename="../src/interface/options/options.cpp" line="1191"/>
+        <location filename="../src/interface/options/options.cpp" line="402"/>
+        <location filename="../src/interface/options/options.cpp" line="1056"/>
+        <location filename="../src/interface/options/options.cpp" line="1192"/>
         <source>m</source>
         <comment>meter</comment>
         <translation>m</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.cpp" line="182"/>
-        <location filename="../src/interface/options/options.cpp" line="401"/>
-        <location filename="../src/interface/options/options.cpp" line="1055"/>
-        <location filename="../src/interface/options/options.cpp" line="1191"/>
+        <location filename="../src/interface/options/options.cpp" line="402"/>
+        <location filename="../src/interface/options/options.cpp" line="1056"/>
+        <location filename="../src/interface/options/options.cpp" line="1192"/>
         <source>ft</source>
         <comment>foot</comment>
         <translation>ft</translation>
@@ -3785,165 +3785,165 @@ click on &apos;Update ISS information&apos;</translation>
         <translation>The altitude must be between %1%2 et %3%2</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="387"/>
+        <location filename="../src/interface/options/options.cpp" line="388"/>
         <source>Lieu : %1</source>
         <translation>Location : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="523"/>
-        <location filename="../src/interface/options/options.cpp" line="542"/>
+        <location filename="../src/interface/options/options.cpp" line="524"/>
+        <location filename="../src/interface/options/options.cpp" line="543"/>
         <source>Renommer</source>
         <translation>Rename</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="526"/>
-        <location filename="../src/interface/options/options.cpp" line="549"/>
+        <location filename="../src/interface/options/options.cpp" line="527"/>
+        <location filename="../src/interface/options/options.cpp" line="550"/>
         <source>Supprimer</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="530"/>
-        <location filename="../src/interface/options/options.cpp" line="650"/>
-        <location filename="../src/interface/options/options.cpp" line="757"/>
+        <location filename="../src/interface/options/options.cpp" line="531"/>
+        <location filename="../src/interface/options/options.cpp" line="651"/>
+        <location filename="../src/interface/options/options.cpp" line="758"/>
         <source>Télécharger...</source>
         <translation>Download...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="538"/>
+        <location filename="../src/interface/options/options.cpp" line="539"/>
         <source>Ajouter à Mes Préférés</source>
         <translation>Add in My Favorites</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="545"/>
+        <location filename="../src/interface/options/options.cpp" line="546"/>
         <source>Modifier</source>
         <translation>Modify</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="612"/>
+        <location filename="../src/interface/options/options.cpp" line="613"/>
         <source>Langue</source>
         <comment>Translate by the name of language, for example : English, Français, Español</comment>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="639"/>
-        <location filename="../src/interface/options/options.cpp" line="720"/>
-        <location filename="../src/interface/options/options.cpp" line="751"/>
+        <location filename="../src/interface/options/options.cpp" line="640"/>
+        <location filename="../src/interface/options/options.cpp" line="721"/>
+        <location filename="../src/interface/options/options.cpp" line="752"/>
         <source>* Défaut</source>
         <translation>* Default</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="680"/>
+        <location filename="../src/interface/options/options.cpp" line="681"/>
         <source>Mes Préférés</source>
         <translation>My Favorites</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="726"/>
+        <location filename="../src/interface/options/options.cpp" line="727"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="727"/>
+        <location filename="../src/interface/options/options.cpp" line="728"/>
         <source>Supprimer...</source>
         <translation>Remove...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="854"/>
+        <location filename="../src/interface/options/options.cpp" line="855"/>
         <source>Problème de droits d&apos;écriture du fichier %1</source>
         <translation>Unable to write file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="951"/>
+        <location filename="../src/interface/options/options.cpp" line="952"/>
         <source>Catégorie</source>
         <translation>Category</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="952"/>
+        <location filename="../src/interface/options/options.cpp" line="953"/>
         <source>Nouveau nom de la catégorie :</source>
         <translation>New name of the category :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="955"/>
-        <location filename="../src/interface/options/options.cpp" line="1117"/>
+        <location filename="../src/interface/options/options.cpp" line="956"/>
+        <location filename="../src/interface/options/options.cpp" line="1118"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="971"/>
-        <location filename="../src/interface/options/options.cpp" line="1003"/>
+        <location filename="../src/interface/options/options.cpp" line="972"/>
+        <location filename="../src/interface/options/options.cpp" line="1004"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="971"/>
+        <location filename="../src/interface/options/options.cpp" line="972"/>
         <source>La catégorie existe déjà. Voulez-vous l&apos;écraser ?</source>
         <translation>The category already exists. Do you want to overwrite it?</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/options/options.cpp" line="972"/>
-        <location filename="../src/interface/options/options.cpp" line="1004"/>
-        <location filename="../src/interface/options/options.cpp" line="1215"/>
-        <source>Oui</source>
-        <translation>Yes</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.cpp" line="973"/>
         <location filename="../src/interface/options/options.cpp" line="1005"/>
         <location filename="../src/interface/options/options.cpp" line="1216"/>
+        <source>Oui</source>
+        <translation>Yes</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/options/options.cpp" line="974"/>
+        <location filename="../src/interface/options/options.cpp" line="1006"/>
+        <location filename="../src/interface/options/options.cpp" line="1217"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1003"/>
+        <location filename="../src/interface/options/options.cpp" line="1004"/>
         <source>Voulez-vous vraiment supprimer la catégorie &lt;b&gt;%1&lt;/b&gt; ?</source>
         <translation>Do you really want to remove the &lt;b&gt;%1&lt;/b&gt; category?</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1085"/>
+        <location filename="../src/interface/options/options.cpp" line="1086"/>
         <source>Le lieu d&apos;observation &lt;b&gt;%1&lt;/b&gt; fait déjà partie de &lt;b&gt;Mes Préférés&lt;/b&gt;</source>
         <translation>The location &lt;b&gt;%1&lt;/b&gt; is already in &lt;b&gt;My Favorites&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1114"/>
+        <location filename="../src/interface/options/options.cpp" line="1115"/>
         <source>Nouveau nom du lieu d&apos;observation :</source>
         <translation>New name of the location :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1212"/>
+        <location filename="../src/interface/options/options.cpp" line="1213"/>
         <source>Voulez-vous vraiment supprimer &lt;b&gt;%1&lt;/b&gt; de la catégorie &lt;b&gt;%2&lt;/b&gt; ?</source>
         <translation>Do you really want to remove &lt;b&gt;%1&lt;/b&gt; from the category &lt;b&gt;%2&lt;/b&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1214"/>
+        <location filename="../src/interface/options/options.cpp" line="1215"/>
         <source>Avertissement</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1356"/>
+        <location filename="../src/interface/options/options.cpp" line="1357"/>
         <source>Le nom de la catégorie n&apos;est pas spécifié</source>
         <translation>The name of the category is not given</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1376"/>
+        <location filename="../src/interface/options/options.cpp" line="1377"/>
         <source>La catégorie spécifiée existe déjà</source>
         <translation>The category already exists</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1487"/>
+        <location filename="../src/interface/options/options.cpp" line="1488"/>
         <source>Le nom du lieu d&apos;observation n&apos;est pas spécifié</source>
         <translation>The name of location is not given</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1496"/>
+        <location filename="../src/interface/options/options.cpp" line="1497"/>
         <source>Le lieu existe déjà dans la catégorie &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>The location already exists in the category &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1557"/>
+        <location filename="../src/interface/options/options.cpp" line="1558"/>
         <source>Lieu d&apos;observation déjà sélectionné</source>
         <translation>Location already selected</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1662"/>
+        <location filename="../src/interface/options/options.cpp" line="1663"/>
         <source>UTC</source>
         <comment>Universal Time Coordinated</comment>
         <translation>UTC</translation>
@@ -4736,8 +4736,8 @@ click on &apos;Update ISS information&apos;</translation>
     <message>
         <location filename="../src/interface/previsat.ui" line="543"/>
         <location filename="../src/interface/previsat.ui" line="617"/>
-        <location filename="../src/interface/previsat.cpp" line="2942"/>
-        <location filename="../src/interface/previsat.cpp" line="2959"/>
+        <location filename="../src/interface/previsat.cpp" line="2937"/>
+        <location filename="../src/interface/previsat.cpp" line="2954"/>
         <source>secondes</source>
         <translation>seconds</translation>
     </message>
@@ -4774,19 +4774,19 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="485"/>
-        <location filename="../src/interface/previsat.cpp" line="1095"/>
+        <location filename="../src/interface/previsat.cpp" line="1090"/>
         <source>Mode de fonctionnement</source>
         <translation>Mode</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="553"/>
-        <location filename="../src/interface/previsat.cpp" line="2637"/>
+        <location filename="../src/interface/previsat.cpp" line="2632"/>
         <source>Temps réel</source>
         <translation>Real time</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="563"/>
-        <location filename="../src/interface/previsat.cpp" line="2640"/>
+        <location filename="../src/interface/previsat.cpp" line="2635"/>
         <source>Mode manuel</source>
         <translation>Manual mode</translation>
     </message>
@@ -4802,19 +4802,19 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="622"/>
-        <location filename="../src/interface/previsat.cpp" line="2960"/>
+        <location filename="../src/interface/previsat.cpp" line="2955"/>
         <source>minutes</source>
         <translation>minutes</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="627"/>
-        <location filename="../src/interface/previsat.cpp" line="2961"/>
+        <location filename="../src/interface/previsat.cpp" line="2956"/>
         <source>heures</source>
         <translation>hours</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="632"/>
-        <location filename="../src/interface/previsat.cpp" line="2962"/>
+        <location filename="../src/interface/previsat.cpp" line="2957"/>
         <source>jours</source>
         <translation>days</translation>
     </message>
@@ -4991,115 +4991,115 @@ the video stream</translation>
         <translation>Update data files</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1077"/>
+        <location filename="../src/interface/previsat.cpp" line="1072"/>
         <source>Messages</source>
         <translation>Messages</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1101"/>
-        <location filename="../src/interface/previsat.cpp" line="2659"/>
+        <location filename="../src/interface/previsat.cpp" line="1096"/>
+        <location filename="../src/interface/previsat.cpp" line="2654"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1107"/>
-        <location filename="../src/interface/previsat.cpp" line="2660"/>
+        <location filename="../src/interface/previsat.cpp" line="1102"/>
+        <location filename="../src/interface/previsat.cpp" line="2655"/>
         <source>Heure</source>
         <translation>Hour</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1173"/>
+        <location filename="../src/interface/previsat.cpp" line="1168"/>
         <source>Vous venez de mettre à jour %1.
 %2Souhaitez-vous faire un don pour soutenir son auteur ?</source>
         <translation>You just update %1.
 %2Do you want to make a donation to support its author ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1869"/>
+        <location filename="../src/interface/previsat.cpp" line="1864"/>
         <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;Tous les fichiers (*.*)</source>
         <translation>PNG files (*.png);;JPEG files (*.jpg *.jpeg);;BMP files (*.bmp);;All files (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2656"/>
+        <location filename="../src/interface/previsat.cpp" line="2651"/>
         <source>dd/MM/yyyy</source>
         <comment>date format</comment>
         <translation>MM/dd/yyyy</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2942"/>
-        <location filename="../src/interface/previsat.cpp" line="2959"/>
+        <location filename="../src/interface/previsat.cpp" line="2937"/>
+        <location filename="../src/interface/previsat.cpp" line="2954"/>
         <source>seconde</source>
         <translation>second</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2960"/>
+        <location filename="../src/interface/previsat.cpp" line="2955"/>
         <source>minute</source>
         <translation>minute</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2961"/>
+        <location filename="../src/interface/previsat.cpp" line="2956"/>
         <source>heure</source>
         <translation>hour</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2962"/>
+        <location filename="../src/interface/previsat.cpp" line="2957"/>
         <source>jour</source>
         <translation>day</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2979"/>
+        <location filename="../src/interface/previsat.cpp" line="2974"/>
         <source>Agrandir</source>
         <translation>Maximize</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2988"/>
+        <location filename="../src/interface/previsat.cpp" line="2983"/>
         <source>Réduire</source>
         <translation>Minimize</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3014"/>
+        <location filename="../src/interface/previsat.cpp" line="3009"/>
         <source>Carte du monde</source>
         <translation>World map</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3022"/>
+        <location filename="../src/interface/previsat.cpp" line="3017"/>
         <source>Carte du ciel</source>
         <translation>Sky map</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3230"/>
+        <location filename="../src/interface/previsat.cpp" line="3225"/>
         <source>onglet_general</source>
         <comment>file name (without accent)</comment>
         <translation>main_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3231"/>
+        <location filename="../src/interface/previsat.cpp" line="3226"/>
         <source>onglet_elements</source>
         <comment>file name (without accent)</comment>
         <translation>elements_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3231"/>
+        <location filename="../src/interface/previsat.cpp" line="3226"/>
         <source>onglet_informations</source>
         <comment>file name (without accent)</comment>
         <translation>information_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2649"/>
+        <location filename="../src/interface/previsat.cpp" line="2644"/>
         <source>Jour julien</source>
         <translation>Julian day</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1492"/>
-        <location filename="../src/interface/previsat.cpp" line="1567"/>
+        <location filename="../src/interface/previsat.cpp" line="1487"/>
+        <location filename="../src/interface/previsat.cpp" line="1562"/>
         <source>Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?</source>
         <translation>An update %1 is available. Do you want to download it?</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1174"/>
-        <location filename="../src/interface/previsat.cpp" line="1387"/>
-        <location filename="../src/interface/previsat.cpp" line="1494"/>
-        <location filename="../src/interface/previsat.cpp" line="1569"/>
+        <location filename="../src/interface/previsat.cpp" line="1169"/>
+        <location filename="../src/interface/previsat.cpp" line="1382"/>
+        <location filename="../src/interface/previsat.cpp" line="1489"/>
+        <location filename="../src/interface/previsat.cpp" line="1564"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
@@ -5109,51 +5109,51 @@ the video stream</translation>
         <translation>Automatic update of orbital elements</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1170"/>
+        <location filename="../src/interface/previsat.cpp" line="1165"/>
         <source>Cette version comporte %1 lignes de code,
 ce qui représente environ %2 pages.</source>
         <translation>This version has %1 lines of code,
 which represents approximately %2 pages.</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2022"/>
-        <location filename="../src/interface/previsat.cpp" line="2061"/>
-        <location filename="../src/interface/previsat.cpp" line="2179"/>
+        <location filename="../src/interface/previsat.cpp" line="2017"/>
+        <location filename="../src/interface/previsat.cpp" line="2056"/>
+        <location filename="../src/interface/previsat.cpp" line="2174"/>
         <source>dddd dd MMMM yyyy  HH:mm:ss</source>
         <translation>dddd, MMMM dd yyyy  HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2315"/>
+        <location filename="../src/interface/previsat.cpp" line="2310"/>
         <source>Mise à jour du fichier GP %1 en cours...</source>
         <translation>Updating GP file %1...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2321"/>
+        <location filename="../src/interface/previsat.cpp" line="2316"/>
         <source>Téléchargement terminé</source>
         <translation>Downloading finished</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1388"/>
-        <location filename="../src/interface/previsat.cpp" line="1495"/>
-        <location filename="../src/interface/previsat.cpp" line="1570"/>
+        <location filename="../src/interface/previsat.cpp" line="1383"/>
+        <location filename="../src/interface/previsat.cpp" line="1490"/>
+        <location filename="../src/interface/previsat.cpp" line="1565"/>
         <source>Oui</source>
         <translation>Yes</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1494"/>
+        <location filename="../src/interface/previsat.cpp" line="1489"/>
         <source>des fichiers internes</source>
         <translation>of internal files</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1178"/>
-        <location filename="../src/interface/previsat.cpp" line="1389"/>
-        <location filename="../src/interface/previsat.cpp" line="1496"/>
-        <location filename="../src/interface/previsat.cpp" line="1572"/>
+        <location filename="../src/interface/previsat.cpp" line="1173"/>
+        <location filename="../src/interface/previsat.cpp" line="1384"/>
+        <location filename="../src/interface/previsat.cpp" line="1491"/>
+        <location filename="../src/interface/previsat.cpp" line="1567"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1385"/>
+        <location filename="../src/interface/previsat.cpp" line="1380"/>
         <source>Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?</source>
         <translation>The orbital elements are older than %1 day(s). Do you want to update them?</translation>
     </message>
@@ -5163,110 +5163,110 @@ which represents approximately %2 pages.</translation>
         <translation>Checking TLE file %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2650"/>
+        <location filename="../src/interface/previsat.cpp" line="2645"/>
         <source>Jour</source>
         <translation>Day</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2346"/>
+        <location filename="../src/interface/previsat.cpp" line="2341"/>
         <source>Mise à jour du groupe d&apos;éléments orbitaux &quot;%1&quot;...</source>
         <translation>Updating &quot;%1&quot; group of orbital elements...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2381"/>
+        <location filename="../src/interface/previsat.cpp" line="2376"/>
         <source>Mise à jour du groupe d&apos;éléments orbitaux &quot;%1&quot; terminée</source>
         <translation>Update of orbital elements group &quot;%1&quot; done</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2851"/>
+        <location filename="../src/interface/previsat.cpp" line="2846"/>
         <source>Impossible d&apos;afficher l&apos;aide en ligne</source>
         <translation>Impossible to display online help</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="972"/>
-        <location filename="../src/interface/previsat.cpp" line="3125"/>
+        <location filename="../src/interface/previsat.cpp" line="3120"/>
         <source>Importer fichier GP / TLE...</source>
         <translation>Import GP / TLE file...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3127"/>
+        <location filename="../src/interface/previsat.cpp" line="3122"/>
         <source>Fichiers GP (*.xml);;Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)</source>
         <translation>GP files (*.xml);;TLE files (*.txt *.tle);;All files (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3145"/>
-        <location filename="../src/interface/previsat.cpp" line="3205"/>
+        <location filename="../src/interface/previsat.cpp" line="3140"/>
+        <location filename="../src/interface/previsat.cpp" line="3200"/>
         <source>Le fichier %1 ne contient pas d&apos;éléments orbitaux</source>
         <translation>The file %1 does not contain orbital elements</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3154"/>
-        <location filename="../src/interface/previsat.cpp" line="3184"/>
+        <location filename="../src/interface/previsat.cpp" line="3149"/>
+        <location filename="../src/interface/previsat.cpp" line="3179"/>
         <source>Le fichier %1 existe déjà</source>
         <translation>The file %1 already exists</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3237"/>
+        <location filename="../src/interface/previsat.cpp" line="3232"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*.*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3410"/>
+        <location filename="../src/interface/previsat.cpp" line="3406"/>
         <source>Commun</source>
         <comment>common orbital elements groups</comment>
         <translation>Common</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3415"/>
+        <location filename="../src/interface/previsat.cpp" line="3411"/>
         <source>Tous</source>
         <comment>all orbital elements groups</comment>
         <translation>All</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3500"/>
-        <location filename="../src/interface/previsat.cpp" line="3503"/>
+        <location filename="../src/interface/previsat.cpp" line="3496"/>
+        <location filename="../src/interface/previsat.cpp" line="3499"/>
         <source>Devise</source>
         <translation>Currency</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3501"/>
-        <location filename="../src/interface/previsat.cpp" line="3503"/>
+        <location filename="../src/interface/previsat.cpp" line="3497"/>
+        <location filename="../src/interface/previsat.cpp" line="3499"/>
         <source>Choisissez la devise :</source>
         <translation>Choose currency :</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3517"/>
+        <location filename="../src/interface/previsat.cpp" line="3513"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires</source>
         <translation>Be careful : it is possible to make a PayPal donation by means of Tipeee, but this will incur additional costs</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3584"/>
+        <location filename="../src/interface/previsat.cpp" line="3580"/>
         <source>Ouverture du fichier d&apos;éléments orbitaux %1 ...</source>
         <translation>Opening orbiral elements file %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3586"/>
+        <location filename="../src/interface/previsat.cpp" line="3582"/>
         <source>Fichier d&apos;éléments orbitaux de %1 satellites</source>
         <translation>Orbital elements file of %1 satellites</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3754"/>
+        <location filename="../src/interface/previsat.cpp" line="3750"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD number : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1868"/>
-        <location filename="../src/interface/previsat.cpp" line="3236"/>
+        <location filename="../src/interface/previsat.cpp" line="1863"/>
+        <location filename="../src/interface/previsat.cpp" line="3231"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1718"/>
+        <location filename="../src/interface/previsat.cpp" line="1713"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3307"/>
+        <location filename="../src/interface/previsat.cpp" line="3302"/>
         <source>Pas d&apos;informations à afficher</source>
         <translation>No available information</translation>
     </message>
