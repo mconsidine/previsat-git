@@ -998,11 +998,33 @@ void Configuration::VerificationArborescences()
 
             QFileInfo ff(dest);
             if (!ff.exists()) {
-                QFile fi;
-                fi.rename(file, dest);
+                QFile fi(file);
+                fi.copy(dest);
             }
         }
 #endif
+
+        // Copie des fichiers de lieux d'observation
+        QDir dirCrd(_dirCoord);
+        if (!dirCrd.exists()) {
+            dirCrd.mkpath(_dirCoord);
+        }
+
+        const QDir dirCmnCrd(_dirCommonData + QDir::separator() + "coordinates");
+        const QStringList filtres(QStringList () << "*.xml");
+        const QStringList listeCoord = dirCmnCrd.entryList(filtres, QDir::Files);
+
+        foreach(const QString fic, listeCoord) {
+
+            const QString file = dirCmnCrd.absolutePath() + QDir::separator() + fic;
+            const QString dest = _dirCoord + QDir::separator() + fic;
+
+            QFileInfo ff(dest);
+            if (!ff.exists()) {
+                QFile fi(file);
+                fi.copy(dest);
+            }
+        }
 
         // Verification et creation des arborescences
         foreach(const QString dirDat, listeDirDat) {
