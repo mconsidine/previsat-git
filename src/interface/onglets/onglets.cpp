@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    5 octobre 2023
+ * >    27 decembre 2023
  *
  */
 
@@ -224,12 +224,12 @@ Antenne *Onglets::antenne() const
  */
 void Onglets::setAcalcAOS(const bool acalc)
 {
-    _acalcAOS = acalc;
+    _general->setAcalcAOS(acalc);
 }
 
 void Onglets::setAcalcDN(const bool acalc)
 {
-    _acalcDN = acalc;
+    _general->setAcalcDN(acalc);
 }
 
 void Onglets::setIndexInformations(const unsigned int newIndexInformations)

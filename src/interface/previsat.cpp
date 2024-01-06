@@ -586,6 +586,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_onglets->starlink(), &CalculsStarlink::MajElementsOrbitaux, this, &PreviSat::TelechargementGroupesStarlink);
     connect(_onglets->evenements(), &CalculsEvenementsOrbitaux::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->general(), &General::RecalculerPositions, _onglets, &Onglets::AffichageLieuObs);
+    connect(_onglets->general(), &General::RecalculerPositions, _onglets, &Onglets::ReinitFlags);
     connect(_onglets->general(), &General::RecalculerPositions, this, &PreviSat::ReinitCalculEvenementsSoleilLune);
     connect(_onglets->general(), &General::RecalculerPositions, this, &PreviSat::GestionTempsReel);
     connect(_onglets->general(), &General::ModeManuel, this, &PreviSat::on_modeManuel_toggled);
