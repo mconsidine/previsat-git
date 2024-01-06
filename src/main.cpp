@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 novembre 2023
+ * >    10 decembre 2023
  *
  */
 
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
         }
 
         // Preparation du splashscreen
-        QLabel *splash = new QLabel(nullptr);
+        QLabel * const splash = new QLabel(nullptr);
         splash->setPixmap(QPixmap(":/resources/interface/splashscreen.png"));
         splash->adjustSize();
         splash->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, splash->size(), qApp->primaryScreen()->geometry()));
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
         police.setWeight(QFont::DemiBold);
 
         // Nom du logiciel et numero de version
-        QLabel *logiciel = new QLabel(QString(APP_NAME) + " " + APP_VER_MAJ, splash);
+        QLabel * const logiciel = new QLabel(QString(APP_NAME) + " " + APP_VER_MAJ, splash);
         logiciel->setStyleSheet("color: white;");
         logiciel->setFont(police);
         logiciel->adjustSize();
@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
 
         // Annees de developpement
         police.setPointSize(12);
-        QLabel *annees = new QLabel(APP_ANNEES_DEV, splash);
+        QLabel * const annees = new QLabel(APP_ANNEES_DEV, splash);
         annees->setStyleSheet("color: white;");
         annees->setFont(police);
         annees->adjustSize();
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 
         // Description
         police.setPointSize(15);
-        QLabel *description = new QLabel("Satellite tracking software", splash);
+        QLabel * const description = new QLabel("Satellite tracking software", splash);
         description->setStyleSheet("color: white;");
         description->setFont(police);
         description->adjustSize();
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
 
         // Site
         police.setBold(false);
-        QLabel *site = new QLabel(DOMAIN_NAME, splash);
+        QLabel * const site = new QLabel(DOMAIN_NAME, splash);
         site->setStyleSheet("color: white;");
         site->setFont(police);
         site->adjustSize();
@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
 
         // Messages
         police.setPointSizeF(10.5);
-        QLabel *message = new QLabel(QObject::tr("Initialisation de la configuration..."), splash);
+        QLabel * const message = new QLabel(QObject::tr("Initialisation de la configuration..."), splash);
         message->setStyleSheet("color: white;");
         message->setFont(police);
         message->setAlignment(Qt::AlignRight);
