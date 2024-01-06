@@ -261,6 +261,11 @@ private slots:
     void on_supprLieu_clicked();
 
     void on_afficone_toggled(bool checked);
+    void on_afftraj_toggled(bool checked);
+    void on_affnotif_toggled(bool checked);
+    void on_affnuit_toggled(bool checked);
+    void on_afflune_toggled(bool checked);
+    void on_affradar_toggled(bool checked);
 
     void on_listeMap_currentIndexChanged(int index);
     void on_listeSons_currentIndexChanged(int index);

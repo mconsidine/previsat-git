@@ -491,6 +491,15 @@ void Options::ChargementPref()
         _ui->utc->setChecked(settings.value("affichage/utc", false).toBool());
         _ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
         _ui->verifMAJ->setChecked(settings.value("affichage/verifMAJ", false).toBool());
+
+        _ui->rotationIconeISS->setEnabled(_ui->afficone->isChecked());
+        _ui->nombreTrajectoires->setEnabled(_ui->afftraj->isChecked());
+        _ui->listeSons->setEnabled(_ui->affnotif->isChecked());
+        _ui->intensiteOmbre->setEnabled(_ui->affnuit->isChecked());
+        _ui->affphaselune->setEnabled(_ui->afflune->isChecked());
+        _ui->rotationLune->setEnabled(_ui->afflune->isChecked());
+        _ui->affinvew->setEnabled(_ui->affradar->checkState() != Qt::Unchecked);
+        _ui->affinvns->setEnabled(_ui->affradar->checkState() != Qt::Unchecked);
     }
 
     /* Retour */
@@ -1587,6 +1596,33 @@ void Options::on_supprLieu_clicked()
 void Options::on_afficone_toggled(bool checked)
 {
     _ui->rotationIconeISS->setEnabled(checked);
+}
+
+void Options::on_afftraj_toggled(bool checked)
+{
+    _ui->nombreTrajectoires->setEnabled(checked);
+}
+
+void Options::on_affnotif_toggled(bool checked)
+{
+    _ui->listeSons->setEnabled(checked);
+}
+
+void Options::on_affnuit_toggled(bool checked)
+{
+    _ui->intensiteOmbre->setEnabled(checked);
+}
+
+void Options::on_afflune_toggled(bool checked)
+{
+    _ui->affphaselune->setEnabled(checked);
+    _ui->rotationLune->setEnabled(checked);
+}
+
+void Options::on_affradar_toggled(bool checked)
+{
+    _ui->affinvew->setEnabled(checked);
+    _ui->affinvns->setEnabled(checked);
 }
 
 

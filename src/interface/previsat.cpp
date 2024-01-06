@@ -913,7 +913,7 @@ void PreviSat::EnchainementCalculs()
             // Nombre de traces au sol a afficher
             int nbTraces = settings.value("affichage/nombreTrajectoires", 2).toInt();
 
-            if (satellites.isEmpty() || !(settings.value("affichage/afftraj", true).toBool())) {
+            if (satellites.isEmpty()) {
                 nbTraces = 1;
             } else if (mcc && satellites.first().elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale()) {
                 nbTraces = 3;
@@ -1417,7 +1417,7 @@ bool PreviSat::VerifMajDate(const QString &fichier, const QStringList &listeFich
         qInfo() << "Début Fonction" << __FUNCTION__;
 
         Telechargement tel(Configuration::instance()->dirTmp());
-        tel.TelechargementFichier(QString("%1/maj/%2").arg(DOMAIN_NAME).arg(fichier), false);
+        tel.TelechargementFichier(QString("%1/maj/%2").arg(DOMAIN_NAME).arg(fichier), false, false);
 
         QFile fi(tel.dirDwn() + QDir::separator() + fichier);
         if (fi.exists() && (fi.size() != 0)) {
