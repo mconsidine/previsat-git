@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    8 novembre 2023
+ * >    26 decembre 2023
  *
  */
 
@@ -789,7 +789,7 @@ void Ciel::AffichageLune()
             transform.rotate(180.);
         }
 
-        transform.translate(-7, -7);
+        transform.translate(-8, -8);
         lun->setTransform(transform);
 
         // Dessin de la phase
@@ -1201,7 +1201,7 @@ void Ciel::AffichageSoleil()
             QGraphicsPixmapItem * const sol = scene->addPixmap(pixsol);
             QTransform transform;
             transform.translate(lsol, bsol);
-            transform.translate(-7, -7);
+            transform.translate(-8, -8);
             sol->setTransform(transform);
         }
     }

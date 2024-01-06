@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    4 octobre 2023
+ * >    26 decembre 2023
  *
  */
 
@@ -350,6 +350,7 @@ void Carte::wheelEvent(QWheelEvent *evt)
         emit SendCurrentScale(echelle);
         _ui->carte->update();
         _ui->carte->viewport()->update();
+        show();
     }
 
     /* Retour */
@@ -674,6 +675,8 @@ void Carte::AffichageLune()
         const int blun = qRound(DEG2PX(90. - Configuration::instance()->lune().latitude() * MATHS::RAD2DEG));
 
         QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
+        lun->setTransformationMode(Qt::SmoothTransformation);
+
         QTransform transform;
         QTransform transform2;
         transform.translate(llun, blun);
@@ -681,13 +684,14 @@ void Carte::AffichageLune()
             transform.rotate(180.);
         }
 
-        transform.translate(-7, -7);
+        transform.translate(-8, -8);
         lun->setTransform(transform);
 
         // Lune au niveau du meridien 180 degres, on duplique le dessin
         if (((llun + 7) > _largeurCarte) || ((llun - 7) < 0)) {
 
             QGraphicsPixmapItem * const lun2 = scene->addPixmap(pixlun);
+            lun2->setTransformationMode(Qt::SmoothTransformation);
 
             if ((llun + 7) > _largeurCarte) {
                 transform2.translate(llun - _largeurCarte, blun);
@@ -834,6 +838,7 @@ void Carte::AffichageSatellites()
                                      Qt::SmoothTransformation);
 
                     pm = scene->addPixmap(img);
+                    pm->setTransformationMode(Qt::SmoothTransformation);
 
                     transform.reset();
                     transform.translate(lsat, bsat);
@@ -856,6 +861,7 @@ void Carte::AffichageSatellites()
 
                     // Icone sur le bord de la carte du monde
                     pm2 = scene->addPixmap(img);
+                    pm2->setTransformationMode(Qt::SmoothTransformation);
                     transform.reset();
 
                     if (lsat > _largeurCarte / 2) {
@@ -906,16 +912,18 @@ void Carte::AffichageSoleil()
             transform.translate(-15, -10);
         } else {
             pixsol = pixsol.scaled(17, 17, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            transform.translate(-7, -7);
+            transform.translate(-8, -8);
         }
 
         QGraphicsPixmapItem * const sol = scene->addPixmap(pixsol);
+        sol->setTransformationMode(Qt::SmoothTransformation);
         sol->setTransform(transform);
 
         // Soleil au niveau du meridien 180 degres, on duplique le dessin
         if (((_lsol + 7) > _largeurCarte) || ((_lsol - 7) < 0)) {
 
             QGraphicsPixmapItem * const sol2 = scene->addPixmap(pixsol);
+            sol2->setTransformationMode(Qt::SmoothTransformation);
             transform.reset();
 
             if ((_lsol + 7) > _largeurCarte) {
@@ -926,7 +934,7 @@ void Carte::AffichageSoleil()
                 transform.translate(_lsol + _largeurCarte, bsol);
             }
 
-            transform.translate(-7, -7);
+            transform.translate(-8, -8);
             sol2->setTransform(transform);
         }
     }
