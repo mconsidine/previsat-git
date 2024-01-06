@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    23 decembre 2023
+ * >    27 decembre 2023
  *
  */
 
@@ -244,6 +244,32 @@ void Options::AppliquerPreferences()
     /* Initialisations */
 
     /* Corps de la methode */
+    EcritureRegistre();
+
+    const QString langue = Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex());
+    Configuration::instance()->locale() = langue;
+
+    emit ChargementTraduction(langue);
+    emit ChargementCarteDuMonde();
+
+    emit ChangementFuseauHoraire((_ui->utc->isChecked()) ? 0 : _ui->updown->value());
+    emit AfficherListeSatellites(Configuration::instance()->nomfic());
+    emit AffichageLieuObs();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Ecriture en base de registre
+ */
+void Options::EcritureRegistre()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     settings.setValue("affichage/affSAA", _ui->affSAA->isChecked());
     settings.setValue("affichage/affconst", _ui->affconst->checkState());
     settings.setValue("affichage/affcoord", _ui->affcoord->isChecked());
@@ -312,20 +338,10 @@ void Options::AppliquerPreferences()
     if (_ui->preferences->currentIndex() < _ui->preferences->count() - 2) {
 
         const QString fichierPref = Configuration::instance()->dirPref() + QDir::separator() +
-                Configuration::instance()->listeFicPref().at(_ui->preferences->currentIndex());
+                                    Configuration::instance()->listeFicPref().at(_ui->preferences->currentIndex());
 
         SauvePreferences(fichierPref);
     }
-
-    const QString langue = Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex());
-    Configuration::instance()->locale() = langue;
-
-    emit ChargementTraduction(langue);
-    emit ChargementCarteDuMonde();
-
-    emit ChangementFuseauHoraire((_ui->utc->isChecked()) ? 0 : _ui->updown->value());
-    emit AfficherListeSatellites(Configuration::instance()->nomfic());
-    emit AffichageLieuObs();
 
     /* Retour */
     return;
