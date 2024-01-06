@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 decembre 2023
+ * >    26 decembre 2023
  *
  */
 
@@ -3079,19 +3079,23 @@ void PreviSat::on_meteo_clicked()
         }
     }
 
+    QString map1 = map0;
+
     // Remplacement des coordonnees
     const QString lon(QString::number(-Configuration::instance()->observateur().longitude() * MATHS::RAD2DEG));
     const QString lat(QString::number(Configuration::instance()->observateur().latitude() * MATHS::RAD2DEG));
-    const QString map = map0.replace("LONGITUDE_CENTRE", lon).replace("LATITUDE_CENTRE", lat)
-                            .replace("UNITE_TEMP", (_options->ui()->unitesKm->isChecked()) ? "C" : "F")
-                            .replace("UNITE_VENT", (_options->ui()->unitesKm->isChecked()) ? "kmh" : "mph")
-                            .replace("VALEUR_ZOOM", QString::number(_options->ui()->valeurZoomMap->value()));
+    map1.replace("LONGITUDE_CENTRE", lon)
+        .replace("LATITUDE_CENTRE", lat)
+        .replace("UNITE_TEMP", (_options->ui()->unitesKm->isChecked()) ? "C" : "F")
+        .replace("UNITE_VENT", (_options->ui()->unitesKm->isChecked()) ? "kmh" : "mph")
+        .replace("VALEUR_ZOOM", QString::number(_options->ui()->valeurZoomMap->value()));
 
     QFile fi2(Configuration::instance()->dirTmp() + QDir::separator() + "meteo.html");
     if (fi2.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream flux(&fi2);
-        flux << map;
+        flux << map1;
     }
+
     fi2.close();
 
     // Chargement de la meteo
