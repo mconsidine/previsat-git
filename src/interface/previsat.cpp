@@ -1485,6 +1485,7 @@ void PreviSat::VerifMajPreviSat()
         if (VerifMajDate("majFichiersInternes", Configuration::instance()->listeFicLocalData())) {
 
             _ui->actionMettre_a_jour_les_fichiers_de_donnees->setVisible(true);
+            _ui->actionTelecharger_la_mise_a_jour->setVisible(false);
 
             const QString msg = tr("Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?");
 
@@ -1537,6 +1538,7 @@ bool PreviSat::VerifMajVersion(const QString &fichier)
     qInfo() << "Début Fonction" << __FUNCTION__;
 
     bool anew = false;
+    _ui->actionTelecharger_la_mise_a_jour->setVisible(false);
 
     /* Corps de la methode */
     try {
@@ -1559,7 +1561,11 @@ bool PreviSat::VerifMajVersion(const QString &fichier)
 
                 if (anew && majPrevi) {
 
+                    QFont police;
+                    police.setBold(true);
+                    _ui->actionTelecharger_la_mise_a_jour->setFont(police);
                     _ui->actionTelecharger_la_mise_a_jour->setVisible(true);
+                    _ui->actionMettre_a_jour_les_fichiers_de_donnees->setVisible(false);
 
                     const QString msg = tr("Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?");
 
@@ -1577,22 +1583,19 @@ bool PreviSat::VerifMajVersion(const QString &fichier)
                     }
 
                     majPrevi = false;
-                } else {
-                    majPrevi = true;
                 }
 
                 settings.setValue("fichier/majPreviSat", majPrevi);
 
-                if (!majPrevi) {
+                if (anew && !majPrevi) {
                     QFont police;
                     police.setBold(true);
                     _ui->actionTelecharger_la_mise_a_jour->setFont(police);
+                    _ui->actionTelecharger_la_mise_a_jour->setVisible(true);
+                    _ui->actionMettre_a_jour_les_fichiers_de_donnees->setVisible(false);
                 }
             }
         }
-
-        _ui->actionTelecharger_la_mise_a_jour->setVisible(!majPrevi);
-
     } catch (PreviSatException const &e) {
     }
 
