@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    12 novembre 2023
+ * >    29 decembre 2023
  *
  */
 
@@ -142,8 +142,8 @@ public:
     const QStringList &listeFicLocalData() const;
 
     // Polices
-    const QFont &police() const;
-    const QFont &policeWcc() const;
+    QFont &police();
+    QFont &policeWcc();
 
     bool &isCarteMaximisee();
     bool &issLive();
@@ -207,14 +207,14 @@ public:
     QString &noradDefaut();
 
     // Liste des fichiers d'elements orbitaux
-    const QStringList &listeFichiersElem() const;
+    QStringList &listeFichiersElem();
     void AjoutSatelliteFichierElem(const QString &norad);
     void SuppressionSatelliteFichierElem(const QString &norad);
     QMap<QString, QStringList> &mapFichierElemNorad();
 
     QList<Satellite> &listeSatellites();
 
-    const QMap<QString, ElementsOrbitaux> &mapElementsOrbitaux() const;
+    QMap<QString, ElementsOrbitaux> &mapElementsOrbitaux();
 
     EvenementsStation &evenementsStation();
 
@@ -244,10 +244,6 @@ public:
     /*
      * Modificateurs
      */
-    void setPolice(const QFont &p);
-    void setPoliceWcc(const QFont &p);
-    void setMapElementsOrbitaux(const QMap<QString, ElementsOrbitaux> &map);
-    void setListeFicElem(const QStringList &listeFic);
     void setObservateurDefaut(const int index);
 
 

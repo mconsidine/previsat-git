@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    27 decembre 2023
+ * >    29 decembre 2023
  *
  */
 
@@ -330,7 +330,7 @@ void Options::EcritureRegistre()
                           _ui->listeStations->item(i)->checkState());
     }
 
-    Configuration::instance()->setPoliceWcc(_ui->policeWCC->currentText());
+    Configuration::instance()->policeWcc() = _ui->policeWCC->currentText();
 
     settings.setValue("fichier/nbFichiersLog", _ui->nbFichiersLog->value());
 
@@ -827,7 +827,7 @@ void Options::InitPoliceWCC()
 #endif
 
     _ui->policeWCC->setCurrentIndex(index);
-    Configuration::instance()->setPoliceWcc(policeWcc);
+    Configuration::instance()->policeWcc() = policeWcc;
 
     /* Retour */
     return;

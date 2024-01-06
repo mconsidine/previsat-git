@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    28 decembre 2023
+ * >    29 decembre 2023
  *
  */
 
@@ -355,12 +355,12 @@ const QStringList &Configuration::listeFicLocalData() const
 }
 
 // Polices
-const QFont &Configuration::police() const
+QFont &Configuration::police()
 {
     return _police;
 }
 
-const QFont &Configuration::policeWcc() const
+QFont &Configuration::policeWcc()
 {
     return _policeWcc;
 }
@@ -531,7 +531,7 @@ QString &Configuration::noradDefaut()
     return _noradDefaut;
 }
 
-const QStringList &Configuration::listeFichiersElem() const
+QStringList &Configuration::listeFichiersElem()
 {
     return _listeFichiersElem;
 }
@@ -560,7 +560,7 @@ QList<Satellite> &Configuration::listeSatellites()
     return _listeSatellites;
 }
 
-const QMap<QString, ElementsOrbitaux> &Configuration::mapElementsOrbitaux() const
+QMap<QString, ElementsOrbitaux> &Configuration::mapElementsOrbitaux()
 {
     return _mapElementsOrbitaux;
 }
@@ -642,26 +642,6 @@ void Configuration::AjoutDonneesSatellitesStarlink(const QString &groupe, const 
 /*
  * Modificateurs
  */
-void Configuration::setPolice(const QFont &p)
-{
-    _police = p;
-}
-
-void Configuration::setPoliceWcc(const QFont &p)
-{
-    _policeWcc = p;
-}
-
-void Configuration::setMapElementsOrbitaux(const QMap<QString, ElementsOrbitaux> &map)
-{
-    _mapElementsOrbitaux = map;
-}
-
-void Configuration::setListeFicElem(const QStringList &listeFic)
-{
-    _listeFichiersElem = listeFic;
-}
-
 void Configuration::setObservateurDefaut(const int index)
 {
     if ((index > 0) && (index < _observateurs.size())) {
