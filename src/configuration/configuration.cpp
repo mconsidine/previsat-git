@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    12 novembre 2023
+ * >    28 decembre 2023
  *
  */
 
@@ -1014,7 +1014,7 @@ void Configuration::VerificationArborescences()
         const QStringList filtres(QStringList () << "*.xml");
         const QStringList listeCoord = dirCmnCrd.entryList(filtres, QDir::Files);
 
-        foreach(const QString fic, listeCoord) {
+        foreach(const QString &fic, listeCoord) {
 
             const QString file = dirCmnCrd.absolutePath() + QDir::separator() + fic;
             const QString dest = _dirCoord + QDir::separator() + fic;
@@ -1027,7 +1027,7 @@ void Configuration::VerificationArborescences()
         }
 
         // Verification et creation des arborescences
-        foreach(const QString dirDat, listeDirDat) {
+        foreach(const QString &dirDat, listeDirDat) {
             const QDir dir(dirDat);
             if (!dir.exists()) {
                 qCritical() << QString("Le répertoire %1 n'existe pas, veuillez réinstaller %2").arg(QDir::toNativeSeparators(dirDat))
@@ -1044,7 +1044,7 @@ void Configuration::VerificationArborescences()
 #endif
                                    << _dirCfg << _dirLog << _dirMap << _dirOut << _dirPref << _dirRsc << _dirSon << _dirStarlink << _dirTmp);
 
-        foreach(const QString dir, listeDir) {
+        foreach(const QString &dir, listeDir) {
             const QDir direc = QDir(dir);
             if (!direc.exists()) {
                 direc.mkpath(dir);

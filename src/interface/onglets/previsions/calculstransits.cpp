@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    20 novembre 2023
+ * >    28 decembre 2023
  *
  */
 
@@ -416,7 +416,7 @@ void CalculsTransits::on_calculsTransit_clicked()
 {
     /* Declarations des variables locales */
     QVector<int> vecSat;
-    ConditionsPrevisions conditions;
+    ConditionsPrevisions conditions {};
 
     /* Initialisations */
     vecSat.append(0);
