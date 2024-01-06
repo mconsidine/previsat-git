@@ -59,6 +59,7 @@ void GPFormatTest::testAll()
     testLectureFichier4();
     testLectureFichierListeGP1();
     testLectureFichierListeGP2();
+    testLectureFichierListeGP3();
     testRecupereNomsat();
 }
 
@@ -219,6 +220,31 @@ void GPFormatTest::testLectureFichierListeGP2()
     Configuration::instance()->LectureDonneesSatellites();
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "iss2.gp";
+    QList<ElementsOrbitaux> listeElem;
+
+    try {
+        listeElem = GPFormat::LectureFichierListeGP(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(), true);
+    } catch (PreviSatException &e) {
+    }
+
+    QCOMPARE(listeElem.size(), 0);
+}
+
+void GPFormatTest::testLectureFichierListeGP3()
+{
+    qInfo(Q_FUNC_INFO);
+
+    QDir dir = QDir::current();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cdUp();
+    dir.cd(qApp->applicationName());
+
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
+    Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->LectureDonneesSatellites();
+
+    const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "data" + QDir::separator() + "taiutc.dat";
     QList<ElementsOrbitaux> listeElem;
 
     try {
