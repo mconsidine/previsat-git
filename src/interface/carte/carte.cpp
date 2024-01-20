@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    26 decembre 2023
+ * >    20 janvier 2024
  *
  */
 
@@ -1222,7 +1222,7 @@ void Carte::AffichageZoneOmbre()
     /* Corps de la methode */
     if (settings.value("affichage/affnuit").toUInt() != Qt::Unchecked) {
 
-        double beta = MATHS::PI_SUR_DEUX;
+        double beta = MATHS::PI_SUR_DEUX - TERRE::REFRACTION_HZ;
         const int imax = ((settings.value("affichage/affnuit").toUInt() == Qt::PartiallyChecked) || _mcc) ? 1 : 4;
 
         const QBrush alpha1 = QBrush(QColor::fromRgb(0, 0, 0, static_cast<int> (2.55 * settings.value("affichage/intensiteOmbre").toDouble())));
