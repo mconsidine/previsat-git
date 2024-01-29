@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 janvier 2024
+ * >    29 janvier 2024
  *
  */
 
@@ -2544,6 +2544,8 @@ void PreviSat::TelechargementGroupesStarlink()
 
             QString fichier;
             QString groupe;
+            QString nomGroupe;
+            QStringList grp;
             unsigned int debf = 0;
             unsigned int debl = 0;
 
@@ -2559,17 +2561,27 @@ void PreviSat::TelechargementGroupesStarlink()
 
                 const unsigned int indf = static_cast<unsigned int> (contenu.indexOf("sup-gp.php?FILE=starlink-", debf)) + 16;
                 const unsigned int finf = static_cast<unsigned int> (contenu.indexOf("&FORMAT", indf));
-                const unsigned int indg = static_cast<unsigned int> (contenu.indexOf(">", indf) + 1);
+                const unsigned int indg = static_cast<unsigned int> (contenu.lastIndexOf(">", indf) + 1);
                 const unsigned int fing = static_cast<unsigned int> (contenu.indexOf("<", indg));
                 const unsigned int indl = static_cast<unsigned int> (contenu.indexOf("Launch: ", debl));
 
                 // Informations Starlink
-                fichier = contenu.mid(indf, finf - indf);
-                groupe = contenu.mid(indg, fing - indg);
+                fichier = contenu.mid(indf, finf - indf).trimmed();
+                groupe = contenu.mid(indg, fing - indg).trimmed();
                 const QString lancement = contenu.mid(contenu.indexOf("Launch: ", indl) + 8, 19);
-                const QString deploiement = contenu.mid(contenu.indexOf("Deployment: ", indl) + 12, 19);
+                const QString deploiement = contenu.mid(contenu.indexOf("Deploy: ", indl) + 8, 23);
 
-                const QString nomGroupe = groupe.split(" ", Qt::SkipEmptyParts).at(1);
+                if (groupe.contains("Backup")) {
+
+                    grp = fichier.split("-", Qt::SkipEmptyParts);
+                    nomGroupe = grp.first() + " " + grp.at(1).toUpper() + "-" + grp.at(2).toUpper();
+                    nomGroupe[0] = nomGroupe[0].toUpper();
+                    groupe = nomGroupe + " Pre-Launch";
+
+                } else {
+                    nomGroupe = groupe.split(" ", Qt::SkipEmptyParts).at(1);
+                }
+
                 if (Configuration::instance()->groupesStarlink().keys().contains(nomGroupe)) {
 
                     groupe = groupe.split(" ", Qt::SkipEmptyParts).first() + " " + nomGroupe;
