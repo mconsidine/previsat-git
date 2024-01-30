@@ -25,6 +25,12 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
+  <property name="frameShape">
+   <enum>QFrame::NoFrame</enum>
+  </property>
+  <property name="frameShadow">
+   <enum>QFrame::Plain</enum>
+  </property>
   <widget class="QStackedWidget" name="dateHeure">
    <property name="geometry">
     <rect>
@@ -33,6 +39,12 @@
      <width>411</width>
      <height>28</height>
     </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::NoFrame</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
    </property>
    <property name="currentIndex">
     <number>0</number>
@@ -1662,10 +1674,10 @@
     </rect>
    </property>
    <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
+    <enum>QFrame::NoFrame</enum>
    </property>
    <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
+    <enum>QFrame::Plain</enum>
    </property>
    <widget class="QWidget" name="formLayoutWidget_20">
     <property name="geometry">

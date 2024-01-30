@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string notr="true">Frame</string>
   </property>
+  <property name="frameShape">
+   <enum>QFrame::NoFrame</enum>
+  </property>
+  <property name="frameShadow">
+   <enum>QFrame::Plain</enum>
+  </property>
   <widget class="QWidget" name="formLayoutWidget_81">
    <property name="geometry">
     <rect>
@@ -211,10 +217,10 @@
     </rect>
    </property>
    <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
+    <enum>QFrame::NoFrame</enum>
    </property>
    <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
+    <enum>QFrame::Plain</enum>
    </property>
    <widget class="QWidget" name="formLayoutWidget_84">
     <property name="geometry">
