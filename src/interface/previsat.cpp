@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    30 decembre 2023
+ * >    20 janvier 2024
  *
  */
 
@@ -651,6 +651,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_options, &Options::AfficherListeSatellites, this, &PreviSat::AffichageCartesRadar);
     connect(_options, &Options::ChargementCarteDuMonde, _carte, &Carte::ChargementCarteDuMonde);
     connect(_options, &Options::ChargementTraduction, this, &PreviSat::ChargementTraduction);
+    connect(_options, &Options::AfficherLieuObs, _onglets, &Onglets::AffichageLieuObs);
     connect(this, &PreviSat::EcritureRegistre, _options, &Options::EcritureRegistre);
 
     // Connexions avec la fenetre Outils

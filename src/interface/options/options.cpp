@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    29 decembre 2023
+ * >    20 janvier 2024
  *
  */
 
@@ -255,6 +255,7 @@ void Options::AppliquerPreferences()
     emit ChangementFuseauHoraire((_ui->utc->isChecked()) ? 0 : _ui->updown->value());
     emit AfficherListeSatellites(Configuration::instance()->nomfic());
     emit AffichageLieuObs();
+    emit AfficherLieuObs();
 
     /* Retour */
     return;
