@@ -4736,8 +4736,8 @@ click on &apos;Update ISS information&apos;</translation>
     <message>
         <location filename="../src/interface/previsat.ui" line="543"/>
         <location filename="../src/interface/previsat.ui" line="617"/>
-        <location filename="../src/interface/previsat.cpp" line="2954"/>
-        <location filename="../src/interface/previsat.cpp" line="2971"/>
+        <location filename="../src/interface/previsat.cpp" line="2966"/>
+        <location filename="../src/interface/previsat.cpp" line="2983"/>
         <source>secondes</source>
         <translation>seconds</translation>
     </message>
@@ -4780,13 +4780,13 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="553"/>
-        <location filename="../src/interface/previsat.cpp" line="2646"/>
+        <location filename="../src/interface/previsat.cpp" line="2658"/>
         <source>Temps réel</source>
         <translation>Real time</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="563"/>
-        <location filename="../src/interface/previsat.cpp" line="2649"/>
+        <location filename="../src/interface/previsat.cpp" line="2661"/>
         <source>Mode manuel</source>
         <translation>Manual mode</translation>
     </message>
@@ -4802,19 +4802,19 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="622"/>
-        <location filename="../src/interface/previsat.cpp" line="2972"/>
+        <location filename="../src/interface/previsat.cpp" line="2984"/>
         <source>minutes</source>
         <translation>minutes</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="627"/>
-        <location filename="../src/interface/previsat.cpp" line="2973"/>
+        <location filename="../src/interface/previsat.cpp" line="2985"/>
         <source>heures</source>
         <translation>hours</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="632"/>
-        <location filename="../src/interface/previsat.cpp" line="2974"/>
+        <location filename="../src/interface/previsat.cpp" line="2986"/>
         <source>jours</source>
         <translation>days</translation>
     </message>
@@ -4997,13 +4997,13 @@ the video stream</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1104"/>
-        <location filename="../src/interface/previsat.cpp" line="2668"/>
+        <location filename="../src/interface/previsat.cpp" line="2680"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1110"/>
-        <location filename="../src/interface/previsat.cpp" line="2669"/>
+        <location filename="../src/interface/previsat.cpp" line="2681"/>
         <source>Heure</source>
         <translation>Hour</translation>
     </message>
@@ -5020,72 +5020,72 @@ the video stream</translation>
         <translation>PNG files (*.png);;JPEG files (*.jpg *.jpeg);;BMP files (*.bmp);;All files (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2665"/>
+        <location filename="../src/interface/previsat.cpp" line="2677"/>
         <source>dd/MM/yyyy</source>
         <comment>date format</comment>
         <translation>MM/dd/yyyy</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2954"/>
-        <location filename="../src/interface/previsat.cpp" line="2971"/>
+        <location filename="../src/interface/previsat.cpp" line="2966"/>
+        <location filename="../src/interface/previsat.cpp" line="2983"/>
         <source>seconde</source>
         <translation>second</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2972"/>
+        <location filename="../src/interface/previsat.cpp" line="2984"/>
         <source>minute</source>
         <translation>minute</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2973"/>
+        <location filename="../src/interface/previsat.cpp" line="2985"/>
         <source>heure</source>
         <translation>hour</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2974"/>
+        <location filename="../src/interface/previsat.cpp" line="2986"/>
         <source>jour</source>
         <translation>day</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2991"/>
+        <location filename="../src/interface/previsat.cpp" line="3003"/>
         <source>Agrandir</source>
         <translation>Maximize</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3000"/>
+        <location filename="../src/interface/previsat.cpp" line="3012"/>
         <source>Réduire</source>
         <translation>Minimize</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3026"/>
+        <location filename="../src/interface/previsat.cpp" line="3038"/>
         <source>Carte du monde</source>
         <translation>World map</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3034"/>
+        <location filename="../src/interface/previsat.cpp" line="3046"/>
         <source>Carte du ciel</source>
         <translation>Sky map</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3246"/>
+        <location filename="../src/interface/previsat.cpp" line="3258"/>
         <source>onglet_general</source>
         <comment>file name (without accent)</comment>
         <translation>main_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3247"/>
+        <location filename="../src/interface/previsat.cpp" line="3259"/>
         <source>onglet_elements</source>
         <comment>file name (without accent)</comment>
         <translation>elements_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3247"/>
+        <location filename="../src/interface/previsat.cpp" line="3259"/>
         <source>onglet_informations</source>
         <comment>file name (without accent)</comment>
         <translation>information_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2658"/>
+        <location filename="../src/interface/previsat.cpp" line="2670"/>
         <source>Jour julien</source>
         <translation>Julian day</translation>
     </message>
@@ -5163,7 +5163,7 @@ which represents approximately %2 pages.</translation>
         <translation>Checking TLE file %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2659"/>
+        <location filename="../src/interface/previsat.cpp" line="2671"/>
         <source>Jour</source>
         <translation>Day</translation>
     </message>
@@ -5178,85 +5178,85 @@ which represents approximately %2 pages.</translation>
         <translation>Update of orbital elements group &quot;%1&quot; done</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2863"/>
+        <location filename="../src/interface/previsat.cpp" line="2875"/>
         <source>Impossible d&apos;afficher l&apos;aide en ligne</source>
         <translation>Impossible to display online help</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="972"/>
-        <location filename="../src/interface/previsat.cpp" line="3141"/>
+        <location filename="../src/interface/previsat.cpp" line="3153"/>
         <source>Importer fichier GP / TLE...</source>
         <translation>Import GP / TLE file...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3143"/>
+        <location filename="../src/interface/previsat.cpp" line="3155"/>
         <source>Fichiers GP (*.xml);;Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)</source>
         <translation>GP files (*.xml);;TLE files (*.txt *.tle);;All files (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3161"/>
-        <location filename="../src/interface/previsat.cpp" line="3221"/>
+        <location filename="../src/interface/previsat.cpp" line="3173"/>
+        <location filename="../src/interface/previsat.cpp" line="3233"/>
         <source>Le fichier %1 ne contient pas d&apos;éléments orbitaux</source>
         <translation>The file %1 does not contain orbital elements</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3170"/>
-        <location filename="../src/interface/previsat.cpp" line="3200"/>
+        <location filename="../src/interface/previsat.cpp" line="3182"/>
+        <location filename="../src/interface/previsat.cpp" line="3212"/>
         <source>Le fichier %1 existe déjà</source>
         <translation>The file %1 already exists</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3253"/>
+        <location filename="../src/interface/previsat.cpp" line="3265"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*.*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3427"/>
+        <location filename="../src/interface/previsat.cpp" line="3439"/>
         <source>Commun</source>
         <comment>common orbital elements groups</comment>
         <translation>Common</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3432"/>
+        <location filename="../src/interface/previsat.cpp" line="3444"/>
         <source>Tous</source>
         <comment>all orbital elements groups</comment>
         <translation>All</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3517"/>
-        <location filename="../src/interface/previsat.cpp" line="3520"/>
+        <location filename="../src/interface/previsat.cpp" line="3529"/>
+        <location filename="../src/interface/previsat.cpp" line="3532"/>
         <source>Devise</source>
         <translation>Currency</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3518"/>
-        <location filename="../src/interface/previsat.cpp" line="3520"/>
+        <location filename="../src/interface/previsat.cpp" line="3530"/>
+        <location filename="../src/interface/previsat.cpp" line="3532"/>
         <source>Choisissez la devise :</source>
         <translation>Choose currency :</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3534"/>
+        <location filename="../src/interface/previsat.cpp" line="3546"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires</source>
         <translation>Be careful : it is possible to make a PayPal donation by means of Tipeee, but this will incur additional costs</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3601"/>
+        <location filename="../src/interface/previsat.cpp" line="3613"/>
         <source>Ouverture du fichier d&apos;éléments orbitaux %1 ...</source>
         <translation>Opening orbiral elements file %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3603"/>
+        <location filename="../src/interface/previsat.cpp" line="3615"/>
         <source>Fichier d&apos;éléments orbitaux de %1 satellites</source>
         <translation>Orbital elements file of %1 satellites</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3771"/>
+        <location filename="../src/interface/previsat.cpp" line="3783"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD number : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1874"/>
-        <location filename="../src/interface/previsat.cpp" line="3252"/>
+        <location filename="../src/interface/previsat.cpp" line="3264"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
@@ -5266,7 +5266,7 @@ which represents approximately %2 pages.</translation>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3323"/>
+        <location filename="../src/interface/previsat.cpp" line="3335"/>
         <source>Pas d&apos;informations à afficher</source>
         <translation>No available information</translation>
     </message>
