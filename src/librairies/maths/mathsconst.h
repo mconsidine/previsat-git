@@ -83,6 +83,7 @@ static constexpr double T360 = 360.;
 static constexpr double ARCMIN_PAR_DEG = 60.;
 static constexpr double ARCSEC_PAR_MIN = 60.;
 static constexpr double ARCSEC_PAR_DEG = 3600.;
+static constexpr double HSEC2RAD = DEUX_TIERS * DEUX_PI;
 
 static constexpr double DEG2RAD = PI / 180.;
 static constexpr double ARCMIN2RAD = PI / 10800.;

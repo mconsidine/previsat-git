@@ -43,12 +43,8 @@
 #ifndef PREVISAT_H
 #define PREVISAT_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QMainWindow>
 #include <QTranslator>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include <QDate>
 
 
@@ -81,6 +77,7 @@ public:
     /**
      * @brief PreviSat Constructeur par defaut
      * @param[in] parent parent
+     * @throw Exception
      */
     explicit PreviSat(QWidget *parent = nullptr);
 
@@ -227,6 +224,7 @@ private:
 
     /**
      * @brief EnchainementCalculs Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
+     * @throw Exception
      */
     void EnchainementCalculs();
 
@@ -237,6 +235,7 @@ private:
 
     /**
      * @brief Initialisation Initialisation de la fenetre principale
+     * @throw Exception
      */
     void Initialisation();
 

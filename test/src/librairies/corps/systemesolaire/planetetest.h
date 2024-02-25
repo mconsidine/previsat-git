@@ -52,7 +52,8 @@ public:
 
 private:
 
-    static void testCalculPosition();
+    static void testCalculAnglesReductionEquat();
+    static void testCalculPositionSimp();
 
 };
 

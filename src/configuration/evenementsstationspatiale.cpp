@@ -34,17 +34,14 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wconversion"
 #include <QDir>
 #include <QFile>
 #include <QXmlStreamReader>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
 #include "configuration.h"
 #include "evenementsstation.h"
 #include "evenementsstationspatiale.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
+#include "librairies/systeme/fichierxml.h"
 
 
 /**********
@@ -63,7 +60,6 @@
  */
 EvenementsStation EvenementsStationSpatiale::LectureEvenementsStationSpatiale()
 {
-
     /* Declarations des variables locales */
     EvenementsStation evenements;
 
@@ -71,57 +67,70 @@ EvenementsStation EvenementsStationSpatiale::LectureEvenementsStationSpatiale()
     evenements.masseStationSpatiale = -1.;
     evenements.coefficientTraineeAtmospherique = -1.;
     evenements.surfaceTraineeAtmospherique = -1.;
+    FichierXml fi(Configuration::instance()->dirLocalData() + QDir::separator() + Configuration::instance()->nomFichierEvenementsStationSpatiale());
 
     /* Corps de la methode */
     try {
 
-        QFile fi(Configuration::instance()->dirLocalData() + QDir::separator() +
-                 Configuration::instance()->nomFichierEvenementsStationSpatiale());
+        QString val;
+        const QDomDocument document = fi.Ouverture(false);
 
-        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        /* Corps de la methode */
+        const QDomElement root = document.firstChildElement();
+        if (root.nodeName() != "ndm") {
+            throw Exception();
+        }
 
-            QXmlStreamReader cfg(&fi);
+        const QDomNode metadata = root.elementsByTagName("metadata").at(0);
+        evenements.dateDebutEvenementsStationSpatiale = metadata.firstChildElement("START_TIME").text();
+        evenements.dateFinEvenementsStationSpatiale = metadata.firstChildElement("STOP_TIME").text();
 
-            cfg.readNextStartElement();
-            if (cfg.name().toString().toLower() == "ndm") {
+        const QDomNode data = root.elementsByTagName("data").at(0);
+        const QDomNodeList valeurs = data.toElement().elementsByTagName("COMMENT");
 
-                while (cfg.readNextStartElement()) {
+        int i = 0;
+        while (i < valeurs.count()) {
 
-                    if (cfg.name().toString().toLower() == "oem") {
+            const QString valeur = valeurs.at(i).toElement().text();
 
-                        while (cfg.readNextStartElement()) {
+            if (valeur.toLower().contains("mass")) {
 
-                            if (cfg.name().toString().toLower() == "body") {
+                // Masse (en kg)
+                evenements.masseStationSpatiale = valeur.split("=").last().toDouble();
 
-                                LectureBody(cfg, evenements);
+            } else if (valeur.toLower().contains("drag_area")) {
 
-                            } else {
-                                cfg.skipCurrentElement();
-                            }
-                        }
+                // Surface de trainee atmospherique
+                evenements.surfaceTraineeAtmospherique = valeur.split("=").last().toDouble();
+
+            } else if (valeur.toLower().contains("drag_coeff")) {
+
+                // Coefficient de trainee atmospherique
+                evenements.coefficientTraineeAtmospherique = valeur.split("=").last().toDouble();
+
+            } else if (valeur.contains("===")) {
+
+                // Recuperation des evenements
+                val = "";
+                while (!val.contains("===")) {
+
+                    val = valeurs.at(++i).toElement().text();
+                    if (!val.contains("===") && !val.isEmpty() && !val.contains("(")) {
+                        val.replace(26, 1, "T");
+                        evenements.evenementsStationSpatiale.append(val);
                     }
                 }
             }
 
-            fi.close();
-
-            if (evenements.dateDebutEvenementsStationSpatiale.isEmpty()
-                    || evenements.dateFinEvenementsStationSpatiale.isEmpty()
-                    || (evenements.masseStationSpatiale < 0.)
-                    || (evenements.surfaceTraineeAtmospherique < 0.)
-                    || (evenements.coefficientTraineeAtmospherique < 0.)) {
-
-                const QFileInfo ff(fi.fileName());
-                qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
-                throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
-                                        .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
-            }
-
-            qInfo() << QString("Lecture fichier %1 OK").arg(Configuration::instance()->nomFichierEvenementsStationSpatiale());
+            i++;
         }
 
-    } catch (PreviSatException &e) {
-        throw PreviSatException();
+       qInfo() << QString("Lecture fichier %1 OK").arg(fi.nomfic());
+
+    } catch (Exception const &e) {
+        qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic()).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                            .arg(fi.nomfic()).arg(APP_NAME), MessageType::ERREUR);
     }
 
     /* Retour */
@@ -154,114 +163,3 @@ EvenementsStation EvenementsStationSpatiale::LectureEvenementsStationSpatiale()
 /*
  * Methodes privees
  */
-/*
- * Lecture de la section body du fichier Station Spatiale
- */
-void EvenementsStationSpatiale::LectureBody(QXmlStreamReader &cfg, EvenementsStation &evenements)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    while (cfg.readNextStartElement()) {
-
-        if (cfg.name().toString().toLower() == "segment") {
-
-            while (cfg.readNextStartElement()) {
-
-                if (cfg.name().toString().toLower() == "metadata") {
-
-                    LectureMetadata(cfg, evenements);
-
-                } else if (cfg.name().toString().toLower() == "data") {
-
-                    LectureData(cfg, evenements);
-                }
-            }
-        }
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Lecture de la section data du fichier Station Spatiale
- */
-void EvenementsStationSpatiale::LectureData(QXmlStreamReader &cfg, EvenementsStation &evenements)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    QString value;
-
-    /* Corps de la methode */
-    while (cfg.readNextStartElement()) {
-
-        value = cfg.readElementText();
-
-        if (value.toLower().contains("mass")) {
-
-            // Masse (en kg)
-            evenements.masseStationSpatiale = value.split("=").last().toDouble();
-
-        } else if (value.toLower().contains("drag_area")) {
-
-            // Surface de trainee atmospherique
-            evenements.surfaceTraineeAtmospherique = value.split("=").last().toDouble();
-
-        } else if (value.toLower().contains("drag_coeff")) {
-
-            // Coefficient de trainee atmospherique
-            evenements.coefficientTraineeAtmospherique = value.split("=").last().toDouble();
-
-        } else if (value.contains("===")) {
-
-            // Recuperation des evenements
-            value = "";
-            while (cfg.readNextStartElement() && !value.contains("===")) {
-
-                value = cfg.readElementText();
-                if (!value.contains("===") && !value.isEmpty() && !value.contains("(")) {
-                    value.replace(26, 1, "T");
-                    evenements.evenementsStationSpatiale.append(value);
-                }
-            }
-        }
-    }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Lecture de la section metadata du fichier Station Spatiale
- */
-void EvenementsStationSpatiale::LectureMetadata(QXmlStreamReader &cfg, EvenementsStation &evenements)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    while (cfg.readNextStartElement()) {
-
-        if (cfg.name().toString().toLower() == "start_time") {
-
-            // Date de debut
-            evenements.dateDebutEvenementsStationSpatiale = cfg.readElementText();
-
-        } else if (cfg.name().toString().toLower() == "stop_time") {
-
-            // Date de fin
-            evenements.dateFinEvenementsStationSpatiale = cfg.readElementText();
-
-        } else {
-            cfg.skipCurrentElement();
-        }
-    }
-
-    /* Retour */
-    return;
-}

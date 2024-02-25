@@ -43,11 +43,7 @@
 #ifndef CARTE_H
 #define CARTE_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFrame>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/corps/satellite/satellite.h"
 
 
@@ -72,6 +68,7 @@ public:
     /**
      * @brief Carte Constructeur par defaut
      * @param[in] parent parent
+     * @throw Exception
      */
     explicit Carte(QWidget *parent = nullptr);
 
@@ -170,6 +167,7 @@ private:
      */
     /**
      * @brief AffichageFrontieres Affichage des frontieres
+     * @throw Exception
      */
     void AffichageFrontieres();
 
@@ -255,6 +253,7 @@ private:
      * @param[in] fichier nom du fichier
      * @param[in] visible visibilite des frontieres
      * @param[in] echelleMin echelle minimale ou la frontiere doit etre visible
+     * @throw Exception
      */
     void LectureFichierKml(const QString &fichier, const bool visible = true, const double echelleMin = 0.);
 

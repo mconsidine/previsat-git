@@ -77,7 +77,7 @@ public:
      * @param[in/out] nombre nombre de satellites
      * @return nombre de satellites
      */
-    static int CalculFlashs(int &nombre);
+    static int CalculFlashs(const int &nombre);
 
     /**
      * @brief CalculMagnitudeFlash Calcul de la magnitude du flash (pour l'affichage dans l'onglet General)
@@ -88,7 +88,10 @@ public:
      * @param[in] refraction prise en compte de la refraction
      * @return magnitude du flash
      */
-    static double CalculMagnitudeFlash(const Date &date, const Satellite &satellite, const Soleil &soleil, const bool calcEclipseLune,
+    static double CalculMagnitudeFlash(const Date &date,
+                                       const Satellite &satellite,
+                                       const Soleil &soleil,
+                                       const bool calcEclipseLune,
                                        const bool refraction);
 
 protected:
@@ -117,7 +120,8 @@ private:
      * @param[in] soleil Soleil
      * @return angle de reflexion du panneau
      */
-    static double AngleReflexion(const Satellite &satellite, const Soleil &soleil);
+    static double AngleReflexion(const Satellite &satellite,
+                                 const Soleil &soleil);
 
     /**
      * @brief CalculAngleMin Calcul de l'angle minimum du panneau
@@ -126,7 +130,9 @@ private:
      * @param[in/out] soleil Soleil
      * @return tableau de la date et de l'angle minimum
      */
-    static QPointF CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil);
+    static QPointF CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm,
+                                  Satellite &satellite,
+                                  Soleil &soleil);
 
     /**
      * @brief CalculEphemSoleilObservateur Calcul des ephemerides du Soleil et de l'observateur
@@ -142,7 +148,11 @@ private:
      * @param[in/out] soleil Soleil
      * @param[out] lim dates limites du flash
      */
-    static void CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Satellite &satellite, Soleil &soleil, std::array<Date, 3> &lim);
+    static void CalculLimitesFlash(const double mgn0,
+                                   const double dateMaxFlash,
+                                   Satellite &satellite,
+                                   Soleil &soleil,
+                                   std::array<Date, 3> &lim);
 
     /**
      * @brief DeterminationFlash Determination du flash
@@ -151,7 +161,10 @@ private:
      * @param[in/out] sat satellite
      * @param[in/out] soleil Soleil
      */
-    static void DeterminationFlash(const QPointF minmax, double &temp, Satellite &sat, Soleil &soleil);
+    static void DeterminationFlash(const QPointF minmax,
+                                   double &temp,
+                                   Satellite &sat,
+                                   Soleil &soleil);
 
     /**
      * @brief LimiteFlash Calcul d'une limite du flash
@@ -161,7 +174,10 @@ private:
      * @param[in/out] soleil Soleil
      * @param[out] limite date et valeur limite du flash
      */
-    static void LimiteFlash(const double mgn0, const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil,
+    static void LimiteFlash(const double mgn0,
+                            const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm,
+                            Satellite &satellite,
+                            Soleil &soleil,
                             std::array<double, 4> &limite);
 
     /**
@@ -171,7 +187,9 @@ private:
      * @param[in/out] satellite satellite
      * @return valeur de la magnitude du flash
      */
-    static double MagnitudeFlash(const double angle, const ConditionEclipse &condEcl, Satellite &satellite);
+    static double MagnitudeFlash(const double angle,
+                                 const ConditionEclipse &condEcl,
+                                 const Satellite &satellite);
 
     /**
      * @brief RotationRV Calcul de la matrice de rotation du repere equatorial au repere orbital local
@@ -186,7 +204,11 @@ private:
      *                                     inpl = 2 : rotation LVLH)
      * @return matrice de rotation
      */
-    static Matrice3D RotationRV(const Vecteur3D &position, const Vecteur3D &vitesse, const double lacet, const double tangage, const int inpl);
+    static Matrice3D RotationRV(const Vecteur3D &position,
+                                const Vecteur3D &vitesse,
+                                const double lacet,
+                                const double tangage,
+                                const int inpl);
 
     /**
      * @brief RotationYawSteering Calcul de la matrice de rotation du repere equatorial au repere defini par la loi locale de yaw steering
@@ -197,7 +219,9 @@ private:
      * @param[in] tangage angle de tangage (en radians)
      * @return matrice de rotation
      */
-    static Matrice3D RotationYawSteering(const Satellite &satellite, const double lacet, const double tangage);
+    static Matrice3D RotationYawSteering(const Satellite &satellite,
+                                         const double lacet,
+                                         const double tangage);
 
 };
 

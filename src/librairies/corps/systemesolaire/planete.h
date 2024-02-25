@@ -51,6 +51,9 @@ class Soleil;
 
 class Planete : public Corps
 {
+#if (BUILD_TEST == true)
+    friend class PlaneteTest;
+#endif
 public:
 
     /*
@@ -72,11 +75,12 @@ public:
      * Methodes publiques
      */
     /**
-     * @brief CalculPosition Calcul de la position d'une planete
+     * @brief CalculPositionSimp Calcul de la position d'une planete
      * @param[in] date date
      * @param[in] soleil soleil
      */
-    void CalculPosition(const Date &date, const Soleil &soleil);
+    void CalculPositionSimp(const Date &date,
+                            const Soleil &soleil);
 
 
     /*

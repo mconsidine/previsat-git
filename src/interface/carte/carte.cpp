@@ -34,17 +34,13 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
 #include <QGraphicsSimpleTextItem>
 #include <QMouseEvent>
 #include <QSettings>
 #include <QXmlStreamReader>
-#include "ui_options.h"
+#include "../options/ui_options.h"
 #include "ui_carte.h"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "carte.h"
 #include "coordiss.h"
 #include "itemgroup.h"
@@ -52,7 +48,7 @@
 #include "configuration/gestionnairexml.h"
 #include "interface/ciel/ciel.h"
 #include "interface/options/options.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 
 #define DEG2PX(x) (_ui->carte->width() * (x) / MATHS::T360)
 #define ECHELLE_MAX (2.)
@@ -102,9 +98,9 @@ Carte::Carte(QWidget *parent) :
 
         Initialisation();
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 
@@ -290,7 +286,7 @@ void Carte::mousePressEvent(QMouseEvent *evt)
 
                 emit RecalculerPositions();
 
-                GestionnaireXml::EcritureConfiguration();
+                Configuration::instance()->EcritureConfiguration();
             }
 
             idx++;
@@ -373,8 +369,13 @@ void Carte::show()
     /* Corps de la methode */
     scene->addPixmap(_pixMap);
 
-    // Affichage des frontieres
-    AffichageFrontieres();
+    try {
+
+        // Affichage des frontieres
+        AffichageFrontieres();
+
+    } catch (Exception const &e) {
+    }
 
     // Affichage de la grille de coordonnees
     AffichageGrille();
@@ -512,8 +513,8 @@ void Carte::AffichageFrontieres()
                 scene->addItem(_groupes.at(i));
             }
 
-        } catch (PreviSatException const &e) {
-            throw PreviSatException();
+        } catch (Exception const &e) {
+            throw Exception();
         }
     }
 
@@ -1004,10 +1005,10 @@ void Carte::AffichageStations()
 
                     const QPointF pt0(QPointF(DEG2PX(sat.zone().at(0).x()), DEG2PX(sat.zone().at(0).y())));
                     poly.append(pt0);
+                    
+                    for(unsigned int i=0; i<sat.zone().size(); i++) {
 
-                    for(auto pt = std::begin(sat.zone()) + 1; pt != std::end(sat.zone()); ++pt) {
-
-                        const QPointF ptActuel(DEG2PX(pt->x()), DEG2PX(pt->y()));
+                        const QPointF ptActuel(DEG2PX(sat.zone()[i].x()), DEG2PX(sat.zone()[i].y()));
                         const QPointF ptPrec = poly.last();
 
                         // Gestion du meridien 180 degres
@@ -1576,9 +1577,9 @@ void Carte::AffichageZoneVisibilite()
                 const QPointF pt0(QPointF(DEG2PX(sat.zone().at(0).x()), DEG2PX(sat.zone().at(0).y())));
                 poly.append(pt0);
 
-                for(auto pt = std::begin(sat.zone()) + 1; pt != std::end(sat.zone()); ++pt) {
+                for(unsigned int i=0; i<sat.zone().size(); i++) {
 
-                    const QPointF ptActuel(DEG2PX(pt->x()), DEG2PX(pt->y()));
+                    const QPointF ptActuel(DEG2PX(sat.zone()[i].x()), DEG2PX(sat.zone()[i].y()));
                     const QPointF ptPrec = poly.last();
 
                     // Gestion du meridien 180 degres
@@ -1779,7 +1780,7 @@ void Carte::LectureFichierKml(const QString &fichier, const bool visible, const 
         QFileInfo ff(fichier);
         if (!ff.exists()) {
             qWarning() << "Le fichier de frontières" << ff.fileName() << "n'existe pas";
-            throw PreviSatException(tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME), MessageType::WARNING);
+            throw Exception(tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME), MessageType::WARNING);
         }
 
         QFile fi(fichier);

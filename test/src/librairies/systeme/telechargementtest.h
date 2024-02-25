@@ -52,7 +52,8 @@ public:
 
 private:
 
-    static void testTelechargementFichier();
+    static void testTelechargementFichier1();
+    static void testTelechargementFichier2();
     static void testUrlExiste();
 
 };

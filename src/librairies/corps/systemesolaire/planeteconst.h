@@ -43,6 +43,9 @@
 #ifndef PLANETECONST_H
 #define PLANETECONST_H
 
+#include <QHash>
+
+
 /*
  * Enumerations
  */
@@ -65,9 +68,8 @@ namespace PLANETE {
 
 static constexpr unsigned int NB_PLANETES = 7;
 static constexpr unsigned int NB_ELEMENTS = 6;
-static constexpr unsigned int NB_DEGRES = 4;
-
-}
+static constexpr unsigned int NB_DEGRES_SIMP = 4;
+static constexpr unsigned int NB_DEGRES = 3;
 
 static const QHash<IndicePlanete, const char *> nomPlanetes = {
     { IndicePlanete::MERCURE, QT_TRANSLATE_NOOP("planet", "Mercure") },
@@ -79,7 +81,7 @@ static const QHash<IndicePlanete, const char *> nomPlanetes = {
     { IndicePlanete::NEPTUNE, QT_TRANSLATE_NOOP("planet", "Neptune") }
 };
 
-static constexpr double tabPlanetes[PLANETE::NB_PLANETES][PLANETE::NB_ELEMENTS][PLANETE::NB_DEGRES] = {
+static constexpr double tabPlanetes[PLANETE::NB_PLANETES][PLANETE::NB_ELEMENTS][PLANETE::NB_DEGRES_SIMP] = {
     // Mercure
     {
         { 252.250906, 149474.0722491, 0.00030350, 0.000000018 },    // Longitude moyenne
@@ -145,5 +147,6 @@ static constexpr double tabPlanetes[PLANETE::NB_PLANETES][PLANETE::NB_ELEMENTS][
     }
 };
 
+}
 
 #endif // PLANETECONST_H

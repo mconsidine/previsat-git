@@ -82,7 +82,7 @@ public:
      * @param[in/out] nombre nombre de satellites
      * @return nombre de satellites
      */
-    static int CalculEvenements(int &nombre);
+    static int CalculEvenements(const int &nombre);
 
 
 protected:

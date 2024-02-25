@@ -34,9 +34,6 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wshadow"
 #include <QDesktopServices>
 #include <QDir>
 #include <QFutureWatcher>
@@ -45,15 +42,12 @@
 #include <QSettings>
 #include <QtConcurrent>
 #include "ui_calculsstarlink.h"
-#pragma GCC diagnostic warning "-Wshadow"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "calculsstarlink.h"
 #include "configuration/configuration.h"
 #include "interface/afficherresultats.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/exceptions/message.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/systeme/telechargement.h"
 #include "previsions/prevision.h"
 
@@ -84,9 +78,9 @@ CalculsStarlink::CalculsStarlink(QWidget *parent) :
 
         Initialisation();
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 
@@ -400,7 +394,7 @@ void CalculsStarlink::on_calculs_clicked()
 
         // Elements orbitaux du train de satellites
         const QMap<QString, ElementsOrbitaux> tabElem =
-            GPFormat::LectureFichier(Configuration::instance()->dirStarlink() + QDir::separator() + fichier + ".xml", "", -1, listeStarlink, true, true);
+            GPFormat::Lecture(Configuration::instance()->dirStarlink() + QDir::separator() + fichier + ".xml", "", -1, listeStarlink, true, true);
 
         // Cas ou les elements orbitaux des satellites sont connus
         if (fichier == "starlink") {
@@ -411,7 +405,7 @@ void CalculsStarlink::on_calculs_clicked()
             date1 = Date(floor(date1.jourJulienUTC() * DATE::NB_MIN_PAR_JOUR + 0.5) * DATE::NB_JOUR_PAR_MIN + DATE::EPS_DATES, 0.);
 
             // Ecart heure locale - UTC
-            conditions.offset = Date::CalculOffsetUTC(date1.ToQDateTime(1));
+            conditions.offset = Date::CalculOffsetUTC(date1.ToQDateTime(DateFormatSec::FORMAT_SEC));
 
         } else {
 
@@ -424,7 +418,7 @@ void CalculsStarlink::on_calculs_clicked()
                                  DATE::EPS_DATES, 0.);
 
             // Ecart heure locale - UTC
-            conditions.offset = Date::CalculOffsetUTC(dateLancement.ToQDateTime(1));
+            conditions.offset = Date::CalculOffsetUTC(dateLancement.ToQDateTime(DateFormatSec::FORMAT_SEC));
         }
 
         // Jour julien initial
@@ -566,7 +560,7 @@ void CalculsStarlink::on_calculs_clicked()
             }
         }
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
     }
 
     /* Retour */

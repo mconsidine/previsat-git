@@ -43,12 +43,8 @@
 #ifndef DATE_H
 #define DATE_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDateTime>
 #include <QList>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "dateconst.h"
 
 
@@ -64,6 +60,7 @@ public:
     /**
      * @brief Date Obtention de la date systeme
      * @param[in] offset ecart heure legale - UTC
+     * @throw Exception
      */
     explicit Date(const double offset = 0.);
 
@@ -71,23 +68,30 @@ public:
      * @brief Date Definition de la date a partir d'un objet Date et de l'ecart heure legale - UTC
      * @param[in] date date
      * @param[in] offset ecart heure legale - UTC
+     * @throw Exception
      */
-    Date(const Date &date, const double offset = 0.);
+    Date(const Date &date,
+         const double offset = 0.);
 
     /**
      * @brief Date Definition de la date a partir d'un objet QDateTime et de l'ecart heure legale - UTC
      * @param[in] datetime date et heure
      * @param[in] offset ecart heure legale - UTC
+     * @throw Exception
      */
-    explicit Date(const QDateTime &datetime, const double offset = 0.);
+    explicit Date(const QDateTime &datetime,
+                  const double offset = 0.);
 
     /**
      * @brief Date Definition de la date a partir d'un jour julien 2000 et de l'ecart heure legale - UTC
      * @param[in] jourJulien2000 jour julien 2000
      * @param[in] offset ecart heure legale - UTC
      * @param[in] acalc calcul des elements du calendrier
+     * @throw Exception
      */
-    Date(const double jourJulien2000, const double offset, const bool acalc = true);
+    Date(const double jourJulien2000,
+         const double offset,
+         const bool acalc = true);
 
     /**
      * @brief Date Definition de la date a partir de l'annee, du mois et du jour (decimal)
@@ -95,8 +99,12 @@ public:
      * @param[in] mo mois
      * @param[in] xjour jour decimal
      * @param[in] offset ecart heure legale - UTC
+     * @throw Exception
      */
-    Date(const int an, const int mo, const double xjour, const double offset);
+    Date(const int an,
+         const int mo,
+         const double xjour,
+         const double offset);
 
     /**
      * @brief Date Definition de la date a partir des elements du calendrier
@@ -107,8 +115,15 @@ public:
      * @param[in] min minutes
      * @param[in] sec secondes
      * @param[in] offset ecart heure legale - UTC
+     * @throw Exception
      */
-    Date(const int an, const int mo, const int j, const int h, const int min, const double sec, const double offset);
+    Date(const int an,
+         const int mo,
+         const int j,
+         const int h,
+         const int min,
+         const double sec,
+         const double offset);
 
 
     /*
@@ -125,6 +140,7 @@ public:
      * @brief ConversionDateIso Conversion d'une date au format ISO en Date
      * @param[in] dateFormatIso date au format ISO
      * @return date
+     * @throw Exception
      */
     static Date ConversionDateIso(const QString &dateFormatIso);
 
@@ -132,12 +148,14 @@ public:
      * @brief ConversionDateNasa Conversion d'une date au format NASA en Date
      * @param[in] dateFormatNasa date au format NASA
      * @return date
+     * @throw Exception
      */
     static Date ConversionDateNasa(const QString &dateFormatNasa);
 
     /**
      * @brief Initialisation Lecture du fichier taiutc.dat
      * @param[in] dirLocalData chemin ou se trouve le fichier
+     * @throw Exception
      */
     static void Initialisation(const QString &dirLocalData);
 
@@ -147,14 +165,15 @@ public:
      * @param[in] systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
      * @return chaine de caracteres contenant la date au format long
      */
-    QString ToLongDate(const QString &locale, const DateSysteme &systeme) const;
+    QString ToLongDate(const QString &locale,
+                       const DateSysteme &systeme) const;
 
     /**
      * @brief ToQDateTime Conversion de la date en QDateTime
      * @param[in] type type d'affichage des secondes (0 = secondes prises a zero; arrondi a l'entier le plus proche sinon)
      * @return date
      */
-    QDateTime ToQDateTime(const int type) const;
+    QDateTime ToQDateTime(const DateFormatSec &type) const;
 
     /**
      * @brief ToShortDate Conversion en chaine de caracteres courte
@@ -162,7 +181,8 @@ public:
      * @param[in] systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
      * @return chaine de caracteres contenant la date au format court
      */
-    QString ToShortDate(const DateFormat &format, const DateSysteme &systeme) const;
+    QString ToShortDate(const DateFormat &format,
+                        const DateSysteme &systeme) const;
 
     /**
      * @brief ToShortDateAMJ Conversion en chaine de caracteres courte (AAAA/MM/JJ)
@@ -170,7 +190,8 @@ public:
      * @param[in] systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
      * @return chaine de caracteres contenant la date au format court (AAAA/MM/JJ)
      */
-    QString ToShortDateAMJ(const DateFormat &format, const DateSysteme &systeme) const;
+    QString ToShortDateAMJ(const DateFormat &format,
+                           const DateSysteme &systeme) const;
 
     /**
      * @brief ToShortDateAMJmillisec Conversion en chaine de caracteres avec une precision a la milliseconde
@@ -232,7 +253,7 @@ private:
     double _deltaAT;
 
     // Table des ecarts TAI-UTC
-    static QList<QPair<double, double> > _ecartsTAI_UTC;
+    static QVector<QPointF> _ecartsTAI_UTC;
     static std::array<std::array<double, DATE::NB_PARAM_TAIUTC>, DATE::NB_LIGNES_TAIUTC> _tabEcartsTAI_UTC;
 
 
@@ -241,11 +262,13 @@ private:
      */
     /**
      * @brief CalculJourJulien Calcul du jour julien 2000 (pour des dates du calendrier gregorien)
+     * @throw Exception
      */
     void CalculJourJulien();
 
     /**
      * @brief getDeltaAT Obtention de l'ecart TAI-UTC
+     * @throw Exception
      */
     void getDeltaAT();
 
@@ -255,7 +278,8 @@ private:
      * @param[in] systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
      * @return heure AM/PM
      */
-    QPair<int, QString> getHrAmPm(const int heure, const DateSysteme &systeme) const;
+    QPair<int, QString> getHrAmPm(const int heure,
+                                  const DateSysteme &systeme) const;
 
 };
 

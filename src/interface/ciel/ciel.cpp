@@ -34,22 +34,19 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QGraphicsPixmapItem>
 #include <QMouseEvent>
+#include <QRegularExpression>
 #include <QSettings>
 #include "ui_ciel.h"
-#include "ui_options.h"
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
+#include "../options/ui_options.h"
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
 #include "ciel.h"
 #include "interface/options/options.h"
 #include "librairies/corps/etoiles/constellation.h"
 #include "librairies/corps/etoiles/ligneconstellation.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/maths/maths.h"
 
 
@@ -102,9 +99,9 @@ Ciel::Ciel(QWidget *parent) :
         resize(parent->height(), parent->height());
         Initialisation();
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 
@@ -558,7 +555,7 @@ void Ciel::mousePressEvent(QMouseEvent *evt)
                 emit ReinitFlags();
 
                 emit RecalculerPositions();
-                GestionnaireXml::EcritureConfiguration();
+                Configuration::instance()->EcritureConfiguration();
             }
 
             idx++;
@@ -663,7 +660,7 @@ void Ciel::AffichageConstellations(const QList<LigneConstellation> &lignesCst, c
                 while (it2.hasNext()) {
 
                     const Constellation cst = it2.next();
-                    if (cst.isVisible()) {
+                    if (cst.visible()) {
 
                         // Calcul des coordonnees radar du label
                         const int lcst = TOPO2X(_lciel, cst.hauteur(), cst.azimut(), 1);
@@ -709,7 +706,7 @@ void Ciel::AffichageEtoiles(const QList<Etoile> &etoiles)
     while (it1.hasNext()) {
 
         const Etoile etoile = it1.next();
-        if (etoile.isVisible() && (etoile.magnitude() <= settings.value("affichage/magnitudeEtoiles").toDouble())) {
+        if (etoile.visible() && (etoile.magnitude() <= settings.value("affichage/magnitudeEtoiles").toDouble())) {
 
             const int lstr = TOPO2X(_lciel, etoile.hauteur(), etoile.azimut(), 1);
             const int bstr = TOPO2Y(_hciel, etoile.hauteur(), etoile.azimut(), 1);
@@ -767,7 +764,7 @@ void Ciel::AffichageLune()
     /* Initialisations */
 
     /* Corps de la methode */
-    if (settings.value("affichage/afflune").toBool() && _lune.isVisible()) {
+    if (settings.value("affichage/afflune").toBool() && _lune.visible()) {
 
         // Calcul des coordonnees radar de la Lune
         const int llun = TOPO2X(_lciel, _lune.hauteur(), _lune.azimut(), 1);
@@ -969,7 +966,7 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
 
         const Satellite sat = it.previous();
 
-        if (sat.isVisible() && (sat.altitude() >= 0.)) {
+        if (sat.visible() && (sat.altitude() >= 0.)) {
 
             // Affichage de la trace dans le ciel
             const QList<ElementsTraceCiel> trace = sat.traceCiel();
@@ -1188,7 +1185,7 @@ void Ciel::AffichageSoleil()
             }
         }
 
-        if (_soleil.isVisible()) {
+        if (_soleil.visible()) {
 
             // Calcul des coordonnees radar du Soleil
             const int lsol = TOPO2X(_lciel, _soleil.hauteur(), _soleil.azimut(), 1);

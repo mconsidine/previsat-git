@@ -52,6 +52,7 @@
 struct SatellitesFlashs
 {
     QString nomsat;
+    QString norad;
     QList<QPair<double, double> > angles;
 };
 

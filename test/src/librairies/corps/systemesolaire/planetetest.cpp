@@ -34,17 +34,12 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "planetetest.h"
 #include "librairies/corps/systemesolaire/planete.h"
 #include "librairies/corps/systemesolaire/soleil.h"
-#include "test/src/testtools.h"
+#include "librairies/dates/date.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -54,44 +49,60 @@ void PlaneteTest::testAll()
     QDir dir = QDir::current();
     dir.cdUp();
     dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
+    static_cast<void> (dir.cd(APP_NAME));
 
     const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Corps::Initialisation(dirCommonData);
     Date::Initialisation(dirCommonData);
     Planete::Initialisation(dirCommonData);
 
-    testCalculPosition();
+    testCalculAnglesReductionEquat();
+    testCalculPositionSimp();
 }
 
-void PlaneteTest::testCalculPosition()
+void PlaneteTest::testCalculAnglesReductionEquat()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const Date date(2028, 11, 13.189199259258, 0.);
+
+    Planete planete;
+    const std::array<double, 3> res = planete.CalculAnglesReductionEquat(date);
+
+    QCOMPARE(res[0], 0.003227530972259288);
+    QCOMPARE(res[1], 0.002804731797614525);
+    QCOMPARE(res[2], 0.00322785138899811);
+}
+
+void PlaneteTest::testCalculPositionSimp()
 {
     qInfo(Q_FUNC_INFO);
 
     const Date date(1992, 10, 12, 23, 59, 0.816, 0.);
 
     QHash<IndicePlanete, Vecteur3D> posRef = {
-        { IndicePlanete::MERCURE, Vecteur3D(-151297638.9475474, -107875353.83721398,  -51807455.07121706) },
-        { IndicePlanete::VENUS,   Vecteur3D(-124657523.43849899, -144456598.3549202,  -65228782.47538642) },
-        { IndicePlanete::MARS,    Vecteur3D(-42871016.4223671,    139075545.2313155,   62335531.06638172) },
-        { IndicePlanete::JUPITER, Vecteur3D(-953089064.5931276, -13357932.538614603,  13840000.921255339) },
-        { IndicePlanete::SATURNE, Vecteur3D(948064975.8679179,   -961607082.5213879, -445045350.99212754) },
-        { IndicePlanete::URANUS,  Vecteur3D(759827322.6007938,  -2592358565.0031056,  -1148007264.731504) },
-        { IndicePlanete::NEPTUNE, Vecteur3D(1223773476.7445397, -4028231280.0757127, -1684110165.6722252) }
+        { IndicePlanete::MERCURE, Vecteur3D( -151297638.9194788, -107875353.82788849,   -51807455.0671741) },
+        { IndicePlanete::VENUS,   Vecteur3D( -124657523.4104318, -144456598.34559423,  -65228782.47134303) },
+        { IndicePlanete::MARS,    Vecteur3D(-42871016.394301444,  139075545.24064124,   62335531.07042512) },
+        { IndicePlanete::JUPITER, Vecteur3D( -953089064.5650622, -13357932.529289419,  13840000.925298497) },
+        { IndicePlanete::SATURNE, Vecteur3D(  948064975.8959835,  -961607082.5120621,  -445045350.9880842) },
+        { IndicePlanete::URANUS,  Vecteur3D(  759827322.6288594, -2592358564.9937806, -1148007264.7274606) },
+        { IndicePlanete::NEPTUNE, Vecteur3D( 1223773476.7726054,  -4028231280.066387, -1684110165.6681817) }
     };
 
     Planete planete;
     Soleil soleil;
-    soleil.CalculPosition(date);
+    soleil.CalculPositionSimp(date);
 
-    for(unsigned int i=0; i<PLANETE::NB_PLANETES; i++) {
+    QHashIterator it(posRef);
+    while (it.hasNext()) {
 
-        const IndicePlanete idx = static_cast<IndicePlanete> (i);
+        const IndicePlanete idx = it.next().key();
+
         planete = Planete(idx);
-        planete.CalculPosition(date, soleil);
+        planete.CalculPositionSimp(date, soleil);
 
-        QCOMPARE(planete.nom(), nomPlanetes[idx]);
+        QCOMPARE(planete.nom(), PLANETE::nomPlanetes[idx]);
         QCOMPARE(planete.indice(), idx);
         CompareVecteurs3D(planete.position(), posRef[idx]);
     }

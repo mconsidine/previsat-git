@@ -34,17 +34,11 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/systeme/telechargement.h"
 #include "telechargementtest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -52,11 +46,12 @@ using namespace TestTools;
 
 void TelechargementTest::testAll()
 {
-    testTelechargementFichier();
+    testTelechargementFichier1();
+    testTelechargementFichier2();
     testUrlExiste();
 }
 
-void TelechargementTest::testTelechargementFichier()
+void TelechargementTest::testTelechargementFichier1()
 {
     qInfo(Q_FUNC_INFO);
 
@@ -64,8 +59,7 @@ void TelechargementTest::testTelechargementFichier()
     dir.mkpath(dir.path() + QDir::separator() + "test");
     dir.cdUp();
     dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
+    dir.cd(APP_NAME);
 
     // Telechargement d'un fichier texte
     const QString fic = QString("%1test/visual-ok.txt").arg(DOMAIN_NAME);
@@ -78,19 +72,22 @@ void TelechargementTest::testTelechargementFichier()
     QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + "visual-ok.txt";
 
     CompareFichiers(ficRes, ficRef);
+}
 
-    try {
-        const QString fic2 = QString("%1test/visual-ok2.txt").arg(DOMAIN_NAME);
-        const QUrl url2(fic2);
-        dwn.TelechargementFichier(url2);
-    } catch (PreviSatException &e) {
-    }
+void TelechargementTest::testTelechargementFichier2()
+{
+    qInfo(Q_FUNC_INFO);
+
+    Telechargement dwn(QDir::current().path() + QDir::separator() + "test" + QDir::separator());
+    const QString fic = QString("%1test/visual-ok2.txt").arg(DOMAIN_NAME);
+    const QUrl url(fic);
+    QVERIFY_THROWS_EXCEPTION(Exception, dwn.TelechargementFichier(url));
 }
 
 void TelechargementTest::testUrlExiste()
 {
     qInfo(Q_FUNC_INFO);
 
-    const QUrl urlLastNews(QString("%1informations/").arg(DOMAIN_NAME) + "last_news_fr.html");
-    QCOMPARE(Telechargement::UrlExiste(urlLastNews), true);
+    const QUrl url(QString("%1test/visual-ok.txt").arg(DOMAIN_NAME));
+    QCOMPARE(Telechargement::UrlExiste(url), true);
 }

@@ -36,18 +36,19 @@
  * >    5 juin 2022
  *
  * Date de revision
- * >    15 decembre 2023
+ * >
  *
  */
 
 #ifndef GPFORMAT_H
 #define GPFORMAT_H
 
-#include <QString>
-#include "librairies/dates/date.h"
+#include <QMap>
 #include "elementsorbitaux.h"
+#include "librairies/systeme/fichierxml.h"
 
 
+class QDomDocument;
 class QDomNode;
 
 class GPFormat
@@ -58,10 +59,9 @@ public:
      *  Constructeurs
      */
     /**
-     * @brief GPFormat Constructeur a partir des elements orbitaux
-     * @param[in] elem elements orbitaux
+     * @brief GPFormat Constructeur par defaut
      */
-    explicit GPFormat(const ElementsOrbitaux &elem);
+    GPFormat();
 
 
     /*
@@ -79,14 +79,18 @@ public:
      * @param[in] fichier nom du fichier d'elements orbitaux
      * @param[in] donneesSat donnees satellites
      * @param[in] lgRec longueur d'une ligne dans les donnees satellite
-     * @param[in] listeSatellites liste des numeros NORAD ou COSPAR (si elle est vide on recupere tous les elements orbitaux du fichier)
+     * @param[in] listeSatellites liste des numeros NORAD ou des designations COSPAR (si elle est vide on recupere tous les elements orbitaux)
      * @param[in] ajoutDonnees ajout des donnees satellite
      * @param[in] alarme affichage des messages d'erreurs ou de warnings
      * @return tableau d'elements orbitaux
+     * @throw Exception
      */
-    static QMap<QString, ElementsOrbitaux> LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
-                                                          const QStringList &listeSatellites = QStringList(), const bool ajoutDonnees = true,
-                                                          const bool alarme = false);
+    static QMap<QString, ElementsOrbitaux> Lecture(const QString &fichier,
+                                                   const QString &donneesSat,
+                                                   const int lgRec,
+                                                   const QStringList &listeSatellites = QStringList(),
+                                                   const bool ajoutDonnees = true,
+                                                   const bool alarme = true);
 
     /**
      * @brief LectureFichierListeGP Lecture d'un fichier GP contenant une liste d'elements orbitaux pour un meme satellite
@@ -95,22 +99,25 @@ public:
      * @param[in] lgRec longueur d'une ligne dans les donnees satellite
      * @param[in] alarme affichage des messages d'erreurs ou de warnings
      * @return liste d'elements orbitaux
+     * @throw Exception
      */
-    static QList<ElementsOrbitaux> LectureFichierListeGP(const QString &nomFichier, const QString &donneesSat, const int lgRec,
-                                                         const bool alarme = false);
+    static QList<ElementsOrbitaux> LectureListeGP(const QString &fichier,
+                                                  const QString &donneesSat,
+                                                  const int lgRec,
+                                                  const bool alarme = false);
 
     /**
      * @brief RecupereNomsat Recupere le nom du satellite
      * @param[in] nomComplet nom complet du satellite
      * @return nom du satellite
      */
-    static QString RecupereNomsat(const QString &nomsat);
+    static QString RecupereNomsat(const QString &nom);
 
 
     /*
      * Accesseurs
      */
-    const ElementsOrbitaux &elements() const;
+    ElementsOrbitaux elements() const;
 
 
 protected:
@@ -129,9 +136,6 @@ private:
     /*
      * Variables privees
      */
-    // Elements orbitaux
-    ElementsOrbitaux _elements;
-
 
     /*
      * Methodes privees

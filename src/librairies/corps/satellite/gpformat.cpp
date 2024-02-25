@@ -30,18 +30,14 @@
  * >    5 juin 2022
  *
  * Date de revision
- * >    15 decembre 2023
+ * >
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFile>
-#include <QFileInfo>
-#include <QtXml>
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wconversion"
-#include "librairies/exceptions/previsatexception.h"
+#include <QtXml/QtXml>
+#include "librairies/exceptions/exception.h"
+#include "librairies/systeme/fichierxml.h"
 #include "gpformat.h"
 
 
@@ -52,14 +48,6 @@
 /*
  * Constructeurs
  */
-/*
- * Constructeur a partir des elements orbitaux
- */
-GPFormat::GPFormat(const ElementsOrbitaux &elem) :
-    _elements(elem)
-{
-}
-
 
 /*
  * Methodes publiques
@@ -98,76 +86,49 @@ int GPFormat::CalculNombreOrbitesEpoque(const ElementsOrbitaux &elements)
 /*
  * Lecture d'un fichier au format GP
  */
-QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
-                                                         const QStringList &listeSatellites, const bool ajoutDonnees, const bool alarme)
+QMap<QString, ElementsOrbitaux> GPFormat::Lecture(const QString &fichier,
+                                                  const QString &donneesSat,
+                                                  const int lgRec,
+                                                  const QStringList &listeSatellites,
+                                                  const bool ajoutDonnees,
+                                                  const bool alarme)
 {
     /* Declarations des variables locales */
-    QDomDocument document;
     QMap<QString, ElementsOrbitaux> mapElem;
 
-    /* Initialisations */
+    try {
 
-    /* Corps de la methode */
-    QFile fi(nomFichier);
-    const QFileInfo ff(fi.fileName());
-    if (!fi.exists() || (fi.size() == 0)) {
+        /* Initialisations */
+        FichierXml fi(fichier);
+        const QDomDocument document = fi.Ouverture(alarme);
 
-#if (BUILD_TEST == false)
-        qWarning() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
-#endif
-        if (alarme) {
-            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
-        }
-    }
+        /* Corps de la methode */
+        ElementsOrbitaux elem;
+        const QDomElement root = document.firstChildElement();
+        const QDomNodeList sats = root.elementsByTagName("omm");
 
-    if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        for(int i=0; i<sats.count(); i++) {
 
-#if (BUILD_TEST == false)
-        qWarning() << QString("Le fichier %1 ne contient aucun satellite").arg(ff.fileName());
-#endif
-#if (COVERAGE_TEST == false)
-        if (alarme) {
-            throw PreviSatException(QObject::tr("Le fichier %1 ne contient aucun satellite").arg(ff.fileName()), MessageType::WARNING);
-        }
-#endif
-    }
+            elem = LectureElements(sats.at(i));
 
-    // Chargement du fichier xml
-    if (!document.setContent(&fi)) {
+            if ((listeSatellites.isEmpty() || listeSatellites.contains(elem.norad) || listeSatellites.contains(elem.cospar))
+                && !mapElem.contains(elem.norad)) {
 
-#if (BUILD_TEST == false)
-        qWarning() << QString("Le fichier %1 ne contient aucun satellite").arg(ff.fileName());
-#endif
-        if (alarme) {
-            throw PreviSatException(QObject::tr("Le fichier %1 ne contient aucun satellite").arg(ff.fileName()), MessageType::WARNING);
-        }
-    }
+                // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
+                const int idx = lgRec * elem.norad.toInt();
+                if (ajoutDonnees && (idx >= 0) && (idx < donneesSat.size())) {
 
-    fi.close();
+                    elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
 
-    ElementsOrbitaux elem;
-    const QDomElement root = document.firstChildElement();
-    const QDomNodeList sats = root.elementsByTagName("omm");
+                    // Correction eventuelle du nombre d'orbites a l'epoque
+                    elem.nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
+                }
 
-    for(int i=0; i<sats.count(); i++) {
-
-        elem = LectureElements(sats.at(i));
-
-        if ((listeSatellites.isEmpty() || listeSatellites.contains(elem.norad) || listeSatellites.contains(elem.cospar))
-            && !mapElem.contains(elem.norad)) {
-
-            // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
-            const int idx = lgRec * elem.norad.toInt();
-            if (ajoutDonnees && (idx >= 0) && (idx < donneesSat.size())) {
-
-                elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
-
-                // Correction eventuelle du nombre d'orbites a l'epoque
-                elem.nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
+                mapElem.insert(elem.norad, elem);
             }
-
-            mapElem.insert(elem.norad, elem);
         }
+    } catch (Exception const &e) {
+        throw Exception();
     }
 
     /* Retour */
@@ -177,84 +138,55 @@ QMap<QString, ElementsOrbitaux> GPFormat::LectureFichier(const QString &nomFichi
 /*
  * Lecture d'un fichier GP contenant une liste d'elements orbitaux pour un meme satellite
  */
-QList<ElementsOrbitaux> GPFormat::LectureFichierListeGP(const QString &nomFichier, const QString &donneesSat, const int lgRec,
-                                                        const bool alarme)
+QList<ElementsOrbitaux> GPFormat::LectureListeGP(const QString &fichier,
+                                                 const QString &donneesSat,
+                                                 const int lgRec,
+                                                 const bool alarme)
 {
     /* Declarations des variables locales */
-    QDomDocument document;
     QList<ElementsOrbitaux> listeElem;
 
-    /* Initialisations */
-    int nbOrbitesEpoque = 0;
+    try {
 
-    /* Corps de la methode */
-    QFile fi(nomFichier);
-    const QFileInfo ff(fi.fileName());
-    if (!fi.exists() || (fi.size() == 0)) {
+        QString norad;
+        Donnees donnees;
+        ElementsOrbitaux elem;
 
-#if (BUILD_TEST == false)
-        qWarning() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
-#endif
-        if (alarme) {
-            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
-        }
-    }
+        /* Initialisations */
+        int nbOrbitesEpoque = 0;
+        FichierXml fi(fichier);
+        const QDomDocument document = fi.Ouverture(alarme);
 
-    if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        /* Corps de la methode */
+        const QDomElement root = document.firstChildElement();
+        const QDomNodeList elems = root.elementsByTagName("omm");
 
-#if (BUILD_TEST == false)
-        qWarning() << QString("Le fichier %1 ne contient aucun satellite").arg(ff.fileName());
-#endif
-#if (COVERAGE_TEST == false)
-        if (alarme) {
-            throw PreviSatException(QObject::tr("Le fichier %1 ne contient aucun satellite").arg(ff.fileName()), MessageType::WARNING);
-        }
-#endif
-    }
+        for(int i=0; i<elems.count(); i++) {
 
-    // Chargement du fichier xml
-    if (!document.setContent(&fi)) {
+            elem = LectureElements(elems.at(i));
 
-#if (BUILD_TEST == false)
-        qWarning() << QString("Le fichier %1 ne contient aucun satellite").arg(ff.fileName());
-#endif
-        if (alarme) {
-            throw PreviSatException(QObject::tr("Le fichier %1 ne contient aucun satellite").arg(ff.fileName()), MessageType::WARNING);
-        }
-    }
+            if (norad.isEmpty()) {
 
-    fi.close();
+                norad = elem.norad;
 
-    QString norad;
-    Donnees donnees;
-    ElementsOrbitaux elem;
+                // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
+                const int idx = lgRec * elem.norad.toInt();
+                if ((idx >= 0) && (idx < donneesSat.size())) {
 
-    const QDomElement root = document.firstChildElement();
-    const QDomNodeList elems = root.elementsByTagName("omm");
+                    elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
 
-    for(int i=0; i<elems.count(); i++) {
-
-        elem = LectureElements(elems.at(i));
-
-        if (norad.isEmpty()) {
-
-            norad = elem.norad;
-
-            // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
-            const int idx = lgRec * elem.norad.toInt();
-            if ((idx >= 0) && (idx < donneesSat.size())) {
-
-                elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
-
-                // Correction eventuelle du nombre d'orbites a l'epoque
-                nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
+                    // Correction eventuelle du nombre d'orbites a l'epoque
+                    nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
+                }
             }
+
+            elem.donnees = donnees;
+            elem.nbOrbitesEpoque = nbOrbitesEpoque;
+            listeElem.append(elem);
         }
 
-        elem.donnees = donnees;
-        elem.nbOrbitesEpoque = nbOrbitesEpoque;
-
-        listeElem.append(elem);
+    } catch (Exception const &e) {
+        throw Exception();
     }
 
     /* Retour */
@@ -264,12 +196,12 @@ QList<ElementsOrbitaux> GPFormat::LectureFichierListeGP(const QString &nomFichie
 /*
  * Recupere le nom du satellite
  */
-QString GPFormat::RecupereNomsat(const QString &lig0)
+QString GPFormat::RecupereNomsat(const QString &nom)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QString nomsat = lig0.trimmed();
+    QString nomsat = nom.trimmed();
 
     /* Corps de la methode */
     if ((nomsat.size() > 25) && (nomsat.mid(25).contains('.') > 0)) {
@@ -300,10 +232,6 @@ QString GPFormat::RecupereNomsat(const QString &lig0)
 /*
  * Accesseurs
  */
-const ElementsOrbitaux &GPFormat::elements() const
-{
-    return _elements;
-}
 
 
 /*************
@@ -328,9 +256,9 @@ const ElementsOrbitaux &GPFormat::elements() const
 ElementsOrbitaux GPFormat::LectureElements(const QDomNode &sat)
 {
     /* Declarations des variables locales */
+    ElementsOrbitaux elem {};
 
     /* Initialisations */
-    ElementsOrbitaux elem {};
 
     /* Corps de la methode */
     if (!sat.isNull()) {

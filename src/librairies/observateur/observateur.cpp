@@ -34,12 +34,8 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#include <QCoreApplication>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include <cmath>
+#include <QCoreApplication>
 #include "librairies/corps/terreconst.h"
 #include "librairies/dates/date.h"
 #include "librairies/maths/maths.h"
@@ -103,7 +99,10 @@ Observateur::Observateur() :
 /*
  * Constructeur a partir des coordonnees geographiques d'un lieu d'observation
  */
-Observateur::Observateur(const QString &nom, const double lon, const double lat, const double alt) :
+Observateur::Observateur(const QString &nom,
+                         const double lon,
+                         const double lat,
+                         const double alt) :
     _nomlieu(nom)
 {
     /* Declarations des variables locales */
@@ -137,8 +136,14 @@ Observateur::Observateur(const QString &nom, const double lon, const double lat,
  * Constructeur a partir des donnees relatives au lieu d'observation a une date donnee
  * (pour le calcul des previsions)
  */
-Observateur::Observateur(const Vecteur3D &pos, const Vecteur3D &vit, const Matrice3D &matRotHz, const double aaerVal, const double arayVal) :
-    _position(pos), _vitesse(vit), _rotHz(matRotHz)
+Observateur::Observateur(const Vecteur3D &pos,
+                         const Vecteur3D &vit,
+                         const Matrice3D &matRotHz,
+                         const double aaerVal,
+                         const double arayVal) :
+    _position(pos),
+    _vitesse(vit),
+    _rotHz(matRotHz)
 {
     /* Declarations des variables locales */
 
@@ -197,21 +202,28 @@ void Observateur::CalculPosVit(const Date &date)
 }
 
 /*
- * Calcul du temps sideral de Greenwich
- * D'apres la formule donnee dans l'Astronomical Algorithms 2nd edition de Jean Meeus, p88
+ * Calcul du temps sideral moyen de Greenwich
  */
 double Observateur::CalculTempsSideralGreenwich(const Date &date)
 {
     /* Declarations des variables locales */
+    double jj0;
 
     /* Initialisations */
-    const double tu = date.jourJulienUTC() * DATE::NB_SIECJ_PAR_JOURS;
-    const double tu2 = tu * tu;
+    const double jj = date.jourJulienUTC();
+    const double f = modf(jj + 0.5, &jj0) * DATE::NB_SEC_PAR_JOUR * TERRE::OMEGA0;
+
+    double jj0h = static_cast<long> (jj) + 0.5;
+    if (jj0h > jj) {
+        jj0h -= 1.;
+    }
+
+    const double t = jj0h * DATE::NB_SIECJ_PAR_JOURS;
 
     /* Corps de la methode */
 
     /* Retour */
-    return (MATHS::DEG2RAD * modulo(280.46061837 + 360.98564736629 * date.jourJulienUTC() + tu2 * (0.000387933 - tu * (1. / 38710000.)), MATHS::T360));
+    return modulo(f + 24110.54841 + t * (8640184.812866 + t * (0.093104 - 6.2e-6 * t)), DATE::NB_SEC_PAR_JOUR) * 15. * MATHS::ARCSEC2RAD;
 }
 
 /*
@@ -234,8 +246,9 @@ QPair<QString, double> Observateur::CalculCap(const Observateur &lieuDistant) co
             cap = (lieuDistant._latitude > 0.) ? 0. : MATHS::PI;
         } else {
 
-            const double num = sin(_longitude - lieuDistant._longitude) * lieuDistant._coslat;
-            const double den = _coslat * lieuDistant._sinlat - _sinlat * lieuDistant._coslat * cos(_longitude - lieuDistant._longitude);
+            const double delta = _longitude - lieuDistant._longitude;
+            const double num = sin(delta) * lieuDistant._coslat;
+            const double den = _coslat * lieuDistant._sinlat - _sinlat * lieuDistant._coslat * cos(delta);
             cap = modulo(atan2(num, den), MATHS::DEUX_PI);
         }
     }
@@ -248,9 +261,7 @@ QPair<QString, double> Observateur::CalculCap(const Observateur &lieuDistant) co
 }
 
 /*
- * Calcul de la distance entre 2 lieux d'observation mesuree le long de la surface terrestre en tenant compte de l'applatissement
- * du globe terrestre, mais sans prise en compte de l'altitude
- * Astronomical Algorithms 2nd edition de Jean Meeus, p85
+ * Calcul de la distance entre 2 lieux d'observation
  */
 double Observateur::CalculDistance(const Observateur &observateur) const
 {
@@ -293,7 +304,9 @@ double Observateur::CalculDistance(const Observateur &observateur) const
 /*
  * Calcul des coordonnees geographiques du lieu a l'intersection d'un vecteur pointant vers la Terre et de l'ellipsoide terrestre
  */
-Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Vecteur3D &origine, const Vecteur3D &direction)
+Observateur Observateur::CalculIntersectionEllipsoide(const Date &date,
+                                                      const Vecteur3D &origine,
+                                                      const Vecteur3D &direction)
 {
     /* Declarations des variables locales */
 
@@ -336,6 +349,7 @@ Observateur Observateur::CalculIntersectionEllipsoide(const Date &date, const Ve
         if (fabs(lon) > MATHS::PI) {
             lon -= sgn(lon) * MATHS::DEUX_PI;
         }
+
         lon *= MATHS::RAD2DEG;
 
         // Latitude
@@ -387,17 +401,17 @@ double Observateur::tempsSideralGreenwich() const
     return _tempsSideralGreenwich;
 }
 
-const Vecteur3D &Observateur::position() const
+Vecteur3D Observateur::position() const
 {
     return _position;
 }
 
-const Vecteur3D &Observateur::vitesse() const
+Vecteur3D Observateur::vitesse() const
 {
     return _vitesse;
 }
 
-const Matrice3D &Observateur::rotHz() const
+Matrice3D Observateur::rotHz() const
 {
     return _rotHz;
 }

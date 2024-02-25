@@ -43,21 +43,12 @@
 #ifndef SOLEILCONST_H
 #define SOLEILCONST_H
 
+#include <QVector>
+
+
 /*
  * Enumerations
  */
-enum class CorpsOccultant {
-    TERRE,
-    LUNE
-};
-
-enum class TypeEclipse {
-    NON_ECLIPSE,
-    ECLIPSE_PARTIELLE,
-    ECLIPSE_ANNULAIRE,
-    ECLIPSE_TOTALE
-};
-
 
 /*
  * Definitions des constantes
@@ -65,7 +56,7 @@ enum class TypeEclipse {
 namespace SOLEIL {
 
 // Demi-grand axe de l'orbite de la Terre
-static constexpr double DEMI_GRAND_AXE_TERRE = 1.000001018;
+static constexpr double DEMI_GRAND_AXE_TERRE = 1.0000010178;
 
 // Magnitude du centre du disque solaire
 static constexpr double MAGNITUDE_SOLEIL = -26.98;
@@ -73,13 +64,14 @@ static constexpr double MAGNITUDE_SOLEIL = -26.98;
 // Rayon equatorial solaire (km)
 static constexpr double RAYON_SOLAIRE = 696342.;
 
-// Unite astronomique (km)
-static constexpr double UA2KM = 149597870.;
 
-// Vitesse de la lumiere (km/s)
-static constexpr double VITESSE_LUMIERE = 299792.458;
-
-static constexpr double KM2UA = 1. / UA2KM;
+// Termes periodiques
+static const QVector<double> kp = {   16002, 21863, 32004, 10931, 14529, 16368,  15318, 32794 };
+static const QVector<double> ca = {      64,  -152,    62,    -8,    32,   -41,     19,   -11 };
+static const QVector<double> sa = {    -150,   -46,    68,    54,    14,    24,    -28,    22 };
+static const QVector<double> kq = {      10, 16002, 21863, 10931,  1473, 32004,   4387,    73 };
+static const QVector<double> cl = {    -325,  -322,   -79,   232,   -52,    97,     55,   -41 };
+static const QVector<double> sl = {    -105,  -137,   258,    35,  -116,   -88,   -112,   -80 };
 
 }
 

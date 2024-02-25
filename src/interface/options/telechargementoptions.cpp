@@ -34,16 +34,12 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
 #include <QFile>
 #include <QMessageBox>
 #include "ui_telechargementoptions.h"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "telechargementoptions.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/systeme/telechargement.h"
 
 
@@ -70,9 +66,9 @@ TelechargementOptions::TelechargementOptions(const TypeTelechargement &type, QWi
 
         Initialisation();
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 
@@ -170,27 +166,24 @@ void TelechargementOptions::TelechargerListe()
     tel.TelechargementFichier(url);
 
     QFile fi(fichier);
-    if (fi.exists() && (fi.size() != 0)) {
+    if (fi.exists() && (fi.size() != 0) && fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QListWidgetItem *elem;
+        const QStringList contenuFichier = QString(fi.readAll()).split('\n', Qt::SkipEmptyParts);
 
-            QListWidgetItem *elem;
-            const QStringList contenuFichier = QString(fi.readAll()).split('\n', Qt::SkipEmptyParts);
+        _ui->listeFichiers->clear();
+        _ui->listeFichiers->scrollToTop();
 
-            _ui->listeFichiers->clear();
-            _ui->listeFichiers->scrollToTop();
+        QStringListIterator it(contenuFichier);
+        while (it.hasNext()) {
 
-            QStringListIterator it(contenuFichier);
-            while (it.hasNext()) {
+            const QString fic = it.next();
 
-                const QString fic = it.next();
-
-                elem = new QListWidgetItem(fic, _ui->listeFichiers);
-                elem->setData(Qt::CheckStateRole, Qt::Unchecked);
-            }
-
-            _ui->listeFichiers->sortItems();
+            elem = new QListWidgetItem(fic, _ui->listeFichiers);
+            elem->setData(Qt::CheckStateRole, Qt::Unchecked);
         }
+
+        _ui->listeFichiers->sortItems();
     }
 
     /* Retour */

@@ -34,20 +34,14 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "configuration/configuration.h"
 #include "interface/afficherresultats.h"
 #include "librairies/corps/corps.h"
 #include "librairies/corps/satellite/tle.h"
 #include "previsions/prevision.h"
 #include "previsiontest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -59,7 +53,6 @@ static QDir dir;
 void PrevisionTest::testAll()
 {
     dir = QDir::current();
-    dir.cdUp();
     dir.cdUp();
     dir.cdUp();
     dir.cd(qApp->applicationName());
@@ -103,7 +96,7 @@ void PrevisionTest::testCalculPrevisions1()
     const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "previsions1_20200815_20200822.txt";
 
-    conditions.tabElem = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+    conditions.tabElem = TLE::Lecture(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions
@@ -131,7 +124,7 @@ void PrevisionTest::testCalculPrevisions2()
     conditions.pas = 0.0034722222222222222;
     conditions.hauteur = 10. * MATHS::DEG2RAD;
     conditions.crepuscule = -6. * MATHS::DEG2RAD;
-    conditions.tabElem = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+    conditions.tabElem = TLE::Lecture(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions
@@ -159,7 +152,7 @@ void PrevisionTest::testCalculPrevisions3()
     conditions.pas = 0.0034722222222222222;
     conditions.hauteur = 5. * MATHS::DEG2RAD;
     conditions.crepuscule = -6. * MATHS::DEG2RAD;
-    conditions.tabElem = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+    conditions.tabElem = TLE::Lecture(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions

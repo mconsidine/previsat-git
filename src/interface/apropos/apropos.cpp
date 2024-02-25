@@ -34,15 +34,11 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDate>
 #include <QMessageBox>
 #include <QStyle>
 #include <QSettings>
 #include "ui_apropos.h"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "apropos.h"
 #include "configuration/configuration.h"
 
@@ -108,7 +104,7 @@ void Apropos::show()
 
     setFont(Configuration::instance()->police());
     const QString titre = tr("À propos de %1 %2");
-    setWindowTitle(titre.arg(APP_NAME).arg(QString(APP_VER_MAJ)));
+    setWindowTitle(titre.arg(APP_NAME).arg(QString(VER_MAJ)));
     setWindowFlags(windowFlags() & ~Qt::WindowMinMaxButtonsHint);
 
     QGraphicsScene * const scene = new QGraphicsScene;
@@ -121,14 +117,14 @@ void Apropos::show()
     view.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     const QString informations = "Copyright © %1 %2";
-    _ui->informationsCopyright->setText(informations.arg(ORG_NAME).arg(QString(APP_ANNEES_DEV)));
+    _ui->informationsCopyright->setText(informations.arg(ORG_NAME).arg(QString(ANNEES_DEV)));
 
     const QString logiciel = "%1 %2";
-    _ui->nomLogiciel->setText(logiciel.arg(APP_NAME).arg(QString(APP_VER_MAJ)));
+    _ui->nomLogiciel->setText(logiciel.arg(APP_NAME).arg(QString(VER_MAJ)));
 
     const QString msg = tr("Version %1  (%2)");
     const QString dateCompilation = QString(__DATE__).split(" ", Qt::SkipEmptyParts).join(" ");
-    _ui->numeroVersion->setText(msg.arg(APP_VERSION).arg(QLocale(Configuration::instance()->locale())
+    _ui->numeroVersion->setText(msg.arg(VERSION).arg(QLocale(Configuration::instance()->locale())
                                                          .toString(QDate::fromString(dateCompilation, "MMM d yyyy"), tr("d MMMM yyyy", "Date format"))));
 
     /* Retour */

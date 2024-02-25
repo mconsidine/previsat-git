@@ -65,7 +65,8 @@ public:
      * @param[in] message Message a afficher
      * @param[in] typeMessage Type de message (ERREUR, INFO, WARNING)
      */
-    static void Afficher(const QString &message, const MessageType &typeMessage);
+    static void Afficher(const QString &message,
+                         const MessageType &typeMessage);
 
     /**
      * @brief setFenetreParent Definition de la fenetre parent (pour centrer l'affichage)

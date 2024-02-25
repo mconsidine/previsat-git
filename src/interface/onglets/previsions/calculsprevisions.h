@@ -43,11 +43,7 @@
 #ifndef CALCULSPREVISIONS_H
 #define CALCULSPREVISIONS_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFrame>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 
 
 namespace Ui {
@@ -71,6 +67,7 @@ public:
     /**
      * @brief CalculsPrevisions Constructeur par defaut
      * @param[in] parent parent
+     * @throw Exception
      */
     explicit CalculsPrevisions(QWidget *parent = nullptr);
 

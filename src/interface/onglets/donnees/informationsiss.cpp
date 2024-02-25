@@ -34,11 +34,7 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QSettings>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "configuration/evenementsstationspatiale.h"
 #include "informationsiss.h"

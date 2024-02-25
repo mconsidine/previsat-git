@@ -34,27 +34,23 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
 #include <QFileInfo>
 #include <QSettings>
 #include <QSoundEffect>
 #include <QThread>
-#include "ui_options.h"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
+#include "../../options/ui_options.h"
 #include "general.h"
 #include "configuration/configuration.h"
 #include "interface/onglets/osculateurs/osculateurs.h"
 #include "interface/onglets/previsions/calculsflashs.h"
 #include "librairies/corps/satellite/evenements.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/maths/maths.h"
 #include "previsions/flashs.h"
-#include "ui_calculsflashs.h"
+#include "../previsions/ui_calculsflashs.h"
 #include "ui_general.h"
-#include "ui_osculateurs.h"
+#include "../osculateurs/ui_osculateurs.h"
 
 
 // Registre
@@ -106,9 +102,9 @@ General::General(CalculsFlashs *flashs, Osculateurs *osculateurs, QWidget *paren
         Initialisation();
 #endif
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 
@@ -336,7 +332,7 @@ void General::AffichageDonneesSatellite(const Date &date)
     } else {
 
         // Satellite au dessus de l'horizon
-        if (satellite.isVisible()) {
+        if (satellite.visible()) {
 
             // Satellite en eclipse totale
             if (conditionEclipse.eclipseTotale()) {
@@ -462,7 +458,8 @@ void General::AffichageDonneesSatellite(const Date &date)
                     .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
         }
 
-        _ui->dateJN->setText(transitionJN.arg(_dateEclipse->ToQDateTime(1).toString(Qt::ISODate).replace("T", " ")).arg(cDelaiEcl));
+        _ui->dateJN->setText(transitionJN.arg(_dateEclipse->ToQDateTime(DateFormatSec::FORMAT_SEC).toString(Qt::ISODate).replace("T", " "))
+                                 .arg(cDelaiEcl));
         _ui->dateJN->adjustSize();
         _ui->dateJN->resize(_ui->dateJN->width(), 16);
         _ui->stackedWidget_aos->setCurrentIndex(0);
@@ -517,7 +514,7 @@ void General::AffichageDonneesSatellite(const Date &date)
 
         _ui->lbl_prochainAOS1->setVisible(true);
         _ui->lbl_prochainAOS2->setVisible(true);
-        _ui->dateAOS1->setText(chaine.arg(dateAOS.ToQDateTime(1).toString(Qt::ISODate).replace("T", " ")).arg(cDelaiAOS));
+        _ui->dateAOS1->setText(chaine.arg(dateAOS.ToQDateTime(DateFormatSec::FORMAT_SEC).toString(Qt::ISODate).replace("T", " ")).arg(cDelaiAOS));
         _ui->dateAOS1->setVisible(true);
         _ui->dateAOS2->setText(_ui->dateAOS1->text());
         _ui->dateAOS2->setVisible(true);
@@ -821,55 +818,54 @@ void General::SauveOngletGeneral(const QString &fichier)
     try {
 
         QFile sw(fichier);
-        if (sw.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        if (!sw.open(QIODevice::WriteOnly | QIODevice::Text) || !sw.isWritable()) {
 
-            if (!sw.isWritable()) {
-                qWarning() << "Problème de droits d'écriture du fichier" << sw.fileName();
-                throw PreviSatException(tr("Problème de droits d'écriture du fichier %1").arg(sw.fileName()), MessageType::WARNING);
-            }
+            qWarning() << "Problème de droits d'écriture du fichier" << sw.fileName();
+            throw Exception(tr("Problème de droits d'écriture du fichier %1").arg(sw.fileName()), MessageType::WARNING);
+        }
 
-            QTextStream flux(&sw);
-            flux.setEncoding(QStringConverter::Utf8);
-
-#if (BUILD_TEST == false)
-            const QString titre = "%1 %2 / %3 (c) %4";
-            flux << titre.arg(APP_NAME).arg(QString(APP_VER_MAJ)).arg(ORG_NAME).arg(QString(APP_ANNEES_DEV))
-                 << Qt::endl << Qt::endl << Qt::endl;
-#endif
-
-            flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure1->text() << Qt::endl << Qt::endl;
-
-            flux << tr("Lieu d'observation :") << " " << _ui->lieuObservation->currentText() << Qt::endl;
-            QString chaine = tr("Longitude  : %1\tLatitude : %2\tAltitude : %3", "Observer coordinates");
-            flux << chaine.arg(_ui->longitudeObs->text()).arg(_ui->latitudeObs->text()).arg(_ui->altitudeObs->text()) << Qt::endl;
-            chaine = tr("Conditions : %1", "Conditions of observation");
-            flux << chaine.arg(_ui->conditionsObservation->text()) << Qt::endl << Qt::endl << Qt::endl;
+        QTextStream flux(&sw);
+        flux.setEncoding(QStringConverter::Utf8);
 
 #if (BUILD_TEST == false)
-            if (_ui->frame_satellite->isVisible())
+        const QString titre = "%1 %2 / %3 (c) %4";
+        flux << titre.arg(APP_NAME).arg(QString(VER_MAJ)).arg(ORG_NAME).arg(QString(ANNEES_DEV))
+             << Qt::endl << Qt::endl << Qt::endl;
 #endif
-            {
-                // Donnees sur le satellite
-                flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
-                chaine = tr("Longitude : %1  \tHauteur    : %2\tAscension droite :  %3");
-                flux << chaine.arg(_ui->longitudeSat->text().trimmed()).arg(_ui->hauteurSat->text()).arg(_ui->ascensionDroiteSat->text().trimmed())
-                     << Qt::endl;
+        flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure1->text() << Qt::endl << Qt::endl;
 
-                chaine = tr("Latitude  :  %1\t\tAzimut (N) : %2\tDéclinaison      : %3");
-                flux << chaine.arg(_ui->latitudeSat->text().trimmed()).arg(_ui->azimutSat->text().trimmed()).arg(_ui->declinaisonSat->text())
-                     << Qt::endl;
+        flux << tr("Lieu d'observation :") << " " << _ui->lieuObservation->currentText() << Qt::endl;
+        QString chaine = tr("Longitude  : %1\tLatitude : %2\tAltitude : %3", "Observer coordinates");
+        flux << chaine.arg(_ui->longitudeObs->text()).arg(_ui->latitudeObs->text()).arg(_ui->altitudeObs->text()) << Qt::endl;
+        chaine = tr("Conditions : %1", "Conditions of observation");
+        flux << chaine.arg(_ui->conditionsObservation->text()) << Qt::endl << Qt::endl << Qt::endl;
 
-                chaine = tr("Altitude  :  %1\t\tDistance   : %2\tConstellation    : %3", "Altitude of satellite");
-                flux << chaine.arg(_ui->altitudeSat->text().leftJustified(13, ' ')).arg(_ui->distanceSat->text().leftJustified(13, ' '))
+#if (BUILD_TEST == false)
+        if (_ui->frame_satellite->isVisible())
+#endif
+        {
+            // Donnees sur le satellite
+            flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
+
+            chaine = tr("Longitude : %1  \tHauteur    : %2\tAscension droite :  %3");
+            flux << chaine.arg(_ui->longitudeSat->text().trimmed()).arg(_ui->hauteurSat->text()).arg(_ui->ascensionDroiteSat->text().trimmed())
+                 << Qt::endl;
+
+            chaine = tr("Latitude  :  %1\t\tAzimut (N) : %2\tDéclinaison      : %3");
+            flux << chaine.arg(_ui->latitudeSat->text().trimmed()).arg(_ui->azimutSat->text().trimmed()).arg(_ui->declinaisonSat->text())
+                 << Qt::endl;
+
+            chaine = tr("Altitude  :  %1\t\tDistance   : %2\tConstellation    : %3", "Altitude of satellite");
+            flux << chaine.arg(_ui->altitudeSat->text().leftJustified(13, ' ')).arg(_ui->distanceSat->text().leftJustified(13, ' '))
                         .arg(_ui->constellationSat->text()) << Qt::endl << Qt::endl;
 
-                chaine = tr("Direction          : %1  \t%2      \t\t%3");
-                flux << chaine.arg(_ui->directionSat->text()).arg(_ui->orbiteSat1->text())
+            chaine = tr("Direction          : %1  \t%2      \t\t%3");
+            flux << chaine.arg(_ui->directionSat->text()).arg(_ui->orbiteSat1->text())
                         .arg((_ui->magnitudeSat->x() == 333) ? _ui->magnitudeSat->text() : "").trimmed() << Qt::endl;
 
-                chaine = tr("Vitesse orbitale   : %1\t%2  %3");
-                flux << chaine.arg(_ui->vitesseSat->text().rightJustified(11, ' '))
+            chaine = tr("Vitesse orbitale   : %1\t%2  %3");
+            flux << chaine.arg(_ui->vitesseSat->text().rightJustified(11, ' '))
 #if (BUILD_TEST == true)
                         .arg(_ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " ")
                         .arg(_ui->lbl_beta1->text()).trimmed() << Qt::endl;
@@ -878,70 +874,69 @@ void General::SauveOngletGeneral(const QString &fichier)
                         .arg((_ui->dateAOS1->isVisible()) ? _ui->lbl_beta1->text() : "").trimmed() << Qt::endl;
 #endif
 
-                chaine = tr("Variation distance : %1  \t%2", "Range rate");
-                flux << chaine.arg(_ui->rangeRate->text().rightJustified(11, ' '))
+            chaine = tr("Variation distance : %1  \t%2", "Range rate");
+            flux << chaine.arg(_ui->rangeRate->text().rightJustified(11, ' '))
 #if (BUILD_TEST == true)
-                        .arg(_ui->lbl_prochainAOS1->text() + " " + _ui->dateAOS1->text()).trimmed() + " " + _ui->lbl_azimut1->text()
-                     << Qt::endl << Qt::endl << Qt::endl;
+                            .arg(_ui->lbl_prochainAOS1->text() + " " + _ui->dateAOS1->text()).trimmed() + " " + _ui->lbl_azimut1->text()
+                 << Qt::endl << Qt::endl << Qt::endl;
 #else
                         .arg((_ui->dateAOS1->isVisible()) ? _ui->lbl_prochainAOS1->text() + " " + _ui->dateAOS1->text() + " " + _ui->lbl_azimut1->text()
                                                           : _ui->lbl_beta1->text()).trimmed() << Qt::endl << Qt::endl << Qt::endl;
 #endif
-            }
-
-            // Donnees sur le Soleil
-            flux << tr("Coordonnées du Soleil :") << Qt::endl;
-            chaine = tr("Hauteur    : %1\t\tAscension droite  :  %2 \tLongitude                : %3");
-            flux << chaine.arg(_ui->hauteurSoleil->text().trimmed()).arg(_ui->ascensionDroiteSoleil->text()).arg(_ui->longitudeSol->text().trimmed())
-                 << Qt::endl;
-
-            chaine = tr("Azimut (N) : %1\t\tDéclinaison       : %2 \tLatitude                 : %3", "Azimuth from the North");
-            flux << chaine.arg(_ui->azimutSoleil->text().trimmed()).arg(_ui->declinaisonSoleil->text()).arg(_ui->latitudeSol->text().trimmed())
-                 << Qt::endl;
-
-            chaine = tr("Distance   : %1   \t\tConstellation     : %2\t\t\tDiamètre apparent        : %3");
-            flux << chaine.arg(_ui->distanceSoleil->text()).arg(_ui->constellationSoleil->text()).arg(_ui->diametreApparentSol->text().trimmed())
-                 << Qt::endl << Qt::endl;
-
-            flux << tr("Évènements Soleil :") << Qt::endl;
-            chaine = tr("Lever    : %1\t\t\tAube astronomique : %2\t\tCrépuscule civil         : %3", "Sunrise");
-            flux << chaine.arg(_ui->leverSoleil->text().trimmed().leftJustified(5, ' ')).arg(_ui->aubeAstro->text().trimmed().leftJustified(5, ' '))
-                        .arg(_ui->crepusculeCivil->text().trimmed().leftJustified(5, ' ')) << Qt::endl;
-            chaine = tr("Méridien : %1\t\t\tAube nautique     : %2\t\tCrépuscule nautique      : %3", "Meridian pass for the Sun");
-            flux << chaine.arg(_ui->meridienSoleil->text().trimmed().leftJustified(5, ' '))
-                        .arg(_ui->aubeNautique->text().trimmed().leftJustified(5, ' '))
-                        .arg(_ui->crepusculeNautique->text().trimmed().leftJustified(5, ' ')) << Qt::endl;
-            chaine = tr("Coucher  : %1\t\t\tAube civile       : %2\t\tCrépuscule astronomique  : %3", "Sunset");
-            flux << chaine.arg(_ui->coucherSoleil->text().trimmed().leftJustified(5, ' ')).arg(_ui->aubeCivile->text().trimmed().leftJustified(5, ' '))
-                        .arg(_ui->crepusculeAstro->text().trimmed().leftJustified(5, ' ')) << Qt::endl << Qt::endl << Qt::endl;
-
-
-            // Donnees sur la Lune
-            flux << tr("Coordonnées de la Lune :") << Qt::endl;
-            chaine = tr("Hauteur    : %1\t\tAscension droite :  %2 \tPhase                    : %3", "Moon phase");
-            flux << chaine.arg(_ui->hauteurLune->text().trimmed()).arg(_ui->ascensionDroiteLune->text()).arg(_ui->phaseLune->text()) << Qt::endl;
-
-            chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2 \tMagnitude (Illumination) : %3", "Azimuth from the North");
-            flux << chaine.arg(_ui->azimutLune->text().trimmed()).arg(_ui->declinaisonLune->text()).arg(_ui->magnitudeIllumLune->text()) << Qt::endl;
-
-            chaine = tr("Distance   : %1  \t\tConstellation    : %2 \t\t\tDiamètre apparent        : %3");
-            flux << chaine.arg(_ui->distanceLune->text()).arg(_ui->constellationLune->text()).arg(_ui->diametreApparentLune->text().trimmed())
-                 << Qt::endl << Qt::endl;
-
-            flux << tr("Évènements Lune :") << Qt::endl;
-            flux << tr("Lever    : %1", "Moonrise").arg(_ui->leverLune->text()) << Qt::endl;
-            flux << tr("Méridien : %1", "Meridian pass for the Moon").arg(_ui->meridienLune->text()) << Qt::endl;
-            flux << tr("Coucher  : %1", "Moonset").arg(_ui->coucherLune->text()) << Qt::endl << Qt::endl;
-
-            flux << tr("Nouvelle Lune    : %1").arg(_ui->nouvelleLune->text()) << Qt::endl;
-            flux << tr("Premier quartier : %1").arg(_ui->premierQuartier->text()) << Qt::endl;
-            flux << tr("Pleine Lune      : %1").arg(_ui->pleineLune->text()) << Qt::endl;
-            flux << tr("Dernier quartier : %1").arg(_ui->dernierQuartier->text()) << Qt::endl;
         }
+
+        // Donnees sur le Soleil
+        flux << tr("Coordonnées du Soleil :") << Qt::endl;
+        chaine = tr("Hauteur    : %1\t\tAscension droite  :  %2 \tLongitude                : %3");
+        flux << chaine.arg(_ui->hauteurSoleil->text().trimmed()).arg(_ui->ascensionDroiteSoleil->text()).arg(_ui->longitudeSol->text().trimmed())
+             << Qt::endl;
+
+        chaine = tr("Azimut (N) : %1\t\tDéclinaison       : %2 \tLatitude                 : %3", "Azimuth from the North");
+        flux << chaine.arg(_ui->azimutSoleil->text().trimmed()).arg(_ui->declinaisonSoleil->text()).arg(_ui->latitudeSol->text().trimmed())
+             << Qt::endl;
+
+        chaine = tr("Distance   : %1   \t\tConstellation     : %2\t\t\tDiamètre apparent        : %3");
+        flux << chaine.arg(_ui->distanceSoleil->text()).arg(_ui->constellationSoleil->text()).arg(_ui->diametreApparentSol->text().trimmed())
+             << Qt::endl << Qt::endl;
+
+        flux << tr("Évènements Soleil :") << Qt::endl;
+        chaine = tr("Lever    : %1\t\t\tAube astronomique : %2\t\tCrépuscule civil         : %3", "Sunrise");
+        flux << chaine.arg(_ui->leverSoleil->text().trimmed().leftJustified(5, ' ')).arg(_ui->aubeAstro->text().trimmed().leftJustified(5, ' '))
+                    .arg(_ui->crepusculeCivil->text().trimmed().leftJustified(5, ' ')) << Qt::endl;
+        chaine = tr("Méridien : %1\t\t\tAube nautique     : %2\t\tCrépuscule nautique      : %3", "Meridian pass for the Sun");
+        flux << chaine.arg(_ui->meridienSoleil->text().trimmed().leftJustified(5, ' '))
+                    .arg(_ui->aubeNautique->text().trimmed().leftJustified(5, ' '))
+                    .arg(_ui->crepusculeNautique->text().trimmed().leftJustified(5, ' ')) << Qt::endl;
+        chaine = tr("Coucher  : %1\t\t\tAube civile       : %2\t\tCrépuscule astronomique  : %3", "Sunset");
+        flux << chaine.arg(_ui->coucherSoleil->text().trimmed().leftJustified(5, ' ')).arg(_ui->aubeCivile->text().trimmed().leftJustified(5, ' '))
+                    .arg(_ui->crepusculeAstro->text().trimmed().leftJustified(5, ' ')) << Qt::endl << Qt::endl << Qt::endl;
+
+
+        // Donnees sur la Lune
+        flux << tr("Coordonnées de la Lune :") << Qt::endl;
+        chaine = tr("Hauteur    : %1\t\tAscension droite :  %2 \tPhase                    : %3", "Moon phase");
+        flux << chaine.arg(_ui->hauteurLune->text().trimmed()).arg(_ui->ascensionDroiteLune->text()).arg(_ui->phaseLune->text()) << Qt::endl;
+
+        chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2 \tMagnitude (Illumination) : %3", "Azimuth from the North");
+        flux << chaine.arg(_ui->azimutLune->text().trimmed()).arg(_ui->declinaisonLune->text()).arg(_ui->magnitudeIllumLune->text()) << Qt::endl;
+
+        chaine = tr("Distance   : %1  \t\tConstellation    : %2 \t\t\tDiamètre apparent        : %3");
+        flux << chaine.arg(_ui->distanceLune->text()).arg(_ui->constellationLune->text()).arg(_ui->diametreApparentLune->text().trimmed())
+             << Qt::endl << Qt::endl;
+
+        flux << tr("Évènements Lune :") << Qt::endl;
+        flux << tr("Lever    : %1", "Moonrise").arg(_ui->leverLune->text()) << Qt::endl;
+        flux << tr("Méridien : %1", "Meridian pass for the Moon").arg(_ui->meridienLune->text()) << Qt::endl;
+        flux << tr("Coucher  : %1", "Moonset").arg(_ui->coucherLune->text()) << Qt::endl << Qt::endl;
+
+        flux << tr("Nouvelle Lune    : %1").arg(_ui->nouvelleLune->text()) << Qt::endl;
+        flux << tr("Premier quartier : %1").arg(_ui->premierQuartier->text()) << Qt::endl;
+        flux << tr("Pleine Lune      : %1").arg(_ui->pleineLune->text()) << Qt::endl;
+        flux << tr("Dernier quartier : %1").arg(_ui->dernierQuartier->text()) << Qt::endl;
 
         sw.close();
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
     }
 
     /* Retour */

@@ -34,7 +34,7 @@
  *
  */
 
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/observateur/observateur.h"
 #include "sgp4.h"
 
@@ -70,9 +70,10 @@ SGP4::SGP4()
  * Methodes publiques
  */
 /*
- * Calcul de la position et de la vitesse
+ * Calcul de la position et de la vitesse du satellite
  */
-void SGP4::Calcul(const Date &date, const ElementsOrbitaux &elements)
+void SGP4::Calcul(const Date &date,
+                  const ElementsOrbitaux &elements)
 {
     /* Declarations des variables locales */
 
@@ -82,183 +83,181 @@ void SGP4::Calcul(const Date &date, const ElementsOrbitaux &elements)
     }
 
     /* Corps de la methode */
-    try {
+    double coseo1 = 0.;
+    double sineo1 = 0.;
 
-        double coseo1 = 0.;
-        double sineo1 = 0.;
+    // Calcul du temps ecoule depuis l'epoque (en minutes)
+    const double tsince = DATE::NB_MIN_PAR_JOUR * (date.jourJulienUTC() - elements.epoque.jourJulienUTC());
 
-        // Calcul du temps ecoule depuis l'epoque (en minutes)
-        const double tsince = DATE::NB_MIN_PAR_JOUR * (date.jourJulienUTC() - elements.epoque.jourJulienUTC());
+    _data.t = tsince;
 
-        _data.t = tsince;
+    // Prise en compte des termes seculaires de la gravite et du freinage atmospherique
+    const double xmdf = _elements.mo + _data.mdot * _data.t;
+    const double argpdf = _elements.argpo + _data.argpdot * _data.t;
+    const double nodedf = _elements.omegao + _data.nodedot * _data.t;
+    _data.argpm = argpdf;
+    _data.mm = xmdf;
+    const double tt2 = _data.t * _data.t;
+    _data.nodem = nodedf + _data.nodecf * tt2;
+    double tempa = 1. - _data.cc1 * _data.t;
+    double tempe = _elements.bstar * _data.cc4 * _data.t;
+    double templ = _data.t2cof * tt2;
 
-        // Prise en compte des termes seculaires de la gravite et du freinage atmospherique
-        const double xmdf = _elements.mo + _data.mdot * _data.t;
-        const double argpdf = _elements.argpo + _data.argpdot * _data.t;
-        const double nodedf = _elements.omegao + _data.nodedot * _data.t;
-        _data.argpm = argpdf;
-        _data.mm = xmdf;
-        const double tt2 = _data.t * _data.t;
-        _data.nodem = nodedf + _data.nodecf * tt2;
-        double tempa = 1. - _data.cc1 * _data.t;
-        double tempe = _elements.bstar * _data.cc4 * _data.t;
-        double templ = _data.t2cof * tt2;
+    if (!_data.isimp) {
 
-        if (!_data.isimp) {
+        const double delomg = _data.omgcof * _data.t;
+        const double delmtmp = 1. + _data.eta * cos(xmdf);
+        const double delm = _data.xmcof * (delmtmp * delmtmp * delmtmp - _data.delmo);
+        double temp = delomg + delm;
+        _data.mm = xmdf + temp;
+        _data.argpm = argpdf - temp;
+        const double tt3 = tt2 * _data.t;
+        const double t4 = tt3 * _data.t;
+        tempa = tempa - _data.d2 * tt2 - _data.d3 * tt3 - _data.d4 * t4;
+        tempe = tempe + _elements.bstar * _data.cc5 * (sin(_data.mm) - _data.sinmao);
+        templ = templ + _data.t3cof * tt3 + t4 * (_data.t4cof + _data.t * _data.t5cof);
+    }
 
-            const double delomg = _data.omgcof * _data.t;
-            const double delmtmp = 1. + _data.eta * cos(xmdf);
-            const double delm = _data.xmcof * (delmtmp * delmtmp * delmtmp - _data.delmo);
-            double temp = delomg + delm;
-            _data.mm = xmdf + temp;
-            _data.argpm = argpdf - temp;
-            const double tt3 = tt2 * _data.t;
-            const double t4 = tt3 * _data.t;
-            tempa = tempa - _data.d2 * tt2 - _data.d3 * tt3 - _data.d4 * t4;
-            tempe = tempe + _elements.bstar * _data.cc5 * (sin(_data.mm) - _data.sinmao);
-            templ = templ + _data.t3cof * tt3 + t4 * (_data.t4cof + _data.t * _data.t5cof);
+    _data.nm = _elements.no;
+    _data.em = _elements.ecco;
+    _data.inclm = _elements.inclo;
+
+    if (_data.method == 'd') {
+        const double tc = _data.t;
+        Dspace(tc);
+    }
+
+    const double am = pow((TERRE::KE / _data.nm), MATHS::DEUX_TIERS) * tempa * tempa;
+    _data.nm = TERRE::KE * pow(am, -1.5);
+    _data.em -= tempe;
+
+    if (_data.em < 1.e-6) {
+        _data.em = 1.e-6;
+    }
+
+    _data.mm = _data.mm + _elements.no * templ;
+    double xlm = _data.mm + _data.argpm + _data.nodem;
+    _data.emsq = _data.em * _data.em;
+    double temp = 1. - _data.emsq;
+
+    _data.nodem = fmod(_data.nodem, MATHS::DEUX_PI);
+    _data.argpm = fmod(_data.argpm, MATHS::DEUX_PI);
+    xlm = fmod(xlm, MATHS::DEUX_PI);
+    _data.mm = fmod(xlm - _data.argpm - _data.nodem, MATHS::DEUX_PI);
+
+    _data.sinim = sin(_data.inclm);
+    _data.cosim = cos(_data.inclm);
+
+    // Prise en compte des termes periodiques luni-solaires
+    _data.ep = _data.em;
+    _data.xincp = _data.inclm;
+    _data.argpp = _data.argpm;
+    _data.nodep = _data.nodem;
+    _data.mp = _data.mm;
+    double sinip = _data.sinim;
+    double cosip = _data.cosim;
+
+    // Termes longue periode
+    if (_data.method == 'd') {
+        Dpper();
+        if (_data.xincp < 0.) {
+            _data.xincp = -_data.xincp;
+            _data.nodep += MATHS::PI;
+            _data.argpp -= MATHS::PI;
         }
 
-        _data.nm = _elements.no;
-        _data.em = _elements.ecco;
-        _data.inclm = _elements.inclo;
+        sinip = sin(_data.xincp);
+        cosip = cos(_data.xincp);
+        _data.aycof = -0.5 * SGP::J3SJ2 * sinip;
 
+        if (fabs(cosip + 1.) > 1.5e-12) {
+            _data.xlcof = -0.25 * SGP::J3SJ2 * sinip * (3. + 5. * cosip) / (1. + cosip);
+        } else {
+            _data.xlcof = -0.25 * SGP::J3SJ2 * sinip * (3. + 5. * cosip) * (1. / 1.5e-12);
+        }
+    }
+
+    const double axnl = _data.ep * cos(_data.argpp);
+    temp = 1. / (am * (1. - _data.ep * _data.ep));
+    const double aynl = _data.ep * sin(_data.argpp) + temp * _data.aycof;
+    const double xl = _data.mp + _data.argpp + _data.nodep + temp * _data.xlcof * axnl;
+
+    // Resolution de l'equation de Kepler
+    const double u = fmod(xl - _data.nodep, MATHS::DEUX_PI);
+    double eo1 = u;
+    double tem5 = 9999.9;
+    int ktr = 1;
+
+    while ((fabs(tem5) >= MATHS::EPSDBL) && (ktr <= 10)) {
+        sineo1 = sin(eo1);
+        coseo1 = cos(eo1);
+        tem5 = (u - aynl * coseo1 + axnl * sineo1 - eo1) / (1. - coseo1 * axnl - sineo1 * aynl);
+        if (fabs(tem5) >= 0.95) {
+            tem5 = (tem5 > 0.) ? 0.95 : -0.95;
+        }
+        eo1 += tem5;
+        ktr++;
+    }
+
+    // Termes courte periode
+    const double ecose = axnl * coseo1 + aynl * sineo1;
+    const double esine = axnl * sineo1 - aynl * coseo1;
+    const double el2 = axnl * axnl + aynl * aynl;
+    const double pl = am * (1. - el2);
+
+    if (pl >= 0.) {
+
+        const double rl = am * (1. - ecose);
+        const double rdotl = sqrt(am) * esine / rl;
+        const double rvdotl = sqrt(pl) / rl;
+        const double betal = sqrt(1. - el2);
+        temp = esine / (1. + betal);
+        const double tmp1 = am / rl;
+        const double sinu = tmp1 * (sineo1 - aynl - axnl * temp);
+        const double cosu = tmp1 * (coseo1 - axnl + aynl * temp);
+        double su = atan2(sinu, cosu);
+        const double sin2u = (cosu + cosu) * sinu;
+        const double cos2u = 1. - 2. * sinu * sinu;
+        temp = 1. / pl;
+        const double temp1 = 0.5 * TERRE::J2 * temp;
+        const double temp2 = temp1 * temp;
+
+        // Prise en compte des termes courte periode
         if (_data.method == 'd') {
-            const double tc = _data.t;
-            Dspace(tc);
+
+            const double cosisq = cosip * cosip;
+            _data.con41 = 3. * cosisq - 1.;
+            _data.x1mth2 = 1. - cosisq;
+            _data.x7thm1 = 7. * cosisq - 1.;
         }
 
-        const double am = pow((TERRE::KE / _data.nm), MATHS::DEUX_TIERS) * tempa * tempa;
-        _data.nm = TERRE::KE * pow(am, -1.5);
-        _data.em -= tempe;
+        const double mrt = TERRE::RAYON_TERRESTRE * (rl * (1. - 1.5 * temp2 * betal * _data.con41) + 0.5 * temp1 * _data.x1mth2 * cos2u);
+        su = su - 0.25 * temp2 * _data.x7thm1 * sin2u;
+        const double temp3 = 1.5 * temp2 * cosip;
+        const double xnode = _data.nodep + temp3 * sin2u;
+        const double xinc = _data.xincp + temp3 * sinip * cos2u;
+        const double mvt = rdotl - _data.nm * temp1 * _data.x1mth2 * sin2u / TERRE::KE;
+        const double rvdot = rvdotl + _data.nm * temp1 * (_data.x1mth2 * cos2u + 1.5 * _data.con41) / TERRE::KE;
 
-        if (_data.em < 1.e-6) {
-            _data.em = 1.e-6;
-        }
+        // Vecteurs directeurs
+        const double sinsu = sin(su);
+        const double cossu = cos(su);
+        const double snod = sin(xnode);
+        const double cnod = cos(xnode);
+        const double cosi = cos(xinc);
+        const double sini = sin(xinc);
 
-        _data.mm = _data.mm + _elements.no * templ;
-        double xlm = _data.mm + _data.argpm + _data.nodem;
-        _data.emsq = _data.em * _data.em;
-        double temp = 1. - _data.emsq;
+        const double xmx = -snod * cosi;
+        const double xmy = cnod * cosi;
+        const Vecteur3D uu(xmx * sinsu + cnod * cossu, xmy * sinsu + snod * cossu, sini * sinsu);
+        const Vecteur3D vv(xmx * cossu - cnod * sinsu, xmy * cossu - snod * sinsu, sini * cossu);
 
-        _data.nodem = fmod(_data.nodem, MATHS::DEUX_PI);
-        _data.argpm = fmod(_data.argpm, MATHS::DEUX_PI);
-        xlm = fmod(xlm, MATHS::DEUX_PI);
-        _data.mm = fmod(xlm - _data.argpm - _data.nodem, MATHS::DEUX_PI);
+        // Position et vitesse
+        _position = uu * mrt;
+        _vitesse = (uu * mvt + vv * rvdot) * SGP::RTMS;
 
-        _data.sinim = sin(_data.inclm);
-        _data.cosim = cos(_data.inclm);
-
-        // Prise en compte des termes periodiques luni-solaires
-        _data.ep = _data.em;
-        _data.xincp = _data.inclm;
-        _data.argpp = _data.argpm;
-        _data.nodep = _data.nodem;
-        _data.mp = _data.mm;
-        double sinip = _data.sinim;
-        double cosip = _data.cosim;
-
-        // Termes longue periode
-        if (_data.method == 'd') {
-            Dpper();
-            if (_data.xincp < 0.) {
-                _data.xincp = -_data.xincp;
-                _data.nodep += MATHS::PI;
-                _data.argpp -= MATHS::PI;
-            }
-
-            sinip = sin(_data.xincp);
-            cosip = cos(_data.xincp);
-            _data.aycof = -0.5 * SGP::J3SJ2 * sinip;
-
-            if (fabs(cosip + 1.) > 1.5e-12) {
-                _data.xlcof = -0.25 * SGP::J3SJ2 * sinip * (3. + 5. * cosip) / (1. + cosip);
-            } else {
-                _data.xlcof = -0.25 * SGP::J3SJ2 * sinip * (3. + 5. * cosip) * (1. / 1.5e-12);
-            }
-        }
-
-        const double axnl = _data.ep * cos(_data.argpp);
-        temp = 1. / (am * (1. - _data.ep * _data.ep));
-        const double aynl = _data.ep * sin(_data.argpp) + temp * _data.aycof;
-        const double xl = _data.mp + _data.argpp + _data.nodep + temp * _data.xlcof * axnl;
-
-        // Resolution de l'equation de Kepler
-        const double u = fmod(xl - _data.nodep, MATHS::DEUX_PI);
-        double eo1 = u;
-        double tem5 = 9999.9;
-        int ktr = 1;
-
-        while ((fabs(tem5) >= MATHS::EPSDBL) && (ktr <= 10)) {
-            sineo1 = sin(eo1);
-            coseo1 = cos(eo1);
-            tem5 = (u - aynl * coseo1 + axnl * sineo1 - eo1) / (1. - coseo1 * axnl - sineo1 * aynl);
-            if (fabs(tem5) >= 0.95) {
-                tem5 = (tem5 > 0.) ? 0.95 : -0.95;
-            }
-            eo1 += tem5;
-            ktr++;
-        }
-
-        // Termes courte periode
-        const double ecose = axnl * coseo1 + aynl * sineo1;
-        const double esine = axnl * sineo1 - aynl * coseo1;
-        const double el2 = axnl * axnl + aynl * aynl;
-        const double pl = am * (1. - el2);
-
-        if (pl >= 0.) {
-
-            const double rl = am * (1. - ecose);
-            const double rdotl = sqrt(am) * esine / rl;
-            const double rvdotl = sqrt(pl) / rl;
-            const double betal = sqrt(1. - el2);
-            temp = esine / (1. + betal);
-            const double tmp1 = am / rl;
-            const double sinu = tmp1 * (sineo1 - aynl - axnl * temp);
-            const double cosu = tmp1 * (coseo1 - axnl + aynl * temp);
-            double su = atan2(sinu, cosu);
-            const double sin2u = (cosu + cosu) * sinu;
-            const double cos2u = 1. - 2. * sinu * sinu;
-            temp = 1. / pl;
-            const double temp1 = 0.5 * TERRE::J2 * temp;
-            const double temp2 = temp1 * temp;
-
-            // Prise en compte des termes courte periode
-            if (_data.method == 'd') {
-
-                const double cosisq = cosip * cosip;
-                _data.con41 = 3. * cosisq - 1.;
-                _data.x1mth2 = 1. - cosisq;
-                _data.x7thm1 = 7. * cosisq - 1.;
-            }
-
-            const double mrt = TERRE::RAYON_TERRESTRE * (rl * (1. - 1.5 * temp2 * betal * _data.con41) + 0.5 * temp1 * _data.x1mth2 * cos2u);
-            su = su - 0.25 * temp2 * _data.x7thm1 * sin2u;
-            const double temp3 = 1.5 * temp2 * cosip;
-            const double xnode = _data.nodep + temp3 * sin2u;
-            const double xinc = _data.xincp + temp3 * sinip * cos2u;
-            const double mvt = rdotl - _data.nm * temp1 * _data.x1mth2 * sin2u / TERRE::KE;
-            const double rvdot = rvdotl + _data.nm * temp1 * (_data.x1mth2 * cos2u + 1.5 * _data.con41) / TERRE::KE;
-
-            // Vecteurs directeurs
-            const double sinsu = sin(su);
-            const double cossu = cos(su);
-            const double snod = sin(xnode);
-            const double cnod = cos(xnode);
-            const double cosi = cos(xinc);
-            const double sini = sin(xinc);
-
-            const double xmx = -snod * cosi;
-            const double xmy = cnod * cosi;
-            const Vecteur3D uu(xmx * sinsu + cnod * cossu, xmy * sinsu + snod * cossu, sini * sinsu);
-            const Vecteur3D vv(xmx * cossu - cnod * sinsu, xmy * cossu - snod * sinsu, sini * cossu);
-
-            // Position et vitesse
-            _position = uu * mrt;
-            _vitesse = (uu * mvt + vv * rvdot) * SGP::RTMS;
-        }
-
-    } catch (PreviSatException const &e) {
+    } else {
+        throw Exception(QObject::tr("Erreur lors du calcul de la position du satellite %1").arg(elements.nom), MessageType::WARNING);
     }
 
     /* Retour */
@@ -274,12 +273,12 @@ char SGP4::method() const
     return _data.method;
 }
 
-const Vecteur3D &SGP4::position() const
+Vecteur3D SGP4::position() const
 {
     return _position;
 }
 
-const Vecteur3D &SGP4::vitesse() const
+Vecteur3D SGP4::vitesse() const
 {
     return _vitesse;
 }
@@ -697,10 +696,10 @@ void SGP4::Dsinit(const double tc) {
             _data.f441 = 35. * sini2 * _data.f220;
             _data.f442 = 39.3750 * sini2 * sini2;
             const double tmp4 = 10. * cosisq;
-            _data.f522 = 9.84375 * _data.sinim * (sini2 * (1. - tmp2 - 5. * cosisq) + 0.33333333 *
-                                        (-2. + 4. * _data.cosim + 6. * cosisq));
+            _data.f522 = 9.84375 * _data.sinim * (sini2 * (1. - tmp2 - 5. * cosisq) +
+                                                  0.33333333 * (-2. + 4. * _data.cosim + 6. * cosisq));
             _data.f523 = _data.sinim * (4.92187512 * sini2 * (-2. - 4. * _data.cosim + tmp4) +
-                              6.56250012 * (1. + tmp2 - tmp3));
+                                        6.56250012 * (1. + tmp2 - tmp3));
             const double tmp5 = 8. * _data.cosim;
             const double tmp6 = 29.53125 * _data.sinim;
             _data.f542 = tmp6 * (2. - tmp5 + cosisq * (-12. + tmp5 + tmp4));
@@ -811,10 +810,11 @@ void SGP4::Dspace(const double tc) {
             // Termes de resonance quasi-synchrones
             if (_data.irez != 2) {
                 xndt = _data.del1 * sin(_data.xli - SGP::FASX2) + _data.del2 * sin(2. * (_data.xli - SGP::FASX4)) +
-                        _data.del3 * sin(3. * (_data.xli - SGP::FASX6));
+                       _data.del3 * sin(3. * (_data.xli - SGP::FASX6));
                 xldot = _data.xni + _data.xfact;
-                xnddt = _data.del1 * cos(_data.xli - SGP::FASX2) + 2. * _data.del2 * cos(2. * (_data.xli - SGP::FASX4)) + 3. * _data.del3 *
-                        cos(3. * (_data.xli - SGP::FASX6));
+                xnddt = _data.del1 * cos(_data.xli - SGP::FASX2) +
+                        2. * _data.del2 * cos(2. * (_data.xli - SGP::FASX4)) +
+                        3. * _data.del3 * cos(3. * (_data.xli - SGP::FASX6));
                 xnddt *= xldot;
             } else {
 
@@ -823,10 +823,10 @@ void SGP4::Dspace(const double tc) {
                 const double x2omi = xomi + xomi;
                 const double x2li = _data.xli + _data.xli;
                 xndt = _data.d2201 * sin(x2omi + _data.xli - SGP::G22) + _data.d2211 * sin(_data.xli - SGP::G22) +
-                        _data.d3210 * sin(xomi + _data.xli - SGP::G32) + _data.d3222 * sin(-xomi + _data.xli - SGP::G32) +
-                        _data.d4410 * sin(x2omi + x2li - SGP::G44) + _data.d4422 * sin(x2li - SGP::G44) + _data.d5220 *
-                        sin(xomi + _data.xli - SGP::G52) + _data.d5232 * sin(-xomi + _data.xli - SGP::G52) + _data.d5421 *
-                        sin(xomi + x2li - SGP::G54) + _data.d5433 * sin(-xomi + x2li - SGP::G54);
+                       _data.d3210 * sin(xomi + _data.xli - SGP::G32) + _data.d3222 * sin(-xomi + _data.xli - SGP::G32) +
+                       _data.d4410 * sin(x2omi + x2li - SGP::G44) + _data.d4422 * sin(x2li - SGP::G44) +
+                       _data.d5220 * sin(xomi + _data.xli - SGP::G52) + _data.d5232 * sin(-xomi + _data.xli - SGP::G52) +
+                       _data.d5421 * sin(xomi + x2li - SGP::G54) + _data.d5433 * sin(-xomi + x2li - SGP::G54);
                 xldot = _data.xni + _data.xfact;
                 xnddt = _data.d2201 * cos(x2omi + _data.xli - SGP::G22) + _data.d2211 * cos(_data.xli - SGP::G22) +
                         _data.d3210 * cos(xomi + _data.xli - SGP::G32) + _data.d3222 * cos(-xomi + _data.xli - SGP::G32) +
@@ -942,8 +942,8 @@ void SGP4::SGP4Init(const ElementsOrbitaux &elements)
         const double psisq = fabs(1. - etasq);
         const double coef = qzms24 * pow(tsi, 4.);
         const double coef1 = coef * pow(psisq, -3.5);
-        const double cc2 = coef1 * _elements.no * (_data.ao * (1. + 1.5 * etasq + eeta * (4. + etasq)) + 0.375 * TERRE::J2 * tsi / psisq *
-                                                   _data.con41 * (8. + 3. * etasq * (8. + etasq)));
+        const double cc2 = coef1 * _elements.no * (_data.ao * (1. + 1.5 * etasq + eeta * (4. + etasq)) +
+                                                   0.375 * TERRE::J2 * tsi / psisq * _data.con41 * (8. + 3. * etasq * (8. + etasq)));
         _data.cc1 = _elements.bstar * cc2;
         double cc3 = 0.;
         if (_elements.ecco > 1.e-4) {
@@ -951,10 +951,9 @@ void SGP4::SGP4Init(const ElementsOrbitaux &elements)
         }
 
         _data.x1mth2 = 1. - _data.cosio2;
-        _data.cc4 = 2. * _elements.no * coef1 * _data.ao * _data.omeosq *
-                (_data.eta * (2. + 0.5 * etasq) + _elements.ecco * (0.5 + 2. * etasq) - TERRE::J2 * tsi /
-                 (_data.ao * psisq) * (-3. * _data.con41 * (1. - 2. * eeta + etasq * (1.5 - 0.5 * eeta)) +
-                                  0.75 * _data.x1mth2 * (2. * etasq - eeta * (1. + etasq)) * cos(2. * _elements.argpo)));
+        _data.cc4 = 2. * _elements.no * coef1 * _data.ao * _data.omeosq * (_data.eta * (2. + 0.5 * etasq) + _elements.ecco * (0.5 + 2. * etasq) -
+                    TERRE::J2 * tsi / (_data.ao * psisq) * (-3. * _data.con41 * (1. - 2. * eeta + etasq * (1.5 - 0.5 * eeta)) +
+                    0.75 * _data.x1mth2 * (2. * etasq - eeta * (1. + etasq)) * cos(2. * _elements.argpo)));
         _data.cc5 = 2. * coef1 * _data.ao * _data.omeosq * (1. + 2.75 * (etasq + eeta) + eeta * etasq);
 
         const double cosio4 = _data.cosio2 * _data.cosio2;
@@ -962,9 +961,9 @@ void SGP4::SGP4Init(const ElementsOrbitaux &elements)
         const double temp2 = 0.5 * temp1 * TERRE::J2 * pinvsq;
         const double temp3 = -0.46875 * TERRE::J4 * pinvsq * pinvsq * _elements.no;
         _data.mdot = _elements.no + 0.5 * temp1 * _data.rteosq * _data.con41 + 0.0625 * temp2 * _data.rteosq *
-                (13. - 78. * _data.cosio2 + 137. * cosio4);
+                                                                                   (13. - 78. * _data.cosio2 + 137. * cosio4);
         _data.argpdot = -0.5 * temp1 * _data.con42 + 0.0625 * temp2 * (7. - 114. * _data.cosio2 + 395. * cosio4) +
-                temp3 * (3. - 36. * _data.cosio2 + 49. * cosio4);
+                        temp3 * (3. - 36. * _data.cosio2 + 49. * cosio4);
         const double xhdot1 = -temp1 * _data.cosio;
         _data.nodedot = xhdot1 + (0.5 * temp2 * (4. - 19. * _data.cosio2) + 2. * temp3 * (3. - 7. * _data.cosio2)) * _data.cosio;
         _data.xpidot = _data.argpdot + _data.nodedot;
@@ -1022,8 +1021,7 @@ void SGP4::SGP4Init(const ElementsOrbitaux &elements)
             _data.d4 = 0.5 * temp * _data.ao * tsi * (221. * _data.ao + 31. * sfour) * _data.cc1;
             _data.t3cof = _data.d2 + 2. * cc1sq;
             _data.t4cof = 0.25 * (3. * _data.d3 + _data.cc1 * (12. * _data.d2 + 10. * cc1sq));
-            _data.t5cof = 0.2 * (3. * _data.d4 + 12. * _data.cc1 * _data.d3 + 6. * _data.d2 * _data.d2 + 15. * cc1sq *
-                                    (2. * _data.d2 + cc1sq));
+            _data.t5cof = 0.2 * (3. * _data.d4 + 12. * _data.cc1 * _data.d3 + 6. * _data.d2 * _data.d2 + 15. * cc1sq * (2. * _data.d2 + cc1sq));
         }
 
         _init = true;

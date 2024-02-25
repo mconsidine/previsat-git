@@ -40,19 +40,15 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"*
 #include <QDir>
 #include <QFile>
 #include <QSettings>
 #include <QStyle>
 #include <QTcpSocket>
 #include "ui_informations.h"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "informations.h"
 #include "configuration/configuration.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/systeme/telechargement.h"
 
 
@@ -86,9 +82,9 @@ Informations::Informations(QWidget *fenetreParent) :
 
         Initialisation();
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 
     /* Retour */
@@ -212,7 +208,7 @@ void Informations::OuvertureInfo(const QString &nomfic, QWidget *onglet, QTextBr
                 _ui->ongletsInfos->removeTab(_ui->ongletsInfos->indexOf(onglet));
             }
         }
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
     }
 
     /* Retour */

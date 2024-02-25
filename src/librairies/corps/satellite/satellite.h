@@ -51,23 +51,8 @@
 #include "sgp4.h"
 #include "signal.h"
 #include "elementsorbitaux.h"
+#include "satelliteconst.h"
 
-
-struct ElementsTraceCiel {
-    double hauteur;
-    double azimut;
-    double jourJulienUTC;
-    bool eclipseTotale;
-    bool eclipsePartielle;
-};
-
-struct ElementsTraceSol {
-    double longitude;
-    double latitude;
-    double jourJulienUTC;
-    bool eclipseTotale;
-    bool eclipsePartielle;
-};
 
 class Satellite : public Corps
 {
@@ -133,7 +118,7 @@ public:
      * Modele SGP4 : d'apres l'article "Revisiting Spacetrack Report #3: Rev 3" de David Vallado (2006)
      * @param[in] date date
      */
-    void CalculPosVit(const Date &date);
+    void CalculPosVit(const Date &date) override;
 
     /**
      * @brief CalculPosVitListeSatellites Calcul de la position d'une liste de satellites
@@ -173,7 +158,11 @@ public:
      * @param[in] observateur observateur
      * @param[in] sec pas en secondes
      */
-    void CalculTraceCiel(const Date &date, const bool acalcEclipseLune, const bool refraction, const Observateur &observateur, const int sec = 0);
+    void CalculTraceCiel(const Date &date,
+                         const bool acalcEclipseLune,
+                         const bool refraction,
+                         const Observateur &observateur,
+                         const int sec = 0);
 
     /**
      * @brief CalculTracesAuSol Calcul des traces au sol
@@ -182,7 +171,10 @@ public:
      * @param[in] acalcEclipseLune calcul des eclipses produites par la Lune
      * @param[in] refraction prise en compte de la refraction atmospherique
      */
-    void CalculTracesAuSol(const Date &dateInit, const int nbOrb, const bool acalcEclipseLune, const bool refraction);
+    void CalculTracesAuSol(const Date &dateInit,
+                           const int nbOrb,
+                           const bool acalcEclipseLune,
+                           const bool refraction);
 
     /**
      * @brief hasAOS Determination si le satellite peut se lever (ou se coucher) dans le ciel de l'observateur
@@ -208,14 +200,14 @@ public:
     int deltaNbOrb() const;
     unsigned int nbOrbites() const;
 
-    const ElementsOrbitaux &elementsOrbitaux() const;
-    const ConditionEclipse &conditionEclipse() const;
-    const ElementsOsculateurs &elementsOsculateurs() const;
-    const Magnitude &magnitude() const;
-    const Phasage &phasage() const;
-    const Signal &signal() const;
-    const QList<ElementsTraceSol> &traceAuSol() const;
-    const QList<ElementsTraceCiel> &traceCiel() const;
+    ElementsOrbitaux elementsOrbitaux() const;
+    ConditionEclipse conditionEclipse() const;
+    ElementsOsculateurs elementsOsculateurs() const;
+    Magnitude magnitude() const;
+    Phasage phasage() const;
+    Signal signal() const;
+    QList<ElementsTraceSol> traceAuSol() const;
+    QList<ElementsTraceCiel> traceCiel() const;
 
 
 protected:

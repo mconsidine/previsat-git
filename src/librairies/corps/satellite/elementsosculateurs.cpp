@@ -88,7 +88,8 @@ ElementsOsculateurs::ElementsOsculateurs()
 /*
  * Calcul des elements osculateurs pour une orbite elliptique
  */
-void ElementsOsculateurs::Calcul(const Vecteur3D &position, const Vecteur3D &vitesse)
+void ElementsOsculateurs::Calcul(const Vecteur3D &position,
+                                 const Vecteur3D &vitesse)
 {
     /* Declarations des variables locales */
 

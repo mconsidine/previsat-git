@@ -34,13 +34,7 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
 #include "interface/afficherresultats.h"
@@ -48,7 +42,7 @@
 #include "librairies/corps/satellite/tle.h"
 #include "previsions/flashs.h"
 #include "flashstest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -62,7 +56,6 @@ void FlashsTest::testAll()
     dir = QDir::current();
     dir.cdUp();
     dir.cdUp();
-    dir.cdUp();
     dir.cd(qApp->applicationName());
 
     const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
@@ -74,7 +67,7 @@ void FlashsTest::testAll()
     Configuration::instance()->_dirLocalData = dirLocalData;
     Configuration::instance()->_dirCfg = dirLocalData + QDir::separator() + "config";
     Configuration::instance()->LectureDonneesSatellites();
-    Configuration::instance()->_mapFlashs = GestionnaireXml::LectureStatutSatellitesFlashs();
+    Configuration::instance()->_mapFlashs = GestionnaireXml::LectureSatellitesFlashs();
 
     conditions.jj1 = 7531.416666666667;
     conditions.jj2 = 7562.416666666667;
@@ -105,7 +98,7 @@ void FlashsTest::testCalculFlashs()
     const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "flares-spctrk.txt";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "flashs1_20200815_20200915.txt";
 
-    conditions.tabElem = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+    conditions.tabElem = TLE::Lecture(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul des flashs
@@ -129,8 +122,8 @@ void FlashsTest::testCalculMagnitudeFlash()
     Configuration::instance()->LectureDonneesSatellites();
 
     const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "flares-spctrk.txt";
-    const QMap<QString, ElementsOrbitaux> mapTle = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(),
-                                                                       Configuration::instance()->lgRec());
+    const QMap<QString, ElementsOrbitaux> mapTle = TLE::Lecture(fichier, Configuration::instance()->donneesSatellites(),
+                                                                Configuration::instance()->lgRec());
 
     Date date(2020, 9, 13, 4, 48, 3.5, 0.);
 
@@ -139,11 +132,11 @@ void FlashsTest::testCalculMagnitudeFlash()
 
     Satellite sat(mapTle["33412"]);
     sat.CalculPosVit(date);
-    sat.CalculCoordHoriz(obs);
+    sat.CalculCoordHoriz(obs, true);
 
     Soleil soleil;
-    soleil.CalculPosition(date);
-    soleil.CalculCoordHoriz(obs);
+    soleil.CalculPosVit(date);
+    soleil.CalculCoordHoriz(obs, true);
 
-    QCOMPARE(Flashs::CalculMagnitudeFlash(date, sat, soleil, true, true), -1.8325270898970918);
+    QCOMPARE(Flashs::CalculMagnitudeFlash(date, sat, soleil, true, true), -1.8325270487881304);
 }

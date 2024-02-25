@@ -35,42 +35,39 @@
  */
 
 #include <iostream>
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QCoreApplication>
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
-#include "test/src/interface/generaltest.h"
-#include "test/src/interface/informationstest.h"
-#include "test/src/interface/osculateurstest.h"
-#include "test/src/librairies/corps/satellite/conditioneclipsetest.h"
-#include "test/src/librairies/corps/satellite/donneestest.h"
-#include "test/src/librairies/corps/satellite/elementsosculateurstest.h"
-#include "test/src/librairies/corps/satellite/evenementstest.h"
-#include "test/src/librairies/corps/satellite/gpformattest.h"
-#include "test/src/librairies/corps/satellite/magnitudetest.h"
-#include "test/src/librairies/corps/satellite/phasagetest.h"
-#include "test/src/librairies/corps/satellite/satellitetest.h"
-#include "test/src/librairies/corps/satellite/sgp4test.h"
-#include "test/src/librairies/corps/satellite/signaltest.h"
-#include "test/src/librairies/corps/satellite/tletest.h"
-#include "test/src/librairies/corps/systemesolaire/lunetest.h"
-#include "test/src/librairies/corps/systemesolaire/planetetest.h"
-#include "test/src/librairies/corps/systemesolaire/soleiltest.h"
-#include "test/src/librairies/dates/datetest.h"
-#include "test/src/librairies/maths/mathstest.h"
-#include "test/src/librairies/observateur/observateurtest.h"
-#include "test/src/librairies/systeme/logmessagetest.h"
-#include "test/src/librairies/systeme/telechargementtest.h"
-#include "test/src/previsions/evenementsorbitauxtest.h"
-#include "test/src/previsions/flashstest.h"
-#include "test/src/previsions/previsiontest.h"
-#include "test/src/previsions/starlinktest.h"
-#include "test/src/previsions/telescopetest.h"
-#include "test/src/previsions/transitstest.h"
+#include "interface/generaltest.h"
+#include "interface/informationstest.h"
+#include "interface/osculateurstest.h"
+#include "librairies/corps/satellite/conditioneclipsetest.h"
+#include "librairies/corps/satellite/donneestest.h"
+#include "librairies/corps/satellite/elementsosculateurstest.h"
+#include "librairies/corps/satellite/evenementstest.h"
+#include "librairies/corps/satellite/gpformattest.h"
+#include "librairies/corps/satellite/magnitudetest.h"
+#include "librairies/corps/satellite/phasagetest.h"
+#include "librairies/corps/satellite/satellitetest.h"
+#include "librairies/corps/satellite/sgp4test.h"
+#include "librairies/corps/satellite/signaltest.h"
+#include "librairies/corps/satellite/tletest.h"
+#include "librairies/corps/systemesolaire/lunetest.h"
+#include "librairies/corps/systemesolaire/planetetest.h"
+#include "librairies/corps/systemesolaire/soleiltest.h"
+#include "librairies/dates/datetest.h"
+#include "librairies/maths/mathstest.h"
+#include "librairies/maths/matrice3dtest.h"
+#include "librairies/maths/vecteur3dtest.h"
+#include "librairies/observateur/observateurtest.h"
+#include "librairies/systeme/fichierxmltest.h"
+#include "librairies/systeme/logmessagetest.h"
+#include "librairies/systeme/telechargementtest.h"
+#include "previsions/evenementsorbitauxtest.h"
+#include "previsions/flashstest.h"
+#include "previsions/previsiontest.h"
+#include "previsions/starlinktest.h"
+#include "previsions/telescopetest.h"
+#include "previsions/transitstest.h"
 
 
 class PreviSatTest : public QObject
@@ -101,12 +98,17 @@ void PreviSatTest::testAll()
 {
     // Librairies
     MathsTest::testAll();
+    Vecteur3DTest::testAll();
+    Matrice3DTest::testAll();
     DateTest::testAll();
-    TelechargementTest::testAll();
+
     SoleilTest::testAll();
     PlaneteTest::testAll();
     LuneTest::testAll();
     ObservateurTest::testAll();
+
+    TelechargementTest::testAll();
+    FichierXmlTest::testAll();
 
     DonneesTest::testAll();
     TLETest::testAll();

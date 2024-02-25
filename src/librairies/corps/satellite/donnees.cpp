@@ -34,9 +34,7 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#include <QObject>
-#pragma GCC diagnostic warning "-Wswitch-default"
+#include "librairies/corps/corpsconst.h"
 #include "donnees.h"
 
 
@@ -57,12 +55,18 @@ Donnees::Donnees()
     /* Initialisations */
 
     /* Corps du constructeur */
+    _longueur = 0.;
+    _diametre = 0.;
+    _envergure = 0.;
+
     _methMagnitude = 'v';
-    _magnitudeStandard = 99.;
-    _section = 0.;
-    _t1 = 0.;
-    _t2 = 0.;
-    _t3 = 0.;
+    _magnitudeStandard = CORPS::MAGNITUDE_INDEFINIE;
+
+    _stsDateRentree = ' ';
+    _stsHeureRentree = ' ';
+
+    _apogee = 0.;
+    _perigee = 0.;
 
     /* Retour */
     return;
@@ -86,27 +90,36 @@ Donnees::Donnees(const QString &donnee)
             _cospar = QObject::tr("N/A");
         }
 
-        _t1 = donnee.mid(19, 5).toDouble();
-        _t2 = donnee.mid(25, 4).toDouble();
-        _t3 = donnee.mid(30, 4).toDouble();
+        _dateLancement = donnee.mid(19, 19).trimmed();
+        _dateRentree = donnee.mid(39, 19).trimmed();
+        _stsDateRentree = donnee.at(59).toLatin1();
+        _stsHeureRentree = donnee.at(60).toLatin1();
 
-        _magnitudeStandard = donnee.mid(35, 5).toDouble();
-        _methMagnitude = donnee.at(41).toLatin1();
-        _section = donnee.mid(43, 6).toDouble();
+        _masseSec = donnee.mid(62, 8).trimmed();
+        _masseTot = donnee.mid(71, 9).trimmed();
 
-        _dateLancement = donnee.mid(50, 10);
-        _dateRentree = donnee.mid(61, 10).trimmed();
+        _longueur = donnee.mid(81, 7).toDouble();
+        _diametre = donnee.mid(89, 6).toDouble();
+        _envergure = donnee.mid(96, 8).toDouble();
 
-        _periode = donnee.mid(72, 10).trimmed();
-        _perigee = donnee.mid(83, 7).trimmed();
-        _apogee = donnee.mid(91, 7).trimmed();
+        _forme = donnee.mid(105, 32).trimmed();
+        _classe = donnee.at(138).toLatin1();
+        _categorie = donnee.mid(140, 4).trimmed();
+        _discipline = donnee.mid(145, 16).trimmed();
 
-        _inclinaison = donnee.mid(99, 6).trimmed();
-        _categorieOrbite = donnee.mid(106, 6).trimmed();
+        _magnitudeStandard = donnee.mid(162, 5).toDouble();
+        _methMagnitude = donnee.at(168).toLatin1();
 
-        _pays = donnee.mid(113, 5).trimmed();
-        _siteLancement = donnee.mid(119, 5).trimmed();
-        _nom = donnee.mid(125).trimmed();
+        _periode = donnee.mid(170, 10).trimmed();
+        _perigee = donnee.mid(181, 7).toDouble();
+        _apogee = donnee.mid(189, 7).toDouble();
+
+        _inclinaison = donnee.mid(197, 6).trimmed();
+        _orbite = donnee.mid(204, 6).trimmed();
+
+        _pays = donnee.mid(211, 5).trimmed();
+        _siteLancement = donnee.mid(217, 5).trimmed();
+        _nom = donnee.mid(223).trimmed();
     }
 
     /* Retour */
@@ -126,29 +139,54 @@ char Donnees::methMagnitude() const
     return _methMagnitude;
 }
 
+char Donnees::stsDateRentree() const
+{
+    return _stsDateRentree;
+}
+
+char Donnees::stsHeureRentree() const
+{
+    return _stsHeureRentree;
+}
+
 double Donnees::magnitudeStandard() const
 {
     return _magnitudeStandard;
 }
 
-double Donnees::section() const
+double Donnees::longueur() const
 {
-    return _section;
+    return _longueur;
 }
 
-double Donnees::t1() const
+double Donnees::diametre() const
 {
-    return _t1;
+    return _diametre;
 }
 
-double Donnees::t2() const
+double Donnees::envergure() const
 {
-    return _t2;
+    return _envergure;
 }
 
-double Donnees::t3() const
+QString Donnees::periode() const
 {
-    return _t3;
+    return _periode;
+}
+
+double Donnees::perigee() const
+{
+    return _perigee;
+}
+
+double Donnees::apogee() const
+{
+    return _apogee;
+}
+
+QString Donnees::inclinaison() const
+{
+    return _inclinaison;
 }
 
 QString Donnees::norad() const
@@ -156,52 +194,62 @@ QString Donnees::norad() const
     return _norad;
 }
 
-const QString &Donnees::cospar() const
+QString Donnees::cospar() const
 {
     return _cospar;
 }
 
-const QString &Donnees::dateLancement() const
+QString Donnees::dateLancement() const
 {
     return _dateLancement;
 }
 
-const QString &Donnees::dateRentree() const
+QString Donnees::dateRentree() const
 {
     return _dateRentree;
 }
 
-const QString &Donnees::periode() const
+QString Donnees::masseSec() const
 {
-    return _periode;
+    return _masseSec;
 }
 
-const QString &Donnees::perigee() const
+QString Donnees::masseTot() const
 {
-    return _perigee;
+    return _masseTot;
 }
 
-const QString &Donnees::apogee() const
+QString Donnees::forme() const
 {
-    return _apogee;
+    return _forme;
 }
 
-const QString &Donnees::inclinaison() const
+QString Donnees::classe() const
 {
-    return _inclinaison;
+    return _classe;
 }
 
-const QString &Donnees::categorieOrbite() const
+QString Donnees::categorie() const
 {
-    return _categorieOrbite;
+    return _categorie;
 }
 
-const QString &Donnees::pays() const
+QString Donnees::discipline() const
+{
+    return _discipline;
+}
+
+QString Donnees::orbite() const
+{
+    return _orbite;
+}
+
+QString Donnees::pays() const
 {
     return _pays;
 }
 
-const QString &Donnees::siteLancement() const
+QString Donnees::siteLancement() const
 {
     return _siteLancement;
 }

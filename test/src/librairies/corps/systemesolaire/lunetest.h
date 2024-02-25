@@ -52,7 +52,7 @@ public:
 
 private:
 
-    static void testCalculPosition();
+    static void testCalculPositionSimp();
     static void testCalculMagnitudePhase();
     static void testCalculLeverMeridienCoucher();
     static void testCalculDatesPhases();

@@ -34,9 +34,6 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wshadow"
 #include <QDesktopServices>
 #include <QDir>
 #include <QFileDialog>
@@ -47,9 +44,6 @@
 #include <QSettings>
 #include <QtConcurrent>
 #include "ui_suivitelescope.h"
-#pragma GCC diagnostic warning "-Wshadow"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "ajustementdates.h"
 #include "suivitelescope.h"
 #include "configuration/configuration.h"
@@ -58,7 +52,7 @@
 #include "librairies/corps/satellite/evenements.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/dates/date.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "previsions/telescope.h"
 
 
@@ -93,9 +87,9 @@ SuiviTelescope::SuiviTelescope(QWidget *parent) :
 
         Initialisation();
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 
@@ -291,14 +285,14 @@ void SuiviTelescope::CalculAos()
         Observateur obs = Configuration::instance()->observateurs().at(_ui->lieuxObservation->currentIndex());
 
         if (_ui->listeTelescope->count() == 0) {
-            throw PreviSatException();
+            throw Exception();
         }
 
         _ui->frameSatSelectionne->setVisible(true);
         const int nsat = getListItemChecked(_ui->listeTelescope);
         if ((nsat == 0) && (_ui->listeTelescope->count() > 0) && _ui->listeTelescope->isVisible()) {
             _ui->frameSatSelectionne->setVisible(false);
-            throw PreviSatException();
+            throw Exception();
         }
 
         for (int i=0; i<_ui->listeTelescope->count(); i++) {
@@ -316,14 +310,14 @@ void SuiviTelescope::CalculAos()
 
         Satellite satSuivi(elements);
         satSuivi.CalculPosVit(dateCalcul);
-        satSuivi.CalculCoordHoriz(obs);
+        satSuivi.CalculCoordHoriz(obs, true);
         satSuivi.CalculElementsOsculateurs(dateCalcul);
 
         Soleil sol;
-        sol.CalculPosition(dateCalcul);
+        sol.CalculPosVit(dateCalcul);
 
         Lune lun;
-        lun.CalculPosition(dateCalcul);
+        lun.CalculPosVit(dateCalcul);
 
         condEcl.CalculSatelliteEclipse(satSuivi.position(), sol, &lun, true);
         const QString ecl = (condEcl.eclipseTotale()) ? tr("Satellite en éclipse") : tr("Satellite éclairé");
@@ -502,7 +496,7 @@ void SuiviTelescope::CalculAos()
             }
         }
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
     }
 
     /* Retour */
@@ -515,7 +509,7 @@ void SuiviTelescope::CalculAos()
 QPointF SuiviTelescope::CalculHauteurMax(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, const Observateur &obs, Satellite &satSuivi) const
 {
     /* Declarations des variables locales */
-    std::array<double, MATHS::DEGRE_INTERPOLATION> ht;
+    std::array<QPointF, MATHS::DEGRE_INTERPOLATION> ht;
 
     /* Initialisations */
     Observateur observateur = obs;
@@ -529,14 +523,14 @@ QPointF SuiviTelescope::CalculHauteurMax(const std::array<double, MATHS::DEGRE_I
 
         // Position du satellite
         satSuivi.CalculPosVit(date);
-        satSuivi.CalculCoordHoriz(observateur);
+        satSuivi.CalculCoordHoriz(observateur, true);
 
         // Hauteur
-        ht[i] = satSuivi.hauteur();
+        ht[i] = QPointF(jjm[i], satSuivi.hauteur());
     }
 
     /* Retour */
-    return Maths::CalculExtremumInterpolation3(jjm, ht);
+    return Maths::CalculExtremumInterpolation3(ht);
 }
 
 /*
@@ -604,7 +598,7 @@ void SuiviTelescope::on_genererPositions_clicked()
     try {
 
         if (_ui->listeTelescope->count() == 0) {
-            throw PreviSatException();
+            throw Exception();
         }
 
         // Elements orbitaux
@@ -617,7 +611,7 @@ void SuiviTelescope::on_genererPositions_clicked()
         }
 
         if (mapElem.isEmpty()) {
-            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), MessageType::WARNING);
+            throw Exception(tr("Aucun satellite n'est sélectionné dans la liste"), MessageType::WARNING);
         }
 
         // Calcul de l'intervalle de temps lorsque le satellite est au-dessus de l'horizon
@@ -628,7 +622,7 @@ void SuiviTelescope::on_genererPositions_clicked()
 
         Satellite satSuivi(mapElem.first());
         satSuivi.CalculPosVit(date);
-        satSuivi.CalculCoordHoriz(obs);
+        satSuivi.CalculCoordHoriz(obs, true);
         satSuivi.CalculElementsOsculateurs(date);
 
         // Hauteur minimale du satellite
@@ -735,7 +729,7 @@ void SuiviTelescope::on_genererPositions_clicked()
             }
         }
 
-    } catch (PreviSatException &) {
+    } catch (Exception const &) {
     }
 
     /* Retour */
@@ -937,8 +931,9 @@ void SuiviTelescope::on_ajusterDates_clicked()
                                                     abs(_ui->valHauteurSatSuivi->text().toInt()) : 5 * _ui->hauteurSatSuivi->currentIndex());
 
     /* Corps de la methode */
-    AjustementDates * const ajustementDates = new AjustementDates(_dateAosSuivi->ToQDateTime(1), _dateLosSuivi->ToQDateTime(1), observateur, elements,
-                                                                  _date->offsetUTC(), hauteur, this);
+    AjustementDates * const ajustementDates = new AjustementDates(_dateAosSuivi->ToQDateTime(DateFormatSec::FORMAT_SEC),
+                                                                 _dateLosSuivi->ToQDateTime(DateFormatSec::FORMAT_SEC),
+                                                                 observateur, elements, _date->offsetUTC(), hauteur, this);
 
     QEvent evt(QEvent::LanguageChange);
 

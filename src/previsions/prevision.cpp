@@ -34,12 +34,8 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QElapsedTimer>
 #include <QFileInfo>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/satellite.h"
@@ -97,7 +93,7 @@ void Prevision::setConditions(const ConditionsPrevisions &conditions)
 /*
  * Calcul des previsions de passage
  */
-int Prevision::CalculPrevisions(int &nombre)
+int Prevision::CalculPrevisions(const int &nombre)
 {
     /* Declarations des variables locales */
     QElapsedTimer tps;
@@ -192,7 +188,7 @@ int Prevision::CalculPrevisions(int &nombre)
             if (sat.hauteur() >= _conditions.hauteur) {
 
                 if (_conditions.calcEclipseLune) {
-                    lune.CalculPosition(date);
+                    lune.CalculPosVit(date);
                 }
 
                 // Conditions d'eclipse du satellite
@@ -211,8 +207,8 @@ int Prevision::CalculPrevisions(int &nombre)
                         ((sat.elementsOrbitaux().donnees.magnitudeStandard() > 98.) && (_conditions.magnitudeLimite > 98.))
                         || !_conditions.eclipse) {
 
-                        sat.CalculCoordHoriz(obs);
-                        soleil.CalculCoordHoriz(obs);
+                        sat.CalculCoordHoriz(obs, true);
+                        soleil.CalculCoordHoriz(obs, true);
 
                         // Ascension droite, declinaison, constellation
                         sat.CalculCoordEquat(obs);
@@ -233,8 +229,9 @@ int Prevision::CalculPrevisions(int &nombre)
                                 res.elements = sat.elementsOrbitaux();
 
                                 // Altitude du satellite
-                                sat.CalculLatitude(sat.position());
-                                res.altitude = sat.CalculAltitude(sat.position());
+                                sat.CalculLatitude();
+                                sat.CalculAltitude();
+                                res.altitude = sat.altitude();
 
                                 // Date calendaire (UTC)
                                 res.date = Date(date.jourJulienUTC(), 0.);
@@ -266,20 +263,20 @@ int Prevision::CalculPrevisions(int &nombre)
                             // Calcul pour le pas suivant
                             date = Date(date.jourJulienUTC() + _conditions.pas, 0., false);
                             _conditions.observateur.CalculPosVit(date);
-                            soleil.CalculPosition(date);
-                            soleil.CalculCoordHoriz(_conditions.observateur);
+                            soleil.CalculPosVit(date);
+                            soleil.CalculCoordHoriz(_conditions.observateur, true);
 
                             if ((soleil.hauteur() > _conditions.crepuscule) || (date.jourJulienUTC() > (_conditions.jj2 + _conditions.pas))) {
                                 afin = true;
                             } else {
                                 sat.CalculPosVit(date);
-                                sat.CalculCoordHoriz(_conditions.observateur);
+                                sat.CalculCoordHoriz(_conditions.observateur, true);
 
                                 if (sat.hauteur() < _conditions.hauteur) {
                                     afin = true;
                                 } else {
                                     if (_conditions.calcEclipseLune) {
-                                        lune.CalculPosition(date);
+                                        lune.CalculPosVit(date);
                                     }
                                     condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
                                     magnitude.Calcul(condEcl, _conditions.observateur, sat.distance(), sat.hauteur(),
@@ -359,7 +356,7 @@ QList<EphemeridesPrevisions> Prevision::CalculEphemSoleilObservateur()
         _conditions.observateur.CalculPosVit(date);
 
         // Position du Soleil
-        soleil.CalculPosition(date);
+        soleil.CalculPosVit(date);
         soleil.CalculCoordHoriz(_conditions.observateur, false);
 
         if (soleil.hauteur() <= _conditions.crepuscule) {

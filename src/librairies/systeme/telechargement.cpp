@@ -34,14 +34,8 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wredundant-decls"
 #include <QtNetwork/QtNetwork>
-#pragma GCC diagnostic warning "-Wredundant-decls"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "telechargement.h"
 
 
@@ -67,7 +61,9 @@ Telechargement::Telechargement(const QString &dir) :
 /*
  * Telechargement de fichier
  */
-void Telechargement::TelechargementFichier(const QUrl &url, const bool alarme, const bool logAlarme)
+void Telechargement::TelechargementFichier(const QUrl &url,
+                                           const bool alarme,
+                                           const bool logAlarme)
 {
     /* Declarations des variables locales */
     QNetworkAccessManager manager;
@@ -95,9 +91,9 @@ void Telechargement::TelechargementFichier(const QUrl &url, const bool alarme, c
         }
 #endif
         if (alarme) {
-            throw PreviSatException(tr("Erreur lors du téléchargement du fichier %1").arg(fic), MessageType::WARNING);
+            throw Exception(tr("Erreur lors du téléchargement du fichier %1").arg(fic), MessageType::WARNING);
         } else {
-            throw PreviSatException();
+            throw Exception();
         }
 
     } else {
@@ -121,9 +117,9 @@ void Telechargement::TelechargementFichier(const QUrl &url, const bool alarme, c
             }
 
             if (alarme) {
-                throw PreviSatException(tr("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn), MessageType::WARNING);
+                throw Exception(tr("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn), MessageType::WARNING);
             } else {
-                throw PreviSatException();
+                throw Exception();
             }
 #endif
         }
@@ -168,7 +164,7 @@ bool Telechargement::UrlExiste(const QUrl &url)
 /*
  * Accesseurs
  */
-const QString &Telechargement::dirDwn() const
+QString Telechargement::dirDwn() const
 {
     return _dirDwn;
 }
@@ -193,7 +189,8 @@ const QString &Telechargement::dirDwn() const
 /*
  * Progression du telechargement
  */
-void Telechargement::ProgressionTelechargement(qint64 octetsRecus, qint64 octetsTotal)
+void Telechargement::ProgressionTelechargement(qint64 octetsRecus,
+                                               qint64 octetsTotal)
 {
     /* Declarations des variables locales */
     QString unite;

@@ -34,16 +34,12 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QScopedPointer>
 #include <QTextStream>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "logmessage.h"
 
 
@@ -58,7 +54,9 @@ static const QHash<QtMsgType, QString> typeMessage = {
     { QtMsgType::QtFatalMsg,    "FATAL  " }
 };
 
-void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+void messageHandler(QtMsgType type,
+                    const QMessageLogContext &context,
+                    const QString &msg);
 
 
 /**********
@@ -71,7 +69,8 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 /*
  * Constructeur par defaut
  */
-LogMessage::LogMessage(const QString &baseNomFichier, const unsigned int nbMaxFic)
+LogMessage::LogMessage(const QString &baseNomFichier,
+                       const unsigned int nbMaxFic)
 {
     /* Declarations des variables locales */
 
@@ -156,7 +155,9 @@ const QString &LogMessage::nomFicLog()
 /*
  * Ecriture du message de log
  */
-void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+void messageHandler(QtMsgType type,
+                    const QMessageLogContext &context,
+                    const QString &msg)
 {
     /* Declarations des variables locales */
 
@@ -173,7 +174,11 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 
     out << typeMessage.value(type) << " : ";
     if (!nomFichier.isEmpty()) {
+#if (BUILD_TEST == true)
+        const QString fic = nomFichier;
+#else
         const QString fic = QString("%1 (ligne %2)").arg(nomFichier).arg(context.line);
+#endif
         out << QString("%1 : %2 : ").arg(fic, -45).arg(nomFonction, -45);
     }
 

@@ -60,6 +60,7 @@ public:
     /**
      * @brief Ecriture Ecriture du fichier de lieu d'observation
      * @param[in] ficObsXml nom du fichier
+     * @throw Exception
      */
     static void Ecriture(const QString &ficObsXml);
 
@@ -68,8 +69,10 @@ public:
      * @param[in] ficObsXml nom du fichier
      * @param[in] alarme affichage d'un message si le fichier ne contient pas de lieux d'observations
      * @return map contenant les lieux d'observation
+     * @throw Exception
      */
-    static QMap<QString, Observateur> Lecture(const QString &ficObsXml, const bool alarme);
+    static QMap<QString, Observateur> Lecture(const QString &ficObsXml,
+                                              const bool alarme = true);
 
 
     /*

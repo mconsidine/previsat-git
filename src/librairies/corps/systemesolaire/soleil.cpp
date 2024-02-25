@@ -62,6 +62,9 @@ Soleil::Soleil()
     return;
 }
 
+/*
+ * Constructeur a partir du vecteur position
+ */
 Soleil::Soleil(const Vecteur3D &pos)
 {
     /* Declarations des variables locales */
@@ -81,49 +84,9 @@ Soleil::Soleil(const Vecteur3D &pos)
  * Methodes publiques
  */
 /*
- * Calcul des heures de lever/coucher/passage au meridien/crepuscules pour une date donnee
+ * Calcul simplifie de la position du Soleil
  */
-void Soleil::CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur, const DateSysteme &syst)
-{
-    /* Declarations des variables locales */
-    Soleil soleil;
-    Ephemerides eph;
-
-    /* Initialisations */
-    Observateur obs = observateur;
-    Date dateCalcul(date.annee(), date.mois(), date.jour() - date.offsetUTC(), date.offsetUTC());
-    const Date dateFin(dateCalcul.jourJulienUTC() + 1., date.offsetUTC(), false);
-    _ephem.clear();
-
-    /* Corps de la methode */
-    do {
-
-        obs.CalculPosVit(dateCalcul);
-
-        soleil.CalculPosition(dateCalcul);
-        soleil.CalculCoordHoriz(obs, true, true, true);
-
-        eph.jourJulienUTC = dateCalcul.jourJulienUTC();
-        eph.hauteur = soleil.hauteur();
-        eph.azimut = soleil.azimut();
-
-        _ephem.append(eph);
-
-        dateCalcul = Date(dateCalcul.jourJulienUTC() + DATE::NB_JOUR_PAR_MIN, 0., false);
-
-    } while (dateCalcul.jourJulienUTC() <= dateFin.jourJulienUTC());
-
-    Corps::CalculLeverMeridienCoucher(date, syst);
-
-    /* Retour */
-    return;
-}
-
-/*
- * Calcul de la position du Soleil a partir du modele simplifie
- * de l'Astronomical Algorithms 2nd edition de Jean Meeus, p163-164
- */
-void Soleil::CalculPosition(const Date &date)
+void Soleil::CalculPositionSimp(const Date &date)
 {
     /* Declarations des variables locales */
     double u1;
@@ -162,7 +125,7 @@ void Soleil::CalculPosition(const Date &date)
     const Vecteur3D pos(_lonEcl, 0., _distanceUA);
 
     // Position cartesienne equatoriale
-    _position = Sph2Cart(pos, date) * SOLEIL::UA2KM;
+    _position = Sph2Cart(pos, date) * CORPS::UA2KM;
 
     /* Retour */
     return;
@@ -195,3 +158,40 @@ double Soleil::distanceUA() const
  * Methodes privees
  */
 
+/*
+ * Calcul des ephemerides du Soleil pour determiner les heures de lever/meriden/coucher
+ */
+void Soleil::CalculEphemLeverMeridienCoucher(const Date &date,
+                                             const Observateur &observateur)
+{
+    /* Declarations des variables locales */
+    Soleil soleil;
+    Ephemerides eph;
+
+    /* Initialisations */
+    Observateur obs = observateur;
+    Date dateCalcul(date.annee(), date.mois(), date.jour() - date.offsetUTC(), date.offsetUTC());
+    const Date dateFin(dateCalcul.jourJulienUTC() + 1., date.offsetUTC(), false);
+    _ephem.clear();
+
+    /* Corps de la methode */
+    do {
+
+        obs.CalculPosVit(dateCalcul);
+
+        soleil.CalculPositionSimp(dateCalcul);
+        soleil.CalculCoordHoriz(obs, true, true, true);
+
+        eph.jourJulienUTC = dateCalcul.jourJulienUTC();
+        eph.hauteur = soleil._hauteur;
+        eph.azimut = soleil._azimut;
+
+        _ephem.append(eph);
+
+        dateCalcul = Date(dateCalcul.jourJulienUTC() + DATE::NB_JOUR_PAR_MIN, 0., false);
+
+    } while (dateCalcul.jourJulienUTC() <= dateFin.jourJulienUTC());
+
+    /* Retour */
+    return;
+}

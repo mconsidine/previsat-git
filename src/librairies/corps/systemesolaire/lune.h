@@ -73,13 +73,6 @@ public:
     void CalculDatesPhases(const Date &date);
 
     /**
-     * @brief CalculLeverMeridienCoucher Calcul des heures de lever, passage au meridien et coucher
-     * @param[in] date date
-     * @param[in] observateur observateur
-     */
-    void CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur, const DateSysteme &syst);
-
-    /**
      * @brief CalculMagnitude Calcul de la magnitude visuelle de la Lune
      * @param[in] soleil Soleil
      */
@@ -92,11 +85,19 @@ public:
     void CalculPhase(const Soleil &soleil);
 
     /**
-     * @brief CalculPosition Calcul de la position de la Lune avec le modele simplifie issu de
-     * l'Astronomical Algorithms 2nd edition de Jean Meeus, pp337-342
+     * @brief CalculPositionSimp Calcul simplifie de la position de la Lune
+     * @cite Astronomical Algorithms 2nd edition de Jean Meeus, pp337-342
      * @param[in] date date
      */
-    void CalculPosition(const Date &date);
+    void CalculPositionSimp(const Date &date);
+
+    /**
+     * @brief CalculPosVit Calcul de la position-vitesse du corps
+     * @param date date
+     */
+    void CalculPosVit(const Date &date) override {
+        CalculPositionSimp(date);
+    }
 
 
     /*
@@ -106,8 +107,8 @@ public:
     double anglePhase() const;
     double fractionIlluminee() const;
     double magnitude() const;
-    const QString &phase() const;
-    const std::array<QString, LUNE::NB_PHASES> &datesPhases() const;
+    QString phase() const;
+    std::array<QString, LUNE::NB_PHASES> datesPhases() const;
 
 
 protected:
@@ -137,6 +138,14 @@ private:
     /*
      * Methodes privees
      */
+    /**
+     * @brief CalculEphemLeverMeridienCoucher Calcul des ephemerides de la Lune pour determiner les heures de lever/meriden/coucher
+     * @param[in] date date
+     * @param[in] observateur observateur
+     */
+    void CalculEphemLeverMeridienCoucher(const Date &date,
+                                         const Observateur &observateur) override;
+
     /**
      * @brief CalculJourJulienPhase Calcul du jour julien approximatif d'une phase lunaire
      * @param[in] k nombre de lunaison depuis le 1er janvier 2000 (sans partie fractionnaire pour la nouvelle lune, +0.25 pour le premier quartier, etc.)

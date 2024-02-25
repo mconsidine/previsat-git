@@ -43,11 +43,7 @@
 #ifndef AFFICHERRESULTATS_H
 #define AFFICHERRESULTATS_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QMainWindow>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "previsions/prevision.h"
 
 

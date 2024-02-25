@@ -43,11 +43,7 @@
 #ifndef RECHERCHESATELLITE_H
 #define RECHERCHESATELLITE_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFrame>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 
 
 namespace Ui {

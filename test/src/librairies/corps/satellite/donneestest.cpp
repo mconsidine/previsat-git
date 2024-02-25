@@ -34,16 +34,10 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "librairies/corps/satellite/donnees.h"
 #include "donneestest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -57,26 +51,33 @@ void DonneesTest::testDonnees()
 {
     qInfo(Q_FUNC_INFO);
 
-    const QString donnees = "025544 1998-067A    30.0 20.0  0.0 -0.43 v 399.00 1998-11-20                 92.95     417     421  51.64 LEO/I  ISS   " \
-        "TTMTR ISS (ZARYA)";
+    const QString donnees = "025544 1998-067A   1998-11-20T06:40:00                           19000     20351    12.6    4.2     23.9 " \
+        "Cyl + 2 Pan                      C SS   -                -0.43 v      92.94     416     421  51.64 LEO/I  ISS   TTMTR ISS (ZARYA)";
 
     const Donnees donneeIss(donnees);
 
     QCOMPARE(donneeIss.norad(), "025544");
     QCOMPARE(donneeIss.cospar(), "1998-067A");
-    QCOMPARE(donneeIss.t1(), 30.);
-    QCOMPARE(donneeIss.t2(), 20.);
-    QCOMPARE(donneeIss.t3(), 0.);
+    QCOMPARE(donneeIss.dateLancement(), "1998-11-20T06:40:00");
+    QCOMPARE(donneeIss.dateRentree(), "");
+    QCOMPARE(donneeIss.stsDateRentree(), ' ');
+    QCOMPARE(donneeIss.stsHeureRentree(), ' ');
+    QCOMPARE(donneeIss.masseSec(), "19000");
+    QCOMPARE(donneeIss.masseTot(), "20351");
+    QCOMPARE(donneeIss.longueur(), 12.6);
+    QCOMPARE(donneeIss.diametre(), 4.2);
+    QCOMPARE(donneeIss.envergure(), 23.9);
+    QCOMPARE(donneeIss.forme(), "Cyl + 2 Pan");
+    QCOMPARE(donneeIss.classe(), 'C');
+    QCOMPARE(donneeIss.categorie(), "SS");
+    QCOMPARE(donneeIss.discipline(), "-");
     QCOMPARE(donneeIss.magnitudeStandard(), -0.43);
     QCOMPARE(donneeIss.methMagnitude(), 'v');
-    QCOMPARE(donneeIss.section(), 399.);
-    QCOMPARE(donneeIss.dateLancement(), "1998-11-20");
-    QCOMPARE(donneeIss.dateRentree(), "");
-    QCOMPARE(donneeIss.periode(), "92.95");
-    QCOMPARE(donneeIss.perigee(), "417");
-    QCOMPARE(donneeIss.apogee(), "421");
+    QCOMPARE(donneeIss.periode(), "92.94");
+    QCOMPARE(donneeIss.perigee(), 416);
+    QCOMPARE(donneeIss.apogee(), 421);
     QCOMPARE(donneeIss.inclinaison(), "51.64");
-    QCOMPARE(donneeIss.categorieOrbite(), "LEO/I");
+    QCOMPARE(donneeIss.orbite(), "LEO/I");
     QCOMPARE(donneeIss.pays(), "ISS");
     QCOMPARE(donneeIss.siteLancement(), "TTMTR");
     QCOMPARE(donneeIss.nom(), "ISS (ZARYA)");

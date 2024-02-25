@@ -34,17 +34,19 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
+#include "librairies/dates/date.h"
+#include "librairies/maths/matrice3d.h"
+#include "librairies/maths/vecteur3d.h"
 #include "testtools.h"
 
 
 namespace TestTools {
+
+void CompareDoublesSeuil(const double actual, const double expected, const double threshold)
+{
+    QCOMPARE_LE(actual - expected, threshold);
+}
 
 void CompareDates(const Date &date1, const Date &date2)
 {

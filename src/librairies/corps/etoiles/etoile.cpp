@@ -30,18 +30,14 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 novembre 2023
+ * >    25 fevrier 2023
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
-#include <QTextStream>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "etoile.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
+#include "librairies/maths/maths.h"
 
 
 /**********
@@ -70,7 +66,10 @@ Etoile::Etoile()
 /*
  * Definition a partir de ses composantes
  */
-Etoile::Etoile(const QString &nomEtoile, const double ascDroite, const double decl, const double mag) :
+Etoile::Etoile(const QString &nomEtoile,
+               const double ascDroite,
+               const double decl,
+               const double mag) :
     _nom(nomEtoile)
 {
     /* Declarations des variables locales */
@@ -93,22 +92,19 @@ Etoile::Etoile(const QString &nomEtoile, const double ascDroite, const double de
 /*
  * Calcul de la position des etoiles
  */
-void Etoile::CalculPositionEtoiles(const Observateur &observateur, QList<Etoile> &etoiles)
+void Etoile::CalculPositionEtoiles(const Observateur &observateur,
+                                   QList<Etoile> &etoiles)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    try {
-        if (etoiles.isEmpty()) {
-            throw PreviSatException(QObject::tr("Le tableau d'étoiles n'est pas initialisé"), MessageType::WARNING);
-        }
-    } catch (PreviSatException &e) {
-        throw PreviSatException();
+    if (etoiles.isEmpty()) {
+        throw Exception(QObject::tr("Le tableau d'étoiles n'est pas initialisé"), MessageType::WARNING);
     }
 
     /* Corps de la methode */
     for (int i=0; i<etoiles.size(); i++) {
-        etoiles[i].CalculCoordHoriz2(observateur);
+        etoiles[i].CalculCoordHoriz3(observateur);
     }
 
     /* Retour */
@@ -118,63 +114,56 @@ void Etoile::CalculPositionEtoiles(const Observateur &observateur, QList<Etoile>
 /*
  * Lecture du fichier d'etoiles
  */
-void Etoile::Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles)
+QList<Etoile> Etoile::Initialisation(const QString &dirCommonData)
 {
     /* Declarations des variables locales */
+    QList<Etoile> etoiles;
 
     /* Initialisations */
 
     /* Corps de la methode */
     const QString fic = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "etoiles.dat";
     QFile fi(fic);
-    if (fi.exists() && (fi.size() != 0)) {
-
-        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-
-            QTextStream flux(&fi);
-
-            double ascDte;
-            double dec;
-            double mag;
-            QString nomEtoile;
-            etoiles.clear();
-
-            while (!flux.atEnd()) {
-
-                const QString ligne = flux.readLine();
-                ascDte = 0.;
-                dec = 0.;
-                mag = 99.;
-                nomEtoile = "";
-
-                if (ligne.length() > 34) {
-
-                    const int ad1 = ligne.mid(0, 2).toInt();
-                    const int ad2 = ligne.mid(2, 2).toInt();
-                    const double ad3 = ligne.mid(4, 4).toDouble();
-                    ascDte = ad1 + ad2 * MATHS::DEG_PAR_ARCMIN + ad3 * MATHS::DEG_PAR_ARCSEC;
-
-                    const int sgnd = (ligne.at(9) == '-') ? -1 : 1;
-                    const int de1 = ligne.mid(10, 2).toInt();
-                    const int de2 = ligne.mid(12, 2).toInt();
-                    const int de3 = ligne.mid(14, 2).toInt();
-                    dec = sgnd * (de1 + de2 * MATHS::DEG_PAR_ARCMIN + de3 * MATHS::DEG_PAR_ARCSEC);
-
-                    mag = ligne.mid(31, 5).toDouble();
-                    nomEtoile = (ligne.length() > 37) ? ligne.mid(37, ligne.length()) : "";
-                }
-
-                etoiles.append(Etoile(nomEtoile, ascDte, dec, mag));
-            }
-        }
-
-        fi.close();
-
-        qInfo() << "Lecture fichier etoiles.dat OK";
+    if (!fi.exists() || (fi.size() == 0)) {
+        const QFileInfo ff(fi.fileName());
+        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME),
+                        MessageType::ERREUR);
     }
 
+    if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        const QFileInfo ff(fi.fileName());
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::ERREUR);
+    }
+
+    const QStringList contenu = QString(fi.readAll()).split("\n", Qt::SkipEmptyParts);
+    fi.close();
+
+    QStringListIterator it(contenu);
+    while (it.hasNext()) {
+
+        const QString ligne = it.next();
+
+        const int ad1 = ligne.mid(0, 2).toInt();
+        const int ad2 = ligne.mid(2, 2).toInt();
+        const double ad3 = ligne.mid(4, 4).toDouble();
+        const double ad = ad1 + ad2 * MATHS::DEG_PAR_ARCMIN + ad3 * MATHS::DEG_PAR_ARCSEC;
+
+        const int sgnd = (ligne.at(9) == '-') ? -1 : 1;
+        const int de1 = ligne.mid(10, 2).toInt();
+        const int de2 = ligne.mid(12, 2).toInt();
+        const int de3 = ligne.mid(14, 2).toInt();
+        const double dec = sgnd * (de1 + de2 * MATHS::DEG_PAR_ARCMIN + de3 * MATHS::DEG_PAR_ARCSEC);
+
+        const double mag = ligne.mid(31, 5).toDouble();
+        const QString nomEtoile = (ligne.length() > 37) ? ligne.mid(37, ligne.length()) : "";
+
+        etoiles.append(Etoile(nomEtoile, ad, dec, mag));
+    }
+
+    qInfo() << "Lecture fichier etoiles.dat OK";
+
     /* Retour */
-    return;
+    return etoiles;
 }
 
 
@@ -186,7 +175,7 @@ double Etoile::magnitude() const
     return _magnitude;
 }
 
-const QString &Etoile::nom() const
+QString Etoile::nom() const
 {
     return _nom;
 }

@@ -43,11 +43,7 @@
 #ifndef OUTILS_H
 #define OUTILS_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDialog>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/corps/satellite/elementsorbitaux.h"
 
 
@@ -71,6 +67,7 @@ public:
     /**
      * @brief Outils Constructeur par defaut
      * @param[in] parent fenetre parent
+     * @throw Exception
      */
     explicit Outils(QWidget *parent = nullptr);
 

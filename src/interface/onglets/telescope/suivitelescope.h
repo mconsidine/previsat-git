@@ -43,11 +43,7 @@
 #ifndef SUIVITELESCOPE_H
 #define SUIVITELESCOPE_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFrame>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/maths/maths.h"
 
 
@@ -75,6 +71,7 @@ public:
     /**
      * @brief SuiviTelescope Constructeur par defaut
      * @param[in] parent parent
+     * @throw Exception
      */
     explicit SuiviTelescope(QWidget *parent = nullptr);
 

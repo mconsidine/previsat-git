@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    previsatexception.cpp
+ * >    Exception.cpp
  *
  * Localisation
  * >    librairies.exceptions
@@ -36,7 +36,7 @@
 
 #include <QString>
 #include "message.h"
-#include "previsatexception.h"
+#include "Exception.h"
 
 
 /**********
@@ -46,35 +46,22 @@
 /*
  * Constructeurs
  */
-/*
- * Constructeur par defaut (propagation de l'exception)
- */
-PreviSatException::PreviSatException() throw()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps du constructeur */
-    _typeMessage = MessageType::INFO;
-
-    /* Retour */
-    return;
-}
 
 /*
  * Propagation de l'exception avec affichage d'un message
  */
-PreviSatException::PreviSatException(const QString &message, const MessageType &typeMessage) throw()
+Exception::Exception(const QString &message,
+                     const MessageType &typeMessage)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps du constructeur */
-    _typeMessage = typeMessage;
     if (!message.trimmed().isEmpty()) {
-#if (BUILD_TEST == false)
+#if (BUILD_TEST == true)
+        Q_UNUSED(typeMessage)
+#else
         Message::Afficher(message, typeMessage);
 #endif
     }

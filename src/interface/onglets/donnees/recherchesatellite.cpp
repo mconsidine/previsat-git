@@ -34,20 +34,16 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
 #include <QFile>
 #include <QSettings>
 #include <QToolTip>
 #include "ui_recherchesatellite.h"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "recherchesatellite.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/tle.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/maths/maths.h"
 
 
@@ -109,56 +105,54 @@ void RechercheSatellite::SauveOngletRecherche(const QString &fichier)
     try {
 
         QFile sw(fichier);
-        if (sw.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        if (!sw.open(QIODevice::WriteOnly | QIODevice::Text) || !sw.isWritable()) {
 
-            if (!sw.isWritable()) {
-                qWarning() << "Problème de droits d'écriture du fichier" << sw.fileName();
-                throw PreviSatException(tr("Problème de droits d'écriture du fichier %1").arg(sw.fileName()), MessageType::WARNING);
-            }
+            qWarning() << "Problème de droits d'écriture du fichier" << sw.fileName();
+            throw Exception(tr("Problème de droits d'écriture du fichier %1").arg(sw.fileName()), MessageType::WARNING);
+        }
 
-            QTextStream flux(&sw);
-            flux.setEncoding(QStringConverter::Utf8);
+        QTextStream flux(&sw);
+        flux.setEncoding(QStringConverter::Utf8);
 
 #if (BUILD_TEST == false)
-            const QString titre = "%1 %2 / %3 (c) %4";
-            flux << titre.arg(APP_NAME).arg(QString(APP_VER_MAJ)).arg(ORG_NAME).arg(QString(APP_ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
+        const QString titre = "%1 %2 / %3 (c) %4";
+        flux << titre.arg(APP_NAME).arg(QString(VER_MAJ)).arg(ORG_NAME).arg(QString(ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
 #endif
 
-            // Donnees sur le satellite
-            flux << tr("Nom                :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
+        // Donnees sur le satellite
+        flux << tr("Nom                :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
-            QString chaine = tr("Numéro NORAD       : %1\t\tMagnitude std/max  : %2", "Standard/Maximum magnitude");
-            flux << chaine.arg(_ui->numNorad->text()).arg(_ui->magnitudeStdMaxDonneesSat->text()) << Qt::endl;
+        QString chaine = tr("Numéro NORAD       : %1\t\tMagnitude std/max  : %2", "Standard/Maximum magnitude");
+        flux << chaine.arg(_ui->numNorad->text()).arg(_ui->magnitudeStdMaxDonneesSat->text()) << Qt::endl;
 
-            chaine = tr("Désignation COSPAR : %1\t\tModèle orbital     : %2");
-            flux << chaine.arg(_ui->desigCospar->text()).arg(_ui->modeleDonneesSat->text()) << Qt::endl;
+        chaine = tr("Désignation COSPAR : %1\t\tModèle orbital     : %2");
+        flux << chaine.arg(_ui->desigCospar->text()).arg(_ui->modeleDonneesSat->text()) << Qt::endl;
 
-            chaine = tr("Dimensions/Section : %1%2");
-            flux << chaine.arg(_ui->dimensionsDonneesSat->text()).arg((_ui->dimensionsDonneesSat->text() == tr("Inconnues")) ? "" : "^2")
-                 << Qt::endl << Qt::endl;
+        chaine = tr("Forme/Dimensions : %1");
+        flux << chaine.arg(_ui->dimensionsDonneesSat->text()) << Qt::endl << Qt::endl;
 
-            chaine = tr("Date de lancement  : %1\t\tApogée  (Altitude) : %2");
-            flux << chaine.arg(_ui->dateLancementDonneesSat->text()).arg(_ui->apogeeDonneesSat->text()) << Qt::endl;
 
-            chaine = (_ui->dateRentree->isVisible()) ? tr("Date de rentrée    : %1\t\t").arg(_ui->dateRentree->text()) :
-                                                       tr("Catégorie d'orbite : %1\t\t").arg(_ui->categorieOrbiteDonneesSat->text());
-            flux << chaine + tr("Périgée (Altitude) : %1").arg(_ui->perigeeDonneesSat->text()) << Qt::endl;
+        flux << tr("Date de lancement  : %1").arg(_ui->dateLancementDonneesSat->text()) << Qt::endl;
 
-            chaine = (_ui->dateRentree->isVisible()) ? tr("Catégorie d'orbite : %1\t\t").arg(_ui->categorieOrbiteDonneesSat->text()) :
-                                                       tr("Pays/Organisation  : %1\t\t").arg(_ui->paysDonneesSat->text());
-            flux << chaine + tr("Période orbitale   : %1").arg(_ui->periodeDonneesSat->text()) << Qt::endl;
-
-            chaine = (_ui->dateRentree->isVisible()) ? tr("Pays/Organisation  : %1\t\t").arg(_ui->paysDonneesSat->text()) :
-                                                       tr("Site de lancement  : %1\t\t").arg(_ui->siteLancementDonneesSat->text());
-            flux << chaine + tr("Inclinaison        : %1").arg(_ui->inclinaisonDonneesSat->text()) << Qt::endl;
-
-            if (_ui->dateRentree->isVisible()) {
-                flux << tr("Site de lancement  : %1").arg(_ui->siteLancementDonneesSat->text());
-            }
+        if (_ui->dateRentree->isVisible()) {
+            flux << tr("Date de rentrée    : %1").arg(_ui->dateRentree->text()) << Qt::endl;
         }
+
+        flux << tr("Catégorie d'orbite : %1").arg(_ui->categorieOrbiteDonneesSat->text()) << Qt::endl;
+        flux << tr("Pays/Organisation  : %1").arg(_ui->paysDonneesSat->text()) << Qt::endl;
+        flux << tr("Site de lancement  : %1").arg(_ui->siteLancementDonneesSat->text()) << Qt::endl << Qt::endl;
+
+
+        flux << tr("Classe/Catégorie/Discipline : %1").arg(_ui->classeCategDiscip->text()) << Qt::endl;
+        flux << tr("Masse sec/totale            : %1").arg(_ui->masseSecTot->text()) << Qt::endl;
+        flux << tr("Apogée  (Altitude)          : %1").arg(_ui->apogeeDonneesSat->text()) << Qt::endl;
+        flux << tr("Périgée (Altitude)          : %1").arg(_ui->perigeeDonneesSat->text()) << Qt::endl;
+        flux << tr("Période orbitale            : %1").arg(_ui->periodeDonneesSat->text()) << Qt::endl;
+        flux << tr("Inclinaison                 : %1").arg(_ui->inclinaisonDonneesSat->text());
+
         sw.close();
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
     }
 
     /* Retour */
@@ -407,8 +401,8 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
 
         const Donnees donnees(_resultatsSatellitesTrouves.at(currentRow));
 
-        double perigee = donnees.perigee().toDouble();
-        double apogee = donnees.apogee().trimmed().toDouble();
+        double perigee = donnees.perigee();
+        double apogee = donnees.apogee();
 
         double ap = apogee + TERRE::RAYON_TERRESTRE;
         double per = perigee + TERRE::RAYON_TERRESTRE;
@@ -447,6 +441,7 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
         const bool modeleDS = (donnees.periode().toDouble() > 225.);
         const QString modele = (modeleDS) ? tr("SGP4 (DS)", "Orbital model SGP4 (deep space)") : tr("SGP4 (NE)", "Orbital model SGP4 (near Earth)");
         _ui->modeleDonneesSat->setText((donnees.periode().isEmpty()) ? tr("Non applicable") : modele);
+
         if (!donnees.periode().isEmpty()) {
             _ui->modeleDonneesSat->adjustSize();
             _ui->modeleDonneesSat->setFixedHeight(16);
@@ -454,12 +449,13 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
         }
 
         // Dimensions du satellite
-        double t1 = donnees.t1();
-        double t2 = donnees.t2();
-        double t3 = donnees.t3();
-        double section = donnees.section();
+        double t1 = donnees.longueur();
+        double t2 = donnees.diametre();
+        double t3 = donnees.envergure();
+
         QString unite1 = tr("m", "meter");
         QString unite2 = tr("km", "kilometer");
+
         if (!settings.value("affichage/unite").toBool()) {
 
             apogee *= TERRE::MILE_PAR_KM;
@@ -470,41 +466,29 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
             t1 *= TERRE::PIED_PAR_METRE;
             t2 *= TERRE::PIED_PAR_METRE;
             t3 *= TERRE::PIED_PAR_METRE;
-            section = arrondi(section * TERRE::PIED_PAR_METRE * TERRE::PIED_PAR_METRE, 0);
+
             unite1 = tr("ft", "foot");
             unite2 = tr("nmi", "nautical mile");
         }
 
         QString dimensions;
-        if ((fabs(t2) < MATHS::EPSDBL100) && (fabs(t3) < MATHS::EPSDBL100)) {
-            const QString fmt3 = tr("Sphérique. R=%1 %2", "R = radius");
-            dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite1);
-        }
-
-        if ((fabs(t2) >= MATHS::EPSDBL100) && (fabs(t3) < MATHS::EPSDBL100)) {
-            const QString fmt3 = tr("Cylindrique. L=%1 %2, R=%3 %2", "L = height, R = radius");
-            dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite1).arg(t2, 0, 'f', 1);
-        }
-
-        if ((fabs(t2) >= MATHS::EPSDBL100) && (fabs(t3) >= MATHS::EPSDBL100)) {
-            const QString fmt3 = tr("Boîte. %1 x %2 x %3 %4");
-            dimensions = fmt3.arg(t1, 0, 'f', 1).arg(t2, 0, 'f', 1).arg(t3, 0, 'f', 1).arg(unite1);
-        }
-
-        if (fabs(t1) < MATHS::EPSDBL100) {
+        if ((fabs(t1) < MATHS::EPSDBL100) && (fabs(t2) < MATHS::EPSDBL100) && (fabs(t3) < MATHS::EPSDBL100)) {
             dimensions = tr("Inconnues");
-        }
-
-        if (fabs(section) > MATHS::EPSDBL100) {
-            dimensions.append(" / %1 %2");
-            dimensions = dimensions.arg(section, 0, 'f', 2).arg(unite1);
-            _ui->sqDonneesSat->setVisible(true);
-
         } else {
-            _ui->sqDonneesSat->setVisible(false);
+            dimensions = QString("%1. %2 x %3 x %4 %5").arg(donnees.forme()).arg(t1, 0, 'f', 1).arg(t2, 0, 'f', 1).arg(t3, 0, 'f', 1).arg(unite1);
         }
 
         _ui->dimensionsDonneesSat->setText(dimensions);
+
+        // Classe/Categorie/Discipline
+        _ui->classeCategDiscip->setText(QString("%1 / %2 / %3").arg(donnees.classe()).arg(donnees.categorie()).arg(donnees.discipline()));
+
+        // Masse sec, totale
+        if ((donnees.masseSec() == "0") && (donnees.masseTot() == "0")) {
+            _ui->masseSecTot->setText("?/?");
+        } else {
+            _ui->masseSecTot->setText(QString("%1/%2 kg").arg(donnees.masseSec()).arg(donnees.masseTot()));
+        }
 
         // Apogee/perigee/periode orbitale
         const QString fmt = "%1 %2 (%3 %2)";
@@ -520,17 +504,21 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
             _ui->perigeeDonneesSat->setText(fmt.arg(per, 0, 'f', 0).arg(unite2).arg(perigee, 0, 'f', 0));
         }
 
-        const QString period =
-                (donnees.periode().isEmpty()) ?
-                    tr("Inconnue") : Maths::ToSexagesimal(donnees.periode().toDouble() * DATE::NB_HEUR_PAR_MIN * MATHS::HEUR2RAD,
-                                                          AngleFormatType::HEURE1, 1, 0, false, true).trimmed();
-        _ui->periodeDonneesSat->setText(period);
+        QString periode;
+        if (donnees.periode().isEmpty()) {
+            periode = tr("Inconnue");
+        } else {
+            periode = Maths::ToSexagesimal(donnees.periode().toDouble() * DATE::NB_HEUR_PAR_MIN * MATHS::HEUR2RAD,
+                                           AngleFormatType::HEURE1, 1, 0, false, true).trimmed();
+        }
+
+        _ui->periodeDonneesSat->setText(periode);
 
         // Inclinaison
         _ui->inclinaisonDonneesSat->setText((donnees.inclinaison().isEmpty()) ? tr("Inconnue") : donnees.inclinaison() + "°");
 
         // Date de lancement
-        _ui->dateLancementDonneesSat->setText((donnees.dateLancement().isEmpty()) ? tr("Inconnue") : donnees.dateLancement());
+        _ui->dateLancementDonneesSat->setText((donnees.dateLancement().isEmpty()) ? tr("Inconnue") : donnees.dateLancement().replace("T", " "));
 
         // Date de rentree
         if (donnees.dateRentree().isEmpty()) {
@@ -538,24 +526,28 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
             _ui->lbl_dateRentree->setVisible(false);
             _ui->dateRentree->setVisible(false);
 
-            _ui->lbl_categorieOrbiteDonneesSat->move(0, 15);
-            _ui->categorieOrbiteDonneesSat->move(_ui->categorieOrbiteDonneesSat->x(), 15);
-
-            _ui->lbl_paysDonneesSat->move(0, 30);
-            _ui->paysDonneesSat->move(_ui->paysDonneesSat->x(), 30);
-
-            _ui->lbl_siteLancementDonneesSat->move(0, 45);
-            _ui->siteLancementDonneesSat->move( _ui->siteLancementDonneesSat->x(), 45);
-
         } else {
 
-            _ui->dateRentree->setText(donnees.dateRentree());
+            const QString dateRentree = donnees.dateRentree() + " " +
+                                        (((donnees.stsDateRentree() == '?') || (donnees.stsHeureRentree() == '?')) ? "?" : "");
+
+            _ui->dateRentree->setText(dateRentree);
             _ui->lbl_dateRentree->setVisible(true);
             _ui->dateRentree->setVisible(true);
+
+            if (donnees.stsDateRentree() == '?') {
+                _ui->dateRentree->setToolTip(tr("Date de rentrée incertaine"));
+
+            } else if (donnees.stsHeureRentree() == '?') {
+                _ui->dateRentree->setToolTip(tr("Heure de rentrée incertaine"));
+
+            } else {
+                _ui->dateRentree->setToolTip("");
+            }
         }
 
         // Categorie d'orbite
-        _ui->categorieOrbiteDonneesSat->setText((donnees.categorieOrbite().isEmpty()) ? tr("Inconnue") : donnees.categorieOrbite());
+        _ui->categorieOrbiteDonneesSat->setText((donnees.orbite().isEmpty()) ? tr("Inconnue") : donnees.orbite());
 
         // Pays/Organisation
         _ui->paysDonneesSat->setText((donnees.pays().isEmpty()) ? tr("Inconnu") : donnees.pays());

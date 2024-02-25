@@ -34,17 +34,11 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "librairies/dates/date.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "datetest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -56,12 +50,12 @@ void DateTest::testAll()
     QDir dir = QDir::current();
     dir.cdUp();
     dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
+    static_cast<void> (dir.cd(APP_NAME));
 
     const QLocale locale(QLocale("fr_FR"));
     QLocale::setDefault(locale);
     const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
+
     Date::Initialisation(dirLocalData);
 
     testDates2();
@@ -79,34 +73,11 @@ void DateTest::testDates1()
 {
     qInfo(Q_FUNC_INFO);
 
-    try {
-        const Date date;
-        Q_UNUSED(date)
-    } catch (PreviSatException &e) {
-    }
-
-    try {
-        const Date date(2006, 1, 15, 21, 24, 37.5, 1. / 24.);
-        Q_UNUSED(date)
-    } catch (PreviSatException &e) {
-    }
-
-    try {
-        const Date date(2206.3921006944444, 1. / 24.);
-        Q_UNUSED(date)
-    } catch (PreviSatException &e) {
-    }
-
-    try {
-        const Date date(2006, 1, 15.8921006944444, 1. / 24.);
-        Q_UNUSED(date)
-    } catch (PreviSatException &e) {
-    }
-
-    try {
-        Date::Initialisation("empty");
-    } catch (PreviSatException &e) {
-    }
+    QVERIFY_THROWS_EXCEPTION(Exception, Date());
+    QVERIFY_THROWS_EXCEPTION(Exception, Date(2006, 1, 15, 21, 24, 37.5, 1. / 24.));
+    QVERIFY_THROWS_EXCEPTION(Exception, Date(2206.3921006944444, 1. / 24.));
+    QVERIFY_THROWS_EXCEPTION(Exception, Date(2006, 1, 15.8921006944444, 1. / 24.));
+    QVERIFY_THROWS_EXCEPTION(Exception, Date::Initialisation("empty"));
 }
 
 void DateTest::testDates2()
@@ -154,7 +125,7 @@ void DateTest::testToQDateTime()
 
     const Date date(2006, 1, 15, 21, 24, 37.5, 0.);
     const QDateTime date2(QDate(2006, 1, 15), QTime(21, 24, 38));
-    QCOMPARE(date.ToQDateTime(1), date2);
+    QCOMPARE(date.ToQDateTime(DateFormatSec::FORMAT_SEC), date2);
 }
 
 void DateTest::testToShortDate()
@@ -208,15 +179,8 @@ void DateTest::testConversionDateIso()
     CompareDates(Date::ConversionDateIso("2022-06-04T13:15:30.829824"), date);
 
     // Cas degrades
-    try {
-        Date::ConversionDateIso("");
-    } catch (PreviSatException &e) {
-    }
-
-    try {
-        Date::ConversionDateIso("aaa");
-    } catch (PreviSatException &e) {
-    }
+    QVERIFY_THROWS_EXCEPTION(Exception, Date::ConversionDateIso(""));
+    QVERIFY_THROWS_EXCEPTION(Exception, Date::ConversionDateIso("aaa"));
 }
 
 void DateTest::testConversionDateNasa()
@@ -227,23 +191,8 @@ void DateTest::testConversionDateNasa()
     CompareDates(Date::ConversionDateNasa("2006-015T21:24:37.5Z"), date);
 
     // Cas degrades
-    try {
-        Date::ConversionDateNasa("");
-    } catch (PreviSatException &e) {
-    }
-
-    try {
-        Date::ConversionDateNasa("aaa");
-    } catch (PreviSatException &e) {
-    }
-
-    try {
-        Date::ConversionDateNasa("aaaTbbb");
-    } catch (PreviSatException &e) {
-    }
-
-    try {
-        Date::ConversionDateNasa("2006-015T21");
-    } catch (PreviSatException &e) {
-    }
+    QVERIFY_THROWS_EXCEPTION(Exception, Date::ConversionDateNasa(""));
+    QVERIFY_THROWS_EXCEPTION(Exception, Date::ConversionDateNasa("aaa"));
+    QVERIFY_THROWS_EXCEPTION(Exception, Date::ConversionDateNasa("aaaTbbb"));
+    QVERIFY_THROWS_EXCEPTION(Exception, Date::ConversionDateNasa("2006-015T21"));
 }

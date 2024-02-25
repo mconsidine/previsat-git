@@ -53,7 +53,7 @@ public:
 private:
 
     static void testSoleil();
-    static void testCalculPosition();
+    static void testCalculPositionSimp();
     static void testCalculLeverMeridienCoucher();
 
 };

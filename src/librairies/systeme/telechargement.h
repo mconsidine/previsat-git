@@ -43,12 +43,8 @@
 #ifndef TELECHARGEMENT_H
 #define TELECHARGEMENT_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QElapsedTimer>
 #include <QObject>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 
 
 class QString;
@@ -78,8 +74,11 @@ public:
      * @param[in] url adresse
      * @param[in] alarme affichage d'une boite de message en cas d'erreur
      * @param[in] logAlarme affichage d'un message d'erreur dans le fichier de log
+     * @throw Exception
      */
-    void TelechargementFichier(const QUrl &url, const bool alarme = true, const bool logAlarme = true);
+    void TelechargementFichier(const QUrl &url,
+                               const bool alarme = true,
+                               const bool logAlarme = true);
 
     /**
      * @brief UrlExiste Verification de l'existence d'une adresse
@@ -92,12 +91,15 @@ public:
     /*
      * Accesseurs
      */
-    const QString &dirDwn() const;
+    QString dirDwn() const;
 
 
 signals:
 
-    void Progression(const int octetsRecus, const int octetsTotal, const double vitesse, const QString &unite);
+    void Progression(const int octetsRecus,
+                     const int octetsTotal,
+                     const double vitesse,
+                     const QString &unite);
 
 
 protected:
@@ -132,7 +134,8 @@ private slots:
      * @param[in] octetsRecus octets recus
      * @param[in] octetsTotal octets du fichier total
      */
-    void ProgressionTelechargement(qint64 octetsRecus, qint64 octetsTotal);
+    void ProgressionTelechargement(qint64 octetsRecus,
+                                   qint64 octetsTotal);
 
 };
 

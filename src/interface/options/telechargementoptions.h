@@ -43,11 +43,7 @@
 #ifndef TELECHARGEMENTOPTIONS_H
 #define TELECHARGEMENTOPTIONS_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QMainWindow>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 
 
@@ -70,6 +66,7 @@ public:
      * @brief TelechargementOptions Constructeur par defaut
      * @param[in] type type de telechargement
      * @param[in] parent fenetre parent
+     * @throw Exception
      */
     explicit TelechargementOptions(const TypeTelechargement &type, QWidget *parent);
 

@@ -34,13 +34,10 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QCoreApplication>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include <cmath>
 #include "librairies/dates/date.h"
+#include "librairies/maths/maths.h"
 #include "planete.h"
 #include "soleil.h"
 
@@ -61,6 +58,9 @@ Planete::Planete()
     _elem.fill(0.);
 }
 
+/*
+ * Constructeur avec l'identifiant de la planete
+ */
 Planete::Planete(const IndicePlanete &iplanete)
 {
     /* Declarations des variables locales */
@@ -82,12 +82,13 @@ Planete::Planete(const IndicePlanete &iplanete)
 /*
  * Calcul de la position d'une planete
  */
-void Planete::CalculPosition(const Date &date, const Soleil &soleil)
+void Planete::CalculPositionSimp(const Date &date,
+                                 const Soleil &soleil)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const Vecteur3D solpos = soleil.position() * SOLEIL::KM2UA;
+    const Vecteur3D solpos = soleil.position() * CORPS::KM2UA;
 
     /* Corps de la methode */
     // Calcul des elements orbitaux
@@ -111,7 +112,7 @@ void Planete::CalculPosition(const Date &date, const Soleil &soleil)
 
     CalculElements(date2);
     CalculCoordonneesSpheriques();
-    _position = (Sph2Cart(_positionSph, date2) + solpos) * SOLEIL::UA2KM;
+    _position = (Sph2Cart(_positionSph, date2) + solpos) * CORPS::UA2KM;
 
     /* Retour */
     return;
@@ -123,7 +124,7 @@ void Planete::CalculPosition(const Date &date, const Soleil &soleil)
  */
 QString Planete::nom() const
 {
-    return QCoreApplication::translate("planet", nomPlanetes[_indice]);
+    return QCoreApplication::translate("planet", PLANETE::nomPlanetes[_indice]);
 }
 
 IndicePlanete Planete::indice() const
@@ -166,8 +167,8 @@ void Planete::CalculElements(const Date &date)
     // Calcul des elements orbitaux
     for(unsigned int i=0; i<PLANETE::NB_ELEMENTS; i++) {
         _elem[i] = 0.;
-        for(unsigned int j=0; j<PLANETE::NB_DEGRES; j++) {
-            _elem[i] += tabPlanetes[static_cast<int> (_indice)][i][j] * tt[j];
+        for(unsigned int j=0; j<PLANETE::NB_DEGRES_SIMP; j++) {
+            _elem[i] += PLANETE::tabPlanetes[static_cast<int> (_indice)][i][j] * tt[j];
         }
     }
 

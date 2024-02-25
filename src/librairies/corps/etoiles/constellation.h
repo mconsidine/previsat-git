@@ -43,9 +43,7 @@
 #ifndef CONSTELLATION_H
 #define CONSTELLATION_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
 #include <QList>
-#pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/corps/corps.h"
 
 
@@ -65,9 +63,11 @@ public:
      * @brief Constellation Definition a partir des composantes
      * @param[in] nomConst nom de la constellation
      * @param[in] ascDroite ascension droite moyenne de la constellation
-     * @param[in] decl declinaison myenne de la declinaison
+     * @param[in] decl declinaison moyenne de la constellation
      */
-    Constellation(const QString &nomConst, const double ascDroite, const double decl);
+    Constellation(const QString &nomConst,
+                  const double ascDroite,
+                  const double decl);
 
 
     /*
@@ -77,21 +77,24 @@ public:
      * @brief CalculConstellations Calcul des positions des noms des constellations pour la carte du ciel
      * @param[in] observateur observateur
      * @param[out] constellations tableau des constellations
+     * @throw Exception
      */
-    static void CalculConstellations(const Observateur &observateur, QList<Constellation> &constellations);
+    static void CalculConstellations(const Observateur &observateur,
+                                     QList<Constellation> &constellations);
 
     /**
      * @brief Initialisation Lecture du fichier de constellations
      * @param[in] dirCommonData chemin des donnees communes
-     * @param[out] constellations tableau de constellations
+     * @return tableau de constellations
+     * @throw Exception
      */
-    static void Initialisation(const QString &dirCommonData, QList<Constellation> &constellations);
+    static QList<Constellation> Initialisation(const QString &dirCommonData);
 
 
     /*
      * Accesseurs
      */
-    const QString &nom() const;
+    QString nom() const;
 
 
 protected:
@@ -113,10 +116,13 @@ private:
     QString _nom;
     QList<Constellation> _constellations;
 
+
     /*
      * Methodes privees
      */
-
+    void CalculPosVit(const Date &date) override {
+        Q_UNUSED(date)
+    }
 
 };
 

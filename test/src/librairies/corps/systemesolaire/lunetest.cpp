@@ -34,37 +34,32 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "librairies/corps/systemesolaire/lune.h"
 #include "librairies/corps/systemesolaire/soleil.h"
+#include "librairies/dates/date.h"
 #include "librairies/observateur/observateur.h"
 #include "lunetest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
 
 void LuneTest::testAll()
 {
-    testCalculPosition();
+    testCalculPositionSimp();
     testCalculMagnitudePhase();
     testCalculLeverMeridienCoucher();
     testCalculDatesPhases();
 }
 
-void LuneTest::testCalculPosition()
+void LuneTest::testCalculPositionSimp()
 {
     qInfo(Q_FUNC_INFO);
 
     const Date date(1992, 4, 11, 23, 59, 1.816, 0.);
     Lune lune;
-    lune.CalculPosition(date);
+    lune.CalculPositionSimp(date);
     const Vecteur3D pos(-251640.85931597583, 254391.46471626704, 87678.7116029949);
     CompareVecteurs3D(lune.position(), pos);
 }
@@ -75,60 +70,60 @@ void LuneTest::testCalculMagnitudePhase()
 
     const Date date1(1992, 4, 11, 23, 59, 1.816, 0.);
     Soleil soleil;
-    soleil.CalculPosition(date1);
+    soleil.CalculPositionSimp(date1);
     Lune lune;
-    lune.CalculPosition(date1);
+    lune.CalculPositionSimp(date1);
     lune.CalculPhase(soleil);
     lune.CalculMagnitude(soleil);
     QCOMPARE(lune.fractionIlluminee(), 0.6785704098427325);
     QCOMPARE(lune.luneCroissante(), true);
-    QCOMPARE(lune.anglePhase(), 1.20559128682);
+    QCOMPARE(lune.anglePhase(), 1.2055912868186884);
     QCOMPARE(lune.phase(), QObject::tr("Premier quartier"));
-    QCOMPARE(lune.magnitude(), -10.653131295908128);
+    QCOMPARE(lune.magnitude(), -10.653131296343474);
 
     const Date date2(2023, 5, 3, 0, 0, 0., 0.);
-    soleil.CalculPosition(date2);
-    lune.CalculPosition(date2);
+    soleil.CalculPositionSimp(date2);
+    lune.CalculPositionSimp(date2);
     lune.CalculPhase(soleil);
     lune.CalculMagnitude(soleil);
     QCOMPARE(lune.fractionIlluminee(), 0.9194146268228294);
     QCOMPARE(lune.luneCroissante(), true);
     QCOMPARE(lune.anglePhase(), 0.5756672283689478);
     QCOMPARE(lune.phase(), QObject::tr("Gibbeuse croissante"));
-    QCOMPARE(lune.magnitude(), -11.570426292922612);
+    QCOMPARE(lune.magnitude(), -11.570426293357274);
 
     const Date date3(2023, 5, 16, 12, 0, 0., 0.);
-    soleil.CalculPosition(date3);
-    lune.CalculPosition(date3);
+    soleil.CalculPositionSimp(date3);
+    lune.CalculPositionSimp(date3);
     lune.CalculPhase(soleil);
     lune.CalculMagnitude(soleil);
     QCOMPARE(lune.fractionIlluminee(), 0.11338723721879734);
     QCOMPARE(lune.luneCroissante(), false);
     QCOMPARE(lune.anglePhase(), 2.454708350973763);
     QCOMPARE(lune.phase(), QObject::tr("Dernier croissant"));
-    QCOMPARE(lune.magnitude(), -6.837637841365922);
+    QCOMPARE(lune.magnitude(), -6.837637841800411);
 
     const Date date4(2023, 5, 19, 17, 50, 0., 0.);
-    soleil.CalculPosition(date4);
-    lune.CalculPosition(date4);
+    soleil.CalculPositionSimp(date4);
+    lune.CalculPositionSimp(date4);
     lune.CalculPhase(soleil);
     lune.CalculMagnitude(soleil);
     QCOMPARE(lune.fractionIlluminee(), 0.0004625325275197101);
     QCOMPARE(lune.luneCroissante(), true);
     QCOMPARE(lune.anglePhase(), 3.098576198262582);
     QCOMPARE(lune.phase(), QObject::tr("Nouvelle Lune"));
-    QCOMPARE(lune.magnitude(), -2.4973832095108968);
+    QCOMPARE(lune.magnitude(), -2.497383209945962);
 
     const Date date5(2023, 5, 5, 0, 0, 0., 0.);
-    soleil.CalculPosition(date5);
-    lune.CalculPosition(date5);
+    soleil.CalculPositionSimp(date5);
+    lune.CalculPositionSimp(date5);
     lune.CalculPhase(soleil);
     lune.CalculMagnitude(soleil);
     QCOMPARE(lune.fractionIlluminee(), 0.9937846767778056);
     QCOMPARE(lune.luneCroissante(), true);
     QCOMPARE(lune.anglePhase(), 0.1578384341715419);
     QCOMPARE(lune.phase(), QObject::tr("Pleine Lune"));
-    QCOMPARE(lune.magnitude(), -12.221111842128456);
+    QCOMPARE(lune.magnitude(), -12.221111842562916);
 }
 
 void LuneTest::testCalculLeverMeridienCoucher()
@@ -140,7 +135,7 @@ void LuneTest::testCalculLeverMeridienCoucher()
     // Toutes les heures sont definies
     Date date(2022, 5, 1, 5, 6, 7., 2. / 24.);
     Observateur obs("Paris", -2.348640000, +48.853390000, 30);
-    lune.CalculLeverMeridienCoucher(date, obs, DateSysteme::SYSTEME_24H);
+    lune.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs);
 
     QCOMPARE(lune.dateLever(), "06h52");
     QCOMPARE(lune.dateMeridien(), "14h18");
@@ -148,7 +143,7 @@ void LuneTest::testCalculLeverMeridienCoucher()
 
     // L'heure de coucher n'existe pas
     date = Date(2022, 5, 5, 5, 6, 7., 2. / 24.);
-    lune.CalculLeverMeridienCoucher(date, obs, DateSysteme::SYSTEME_24H);
+    lune.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs);
 
     QCOMPARE(lune.dateLever(), "08h56");
     QCOMPARE(lune.dateMeridien(), "17h33");
@@ -156,7 +151,7 @@ void LuneTest::testCalculLeverMeridienCoucher()
 
     // L'heure de passage au meridien n'existe pas
     date = Date(2022, 5, 16, 5, 6, 7., 2. / 24.);
-    lune.CalculLeverMeridienCoucher(date, obs, DateSysteme::SYSTEME_24H);
+    lune.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs);
 
     QCOMPARE(lune.dateLever(), "22h20");
     QCOMPARE(lune.dateMeridien(), "-");
@@ -164,7 +159,7 @@ void LuneTest::testCalculLeverMeridienCoucher()
 
     // L'heure de lever n'existe pas
     date = Date(2022, 5, 20, 5, 6, 7., 2. / 24.);
-    lune.CalculLeverMeridienCoucher(date, obs, DateSysteme::SYSTEME_24H);
+    lune.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs);
 
     QCOMPARE(lune.dateLever(), "-");
     QCOMPARE(lune.dateMeridien(), "05h49");

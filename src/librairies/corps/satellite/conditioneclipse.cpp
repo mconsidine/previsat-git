@@ -34,8 +34,8 @@
  *
  */
 
-#include "conditioneclipse.h"
 #include "librairies/corps/terreconst.h"
+#include "conditioneclipse.h"
 
 
 /**********
@@ -52,12 +52,17 @@
 /*
  * Calcul de la condition d'eclipse du satellite
  */
-void ConditionEclipse::CalculSatelliteEclipse(const Vecteur3D &position, const Soleil &soleil, const Lune *lune, const bool refraction)
+void ConditionEclipse::CalculSatelliteEclipse(const Vecteur3D &position,
+                                              const Soleil &soleil,
+                                              const Lune *lune,
+                                              const bool refraction)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
     _soleil = soleil;
+    _eclipsePartielle = false;
+    _eclipseAnnulaire = false;
 
     /* Corps de la methode */
     // Calcul de l'eclipse par la Terre
@@ -68,10 +73,10 @@ void ConditionEclipse::CalculSatelliteEclipse(const Vecteur3D &position, const S
         _eclipseLune = CalculEclipse(position, lune->position(), CorpsOccultant::LUNE, false);
     }
 
+    // Cas d'eclipse totale
     _eclipseTotale = ((_eclipseSoleil.type == TypeEclipse::ECLIPSE_TOTALE) || (_eclipseLune.type == TypeEclipse::ECLIPSE_TOTALE));
 
-    _eclipsePartielle = false;
-    _eclipseAnnulaire = false;
+    // Cas d'eclipse partielle
     if (!_eclipseTotale) {
         _eclipsePartielle = ((_eclipseSoleil.type == TypeEclipse::ECLIPSE_PARTIELLE) || (_eclipseLune.type == TypeEclipse::ECLIPSE_PARTIELLE));
         _eclipseAnnulaire = ((_eclipseSoleil.type == TypeEclipse::ECLIPSE_ANNULAIRE) || (_eclipseLune.type == TypeEclipse::ECLIPSE_ANNULAIRE));
@@ -130,7 +135,9 @@ const ElementsEclipse &ConditionEclipse::eclipseSoleil() const
 /*
  * Calcul des elements d'une eclipse
  */
-ElementsEclipse ConditionEclipse::CalculEclipse(const Vecteur3D &position, const Vecteur3D &positionCorpsOccultant, const CorpsOccultant &corpsOccultant,
+ElementsEclipse ConditionEclipse::CalculEclipse(const Vecteur3D &position,
+                                                const Vecteur3D &positionCorpsOccultant,
+                                                const CorpsOccultant &corpsOccultant,
                                                 const bool refraction) const
 {
     /* Declarations des variables locales */
@@ -147,6 +154,7 @@ ElementsEclipse ConditionEclipse::CalculEclipse(const Vecteur3D &position, const
     default:
     case CorpsOccultant::TERRE:
     {
+        // Eclipse par la Terre : approximation cone d'ombre aplati
         rho = position;
         const double tanlat = position.z() / sqrt(position.x() * position.x() + position.y() * position.y());
         const double u = atan(tanlat / (1. - TERRE::APLA));
@@ -155,39 +163,49 @@ ElementsEclipse ConditionEclipse::CalculEclipse(const Vecteur3D &position, const
         rayon = TERRE::RAYON_TERRESTRE * sqrt(cu * cu + TERRE::G2 * su * su);
         break;
     }
+
     case CorpsOccultant::LUNE:
+
+        // Eclipse par la Lune
         rho = position - positionCorpsOccultant;
         rayon = LUNE::RAYON_LUNAIRE;
         break;
     }
 
+    // Calcul des elements de l'eclipse
     elements.phiSoleil = asin(SOLEIL::RAYON_SOLAIRE / distSatSol);
     if (std::isnan(elements.phiSoleil)) {
         elements.phiSoleil = MATHS::PI_SUR_DEUX;
+
     } else if ((corpsOccultant == CorpsOccultant::TERRE) && refraction) {
         elements.phiSoleil += TERRE::REFRACTION_HZ;
     }
 
     const double distance = rho.Norme();
     elements.phi = asin(rayon / distance);
+
     if (std::isnan(elements.phi)) {
         elements.phi = MATHS::PI_SUR_DEUX;
     }
 
     elements.elongation = (-rho).Angle(rhoSatSol);
 
+    // Discrimination des cas d'eclipse
     if (((elements.phiSoleil + elements.phi) <= elements.elongation) || (distSatSol <= distance)) {
 
+        // Non eclipse
         elements.type = TypeEclipse::NON_ECLIPSE;
         elements.luminosite = 1.;
 
     } else if ((elements.phi - elements.phiSoleil) >= elements.elongation) {
 
+        // Eclise totale
         elements.type = TypeEclipse::ECLIPSE_TOTALE;
         elements.luminosite = 0.;
 
     } else if ((elements.phiSoleil - elements.phi) >= elements.elongation) {
 
+        // Eclipse annulaire
         elements.type = TypeEclipse::ECLIPSE_ANNULAIRE;
         const double cps = cos(elements.phiSoleil);
         const double cpc = cos(elements.phi);
@@ -195,6 +213,7 @@ ElementsEclipse ConditionEclipse::CalculEclipse(const Vecteur3D &position, const
 
     } else {
 
+        // Eclipse partielle
         elements.type = TypeEclipse::ECLIPSE_PARTIELLE;
         const double cps = cos(elements.phiSoleil);
         const double cpc = cos(elements.phi);

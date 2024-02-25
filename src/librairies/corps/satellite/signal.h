@@ -66,7 +66,9 @@ public:
      * @param[in] distance distance au satellite (km)
      * @param[in] frequence frequence (Hz). Par defaut 100 MHz
      */
-    void Calcul(const double rangeRate, const double distance, const double frequence = 100.e6);
+    void Calcul(const double rangeRate,
+                const double distance,
+                const double frequence = 100.e6);
 
 
     /*

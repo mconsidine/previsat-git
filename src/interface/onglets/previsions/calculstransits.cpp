@@ -34,9 +34,6 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wshadow"
 #include <QFileInfo>
 #include <QFutureWatcher>
 #include <QMenu>
@@ -45,16 +42,13 @@
 #include <QSettings>
 #include <QtConcurrent>
 #include "ui_calculstransits.h"
-#pragma GCC diagnostic warning "-Wshadow"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "calculstransits.h"
 #include "configuration/configuration.h"
 #include "interface/afficherresultats.h"
 #include "interface/listwidgetitem.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/exceptions/message.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/systeme/telechargement.h"
 #include "previsions/transits.h"
 
@@ -87,9 +81,9 @@ CalculsTransits::CalculsTransits(QWidget *parent) :
 
         Initialisation();
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 
@@ -210,7 +204,7 @@ void CalculsTransits::show(const Date &date)
     /* Initialisations */
 
     /* Corps de la methode */
-    _ui->dateInitialeTransit->setDateTime(date.ToQDateTime(0));
+    _ui->dateInitialeTransit->setDateTime(date.ToQDateTime(DateFormatSec::FORMAT_SEC_ZERO));
     _ui->dateFinaleTransit->setDateTime(_ui->dateInitialeTransit->dateTime().addDays(7));
 
     CalculAgeElementsOrbitaux();
@@ -318,7 +312,7 @@ void CalculsTransits::CalculAgeElementsOrbitaux()
 
         // Lecture du fichier d'elements orbitaux de l'ISS
         const QString fichier = Configuration::instance()->dirElem() + QDir::separator() + "iss.gp";
-        _listeElemIss = GPFormat::LectureFichierListeGP(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+        _listeElemIss = GPFormat::LectureListeGP(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
 
         if (!_listeElemIss.isEmpty()) {
 
@@ -569,7 +563,7 @@ void CalculsTransits::on_calculsTransit_clicked()
             }
         }
 
-    } catch (PreviSatException &) {
+    } catch (Exception const &) {
     }
 
     /* Retour */
@@ -708,7 +702,7 @@ void CalculsTransits::on_majElementsOrbitauxIss_clicked()
         // Mise a jour de l'age des elements orbitaux
         CalculAgeElementsOrbitaux();
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
     }
 
     /* Retour */

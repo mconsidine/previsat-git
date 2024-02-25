@@ -34,28 +34,32 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
-#include "configuration/configuration.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/maths/maths.h"
 #include "librairies/observateur/observateur.h"
 #include "satellitetest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
 
+static QDir dir;
+
 void SatelliteTest::testAll()
 {
+    dir = QDir::current();
+    dir.cdUp();
+    dir.cdUp();
+    static_cast<void> (dir.cd(APP_NAME));
+
+    const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
+    Corps::Initialisation(dirCommonData);
+    Date::Initialisation(dirCommonData);
+
     testCalculBeta();
     testCalculCercleAcquisition();
     testCalculCoordHoriz2();
@@ -81,13 +85,13 @@ void SatelliteTest::testCalculBeta()
     const QString ligne2 = "2 25544  51.6448 106.1119 0005093  86.4732  19.8785 15.49521149205776";
 
     const Date date(2019, 12, 31, 16, 0, 0., 0.);
-    TLE tle(ligne0, ligne1, ligne2);
+    const TLE tle(ligne0, ligne1, ligne2);
 
     Satellite sat(tle.elements());
     sat.CalculPosVit(date);
 
     Soleil soleil;
-    soleil.CalculPosition(date);
+    soleil.CalculPositionSimp(date);
 
     sat.CalculBeta(soleil);
 
@@ -103,7 +107,7 @@ void SatelliteTest::testCalculCercleAcquisition()
     const QString ligne2 = "2 25544  51.6448 106.1119 0005093  86.4732  19.8785 15.49521149205776";
 
     const Date date(2019, 12, 31, 16, 0, 0., 0.);
-    TLE tle(ligne0, ligne1, ligne2);
+    const TLE tle(ligne0, ligne1, ligne2);
 
     Satellite sat(tle.elements());
     sat.CalculPosVit(date);
@@ -132,10 +136,10 @@ void SatelliteTest::testCalculCoordHoriz2()
     sat.CalculPosVit(date);
     sat.CalculCoordHoriz(obs, true, false);
     sat.CalculCoordEquat(obs, false);
-    sat.CalculCoordHoriz2(obs);
+    sat.CalculCoordHoriz3(obs);
 
-    QCOMPARE(sat.hauteur(), 0.010451579950689613);
-    QCOMPARE(sat.azimut(), 3.1795612051615314);
+    QCOMPARE(sat.hauteur(), 0.010451579960469935);
+    QCOMPARE(sat.azimut(), 3.179561204007342);
 
     date = Date(2020, 1, 11, 21, 28, 30., 0.);
     obs.CalculPosVit(date);
@@ -143,9 +147,10 @@ void SatelliteTest::testCalculCoordHoriz2()
     sat.CalculPosVit(date);
     sat.CalculCoordHoriz(obs, true, false);
     sat.CalculCoordEquat(obs, false);
-    sat.CalculCoordHoriz2(obs);
+    sat.CalculCoordHoriz3(obs);
 
-    QCOMPARE(sat.hauteur(), -0.013773458990370531);
+    QCOMPARE(sat.hauteur(), -0.013773459271988258);
+    QCOMPARE(sat.visible(), false);
 }
 
 void SatelliteTest::testCalculPosVit1()
@@ -154,14 +159,8 @@ void SatelliteTest::testCalculPosVit1()
 
     const QString fmt = "%1 %2 %3 %4 %5 %6 %7";
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "sgp4.txt";
-    const QMap<QString, ElementsOrbitaux> mapElem = TLE::LectureFichier(fic, QString(), 0);
+    const QMap<QString, ElementsOrbitaux> mapElem = TLE::Lecture(fic, QString(), 0);
 
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "sgp4_res.txt";
     QFileInfo ff(ficRes);
@@ -210,6 +209,7 @@ void SatelliteTest::testCalculPosVit1()
 
         } while (date.jourJulienUTC() <= elem.epoque.jourJulienUTC() + fin * DATE::NB_JOUR_PAR_MIN + DATE::NB_JOUR_PAR_MIN);
     }
+
     res.close();
 
     const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + "sgp4_ref.txt";
@@ -220,25 +220,15 @@ void SatelliteTest::testCalculPosVit2()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "iss.gp";
-    const QList<ElementsOrbitaux> listeElem = GPFormat::LectureFichierListeGP(fic, Configuration::instance()->donneesSatellites(),
-                                                                              Configuration::instance()->lgRec());
+    const QList<ElementsOrbitaux> listeElem = GPFormat::LectureListeGP(fic, "", -1);
 
     Satellite sat(listeElem);
     QCOMPARE(sat._listElements.size(), listeElem.size());
 
     const Date date(2023, 2, 2, 0, 0, 0., 0.);
     sat.CalculPosVit(date);
+
     const Vecteur3D pos(-73.24427091902145, 6704.632372584346, 1106.632182287279);
     const Vecteur3D vit(-4.827118447150993, 0.9222014946152153, -5.8768841331293284);
     CompareVecteurs3D(sat.position(), pos);
@@ -249,15 +239,11 @@ void SatelliteTest::testCalculPosVit3()
 {
     qInfo(Q_FUNC_INFO);
 
-    ElementsOrbitaux elem {};
+    const ElementsOrbitaux elem {};
     Satellite sat(elem);
 
-    Date date(2020, 1, 11, 21, 20, 0., 0.);
-
-    try {
-        sat.CalculPosVit(date);
-    } catch (PreviSatException &e) {
-    }
+    const Date date(2020, 1, 11, 21, 20, 0., 0.);
+    sat.CalculPosVit(date);
 
     QCOMPARE(sat.position().Norme(), 0.);
     QCOMPARE(sat.vitesse().Norme(), 0.);
@@ -273,15 +259,15 @@ void SatelliteTest::testCalculPosVitECEF()
     const TLE tle(ligne0, ligne1, ligne2);
     Satellite sat(tle.elements());
 
-    Date date(2020, 1, 11, 21, 20, 0., 0.);
+    const Date date(2020, 1, 11, 21, 20, 0., 0.);
     sat.CalculPosVit(date);
 
     Vecteur3D posEcef;
     Vecteur3D vitEcef;
     sat.CalculPosVitECEF(date, posEcef, vitEcef);
 
-    const Vecteur3D posRef(5962.088811390397, 155.9202497577353, 3250.407052726898);
-    const Vecteur3D vitRef(-2.7343740085535795, 4.9106707363469955, 4.7562253836562896);
+    const Vecteur3D posRef(5962.08881131999, 155.92025244996103, 3250.407052726898);
+    const Vecteur3D vitRef(-2.7343740107710297, 4.910670735112268, 4.7562253836562896);
     CompareVecteurs3D(posEcef, posRef);
     CompareVecteurs3D(vitEcef, vitRef);
 }
@@ -290,28 +276,17 @@ void SatelliteTest::testCalculElementsOsculateurs()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
-    const QMap<QString, ElementsOrbitaux> mapTLE = TLE::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
-                                                                       Configuration::instance()->lgRec());
+    const QMap<QString, ElementsOrbitaux> mapTLE = TLE::Lecture(fic, "", -1);
 
-    Date date(2020, 8, 16, 0, 0, 0., 0.);
+    const Date date(2020, 8, 16, 0, 0, 0., 0.);
 
     Satellite sat(mapTLE["25544"]);
     sat.CalculPosVit(date);
     sat.CalculElementsOsculateurs(date);
 
     QCOMPARE(sat.ageElementsOrbitaux(), 0.6277587499998845);
-    QCOMPARE(sat.nbOrbites(), 124128u);
+    QCOMPARE(sat.nbOrbites(), 24128u);
     QCOMPARE(sat.method(), 'n');
     QCOMPARE(sat.elementsOsculateurs().demiGrandAxe(), 6800.37693729);
 }
@@ -325,13 +300,11 @@ void SatelliteTest::testCalculTraceCiel()
     const QString ligne2 = "2 25544  51.6443 102.5677 0005157  88.3081  52.3104 15.49523379205885";
     const TLE tle(ligne0, ligne1, ligne2);
 
-    Date date(2020, 1, 1, 6, 11, 0., 0.);
+    const Date date(2020, 1, 1, 6, 11, 0., 0.);
+    const Observateur obs("Paris", -2.348640000, +48.853390000, 30);
 
     Satellite sat(tle.elements());
     sat.CalculPosVit(date);
-
-    const Observateur obs("Paris", -2.348640000, +48.853390000, 30);
-
     sat.CalculTraceCiel(date, true, true, obs);
 
     QCOMPARE_GT(sat.traceCiel().size(), 0);
@@ -341,45 +314,37 @@ void SatelliteTest::testCalculPosVitListeSatellites()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
-    const QMap<QString, ElementsOrbitaux> mapTLE = TLE::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
-                                                                       Configuration::instance()->lgRec());
+    QMap<QString, ElementsOrbitaux> mapTLE = TLE::Lecture(fic, "", -1);
 
-    Date date(2020, 8, 15, 13, 42, 0., 0.);
+    const Date date(2020, 8, 15, 13, 42, 0., 0.);
     Observateur obs("Paris", -2.348640000, +48.853390000, 30);
     obs.CalculPosVit(date);
 
     Soleil soleil;
-    soleil.CalculPosition(date);
+    soleil.CalculPositionSimp(date);
 
     Lune lune;
-    lune.CalculPosition(date);
+    lune.CalculPositionSimp(date);
 
     QList<Satellite> satellites;
+    mapTLE["25544"].donnees.setMagnitudeStandard(-0.43);
     satellites.append(Satellite(mapTLE["25544"]));
 
     Satellite::CalculPosVitListeSatellites(date, obs, soleil, lune, 3, true, true, true, true, true, true, true, true, satellites);
 
     QCOMPARE(satellites.first().phasage().nu0(), 15);
-    QCOMPARE(satellites.first().signal().attenuation(), 137.4342178796233);
+    QCOMPARE(satellites.first().signal().attenuation(), 137.4342178711553);
     QCOMPARE(satellites.first().altitude(), 424.52109699485754);
-    QCOMPARE(satellites.first().rangeRate(), -6.853740793330628);
-    QCOMPARE(satellites.first().magnitude().magnitude(), 4.871106983557947);
-    QCOMPARE(satellites.first().ascensionDroite(), 1.2459691983080656);
-    QCOMPARE(satellites.first().declinaison(), 0.308777949256643);
+    QCOMPARE(satellites.first().rangeRate(), -6.853740793134641);
+    QCOMPARE(satellites.first().conditionEclipse().eclipseSoleil().type, TypeEclipse::NON_ECLIPSE);
+    QCOMPARE(satellites.first().magnitude().magnitude(), 4.87110697465);
+    QCOMPARE(satellites.first().ascensionDroite(), 1.245969198095632);
+    QCOMPARE(satellites.first().declinaison(), 0.3087779495604541);
     QCOMPARE(satellites.first().constellation(), "Tau");
-    QCOMPARE(satellites.first().longitude(), 0.36338638004248525);
-    CompareVecteurs3D(satellites.first().dist(), Vecteur3D(542.7538686361972, 1603.1191934262467, 536.5097144664396));
+    QCOMPARE(satellites.first().longitude(), 0.3633863796025767);
+    QCOMPARE(satellites.first().traceAuSol().size(), 1080);
+    CompareVecteurs3D(satellites.first().dist(), Vecteur3D(542.7538683875641, 1603.11919159333, 536.5097144664396));
 }
 
 void SatelliteTest::testHasAos1()
@@ -391,7 +356,7 @@ void SatelliteTest::testHasAos1()
     const QString ligne2 = "2 25544  51.6448 106.1119 0005093  86.4732  19.8785 15.49521149205776";
 
     const Date date(2019, 12, 31, 16, 0, 0., 0.);
-    TLE tle(ligne0, ligne1, ligne2);
+    const TLE tle(ligne0, ligne1, ligne2);
 
     Satellite sat(tle.elements());
     sat.CalculPosVit(date);
@@ -410,7 +375,7 @@ void SatelliteTest::testHasAos2()
     const QString ligne2 = "2 25544   1.6448 106.1119 0005093  86.4732  19.8785 15.49521149205771";
 
     const Date date(2019, 12, 31, 16, 0, 0., 0.);
-    TLE tle(ligne0, ligne1, ligne2);
+    const TLE tle(ligne0, ligne1, ligne2);
 
     Satellite sat(tle.elements());
     sat.CalculPosVit(date);

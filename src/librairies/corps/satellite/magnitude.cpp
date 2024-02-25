@@ -72,8 +72,13 @@ Magnitude::Magnitude()
 /*
  * Calcul de la magnitude visuelle du satellite
  */
-void Magnitude::Calcul(const ConditionEclipse &conditionEclipse, const Observateur &observateur, const double distance, const double hauteur,
-                       const double magnitudeStandard, const bool extinction, const bool effetEclipsePartielle)
+void Magnitude::Calcul(const ConditionEclipse &conditionEclipse,
+                       const Observateur &observateur,
+                       const double distance,
+                       const double hauteur,
+                       const double magnitudeStandard,
+                       const bool extinction,
+                       const bool effetEclipsePartielle)
 {
     /* Declarations des variables locales */
 
@@ -114,7 +119,8 @@ void Magnitude::Calcul(const ConditionEclipse &conditionEclipse, const Observate
 /*
  * Determination de l'extinction atmospherique
  */
-double Magnitude::ExtinctionAtmospherique(const Observateur &observateur, const double hauteur) const
+double Magnitude::ExtinctionAtmospherique(const Observateur &observateur,
+                                          const double hauteur) const
 {
     /* Declarations des variables locales */
 

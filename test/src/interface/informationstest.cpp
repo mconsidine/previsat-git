@@ -46,7 +46,7 @@
 #include "interface/onglets/donnees/informationssatellite.h"
 #include "interface/onglets/donnees/recherchesatellite.h"
 #include "librairies/corps/satellite/tle.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -67,7 +67,6 @@ void InformationsTest::testSauveOngletInformations()
     QDir dir = QDir::current();
     dir.cdUp();
     dir.cdUp();
-    dir.cdUp();
     dir.cd(qApp->applicationName());
 
     Configuration::instance()->_locale = "fr";
@@ -81,11 +80,11 @@ void InformationsTest::testSauveOngletInformations()
 
     Configuration::instance()->LectureDonneesSatellites();
 
-    const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
+    const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
 
     const int lgrec = Configuration::instance()->lgRec();
     const QStringList listeElem(QStringList () << "25544");
-    QMap<QString, ElementsOrbitaux> mapElem = TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(), lgrec, listeElem);
+    QMap<QString, ElementsOrbitaux> mapElem = TLE::Lecture(nomfic, Configuration::instance()->donneesSatellites(), lgrec, listeElem);
 
     Satellite sat(mapElem.first());
     Configuration::instance()->listeSatellites().append(sat);

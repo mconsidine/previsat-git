@@ -34,46 +34,34 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "librairies/corps/systemesolaire/soleil.h"
+#include "librairies/dates/date.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/observateur/observateur.h"
 #include "soleiltest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
 
 void SoleilTest::testAll()
 {
-    try {
-        Corps::Initialisation("empty");
-    } catch (std::exception &e) {
-    }
-
-    try {
-        Soleil soleil;
-        soleil.CalculCoordEquat(Observateur());
-    } catch (std::exception &e) {
-    }
+    QVERIFY_THROWS_EXCEPTION(Exception, Corps::Initialisation("empty"));
+    Soleil soleil;
+    QVERIFY_THROWS_EXCEPTION(Exception, soleil.CalculCoordEquat(Observateur()));
 
     QDir dir = QDir::current();
     dir.cdUp();
     dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
+    static_cast<void> (dir.cd(APP_NAME));
 
     const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Corps::Initialisation(dirCommonData);
     Date::Initialisation(dirCommonData);
 
     testSoleil();
-    testCalculPosition();
+    testCalculPositionSimp();
     testCalculLeverMeridienCoucher();
 }
 
@@ -86,18 +74,18 @@ void SoleilTest::testSoleil()
     CompareVecteurs3D(soleil.position(), pos);
 }
 
-void SoleilTest::testCalculPosition()
+void SoleilTest::testCalculPositionSimp()
 {
     qInfo(Q_FUNC_INFO);
 
     const Date date(1992, 10, 12, 23, 59, 0.816, 0.);
 
     Soleil soleil;
-    soleil.CalculPosition(date);
+    soleil.CalculPositionSimp(date);
 
-    const Vecteur3D pos(-140328287.9615894, -46628772.91250957, -20216954.727520175);
+    const Vecteur3D pos(-140328287.93352383, -46628772.90318371, -20216954.723476738);
     CompareVecteurs3D(soleil.position(), pos);
-    QCOMPARE(soleil.distanceUA(), pos.Norme() * SOLEIL::KM2UA);
+    QCOMPARE(soleil.distanceUA(), pos.Norme() * CORPS::KM2UA);
 }
 
 void SoleilTest::testCalculLeverMeridienCoucher()
@@ -109,7 +97,7 @@ void SoleilTest::testCalculLeverMeridienCoucher()
     // Toutes les heures sont definies
     Date date(2022, 5, 12, 5, 6, 7., 2. / 24.);
     Observateur obs1("Paris", -2.348640000, +48.853390000, 30);
-    soleil.CalculLeverMeridienCoucher(date, obs1, DateSysteme::SYSTEME_24H);
+    soleil.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs1);
 
     QCOMPARE(soleil.dateLever(), "06h15");
     QCOMPARE(soleil.dateMeridien(), "13h47");
@@ -125,7 +113,7 @@ void SoleilTest::testCalculLeverMeridienCoucher()
 
     // Cas des nuits blanches
     date = Date(2022, 6, 12, 5, 6, 7., 2. / 24.);
-    soleil.CalculLeverMeridienCoucher(date, obs1, DateSysteme::SYSTEME_24H);
+    soleil.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs1);
 
     QCOMPARE(soleil.dateLever(), "05h49");
     QCOMPARE(soleil.dateMeridien(), "13h50");
@@ -141,7 +129,7 @@ void SoleilTest::testCalculLeverMeridienCoucher()
 
     // Cas du pole nord au mois de juin (pas de lever ni de coucher)
     Observateur obs2("Pole nord", 0., +90., 0);
-    soleil.CalculLeverMeridienCoucher(date, obs2, DateSysteme::SYSTEME_24H);
+    soleil.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs2);
 
     QCOMPARE(soleil.dateLever(), "-");
     QCOMPARE(soleil.dateMeridien(), "14h00");
@@ -156,7 +144,7 @@ void SoleilTest::testCalculLeverMeridienCoucher()
 
     // Cas du pole nord a l'equinoxe
     date = Date(2022, 3, 19, 5, 6, 7., 2. / 24.);
-    soleil.CalculLeverMeridienCoucher(date, obs2, DateSysteme::SYSTEME_24H);
+    soleil.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs2);
 
     QCOMPARE(soleil.dateLever(), "06h47");
     QCOMPARE(soleil.dateMeridien(), "14h08");
@@ -172,7 +160,7 @@ void SoleilTest::testCalculLeverMeridienCoucher()
     // Cas d'un lieu pres du cercle polaire
     date = Date(2022, 1, 15, 5, 6, 7., 2. / 24.);
     Observateur obs3("Tromsö", 18.954656, 69.649979, 0.);
-    soleil.CalculLeverMeridienCoucher(date, obs3, DateSysteme::SYSTEME_24H);
+    soleil.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs3);
 
     QCOMPARE(soleil.dateLever(), "-");
     QCOMPARE(soleil.dateMeridien(), "15h25");

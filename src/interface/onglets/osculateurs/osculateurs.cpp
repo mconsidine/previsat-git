@@ -34,16 +34,12 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFile>
 #include <QSettings>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "osculateurs.h"
 #include "ui_osculateurs.h"
 #include "configuration/configuration.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/maths/maths.h"
 #include "librairies/maths/vecteur3d.h"
 
@@ -76,9 +72,9 @@ Osculateurs::Osculateurs(QWidget *parent) :
         Initialisation();
 #endif
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 
@@ -169,10 +165,10 @@ void Osculateurs::show(const Date &date)
     const int ct0 = satellite.phasage().ct0();
     const int nbOrb = satellite.phasage().nbOrb();
 
-    if ((nu0 == CORPS::ELEMENT_PHASAGE_INDEFINI)
-            || (dt0 == CORPS::ELEMENT_PHASAGE_INDEFINI)
-            || (ct0 == CORPS::ELEMENT_PHASAGE_INDEFINI)
-            || (nbOrb == CORPS::ELEMENT_PHASAGE_INDEFINI)) {
+    if ((nu0 == SATELLITE::ELEMENT_PHASAGE_INDEFINI)
+            || (dt0 == SATELLITE::ELEMENT_PHASAGE_INDEFINI)
+            || (ct0 == SATELLITE::ELEMENT_PHASAGE_INDEFINI)
+            || (nbOrb == SATELLITE::ELEMENT_PHASAGE_INDEFINI)) {
         _ui->phasage->setText(tr("N/A", "Not applicable"));
     } else {
         _ui->phasage->setText(fmt4.arg(nu0).arg(dt0).arg(ct0).arg(nbOrb));
@@ -196,122 +192,120 @@ void Osculateurs::SauveOngletElementsOsculateurs(const QString &fichier)
     try {
 
         QFile sw(fichier);
-        if (sw.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        if (!sw.open(QIODevice::WriteOnly | QIODevice::Text) || !sw.isWritable()) {
 
-            if (!sw.isWritable()) {
-                qWarning() << "Problème de droits d'écriture du fichier" << sw.fileName();
-                throw PreviSatException(tr("Problème de droits d'écriture du fichier %1").arg(sw.fileName()), MessageType::WARNING);
-            }
+            qWarning() << "Problème de droits d'écriture du fichier" << sw.fileName();
+            throw Exception(tr("Problème de droits d'écriture du fichier %1").arg(sw.fileName()), MessageType::WARNING);
+        }
 
-            QTextStream flux(&sw);
-            flux.setEncoding(QStringConverter::Utf8);
+        QTextStream flux(&sw);
+        flux.setEncoding(QStringConverter::Utf8);
 
 #if (BUILD_TEST == false)
-            const QString titre = "%1 %2 / %3 (c) %4";
-            flux << titre.arg(APP_NAME).arg(QString(APP_VER_MAJ)).arg(ORG_NAME).arg(QString(APP_ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
+        const QString titre = "%1 %2 / %3 (c) %4";
+        flux << titre.arg(APP_NAME).arg(QString(VER_MAJ)).arg(ORG_NAME).arg(QString(ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
 #endif
-            flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure1->text() << Qt::endl << Qt::endl;
+        flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure1->text() << Qt::endl << Qt::endl;
 
-            // Donnees sur le satellite
-            flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
+        // Donnees sur le satellite
+        flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
-            flux << tr("Vecteur d'état") << " (" << _ui->typeRepere->currentText() << ") :" << Qt::endl;
-            QString chaine = tr("x : %1\t\t\tvx : %2", "Position, velocity");
-            flux << chaine.arg(_ui->xsat->text().rightJustified(13, ' ')).arg(_ui->vxsat->text().rightJustified(15, ' ')) << Qt::endl;
+        flux << tr("Vecteur d'état") << " (" << _ui->typeRepere->currentText() << ") :" << Qt::endl;
+        QString chaine = tr("x : %1\t\t\tvx : %2", "Position, velocity");
+        flux << chaine.arg(_ui->xsat->text().rightJustified(13, ' ')).arg(_ui->vxsat->text().rightJustified(15, ' ')) << Qt::endl;
 
-            chaine = tr("y : %1\t\t\tvy : %2", "Position, velocity");
-            flux << chaine.arg(_ui->ysat->text().rightJustified(13, ' ')).arg(_ui->vysat->text().rightJustified(15, ' ')) << Qt::endl;
+        chaine = tr("y : %1\t\t\tvy : %2", "Position, velocity");
+        flux << chaine.arg(_ui->ysat->text().rightJustified(13, ' ')).arg(_ui->vysat->text().rightJustified(15, ' ')) << Qt::endl;
 
-            chaine = tr("z : %1\t\t\tvz : %2", "Position, velocity");
-            flux << chaine.arg(_ui->zsat->text().rightJustified(13, ' ')).arg(_ui->vzsat->text().rightJustified(15, ' ')) << Qt::endl << Qt::endl;
+        chaine = tr("z : %1\t\t\tvz : %2", "Position, velocity");
+        flux << chaine.arg(_ui->zsat->text().rightJustified(13, ' ')).arg(_ui->vzsat->text().rightJustified(15, ' ')) << Qt::endl << Qt::endl;
 
-            flux << tr("Éléments osculateurs :") << Qt::endl;
-            switch (_ui->typeParametres->currentIndex()) {
+        flux << tr("Éléments osculateurs :") << Qt::endl;
+        switch (_ui->typeParametres->currentIndex()) {
 
-            case 0:
-                // Parametres kepleriens
-                chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2");
-                flux << chaine.arg(_ui->demiGrandAxeKeplerien->text()).arg(_ui->ADNoeudAscendant->text().rightJustified(9, '0')) << Qt::endl;
+        case 0:
+            // Parametres kepleriens
+            chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2");
+            flux << chaine.arg(_ui->demiGrandAxeKeplerien->text()).arg(_ui->ADNoeudAscendant->text().rightJustified(9, '0')) << Qt::endl;
 
-                chaine = tr("Excentricité         : %1\tArgument du périgée                 : %2");
-                flux << chaine.arg(_ui->excentricite->text()).arg(_ui->argumentPerigee->text().rightJustified(9, '0')) << Qt::endl;
+            chaine = tr("Excentricité         : %1\tArgument du périgée                 : %2");
+            flux << chaine.arg(_ui->excentricite->text()).arg(_ui->argumentPerigee->text().rightJustified(9, '0')) << Qt::endl;
 
-                chaine = tr("Inclinaison          : %1\tAnomalie moyenne                    : %2");
-                flux << chaine.arg(_ui->inclinaison->text().rightJustified(9, '0')).arg(_ui->anomalieMoyenne->text().rightJustified(9, '0'))
-                     << Qt::endl << Qt::endl;
-                break;
+            chaine = tr("Inclinaison          : %1\tAnomalie moyenne                    : %2");
+            flux << chaine.arg(_ui->inclinaison->text().rightJustified(9, '0')).arg(_ui->anomalieMoyenne->text().rightJustified(9, '0'))
+                 << Qt::endl << Qt::endl;
+            break;
 
-            case 1:
-                // Parametres circulaires
-                chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2");
-                flux << chaine.arg(_ui->demiGrandAxeCirc->text()).arg(_ui->ADNoeudAscendant2->text().rightJustified(9, '0')) << Qt::endl;
+        case 1:
+            // Parametres circulaires
+            chaine = tr("Demi-grand axe       : %1\tAscension droite du noeud ascendant : %2");
+            flux << chaine.arg(_ui->demiGrandAxeCirc->text()).arg(_ui->ADNoeudAscendant2->text().rightJustified(9, '0')) << Qt::endl;
 
-                chaine = tr("Ex                   : %1\tInclinaison                         : %2", "Ex = Component X of eccentricity vector");
-                flux << chaine.arg(_ui->ex1->text().rightJustified(10, ' ')).arg(_ui->inclinaison2->text().rightJustified(9, '0')) << Qt::endl;
+            chaine = tr("Ex                   : %1\tInclinaison                         : %2", "Ex = Component X of eccentricity vector");
+            flux << chaine.arg(_ui->ex1->text().rightJustified(10, ' ')).arg(_ui->inclinaison2->text().rightJustified(9, '0')) << Qt::endl;
 
-                chaine = tr("Ey                   : %1\tPosition sur orbite                 : %2", "Ey = Component Y of eccentricity vector");
-                flux << chaine.arg(_ui->ey1->text().rightJustified(10, ' ')).arg(_ui->positionSurOrbite->text().rightJustified(9, '0'))
-                     << Qt::endl << Qt::endl;
-                break;
+            chaine = tr("Ey                   : %1\tPosition sur orbite                 : %2", "Ey = Component Y of eccentricity vector");
+            flux << chaine.arg(_ui->ey1->text().rightJustified(10, ' ')).arg(_ui->positionSurOrbite->text().rightJustified(9, '0'))
+                 << Qt::endl << Qt::endl;
+            break;
 
-            case 2:
-                // Parametres equatoriaux
-                chaine = tr("Demi-grand axe       : %1\tIx                 : %2", "Ix = Component X of inclination vector");
-                flux << chaine.arg(_ui->demiGrandAxeEquat->text()).arg(_ui->ix1->text()) << Qt::endl;
+        case 2:
+            // Parametres equatoriaux
+            chaine = tr("Demi-grand axe       : %1\tIx                 : %2", "Ix = Component X of inclination vector");
+            flux << chaine.arg(_ui->demiGrandAxeEquat->text()).arg(_ui->ix1->text()) << Qt::endl;
 
-                chaine = tr("Excentricité         : %1\tIy                 : %2", "Iy = Component Y of inclination vector");
-                flux << chaine.arg(_ui->excentricite2->text()).arg(_ui->iy1->text()) << Qt::endl;
+            chaine = tr("Excentricité         : %1\tIy                 : %2", "Iy = Component Y of inclination vector");
+            flux << chaine.arg(_ui->excentricite2->text()).arg(_ui->iy1->text()) << Qt::endl;
 
-                chaine = tr("Longitude du périgée : %1\tAnomalie moyenne   : %2");
-                flux << chaine.arg(_ui->longitudePerigee->text().rightJustified(9, '0')).arg(_ui->anomalieMoyenne2->text().rightJustified(9, '0'))
-                     << Qt::endl << Qt::endl;
-                break;
+            chaine = tr("Longitude du périgée : %1\tAnomalie moyenne   : %2");
+            flux << chaine.arg(_ui->longitudePerigee->text().rightJustified(9, '0')).arg(_ui->anomalieMoyenne2->text().rightJustified(9, '0'))
+                 << Qt::endl << Qt::endl;
+            break;
 
-            case 3:
-                // Parametres circulaires equatoriaux
-                chaine = tr("Demi-grand axe       : %1\tIx                          : %2", "Ix = Component X of inclination vector");
-                flux << chaine.arg(_ui->demiGrandAxeCircEquat->text()).arg(_ui->ix2->text().rightJustified(10, ' ')) << Qt::endl;
+        case 3:
+            // Parametres circulaires equatoriaux
+            chaine = tr("Demi-grand axe       : %1\tIx                          : %2", "Ix = Component X of inclination vector");
+            flux << chaine.arg(_ui->demiGrandAxeCircEquat->text()).arg(_ui->ix2->text().rightJustified(10, ' ')) << Qt::endl;
 
-                chaine = tr("Ex                   : %1\tIy                          : %2",
-                            "Ex = Component X of eccentricity vector, Iy = Component Y of inclination vector");
-                flux << chaine.arg(_ui->ex2->text().rightJustified(10, ' ')).arg(_ui->iy2->text().rightJustified(10, ' ')) << Qt::endl;
+            chaine = tr("Ex                   : %1\tIy                          : %2",
+                        "Ex = Component X of eccentricity vector, Iy = Component Y of inclination vector");
+            flux << chaine.arg(_ui->ex2->text().rightJustified(10, ' ')).arg(_ui->iy2->text().rightJustified(10, ' ')) << Qt::endl;
 
-                chaine = tr("Ey                   : %1\tArgument de longitude vraie : %2", "Ey = Component Y of eccentricity vector");
-                flux << chaine.arg(_ui->ey2->text().rightJustified(10, ' ')).arg(_ui->argumentLongitudeVraie2->text().rightJustified(9, '0'))
-                     << Qt::endl << Qt::endl;
-                break;
+            chaine = tr("Ey                   : %1\tArgument de longitude vraie : %2", "Ey = Component Y of eccentricity vector");
+            flux << chaine.arg(_ui->ey2->text().rightJustified(10, ' ')).arg(_ui->argumentLongitudeVraie2->text().rightJustified(9, '0'))
+                 << Qt::endl << Qt::endl;
+            break;
 
-            default:
-                break;
-            }
-
-            chaine = tr("Anomalie vraie       : %1\tApogée  (Altitude) : %2");
-            flux << chaine.arg(_ui->anomalieVraie->text().rightJustified(9, '0')).arg(_ui->apogee->text()) << Qt::endl;
-
-            chaine = tr("Anomalie excentrique : %1\tPérigée (Altitude) : %2");
-            flux << chaine.arg(_ui->anomalieExcentrique->text().rightJustified(9, '0')).arg(_ui->perigee->text()) << Qt::endl;
-
-            chaine = tr("Champ de vue         : %1  \tPériode orbitale   : %2");
-            flux << chaine.arg(_ui->champDeVue->text()).arg(_ui->periode->text().replace(" ", "")) << Qt::endl << Qt::endl;
-
-
-            flux << tr("Divers :") << Qt::endl;
-            chaine = tr("Doppler @ 100 MHz    : %1", "Doppler effect at 100 MegaHertz");
-            flux << chaine.arg(_ui->doppler->text()) << Qt::endl;
-
-            chaine = tr("Atténuation          : %1");
-            flux << chaine.arg(_ui->attenuation->text()) << Qt::endl;
-
-            chaine = tr("Délai                : %1", "Delay of signal at light speed");
-            flux << chaine.arg(_ui->delai->text()) << Qt::endl << Qt::endl;
-
-            chaine = tr("Phasage              : %1");
-            flux << chaine.arg(_ui->phasage->text()) << Qt::endl;
+        default:
+            break;
         }
+
+        chaine = tr("Anomalie vraie       : %1\tApogée  (Altitude) : %2");
+        flux << chaine.arg(_ui->anomalieVraie->text().rightJustified(9, '0')).arg(_ui->apogee->text()) << Qt::endl;
+
+        chaine = tr("Anomalie excentrique : %1\tPérigée (Altitude) : %2");
+        flux << chaine.arg(_ui->anomalieExcentrique->text().rightJustified(9, '0')).arg(_ui->perigee->text()) << Qt::endl;
+
+        chaine = tr("Champ de vue         : %1  \tPériode orbitale   : %2");
+        flux << chaine.arg(_ui->champDeVue->text()).arg(_ui->periode->text().replace(" ", "")) << Qt::endl << Qt::endl;
+
+
+        flux << tr("Divers :") << Qt::endl;
+        chaine = tr("Doppler @ 100 MHz    : %1", "Doppler effect at 100 MegaHertz");
+        flux << chaine.arg(_ui->doppler->text()) << Qt::endl;
+
+        chaine = tr("Atténuation          : %1");
+        flux << chaine.arg(_ui->attenuation->text()) << Qt::endl;
+
+        chaine = tr("Délai                : %1", "Delay of signal at light speed");
+        flux << chaine.arg(_ui->delai->text()) << Qt::endl << Qt::endl;
+
+        chaine = tr("Phasage              : %1");
+        flux << chaine.arg(_ui->phasage->text()) << Qt::endl;
 
         sw.close();
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
     }
 
     /* Retour */

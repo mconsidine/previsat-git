@@ -34,16 +34,11 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDesktopServices>
 #include <QDir>
 #include <QFileDialog>
 #include <QPushButton>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
-#include "librairies/exceptions/previsatexception.h"
 #include "librairies/systeme/logmessage.h"
 #include "logging.h"
 #include "ui_logging.h"

@@ -74,7 +74,7 @@ public:
      * @param[in/out] nombre nombre de satellites
      * @return nombre de satellites
      */
-    static int CalculPrevisions(int &nombre);
+    static int CalculPrevisions(const int &nombre);
 
 
 protected:

@@ -34,20 +34,16 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QGraphicsPixmapItem>
 #include <QMouseEvent>
 #include <QSettings>
-#include "ui_options.h"
+#include "../options/ui_options.h"
 #include "ui_radar.h"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
 #include "interface/ciel/ciel.h"
 #include "interface/options/options.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "radar.h"
 
 
@@ -79,9 +75,9 @@ Radar::Radar(QWidget *parent) :
 
         qInfo() << "Fin   Initialisation" << metaObject()->className();
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 
@@ -290,7 +286,7 @@ void Radar::mousePressEvent(QMouseEvent *evt)
                     Configuration::instance()->notifFlashs() = NotificationSonore::ATTENTE_LOS;
 
                     emit RecalculerPositions();
-                    GestionnaireXml::EcritureConfiguration();
+                    Configuration::instance()->EcritureConfiguration();
                 }
 
                 idx++;
@@ -364,7 +360,7 @@ void Radar::show()
 
     // Affichage du Soleil
     const Soleil &soleil = Configuration::instance()->soleil();
-    if (settings.value("affichage/affsoleil").toBool() && soleil.isVisible()) {
+    if (settings.value("affichage/affsoleil").toBool() && soleil.visible()) {
 
         // Calcul des coordonnees radar du Soleil
         const int lsol = TOPO2X(100., soleil.hauteur(), soleil.azimut(), xf);
@@ -383,7 +379,7 @@ void Radar::show()
 
     // Affichage de la Lune
     const Lune &lune = Configuration::instance()->lune();
-    if (settings.value("affichage/afflune").toBool() && lune.isVisible()) {
+    if (settings.value("affichage/afflune").toBool() && lune.visible()) {
 
         // Calcul des coordonnees radar de la Lune
         const int llun = TOPO2X(100., lune.hauteur(), lune.azimut(), xf);
@@ -438,7 +434,7 @@ void Radar::show()
 
         const Satellite sat = it1.previous();
 
-        if (sat.isVisible() && (sat.altitude() >= 0.) && settings.value("affichage/afftraceCiel").toBool() && !sat.traceCiel().isEmpty()) {
+        if (sat.visible() && (sat.altitude() >= 0.) && settings.value("affichage/afftraceCiel").toBool() && !sat.traceCiel().isEmpty()) {
 
             const ElementsTraceCiel trace0 = sat.traceCiel().first();
             const QPointF coord0(trace0.hauteur, trace0.azimut);

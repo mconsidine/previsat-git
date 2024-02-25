@@ -65,23 +65,23 @@ public:
      */
     explicit Soleil(const Vecteur3D &pos);
 
-
     /*
      * Methodes publiques
      */
     /**
-     * @brief CalculLeverMeridienCoucher Calcul des heures de lever/coucher/passage au meridien/crepuscules pour une date donnee
+     * @brief CalculPositionSimp Calcul simplifie de la position du Soleil
+     * @cite Astronomical Algorithms 2nd edition de Jean Meeus, p163-164
      * @param[in] date date
-     * @param[in] observateur observateur
      */
-    void CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur, const DateSysteme &syst);
+    void CalculPositionSimp(const Date &date);
 
     /**
-     * @brief CalculPosition Calcul de la position du Soleil a partir du modele simplifie
-     * de l'Astronomical Algorithms 2nd edition de Jean Meeus, p163-164
-     * @param[in] date date
+     * @brief CalculPosVit Calcul de la position-vitesse du corps
+     * @param date date
      */
-    void CalculPosition(const Date &date);
+    void CalculPosVit(const Date &date) override {
+        CalculPositionSimp(date);
+    }
 
 
     /*
@@ -112,6 +112,14 @@ private:
     /*
      * Methodes privees
      */
+
+    /**
+     * @brief CalculEphemLeverMeridienCoucher Calcul des ephemerides du Soleil pour determiner les heures de lever/meriden/coucher
+     * @param[in] date date
+     * @param[in] observateur observateur
+     */
+    void CalculEphemLeverMeridienCoucher(const Date &date,
+                                         const Observateur &observateur) override;
 
 
 };

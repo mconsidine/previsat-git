@@ -43,11 +43,7 @@
 #ifndef OPTIONS_H
 #define OPTIONS_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDialog>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 
 
 namespace Ui {
@@ -68,6 +64,7 @@ public:
     /**
      * @brief Options Constructeur par defaut
      * @param[in] parent fenetre parent
+     * @throw Exception
      */
     explicit Options(QWidget *parent = nullptr);
 

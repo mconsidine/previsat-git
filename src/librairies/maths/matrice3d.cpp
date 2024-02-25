@@ -48,14 +48,15 @@
 /*
  * Definition d'une matrice de rotation
  */
-Matrice3D::Matrice3D(const AxeType &axe, const double ang)
+Matrice3D::Matrice3D(const AxeType &axe,
+                     const double angle)
 {
     /* Declarations des variables locales */
     Vecteur3D vec1, vec2, vec3;
 
     /* Initialisations */
-    const double cosang = cos(ang);
-    const double sinang = sin(ang);
+    const double cosang = cos(angle);
+    const double sinang = sin(angle);
 
     /* Corps du constructeur */
     switch (axe) {
@@ -116,17 +117,17 @@ Matrice3D Matrice3D::Transposee() const
 /*
  * Accesseurs
  */
-const Vecteur3D &Matrice3D::vecteur1() const
+Vecteur3D Matrice3D::vecteur1() const
 {
     return _vecteur1;
 }
 
-const Vecteur3D &Matrice3D::vecteur2() const
+Vecteur3D Matrice3D::vecteur2() const
 {
     return _vecteur2;
 }
 
-const Vecteur3D &Matrice3D::vecteur3() const
+Vecteur3D Matrice3D::vecteur3() const
 {
     return _vecteur3;
 }

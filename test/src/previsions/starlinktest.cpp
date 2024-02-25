@@ -34,14 +34,7 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
-#include <QDir>
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "configuration/configuration.h"
 #include "interface/afficherresultats.h"
 #include "librairies/corps/corps.h"
@@ -49,7 +42,7 @@
 #include "librairies/corps/satellite/gpformat.h"
 #include "previsions/prevision.h"
 #include "starlinktest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -67,7 +60,6 @@ void StarlinkTest::testStarlink1()
     QDir dir = QDir::current();
     dir.cdUp();
     dir.cdUp();
-    dir.cdUp();
     dir.cd(qApp->applicationName());
 
     const QString dirCommonData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
@@ -83,7 +75,7 @@ void StarlinkTest::testStarlink1()
     const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "starlink-g6-19.xml";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "starlink_20230930_20231007.txt";
 
-    const QMap<QString, ElementsOrbitaux> tabElem = GPFormat::LectureFichier(fichier, "", -1);
+    const QMap<QString, ElementsOrbitaux> tabElem = GPFormat::Lecture(fichier, "", -1);
 
     ConditionsPrevisions conditions;
     conditions.jj1 = 8672.586805555557;

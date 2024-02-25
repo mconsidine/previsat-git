@@ -43,11 +43,7 @@
 #ifndef COORDISS_H
 #define COORDISS_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFrame>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 
 
 class Date;
@@ -68,6 +64,7 @@ public:
     /**
      * @brief CoordISS Constructeur par defaut
      * @param[in] parent parent
+     * @throw Exception
      */
     explicit CoordISS(QWidget *parent = nullptr);
 

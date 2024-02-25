@@ -34,21 +34,14 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "librairies/corps/satellite/conditioneclipse.h"
 #include "librairies/corps/satellite/sgp4.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/soleil.h"
 #include "librairies/maths/maths.h"
 #include "conditioneclipsetest.h"
-#include "test/src/testtools.h"
-
+#include "testtools.h"
 
 using namespace TestTools;
 
@@ -73,7 +66,7 @@ void ConditionEclipseTest::testCalcul()
     sgp4.Calcul(date, tle.elements());
 
     Soleil soleil;
-    soleil.CalculPosition(date);
+    soleil.CalculPositionSimp(date);
 
     ConditionEclipse cond;
     cond.CalculSatelliteEclipse(sgp4.position(), soleil);
@@ -81,7 +74,7 @@ void ConditionEclipseTest::testCalcul()
     QCOMPARE(cond.eclipseSoleil().elongation, 1.2372960132682804);
     QCOMPARE(cond.eclipseSoleil().luminosite, 1.);
     QCOMPARE(cond.eclipseSoleil().phi, 1.2119664974413888);
-    QCOMPARE(cond.eclipseSoleil().phiSoleil, 0.02479180294354775);
+    QCOMPARE(cond.eclipseSoleil().phiSoleil, 0.0247918029445);
     QCOMPARE(cond.eclipseSoleil().type, TypeEclipse::NON_ECLIPSE);
     QCOMPARE(cond.eclipseTotale(), false);
     QCOMPARE(cond.eclipseAnnulaire(), false);
@@ -90,13 +83,13 @@ void ConditionEclipseTest::testCalcul()
     // Satellite eclipse partielle
     date = Date(2019, 12, 31, 17, 10, 20., 0.);
     sgp4.Calcul(date, tle.elements());
-    soleil.CalculPosition(date);
+    soleil.CalculPositionSimp(date);
 
     cond.CalculSatelliteEclipse(sgp4.position(), soleil);
     QCOMPARE(cond.eclipseSoleil().elongation, 1.2362158066090845);
     QCOMPARE(arrondi(cond.eclipseSoleil().luminosite, 9), 0.998031093);
     QCOMPARE(cond.eclipseSoleil().phi, 1.2119741808986393);
-    QCOMPARE(cond.eclipseSoleil().phiSoleil, 0.02479180272118075);
+    QCOMPARE(cond.eclipseSoleil().phiSoleil, 0.02479180272212746);
     QCOMPARE(cond.eclipseSoleil().type, TypeEclipse::ECLIPSE_PARTIELLE);
     QCOMPARE(cond.eclipseTotale(), false);
     QCOMPARE(cond.eclipseAnnulaire(), false);
@@ -105,13 +98,13 @@ void ConditionEclipseTest::testCalcul()
     // Satellite eclipse totale
     date = Date(2019, 12, 31, 17, 11, 06., 0.);
     sgp4.Calcul(date, tle.elements());
-    soleil.CalculPosition(date);
+    soleil.CalculPositionSimp(date);
 
     cond.CalculSatelliteEclipse(sgp4.position(), soleil);
     QCOMPARE(cond.eclipseSoleil().elongation, 1.1865621461299487);
     QCOMPARE(cond.eclipseSoleil().luminosite, 0.);
     QCOMPARE(cond.eclipseSoleil().phi, 1.2123346939787312);
-    QCOMPARE(cond.eclipseSoleil().phiSoleil, 0.024791792594873272);
+    QCOMPARE(cond.eclipseSoleil().phiSoleil, 0.02479179259581998);
     QCOMPARE(cond.eclipseSoleil().type, TypeEclipse::ECLIPSE_TOTALE);
     QCOMPARE(cond.eclipseTotale(), true);
     QCOMPARE(cond.eclipseAnnulaire(), false);
@@ -128,14 +121,14 @@ void ConditionEclipseTest::testCalcul()
     sgp4.Calcul(date, tle2.elements());
 
     Lune lune;
-    lune.CalculPosition(date);
-    soleil.CalculPosition(date);
+    lune.CalculPositionSimp(date);
+    soleil.CalculPositionSimp(date);
 
     cond.CalculSatelliteEclipse(sgp4.position(), soleil, &lune);
     QCOMPARE(arrondi(cond.eclipseLune().elongation, 9), 0.009338529);
-    QCOMPARE(arrondi(cond.eclipseLune().luminosite, 8), 0.99999127);
+    QCOMPARE(arrondi(cond.eclipseLune().luminosite, 8), 0.99999228);
     QCOMPARE(cond.eclipseLune().phi, 0.004608512352456751);
-    QCOMPARE(cond.eclipseLune().phiSoleil, 0.004733071678722244);
+    QCOMPARE(cond.eclipseLune().phiSoleil, 0.00473307167967);
     QCOMPARE(cond.eclipseLune().type, TypeEclipse::ECLIPSE_PARTIELLE);
     QCOMPARE(cond.eclipseTotale(), false);
     QCOMPARE(cond.eclipseAnnulaire(), false);
@@ -151,14 +144,14 @@ void ConditionEclipseTest::testCalcul()
     sgp4.setInit(false);
     sgp4.Calcul(date, tle3.elements());
 
-    lune.CalculPosition(date);
-    soleil.CalculPosition(date);
+    lune.CalculPositionSimp(date);
+    soleil.CalculPositionSimp(date);
 
     cond.CalculSatelliteEclipse(sgp4.position(), soleil, &lune);
     QCOMPARE(arrondi(cond.eclipseLune().elongation, 10), 0.0002125044);
-    QCOMPARE(cond.eclipseLune().luminosite, 0.08983496455163091);
+    QCOMPARE(cond.eclipseLune().luminosite, 0.08983496491252252);
     QCOMPARE(cond.eclipseLune().phi, 0.004515254625907768);
-    QCOMPARE(cond.eclipseLune().phiSoleil, 0.00473284420586589);
+    QCOMPARE(cond.eclipseLune().phiSoleil, 0.004732844206812463);
     QCOMPARE(cond.eclipseLune().type, TypeEclipse::ECLIPSE_ANNULAIRE);
     QCOMPARE(cond.eclipseTotale(), false);
     QCOMPARE(cond.eclipseAnnulaire(), true);

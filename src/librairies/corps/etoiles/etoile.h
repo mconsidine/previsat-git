@@ -43,9 +43,6 @@
 #ifndef ETOILE_H
 #define ETOILE_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#include <QList>
-#pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/corps/corps.h"
 
 
@@ -68,7 +65,10 @@ public:
      * @param[in] decl declinaison (degres)
      * @param[in] mag magnitude
      */
-    Etoile(const QString &nomEtoile, const double ascDroite, const double decl, const double mag);
+    Etoile(const QString &nomEtoile,
+           const double ascDroite,
+           const double decl,
+           const double mag);
 
 
     /*
@@ -77,26 +77,25 @@ public:
     /**
      * @brief CalculPositionEtoiles Calcul de la position des etoiles
      * @param[in] observateur observateur
+     * @throw Exception
      */
-    static void CalculPositionEtoiles(const Observateur &observateur, QList<Etoile> &etoiles);
+    static void CalculPositionEtoiles(const Observateur &observateur,
+                                      QList<Etoile> &etoiles);
 
     /**
      * @brief Initialisation Lecture du fichier d'etoiles
      * @param[in] dirCommonData chemin des donnees communes
+     * @return tableau d'etoiles
+     * @throw Exception
      */
-    /**
-     * @brief Initialisation Lecture du fichier d'etoiles
-     * @param[in] dirCommonData chemin des donnees communes
-     * @param[out] etoiles tableau d'etoiles
-     */
-    static void Initialisation(const QString &dirCommonData, QList<Etoile> &etoiles);
+    static QList<Etoile> Initialisation(const QString &dirCommonData);
 
 
     /*
      * Accesseurs
      */
     double magnitude() const;
-    const QString &nom() const;
+    QString nom() const;
 
 
 protected:
@@ -122,12 +121,9 @@ private:
     /*
      * Methodes privees
      */
-    /**
-     * @brief InitTabEtoiles Lecture du fichier d'etoiles
-     * @param[out] etoiles tableau d'etoiles
-     */
-    static void InitTabEtoiles(QList<Etoile> &etoiles);
-
+    void CalculPosVit(const Date &date) override {
+        Q_UNUSED(date)
+    }
 
 };
 

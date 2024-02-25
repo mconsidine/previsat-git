@@ -60,6 +60,7 @@ enum class TypeNoeudOrbite {
     NOEUD_DESCENDANT
 };
 
+
 /*
  * Definitions des constantes
  */

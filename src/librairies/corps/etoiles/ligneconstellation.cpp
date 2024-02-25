@@ -34,17 +34,12 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
-#include <QTextStream>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "ligneconstellation.h"
 
 
-QList<QPair<int, int> > LigneConstellation::_tabLigCst;
+QList<QPoint> LigneConstellation::_tabLigCst;
 
 /**********
  * PUBLIC *
@@ -83,24 +78,19 @@ void LigneConstellation::CalculLignesCst(const QList<Etoile> &etoiles, QList<Lig
     /* Initialisations */
 
     /* Corps de la methode */
-    try {
-        if (_tabLigCst.isEmpty()) {
-            throw PreviSatException(QObject::tr("Le tableau de lignes de constellation n'est pas initialisé"), MessageType::WARNING);
-        }
+    if (_tabLigCst.isEmpty()) {
+        throw Exception(QObject::tr("Le tableau de lignes de constellation n'est pas initialisé"), MessageType::WARNING);
+    }
 
-        if (etoiles.isEmpty()) {
-            throw PreviSatException(QObject::tr("Le tableau d'étoiles n'est pas initialisé"), MessageType::WARNING);
-        }
+    if (etoiles.isEmpty()) {
+        throw Exception(QObject::tr("Le tableau d'étoiles n'est pas initialisé"), MessageType::WARNING);
+    }
 
-        lignesCst.clear();
-        for (int i=0; i<_tabLigCst.size(); i++) {
-            const int ind1 = _tabLigCst.at(i).first - 1;
-            const int ind2 = _tabLigCst.at(i).second - 1;
-            lignesCst.append(LigneConstellation(etoiles.at(ind1), etoiles.at(ind2)));
-        }
-
-    } catch (PreviSatException &e) {
-        throw PreviSatException();
+    lignesCst.clear();
+    for (int i=0; i<_tabLigCst.size(); i++) {
+        const int ind1 = _tabLigCst.at(i).x() - 1;
+        const int ind2 = _tabLigCst.at(i).y() - 1;
+        lignesCst.append(LigneConstellation(etoiles.at(ind1), etoiles.at(ind2)));
     }
 
     /* Retour */
@@ -118,24 +108,29 @@ void LigneConstellation::Initialisation(const QString &dirCommonData)
 
     /* Corps de la methode */
     const QString ficLig = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "constlines.dat";
-    QFile fichier(ficLig);
-    if (fichier.exists() && (fichier.size() != 0)) {
-
-        if (fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QTextStream flux(&fichier);
-
-            _tabLigCst.clear();
-            while (!flux.atEnd()) {
-
-                const QStringList ligne = flux.readLine().split(" ");
-                const QPair<int, int> lig(ligne.first().toInt(), ligne.at(1).toInt());
-                _tabLigCst.append(lig);
-            }
-        }
-        fichier.close();
-
-        qInfo() << "Lecture fichier constlines.dat OK";
+    QFile fi(ficLig);
+    if (!fi.exists() || (fi.size() == 0)) {
+        const QFileInfo ff(fi.fileName());
+        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME),
+                        MessageType::ERREUR);
     }
+
+    if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        const QFileInfo ff(fi.fileName());
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::ERREUR);
+    }
+
+    const QStringList contenu = QString(fi.readAll()).split("\n", Qt::SkipEmptyParts);
+    fi.close();
+
+    QStringListIterator it(contenu);
+    while (it.hasNext()) {
+
+        const QStringList ligne = it.next().split(" ", Qt::SkipEmptyParts);
+        _tabLigCst.append(QPoint(ligne.first().toInt(), ligne.last().toInt()));
+    }
+
+    qInfo() << "Lecture fichier constlines.dat OK";
 
     /* Retour */
     return;
@@ -150,12 +145,12 @@ bool LigneConstellation::isDessin() const
     return _dessin;
 }
 
-const Etoile &LigneConstellation::etoile1() const
+Etoile LigneConstellation::etoile1() const
 {
     return _etoile1;
 }
 
-const Etoile &LigneConstellation::etoile2() const
+Etoile LigneConstellation::etoile2() const
 {
     return _etoile2;
 }

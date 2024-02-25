@@ -34,20 +34,14 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "librairies/corps/satellite/evenements.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/maths/maths.h"
 #include "librairies/observateur/observateur.h"
 #include "evenementstest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -75,7 +69,7 @@ void EvenementsTest::testCalculAOS()
     Observateur obs("Paris", -2.348640000, +48.853390000, 30);
     obs.CalculPosVit(date);
 
-    sat.CalculCoordHoriz(obs);
+    sat.CalculCoordHoriz(obs, true);
 
     // AOS suivant
     const ElementsAOS elements1 = Evenements::CalculAOS(date, sat, obs, SensCalcul::CHRONOLOGIQUE);
@@ -88,7 +82,7 @@ void EvenementsTest::testCalculAOS()
     date = Date(2020, 1, 11, 21, 20, 0., 0.);
     sat.CalculPosVit(date);
     obs.CalculPosVit(date);
-    sat.CalculCoordHoriz(obs);
+    sat.CalculCoordHoriz(obs, true);
 
     const ElementsAOS elements2 = Evenements::CalculAOS(date, sat, obs, SensCalcul::ANTI_CHRONOLOGIQUE);
     QCOMPARE(arrondi(elements2.date.jourJulienUTC(), 8), 7315.38871499);
@@ -107,7 +101,7 @@ void EvenementsTest::testCalculAOS()
     date = Date(2020, 1, 11, 21, 40, 0., 0.);
     sat.CalculPosVit(date);
     obs.CalculPosVit(date);
-    sat.CalculCoordHoriz(obs);
+    sat.CalculCoordHoriz(obs, true);
 
     const ElementsAOS elements4 = Evenements::CalculAOS(date, sat, obs, SensCalcul::ANTI_CHRONOLOGIQUE);
     QCOMPARE(arrondi(elements4.date.jourJulienUTC(), 8), 7315.39473843);
@@ -158,10 +152,10 @@ void EvenementsTest::testCalculOmbrePenombre()
     sat.CalculPosVit(date);
 
     Soleil soleil;
-    soleil.CalculPosition(date);
+    soleil.CalculPositionSimp(date);
 
     Lune lune;
-    lune.CalculPosition(date);
+    lune.CalculPositionSimp(date);
     sat._conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, &lune, true);
 
     // Prochain passage penombre->ombre

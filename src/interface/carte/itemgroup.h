@@ -43,12 +43,8 @@
 #ifndef ITEMGROUP_H
 #define ITEMGROUP_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QGraphicsItemGroup>
 #include <QObject>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
 
 
 class ItemGroup : public QObject, public QGraphicsItemGroup

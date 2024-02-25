@@ -50,12 +50,12 @@
  * Definitions des structures
  */
 struct FrequenceRadio {
-    QString nom;
+    QStringList nom;
     QStringList frequenceMontante;
     QStringList frequenceDescendante;
-    QString balise;
-    QString mode;
-    QString signalAppel;
+    QStringList balise;
+    QStringList mode;
+    QStringList signalAppel;
 };
 
 #endif // FREQUENCESRADIO_H

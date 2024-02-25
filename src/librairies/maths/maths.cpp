@@ -34,12 +34,8 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QObject>
 #include <QString>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "maths.h"
 
 
@@ -57,30 +53,25 @@
 /*
  * Calcul d'un extremum par interpolation a l'ordre 3
  */
-QPointF Maths::CalculExtremumInterpolation3(const std::array<double, MATHS::DEGRE_INTERPOLATION> &xtab,
-                                            const std::array<double, MATHS::DEGRE_INTERPOLATION> &ytab)
+QPointF Maths::CalculExtremumInterpolation3(const std::array<QPointF, MATHS::DEGRE_INTERPOLATION> &table)
 {
     /* Declarations des variables locales */
-    QPointF res;
 
     /* Initialisations */
-    const double a = ytab[1] - ytab[0];
-    const double b = ytab[2] - ytab[1];
+    const double a = table[1].y() - table[0].y();
+    const double b = table[2].y() - table[1].y();
     const double ci = (a + b) / (b - a);
 
     /* Corps de la methode */
-    res.setX(xtab[1] - 0.5 * (xtab[1] - xtab[0]) * ci);
-    res.setY(ytab[1] - 0.125 * (a + b) * ci);
 
     /* Retour */
-    return res;
+    return QPointF(table[1].x() - 0.5 * (table[1].x() - table[0].x()) * ci, table[1].y() - 0.125 * (a + b) * ci);
 }
 
 /*
  * Calcul d'une valeur x pour une valeur y donnee, par interpolation a l'ordre 3
  */
-double Maths::CalculValeurXInterpolation3(const std::array<double, MATHS::DEGRE_INTERPOLATION> &xtab,
-                                          const std::array<double, MATHS::DEGRE_INTERPOLATION> &ytab,
+double Maths::CalculValeurXInterpolation3(const std::array<QPointF, MATHS::DEGRE_INTERPOLATION> &table,
                                           const double yval,
                                           const double epsilon)
 {
@@ -89,11 +80,11 @@ double Maths::CalculValeurXInterpolation3(const std::array<double, MATHS::DEGRE_
 
     /* Initialisations */
     unsigned int iter = 0;
-    double dn0 = 100000.;
+    double dn0 = MATHS::ITERATIONS_MAX;
     double n0 = 0.;
 
     for (unsigned int i=0; i<MATHS::DEGRE_INTERPOLATION; i++) {
-        yy[i] = ytab[i] - yval;
+        yy[i] = table[i].y() - yval;
     }
 
     const double a = yy[1] - yy[0];
@@ -117,13 +108,14 @@ double Maths::CalculValeurXInterpolation3(const std::array<double, MATHS::DEGRE_
     }
 
     /* Retour */
-    return (xtab[1] + n0 * (xtab[1] - xtab[0]));
+    return (table[1].x() + n0 * (table[1].x() - table[0].x()));
 }
 
 /*
  * Interpolation par polynome de Lagrange
  */
-double Maths::InterpolationLagrange(const QVector<QPointF> &table, const double xval)
+double Maths::InterpolationLagrange(const QVector<QPointF> &table,
+                                    const double xval)
 {
     /* Declarations des variables locales */
     double c;
@@ -152,8 +144,12 @@ double Maths::InterpolationLagrange(const QVector<QPointF> &table, const double 
 /*
  * Conversion d'un angle sous forme decimale en chaine de caracteres formattee
  */
-QString Maths::ToSexagesimal(const double xdec, const AngleFormatType &typeAngle, const int nbDeg, const int nbDecimales,
-                             const bool signe, const bool espace)
+QString Maths::ToSexagesimal(const double xdec,
+                             const AngleFormatType &typeAngle,
+                             const int nbDeg,
+                             const int nbDecimales,
+                             const bool signe,
+                             const bool espace)
 {
     /* Declarations des variables locales */
     double xval;

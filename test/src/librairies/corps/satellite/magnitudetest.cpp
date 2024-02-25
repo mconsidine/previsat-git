@@ -34,21 +34,15 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "librairies/corps/satellite/conditioneclipse.h"
 #include "librairies/corps/satellite/magnitude.h"
-#include "librairies/corps/satellite/sgp4.h"
+#include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/soleil.h"
 #include "librairies/observateur/observateur.h"
 #include "magnitudetest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -70,6 +64,9 @@ void MagnitudeTest::testCalcul()
     // Satellite non eclipse
     Date date(2020, 1, 1, 6, 11, 0., 0.);
 
+    Satellite sat(tle.elements());
+    sat.CalculPosVit(date);
+
     SGP4 sgp4;
     sgp4.Calcul(date, tle.elements());
 
@@ -77,19 +74,17 @@ void MagnitudeTest::testCalcul()
     obs.CalculPosVit(date);
 
     Soleil soleil;
-    soleil.CalculPosition(date);
+    soleil.CalculPositionSimp(date);
 
     ConditionEclipse cond;
     cond.CalculSatelliteEclipse(sgp4.position(), soleil);
 
-    Corps sat;
-    sat.setPosition(sgp4.position());
-    sat.CalculCoordHoriz(obs);
+    sat.CalculCoordHoriz(obs, true);
 
     const double magnitudeStandard = -0.5;
     Magnitude magn;
     magn.Calcul(cond, obs, sat.distance(), sat.hauteur(), magnitudeStandard);
 
-    QCOMPARE(magn.magnitude(), -1.778414273396659);
+    QCOMPARE(magn.magnitude(), -1.778414273382328);
     QCOMPARE(magn.fractionIlluminee(), 0.6315377954832837);
 }

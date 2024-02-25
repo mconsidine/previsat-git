@@ -34,9 +34,6 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wshadow"
 #include <QDir>
 #include <QFutureWatcher>
 #include <QProgressBar>
@@ -44,15 +41,12 @@
 #include <QSettings>
 #include <QtConcurrent>
 #include "ui_calculsflashs.h"
-#pragma GCC diagnostic warning "-Wshadow"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "calculsflashs.h"
 #include "configuration/configuration.h"
 #include "interface/afficherresultats.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/exceptions/message.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/systeme/telechargement.h"
 #include "previsions/flashs.h"
 
@@ -83,9 +77,9 @@ CalculsFlashs::CalculsFlashs(QWidget *parent) :
 
         Initialisation();
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 
@@ -134,7 +128,7 @@ void CalculsFlashs::show(const Date &date)
     /* Initialisations */
 
     /* Corps de la methode */
-    _ui->dateInitialeMetOp->setDateTime(date.ToQDateTime(0));
+    _ui->dateInitialeMetOp->setDateTime(date.ToQDateTime(DateFormatSec::FORMAT_SEC_ZERO));
     _ui->dateFinaleMetOp->setDateTime(_ui->dateInitialeMetOp->dateTime().addDays(7));
 
     CalculAgeElementsOrbitaux();
@@ -200,9 +194,9 @@ void CalculsFlashs::CalculAgeElementsOrbitaux()
     /* Initialisations */
 
     /* Corps de la methode */
-    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(Configuration::instance()->dirElem() + QDir::separator() +
-                                                                             "flares-spctrk.xml", Configuration::instance()->donneesSatellites(),
-                                                                             Configuration::instance()->lgRec());
+    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::Lecture(Configuration::instance()->dirElem() + QDir::separator() + "flares-spctrk.xml",
+                                                                      Configuration::instance()->donneesSatellites(),
+                                                                      Configuration::instance()->lgRec());
 
     if (mapElem.isEmpty()) {
 
@@ -385,8 +379,8 @@ void CalculsFlashs::on_calculsFlashs_clicked()
         QStringList listeSatellites = Configuration::instance()->mapFlashs().keys();
 
         // Lecture du fichier d'elements orbitaux
-        QMap<QString, ElementsOrbitaux> tabElem = GPFormat::LectureFichier(fichier, Configuration::instance()->donneesSatellites(),
-                                                                           Configuration::instance()->lgRec(), listeSatellites);
+        QMap<QString, ElementsOrbitaux> tabElem = GPFormat::Lecture(fichier, Configuration::instance()->donneesSatellites(),
+                                                                    Configuration::instance()->lgRec(), listeSatellites);
 
         // Mise a jour de la liste de satellites et creation du tableau de satellites
         QMutableStringListIterator it(listeSatellites);
@@ -400,7 +394,7 @@ void CalculsFlashs::on_calculsFlashs_clicked()
         // Il n'y a aucun satellite produisant des flashs dans le fichier d'elements orbitaux
         if (listeSatellites.size() == 0) {
             qWarning() << "Aucun satellite produisant des flashs n'a été trouvé dans le fichier d'éléments orbitaux";
-            throw PreviSatException(tr("Aucun satellite produisant des flashs n'a été trouvé dans le fichier d'éléments orbitaux"), MessageType::WARNING);
+            throw Exception(tr("Aucun satellite produisant des flashs n'a été trouvé dans le fichier d'éléments orbitaux"), MessageType::WARNING);
         }
 
         conditions.tabElem = tabElem;
@@ -481,7 +475,7 @@ void CalculsFlashs::on_calculsFlashs_clicked()
             }
         }
 
-    } catch (PreviSatException &) {
+    } catch (Exception const &) {
     }
 
     /* Retour */
@@ -594,7 +588,7 @@ void CalculsFlashs::on_majElementsOrbitaux_clicked()
 
         CalculAgeElementsOrbitaux();
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
     }
 
     /* Retour */

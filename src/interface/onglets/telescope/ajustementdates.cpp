@@ -37,7 +37,7 @@
 #include "ajustementdates.h"
 #include "librairies/corps/satellite/evenements.h"
 #include "librairies/corps/satellite/satellite.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/maths/maths.h"
 #include "ui_ajustementdates.h"
 
@@ -69,9 +69,9 @@ AjustementDates::AjustementDates(const QDateTime &dateInitiale, const QDateTime 
 
         Initialisation();
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 
@@ -176,7 +176,7 @@ void AjustementDates::Initialisation()
     const Date dateInit(_date1.addSecs(-10), _offset);
     Satellite sat(_elements);
     const ElementsAOS elementsAos1 = Evenements::CalculAOS(dateInit, sat, _observateur, SensCalcul::CHRONOLOGIQUE, _hauteur);
-    QDateTime dt1 = elementsAos1.date.ToQDateTime(1).addSecs(static_cast<quint64> (floor(_offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES)));
+    QDateTime dt1 = elementsAos1.date.ToQDateTime(DateFormatSec::FORMAT_SEC).addSecs(static_cast<quint64> (floor(_offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES)));
     if (dt1 > _date2) {
         dt1 = _date1;
     }
@@ -187,7 +187,8 @@ void AjustementDates::Initialisation()
 
     const Date dateFin(_date2, _offset);
     const ElementsAOS elementsAos2 = Evenements::CalculAOS(dateFin, sat, _observateur, SensCalcul::ANTI_CHRONOLOGIQUE, _hauteur);
-    QDateTime dt2 = elementsAos2.date.ToQDateTime(1).addSecs(static_cast<quint64> (floor(_offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES)));
+    QDateTime dt2 = elementsAos2.date.ToQDateTime(DateFormatSec::FORMAT_SEC)
+                        .addSecs(static_cast<quint64> (floor(_offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES)));
     if (dt2 < _date1) {
         dt2 = _date2;
     }
@@ -235,7 +236,7 @@ void AjustementDates::MajCoordHorizDebut()
 
     Satellite sat(_elements);
     sat.CalculPosVit(date);
-    sat.CalculCoordHoriz(_observateur);
+    sat.CalculCoordHoriz(_observateur, true);
 
     _ui->hauteurDebut->setText(Maths::ToSexagesimal(sat.hauteur(), AngleFormatType::DEGRE, 2, 0, true, true));
     _ui->azimutDebut->setText(Maths::ToSexagesimal(sat.azimut(), AngleFormatType::DEGRE, 3, 0, false, true));
@@ -261,7 +262,7 @@ void AjustementDates::MajCoordHorizFin()
 
     Satellite sat(_elements);
     sat.CalculPosVit(date);
-    sat.CalculCoordHoriz(_observateur);
+    sat.CalculCoordHoriz(_observateur, true);
 
     _ui->hauteurFin->setText(Maths::ToSexagesimal(sat.hauteur(), AngleFormatType::DEGRE, 2, 0, true, true));
     _ui->azimutFin->setText(Maths::ToSexagesimal(sat.azimut(), AngleFormatType::DEGRE, 3, 0, false, true));

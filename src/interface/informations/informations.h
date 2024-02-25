@@ -40,11 +40,7 @@
 #ifndef INFORMATIONS_H
 #define INFORMATIONS_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QMainWindow>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 
 
 class QTextBrowser;
@@ -66,6 +62,7 @@ public:
     /**
      * @brief Informations Constructeur par defaut
      * @param[in] fenetreParent fenetre parent
+     * @throw Exception
      */
     explicit Informations(QWidget *fenetreParent);
 

@@ -35,7 +35,7 @@
  */
 
 #include <cmath>
-#include "librairies/corps/systemesolaire/soleilconst.h"
+#include "librairies/corps/corpsconst.h"
 #include "librairies/maths/mathsconst.h"
 #include "signal.h"
 
@@ -72,23 +72,28 @@ Signal::Signal()
 /*
  * Calcul des elements du signal
  */
-void Signal::Calcul(const double rangeRate, const double distance, const double frequence)
+void Signal::Calcul(const double rangeRate,
+                    const double distance,
+                    const double frequence)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    // Delai en secondes
-    const double delaiSec = distance / SOLEIL::VITESSE_LUMIERE;
+    if ((distance > MATHS::EPSDBL100) && (fabs(rangeRate) > MATHS::EPSDBL100) && (frequence > MATHS::EPSDBL100)) {
 
-    /* Corps de la methode */
-    // Decalage Doppler (Hz)
-    _doppler = -frequence * rangeRate / SOLEIL::VITESSE_LUMIERE;
+        // Delai en secondes
+        const double delaiSec = distance / CORPS::VITESSE_LUMIERE;
 
-    // Attenuation (free-space path loss) avec la formule exacte, en dB
-    _attenuation = 20. * log10(4. * MATHS::PI * delaiSec * frequence);
+        /* Corps de la methode */
+        // Decalage Doppler (Hz)
+        _doppler = -frequence * rangeRate / CORPS::VITESSE_LUMIERE;
 
-    // Delai du signal en millisecondes (dans le vide)
-    _delai = 1000. * delaiSec;
+        // Attenuation (free-space path loss) avec la formule exacte, en dB
+        _attenuation = 20. * log10(4. * MATHS::PI * delaiSec * frequence);
+
+        // Delai du signal en millisecondes (dans le vide)
+        _delai = 1000. * delaiSec;
+    }
 
     /* Retour */
     return;

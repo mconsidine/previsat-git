@@ -42,12 +42,12 @@
 #pragma GCC diagnostic warning "-Wswitch-default"
 #pragma GCC diagnostic warning "-Wswitch-enum"
 #include "osculateurstest.h"
-#include "ui_osculateurs.h"
+#include "../../../src/interface/onglets/osculateurs/ui_osculateurs.h"
 #include "configuration/configuration.h"
 #include "interface/onglets/general/general.h"
 #include "interface/onglets/osculateurs/osculateurs.h"
 #include "librairies/corps/satellite/tle.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -65,7 +65,6 @@ void OsculateursTest::testSauveOngletOsculateurs()
     Osculateurs *osculateurs = nullptr;
 
     QDir dir = QDir::current();
-    dir.cdUp();
     dir.cdUp();
     dir.cdUp();
     dir.cd(qApp->applicationName());
@@ -89,18 +88,20 @@ void OsculateursTest::testSauveOngletOsculateurs()
     obs.append(observateur);
     Configuration::instance()->_observateurs = obs;
 
-    const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
+    const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
 
     const int lgrec = Configuration::instance()->lgRec();
     const QStringList listeElem(QStringList () << "25544");
-    QMap<QString, ElementsOrbitaux> mapElem = TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(), lgrec, listeElem);
+    QMap<QString, ElementsOrbitaux> mapElem = TLE::Lecture(nomfic, Configuration::instance()->donneesSatellites(), lgrec, listeElem);
 
     Satellite sat(mapElem.first());
 
     sat.CalculPosVit(date);
-    sat.CalculCoordHoriz(observateur);
+    sat.CalculCoordHoriz(observateur, true);
 
     sat.CalculElementsOsculateurs(date);
+    sat.CalculLatitude();
+    sat.CalculAltitude();
     const Date dateInit = Date(date.jourJulienUTC(), 0., false);
     sat.CalculTracesAuSol(dateInit, 1, true, true);
     sat._phasage.Calcul(sat.elementsOsculateurs(), sat.elementsOrbitaux().no);

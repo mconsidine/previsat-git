@@ -83,7 +83,7 @@ public:
      * @param[in/out] nombre nombre de satellites
      * @return nombre de satellites
      */
-    static int CalculTransits(int &nombre);
+    static int CalculTransits(const int &nombre);
 
 
 protected:
@@ -121,7 +121,9 @@ private:
      * @param[in/out] satellite satellite
      * @return tableau de la date et de l'angle minimum
      */
-    static QPointF CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps, Satellite &satellite);
+    static QPointF CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm,
+                                  const CorpsTransit &typeCorps,
+                                  Satellite &satellite);
 
     /**
      * @brief CalculDate Calcul de la date ou la distance angulaire est minimale
@@ -131,7 +133,9 @@ private:
      * @param[in/out] satellite satellite
      * @return date ou la distance angulaire est minimale
      */
-    static double CalculDate(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps, const bool itransit,
+    static double CalculDate(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm,
+                             const CorpsTransit &typeCorps,
+                             const bool itransit,
                              Satellite &satellite);
 
     /**
@@ -142,7 +146,10 @@ private:
      * @param[in/out] satellite satellite
      * @return ensemble des dates
      */
-    static QList<Date> CalculElements(const double jmax, const CorpsTransit &typeCorps, const bool itransit, Satellite &satellite);
+    static QList<Date> CalculElements(const double jmax,
+                                      const CorpsTransit &typeCorps,
+                                      const bool itransit,
+                                      Satellite &satellite);
 
     /**
      * @brief CalculEphemSoleilLune Calcul des ephemerides du Soleil et de la Lune

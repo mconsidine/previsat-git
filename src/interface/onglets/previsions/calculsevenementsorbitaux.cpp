@@ -34,9 +34,6 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wshadow"
 #include <QDir>
 #include <QFutureWatcher>
 #include <QMenu>
@@ -45,15 +42,12 @@
 #include <QSettings>
 #include <QtConcurrent>
 #include "ui_calculsevenementsorbitaux.h"
-#pragma GCC diagnostic warning "-Wshadow"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "calculsevenementsorbitaux.h"
 #include "configuration/configuration.h"
 #include "interface/afficherresultats.h"
 #include "interface/listwidgetitem.h"
 #include "librairies/exceptions/message.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "previsions/evenementsorbitaux.h"
 
 
@@ -85,9 +79,9 @@ CalculsEvenementsOrbitaux::CalculsEvenementsOrbitaux(QWidget *parent) :
 
         Initialisation();
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 
@@ -134,7 +128,7 @@ void CalculsEvenementsOrbitaux::show(const Date &date)
     /* Initialisations */
 
     /* Corps de la methode */
-    _ui->dateInitialeEvt->setDateTime(date.ToQDateTime(0));
+    _ui->dateInitialeEvt->setDateTime(date.ToQDateTime(DateFormatSec::FORMAT_SEC_ZERO));
     _ui->dateFinaleEvt->setDateTime(_ui->dateInitialeEvt->dateTime().addDays(7));
 
     CalculAgeElementsOrbitaux();
@@ -350,7 +344,7 @@ void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
     try {
 
         if (_ui->listeEvenements->count() == 0) {
-            throw PreviSatException();
+            throw Exception();
         }
 
         QVector<int> vecSat;
@@ -366,7 +360,7 @@ void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
         }
 
         if (conditions.listeSatellites.isEmpty()) {
-            throw PreviSatException(tr("Aucun satellite n'est sélectionné dans la liste"), MessageType::WARNING);
+            throw Exception(tr("Aucun satellite n'est sélectionné dans la liste"), MessageType::WARNING);
         }
 
         // Ecart heure locale - UTC
@@ -477,7 +471,7 @@ void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
             }
         }
 
-    } catch (PreviSatException &) {
+    } catch (Exception const &) {
     }
 
     /* Retour */

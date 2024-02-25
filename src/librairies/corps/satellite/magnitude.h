@@ -74,8 +74,13 @@ public:
      * @param[in] extinction prise en compte de l'extinction atmospherique
      * @param[in] effetEclipsePartielle prise en compte de l'effet des eclipses partielles
      */
-    void Calcul(const ConditionEclipse &conditionEclipse, const Observateur &observateur, const double distance, const double hauteur,
-                const double magnitudeStandard, const bool extinction = true, const bool effetEclipsePartielle = true);
+    void Calcul(const ConditionEclipse &conditionEclipse,
+                const Observateur &observateur,
+                const double distance,
+                const double hauteur,
+                const double magnitudeStandard,
+                const bool extinction = true,
+                const bool effetEclipsePartielle = true);
 
     /**
      * @brief ExtinctionAtmospherique Determination de l'extinction atmospherique
@@ -84,7 +89,8 @@ public:
      * @param[in] hauteur hauteur du satellite
      * @return correction de magnitude correspondant a l'extinction atmospherique
      */
-    double ExtinctionAtmospherique(const Observateur &observateur, const double hauteur) const;
+    double ExtinctionAtmospherique(const Observateur &observateur,
+                                   const double hauteur) const;
 
 
     /*

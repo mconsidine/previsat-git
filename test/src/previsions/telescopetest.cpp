@@ -34,20 +34,14 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "configuration/configuration.h"
 #include "telescopetest.h"
 #include "librairies/corps/corps.h"
 #include "librairies/corps/satellite/evenements.h"
 #include "librairies/corps/satellite/tle.h"
 #include "previsions/telescope.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -59,7 +53,6 @@ static QDir dir;
 void TelescopeTest::testAll()
 {
     dir = QDir::current();
-    dir.cdUp();
     dir.cdUp();
     dir.cdUp();
     dir.cd(qApp->applicationName());
@@ -90,11 +83,11 @@ void TelescopeTest::testCalculSuiviTelescope1()
 
     // Test des satellites potentiellement visibles
     int n = 0;
-    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
+    const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
 
     const int lgrec = Configuration::instance()->lgRec();
     const QStringList listeTLE(QStringList () << "25544");
-    QMap<QString, ElementsOrbitaux> mapTLE = TLE::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), lgrec, listeTLE);
+    QMap<QString, ElementsOrbitaux> mapTLE = TLE::Lecture(fichier, Configuration::instance()->donneesSatellites(), lgrec, listeTLE);
     conditions.tabElem = mapTLE;
 
     Satellite sat(mapTLE.first());
@@ -104,13 +97,13 @@ void TelescopeTest::testCalculSuiviTelescope1()
     conditions.observateur.CalculPosVit(date);
 
     sat.CalculPosVit(date);
-    sat.CalculCoordHoriz(conditions.observateur);
+    sat.CalculCoordHoriz(conditions.observateur, true);
 
     Soleil soleil;
-    soleil.CalculPosition(date);
+    soleil.CalculPosVit(date);
 
     Lune lune;
-    lune.CalculPosition(date);
+    lune.CalculPosVit(date);
 
     ConditionEclipse condEcl;
     condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, true);
@@ -124,10 +117,10 @@ void TelescopeTest::testCalculSuiviTelescope1()
     conditions.observateur.CalculPosVit(date);
 
     sat.CalculPosVit(date);
-    sat.CalculCoordHoriz(conditions.observateur);
+    sat.CalculCoordHoriz(conditions.observateur, true);
 
-    soleil.CalculPosition(date);
-    lune.CalculPosition(date);
+    soleil.CalculPosVit(date);
+    lune.CalculPosVit(date);
     condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, true);
 
     const ElementsAOS elemLOS = Evenements::CalculAOS(date, sat, conditions.observateur);

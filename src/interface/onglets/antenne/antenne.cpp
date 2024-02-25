@@ -34,8 +34,6 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QHostAddress>
@@ -44,12 +42,10 @@
 #include <QTimer>
 #include <QUdpSocket>
 #include "ui_antenne.h"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "antenne.h"
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/evenements.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 
 
 // Registre
@@ -80,9 +76,9 @@ Antenne::Antenne(QWidget *parent) :
 
         Initialisation();
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 
@@ -234,24 +230,24 @@ void Antenne::show(const Date &date)
         const bool aff1 = (fabs(frequenceMontante) > 0.);
         _ui->dopplerMontant->setText((aff1) ? QString("%1 Hz").arg(-signal.doppler(), 0, 'f', 0) : "-");
         _ui->frequenceMontanteReelle->setText((aff1) ? QString("%1 MHz").arg((frequenceMontante - signal.doppler()) * 1.e-6, 0, 'f', 6) : "-");
-        _ui->frequenceMontanteReelle->setStyleSheet(QString("font-weight: ") + ((sat.isVisible() && aff1) ? "bold" : "normal"));
+        _ui->frequenceMontanteReelle->setStyleSheet(QString("font-weight: ") + ((sat.visible() && aff1) ? "bold" : "normal"));
         _ui->attenuationMontant->setText((aff1) ? QString("%1 dB").arg(signal.attenuation(), 0, 'f', 2) : "-");
         _ui->delaiMontant->setText((aff1) ? QString("%1 ms").arg(signal.delai(), 0, 'f', 2) : "-");
-        _ui->baliseMontant->setText((frequencesMontant.balise.isEmpty()) ? "-" : frequencesMontant.balise);
-        _ui->modeMontant->setText((frequencesMontant.mode.isEmpty()) ? "-" : frequencesMontant.mode);
-        _ui->signalAppelMontant->setText((frequencesMontant.signalAppel.isEmpty()) ? "-" : frequencesMontant.signalAppel);
+        _ui->baliseMontant->setText((frequencesMontant.balise.first().isEmpty()) ? "-" : frequencesMontant.balise.first());
+        _ui->modeMontant->setText((frequencesMontant.mode.first().isEmpty()) ? "-" : frequencesMontant.mode.first());
+        _ui->signalAppelMontant->setText((frequencesMontant.signalAppel.first().isEmpty()) ? "-" : frequencesMontant.signalAppel.first());
 
         // Donnees sur le signal descendant
         signal.Calcul(rangeRate, distance, frequenceDescendante);
         const bool aff2 = (fabs(frequenceDescendante) > 0.);
         _ui->dopplerDescendant->setText((aff2) ? QString("%1 Hz").arg(signal.doppler(), 0, 'f', 0) : "-");
         _ui->frequenceDescendanteReelle->setText((aff2) ? QString("%1 MHz").arg((frequenceDescendante + signal.doppler()) * 1.e-6, 0, 'f', 6) : "-");
-        _ui->frequenceDescendanteReelle->setStyleSheet(QString("font-weight: ") + ((sat.isVisible() && aff2) ? "bold" : "normal"));
+        _ui->frequenceDescendanteReelle->setStyleSheet(QString("font-weight: ") + ((sat.visible() && aff2) ? "bold" : "normal"));
         _ui->attenuationDescendant->setText((aff2) ? QString("%1 dB").arg(signal.attenuation(), 0, 'f', 2) : "-");
         _ui->delaiDescendant->setText((aff2) ? QString("%1 ms").arg(signal.delai(), 0, 'f', 2) : "-");
-        _ui->baliseDescendant->setText((frequencesDescendant.balise.isEmpty()) ? "-" : frequencesDescendant.balise);
-        _ui->modeDescendant->setText((frequencesDescendant.mode.isEmpty()) ? "-" : frequencesDescendant.mode);
-        _ui->signalAppelDescendant->setText((frequencesDescendant.signalAppel.isEmpty()) ? "-" : frequencesDescendant.signalAppel);
+        _ui->baliseDescendant->setText((frequencesDescendant.balise.first().isEmpty()) ? "-" : frequencesDescendant.balise.first());
+        _ui->modeDescendant->setText((frequencesDescendant.mode.first().isEmpty()) ? "-" : frequencesDescendant.mode.first());
+        _ui->signalAppelDescendant->setText((frequencesDescendant.signalAppel.first().isEmpty()) ? "-" : frequencesDescendant.signalAppel.first());
     }
 
     // Nom du satellite
@@ -389,7 +385,7 @@ void Antenne::EnvoiUdp()
 
     /* Corps de la methode */
     donnees = QByteArray(_structureMessageUdp.arg(sat.elementsOrbitaux().nom)
-                         .arg((sat.isVisible()) ? 1 : 0)
+                         .arg((sat.visible()) ? 1 : 0)
                          .arg(azimut)
                          .arg(hauteur)
                          .arg(sat.rangeRate() * 1.e3, 0, 'f', 1).toStdString().c_str());
@@ -469,7 +465,7 @@ void Antenne::on_connexion_clicked()
             _chronometreUdp = nullptr;
         }
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
     }
 
     /* Retour */

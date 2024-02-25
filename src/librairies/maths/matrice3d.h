@@ -72,9 +72,10 @@ public:
     /**
      * @brief Matrice3D Definition d'une matrice de rotation
      * @param[in] axe axe de rotation
-     * @param[in] ang angle de rotation
+     * @param[in] angle angle de rotation
      */
-    Matrice3D(const AxeType &axe, const double ang);
+    Matrice3D(const AxeType &axe,
+              const double angle);
 
     /**
      * @brief Matrice3D Definition a partir des vecteurs colonne
@@ -82,7 +83,9 @@ public:
      * @param[in] vec2 vecteur 2
      * @param[in] vec3 vecteur 3
      */
-    Matrice3D(const Vecteur3D &vec1, const Vecteur3D &vec2, const Vecteur3D &vec3) :
+    Matrice3D(const Vecteur3D &vec1,
+              const Vecteur3D &vec2,
+              const Vecteur3D &vec3) :
         _vecteur1(vec1),
         _vecteur2(vec2),
         _vecteur3(vec3) {
@@ -111,7 +114,8 @@ public:
      * @param[in] vecteur vecteur 3D
      * @return vecteur 3D resultat
      */
-    friend inline Vecteur3D operator * (const Matrice3D &matrice, const Vecteur3D &vecteur);
+    friend inline Vecteur3D operator * (const Matrice3D &matrice,
+                                        const Vecteur3D &vecteur);
 
     /**
      * @brief operator * produit de 2 matrices 3x3
@@ -119,15 +123,16 @@ public:
      * @param[in] matrice2 matrice 2
      * @return matrice 3D resultat
      */
-    friend inline Matrice3D operator * (const Matrice3D &matrice1, const Matrice3D &matrice2);
+    friend inline Matrice3D operator * (const Matrice3D &matrice1,
+                                        const Matrice3D &matrice2);
 
 
     /*
      * Accesseurs
      */
-    const Vecteur3D &vecteur1() const;
-    const Vecteur3D &vecteur2() const;
-    const Vecteur3D &vecteur3() const;
+    Vecteur3D vecteur1() const;
+    Vecteur3D vecteur2() const;
+    Vecteur3D vecteur3() const;
 
 
 protected:
@@ -162,7 +167,8 @@ private:
 /*
  * Produit d'une Matrice3D avec un vecteur 3D
  */
-inline Vecteur3D operator * (const Matrice3D &matrice, const Vecteur3D &vecteur)
+inline Vecteur3D operator * (const Matrice3D &matrice,
+                             const Vecteur3D &vecteur)
 {
     const double x = matrice._vecteur1.x() * vecteur.x() + matrice._vecteur2.x() * vecteur.y() + matrice._vecteur3.x() * vecteur.z();
     const double y = matrice._vecteur1.y() * vecteur.x() + matrice._vecteur2.y() * vecteur.y() + matrice._vecteur3.y() * vecteur.z();
@@ -174,7 +180,8 @@ inline Vecteur3D operator * (const Matrice3D &matrice, const Vecteur3D &vecteur)
 /*
  * Produit de 2 matrices
  */
-inline Matrice3D operator * (const Matrice3D &matrice1, const Matrice3D &matrice2)
+inline Matrice3D operator * (const Matrice3D &matrice1,
+                             const Matrice3D &matrice2)
 {
     return (Matrice3D(matrice1 * matrice2._vecteur1, matrice1 * matrice2._vecteur2, matrice1 * matrice2._vecteur3));
 }

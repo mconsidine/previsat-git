@@ -44,9 +44,7 @@
 #define MATHS_H
 
 #include <cmath>
-#pragma GCC diagnostic ignored "-Wconversion"
 #include <QPointF>
-#pragma GCC diagnostic ignored "-Wconversion"
 #include "mathsconst.h"
 
 
@@ -66,24 +64,20 @@ public:
     /**
      * @brief CalculExtremumInterpolation3 Calcul d'un extremum par interpolation a l'ordre 3,
      * issu de l'Astronomical Algorithms 2nd edition, de Jean Meeus, pp23-25
-     * @param[in] xtab Tableau des abscisses
-     * @param[in] ytab Tableau des ordonnees
+     * @param[in] table Tableau de valeurs
      * @return Coordonnees de l'extremum
      */
-    static QPointF CalculExtremumInterpolation3(const std::array<double, MATHS::DEGRE_INTERPOLATION> &xtab,
-                                                const std::array<double, MATHS::DEGRE_INTERPOLATION> &ytab);
+    static QPointF CalculExtremumInterpolation3(const std::array<QPointF, MATHS::DEGRE_INTERPOLATION> &table);
 
     /**
      * @brief CalculValeurXInterpolation3 Calcul d'une valeur x pour une valeur y donnee, par interpolation a l'ordre 3,
      * issu de l'Astronomical Algorithms 2nd edition, de Jean Meeus, pp23-27
-     * @param[in] xtab Tableau des abscisses
-     * @param[in] ytab Tableau des ordonnees
+     * @param[in] table Tableau de valeur
      * @param[in] yval Valeur de l'ordonnee
-     * @param[in] Epsilon Seuil de comparaison
+     * @param[in] epsilon Seuil de comparaison
      * @return valeur x correspondante
      */
-    static double CalculValeurXInterpolation3(const std::array<double, MATHS::DEGRE_INTERPOLATION> &xtab,
-                                              const std::array<double, MATHS::DEGRE_INTERPOLATION> &ytab,
+    static double CalculValeurXInterpolation3(const std::array<QPointF, MATHS::DEGRE_INTERPOLATION> &table,
                                               const double yval,
                                               const double epsilon);
 
@@ -93,7 +87,8 @@ public:
      * @param[in] xval valeur de l'abscisse
      * @return valeur de l'ordonnee interpolee
      */
-    static double InterpolationLagrange(const QVector<QPointF> &table, const double xval);
+    static double InterpolationLagrange(const QVector<QPointF> &table,
+                                        const double xval);
 
     /**
      * @brief ToSexagesimal Conversion d'un angle sous forme decimale en chaine de caracteres formattee
@@ -105,7 +100,11 @@ public:
      * @param[in] espace Affichage d'un espace entre les composantes de l'angle
      * @return chaine de caracteres contenant la valeur angulaire
      */
-    static QString ToSexagesimal(const double xdec, const AngleFormatType &typeAngle, const int nbDeg, const int nbDecimales, const bool signe,
+    static QString ToSexagesimal(const double xdec,
+                                 const AngleFormatType &typeAngle,
+                                 const int nbDeg,
+                                 const int nbDecimales,
+                                 const bool signe,
                                  const bool espace);
 
 
@@ -162,7 +161,8 @@ static inline int sgn(const double x)
  * @param[in] nbDec nombre de decimales
  * @return Arrondi
  */
-static inline double arrondi(const double x, const unsigned int nbDec)
+static inline double arrondi(const double x,
+                             const unsigned int nbDec)
 {
     /* Declarations des variables locales */
 
@@ -182,7 +182,8 @@ static inline double arrondi(const double x, const unsigned int nbDec)
  * @param[in] y valeur modulante
  * @return valeur modulee
  */
-static inline double modulo(const double x, const double y)
+static inline double modulo(const double x,
+                            const double y)
 {
     /* Declarations des variables locales */
 

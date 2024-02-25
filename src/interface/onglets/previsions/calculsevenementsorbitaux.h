@@ -43,11 +43,7 @@
 #ifndef CALCULSEVENEMENTSORBITAUX_H
 #define CALCULSEVENEMENTSORBITAUX_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFrame>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 
 
 namespace Ui {
@@ -71,6 +67,7 @@ public:
     /**
      * @brief CalculsEvenementsOrbitaux Constructeur par defaut
      * @param[in] parent parent
+     * @throw Exception
      */
     explicit CalculsEvenementsOrbitaux(QWidget *parent = nullptr);
 

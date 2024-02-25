@@ -45,17 +45,10 @@
 
 #include "librairies/corps/systemesolaire/lune.h"
 #include "librairies/corps/systemesolaire/soleil.h"
+#include "elementseclipse.h"
 
 
 class Vecteur3D;
-
-struct ElementsEclipse {
-    double luminosite = 1.;
-    double elongation;
-    double phiSoleil;
-    double phi;
-    TypeEclipse type = TypeEclipse::NON_ECLIPSE;
-};
 
 class ConditionEclipse
 {
@@ -86,7 +79,10 @@ public:
      * @param[in] lune Lune
      * @param[in] refraction prise en compte de la refraction (cas de la Terre)
      */
-    void CalculSatelliteEclipse(const Vecteur3D &position, const Soleil &soleil, const Lune *lune = nullptr, const bool refraction = true);
+    void CalculSatelliteEclipse(const Vecteur3D &position,
+                                const Soleil &soleil,
+                                const Lune *lune = nullptr,
+                                const bool refraction = true);
 
 
     /*
@@ -122,6 +118,7 @@ private:
     ElementsEclipse _eclipseSoleil;
     Soleil _soleil;
 
+
     /*
      * Methodes privees
      */
@@ -133,7 +130,9 @@ private:
      * @param[in] refraction prise en compte de la refraction (cas de la Terre)
      * @return elements de l'eclipse
      */
-    ElementsEclipse CalculEclipse(const Vecteur3D &position, const Vecteur3D &positionCorpsOccultant, const CorpsOccultant &corpsOccultant,
+    ElementsEclipse CalculEclipse(const Vecteur3D &position,
+                                  const Vecteur3D &positionCorpsOccultant,
+                                  const CorpsOccultant &corpsOccultant,
                                   const bool refraction) const;
 
 };

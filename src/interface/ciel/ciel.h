@@ -43,11 +43,7 @@
 #ifndef CIEL_H
 #define CIEL_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFrame>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/dates/date.h"
 #include "librairies/observateur/observateur.h"
 #include "librairies/corps/satellite/satellite.h"
@@ -82,6 +78,7 @@ public:
     /**
      * @brief Ciel Constructeur par defaut
      * @param[in] parent parent
+     * @throw Exception
      */
     explicit Ciel(QWidget *parent = nullptr);
 

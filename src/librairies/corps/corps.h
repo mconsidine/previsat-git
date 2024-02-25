@@ -40,14 +40,12 @@
 #ifndef CORPS_H
 #define CORPS_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
+#include <QList>
 #include <QPointF>
-#include <QVector>
 #include <QString>
-#pragma GCC diagnostic warning "-Wconversion"
+#include "librairies/maths/vecteur3d.h"
 #include "corpsconst.h"
 #include "ephemerides.h"
-#include "librairies/maths/vecteur3d.h"
 
 
 class Date;
@@ -61,34 +59,44 @@ public:
     /*
      *  Constructeurs
      */
-    /**
-     * @brief Corps Constructeur par defaut
-     */
-    Corps();
+    Corps() {
+        _azimut = 0.;
+        _hauteur = 0.;
+        _distance = 0.;
 
+        _ascensionDroite = 0.;
+        _declinaison = 0.;
 
-    /*
-     * Modificateurs
-     */
-    void setPosition(const Vecteur3D &pos);
+        _longitude = 0.;
+        _latitude = 0.;
+        _altitude = 0.;
 
+        _visible = false;
+        _rangeRate = 0.;
+
+        _lonEcl = 0.;
+        _latEcl = 0.;
+        _ct = 0.;
+        _r0 = 0.;
+    }
 
     /*
      * Methodes publiques
      */
     /**
      * @brief CalculAltitude Calcul de l'altitude du corps
-     * @param[in] pos position cartesienne du corps
      * @return altitude (km)
      */
-    double CalculAltitude(const Vecteur3D &pos) const;
+    void CalculAltitude();
 
     /**
      * @brief CalculCoordEquat Calcul des coordonnees equatoriales
      * @param[in] observateur observateur
      * @param[in] determinationConstellation determination de la constellation
+     * @throw Exception
      */
-    void CalculCoordEquat(const Observateur &observateur, const bool determinationConstellation = true);
+    void CalculCoordEquat(const Observateur &observateur,
+                          const bool determinationConstellation = true);
 
     /**
      * @brief CalculCoordHoriz Calcul des coordonnees horizontales
@@ -97,13 +105,17 @@ public:
      * @param[in] arefr prise en compte de la refraction
      * @param[in] aos gestion de la refraction dans le cas du calcul de lever/coucher
      */
-    void CalculCoordHoriz(const Observateur &observateur, const bool acalc = true, const bool arefr = true, const bool aos = false);
+    void CalculCoordHoriz(const Observateur &observateur,
+                          const bool acalc/* = true*/,
+                          const bool arefr = true,
+                          const bool aos = false);
 
+    // TODO
     /**
-     * @brief CalculCoordHoriz2 Calcul des coordonnees horizontales (avec condition de visibilite)
+     * @brief CalculCoordHoriz Calcul des coordonnees horizontales (avec condition de visibilite)
      * @param[in] observateur observateur
      */
-    void CalculCoordHoriz2(const Observateur &observateur);
+    void CalculCoordHoriz3(const Observateur &observateur);
 
     /**
      * @brief CalculCoordTerrestres Calcul des coordonnees terrestres du corps a la date courante
@@ -119,10 +131,28 @@ public:
 
     /**
      * @brief CalculLatitude Calcul de la latitude geodesique du corps
-     * @param[in] pos position cartesienne du corps
-     * @return latitude (radian)
      */
-    double CalculLatitude(const Vecteur3D &pos);
+    void CalculLatitude();
+
+    /**
+     * @brief CalculLeverMeridienCoucher Calcul des lever/passage au meridien/coucher
+     * @param[in] date date
+     * @param[in] syst systeme horaire
+     * @param[in] observateur observateur
+     * @param[in] calculCrepuscules calcul des crepuscules dans le cas du Soleil
+     */
+    void CalculLeverMeridienCoucher(const Date &date,
+                                    const DateSysteme &syst,
+                                    const Observateur &observateur,
+                                    const bool calculCrepuscules = true);
+
+    /**
+     * @brief CalculPosVit Calcul de la position-vitesse du corps
+     * @param date date
+     */
+    virtual void CalculPosVit(const Date &date) {
+        Q_UNUSED(date)
+    }
 
     /**
      * @brief CalculPosVitECEF Calcul de la position et de la vitesse dans le repere ECEF
@@ -130,7 +160,9 @@ public:
      * @param[out] positionECEF position dans le repere ECEF
      * @param[out] vitesseECEF vitesse dans le repere ECEF
      */
-    void CalculPosVitECEF(const Date &date, Vecteur3D &positionECEF, Vecteur3D &vitesseECEF) const;
+    void CalculPosVitECEF(const Date &date,
+                          Vecteur3D &positionECEF,
+                          Vecteur3D &vitesseECEF) const;
 
     /**
      * @brief CalculRefractionAtmospherique Calcul de la refraction atmospherique
@@ -147,6 +179,8 @@ public:
 
     /**
      * @brief Initialisation Initialisation des elements relatifs aux corps (satellites, systeme solaire, etc.)
+     * @param dirCommonData repertoire ou se trouve le fichier constellations.dat
+     * @throw Exception
      */
     static void Initialisation(const QString &dirCommonData);
 
@@ -156,32 +190,46 @@ public:
      * @param[in] date date
      * @return vecteur en coordonnees cartesiennes equatoriales
      */
-    Vecteur3D Sph2Cart(const Vecteur3D &vecteur, const Date &date) const;
+    Vecteur3D Sph2Cart(const Vecteur3D &vecteur,
+                       const Date &date) const;
 
 
     /*
      * Accesseurs
      */
-    double altitude() const;
-    double ascensionDroite() const;
-    double azimut() const;
-    const QString &constellation() const;
-    double declinaison() const;
-    const Vecteur3D &dist() const;
-    double distance() const;
     double hauteur() const;
-    double latitude() const;
+    double azimut() const;
+    double distance() const;
+
+    double ascensionDroite() const;
+    double declinaison() const;
+    QString constellation() const;
+
     double longitude() const;
+    double latitude() const;
+    double altitude() const;
+
+    Vecteur3D position() const;
+    Vecteur3D vitesse() const;
+    Vecteur3D dist() const;
+
     double lonEcl() const;
-    const Vecteur3D &position() const;
+
+    bool visible() const;
     double rangeRate() const;
-    bool isVisible() const;
-    const Vecteur3D &vitesse() const;
-    const std::array<QPointF, 360> &zone() const;
-    const QString &dateLever() const;
-    const QString &dateMeridien() const;
-    const QString &dateCoucher() const;
-    const std::array<QString, 6> &datesCrepuscules() const;
+
+    std::array<QPointF, 360> zone() const;
+
+    QString dateLever() const;
+    QString dateMeridien() const;
+    QString dateCoucher() const;
+    std::array<QString, 6> datesCrepuscules() const;
+
+
+    /*
+     * Modificateurs
+     */
+    void setPosition(const Vecteur3D &pos);
 
 
 protected:
@@ -190,8 +238,8 @@ protected:
      * Variables protegees
      */
     // Coordonnees horizontales
-    double _azimut;
     double _hauteur;
+    double _azimut;
     double _distance;
 
     // Coordonnees equatoriales
@@ -204,6 +252,11 @@ protected:
     double _latitude;
     double _altitude;
 
+    // Coordonnees cartesiennes
+    Vecteur3D _position;
+    Vecteur3D _vitesse;
+    Vecteur3D _dist;
+
     // Coordonnees ecliptiques
     double _lonEcl;
     double _latEcl;
@@ -211,12 +264,6 @@ protected:
     bool _visible;
     double _rangeRate;
 
-    // Coordonnees cartesiennes
-    Vecteur3D _position;
-    Vecteur3D _vitesse;
-    Vecteur3D _dist;
-
-    // Zone de visibilite
     std::array<QPointF, 360> _zone;
 
     // Dates de lever, passage au meridien et coucher
@@ -225,23 +272,19 @@ protected:
     QString _dateMeridien;
     QString _dateCoucher;
 
+    // Dates de crepuscules
     std::array<QString, 6> _datesCrepuscules;
-
-
-    double _r0;
-    double _ct;
-
 
     /*
      * Methodes protegees
      */
-    /**
-     * @brief CalculLeverMeridienCoucher Calcul des lever/passage au meridien/coucher
-     * @param[in] date date
-     * @param[in] syst systeme horaire
-     * @param[in] calculCrepuscules calcul des crepuscules
-     */
-    void CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst, const bool calculCrepuscules = true);
+    std::array<double, 3> CalculAnglesReductionEquat(const Date &date);
+
+    virtual void CalculEphemLeverMeridienCoucher(const Date &date,
+                                                 const Observateur &observateur) {
+        Q_UNUSED(date)
+        Q_UNUSED(observateur)
+    }
 
 
 private:
@@ -250,6 +293,9 @@ private:
      * Variables privees
      */
 
+    double _ct;
+    double _r0;
+
     /*
      * Methodes privees
      */
@@ -257,7 +303,6 @@ private:
      * @brief CalculLatitudeAltitude Calcul de la latitude et de l'altitude
      */
     void CalculLatitudeAltitude();
-
 
 };
 

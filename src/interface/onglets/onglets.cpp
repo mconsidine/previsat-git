@@ -34,21 +34,17 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QSettings>
 #if defined (Q_OS_WIN)
-#include "ui_suivitelescope.h"
+#include "telescope/ui_suivitelescope.h"
 #endif
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "onglets.h"
-#include "ui_general.h"
+#include "general/ui_general.h"
 #include "ui_onglets.h"
 #include "antenne/antenne.h"
 #include "configuration/configuration.h"
 #include "general/general.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "osculateurs/osculateurs.h"
 #include "donnees/informationsiss.h"
 #include "donnees/informationssatellite.h"
@@ -115,9 +111,9 @@ Onglets::Onglets(QWidget *parent) :
 
         Initialisation();
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 

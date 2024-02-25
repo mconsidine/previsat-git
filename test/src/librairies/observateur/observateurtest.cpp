@@ -34,16 +34,11 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
+#include "librairies/dates/date.h"
 #include "librairies/observateur/observateur.h"
 #include "observateurtest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -86,15 +81,15 @@ void ObservateurTest::testCalculPosVit()
 
     const Date date(2453736.5 - DATE::TJ2000, 0., false);
     obs.CalculPosVit(date);
-    QCOMPARE(obs.tempsSideralGreenwich(), 1.7541749819128);
+    QCOMPARE(obs.tempsSideralGreenwich(), 1.7541749818606813);
 
-    const Vecteur3D pos(-935.523497565, 4099.350266913102, 4779.867771479537);
-    const Vecteur3D vit(-0.2989293707781232, -0.068219457296, 0.);
+    const Vecteur3D pos(-935.5234973576179, 4099.350266962309, 4779.867771479536);
+    const Vecteur3D vit(-0.29892937078171145, -0.06821945728093355, 0.);
     CompareVecteurs3D(obs.position(), pos);
     CompareVecteurs3D(obs.vitesse(), vit);
 
-    const Vecteur3D vec1(-0.16754305138463807, -0.974934435897221, -0.14639730746707988);
-    const Vecteur3D vec2(0.7341532887210003, -0.222492349758, 0.6414952088350873);
+    const Vecteur3D vec1(-0.16754305134751404, -0.9749344359089238, -0.14639730743464133);
+    const Vecteur3D vec2(0.7341532887298128, -0.2224923497088127, 0.6414952088427875);
     const Vecteur3D vec3(-0.6579880504935971, 0., 0.7530283695901739);
     const Matrice3D mat(vec1, vec2, vec3);
     CompareMatrices3D(obs.rotHz(), mat);
@@ -133,7 +128,7 @@ void ObservateurTest::testCalculIntersectionEllipsoide()
     const Vecteur3D dir(0.21415669380530017, 0.5068783427737875, -0.8349917700943416);
     const Observateur obsmax = Observateur::CalculIntersectionEllipsoide(date, pos, dir);
 
-    QCOMPARE(obsmax.longitude(), -0.021584027947731066);
+    QCOMPARE(obsmax.longitude(), -0.021584028379274756);
     QCOMPARE(obsmax.latitude(), 0.7598665103893715);
 }
 
@@ -142,5 +137,5 @@ void ObservateurTest::testCalculTempsSideralGreenwich()
     qInfo(Q_FUNC_INFO);
 
     const Date date(2453736.5 - DATE::TJ2000, 0., false);
-    QCOMPARE(Observateur::CalculTempsSideralGreenwich(date), 1.7541749819128);
+    QCOMPARE(Observateur::CalculTempsSideralGreenwich(date), 1.7541749818606813);
 }

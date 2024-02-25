@@ -34,18 +34,13 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
-#include "librairies/corps/corpsconst.h"
 #include "librairies/corps/satellite/elementsosculateurs.h"
 #include "librairies/corps/satellite/phasage.h"
+#include "librairies/corps/satellite/satelliteconst.h"
+#include "librairies/maths/vecteur3d.h"
 #include "phasagetest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -90,8 +85,8 @@ void PhasageTest::testCalcul2()
     Phasage phasage;
     phasage.Calcul(elem, n0);
 
-    QCOMPARE(phasage.ct0(), CORPS::ELEMENT_PHASAGE_INDEFINI);
-    QCOMPARE(phasage.dt0(), CORPS::ELEMENT_PHASAGE_INDEFINI);
-    QCOMPARE(phasage.nbOrb(), CORPS::ELEMENT_PHASAGE_INDEFINI);
-    QCOMPARE(phasage.nu0(), CORPS::ELEMENT_PHASAGE_INDEFINI);
+    QCOMPARE(phasage.ct0(), SATELLITE::ELEMENT_PHASAGE_INDEFINI);
+    QCOMPARE(phasage.dt0(), SATELLITE::ELEMENT_PHASAGE_INDEFINI);
+    QCOMPARE(phasage.nbOrb(), SATELLITE::ELEMENT_PHASAGE_INDEFINI);
+    QCOMPARE(phasage.nu0(), SATELLITE::ELEMENT_PHASAGE_INDEFINI);
 }

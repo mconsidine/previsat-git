@@ -43,11 +43,7 @@
 #ifndef ANTENNE_H
 #define ANTENNE_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFrame>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 
 namespace Ui {
 class Antenne;
@@ -70,6 +66,7 @@ public:
     /**
      * @brief Antenne Constructeur par defaut
      * @param[in] parent parent
+     * @throw Exception
      */
     explicit Antenne(QWidget *parent = nullptr);
 

@@ -34,24 +34,24 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
-#include <configuration/configuration.h>
 #include "librairies/corps/satellite/tle.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "tletest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
 
+static QDir dir;
+
 void TLETest::testAll()
 {
+    dir = QDir::current();
+    dir.cdUp();
+    dir.cdUp();
+    static_cast<void> (dir.cd(APP_NAME));
+
     testTLE();
     testLectureFichier1();
     testLectureFichier2();
@@ -91,26 +91,14 @@ void TLETest::testLectureFichier1()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
-    const QMap<QString, ElementsOrbitaux> mapTLE = TLE::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
-                                                                       Configuration::instance()->lgRec());
+    const QMap<QString, ElementsOrbitaux> mapTLE = TLE::Lecture(fic, "", -1);
 
     QCOMPARE(mapTLE.keys().size(), 163);
 
     // TLE a 2 lignes
     const QString fic2 = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual2.txt";
-    const QMap<QString, ElementsOrbitaux> mapTLE2 = TLE::LectureFichier(fic2, Configuration::instance()->donneesSatellites(),
-                                                                        Configuration::instance()->lgRec());
+    const QMap<QString, ElementsOrbitaux> mapTLE2 = TLE::Lecture(fic2, "", -1);
 
     QCOMPARE(mapTLE2.keys().size(), 163);
 }
@@ -119,32 +107,15 @@ void TLETest::testLectureFichier2()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual3.txt";
-    const QMap<QString, ElementsOrbitaux> mapTLE = TLE::LectureFichier(fic, QString(), 0);
-
-    QCOMPARE(mapTLE.keys().size(), 0);
+    QVERIFY_THROWS_EXCEPTION(Exception, TLE::Lecture(fic, "", -1));
 }
 
 void TLETest::testMiseAJourFichier()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
     QString dest = dir.path();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
     const QString ficnew = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + "visual.txt";
@@ -152,9 +123,7 @@ void TLETest::testMiseAJourFichier()
     QFile fi(fic);
     const QString ficold = dest + QDir::separator() + "test" + QDir::separator() + QFileInfo(fic).fileName();
     fi.copy(ficold);
-
-    const QStringList compteRendu = TLE::MiseAJourFichier(ficold, ficnew, Configuration::instance()->donneesSatellites(),
-                                                          Configuration::instance()->lgRec(), 1);
+    const QStringList compteRendu = TLE::MiseAJourFichier(ficold, ficnew, "", -1, 1);
 
     QCOMPARE(compteRendu.first(), "visual.txt");
     QCOMPARE(compteRendu.at(1), "157");
@@ -167,24 +136,12 @@ void TLETest::testVerifieFichier()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    int nb;
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual-nok%1.txt";
 
-    for(int i=0; i<=13; i++) {
+    for(int i=1; i<=13; i++) {
 
-        nb = -1;
         const QString nomfic = fic.arg(i);
-        try {
-            nb = TLE::VerifieFichier(nomfic, false);
-        } catch (PreviSatException &e) {
-        }
-
+        const int nb = TLE::VerifieFichier(nomfic, false);
         QCOMPARE(nb, 0);
     }
 

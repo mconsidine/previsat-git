@@ -37,21 +37,16 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
 #include <QLabel>
 #include <QScreen>
 #include <QSettings>
 #include <QSharedMemory>
 #include <QStyle>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "interface/previsat.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/systeme/logmessage.h"
-#pragma GCC diagnostic ignored "-Wmissing-declarations"
 #include <QApplication>
 
 
@@ -93,12 +88,12 @@ int main(int argc, char *argv[])
                 if (mem.attach(QSharedMemory::ReadOnly)) {
 
                     qWarning() << QString("Une instance de %1 est déjà ouverte").arg(APP_NAME);
-                    throw PreviSatException(QObject::tr("Une instance de %1 est déjà ouverte").arg(APP_NAME), MessageType::WARNING);
+                    throw Exception(QObject::tr("Une instance de %1 est déjà ouverte").arg(APP_NAME), MessageType::WARNING);
                 }
 
             } else if (mem.error() != QSharedMemory::NoError) {
                 qWarning() << "Erreur lors de la verification d'instance unique :" << mem.errorString();
-                throw PreviSatException(mem.errorString(), MessageType::WARNING);
+                throw Exception(mem.errorString(), MessageType::WARNING);
             }
         }
 
@@ -116,7 +111,7 @@ int main(int argc, char *argv[])
         police.setWeight(QFont::DemiBold);
 
         // Nom du logiciel et numero de version
-        QLabel * const logiciel = new QLabel(QString(APP_NAME) + " " + APP_VER_MAJ, splash);
+        QLabel * const logiciel = new QLabel(QString(APP_NAME) + " " + VER_MAJ, splash);
         logiciel->setStyleSheet("color: white;");
         logiciel->setFont(police);
         logiciel->adjustSize();
@@ -124,7 +119,7 @@ int main(int argc, char *argv[])
 
         // Annees de developpement
         police.setPointSize(12);
-        QLabel * const annees = new QLabel(APP_ANNEES_DEV, splash);
+        QLabel * const annees = new QLabel(ANNEES_DEV, splash);
         annees->setStyleSheet("color: white;");
         annees->setFont(police);
         annees->adjustSize();
@@ -187,7 +182,7 @@ int main(int argc, char *argv[])
         /* Retour */
         return a.exec();
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
         return EXIT_FAILURE;
     }
 }

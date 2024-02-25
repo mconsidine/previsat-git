@@ -71,7 +71,9 @@ public:
      * @param[in] yval composante y du vecteur
      * @param[in] zval composante z du vecteur
      */
-    Vecteur3D(const double xval, const double yval, const double zval);
+    Vecteur3D(const double xval,
+              const double yval,
+              const double zval);
 
 
     /*
@@ -97,18 +99,13 @@ public:
     double Norme() const;
 
     /**
-     * @brief Nul Test si un vecteur est nul
-     * @return vrai si le vecteur est nul
-     */
-    bool Nul() const;
-
-    /**
      * @brief Rotation Rotation d'un vecteur autour d'un axe
      * @param[in] axe axe (AXE_X, AXE_Y ou AXE_Z)
      * @param[in] angle angle de rotation (rad)
      * @return vecteur issu de la rotation
      */
-    Vecteur3D Rotation(const AxeType &axe, const double angle) const;
+    Vecteur3D Rotation(const AxeType &axe,
+                       const double angle) const;
 
     /**
      * @brief operator = Affectation d'un vecteur 3D
@@ -130,7 +127,8 @@ public:
      * @param[in] vecteur2 vecteur2
      * @return Somme de deux vecteurs 3D
      */
-    friend inline Vecteur3D operator + (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2);
+    friend inline Vecteur3D operator + (const Vecteur3D &vecteur1,
+                                        const Vecteur3D &vecteur2);
 
     /**
      * @brief operator - Difference de deux vecteurs 3D
@@ -138,7 +136,8 @@ public:
      * @param[in] vecteur2 vecteur2
      * @return Difference de deux vecteurs 3D
      */
-    friend inline Vecteur3D operator - (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2);
+    friend inline Vecteur3D operator - (const Vecteur3D &vecteur1,
+                                        const Vecteur3D &vecteur2);
 
     /**
      * @brief operator * Produit d'un vecteur 3D par un scalaire
@@ -146,14 +145,16 @@ public:
      * @param[in] scalaire grandeur scalaire
      * @return Produit d'un vecteur 3D par un scalaire
      */
-    friend inline Vecteur3D operator * (const Vecteur3D &vecteur1, const double scalaire);
+    friend inline Vecteur3D operator * (const Vecteur3D &vecteur1,
+                                        const double scalaire);
 
     /**
      * @brief operator *= Produit d'un vecteur avec un scalaire
      * @param[in/out] vecteur vecteur
      * @param[in] scalaire scalaire
      */
-    friend inline void operator *= (Vecteur3D &vecteur, const double scalaire);
+    friend inline void operator *= (Vecteur3D &vecteur,
+                                    const double scalaire);
 
     /**
      * @brief operator * Produit scalaire de deux vecteurs 3D
@@ -161,7 +162,8 @@ public:
      * @param[in] vecteur2 vecteur2
      * @return Produit scalaire de deux vecteurs 3D
      */
-    friend inline double operator * (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2);
+    friend inline double operator * (const Vecteur3D &vecteur1,
+                                     const Vecteur3D &vecteur2);
 
     /**
      * @brief operator ^ Produit vectoriel de deux vecteurs 3D
@@ -169,7 +171,8 @@ public:
      * @param[in] vecteur2 vecteur2
      * @return Produit vectoriel de deux vecteurs 3D
      */
-    friend inline Vecteur3D operator ^ (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2);
+    friend inline Vecteur3D operator ^ (const Vecteur3D &vecteur1,
+                                        const Vecteur3D &vecteur2);
 
 
     /*
@@ -220,7 +223,8 @@ inline Vecteur3D operator - (const Vecteur3D &vecteur)
 /*
  * Somme de 2 vecteurs 3D
  */
-inline Vecteur3D operator + (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2)
+inline Vecteur3D operator + (const Vecteur3D &vecteur1,
+                             const Vecteur3D &vecteur2)
 {
     return (Vecteur3D(vecteur1._x + vecteur2._x, vecteur1._y + vecteur2._y, vecteur1._z + vecteur2._z));
 }
@@ -228,7 +232,8 @@ inline Vecteur3D operator + (const Vecteur3D &vecteur1, const Vecteur3D &vecteur
 /*
  * Difference de 2 vecteurs 3D
  */
-inline Vecteur3D operator - (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2)
+inline Vecteur3D operator - (const Vecteur3D &vecteur1,
+                             const Vecteur3D &vecteur2)
 {
     return (Vecteur3D(vecteur1._x - vecteur2._x, vecteur1._y - vecteur2._y, vecteur1._z - vecteur2._z));
 }
@@ -236,7 +241,8 @@ inline Vecteur3D operator - (const Vecteur3D &vecteur1, const Vecteur3D &vecteur
 /*
  * Multiplication d'un vecteur 3D par un scalaire
  */
-inline Vecteur3D operator * (const Vecteur3D &vecteur1, const double scalaire)
+inline Vecteur3D operator * (const Vecteur3D &vecteur1,
+                             const double scalaire)
 {
     return (Vecteur3D(vecteur1._x * scalaire, vecteur1._y * scalaire, vecteur1._z * scalaire));
 }
@@ -244,7 +250,8 @@ inline Vecteur3D operator * (const Vecteur3D &vecteur1, const double scalaire)
 /*
  * Produit d'un vecteur par un scalaire
  */
-inline void operator *= (Vecteur3D &vecteur, const double scalaire)
+inline void operator *= (Vecteur3D &vecteur,
+                         const double scalaire)
 {
     vecteur._x *= scalaire;
     vecteur._y *= scalaire;
@@ -254,7 +261,8 @@ inline void operator *= (Vecteur3D &vecteur, const double scalaire)
 /*
  * Produit scalaire de 2 vecteurs 3D
  */
-inline double operator * (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2)
+inline double operator * (const Vecteur3D &vecteur1,
+                          const Vecteur3D &vecteur2)
 {
     return (vecteur1._x * vecteur2._x + vecteur1._y * vecteur2._y + vecteur1._z * vecteur2._z);
 }
@@ -262,7 +270,8 @@ inline double operator * (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2)
 /*
  * Produit vectoriel de 2 vecteurs 3D
  */
-inline Vecteur3D operator ^ (const Vecteur3D &vecteur1, const Vecteur3D &vecteur2)
+inline Vecteur3D operator ^ (const Vecteur3D &vecteur1,
+                             const Vecteur3D &vecteur2)
 {
     return (Vecteur3D(vecteur1._y * vecteur2._z - vecteur1._z * vecteur2._y,
                       vecteur1._z * vecteur2._x - vecteur1._x * vecteur2._z,

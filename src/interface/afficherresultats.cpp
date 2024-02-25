@@ -34,8 +34,6 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDesktopServices>
 #include <QDir>
 #include <QFile>
@@ -46,9 +44,7 @@
 #include <QStringDecoder>
 #include <QtGlobal>
 #include "ui_afficherresultats.h"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
-#include "ui_onglets.h"
+#include "onglets/ui_onglets.h"
 #include "afficherresultats.h"
 #include "interface/ciel/ciel.h"
 #include "configuration/configuration.h"
@@ -96,8 +92,8 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const Conditi
 #if (BUILD_TEST == false)
     _ui->setupUi(this);
 
-    Etoile::Initialisation(Configuration::instance()->dirCommonData(), etoiles);
-    Constellation::Initialisation(Configuration::instance()->dirCommonData(), constellations);
+    etoiles = Etoile::Initialisation(Configuration::instance()->dirCommonData());
+    constellations = Constellation::Initialisation(Configuration::instance()->dirCommonData());
 
     if (_typeCalcul == TypeCalcul::EVENEMENTS) {
         _ui->actionEnregistrer->setVisible(false);
@@ -639,7 +635,7 @@ void AfficherResultats::EcrireEntete() const
 
         // Ligne d'entete
 #if (BUILD_TEST == false)
-        flux << QString("%1 %2 / %3 (c) %4").arg(APP_NAME).arg(QString(APP_VERSION)).arg(ORG_NAME).arg(QString(APP_ANNEES_DEV)) << Qt::endl << Qt::endl;
+        flux << QString("%1 %2 / %3 (c) %4").arg(APP_NAME).arg(QString(VERSION)).arg(ORG_NAME).arg(QString(ANNEES_DEV)) << Qt::endl << Qt::endl;
 #endif
 
         // Lieu d'observation
@@ -743,7 +739,7 @@ QStringList AfficherResultats::ElementsDetailsEvenements(const ResultatPrevision
     elems.append(res.nom);
 
     // Date
-    const double offset = Date::CalculOffsetUTC(res.date.ToQDateTime(1));
+    const double offset = Date::CalculOffsetUTC(res.date.ToQDateTime(DateFormatSec::FORMAT_SEC));
     const Date date(res.date, offset);
     elems.append(date.ToShortDateAMJ(DateFormat::FORMAT_COURT, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -778,12 +774,12 @@ QStringList AfficherResultats::ElementsFlashs(const QList<ResultatPrevisions> &l
     elems.append(liste.first().nom);
 
     // Date de debut
-    const double offset1 = Date::CalculOffsetUTC(liste.first().date.ToQDateTime(1));
+    const double offset1 = Date::CalculOffsetUTC(liste.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC));
     const Date dateDeb(liste.first().date, offset1);
     elems.append(dateDeb.ToShortDateAMJ(DateFormat::FORMAT_LONG, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
     // Date de fin
-    const double offset2 = Date::CalculOffsetUTC(liste.last().date.ToQDateTime(1));
+    const double offset2 = Date::CalculOffsetUTC(liste.last().date.ToQDateTime(DateFormatSec::FORMAT_SEC));
     const Date dateFin(liste.last().date, offset2);
     elems.append(dateFin.ToShortDateAMJ(DateFormat::FORMAT_LONG, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -846,7 +842,7 @@ QStringList AfficherResultats::ElementsDetailsFlashs(const ResultatPrevisions &r
     elems.append(QString("%1").arg(res.nom, -10));
 
     // Date
-    const double offset = Date::CalculOffsetUTC(res.date.ToQDateTime(1));
+    const double offset = Date::CalculOffsetUTC(res.date.ToQDateTime(DateFormatSec::FORMAT_SEC));
     const Date date(res.date, offset);
     elems.append(date.ToShortDateAMJ(DateFormat::FORMAT_LONG, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -922,12 +918,12 @@ QStringList AfficherResultats::ElementsPrevisions(const QList<ResultatPrevisions
     elems.append(liste.first().nom);
 
     // Date de debut
-    const double offset1 = Date::CalculOffsetUTC(liste.first().date.ToQDateTime(1));
+    const double offset1 = Date::CalculOffsetUTC(liste.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC));
     const Date dateDeb(liste.first().date, offset1);
     elems.append(dateDeb.ToShortDateAMJ(DateFormat::FORMAT_COURT, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
     // Date de fin
-    const double offset2 = Date::CalculOffsetUTC(liste.last().date.ToQDateTime(1));
+    const double offset2 = Date::CalculOffsetUTC(liste.last().date.ToQDateTime(DateFormatSec::FORMAT_SEC));
     const Date dateFin(liste.last().date, offset2);
     elems.append(dateFin.ToShortDateAMJ(DateFormat::FORMAT_COURT, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -991,7 +987,7 @@ QStringList AfficherResultats::ElementsDetailsPrevisions(const ResultatPrevision
     elems.append(res.nom);
 
     // Date
-    const double offset = Date::CalculOffsetUTC(res.date.ToQDateTime(1));
+    const double offset = Date::CalculOffsetUTC(res.date.ToQDateTime(DateFormatSec::FORMAT_SEC));
     const Date date(res.date, offset);
     elems.append(date.ToShortDateAMJ(DateFormat::FORMAT_COURT, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -1049,7 +1045,7 @@ QStringList AfficherResultats::ElementsTransits(const QList<ResultatPrevisions> 
     elems.append(elem.nom);
 
     // Date du maximum
-    const double offset1 = Date::CalculOffsetUTC(liste.at(2).date.ToQDateTime(1));
+    const double offset1 = Date::CalculOffsetUTC(liste.at(2).date.ToQDateTime(DateFormatSec::FORMAT_SEC));
     const Date dateMax(elem.date, offset1);
     elems.append(dateMax.ToShortDateAMJ(DateFormat::FORMAT_LONG, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -1100,7 +1096,7 @@ QStringList AfficherResultats::ElementsDetailsTransits(const ResultatPrevisions 
     elems.append(res.nom);
 
     // Date
-    const double offset = Date::CalculOffsetUTC(res.date.ToQDateTime(1));
+    const double offset = Date::CalculOffsetUTC(res.date.ToQDateTime(DateFormatSec::FORMAT_SEC));
     const Date date(res.date, offset);
     elems.append(date.ToShortDateAMJ(DateFormat::FORMAT_LONG, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -1710,13 +1706,13 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
     /* Initialisations */
     const QList<ResultatPrevisions> list = _ui->resultatsPrevisions->item(_ui->resultatsPrevisions->currentRow(), 0)->data(Qt::UserRole)
             .value<QList<ResultatPrevisions> > ();
-    const Date dateDeb = Date(list.first().date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(1)));
-    const Date dateFin = Date(list.last().date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(1)));
+    const Date dateDeb = Date(list.first().date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC)));
+    const Date dateFin = Date(list.last().date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC)));
 
     if (_typeCalcul == TypeCalcul::FLASHS) {
-        dateMax = Date(list.at(1).date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(1)));
+        dateMax = Date(list.at(1).date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC)));
     } else if (_typeCalcul == TypeCalcul::TRANSITS) {
-        dateMax = Date(list.at(2).date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(1)));
+        dateMax = Date(list.at(2).date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC)));
     } else {
         dateMax = dateDeb;
     }
@@ -1727,13 +1723,13 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
     observateur.CalculPosVit(dateDeb);
 
     // Calcul de la position du Soleil
-    soleil.CalculPosition(dateDeb);
-    soleil.CalculCoordHoriz(observateur);
+    soleil.CalculPosVit(dateDeb);
+    soleil.CalculCoordHoriz(observateur, true);
 
     // Calcul de la position de la Lune
-    lune.CalculPosition(dateDeb);
+    lune.CalculPosVit(dateDeb);
     lune.CalculPhase(soleil);
-    lune.CalculCoordHoriz(observateur);
+    lune.CalculCoordHoriz(observateur, true);
     lune.CalculCoordEquat(observateur, false);
 
     // Calcul de la position du catalogue d'etoiles
@@ -1747,14 +1743,14 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
     for(unsigned int i=0; i<PLANETE::NB_PLANETES; i++) {
 
         planetes[i] = Planete(static_cast<IndicePlanete> (i));
-        planetes[i].CalculPosition(dateDeb, soleil);
-        planetes[i].CalculCoordHoriz(observateur);
+        planetes[i].CalculPositionSimp(dateDeb, soleil);
+        planetes[i].CalculCoordHoriz(observateur, true);
     }
 
     // Satellite selectionne
     Satellite sat(list.first().elements);
     sat.CalculPosVit(dateMax);
-    sat.CalculCoordHoriz(observateur);
+    sat.CalculCoordHoriz(observateur, true);
     sat.CalculElementsOsculateurs(dateMax);
 
     const Date dateLever = Evenements::CalculAOS(dateMax, sat, observateur, SensCalcul::ANTI_CHRONOLOGIQUE).date;

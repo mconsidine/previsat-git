@@ -27,7 +27,7 @@
  * >
  *
  * Description
- * >    Tests des classes Maths, Vecteur3D et Matrice3D
+ * >    Tests de la classe Maths
  *
  * Auteur
  * >    Astropedia
@@ -52,9 +52,11 @@ public:
 
 private:
 
-    static void testMaths();
-    static void testMatrice3D();
-    static void testVecteur3D();
+    static void testFonctionsInline();
+    static void testCalculExtremumInterpolation3();
+    static void testCalculValeurXInterpolation3();
+    static void testInterpolationLagrange();
+    static void testToSexagesimal();
 
 };
 

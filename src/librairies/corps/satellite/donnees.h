@@ -44,6 +44,7 @@
 #define DONNEES_H
 
 #include <QString>
+#include "librairies/dates/date.h"
 
 
 class Donnees
@@ -73,22 +74,29 @@ public:
      * Accesseurs
      */
     char methMagnitude() const;
+    char stsDateRentree() const;
+    char stsHeureRentree() const;
     double magnitudeStandard() const;
-    double section() const;
-    double t1() const;
-    double t2() const;
-    double t3() const;
+    double longueur() const;
+    double diametre() const;
+    double envergure() const;
+    QString periode() const;
+    double perigee() const;
+    double apogee() const;
+    QString inclinaison() const;
     QString norad() const;
-    const QString &cospar() const;
-    const QString &dateLancement() const;
-    const QString &dateRentree() const;
-    const QString &periode() const;
-    const QString &perigee() const;
-    const QString &apogee() const;
-    const QString &inclinaison() const;
-    const QString &categorieOrbite() const;
-    const QString &pays() const;
-    const QString &siteLancement() const;
+    QString cospar() const;
+    QString dateLancement() const;
+    QString dateRentree() const;
+    QString masseSec() const;
+    QString masseTot() const;
+    QString forme() const;
+    QString classe() const;
+    QString categorie() const;
+    QString discipline() const;
+    QString orbite() const;
+    QString pays() const;
+    QString siteLancement() const;
     QString nom() const;
 
 
@@ -115,20 +123,27 @@ private:
      * Variables privees
      */
     char _methMagnitude;
+    char _stsDateRentree;
+    char _stsHeureRentree;
     double _magnitudeStandard;
-    double _section;
-    double _t1;
-    double _t2;
-    double _t3;
+    double _longueur;
+    double _diametre;
+    double _envergure;
+    QString _periode;
+    double _perigee;
+    double _apogee;
+    QString _inclinaison;
     QString _norad;
     QString _cospar;
     QString _dateLancement;
     QString _dateRentree;
-    QString _periode;
-    QString _perigee;
-    QString _apogee;
-    QString _inclinaison;
-    QString _categorieOrbite;
+    QString _masseSec;
+    QString _masseTot;
+    QString _forme;
+    QString _classe;
+    QString _categorie;
+    QString _discipline;
+    QString _orbite;
     QString _pays;
     QString _siteLancement;
     QString _nom;

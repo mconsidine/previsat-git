@@ -43,11 +43,7 @@
 #ifndef ONGLETS_H
 #define ONGLETS_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QTabWidget>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 
 
 namespace Ui {
@@ -84,6 +80,7 @@ public:
     /**
      * @brief Onglets Constructeur par defaut
      * @param[in] parent parent
+     * @throw Exception
      */
     explicit Onglets(QWidget *parent = nullptr);
 

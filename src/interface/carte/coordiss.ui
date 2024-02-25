@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>223</width>
-    <height>59</height>
+    <height>63</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>223</width>
-    <height>46</height>
+    <height>34</height>
    </size>
   </property>
   <property name="palette">
@@ -470,180 +470,177 @@
   <property name="frameShape">
    <enum>QFrame::StyledPanel</enum>
   </property>
-  <widget class="QLabel" name="inclinaisonISS">
+  <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>112</x>
+     <x>0</x>
      <y>0</y>
-     <width>108</width>
-     <height>21</height>
+     <width>221</width>
+     <height>61</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <family>Lucida Console</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="mouseTracking">
-    <bool>true</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QLabel { color: white; }</string>
-   </property>
-   <property name="text">
-    <string notr="true">INC = 51.6</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="nextTransitionISS">
-   <property name="geometry">
-    <rect>
-     <x>112</x>
-     <y>13</y>
-     <width>121</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lucida Console</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="mouseTracking">
-    <bool>true</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QLabel { color: white; }</string>
-   </property>
-   <property name="text">
-    <string notr="true">D/N : 0:17:36</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="longitudeISS">
-   <property name="geometry">
-    <rect>
-     <x>5</x>
-     <y>26</y>
-     <width>108</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lucida Console</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="mouseTracking">
-    <bool>true</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QLabel { color: white; }</string>
-   </property>
-   <property name="text">
-    <string notr="true">LON = -101.3</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="orbiteISS">
-   <property name="geometry">
-    <rect>
-     <x>112</x>
-     <y>26</y>
-     <width>108</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lucida Console</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="mouseTracking">
-    <bool>true</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QLabel { color: white; }</string>
-   </property>
-   <property name="text">
-    <string notr="true">ORB = 86861</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="latitudeISS">
-   <property name="geometry">
-    <rect>
-     <x>5</x>
-     <y>0</y>
-     <width>108</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lucida Console</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="mouseTracking">
-    <bool>true</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QLabel { color: white; }</string>
-   </property>
-   <property name="text">
-    <string notr="true">LAT = 45.6</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="altitudeISS">
-   <property name="geometry">
-    <rect>
-     <x>5</x>
-     <y>13</y>
-     <width>108</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lucida Console</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="mouseTracking">
-    <bool>true</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QLabel { color: white; }</string>
-   </property>
-   <property name="text">
-    <string notr="true">ALT = 225.5</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="betaISS">
-   <property name="geometry">
-    <rect>
-     <x>5</x>
-     <y>39</y>
-     <width>108</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lucida Console</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="mouseTracking">
-    <bool>true</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QLabel { color: white; }</string>
-   </property>
-   <property name="text">
-    <string notr="true">BETA = 75.3</string>
-   </property>
+   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,1">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetFixedSize</enum>
+    </property>
+    <property name="leftMargin">
+     <number>3</number>
+    </property>
+    <property name="topMargin">
+     <number>3</number>
+    </property>
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="1" column="1">
+     <widget class="QLabel" name="nextTransitionISS">
+      <property name="font">
+       <font>
+        <family>Lucida Console</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel { color: white; }</string>
+      </property>
+      <property name="text">
+       <string notr="true">D/N : 0:17:36</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="longitudeISS">
+      <property name="minimumSize">
+       <size>
+        <width>108</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Lucida Console</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel { color: white; }</string>
+      </property>
+      <property name="text">
+       <string notr="true">LON = -101.3</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLabel" name="orbiteISS">
+      <property name="font">
+       <font>
+        <family>Lucida Console</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel { color: white; }</string>
+      </property>
+      <property name="text">
+       <string notr="true">ORB = 86861</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="altitudeISS">
+      <property name="font">
+       <font>
+        <family>Lucida Console</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel { color: white; }</string>
+      </property>
+      <property name="text">
+       <string notr="true">ALT = 225.5</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="latitudeISS">
+      <property name="font">
+       <font>
+        <family>Lucida Console</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel { color: white; }</string>
+      </property>
+      <property name="text">
+       <string notr="true">LAT = 45.6</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="inclinaisonISS">
+      <property name="font">
+       <font>
+        <family>Lucida Console</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel { color: white; }</string>
+      </property>
+      <property name="text">
+       <string notr="true">INC = 51.6</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="betaISS">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>15</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Lucida Console</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel { color: white; }</string>
+      </property>
+      <property name="text">
+       <string notr="true">BETA = 75.3</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

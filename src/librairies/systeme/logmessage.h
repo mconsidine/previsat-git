@@ -61,7 +61,8 @@ public:
      * @param[in] baseNomFichier base du nom du fichier de log
      * @param[in] nbMaxFic nombre maximum de fichiers
      */
-    LogMessage(const QString &baseNomFichier, const unsigned int nbMaxFic);
+    LogMessage(const QString &baseNomFichier,
+               const unsigned int nbMaxFic);
 
     /*
      * Destructeur

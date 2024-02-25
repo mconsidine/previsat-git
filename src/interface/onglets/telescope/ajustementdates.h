@@ -43,12 +43,8 @@
 #ifndef AJUSTEMENTDATES_H
 #define AJUSTEMENTDATES_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDateTime>
 #include <QDialog>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/corps/satellite/elementsorbitaux.h"
 #include "librairies/observateur/observateur.h"
 
@@ -73,6 +69,7 @@ public:
      * @param[in] observateur observateur
      * @param[in] elements elements orbitaux
      * @param[in] parent fenetre parent
+     * @throw Exception
      */
     explicit AjustementDates(const QDateTime &dateInitiale, const QDateTime &dateFinale, const Observateur &observateur,
                              const ElementsOrbitaux &elements, const double offset, const double hauteur, QWidget *parent = nullptr);

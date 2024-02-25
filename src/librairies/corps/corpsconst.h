@@ -43,6 +43,10 @@
 #ifndef CORPSCONST_H
 #define CORPSCONST_H
 
+#include "librairies/dates/dateconst.h"
+#include "librairies/maths/mathsconst.h"
+
+
 /*
  * Enumerations
  */
@@ -52,10 +56,20 @@
  */
 namespace CORPS {
 
-static constexpr int ELEMENT_PHASAGE_INDEFINI = -999;
-static constexpr int NB_ORB_INDEFINI = -1;
-
 static constexpr double MAGNITUDE_INDEFINIE = 99.;
+
+static constexpr double CONSTANTE_GAUSS = 0.017202098950;
+static constexpr double OBLIQUITE = 23.43929111111111 * MATHS::DEG2RAD;
+
+// Unite astronomique (km)
+static constexpr double UA2KM = 149597870.;
+
+// Vitesse de la lumiere (km/s)
+static constexpr double VITESSE_LUMIERE = 299792.458;
+
+static constexpr double KM2UA = 1. / UA2KM;
+
+static constexpr double TAU = UA2KM / (VITESSE_LUMIERE * DATE::NB_SEC_PAR_JOUR);
 
 }
 

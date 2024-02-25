@@ -163,9 +163,9 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>130</y>
+     <y>120</y>
      <width>175</width>
-     <height>69</height>
+     <height>101</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout_info4">
@@ -294,6 +294,35 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="lbl_anomalieMoy">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Anomalie moyenne :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLabel" name="anomalieMoy">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string notr="true">000.0000°</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -430,7 +459,7 @@
   <widget class="QWidget" name="formLayoutWidget_39">
    <property name="geometry">
     <rect>
-     <x>580</x>
+     <x>550</x>
      <y>40</y>
      <width>171</width>
      <height>69</height>
@@ -447,7 +476,7 @@
      <number>3</number>
     </property>
     <property name="verticalSpacing">
-     <number>0</number>
+     <number>1</number>
     </property>
     <item row="0" column="0">
      <widget class="QLabel" name="lbl_dateLancement">
@@ -543,8 +572,8 @@
   <widget class="QWidget" name="formLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>290</x>
-     <y>39</y>
+     <x>270</x>
+     <y>40</y>
      <width>241</width>
      <height>71</height>
     </rect>
@@ -756,172 +785,132 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget_2">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>290</x>
-     <y>129</y>
-     <width>353</width>
-     <height>71</height>
+     <x>270</x>
+     <y>120</y>
+     <width>451</width>
+     <height>101</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_info5">
-    <property name="spacing">
-     <number>0</number>
+   <layout class="QFormLayout" name="formLayout_info5">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetFixedSize</enum>
     </property>
-    <item>
-     <layout class="QFormLayout" name="formLayout_info5">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetFixedSize</enum>
+    <property name="labelAlignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="horizontalSpacing">
+     <number>3</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>1</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_masseSecTot">
+      <property name="text">
+       <string>Masse sec/totale :</string>
       </property>
-      <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-      <property name="horizontalSpacing">
-       <number>3</number>
-      </property>
-      <property name="verticalSpacing">
-       <number>1</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="lbl_anomalieMoy">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Anomalie moyenne :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="anomalieMoy">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string notr="true">000.0000°</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="lbl_magnitudeStdMax">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string extracomment="Standard/maximum magnitude">Magnitude std/max :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="magnitudeStdMax">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string notr="true">-0.5v/-2.9</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="lbl_modele">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Modèle orbital :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="modele">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string notr="true">SGP4 (NE)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="lbl_dimensions">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Dimensions/Section :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QLabel" name="dimensions">
-        <property name="font">
-         <font/>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string notr="true">Cylindrique. L=30.0m, R=20.0m / 350.00 m</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     </widget>
     </item>
-    <item>
-     <widget class="QFrame" name="frame">
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+    <item row="0" column="1">
+     <widget class="QLabel" name="masseSecTot">
+      <property name="text">
+       <string notr="true">2000/3000 kg</string>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLabel" name="magnitudeStdMax">
+      <property name="font">
+       <font/>
       </property>
-      <property name="lineWidth">
-       <number>0</number>
+      <property name="mouseTracking">
+       <bool>true</bool>
       </property>
-      <widget class="QLabel" name="sq">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>48</y>
-         <width>16</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font/>
-       </property>
-       <property name="mouseTracking">
-        <bool>true</bool>
-       </property>
-       <property name="text">
-        <string notr="true">2</string>
-       </property>
-      </widget>
+      <property name="text">
+       <string notr="true">-0.5v/-2.9</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="lbl_magnitudeStdMax">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string extracomment="Standard/maximum magnitude">Magnitude std/max :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="lbl_modele">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Modèle orbital :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLabel" name="modele">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string notr="true">SGP4 (NE)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="lbl_dimensions">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Forme/Dimensions :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLabel" name="dimensions">
+      <property name="font">
+       <font/>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string notr="true">Cylindrique. L=30.0m, R=20.0m</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="lbl_classeCategDiscip">
+      <property name="text">
+       <string>Classe/Categorie/Discipline :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLabel" name="classeCategDiscip">
+      <property name="text">
+       <string notr="true">C / TECH / ENV*</string>
+      </property>
      </widget>
     </item>
    </layout>

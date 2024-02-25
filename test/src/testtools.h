@@ -43,17 +43,19 @@
 #ifndef TESTTOOLS_H
 #define TESTTOOLS_H
 
-#include "librairies/dates/date.h"
-#include "librairies/maths/matrice3d.h"
-#include "librairies/maths/vecteur3d.h"
+class Date;
+class Matrice3D;
+class Vecteur3D;
 
 
 namespace TestTools {
 
-    void CompareDates(const Date &date1, const Date &date2);
-    void CompareMatrices3D(const Matrice3D &mat1, const Matrice3D &mat2);
-    void CompareVecteurs3D(const Vecteur3D &vec1, const Vecteur3D &vec2);
-    void CompareFichiers(const QString &ficRes, const QString &ficRef);
+void CompareDates(const Date &date1, const Date &date2);
+void CompareMatrices3D(const Matrice3D &mat1, const Matrice3D &mat2);
+void CompareVecteurs3D(const Vecteur3D &vec1, const Vecteur3D &vec2);
+void CompareFichiers(const QString &ficRes, const QString &ficRef);
+
+void CompareDoublesSeuil(const double actual, const double expected, const double threshold);
 
 }
 

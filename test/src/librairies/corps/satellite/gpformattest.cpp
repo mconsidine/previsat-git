@@ -34,24 +34,24 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
-#include "configuration/configuration.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "gpformattest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
 
+static QDir dir;
+
 void GPFormatTest::testAll()
 {
+    dir = QDir::current();
+    dir.cdUp();
+    dir.cdUp();
+    static_cast<void> (dir.cd(APP_NAME));
+
     testGPFormat();
     testLectureFichier1();
     testLectureFichier2();
@@ -67,41 +67,18 @@ void GPFormatTest::testGPFormat()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.xml";
-    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
-                                                                             Configuration::instance()->lgRec());
+    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::Lecture(fic, "", -1,  QStringList(), true, false);
 
-    GPFormat elem(mapElem["025544"]);
-    QCOMPARE(elem.elements().cospar, "1998-067A");
+    QCOMPARE(mapElem["025544"].cospar, "1998-067A");
 }
 
 void GPFormatTest::testLectureFichier1()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.xml";
-    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(),
-                                                                             Configuration::instance()->lgRec());
+    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::Lecture(fic, "", -1,  QStringList(), true, false);
 
     QCOMPARE(mapElem.keys().size(), 160);
 }
@@ -110,25 +87,10 @@ void GPFormatTest::testLectureFichier2()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual2.xml";
     QMap<QString, ElementsOrbitaux> mapElem;
 
-    try {
-        mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(), QStringList(), true,
-                                           true);
-    } catch (PreviSatException &e) {
-    }
-
+    QVERIFY_THROWS_EXCEPTION(Exception, mapElem = GPFormat::Lecture(fic, "", -1));
     QCOMPARE(mapElem.size(), 0);
 }
 
@@ -136,25 +98,10 @@ void GPFormatTest::testLectureFichier3()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual-nok.xml";
     QMap<QString, ElementsOrbitaux> mapElem;
 
-    try {
-        mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(), QStringList(), true,
-                                           true);
-    } catch (PreviSatException &e) {
-    }
-
+    QVERIFY_THROWS_EXCEPTION(Exception, mapElem = GPFormat::Lecture(fic, "", -1));
     QCOMPARE(mapElem.size(), 0);
 }
 
@@ -162,25 +109,10 @@ void GPFormatTest::testLectureFichier4()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "data" + QDir::separator() + "taiutc.dat";
     QMap<QString, ElementsOrbitaux> mapElem;
 
-    try {
-        mapElem = GPFormat::LectureFichier(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(), QStringList(), true,
-                                           true);
-    } catch (PreviSatException &e) {
-    }
-
+    QVERIFY_THROWS_EXCEPTION(Exception, mapElem = GPFormat::Lecture(fic, "", -1));
     QCOMPARE(mapElem.size(), 0);
 }
 
@@ -188,19 +120,8 @@ void GPFormatTest::testLectureFichierListeGP1()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "iss.gp";
-    const QList<ElementsOrbitaux> listeElem = GPFormat::LectureFichierListeGP(fic, Configuration::instance()->donneesSatellites(),
-                                                                              Configuration::instance()->lgRec());
+    const QList<ElementsOrbitaux> listeElem = GPFormat::LectureListeGP(fic, "", -1);
 
     QCOMPARE(listeElem.size(), 60);
 }
@@ -209,24 +130,10 @@ void GPFormatTest::testLectureFichierListeGP2()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "iss2.gp";
     QList<ElementsOrbitaux> listeElem;
 
-    try {
-        listeElem = GPFormat::LectureFichierListeGP(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(), true);
-    } catch (PreviSatException &e) {
-    }
-
+    QVERIFY_THROWS_EXCEPTION(Exception, listeElem = GPFormat::LectureListeGP(fic, "", -1, true));
     QCOMPARE(listeElem.size(), 0);
 }
 
@@ -234,24 +141,10 @@ void GPFormatTest::testLectureFichierListeGP3()
 {
     qInfo(Q_FUNC_INFO);
 
-    QDir dir = QDir::current();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
-
-    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
-    Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "data" + QDir::separator() + "taiutc.dat";
     QList<ElementsOrbitaux> listeElem;
 
-    try {
-        listeElem = GPFormat::LectureFichierListeGP(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(), true);
-    } catch (PreviSatException &e) {
-    }
-
+    QVERIFY_THROWS_EXCEPTION(Exception, listeElem = GPFormat::LectureListeGP(fic, "", -1, true));
     QCOMPARE(listeElem.size(), 0);
 }
 

@@ -64,6 +64,7 @@ public:
     /**
      * @brief LectureEvenementsStationSpatiale Lecture du fichier NASA contenant les evenements de la Station Spatiale
      * @return evenements lies a la station spatiale
+     * @throw Exception
      */
     static EvenementsStation LectureEvenementsStationSpatiale();
 
@@ -97,26 +98,7 @@ private:
     /*
      * Methodes privees
      */
-    /**
-     * @brief LectureBody Lecture de la section body du fichier Station Spatiale
-     * @param[in/out] cfg lecteur xml
-     * @param[in/out] evenements evenements
-     */
-    static void LectureBody(QXmlStreamReader &cfg, EvenementsStation &evenements);
 
-    /**
-     * @brief LectureData Lecture de la section data du fichier Station Spatiale
-     * @param[in/out] cfg lecteur xml
-     * @param[in/out] evenements evenements
-     */
-    static void LectureData(QXmlStreamReader &cfg, EvenementsStation &evenements);
-
-    /**
-     * @brief LectureMetadata Lecture de la section metadata du fichier Station Spatiale
-     * @param[in/out] cfg lecteur xml
-     * @param[in/out] evenements evenements
-     */
-    static void LectureMetadata(QXmlStreamReader &cfg, EvenementsStation &evenements);
 
 };
 

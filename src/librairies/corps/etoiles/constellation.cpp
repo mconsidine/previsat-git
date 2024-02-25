@@ -30,18 +30,13 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    3 novembre 2023
+ * >    25 fevrier 2023
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
-#include <QTextStream>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "constellation.h"
-#include"librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 
 
 /**********
@@ -69,7 +64,9 @@ Constellation::Constellation()
 /*
  * Definition a partir des composantes
  */
-Constellation::Constellation(const QString &nomConst, const double ascDroite, const double decl) :
+Constellation::Constellation(const QString &nomConst,
+                             const double ascDroite,
+                             const double decl) :
     _nom(nomConst)
 {
     /* Declarations des variables locales */
@@ -88,24 +85,23 @@ Constellation::Constellation(const QString &nomConst, const double ascDroite, co
 /*
  * Methodes publiques
  */
-void Constellation::CalculConstellations(const Observateur &observateur, QList<Constellation> &constellations)
+/*
+ * Calcul des positions des noms des constellations pour la carte du ciel
+ */
+void Constellation::CalculConstellations(const Observateur &observateur,
+                                         QList<Constellation> &constellations)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
-    try {
+    if (constellations.isEmpty()) {
+        throw Exception(QObject::tr("Le tableau de constellations n'est pas initialisé"), MessageType::WARNING);
+    }
 
-        if (constellations.isEmpty()) {
-            throw PreviSatException(QObject::tr("Le tableau de constellations n'est pas initialisé"), MessageType::WARNING);
-        }
-
-        for (int i=0; i<constellations.size(); i++) {
-            constellations[i].CalculCoordHoriz2(observateur);
-        }
-    } catch (PreviSatException &e) {
-        throw PreviSatException();
+    for (int i=0; i<constellations.size(); i++) {
+        constellations[i].CalculCoordHoriz3(observateur);
     }
 
     /* Retour */
@@ -115,45 +111,51 @@ void Constellation::CalculConstellations(const Observateur &observateur, QList<C
 /*
  * Lecture du fichier de constellations
  */
-void Constellation::Initialisation(const QString &dirCommonData, QList<Constellation> &constellations)
+QList<Constellation> Constellation::Initialisation(const QString &dirCommonData)
 {
     /* Declarations des variables locales */
+    QList<Constellation> constellations;
 
     /* Initialisations */
 
     /* Corps de la methode */
     const QString fic = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "constlabel.dat";
     QFile fi(fic);
-    if (fi.exists() && fi.size() != 0) {
-
-        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-
-            constellations.clear();
-            QTextStream flux(&fi);
-
-            while (!flux.atEnd()) {
-
-                const QString ligne = flux.readLine();
-                const double asc = ligne.mid(0, 6).toDouble();
-                const double dec = ligne.mid(7, 7).toDouble();
-                constellations.append(Constellation(ligne.mid(15, 3), asc, dec));
-            }
-        }
-
-        fi.close();
-
-        qInfo() << "Lecture fichier constlabel.dat OK";
+    if (!fi.exists() || (fi.size() == 0)) {
+        const QFileInfo ff(fi.fileName());
+        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME),
+                        MessageType::ERREUR);
     }
 
+    if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        const QFileInfo ff(fi.fileName());
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::ERREUR);
+    }
+
+    const QStringList contenu = QString(fi.readAll()).split("\n", Qt::SkipEmptyParts);
+    fi.close();
+
+    QStringListIterator it(contenu);
+    while (it.hasNext()) {
+
+        const QStringList ligne = it.next().split(" ", Qt::SkipEmptyParts);
+
+        const double ad = ligne.first().toDouble();
+        const double de = ligne.at(1).toDouble();
+        constellations.append(Constellation(ligne.at(2), ad, de));
+    }
+
+    qInfo() << "Lecture fichier constlabel.dat OK";
+
     /* Retour */
-    return;
+    return constellations;
 }
 
 
 /*
  * Accesseurs
  */
-const QString &Constellation::nom() const
+QString Constellation::nom() const
 {
     return _nom;
 }

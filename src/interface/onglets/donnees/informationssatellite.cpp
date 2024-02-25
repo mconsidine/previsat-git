@@ -34,17 +34,13 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFile>
 #include <QSettings>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "informationssatellite.h"
 #include "ui_informationssatellite.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/maths/maths.h"
 
 
@@ -122,8 +118,7 @@ void InformationsSatellite::show(const Satellite &satellite)
     _ui->cospar->setText(elem.cospar);
 
     // Epoque des elements orbitaux
-    _ui->epoque->setText(elem.epoque.ToShortDate(DateFormat::FORMAT_COURT, ( settings.value("affichage/systemeHoraire").toBool()) ?
-                                                     DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
+    _ui->epoque->setText(elem.epoque.ToQDateTime(DateFormatSec::FORMAT_SEC).toString(Qt::ISODate).replace("T", " "));
 
     // Coefficient pseudo-ballistique
     _ui->bstar->setText(fmt1.arg(elem.bstar, 0, 'g', 6));
@@ -141,10 +136,10 @@ void InformationsSatellite::show(const Satellite &satellite)
 
 
     // Date de lancement
-    _ui->dateLancement->setText((donnee.dateLancement().isEmpty()) ? tr("Inconnue") : donnee.dateLancement());
+    _ui->dateLancement->setText((donnee.dateLancement().isEmpty()) ? tr("Inconnue") : donnee.dateLancement().replace("T", " "));
 
     // Categorie d'orbite
-    _ui->categorieOrbite->setText((donnee.categorieOrbite().isEmpty()) ? tr("Inconnue") : donnee.categorieOrbite());
+    _ui->categorieOrbite->setText((donnee.orbite().isEmpty()) ? tr("Inconnue") : donnee.orbite());
 
     // Pays ou organisation
     _ui->pays->setText((donnee.pays().isEmpty()) ? tr("Inconnu") : donnee.pays());
@@ -167,9 +162,15 @@ void InformationsSatellite::show(const Satellite &satellite)
     // Argument du perigee moyen
     _ui->argumentPerigeeMoy->setText(fmt2.arg(elem.argpo, 0, 'f', 4));
 
-
     // Anomalie moyenne (moyenne)
     _ui->anomalieMoy->setText(fmt2.arg(elem.mo, 0, 'f', 4));
+
+    // Masse sec, totale
+    if ((donnee.masseSec() == "0") && (donnee.masseTot() == "0")) {
+        _ui->masseSecTot->setText("?/?");
+    } else {
+        _ui->masseSecTot->setText(QString("%1/%2 kg").arg(donnee.masseSec()).arg(donnee.masseTot()));
+    }
 
     // Magnitude standard, methode de determination de la magnitude, magnitude maximale
     if (donnee.magnitudeStandard() < CORPS::MAGNITUDE_INDEFINIE) {
@@ -191,45 +192,29 @@ void InformationsSatellite::show(const Satellite &satellite)
     _ui->modele->setText((satellite.method() == 'd') ? "SGP4 (DS)" : "SGP4 (NE)");
     _ui->modele->setToolTip((satellite.method() == 'd') ? tr("Modèle haute orbite") : tr("Modèle basse orbite"));
 
-    // Dimensions du satellite
-    double t1 = donnee.t1();
-    double t2 = donnee.t2();
-    double t3 = donnee.t3();
-    double section = donnee.section();
+    // Forme et dimensions du satellite
+    double t1 = donnee.longueur();
+    double t2 = donnee.diametre();
+    double t3 = donnee.envergure();
+
     const QString unite = (settings.value("affichage/unite").toBool()) ? tr("m", "meter") : tr("ft", "foot");
     if (!settings.value("affichage/unite").toBool()) {
         t1 *= TERRE::PIED_PAR_METRE;
         t2 *= TERRE::PIED_PAR_METRE;
         t3 *= TERRE::PIED_PAR_METRE;
-        section = arrondi(section * TERRE::PIED_PAR_METRE * TERRE::PIED_PAR_METRE, 0);
     }
 
     QString dimensions;
-    if ((fabs(t2) < MATHS::EPSDBL100) && (fabs(t3) < MATHS::EPSDBL100)) {
-        const QString fmt3 = tr("Sphérique. R=%1 %2", "R = radius");
-        dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite);
-    }
-    if ((fabs(t2) >= MATHS::EPSDBL100) && (fabs(t3) < MATHS::EPSDBL100)) {
-        const QString fmt3 = tr("Cylindrique. L=%1 %2, R=%3 %2", "L = height; R = radius");
-        dimensions = fmt3.arg(t1, 0, 'f', 1).arg(unite).arg(t2, 0, 'f', 1);
-    }
-    if ((fabs(t2) >= MATHS::EPSDBL100) && (fabs(t3) >= MATHS::EPSDBL100)) {
-        const QString fmt3 = tr("Boîte. %1 x %2 x %3 %4");
-        dimensions = fmt3.arg(t1, 0, 'f', 1).arg(t2, 0, 'f', 1).arg(t3, 0, 'f', 1).arg(unite);
-    }
-    if (fabs(t1) < MATHS::EPSDBL100) {
+    if ((fabs(t1) < MATHS::EPSDBL100) && (fabs(t2) < MATHS::EPSDBL100) && (fabs(t3) < MATHS::EPSDBL100)) {
         dimensions = tr("Inconnues");
-    }
-
-    if (fabs(section) > MATHS::EPSDBL100) {
-        dimensions.append(" / %1 %2");
-        dimensions = dimensions.arg(section, 0, 'f', 2).arg(unite);
-        _ui->sq->setVisible(true);
     } else {
-        _ui->sq->setVisible(false);
+        dimensions = QString("%1. %2 x %3 x %4 %5").arg(donnee.forme()).arg(t1, 0, 'f', 1).arg(t2, 0, 'f', 1).arg(t3, 0, 'f', 1).arg(unite);
     }
 
     _ui->dimensions->setText(dimensions);
+
+    // Classe, categorie et discipline
+    _ui->classeCategDiscip->setText(QString("%1 / %2 / %3").arg(donnee.classe()).arg(donnee.categorie()).arg(donnee.discipline()));
 
     /* Retour */
     return;
@@ -252,7 +237,7 @@ void InformationsSatellite::SauveOngletInformations(const QString &fichier)
 
             if (!sw.isWritable()) {
                 qWarning() << "Problème de droits d'écriture du fichier" << sw.fileName();
-                throw PreviSatException(tr("Problème de droits d'écriture du fichier %1").arg(sw.fileName()), MessageType::WARNING);
+                throw Exception(tr("Problème de droits d'écriture du fichier %1").arg(sw.fileName()), MessageType::WARNING);
             }
 
             QTextStream flux(&sw);
@@ -260,47 +245,49 @@ void InformationsSatellite::SauveOngletInformations(const QString &fichier)
 
 #if (BUILD_TEST == false)
             const QString titre = "%1 %2 / %3 (c) %4";
-            flux << titre.arg(APP_NAME).arg(QString(APP_VER_MAJ)).arg(ORG_NAME).arg(QString(APP_ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
+            flux << titre.arg(APP_NAME).arg(QString(VER_MAJ)).arg(ORG_NAME).arg(QString(ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
 #endif
 
             // Donnees sur le satellite
             flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
-            QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement       : %2 rev/jour\t Date de lancement  : %3",
+            QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement             : %2 rev/jour\t Date de lancement  : %3",
                                 "revolution per day");
             flux << chaine.arg(_ui->norad->text()).arg(_ui->nbRev->text()).arg(_ui->dateLancement->text()) << Qt::endl;
 
-            chaine = tr("Désignation COSPAR      : %1\t\tn'/2                  : %2 rev/jour^2\t Catégorie d'orbite : %3",
+            chaine = tr("Désignation COSPAR      : %1\t\tn'/2                        : %2 rev/jour^2\t Catégorie d'orbite : %3",
                         "n'/2 = derivative of the mean motion divided by two (in revolution per day square)");
             flux << chaine.arg(_ui->cospar->text()).arg(_ui->nbRev2->text().rightJustified(11, ' ')).arg(_ui->categorieOrbite->text()) << Qt::endl;
 
-            chaine = tr("Époque (UTC)            : %1\tn\"/6                  : %2 rev/jour^3\t Pays/Organisation  : %3",
+            chaine = tr("Époque (UTC)            : %1\tn\"/6                        : %2 rev/jour^3\t Pays/Organisation  : %3",
                         "n\"/6 = second derivative of the mean motion divided by six (in revolution per day cube)");
             flux << chaine.arg(_ui->epoque->text()).arg(_ui->nbRev3->text().rightJustified(11, ' ')).arg(_ui->pays->text()) << Qt::endl;
 
-            chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque : %2\t\t\t Site de lancement  : %3",
+            chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque       : %2\t\t\t Site de lancement  : %3",
                         "Pseudo-ballistic coefficient in 1/Earth radius");
             flux << chaine.arg(_ui->bstar->text()).arg(_ui->nbOrbitesEpoque->text()).arg(_ui->siteLancement->text()) << Qt::endl << Qt::endl;
 
-            chaine = tr("Inclinaison             : %1\t\tAnomalie moyenne      : %2");
-            flux << chaine.arg(_ui->inclinaisonMoy->text().trimmed().rightJustified(9, '0'))
-                    .arg(_ui->anomalieMoy->text().trimmed().rightJustified(9, '0')) << Qt::endl;
 
-            chaine = tr("AD noeud ascendant      : %1\t\tMagnitude std/max     : %2",
+            chaine = tr("Inclinaison             : %1\t\tMasse sec/totale            : %2");
+            flux << chaine.arg(_ui->inclinaisonMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->masseSecTot->text()) << Qt::endl;
+
+            chaine = tr("AD noeud ascendant      : %1\t\tMagnitude std/max           : %2",
                         "Right ascension of the ascending node, Standard/Maximum magnitude");
             flux << chaine.arg(_ui->ADNoeudAscendantMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->magnitudeStdMax->text()) << Qt::endl;
 
-            chaine = tr("Excentricité            : %1\t\tModèle orbital        : %2");
+            chaine = tr("Excentricité            : %1\t\tModèle orbital              : %2");
             flux << chaine.arg(_ui->excentriciteMoy->text()).arg(_ui->modele->text()) << Qt::endl;
 
-            chaine = tr("Argument du périgée     : %1\t\tDimensions/Section    : %2%3");
-            flux << chaine.arg(_ui->argumentPerigeeMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->dimensions->text())
-                    .arg((_ui->dimensions->text() == tr("Inconnues")) ? "" : "^2") << Qt::endl;
+            chaine = tr("Argument du périgée     : %1\t\tDimensions/Section          : %2");
+            flux << chaine.arg(_ui->argumentPerigeeMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->dimensions->text()) << Qt::endl;
 
+            chaine = tr("Anomalie moyenne        : %1\t\tClasse/Catégorie/Discipline : %2");
+            flux << chaine.arg(_ui->anomalieMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->classeCategDiscip->text()) << Qt::endl;
         }
+
         sw.close();
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
     }
 
     /* Retour */

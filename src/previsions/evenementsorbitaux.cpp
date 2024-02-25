@@ -34,13 +34,9 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QElapsedTimer>
 #include <QFileInfo>
 #include <QObject>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "evenementsorbitaux.h"
 #include "librairies/corps/satellite/gpformat.h"
@@ -118,7 +114,7 @@ void EvenementsOrbitaux::setConditions(const ConditionsPrevisions &conditions)
 /*
  * Calcul des evenements orbitaux
  */
-int EvenementsOrbitaux::CalculEvenements(int &nombre)
+int EvenementsOrbitaux::CalculEvenements(const int &nombre)
 {
     /* Declarations des variables locales */
     QElapsedTimer tps;
@@ -180,6 +176,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
     double altitude;
     Satellite sat;
     std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
+    std::array<QPointF, MATHS::DEGRE_INTERPOLATION> eve;
     std::array<double, MATHS::DEGRE_INTERPOLATION> evt;
     ResultatPrevisions res;
     QList<ResultatPrevisions> result;
@@ -340,11 +337,11 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                 if (((eph2.rayon > eph1.rayon) && (eph2.rayon > eph3.rayon)) || ((eph2.rayon < eph1.rayon) && (eph2.rayon < eph3.rayon))) {
 
                     // Il y a un passage au perigee ou a l'apogee : calcul par interpolation de la date
-                    evt[0] = eph1.rayon;
-                    evt[1] = eph2.rayon;
-                    evt[2] = eph3.rayon;
+                    eve[0] = QPointF(jjm[0], eph1.rayon);
+                    eve[1] = QPointF(jjm[1], eph2.rayon);
+                    eve[2] = QPointF(jjm[2], eph3.rayon);
 
-                    const QPointF minmax = Maths::CalculExtremumInterpolation3(jjm, evt);
+                    const QPointF minmax = Maths::CalculExtremumInterpolation3(eve);
 
                     res.nom = sat.elementsOrbitaux().nom;
                     res.date = Date(minmax.x(), 0.);
@@ -368,7 +365,7 @@ int EvenementsOrbitaux::CalculEvenements(int &nombre)
                         altitude *= TERRE::MILE_PAR_KM;
                     }
 
-                    const QString typeEvt = (evt.at(2) >= minmax.y()) ? QObject::tr("Périgée : %1%2 (%3%2)") : QObject::tr("Apogée : %1%2 (%3%2)");
+                    const QString typeEvt = (eve.at(2).y() >= minmax.y()) ? QObject::tr("Périgée : %1%2 (%3%2)") : QObject::tr("Apogée : %1%2 (%3%2)");
                     res.typeEvenement = typeEvt.arg(rayonVecteur, 0, 'f', 1).arg(_conditions.unite).arg(altitude, 0, 'f', 1);
 
                     result.append(res);
@@ -490,11 +487,11 @@ QMap<QString, QList<EphemeridesEvenements> > EvenementsOrbitaux::CalculEphemerid
         do {
 
             // Position du Soleil
-            soleil.CalculPosition(date);
+            soleil.CalculPosVit(date);
 
             // Position de la Lune
             if (_conditions.calcEclipseLune) {
-                lune.CalculPosition(date);
+                lune.CalculPosVit(date);
             }
 
             // Position du satellite
@@ -551,15 +548,19 @@ ResultatPrevisions EvenementsOrbitaux::CalculEvt(const std::array<double, MATHS:
 {
     /* Declarations des variables locales */
     ResultatPrevisions res;
+    std::array<QPointF, MATHS::DEGRE_INTERPOLATION> eve;
 
     /* Initialisations */
+    for(unsigned int i=0; i<MATHS::DEGRE_INTERPOLATION; i++) {
+        eve[i] = QPointF(jjm[i], evt[i]);
+    }
 
     /* Corps de la methode */
     // Nom du satellite
     res.nom = sat.elementsOrbitaux().nom;
 
     // Calcul de la date par interpolation
-    res.date = Date(Maths::CalculValeurXInterpolation3(jjm, evt, yval, DATE::EPS_DATES), 0.);
+    res.date = Date(Maths::CalculValeurXInterpolation3(eve, yval, DATE::EPS_DATES), 0.);
 
     // Calcul de la position du satellite
     sat.CalculPosVit(res.date);

@@ -43,10 +43,6 @@
 #ifndef LIGNECONSTELLATION_H
 #define LIGNECONSTELLATION_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#include <QList>
-#include <QPair>
-#pragma GCC diagnostic warning "-Wconversion"
 #include "etoile.h"
 
 
@@ -70,7 +66,7 @@ public:
     LigneConstellation(const Etoile &star1, const Etoile &star2) :
         _etoile1(star1),
         _etoile2(star2) {
-        _dessin = (_etoile1.isVisible() && _etoile2.isVisible());
+        _dessin = (_etoile1.visible() && _etoile2.visible());
     }
 
 
@@ -81,12 +77,14 @@ public:
      * @brief CalculLignesCst Calcul des lignes de constellations
      * @param[in] etoiles tableau d'etoiles
      * @param[out] lignesCst tableau de lignes de constellation
+     * @throw Exception
      */
     static void CalculLignesCst(const QList<Etoile> &etoiles, QList<LigneConstellation> &lignesCst);
 
     /**
      * @brief Initialisation Lecture du fichier contenant les lignes de constellations
      * @param[in] dirCommonData chemin des donnees communes
+     * @throw Exception
      */
     static void Initialisation(const QString &dirCommonData);
 
@@ -95,8 +93,8 @@ public:
      * Accesseurs
      */
     bool isDessin() const;
-    const Etoile &etoile1() const;
-    const Etoile &etoile2() const;
+    Etoile etoile1() const;
+    Etoile etoile2() const;
 
 
 protected:
@@ -118,7 +116,7 @@ private:
     bool _dessin;
     Etoile _etoile1;
     Etoile _etoile2;
-    static QList<QPair<int, int> > _tabLigCst;
+    static QList<QPoint> _tabLigCst;
 
 
     /*

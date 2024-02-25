@@ -66,19 +66,21 @@ public:
      * Methodes publiques
      */
     /**
-     * @brief Calcul Calcul de la position et de la vitesse
+     * @brief Calcul Calcul de la position et de la vitesse du satellite
      * @param[in] date date
      * @param[in] elements elements orbitaux du satellite
+     * @throw Exception
      */
-    void Calcul(const Date &date, const ElementsOrbitaux &elements);
+    void Calcul(const Date &date,
+                const ElementsOrbitaux &elements);
 
 
     /*
      * Accesseurs
      */
     char method() const;
-    const Vecteur3D &position() const;
-    const Vecteur3D &vitesse() const;
+    Vecteur3D position() const;
+    Vecteur3D vitesse() const;
 
 
     /*
@@ -145,7 +147,6 @@ private:
      * @param[in] elements elements
      */
     void SGP4Init(const ElementsOrbitaux &elements);
-
 
 };
 

@@ -43,11 +43,7 @@
 #ifndef RADAR_H
 #define RADAR_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFrame>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 
 
 namespace Ui {
@@ -68,6 +64,7 @@ public:
     /**
      * @brief Radar Constructeur par defaut
      * @param[in] parent parent
+     * @throw Exception
      */
     explicit Radar(QWidget *parent = nullptr);
 

@@ -34,16 +34,10 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "librairies/systeme/logmessage.h"
 #include "logmessagetest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -62,10 +56,9 @@ void LogMessageTest::testLogMessage()
     dir.mkpath(dir.path() + QDir::separator() + "test");
     dir.cdUp();
     dir.cdUp();
-    dir.cdUp();
-    dir.cd(qApp->applicationName());
+    static_cast<bool> (dir.cd(APP_NAME));
 
-    const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + qApp->applicationName();
+    const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + APP_NAME;
     LogMessage logMessage(ficRes, 1);
     Q_UNUSED(logMessage)
 
@@ -85,7 +78,7 @@ void LogMessageTest::testLogMessage()
     qCritical() << R"("Message d'erreurs 1")";
     qCritical() << "Message d'erreurs 2";
 
-    const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + qApp->applicationName() + ".log";
+    const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + APP_NAME + ".log";
     CompareFichiers(ficRes + ".log", ficRef);
 
     QCOMPARE(LogMessage::nomFicLog(), QDir::toNativeSeparators(ficRes + ".log"));

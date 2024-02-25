@@ -66,7 +66,9 @@ Vecteur3D::Vecteur3D(const double valeurInit)
 /*
  * Definition du vecteur a partir de ses composantes
  */
-Vecteur3D::Vecteur3D(const double xval, const double yval, const double zval)
+Vecteur3D::Vecteur3D(const double xval,
+                     const double yval,
+                     const double zval)
 {
     /* Declarations des variables locales */
 
@@ -140,24 +142,10 @@ double Vecteur3D::Norme() const
 }
 
 /*
- * Test si un vecteur est nul
- */
-bool Vecteur3D::Nul() const
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-
-    /* Retour */
-    return ((fabs(_x) < MATHS::EPSDBL) && (fabs(_y) < MATHS::EPSDBL) && (fabs(_z) < MATHS::EPSDBL));
-}
-
-/*
  * Rotation d'un vecteur autour d'un axe
  */
-Vecteur3D Vecteur3D::Rotation(const AxeType &axe, const double angle) const
+Vecteur3D Vecteur3D::Rotation(const AxeType &axe,
+                              const double angle) const
 {
     /* Declarations des variables locales */
     Vecteur3D vecteur;

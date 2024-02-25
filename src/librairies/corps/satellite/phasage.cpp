@@ -34,11 +34,9 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
 #include <QtMath>
-#pragma GCC diagnostic warning "-Wconversion"
 #include "elementsosculateurs.h"
-#include "librairies/corps/corpsconst.h"
+#include "librairies/corps/satellite/satelliteconst.h"
 #include "librairies/corps/terreconst.h"
 #include "phasage.h"
 
@@ -60,10 +58,10 @@ Phasage::Phasage()
     /* Initialisations */
 
     /* Corps du constructeur */
-    _nbOrb = CORPS::ELEMENT_PHASAGE_INDEFINI;
-    _ct0 = CORPS::ELEMENT_PHASAGE_INDEFINI;
-    _dt0 = CORPS::ELEMENT_PHASAGE_INDEFINI;
-    _nu0 = CORPS::ELEMENT_PHASAGE_INDEFINI;
+    _nbOrb = SATELLITE::ELEMENT_PHASAGE_INDEFINI;
+    _ct0 = SATELLITE::ELEMENT_PHASAGE_INDEFINI;
+    _dt0 = SATELLITE::ELEMENT_PHASAGE_INDEFINI;
+    _nu0 = SATELLITE::ELEMENT_PHASAGE_INDEFINI;
 
     /* Retour */
     return;
@@ -76,7 +74,8 @@ Phasage::Phasage()
 /*
  * Calcul des elements de phasage
  */
-void Phasage::Calcul(const ElementsOsculateurs &elements, const double n0)
+void Phasage::Calcul(const ElementsOsculateurs &elements,
+                     const double n0)
 {
     /* Declarations des variables locales */
 
@@ -115,24 +114,28 @@ void Phasage::Calcul(const ElementsOsculateurs &elements, const double n0)
                 _ct0 = iter;
                 atrouve = true;
             }
+
             iter++;
         }
+
         spec += pas;
     }
 
     if (atrouve) {
+
         if ((precessionNoeud < 0.975) || (precessionNoeud > 0.995)) {
             _dt0 = static_cast<int> (qRound(nt0 - _nu0 * _ct0));
         } else {
             _dt0 = static_cast<int> (qRound((v - _nu0) * _ct0));
         }
+
         _nbOrb = static_cast<int> (qRound(nt0));
 
     } else {
-        _nbOrb = CORPS::ELEMENT_PHASAGE_INDEFINI;
-        _ct0 = CORPS::ELEMENT_PHASAGE_INDEFINI;
-        _dt0 = CORPS::ELEMENT_PHASAGE_INDEFINI;
-        _nu0 = CORPS::ELEMENT_PHASAGE_INDEFINI;
+        _nbOrb = SATELLITE::ELEMENT_PHASAGE_INDEFINI;
+        _ct0 = SATELLITE::ELEMENT_PHASAGE_INDEFINI;
+        _dt0 = SATELLITE::ELEMENT_PHASAGE_INDEFINI;
+        _nu0 = SATELLITE::ELEMENT_PHASAGE_INDEFINI;
     }
 
     /* Retour */

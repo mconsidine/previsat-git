@@ -34,18 +34,15 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include <cmath>
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/corps/satellite/tle.h"
+#include "librairies/exceptions/exception.h"
 #include "telescope.h"
 
 
@@ -79,7 +76,7 @@ void Telescope::setConditions(const ConditionsPrevisions &conditions)
 /*
  * Calcul des coordonnees du satellite pour le suivi avec un telescope
  */
-int Telescope::CalculSuiviTelescope(int &nombre)
+int Telescope::CalculSuiviTelescope(const int &nombre)
 {
     /* Declarations des variables locales */
 
@@ -88,55 +85,54 @@ int Telescope::CalculSuiviTelescope(int &nombre)
     /* Corps de la methode */
     QFile fi(_conditions.ficRes);
 
-    if (fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
-
-        if (fi.isWritable()) {
-
-            const QString fmt = "%1,%2,%3,%4";
-            double jjmsec = floor(_conditions.jj1 * DATE::NB_MILLISEC_PAR_JOUR + _conditions.pas);
-            Date date(jjmsec * DATE::NB_JOUR_PAR_MILLISEC, 0.);
-
-            // Elements orbitaux
-            const QMap<QString, ElementsOrbitaux> tabElem = _conditions.tabElem;
-
-            // Satellite
-            Satellite sat(tabElem.first());
-
-            const QString entete(R"&("Time (UTCG)","Range (km)","Right Ascen (deg)","Declination (deg)")&");
-
-            QTextStream flux(&fi);
-            flux << entete << Qt::endl;
-
-            int i = 0;
-            while (i < _conditions.nbIter) {
-
-                // Position de l'observateur
-                _conditions.observateur.CalculPosVit(date);
-
-                // Position du satellite
-                sat.CalculPosVit(date);
-
-                // Position topocentrique du satellite
-                sat.CalculCoordHoriz(_conditions.observateur, true, false);
-                const double ht = sat.CalculRefractionAtmospherique(sat.hauteur());
-
-                if (ht >= _conditions.hauteur) {
-
-                    // Ascension droite, declinaison
-                    sat.CalculCoordEquat(_conditions.observateur, false);
-
-                    const QString ephem = fmt.arg(date.ToShortDateAMJmillisec()).arg(sat.distance(), 16, 'f', 6).
-                            arg(sat.ascensionDroite() * MATHS::RAD2DEG, 16, 'f', 6).arg(sat.declinaison() * MATHS::RAD2DEG, 16, 'f', 6);
-
-                    flux << ephem << Qt::endl;
-                }
-
-                jjmsec += _conditions.pas;
-                date = Date(jjmsec * DATE::NB_JOUR_PAR_MILLISEC, 0.);
-                i++;
-            }
-        }
+    if (!fi.open(QIODevice::WriteOnly | QIODevice::Text) || !fi.isWritable()) {
+        throw Exception();
     }
+
+    const QString fmt = "%1,%2,%3,%4";
+    double jjmsec = floor(_conditions.jj1 * DATE::NB_MILLISEC_PAR_JOUR + _conditions.pas);
+    Date date(jjmsec * DATE::NB_JOUR_PAR_MILLISEC, 0.);
+
+    // Elements orbitaux
+    const QMap<QString, ElementsOrbitaux> tabElem = _conditions.tabElem;
+
+    // Satellite
+    Satellite sat(tabElem.first());
+
+    const QString entete(R"&("Time (UTCG)","Range (km)","Right Ascen (deg)","Declination (deg)")&");
+
+    QTextStream flux(&fi);
+    flux << entete << Qt::endl;
+
+    int i = 0;
+    while (i < _conditions.nbIter) {
+
+        // Position de l'observateur
+        _conditions.observateur.CalculPosVit(date);
+
+        // Position du satellite
+        sat.CalculPosVit(date);
+
+        // Position topocentrique du satellite
+        sat.CalculCoordHoriz(_conditions.observateur, true, false);
+        const double ht = sat.CalculRefractionAtmospherique(sat.hauteur());
+
+        if (ht >= _conditions.hauteur) {
+
+            // Ascension droite, declinaison
+            sat.CalculCoordEquat(_conditions.observateur, false);
+
+            const QString ephem = fmt.arg(date.ToShortDateAMJmillisec()).arg(sat.distance(), 16, 'f', 6).
+                                  arg(sat.ascensionDroite() * MATHS::RAD2DEG, 16, 'f', 6).arg(sat.declinaison() * MATHS::RAD2DEG, 16, 'f', 6);
+
+            flux << ephem << Qt::endl;
+        }
+
+        jjmsec += _conditions.pas;
+        date = Date(jjmsec * DATE::NB_JOUR_PAR_MILLISEC, 0.);
+        i++;
+    }
+
     fi.close();
 
     /* Retour */

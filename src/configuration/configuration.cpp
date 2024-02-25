@@ -34,24 +34,14 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#include <QCoreApplication>
 #include <QDir>
-#include <QSettings>
 #include <QStandardPaths>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration.h"
 #include "evenementsstationspatiale.h"
 #include "gestionnairexml.h"
-#include "librairies/corps/corps.h"
-#include "librairies/dates/date.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
+#include "librairies/systeme/fichierxml.h"
 
-
-// Registre
-static QSettings settings(ORG_NAME, APP_NAME);
 
 Configuration *Configuration::_instance = nullptr;
 
@@ -83,21 +73,14 @@ void Configuration::Chargement()
         qInfo() << "Début Chargement Configuration";
 
         // Lecture du fichier de configuration generale
-        GestionnaireXml::LectureConfiguration(_nomFichierEvenementsStationSpatiale,
-                                              _noradStationSpatiale,
-                                              _versionCfg,
-                                              _adresseCelestrak,
-                                              _adresseRocketLaunchLive,
-                                              _nomfic,
-                                              _noradDefaut,
-                                              _observateurs,
-                                              _mapSatellitesFichierElem);
+        LectureConfiguration();
 
         // Lecture du fichier de categories d'orbite
         _mapCategoriesOrbite = GestionnaireXml::LectureCategoriesOrbite();
 
         // Lecture du fichier de gestionnaire d'elements orbitaux
-        _mapCategoriesElementsOrbitaux = GestionnaireXml::LectureGestionnaireElementsOrbitaux(_versionCategorieElem, _mapCategoriesMajElementsOrbitaux);
+        _mapCategoriesElementsOrbitaux = GestionnaireXml::LectureGestionnaireElementsOrbitaux(_versionCategorieElem,
+                                                                                              _mapCategoriesMajElementsOrbitaux);
 
         // Lecture du fichier listant les pays et organisations
         _mapPays = GestionnaireXml::LecturePays();
@@ -112,7 +95,7 @@ void Configuration::Chargement()
         _mapStations = GestionnaireXml::LectureStations();
 
         // Lecture du fichier de statut des satellites produisant des flashs
-        _mapFlashs = GestionnaireXml::LectureStatutSatellitesFlashs();
+        _mapFlashs = GestionnaireXml::LectureSatellitesFlashs();
 
         // Lecture des frequences radio des satellites
         _mapFrequencesRadio = GestionnaireXml::LectureFrequencesRadio();
@@ -133,10 +116,10 @@ void Configuration::Chargement()
         Corps::Initialisation(_dirCommonData);
 
         // Initialisation du tableau d'etoiles
-        Etoile::Initialisation(_dirCommonData, _etoiles);
+        _etoiles = Etoile::Initialisation(_dirCommonData);
 
         // Initialisation des tableaux de constellations
-        Constellation::Initialisation(_dirCommonData, _constellations);
+        _constellations = Constellation::Initialisation(_dirCommonData);
         LigneConstellation::Initialisation(_dirCommonData);
 
         _adresseCelestrakNorad = _adresseCelestrak + "NORAD/elements/gp.php?GROUP=%1&FORMAT=xml";
@@ -168,9 +151,9 @@ void Configuration::Chargement()
 
         // Ecriture d'informations dans le fichier de log
         qInfo() << QString("Lieu d'observation : %1 %2 %3")
-                   .arg(_observateurs.first().longitude() * MATHS::RAD2DEG, 0, 'f', 9)
-                   .arg(_observateurs.first().latitude() * MATHS::RAD2DEG, 0, 'f', 9)
-                   .arg(_observateurs.first().altitude() * 1.e3);
+                       .arg(_observateurs.first().longitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                       .arg(_observateurs.first().latitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                       .arg(_observateurs.first().altitude() * 1.e3);
 
         qInfo() << "Nom du fichier d'éléments orbitaux :" << _nomfic;
         qInfo() << "Numéro NORAD par défaut :" << _noradDefaut;
@@ -184,10 +167,111 @@ void Configuration::Chargement()
         qInfo() << "Fin   Chargement Configuration";
         qInfo() << "--";
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Chargement Configuration";
-        throw PreviSatException();
+        throw Exception();
     }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Ecriture de la configuration
+ */
+void Configuration::EcritureConfiguration()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QFile fi(Configuration::instance()->dirCfg() + QDir::separator() + "configuration.xml");
+
+    if (!fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        const QFileInfo ff(fi.fileName());
+        qWarning() << QString("Erreur lors de l'écriture du fichier %1").arg(ff.fileName());
+        throw Exception(QObject::tr("Erreur lors de l'écriture du fichier %1").arg(ff.fileName()), MessageType::WARNING);
+    }
+
+    QXmlStreamWriter cfg(&fi);
+
+    cfg.setAutoFormatting(true);
+    cfg.writeStartDocument();
+    cfg.writeStartElement("PreviSatConfiguration");
+    cfg.writeAttribute("version", _versionCfg);
+
+    // Numero NORAD de la station spatiale
+    cfg.writeTextElement("NoradStationSpatiale", _noradStationSpatiale);
+
+    // Adresse du site Celestrak
+    cfg.writeTextElement("AdresseCelestrak", _adresseCelestrak);
+
+    // Adresse du site RocketLaunchLive
+    cfg.writeTextElement("AdresseRocketLaunchLive", _adresseRocketLaunchLive);
+
+    // Nom du fichier d'evenements de la Station Spatiale
+    cfg.writeTextElement("NomFichierEvenementsStationSpatiale", _nomFichierEvenementsStationSpatiale);
+
+    // Observateurs
+    cfg.writeStartElement("Observateurs");
+    QListIterator itObs(_observateurs);
+    while (itObs.hasNext()) {
+
+        const Observateur obs = itObs.next();
+        cfg.writeStartElement("Observateur");
+        cfg.writeTextElement("Nom", obs.nomlieu());
+
+        cfg.writeTextElement("Longitude", QString::number(obs.longitude() * MATHS::RAD2DEG, 'f', 9));
+        cfg.writeTextElement("Latitude", QString::number(obs.latitude() * MATHS::RAD2DEG, 'f', 9));
+        cfg.writeTextElement("Altitude", QString::number(obs.altitude() * 1000.));
+        cfg.writeEndElement();
+    }
+
+    cfg.writeEndElement();
+
+    // Listes de satellites selon le fichier d'elements orbitaux
+    cfg.writeStartElement("FichiersElem");
+
+    // Numeros NORAD du fichier par defaut
+    const QStringList listeNorad = _mapSatellitesFichierElem[_nomfic];
+    if (!listeNorad.isEmpty()) {
+
+        cfg.writeStartElement("Fichier");
+        cfg.writeAttribute("nom", _nomfic);
+
+        QStringListIterator itNorad(listeNorad);
+        while (itNorad.hasNext()) {
+            cfg.writeTextElement("Norad", QString("%1").arg(itNorad.next(), 6, '0'));
+        }
+
+        cfg.writeEndElement();
+    }
+
+    QMapIterator itElem(_mapSatellitesFichierElem);
+    while (itElem.hasNext()) {
+
+        itElem.next();
+
+        if (!itElem.value().isEmpty() && (itElem.key() != _nomfic)) {
+
+            cfg.writeStartElement("Fichier");
+            cfg.writeAttribute("nom", itElem.key());
+
+            QStringListIterator itNorad(itElem.value());
+            while (itNorad.hasNext()) {
+                cfg.writeTextElement("Norad", QString("%1").arg(itNorad.next(), 6, '0'));
+            }
+
+            cfg.writeEndElement();
+        }
+    }
+
+    cfg.writeEndElement();
+
+    cfg.writeEndElement();
+    cfg.writeEndDocument();
+    fi.close();
 
     /* Retour */
     return;
@@ -209,8 +293,14 @@ void Configuration::Initialisation()
     // Determination de la locale et liste des langues disponibles
     DeterminationLocale();
 
-    // Verification des arborescences
-    VerificationArborescences();
+    try {
+
+        // Verification des arborescences
+        VerificationArborescences();
+
+    } catch (Exception const &e) {
+        throw Exception();
+    }
 
     /* Retour */
     return;
@@ -243,6 +333,7 @@ Configuration *Configuration::instance()
     if (_instance == nullptr) {
         _instance = new Configuration();
     }
+
     return _instance;
 }
 
@@ -476,10 +567,11 @@ QMap<QString, QList<CategorieElementsOrbitaux> > &Configuration::mapCategoriesEl
     return _mapCategoriesElementsOrbitaux;
 }
 
-const QMap<QString, QList<CategorieElementsOrbitaux> > &Configuration::mapCategoriesMajElementsOrbitaux() const
+QMap<QString, QList<CategorieElementsOrbitaux> > &Configuration::mapCategoriesMajElementsOrbitaux()
 {
     return _mapCategoriesMajElementsOrbitaux;
 }
+
 
 const QMap<QString, QString> &Configuration::mapPays() const
 {
@@ -631,7 +723,10 @@ QMap<QString, QStringList> &Configuration::groupesStarlink()
     return _groupesStarlink;
 }
 
-void Configuration::AjoutDonneesSatellitesStarlink(const QString &groupe, const QString &fichier, const QString &lancement, const QString &deploiement)
+void Configuration::AjoutDonneesSatellitesStarlink(const QString &groupe,
+                                                   const QString &fichier,
+                                                   const QString &lancement,
+                                                   const QString &deploiement)
 {
     if (!_satellitesStarlink.keys().contains(groupe)) {
         _satellitesStarlink.insert(groupe, { fichier, lancement, deploiement });
@@ -679,19 +774,32 @@ void Configuration::DefinitionArborescences()
     /* Corps de la methode */
     _dirExe = QCoreApplication::applicationDirPath();
 
+#if (PORTABLE_BUILD)
+    const QString dir = _dirExe + QDir::separator();
+#else
     const QStringList listeGenericDir = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QString(), QStandardPaths::LocateDirectory);
     const QString dir = listeGenericDir.first() + dirAstr + QDir::separator();
+#endif
     _dirLocalData = dir + "data";
     _dirElem = dir + "elem";
     _dirLog = dir + "log";
     _dirStarlink = dir + "starlink";
 
+#if (PORTABLE_BUILD)
+    _dirOut = _dirExe + QDir::separator() + dirAstr;
+    _dirTmp = _dirExe + QDir::separator() + "cache";
+#else
     _dirOut = QStandardPaths::locate(QStandardPaths::DocumentsLocation, QString(), QStandardPaths::LocateDirectory) + dirAstr;
     _dirTmp = QStandardPaths::locate(QStandardPaths::CacheLocation, QString(), QStandardPaths::LocateDirectory);
+#endif
 
     if (_dirTmp.endsWith("/")) {
         _dirTmp.resize(_dirTmp.size() - 1);
     }
+
+#if (PORTABLE_BUILD)
+    const QString dirCommon = _dirExe;
+#else
 
 #if defined (Q_OS_WIN)
     const QString dirCommon = listeGenericDir.at(1) + dirAstr;
@@ -704,7 +812,7 @@ void Configuration::DefinitionArborescences()
     _dirLog = _dirExe + QDir::separator() + "log";
     _dirOut = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory) + APP_NAME;
 #endif
-
+#endif
 
     if (_dirTmp.trimmed().isEmpty()) {
         _dirTmp = _dirLocalData.mid(0, _dirLocalData.lastIndexOf(QDir::separator())) + QDir::separator() + "cache";
@@ -848,6 +956,103 @@ void Configuration::InitListeFichiersSon()
 }
 
 /*
+ * Lecture du fichier de configuration generale
+ */
+void Configuration::LectureConfiguration()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString nomficXml = "configuration.xml";
+
+    try {
+
+        const QString msg = QObject::tr("Le fichier de configuration de %1 a évolué.\n" \
+                                        "Souhaitez-vous tenter de récupérer les lieux d'observation ?").arg(APP_NAME);
+        GestionnaireXml::VerifieVersionXml(nomficXml, msg);
+
+        FichierXml fi(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
+        const QDomDocument document = fi.Ouverture(false);
+        _versionCfg = fi.version();
+
+        /* Corps de la methode */
+        const QDomElement root = document.firstChildElement();
+        if (root.nodeName() != "PreviSatConfiguration") {
+            throw Exception();
+        }
+
+        _noradStationSpatiale = root.firstChildElement("NoradStationSpatiale").text();
+        _adresseCelestrak = root.firstChildElement("AdresseCelestrak").text();
+        _adresseRocketLaunchLive = root.firstChildElement("AdresseRocketLaunchLive").text();
+        _nomFichierEvenementsStationSpatiale = root.firstChildElement("NomFichierEvenementsStationSpatiale").text();
+
+        // Lieux d'observation
+        const QDomNode listeObservateurs = root.elementsByTagName("Observateurs").at(0);
+        _observateurs = (GestionnaireXml::observateurs().isEmpty()) ? GestionnaireXml::LectureLieuxObservation(listeObservateurs) :
+                            GestionnaireXml::observateurs();
+
+        // Elements orbitaux
+        QStringList listeNorad;
+        const QDomNodeList listeFichiers = root.elementsByTagName("Fichier");
+
+        for(int i=0; i<listeFichiers.count(); i++) {
+
+            listeNorad.clear();
+            const QDomNode fichier = listeFichiers.at(i);
+            const QDomElement fic = fichier.toElement();
+            const QString nom = fic.attribute("nom");
+
+            const QDomNodeList norads = fic.elementsByTagName("Norad");
+
+            for(int j=0; j<norads.count(); j++) {
+                listeNorad.append(QString("%1").arg(norads.at(j).toElement().text(), 6, '0'));
+            }
+
+            _mapSatellitesFichierElem.insert(nom, listeNorad);
+
+            if (_nomfic.isEmpty()) {
+                _nomfic = nom;
+                _noradDefaut = listeNorad.first();
+            }
+        }
+
+        if (_nomfic.isEmpty()) {
+            _nomfic = "visual.xml";
+        }
+
+        if (_noradDefaut.isEmpty()) {
+            _noradDefaut = _noradStationSpatiale;
+        }
+
+        if (_nomFichierEvenementsStationSpatiale.isEmpty()) {
+            _nomFichierEvenementsStationSpatiale = "ISS.OEM_J2K_EPH.xml";
+        }
+
+        if (_mapSatellitesFichierElem.isEmpty()) {
+            const QStringList elem(QStringList() << _noradStationSpatiale << "20580");
+            _mapSatellitesFichierElem.insert(_nomfic, elem);
+        }
+
+        if (_noradStationSpatiale.isEmpty() || _observateurs.isEmpty()) {
+
+            qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+        }
+
+        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+
+    } catch (Exception const &e) {
+        qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                            .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
  * Lecture du fichier des chaines NASA
  */
 void Configuration::LectureChainesNasa()
@@ -861,8 +1066,7 @@ void Configuration::LectureChainesNasa()
     /* Corps de la methode */
     if (!fi.exists() || (fi.size() == 0)) {
         qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME);
-        throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME),
-                                MessageType::ERREUR);
+        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME), MessageType::ERREUR);
     }
 
     if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -873,8 +1077,8 @@ void Configuration::LectureChainesNasa()
     if (_listeChainesNasa.isEmpty()) {
         const QFileInfo ff(fi.fileName());
         qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
-        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
-                                .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+        throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                            .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
     }
 
     qInfo() << "Lecture fichier chaines.chnl OK";
@@ -900,25 +1104,25 @@ void Configuration::LectureDonneesSatellites()
 
     if (!fi.exists() || (fi.size() == 0)) {
         qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME);
-        throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME),
-                                MessageType::ERREUR);
+        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME), MessageType::ERREUR);
     }
 
     if (fi.open(QIODevice::ReadOnly)) {
         const QByteArray donneesCompressees = fi.readAll();
         _donneesSatellites = QString(qUncompress(donneesCompressees));
     }
+
     fi.close();
 
-    if (_donneesSatellites.isEmpty()) {
+    const int cpt = static_cast<int> (_donneesSatellites.count('\n'));
+    _lgRec = (cpt == 0) ? -1 : static_cast<int> (_donneesSatellites.size() / cpt);
+
+    if (_donneesSatellites.isEmpty() || (_lgRec != QString("%1").arg(NB_COL_DONNEES).toInt())) {
 
         _lgRec = -1;
         qCritical() <<  QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
-        throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
-                                .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
-
-    } else {
-        _lgRec = static_cast<int> (_donneesSatellites.size() / _donneesSatellites.count('\n'));
+        throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                            .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
     }
 
 #if (BUILD_TEST == false)
@@ -949,8 +1153,8 @@ void Configuration::VerificationArborescences()
         }
 
         const QStringList listeDirOrig(QStringList () << _dirCommonData + QDir::separator() + "coordinates"
-                                       << _dirCommonData + QDir::separator() + "html"
-                                       << _dirCommonData + QDir::separator() + "preferences");
+                                                     << _dirCommonData + QDir::separator() + "html"
+                                                     << _dirCommonData + QDir::separator() + "preferences");
 
         foreach(QString orig, listeDirOrig) {
             QDir dir(orig);
@@ -1011,10 +1215,10 @@ void Configuration::VerificationArborescences()
             const QDir dir(dirDat);
             if (!dir.exists()) {
                 qCritical() << QString("Le répertoire %1 n'existe pas, veuillez réinstaller %2").arg(QDir::toNativeSeparators(dirDat))
-                               .arg(APP_NAME);
-                throw PreviSatException(
-                            QObject::tr("Le répertoire %1 n'existe pas, veuillez réinstaller %2").arg(QDir::toNativeSeparators(dirDat))
-                            .arg(APP_NAME), MessageType::ERREUR);
+                                   .arg(APP_NAME);
+                throw Exception(
+                    QObject::tr("Le répertoire %1 n'existe pas, veuillez réinstaller %2").arg(QDir::toNativeSeparators(dirDat))
+                        .arg(APP_NAME), MessageType::ERREUR);
             }
         }
 
@@ -1036,8 +1240,8 @@ void Configuration::VerificationArborescences()
         const QString repSon = QString("sound") + QDir::separator();
         const QString repStr = QString("stars") + QDir::separator();
         const QStringList ficCommonData(QStringList () << repSon + "aos-default.wav" << repSon + "los-default.wav"
-                                        << repStr + "constellations.dat" << repStr + "constlabel.dat"
-                                        << repStr + "constlines.dat" << repStr + "etoiles.dat");
+                                                      << repStr + "constellations.dat" << repStr + "constlabel.dat"
+                                                      << repStr + "constlines.dat" << repStr + "etoiles.dat");
 
         VerifieFichiersData(_dirCommonData, ficCommonData);
 
@@ -1051,8 +1255,8 @@ void Configuration::VerificationArborescences()
         // Fichiers non obligatoires pour le fonctionnement de PreviSat
         _listeFicLocalData << "ISS.OEM_J2K_EPH.xml" << "radio.xml";
 
-    } catch (PreviSatException &e) {
-        throw PreviSatException();
+    } catch (Exception const &e) {
+        throw Exception();
     }
 
     /* Retour */
@@ -1078,15 +1282,15 @@ void Configuration::VerifieFichiersData(const QString &dirData, const QStringLis
         // Le fichier n'existe pas
         if (!fi.exists()) {
             qCritical() << QString("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
-            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2")
-                                    .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            throw Exception(QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2")
+                                .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
 
         // Le fichier est vide
         if (fi.size() == 0) {
             qCritical() << QString("Le fichier %1 est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
-            throw PreviSatException(QObject::tr("Le fichier %1 est vide, veuillez réinstaller %2")
-                                    .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            throw Exception(QObject::tr("Le fichier %1 est vide, veuillez réinstaller %2")
+                                .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
     }
 

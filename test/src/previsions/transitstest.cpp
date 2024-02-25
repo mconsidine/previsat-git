@@ -34,20 +34,14 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "configuration/configuration.h"
 #include "interface/afficherresultats.h"
 #include "librairies/corps/corps.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "previsions/transits.h"
 #include "transitstest.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -59,7 +53,6 @@ static QDir dir;
 void TransitsTest::testAll()
 {
     dir = QDir::current();
-    dir.cdUp();
     dir.cdUp();
     dir.cdUp();
     dir.cd(qApp->applicationName());
@@ -106,10 +99,9 @@ void TransitsTest::testCalculTransits()
     const QString fichierIss = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "iss.gp";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "transits_20230205_20230307.txt";
 
-    conditions.tabElem = GPFormat::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
-                                             conditions.listeSatellites);
-    conditions.listeElemIss = GPFormat::LectureFichierListeGP(fichierIss, Configuration::instance()->donneesSatellites(),
-                                                              Configuration::instance()->lgRec());
+    conditions.tabElem = GPFormat::Lecture(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
+                                           conditions.listeSatellites);
+    conditions.listeElemIss = GPFormat::LectureListeGP(fichierIss, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions

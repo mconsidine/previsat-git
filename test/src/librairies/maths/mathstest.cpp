@@ -34,31 +34,25 @@
  *
  */
 
-#include <QPair>
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
+#include "librairies/exceptions/exception.h"
 #include "librairies/maths/maths.h"
-#include "librairies/maths/matrice3d.h"
-#include "librairies/maths/vecteur3d.h"
 #include "mathstest.h"
-#include "test/src/testtools.h"
-
+#include "testtools.h"
 
 using namespace TestTools;
 
+
 void MathsTest::testAll()
 {
-    testMaths();
-    testVecteur3D();
-    testMatrice3D();
+    testFonctionsInline();
+    testCalculExtremumInterpolation3();
+    testCalculValeurXInterpolation3();
+    testInterpolationLagrange();
+    testToSexagesimal();
 }
 
-void MathsTest::testMaths()
+void MathsTest::testFonctionsInline()
 {
     qInfo(Q_FUNC_INFO);
 
@@ -79,18 +73,40 @@ void MathsTest::testMaths()
     // Modulo
     QCOMPARE(modulo(450., 360.), 90.);
     QCOMPARE(modulo(-450., 360.), 270.);
+}
+
+void MathsTest::testCalculExtremumInterpolation3()
+{
+    qInfo(Q_FUNC_INFO);
 
     // Extremum par interpolation
-    const std::array<double, MATHS::DEGRE_INTERPOLATION> xtab1 = { 12., 16., 20. };
-    const std::array<double, MATHS::DEGRE_INTERPOLATION> ytab1 = { 1.3814294, 1.3812213, 1.3812453 };
+    const std::array<QPointF, MATHS::DEGRE_INTERPOLATION> tab = {
+        QPointF { 12., 1.3814294 },
+        QPointF { 16., 1.3812213 },
+        QPointF { 20., 1.3812453 }
+    };
+
     const QPointF extremum(17.5863851788, 1.38120304665537);
-    const QPointF val = Maths::CalculExtremumInterpolation3(xtab1, ytab1);
-    QCOMPARE(val, extremum);
+    QCOMPARE(Maths::CalculExtremumInterpolation3(tab), extremum);
+}
+
+void MathsTest::testCalculValeurXInterpolation3()
+{
+    qInfo(Q_FUNC_INFO);
 
     // Determination abscisse par interpolation
-    const std::array<double, MATHS::DEGRE_INTERPOLATION> xtab2 = { 26., 27., 28. };
-    const std::array<double, MATHS::DEGRE_INTERPOLATION> ytab2 = { -1693.4, 406.3, 2303.2 };
-    QCOMPARE(Maths::CalculValeurXInterpolation3(xtab2, ytab2, 0., MATHS::EPSDBL), 26.798732704968522);
+    const std::array<QPointF, MATHS::DEGRE_INTERPOLATION> tab = {
+        QPointF { 26., -1693.4 },
+        QPointF { 27., 406.3 },
+        QPointF { 28., 2303.2 }
+    };
+
+    QCOMPARE(Maths::CalculValeurXInterpolation3(tab, 0., MATHS::EPSDBL), 26.798732704968522);
+}
+
+void MathsTest::testInterpolationLagrange()
+{
+    qInfo(Q_FUNC_INFO);
 
     // Calcul d'interpolation par polynome de Lagrange
     const QVector<QPointF> table = {
@@ -101,7 +117,13 @@ void MathsTest::testMaths()
         { 31.58, 0.5236885653 },
         { 33.05, 0.5453707057 }
     };
-    QCOMPARE(arrondi(Maths::InterpolationLagrange(table, 30.), 10), 0.5);
+
+    CompareDoublesSeuil(Maths::InterpolationLagrange(table, 30.), 0.5, MATHS::EPSDBL100);
+}
+
+void MathsTest::testToSexagesimal()
+{
+    qInfo(Q_FUNC_INFO);
 
     // Affichage en sexagesimal
     QCOMPARE(Maths::ToSexagesimal(12.3456789, AngleFormatType::NO_TYPE, 2, 4, true, true), R"(+12° 20' 44.4440")");
@@ -110,135 +132,4 @@ void MathsTest::testMaths()
     QCOMPARE(Maths::ToSexagesimal(0.26179211559393, AngleFormatType::HEURE1, 2, 0, false, false), " 01h00m00s");
     QCOMPARE(Maths::ToSexagesimal(12.3456789, AngleFormatType::NO_TYPE, -2, -1, true, true), R"(+12° 20' 44")");
     QCOMPARE(Maths::ToSexagesimal(1.23456789, AngleFormatType::HEURE1, 3, 0, false, false), " 04h42m57s");
-}
-
-void MathsTest::testMatrice3D()
-{
-    qInfo(Q_FUNC_INFO);
-
-    const Matrice3D mat0;
-    const Vecteur3D vec0;
-    const Matrice3D mat1(vec0, vec0, vec0);
-    CompareMatrices3D(mat0, mat1);
-
-    const Vecteur3D vec1(1., 2., 3.);
-    const Vecteur3D vec2(4., 5., 6.);
-    const Vecteur3D vec3(7., 8., 9.);
-    const Matrice3D mat2(vec1, vec2, vec3);
-    const Matrice3D mat3 = mat2;
-    CompareMatrices3D(mat2, mat3);
-
-    const Matrice3D mat4(AxeType::AXE_X, MATHS::PI / 6.);
-    const Vecteur3D vec4(1., 0., 0.);
-    const Vecteur3D vec5(0., sqrt(3.) / 2., -0.5);
-    const Vecteur3D vec6(0., 0.5, sqrt(3.) / 2.);
-    const Matrice3D mat5(vec4, vec5, vec6);
-    CompareMatrices3D(mat4, mat5);
-
-    const Matrice3D mat6(AxeType::AXE_Y, MATHS::PI / 6.);
-    const Vecteur3D vec7(sqrt(3.) / 2., 0., 0.5);
-    const Vecteur3D vec8(0., 1., 0.);
-    const Vecteur3D vec9(-0.5, 0., sqrt(3.) / 2.);
-    const Matrice3D mat7(vec7, vec8, vec9);
-    CompareMatrices3D(mat6, mat7);
-
-    const Matrice3D mat8(AxeType::AXE_Z, MATHS::PI / 6.);
-    const Vecteur3D vec10(sqrt(3.) / 2., -0.5, 0.);
-    const Vecteur3D vec11(0.5, sqrt(3.) / 2., 0.);
-    const Vecteur3D vec12(0., 0., 1.);
-    const Matrice3D mat9(vec10, vec11, vec12);
-    CompareMatrices3D(mat8, mat9);
-
-    const Matrice3D mat8b(static_cast<AxeType> (4), MATHS::PI / 6.);
-    const Vecteur3D vec12b(0., 0., 0.);
-    const Matrice3D mat9b(vec12b, vec12b, vec12b);
-    CompareMatrices3D(mat8b, mat9b);
-
-    const Vecteur3D vec13(1., 4., 7.);
-    const Vecteur3D vec14(2., 5., 8.);
-    const Vecteur3D vec15(3., 6., 9.);
-    const Matrice3D mat10(vec13, vec14, vec15);
-    CompareMatrices3D(mat2.Transposee(), mat10);
-
-    const Vecteur3D vec16(14., 32., 50.);
-    CompareVecteurs3D(mat10 * vec1, vec16);
-
-    const Vecteur3D vec17(14., 32, 50.);
-    const Vecteur3D vec18(32., 77., 122.);
-    const Vecteur3D vec19(50., 122., 194.);
-    const Matrice3D mat11(vec17, vec18, vec19);
-    CompareMatrices3D(mat10 * mat2, mat11);
-}
-
-void MathsTest::testVecteur3D()
-{
-    qInfo(Q_FUNC_INFO);
-
-    // Constructeurs
-    const Vecteur3D vec0;
-    QCOMPARE(vec0.x(), 0.);
-    QCOMPARE(vec0.y(), 0.);
-    QCOMPARE(vec0.z(), 0.);
-
-    Vecteur3D vec1(1., 2., 3.);
-    QCOMPARE(vec1.x(), 1.);
-    QCOMPARE(vec1.y(), 2.);
-    QCOMPARE(vec1.z(), 3.);
-
-    Vecteur3D vec2 = vec1;
-    CompareVecteurs3D(vec2, vec1);
-
-    // Operations
-    // Addition de 2 vecteurs
-    vec2 = Vecteur3D(4., 5., 6.);
-    const Vecteur3D vec3(5., 7., 9.);
-    CompareVecteurs3D(vec1 + vec2, vec3);
-
-    // Vecteur oppose
-    const Vecteur3D vec4(-1., -2., -3.);
-    CompareVecteurs3D(-vec1, vec4);
-
-    // Soustraction de 2 vecteurs
-    CompareVecteurs3D(vec3 - vec2, vec1);
-
-    // Produit avec un scalaire
-    Vecteur3D vec5(-2., -4., -6.);
-    CompareVecteurs3D(vec1 * (-2.), vec5);
-
-    // Produit scalaire
-    Vecteur3D vec6(7., -3., 2.);
-    QCOMPARE(vec1 * vec6, 7.);
-
-    // Produit vectoriel
-    const Vecteur3D vec7(-6., 4., -5.);
-    const Vecteur3D vec8(-22., -13., 16.);
-    CompareVecteurs3D(vec1 ^ vec7, vec8);
-
-    // Angle
-    QCOMPARE(vec1.Angle(vec7), 1.9778921693662815374593799604662);
-
-    // Norme
-    QCOMPARE(vec1.Norme(), sqrt(14.));
-
-    // Normalise
-    const Vecteur3D vec9 = vec1 * (1. / sqrt(14.));
-    CompareVecteurs3D(vec1.Normalise(), vec9);
-
-    // Nul
-    QCOMPARE(vec0.Nul(), true);
-    QCOMPARE(vec1.Nul(), false);
-
-    // Rotation
-    double ang = 30. * MATHS::DEG2RAD;
-    vec2 = Vecteur3D(1., 3.2320508075688772935274463415059, 1.5980762113533159402911695122588);
-    CompareVecteurs3D(vec1.Rotation(AxeType::AXE_X, ang), vec2);
-
-    vec2 = Vecteur3D(-0.63397459621556135323627682924706, 2., 3.0980762113533159402911695122588);
-    CompareVecteurs3D(vec1.Rotation(AxeType::AXE_Y, ang), vec2);
-
-    vec2 = Vecteur3D(1.8660254037844386467637231707529, 1.2320508075688772935274463415059, 3.);
-    CompareVecteurs3D(vec1.Rotation(AxeType::AXE_Z, ang), vec2);
-
-    vec2 = Vecteur3D();
-    CompareVecteurs3D(vec1.Rotation(static_cast<AxeType> (4), ang), vec2);
 }

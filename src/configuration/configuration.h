@@ -43,18 +43,10 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QFont>
+#include <QList>
 #include <QMap>
 #include <QString>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#include "librairies/corps/etoiles/constellation.h"
-#include "librairies/corps/etoiles/etoile.h"
-#include "librairies/corps/etoiles/ligneconstellation.h"
-#include "librairies/corps/satellite/elementsorbitaux.h"
-#include "librairies/corps/satellite/satellite.h"
-#include "librairies/corps/systemesolaire/planete.h"
-#include "librairies/observateur/observateur.h"
 #include "categorieelementsorbitaux.h"
 #include "configurationconst.h"
 #include "evenementsstation.h"
@@ -62,23 +54,29 @@
 #include "satellitesflashs.h"
 #include "satellitesstarlink.h"
 #include "satellitetdrs.h"
+#include "librairies/corps/etoiles/constellation.h"
+#include "librairies/corps/etoiles/etoile.h"
+#include "librairies/corps/etoiles/ligneconstellation.h"
+#include "librairies/corps/satellite/elementsorbitaux.h"
+#include "librairies/corps/satellite/satellite.h"
+#include "librairies/corps/systemesolaire/lune.h"
+#include "librairies/corps/systemesolaire/planete.h"
+#include "librairies/corps/systemesolaire/soleil.h"
+#include "librairies/observateur/observateur.h"
 
 
 class Configuration
 {
 #if (BUILD_TEST == true)
-    friend class EvenementsOrbitauxTest;
+    friend class PrevisionTest;
+    friend class TransitsTest;
     friend class FlashsTest;
     friend class GeneralTest;
-    friend class GPFormatTest;
     friend class InformationsTest;
+    friend class EvenementsOrbitauxTest;
     friend class OsculateursTest;
-    friend class PrevisionTest;
-    friend class SatelliteTest;
     friend class StarlinkTest;
     friend class TelescopeTest;
-    friend class TransitsTest;
-    friend class TLETest;
 #endif
 
 public:
@@ -96,11 +94,19 @@ public:
 
     /**
      * @brief Chargement Chargement de la configuration generale
+     * @throw Exception
      */
     void Chargement();
 
     /**
+     * @brief EcritureConfiguration Ecriture de la configuration
+     * @throw Exception
+     */
+    void EcritureConfiguration();
+
+    /**
      * @brief Initialisation Definitions preliminaires pour le logiciel
+     * @throw Exception
      */
     void Initialisation();
 
@@ -183,8 +189,8 @@ public:
     const QMap<TypeTelechargement, QString> &mapAdressesTelechargement() const;
 
 
-    QMap<QString, QList<CategorieElementsOrbitaux> > &mapCategoriesElementsOrbitaux() ;
-    const QMap<QString, QList<CategorieElementsOrbitaux> > &mapCategoriesMajElementsOrbitaux() const;
+    QMap<QString, QList<CategorieElementsOrbitaux> > &mapCategoriesElementsOrbitaux();
+    QMap<QString, QList<CategorieElementsOrbitaux> > &mapCategoriesMajElementsOrbitaux();
 
     const QMap<QString, QString> &mapPays() const;
     const QMap<int, SatelliteTDRS> &mapTDRS() const;
@@ -238,7 +244,10 @@ public:
     // Satellites Starlink
     QMap<QString, SatellitesStarlink> &satellitesStarlink();
     QMap<QString, QStringList> &groupesStarlink();
-    void AjoutDonneesSatellitesStarlink(const QString &groupe, const QString &fichier, const QString &lancement, const QString &deploiement);
+    void AjoutDonneesSatellitesStarlink(const QString &groupe,
+                                        const QString &fichier,
+                                        const QString &lancement,
+                                        const QString &deploiement);
 
 
     /*
@@ -465,17 +474,26 @@ private:
     void InitListeFichiersSon();
 
     /**
+     * @brief LectureConfiguration Lecture du fichier de configuration generale
+     * @throw Exception
+     */
+    void LectureConfiguration();
+
+    /**
      * @brief LectureChainesNasa Lecture du fichier des chaines NASA
+     * @throw Exception
      */
     void LectureChainesNasa();
 
     /**
      * @brief LectureDonneesSatellites Lecture du fichier de donnees satellites
+     * @throw Exception
      */
     void LectureDonneesSatellites();
 
     /**
      * @brief VerificationArborescences Verification des arborescences
+     * @throw Exception
      */
     void VerificationArborescences();
 
@@ -483,8 +501,10 @@ private:
      * @brief VerifieFichiersData Verifie la presence des fichiers du repertoire data
      * @param[in] dirData repertoire data
      * @param[in] listeFicData liste de fichiers du repertoire data
+     * @throw Exception
      */
-    void VerifieFichiersData(const QString &dirData, const QStringList &listeFicData) const;
+    void VerifieFichiersData(const QString &dirData,
+                             const QStringList &listeFicData) const;
 
 
 };

@@ -101,7 +101,7 @@ void Transits::setConditions(const ConditionsPrevisions &conditions)
 /*
  * Calcul des transits devant la Lune ou le Soleil
  */
-int Transits::CalculTransits(int &nombre)
+int Transits::CalculTransits(const int &nombre)
 {
     /* Declarations des variables locales */
     QElapsedTimer tps;
@@ -239,12 +239,12 @@ int Transits::CalculTransits(int &nombre)
 
                         // Position du corps (Soleil ou Lune)
                         if (typeCorps == CorpsTransit::CORPS_SOLEIL) {
-                            soleil.CalculPosition(date0);
+                            soleil.CalculPosVit(date0);
                             corps.setPosition(soleil.position());
                         }
 
                         if (typeCorps == CorpsTransit::CORPS_LUNE) {
-                            lune.CalculPosition(date0);
+                            lune.CalculPosVit(date0);
                             corps.setPosition(lune.position());
                         }
 
@@ -301,7 +301,7 @@ int Transits::CalculTransits(int &nombre)
                             }
 
                             // Position du corps (Soleil ou Lune)
-                            soleil.CalculPosition(date2);
+                            soleil.CalculPosVit(date2);
                             soleil.CalculCoordHoriz(_conditions.observateur, false);
 
                             if (typeCorps == CorpsTransit::CORPS_SOLEIL) {
@@ -310,7 +310,7 @@ int Transits::CalculTransits(int &nombre)
                             }
 
                             if (typeCorps == CorpsTransit::CORPS_LUNE) {
-                                lune.CalculPosition(date2);
+                                lune.CalculPosVit(date2);
                                 corps.setPosition(lune.position());
                                 rayon = LUNE::RAYON_LUNAIRE;
                             }
@@ -352,20 +352,21 @@ int Transits::CalculTransits(int &nombre)
 
                                     // Position du satellite
                                     sat.CalculPosVit(dates[j]);
-                                    sat.CalculCoordHoriz(_conditions.observateur);
+                                    sat.CalculCoordHoriz(_conditions.observateur, true);
                                     sat.CalculCoordEquat(_conditions.observateur);
 
                                     // Altitude et distance du satellite
-                                    sat.CalculLatitude(sat.position());
-                                    res.altitude = sat.CalculAltitude(sat.position());
+                                    sat.CalculLatitude();
+                                    sat.CalculAltitude();
+                                    res.altitude = sat.altitude();
                                     res.distance = sat.distance();
 
                                     // Posiition du Soleil
-                                    soleil.CalculPosition(dates[j]);
-                                    soleil.CalculCoordHoriz(_conditions.observateur);
+                                    soleil.CalculPosVit(dates[j]);
+                                    soleil.CalculCoordHoriz(_conditions.observateur, true);
 
                                     // Position de la Lune
-                                    lune.CalculPosition(dates[j]);
+                                    lune.CalculPosVit(dates[j]);
                                     condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
 
                                     // Date calendaire
@@ -385,7 +386,7 @@ int Transits::CalculTransits(int &nombre)
 
                                     // Distance angulaire
                                     corps.setPosition((typeCorps == CorpsTransit::CORPS_SOLEIL) ? soleil.position() : lune.position());
-                                    corps.CalculCoordHoriz(_conditions.observateur);
+                                    corps.CalculCoordHoriz(_conditions.observateur, true);
                                     res.angle = corps.dist().Angle(sat.dist());
 
                                     // Coordonnees topocentriques du Soleil
@@ -413,13 +414,13 @@ int Transits::CalculTransits(int &nombre)
                                         sat.CalculCoordHoriz(obsmax, false);
 
                                         if (typeCorps == CorpsTransit::CORPS_SOLEIL) {
-                                            soleil.CalculPosition(dates[j]);
+                                            soleil.CalculPosVit(dates[j]);
                                             corps.setPosition(soleil.position());
                                             rayon = SOLEIL::RAYON_SOLAIRE;
                                         }
 
                                         if (typeCorps == CorpsTransit::CORPS_LUNE) {
-                                            lune.CalculPosition(dates[j]);
+                                            lune.CalculPosVit(dates[j]);
                                             corps.setPosition(lune.position());
                                             rayon = LUNE::RAYON_LUNAIRE;
                                         }
@@ -486,14 +487,15 @@ int Transits::CalculTransits(int &nombre)
 /*
  * Calcul de l'angle minimum du panneau
  */
-QPointF Transits::CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps,
+QPointF Transits::CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm,
+                                 const CorpsTransit &typeCorps,
                                  Satellite &satellite)
 {
     /* Declarations des variables locales */
     Corps corps;
     Soleil soleil;
     Lune lune;
-    std::array<double, MATHS::DEGRE_INTERPOLATION> ang;
+    std::array<QPointF, MATHS::DEGRE_INTERPOLATION> ang;
 
     /* Initialisations */
 
@@ -510,29 +512,31 @@ QPointF Transits::CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLA
 
         // Position de la Lune ou du Soleil
         if (typeCorps == CorpsTransit::CORPS_SOLEIL) {
-            soleil.CalculPosition(date);
+            soleil.CalculPosVit(date);
             corps.setPosition(soleil.position());
         }
 
         if (typeCorps == CorpsTransit::CORPS_LUNE) {
-            lune.CalculPosition(date);
+            lune.CalculPosVit(date);
             corps.setPosition(lune.position());
         }
 
         corps.CalculCoordHoriz(_conditions.observateur, false);
 
         // Angle de reflexion
-        ang[i] = corps.dist().Angle(satellite.dist());
+        ang[i] = QPointF(jjm[i], corps.dist().Angle(satellite.dist()));
     }
 
     /* Retour */
-    return Maths::CalculExtremumInterpolation3(jjm, ang);
+    return Maths::CalculExtremumInterpolation3(ang);
 }
 
 /*
  * Calcul de la date ou la distance angulaire est minimale
  */
-double Transits::CalculDate(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, const CorpsTransit &typeCorps, const bool itransit,
+double Transits::CalculDate(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm,
+                            const CorpsTransit &typeCorps,
+                            const bool itransit,
                             Satellite &satellite)
 {
     /* Declarations des variables locales */
@@ -540,7 +544,7 @@ double Transits::CalculDate(const std::array<double, MATHS::DEGRE_INTERPOLATION>
     Corps corps;
     Soleil soleil;
     Lune lune;
-    std::array<double, MATHS::DEGRE_INTERPOLATION> angle;
+    std::array<QPointF, MATHS::DEGRE_INTERPOLATION> angle;
 
     /* Initialisations */
 
@@ -557,18 +561,18 @@ double Transits::CalculDate(const std::array<double, MATHS::DEGRE_INTERPOLATION>
 
         // Position du corps
         if (typeCorps == CorpsTransit::CORPS_SOLEIL) {
-            soleil.CalculPosition(date);
+            soleil.CalculPosVit(date);
             corps.setPosition(soleil.position());
         }
 
         if (typeCorps == CorpsTransit::CORPS_LUNE) {
-            lune.CalculPosition(date);
+            lune.CalculPosVit(date);
             corps.setPosition(lune.position());
         }
 
         corps.CalculCoordHoriz(_conditions.observateur, false);
 
-        angle[i] = corps.dist().Angle(satellite.dist());
+        angle[i] = QPointF(jjm[i],corps.dist().Angle(satellite.dist()));
     }
 
     if (itransit) {
@@ -581,13 +585,16 @@ double Transits::CalculDate(const std::array<double, MATHS::DEGRE_INTERPOLATION>
     }
 
     /* Retour */
-    return Maths::CalculValeurXInterpolation3(jjm, angle, dist, DATE::EPS_DATES);
+    return Maths::CalculValeurXInterpolation3(angle, dist, DATE::EPS_DATES);
 }
 
 /*
  * Calcul des dates caracteristiques de la conjonction ou du transit
  */
-QList<Date> Transits::CalculElements(const double jmax, const CorpsTransit &typeCorps, const bool itransit, Satellite &satellite)
+QList<Date> Transits::CalculElements(const double jmax,
+                                     const CorpsTransit &typeCorps,
+                                     const bool itransit,
+                                     Satellite &satellite)
 {
     /* Declarations des variables locales */
     std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
@@ -679,7 +686,7 @@ QMap<CorpsTransit, QList<EphemeridesTransits> > Transits::CalculEphemSoleilLune(
             _conditions.observateur.CalculPosVit(date);
 
             // Position du Soleil
-            soleil.CalculPosition(date);
+            soleil.CalculPosVit(date);
             soleil.CalculCoordHoriz(_conditions.observateur, false);
 
             if (soleil.hauteur() >= _conditions.hauteur) {
@@ -709,7 +716,7 @@ QMap<CorpsTransit, QList<EphemeridesTransits> > Transits::CalculEphemSoleilLune(
             _conditions.observateur.CalculPosVit(date);
 
             // Position de la Lune
-            lune.CalculPosition(date);
+            lune.CalculPosVit(date);
             lune.CalculCoordHoriz(_conditions.observateur, false);
 
             if (lune.hauteur() >= _conditions.hauteur) {

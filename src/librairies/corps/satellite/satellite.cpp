@@ -34,7 +34,7 @@
  *
  */
 
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/maths/maths.h"
 #include "librairies/observateur/observateur.h"
 #include "evenements.h"
@@ -145,11 +145,10 @@ void Satellite::CalculElementsOsculateurs(const Date &date)
     _ageElementsOrbitaux = date.jourJulienUTC() - _elementsOrbitaux.epoque.jourJulienUTC();
 
     // Nombre d'orbites a la date courante
-    _nbOrbites = _elementsOrbitaux.nbOrbitesEpoque +
-            static_cast<unsigned int> (floor((_elementsOrbitaux.no + _ageElementsOrbitaux * _elementsOrbitaux.bstar) * _ageElementsOrbitaux +
-                                             modulo(_elementsOrbitaux.omegao + _elementsOrbitaux.mo, MATHS::DEUX_PI) / MATHS::T360 -
-                                             modulo(_elementsOsculateurs.argumentPerigee() + _elementsOsculateurs.anomalieVraie(), MATHS::DEUX_PI) /
-                                             MATHS::DEUX_PI + 0.5));
+    const double nb0 = (_elementsOrbitaux.no + _ageElementsOrbitaux * _elementsOrbitaux.bstar) * _ageElementsOrbitaux;
+    const double nb1 = modulo(_elementsOrbitaux.omegao + _elementsOrbitaux.mo, MATHS::DEUX_PI) / MATHS::T360;
+    const double nb2 = modulo(_elementsOsculateurs.argumentPerigee() + _elementsOsculateurs.anomalieVraie(), MATHS::DEUX_PI) / MATHS::DEUX_PI;
+    _nbOrbites = _elementsOrbitaux.nbOrbitesEpoque + static_cast<unsigned int> (floor(nb0 + nb1 - nb2 + 0.5));
 
     /* Retour */
     return;
@@ -166,39 +165,38 @@ void Satellite::CalculPosVit(const Date &date)
     /* Initialisations */
 
     /* Corps de la methode */
-    try {
+    if (!_listElements.isEmpty()) {
 
-        if (!_listElements.isEmpty()) {
+        const double jjsav = _elementsOrbitaux.epoque.jourJulienUTC();
+        _elementsOrbitaux = _listElements.first();
 
-            const double jjsav = _elementsOrbitaux.epoque.jourJulienUTC();
-            _elementsOrbitaux = _listElements.first();
+        // Recherche des elements orbitaux les plus recents
+        ElementsOrbitaux elem;
+        QListIterator it(_listElements);
+        while (it.hasNext()) {
 
-            // Recherche des elements orbitaux les plus recents
-            ElementsOrbitaux elem;
-            QListIterator it(_listElements);
-            while (it.hasNext()) {
+            elem = it.next();
 
-                elem = it.next();
-
-                if (date.jourJulienUTC() >= elem.epoque.jourJulienUTC()) {
-                    _elementsOrbitaux = elem;
-                } else {
-                    it.toBack();
-                }
-            }
-
-            // Reinitialisation des valeurs du modele SGP4 en cas de changement d'elements orbitaux
-            if (fabs(_elementsOrbitaux.epoque.jourJulienUTC() - jjsav) > DATE::EPS_DATES) {
-                _sgp4.setInit(false);
+            if (date.jourJulienUTC() >= elem.epoque.jourJulienUTC()) {
+                _elementsOrbitaux = elem;
+            } else {
+                it.toBack();
             }
         }
 
-        // Calcul de la position et de la vitesse
+        // Reinitialisation des valeurs du modele SGP4 en cas de changement d'elements orbitaux
+        if (fabs(_elementsOrbitaux.epoque.jourJulienUTC() - jjsav) > DATE::EPS_DATES) {
+            _sgp4.setInit(false);
+        }
+    }
+
+    // Calcul de la position et de la vitesse
+    try {
         _sgp4.Calcul(date, _elementsOrbitaux);
         _position = _sgp4.position();
         _vitesse = _sgp4.vitesse();
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
     }
 
     /* Retour */
@@ -247,13 +245,13 @@ void Satellite::CalculPosVitListeSatellites(const Date &date,
         // Calcul de la zone de visibilite du satellite
         if (visibilite) {
             const double bt = (mcc && satellites[i]._elementsOrbitaux.nom.toLower().startsWith("tdrs")) ?
-                        MATHS::PI_SUR_DEUX + 8.7 * MATHS::DEG2RAD :
-                        acos(TERRE::RAYON_TERRESTRE / (TERRE::RAYON_TERRESTRE + satellites[i]._altitude)) - 0.5 * TERRE::REFRACTION_HZ;
+                                  MATHS::PI_SUR_DEUX + 8.7 * MATHS::DEG2RAD :
+                                  acos(TERRE::RAYON_TERRESTRE / (TERRE::RAYON_TERRESTRE + satellites[i]._altitude)) - 0.5 * TERRE::REFRACTION_HZ;
             satellites[i].CalculZoneVisibilite(bt);
         }
 
         // Calcul de la trajectoire dans le ciel
-        if (traceCiel && satellites.at(i).isVisible()) {
+        if (traceCiel && satellites.at(i)._visible) {
             satellites[i].CalculTraceCiel(date, acalcEclipseLune, refractionAtmospherique, obs);
         }
 
@@ -273,7 +271,7 @@ void Satellite::CalculPosVitListeSatellites(const Date &date,
             if (nbTracesAuSol > 0) {
 
                 const Date dateISS =
-                        Date(Evenements::CalculNoeudOrbite(date, satellites[i], SensCalcul::ANTI_CHRONOLOGIQUE).jourJulienUTC() - DATE::EPS_DATES, 0., false);
+                    Date(Evenements::CalculNoeudOrbite(date, satellites[i], SensCalcul::ANTI_CHRONOLOGIQUE).jourJulienUTC() - DATE::EPS_DATES, 0., false);
 
                 const Date dateInit = (mcc && isISS) ? dateISS : Date(date.jourJulienUTC(), 0., false);
 
@@ -298,7 +296,11 @@ void Satellite::CalculPosVitListeSatellites(const Date &date,
 /*
  * Calcul de la trace dans le ciel
  */
-void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, const bool refraction, const Observateur &observateur, const int sec)
+void Satellite::CalculTraceCiel(const Date &date,
+                                const bool acalcEclipseLune,
+                                const bool refraction,
+                                const Observateur &observateur,
+                                const int sec)
 {
     /* Declarations des variables locales */
     Soleil soleil;
@@ -332,23 +334,23 @@ void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, c
             obs.CalculPosVit(j0);
 
             // Coordonnees horizontales
-            sat.CalculCoordHoriz(obs);
+            sat.CalculCoordHoriz(obs, true);
 
             if ((sat._hauteur >= 0.) && (i < 86400)) {
 
                 // Position du Soleil
-                soleil.CalculPosition(j0);
+                soleil.CalculPositionSimp(j0);
 
                 // Position de la Lune
                 if (acalcEclipseLune) {
-                    lune.CalculPosition(j0);
+                    lune.CalculPositionSimp(j0);
                 }
 
                 // Conditions d'eclipse
                 sat._conditionEclipse.CalculSatelliteEclipse(sat._position, soleil, &lune, refraction);
 
-                elem.azimut = sat.azimut();
-                elem.hauteur = sat.hauteur();
+                elem.azimut = sat._azimut;
+                elem.hauteur = sat._hauteur;
                 elem.jourJulienUTC = j0.jourJulienUTC();
                 elem.eclipseTotale = sat._conditionEclipse.eclipseTotale();
                 elem.eclipsePartielle = (sat._conditionEclipse.eclipseAnnulaire() || sat._conditionEclipse.eclipsePartielle());
@@ -368,7 +370,10 @@ void Satellite::CalculTraceCiel(const Date &date, const bool acalcEclipseLune, c
 /*
  * Calcul des traces au sol
  */
-void Satellite::CalculTracesAuSol(const Date &dateInit, const int nbOrb, const bool acalcEclipseLune, const bool refraction)
+void Satellite::CalculTracesAuSol(const Date &dateInit,
+                                  const int nbOrb,
+                                  const bool acalcEclipseLune,
+                                  const bool refraction)
 {
     /* Declarations des variables locales */
     Soleil soleil;
@@ -396,15 +401,16 @@ void Satellite::CalculTracesAuSol(const Date &dateInit, const int nbOrb, const b
         }
 
         // Latitude
-        elem.latitude = sat.CalculLatitude(pos);
+        sat.CalculLatitude();
+        elem.latitude = sat._latitude;
         elem.latitude = MATHS::RAD2DEG * (MATHS::PI_SUR_DEUX - elem.latitude);
 
         // Position du Soleil
-        soleil.CalculPosition(date);
+        soleil.CalculPositionSimp(date);
 
         // Position de la Lune
         if (acalcEclipseLune) {
-            lune.CalculPosition(date);
+            lune.CalculPositionSimp(date);
         }
 
         // Conditions d'eclipse
@@ -478,42 +484,42 @@ unsigned int Satellite::nbOrbites() const
     return _nbOrbites;
 }
 
-const ElementsOrbitaux &Satellite::elementsOrbitaux() const
+ElementsOrbitaux Satellite::elementsOrbitaux() const
 {
     return _elementsOrbitaux;
 }
 
-const ConditionEclipse &Satellite::conditionEclipse() const
+ConditionEclipse Satellite::conditionEclipse() const
 {
     return _conditionEclipse;
 }
 
-const ElementsOsculateurs &Satellite::elementsOsculateurs() const
+ElementsOsculateurs Satellite::elementsOsculateurs() const
 {
     return _elementsOsculateurs;
 }
 
-const Magnitude &Satellite::magnitude() const
+Magnitude Satellite::magnitude() const
 {
     return _magnitude;
 }
 
-const Phasage &Satellite::phasage() const
+Phasage Satellite::phasage() const
 {
     return _phasage;
 }
 
-const Signal &Satellite::signal() const
+Signal Satellite::signal() const
 {
     return _signal;
 }
 
-const QList<ElementsTraceSol> &Satellite::traceAuSol() const
+QList<ElementsTraceSol> Satellite::traceAuSol() const
 {
     return _traceAuSol;
 }
 
-const QList<ElementsTraceCiel> &Satellite::traceCiel() const
+QList<ElementsTraceCiel> Satellite::traceCiel() const
 {
     return _traceCiel;
 }

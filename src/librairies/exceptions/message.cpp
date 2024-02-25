@@ -34,13 +34,9 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
 #include <QMainWindow>
 #include <QMessageBox>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "message.h"
 
 
@@ -61,7 +57,8 @@ QMainWindow *_fenetre;
 /*
  * Affichage d'un message dans une boite de message
  */
-void Message::Afficher(const QString &message, const MessageType &typeMessage)
+void Message::Afficher(const QString &message,
+                       const MessageType &typeMessage)
 {
     /* Declarations des variables locales */
 

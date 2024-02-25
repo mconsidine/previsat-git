@@ -34,11 +34,7 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QObject>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "librairies/dates/date.h"
 #include "librairies/maths/maths.h"
 #include "librairies/observateur/observateur.h"
@@ -85,9 +81,10 @@ void Lune::CalculDatesPhases(const Date &date)
     double t_evt;
     Lune lune;
     Soleil soleil;
-    std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
     std::array<double, LUNE::NB_PHASES> jjPhases;
+    std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
     std::array<double, MATHS::DEGRE_INTERPOLATION> ecartAngle;
+    std::array<QPointF, MATHS::DEGRE_INTERPOLATION> tab;
 
     /* Initialisations */
     const double annee = date.annee() + (date.mois() - 1) / 12. + date.jour() / 365.;
@@ -127,16 +124,18 @@ void Lune::CalculDatesPhases(const Date &date)
 
                 const Date dateCalcul(jjm.at(j), 0., false);
 
-                lune.CalculPosition(dateCalcul);
-                soleil.CalculPosition(dateCalcul);
+                lune.CalculPositionSimp(dateCalcul);
+                soleil.CalculPositionSimp(dateCalcul);
 
                 ecartAngle[j] = modulo(lune._lonEcl - soleil.lonEcl() - angle, MATHS::DEUX_PI);
                 if (ecartAngle[j] > MATHS::PI) {
                     ecartAngle[j] -= MATHS::DEUX_PI;
                 }
+
+                tab[j] = QPointF(jjm[j], ecartAngle[j]);
             }
 
-            t_evt = Maths::CalculValeurXInterpolation3(jjm, ecartAngle, 0., 1.e-8);
+            t_evt = Maths::CalculValeurXInterpolation3(tab, 0., 1.e-8);
             pas *= 0.5;
 
             jjm[0] = t_evt - pas;
@@ -147,49 +146,10 @@ void Lune::CalculDatesPhases(const Date &date)
         }
 
         if (iter < MATHS::ITERATIONS_MAX) {
-            _datesPhases[i] = Date(dateEvt, date.offsetUTC()).ToQDateTime(1).toString(Qt::ISODate).remove(16, 3).replace(":", "h").replace("T", " ")
-                                  .trimmed();
+            _datesPhases[i] = Date(dateEvt, date.offsetUTC()).ToQDateTime(DateFormatSec::FORMAT_SEC).toString(Qt::ISODate).remove(16, 3)
+                                  .replace(":", "h").replace("T", " ").trimmed();
         }
     }
-
-    /* Retour */
-    return;
-}
-
-/*
- * Calcul des heures de lever, passage au meridien et coucher
- */
-void Lune::CalculLeverMeridienCoucher(const Date &date, const Observateur &observateur, const DateSysteme &syst)
-{
-    /* Declarations des variables locales */
-    Lune lune;
-    Ephemerides eph;
-
-    /* Initialisations */
-    Observateur obs = observateur;
-    Date dateCalcul(date.annee(), date.mois(), date.jour() - date.offsetUTC(), date.offsetUTC());
-    const Date dateFin(dateCalcul.jourJulienUTC() + 1., date.offsetUTC(), false);
-    _ephem.clear();
-
-    /* Corps de la methode */
-    do {
-
-        obs.CalculPosVit(dateCalcul);
-
-        lune.CalculPosition(dateCalcul);
-        lune.CalculCoordHoriz(obs, true, true, true);
-
-        eph.jourJulienUTC = dateCalcul.jourJulienUTC();
-        eph.hauteur = lune.hauteur();
-        eph.azimut = lune.azimut();
-
-        _ephem.append(eph);
-
-        dateCalcul = Date(dateCalcul.jourJulienUTC() + DATE::NB_JOUR_PAR_MIN, 0., false);
-
-    } while (dateCalcul.jourJulienUTC() <= dateFin.jourJulienUTC());
-
-    Corps::CalculLeverMeridienCoucher(date, syst, false);
 
     /* Retour */
     return;
@@ -230,7 +190,7 @@ void Lune::CalculMagnitude(const Soleil &soleil)
     const double phi = (tmp1 + tmp2 + tmp3) / LUNE::P;
 
     const double dm = kappa * phi;
-    const double distlune = _position.Norme() * SOLEIL::KM2UA;
+    const double distlune = _position.Norme() * CORPS::KM2UA;
 
     _magnitude = LUNE::W0 + 5. * log10(distlune * soleil.distanceUA()) - 2.5 * log10(dm);
 
@@ -246,7 +206,7 @@ void Lune::CalculPhase(const Soleil &soleil)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double distlune = _position.Norme() * SOLEIL::KM2UA;
+    const double distlune = _position.Norme() * CORPS::KM2UA;
 
     /* Corps de la methode */
     // Determination si la lune est croissante
@@ -288,13 +248,12 @@ void Lune::CalculPhase(const Soleil &soleil)
 }
 
 /*
- * Calcul de la position de la Lune avec le modele simplifie issu de
- * l'Astronomical Algorithms 2nd edition de Jean Meeus, pp337-342
+ * Calcul simplifie de la position de la Lune
  */
-void Lune::CalculPosition(const Date &date)
+void Lune::CalculPositionSimp(const Date &date)
 {
     /* Declarations des variables locales */
-    double coef[5];
+    std::array<double, 5> coef;
 
     /* Initialisations */
     double b0 = 0.;
@@ -389,12 +348,12 @@ double Lune::magnitude() const
     return _magnitude;
 }
 
-const QString &Lune::phase() const
+QString Lune::phase() const
 {
     return _phase;
 }
 
-const std::array<QString, LUNE::NB_PHASES> &Lune::datesPhases() const
+std::array<QString, LUNE::NB_PHASES> Lune::datesPhases() const
 {
     return _datesPhases;
 }
@@ -416,6 +375,44 @@ const std::array<QString, LUNE::NB_PHASES> &Lune::datesPhases() const
 /*
  * Methodes privees
  */
+/*
+ * Calcul des ephemerides de la Lune pour determiner les heures de lever/meriden/coucher
+ */
+void Lune::CalculEphemLeverMeridienCoucher(const Date &date,
+                                           const Observateur &observateur)
+{
+    /* Declarations des variables locales */
+    Lune lune;
+    Ephemerides eph;
+
+    /* Initialisations */
+    Observateur obs = observateur;
+    Date dateCalcul(date.annee(), date.mois(), date.jour() - date.offsetUTC(), date.offsetUTC());
+    const Date dateFin(dateCalcul.jourJulienUTC() + 1., date.offsetUTC(), false);
+    _ephem.clear();
+
+    /* Corps de la methode */
+    do {
+
+        obs.CalculPosVit(dateCalcul);
+
+        lune.CalculPositionSimp(dateCalcul);
+        lune.CalculCoordHoriz(obs, true, true, true);
+
+        eph.jourJulienUTC = dateCalcul.jourJulienUTC();
+        eph.hauteur = lune._hauteur;
+        eph.azimut = lune._azimut;
+
+        _ephem.append(eph);
+
+        dateCalcul = Date(dateCalcul.jourJulienUTC() + DATE::NB_JOUR_PAR_MIN, 0., false);
+
+    } while (dateCalcul.jourJulienUTC() <= dateFin.jourJulienUTC());
+
+    /* Retour */
+    return;
+}
+
 /*
  * Calcul du jour julien approximatif d'une phase lunaire
  */

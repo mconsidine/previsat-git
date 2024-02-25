@@ -53,6 +53,11 @@ enum class DateFormat {
     FORMAT_MILLISEC = 3
 };
 
+enum class DateFormatSec {
+    FORMAT_SEC,
+    FORMAT_SEC_ZERO,
+};
+
 enum class DateSysteme {
     SYSTEME_24H,
     SYSTEME_12H
@@ -100,6 +105,7 @@ static constexpr double NB_MILLJ_PAR_JOURS = 1. / NB_JOURS_PAR_MILLJ;
 
 static constexpr unsigned int NB_LIGNES_TAIUTC = 13;
 static constexpr unsigned int NB_PARAM_TAIUTC = 5;
+
 }
 
 #endif // DATESCONST_H

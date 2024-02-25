@@ -40,12 +40,8 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QElapsedTimer>
 #include <QFileInfo>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "configuration/configuration.h"
 #include "flashs.h"
 #include "librairies/corps/satellite/gpformat.h"
@@ -122,7 +118,7 @@ void Flashs::setConditions(const ConditionsPrevisions &conditions)
 /*
  * Determination des flashs
  */
-int Flashs::CalculFlashs(int &nombre)
+int Flashs::CalculFlashs(const int &nombre)
 {
     /* Declarations des variables locales */
     QElapsedTimer tps;
@@ -220,7 +216,7 @@ int Flashs::CalculFlashs(int &nombre)
             if (sat.hauteur() >= _conditions.hauteur) {
 
                 if (_conditions.calcEclipseLune) {
-                    lune.CalculPosition(date);
+                    lune.CalculPosVit(date);
                 }
 
                 // Determination de la condition d'eclipse du satellite
@@ -277,10 +273,10 @@ int Flashs::CalculFlashs(int &nombre)
                         sat.CalculCoordHoriz(_conditions.observateur, false);
 
                         // Position du Soleil
-                        soleil.CalculPosition(date0);
+                        soleil.CalculPosVit(date0);
 
                         if (_conditions.calcEclipseLune) {
-                            lune.CalculPosition(date0);
+                            lune.CalculPosVit(date0);
                         }
 
                         // Condition d'eclipse du satellite
@@ -321,7 +317,10 @@ int Flashs::CalculFlashs(int &nombre)
 /*
  * Calcul de la magnitude du flash
  */
-double Flashs::CalculMagnitudeFlash(const Date &date, const Satellite &satellite, const Soleil &soleil, const bool calcEclipseLune,
+double Flashs::CalculMagnitudeFlash(const Date &date,
+                                    const Satellite &satellite,
+                                    const Soleil &soleil,
+                                    const bool calcEclipseLune,
                                     const bool refraction)
 {
     /* Declarations des variables locales */
@@ -330,7 +329,7 @@ double Flashs::CalculMagnitudeFlash(const Date &date, const Satellite &satellite
     Satellite sat = satellite;
     Lune lune;
     if (calcEclipseLune) {
-        lune.CalculPosition(date);
+        lune.CalculPosVit(date);
     }
 
     ConditionEclipse condEcl;
@@ -365,7 +364,8 @@ double Flashs::CalculMagnitudeFlash(const Date &date, const Satellite &satellite
 /*
  * Calcul de l'angle de reflexion du panneau
  */
-double Flashs::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
+double Flashs::AngleReflexion(const Satellite &satellite,
+                              const Soleil &soleil)
 {
     /* Declarations des variables locales */
     int imin;
@@ -416,10 +416,12 @@ double Flashs::AngleReflexion(const Satellite &satellite, const Soleil &soleil)
 /*
  * Calcul de l'angle minimum du panneau
  */
-QPointF Flashs::CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil)
+QPointF Flashs::CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm,
+                               Satellite &satellite,
+                               Soleil &soleil)
 {
     /* Declarations des variables locales */
-    std::array<double, MATHS::DEGRE_INTERPOLATION> ang;
+    std::array<QPointF, MATHS::DEGRE_INTERPOLATION> ang;
 
     /* Initialisations */
 
@@ -435,14 +437,14 @@ QPointF Flashs::CalculAngleMin(const std::array<double, MATHS::DEGRE_INTERPOLATI
         satellite.CalculCoordHoriz(_conditions.observateur, false);
 
         // Position du Soleil
-        soleil.CalculPosition(date);
+        soleil.CalculPosVit(date);
 
         // Angle de reflexion
-        ang[i] = AngleReflexion(satellite, soleil);
+        ang[i] = QPointF(jjm[i], AngleReflexion(satellite, soleil));
     }
 
     /* Retour */
-    return Maths::CalculExtremumInterpolation3(jjm, ang);
+    return Maths::CalculExtremumInterpolation3(ang);
 }
 
 /*
@@ -466,7 +468,7 @@ QList<EphemeridesFlashs> Flashs::CalculEphemSoleilObservateur()
         _conditions.observateur.CalculPosVit(date);
 
         // Position du Soleil
-        soleil.CalculPosition(date);
+        soleil.CalculPosVit(date);
         soleil.CalculCoordHoriz(_conditions.observateur, false);
 
         if (soleil.hauteur() <= _conditions.crepuscule) {
@@ -489,7 +491,11 @@ QList<EphemeridesFlashs> Flashs::CalculEphemSoleilObservateur()
 /*
  * Calcul des bornes inferieures et superieures du flash
  */
-void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Satellite &satellite, Soleil &soleil, std::array<Date, 3> &lim)
+void Flashs::CalculLimitesFlash(const double mgn0,
+                                const double dateMaxFlash,
+                                Satellite &satellite,
+                                Soleil &soleil,
+                                std::array<Date, 3> &lim)
 {
     /* Declarations des variables locales */
     double tmp;
@@ -634,7 +640,10 @@ void Flashs::CalculLimitesFlash(const double mgn0, const double dateMaxFlash, Sa
 /*
  * Determination du flash
  */
-void Flashs::DeterminationFlash(const QPointF minmax, double &temp, Satellite &sat, Soleil &soleil)
+void Flashs::DeterminationFlash(const QPointF minmax,
+                                double &temp,
+                                Satellite &sat,
+                                Soleil &soleil)
 {
     /* Declarations des variables locales */
 
@@ -652,7 +661,7 @@ void Flashs::DeterminationFlash(const QPointF minmax, double &temp, Satellite &s
     if (sat.hauteur() >= 0.) {
 
         // Position du Soleil
-        soleil.CalculPosition(date);
+        soleil.CalculPosVit(date);
         soleil.CalculCoordHoriz(_conditions.observateur, false);
 
         // Angle de reflexion
@@ -664,7 +673,7 @@ void Flashs::DeterminationFlash(const QPointF minmax, double &temp, Satellite &s
 
             Lune lune;
             if (_conditions.calcEclipseLune) {
-                lune.CalculPosition(date);
+                lune.CalculPosVit(date);
             }
 
             ConditionEclipse condEcl;
@@ -698,14 +707,14 @@ void Flashs::DeterminationFlash(const QPointF minmax, double &temp, Satellite &s
 
                         // Position du satellite
                         sat.CalculPosVit(dates[i]);
-                        sat.CalculCoordHoriz(_conditions.observateur);
+                        sat.CalculCoordHoriz(_conditions.observateur, true);
 
                         // Position du Soleil
-                        soleil.CalculPosition(dates[i]);
-                        soleil.CalculCoordHoriz(_conditions.observateur);
+                        soleil.CalculPosVit(dates[i]);
+                        soleil.CalculCoordHoriz(_conditions.observateur, true);
 
                         if (_conditions.calcEclipseLune) {
-                            lune.CalculPosition(dates[i]);
+                            lune.CalculPosVit(dates[i]);
                         }
 
                         // Condition d'eclipse du satellite
@@ -756,8 +765,9 @@ void Flashs::DeterminationFlash(const QPointF minmax, double &temp, Satellite &s
                                 res.miroir = _mir;
 
                                 // Altitude et distance du satellite
-                                sat.CalculLatitude(sat.position());
-                                res.altitude = sat.CalculAltitude(sat.position());
+                                sat.CalculLatitude();
+                                sat.CalculAltitude();
+                                res.altitude = sat.altitude();
                                 res.distance = sat.distance();
 
                                 // Coordonnees topocentriques du Soleil
@@ -807,16 +817,19 @@ void Flashs::DeterminationFlash(const QPointF minmax, double &temp, Satellite &s
 /*
  * Calcul d'une limite du flash
  */
-void Flashs::LimiteFlash(const double mgn0, const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm, Satellite &satellite, Soleil &soleil,
+void Flashs::LimiteFlash(const double mgn0,
+                         const std::array<double, MATHS::DEGRE_INTERPOLATION> jjm,
+                         Satellite &satellite,
+                         Soleil &soleil,
                          std::array<double, 4> &limite)
 {
     /* Declarations des variables locales */
     Lune lune;
     ConditionEclipse condEcl;
-    std::array<double, MATHS::DEGRE_INTERPOLATION> ang;
-    std::array<double, MATHS::DEGRE_INTERPOLATION> ecl;
-    std::array<double, MATHS::DEGRE_INTERPOLATION> ht;
-    std::array<double, MATHS::DEGRE_INTERPOLATION> mag;
+    std::array<QPointF, MATHS::DEGRE_INTERPOLATION> ang;
+    std::array<QPointF, MATHS::DEGRE_INTERPOLATION> ecl;
+    std::array<QPointF, MATHS::DEGRE_INTERPOLATION> ht;
+    std::array<QPointF, MATHS::DEGRE_INTERPOLATION> mag;
 
     /* Initialisations */
 
@@ -830,45 +843,45 @@ void Flashs::LimiteFlash(const double mgn0, const std::array<double, MATHS::DEGR
         // Position du satellite
         satellite.CalculPosVit(date);
         satellite.CalculCoordHoriz(_conditions.observateur, false);
-        ht[i] = satellite.hauteur();
+        ht[i] = QPointF(jjm[i], satellite.hauteur());
 
         // Position du Soleil
-        soleil.CalculPosition(date);
+        soleil.CalculPosVit(date);
 
         if (_conditions.calcEclipseLune) {
-            lune.CalculPosition(date);
+            lune.CalculPosVit(date);
         }
 
         // Conditions d'eclipse du satellite
         condEcl.CalculSatelliteEclipse(satellite.position(), soleil, &lune, _conditions.refraction);
-        ecl[i] = (condEcl.eclipseLune().luminosite < condEcl.eclipseSoleil().luminosite) ?
+        ecl[i] = QPointF(jjm[i], (condEcl.eclipseLune().luminosite < condEcl.eclipseSoleil().luminosite) ?
                        condEcl.eclipseLune().phi - condEcl.eclipseLune().phiSoleil - condEcl.eclipseLune().elongation :
-                       condEcl.eclipseSoleil().phi - condEcl.eclipseSoleil().phiSoleil - condEcl.eclipseSoleil().elongation;
+                                     condEcl.eclipseSoleil().phi - condEcl.eclipseSoleil().phiSoleil - condEcl.eclipseSoleil().elongation);
 
         // Angle de reflexion
-        ang[i] = AngleReflexion(satellite, soleil);
+        ang[i] = QPointF(jjm[i], AngleReflexion(satellite, soleil));
 
         // Magnitude du satellite
-        mag[i] = MagnitudeFlash(ang[i], condEcl, satellite);
+        mag[i] = QPointF(jjm[i], MagnitudeFlash(ang[i].y(), condEcl, satellite));
     }
 
     double t_ecl, t_ht;
     // Calcul par interpolation de la date pour laquelle la magnitude est egale a la magnitude specifiee par l'utilisateur
-    const double t_mag = Maths::CalculValeurXInterpolation3(jjm, mag, mgn0, DATE::EPS_DATES);
+    const double t_mag = Maths::CalculValeurXInterpolation3(mag, mgn0, DATE::EPS_DATES);
 
     // Calcul par interpolation de la date pour laquelle l'angle de reflexion est egal a l'angle de reflexion specifie par l'utilisateur
-    const double t_ang = Maths::CalculValeurXInterpolation3(jjm, ang, _conditions.angleLimite, DATE::EPS_DATES);
+    const double t_ang = Maths::CalculValeurXInterpolation3(ang, _conditions.angleLimite, DATE::EPS_DATES);
 
     // Calcul par interpolation de la date pour laquelle la hauteur est egale a la hauteur specifie par l'utilisateur
-    if (((ht[0] - _conditions.hauteur) * (ht[2] - _conditions.hauteur) < 0.) ||
-            ((ht[0] < _conditions.hauteur) && (ht[2] < _conditions.hauteur))) {
-        t_ht = Maths::CalculValeurXInterpolation3(jjm, ht, _conditions.hauteur, DATE::EPS_DATES);
+    if (((ht[0].y() - _conditions.hauteur) * (ht[2].y() - _conditions.hauteur) < 0.) ||
+            ((ht[0].y() < _conditions.hauteur) && (ht[2].y() < _conditions.hauteur))) {
+        t_ht = Maths::CalculValeurXInterpolation3(ht, _conditions.hauteur, DATE::EPS_DATES);
     } else {
         t_ht = DATE::DATE_INFINIE;
     }
 
-    if ((ecl[0] * ecl[2] < 0.) || (ecl[0] > 0. && ecl[2] > 0.)) {
-        t_ecl = Maths::CalculValeurXInterpolation3(jjm, ecl, 0., DATE::EPS_DATES);
+    if ((ecl[0].y() * ecl[2].y() < 0.) || (ecl[0].y() > 0. && ecl[2].y() > 0.)) {
+        t_ecl = Maths::CalculValeurXInterpolation3(ecl, 0., DATE::EPS_DATES);
     } else {
         t_ecl = DATE::DATE_INFINIE;
     }
@@ -885,7 +898,9 @@ void Flashs::LimiteFlash(const double mgn0, const std::array<double, MATHS::DEGR
 /*
  * Determination de la magnitude du flash
  */
-double Flashs::MagnitudeFlash(const double angle, const ConditionEclipse &condEcl, Satellite &satellite)
+double Flashs::MagnitudeFlash(const double angle,
+                              const ConditionEclipse &condEcl,
+                              const Satellite &satellite)
 {
     /* Declarations des variables locales */
 
@@ -928,7 +943,11 @@ double Flashs::MagnitudeFlash(const double angle, const ConditionEclipse &condEc
 /*
  * Calcul de la matrice de rotation du repere equatorial au repere orbital local
  */
-Matrice3D Flashs::RotationRV(const Vecteur3D &position, const Vecteur3D &vitesse, const double lacet, const double tangage, const int inpl)
+Matrice3D Flashs::RotationRV(const Vecteur3D &position,
+                             const Vecteur3D &vitesse,
+                             const double lacet,
+                             const double tangage,
+                             const int inpl)
 {
     /* Declarations des variables locales */
 
@@ -984,7 +1003,9 @@ Matrice3D Flashs::RotationRV(const Vecteur3D &position, const Vecteur3D &vitesse
 /*
  * Calcul de la matrice de rotation du repere equatorial au repere defini par la loi locale de yaw steering
  */
-Matrice3D Flashs::RotationYawSteering(const Satellite &satellite, const double lacet, const double tangage)
+Matrice3D Flashs::RotationYawSteering(const Satellite &satellite,
+                                      const double lacet,
+                                      const double tangage)
 {
     /* Declarations des variables locales */
 

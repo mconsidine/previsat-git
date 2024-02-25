@@ -37,20 +37,14 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
-#include "corps.h"
-#include "terreconst.h"
 #include "librairies/dates/date.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/maths/maths.h"
 #include "librairies/observateur/observateur.h"
+#include "corps.h"
+#include "terreconst.h"
 
-
-static constexpr double RE2 = TERRE::RAYON_TERRESTRE * TERRE::E2;
 
 struct ConstElem {
     double ad1;
@@ -63,6 +57,9 @@ static QList<ConstElem> _tabConst;
 static std::array<double, 360> _caz;
 static std::array<double, 360> _saz;
 
+static constexpr double RE2 = TERRE::RAYON_TERRESTRE * TERRE::E2;
+static const Vecteur3D omegaTerre(0., 0., TERRE::OMEGA);
+
 
 /**********
  * PUBLIC *
@@ -71,48 +68,6 @@ static std::array<double, 360> _saz;
 /*
  * Constructeurs
  */
-/*
- * Constructeur par defaut
- */
-Corps::Corps()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps du constructeur */
-    _azimut = 0.;
-    _hauteur = 0.;
-    _distance = 0.;
-
-    _ascensionDroite = 0.;
-    _declinaison = 0.;
-
-    _longitude = 0.;
-    _latitude = 0.;
-    _altitude = 0.;
-
-    _visible = false;
-    _rangeRate = 0.;
-
-    _lonEcl = 0.;
-    _latEcl = 0.;
-    _ct = 0.;
-    _r0 = 0.;
-
-    /* Retour */
-    return;
-}
-
-
-/*
- * Modificateurs
- */
-void Corps::setPosition(const Vecteur3D &pos)
-{
-    _position = pos;
-}
-
 
 /*
  * Methodes publiques
@@ -120,22 +75,25 @@ void Corps::setPosition(const Vecteur3D &pos)
 /*
  * Calcul de l'altitude du corps
  */
-double Corps::CalculAltitude(const Vecteur3D &pos) const
+void Corps::CalculAltitude()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
 
     /* Corps de la methode */
+    _altitude = ((_r0 < 1.e-3) ? fabs(_position.z()) - TERRE::RAYON_TERRESTRE * (1. - TERRE::APLA)
+                               : _r0 / cos(_latitude) - TERRE::RAYON_TERRESTRE * _ct);
 
     /* Retour */
-    return ((_r0 < 1.e-3) ? fabs(pos.z()) - TERRE::RAYON_TERRESTRE * (1. - TERRE::APLA) : _r0 / cos(_latitude) - TERRE::RAYON_TERRESTRE * _ct);
+    return;
 }
 
 /*
  * Calcul des coordonnees equatoriales
  */
-void Corps::CalculCoordEquat(const Observateur &observateur, const bool determinationConstellation)
+void Corps::CalculCoordEquat(const Observateur &observateur,
+                             const bool determinationConstellation)
 {
     /* Declarations des variables locales */
 
@@ -159,30 +117,19 @@ void Corps::CalculCoordEquat(const Observateur &observateur, const bool determin
     // Determination de la constellation
     if (determinationConstellation) {
 
-        try {
+        if (_tabConst.isEmpty()) {
+            throw Exception(QObject::tr("Tableau de constellations vide"), MessageType::WARNING);
+        }
 
-            if (_tabConst.isEmpty()) {
-                throw PreviSatException(QObject::tr("Tableau de constellations vide"), MessageType::WARNING);
+        QListIterator it(_tabConst);
+        while (it.hasNext()) {
+
+            const ConstElem elem = it.next();
+
+            if ((_declinaison >= elem.dec) && (_ascensionDroite >= elem.ad1) && (_ascensionDroite < elem.ad2)) {
+                it.toBack();
+                _constellation = elem.nom;
             }
-
-            QListIterator it(_tabConst);
-            while (it.hasNext()) {
-
-                const ConstElem elem = it.next();
-
-                if (_declinaison >= elem.dec) {
-
-                    if (_ascensionDroite < elem.ad2) {
-                        if (_ascensionDroite >= elem.ad1) {
-                            it.toBack();
-                            _constellation = elem.nom;
-                        }
-                    }
-                }
-            }
-
-        } catch (PreviSatException &e) {
-            throw PreviSatException();
         }
     }
 
@@ -193,7 +140,10 @@ void Corps::CalculCoordEquat(const Observateur &observateur, const bool determin
 /*
  * Calcul des coordonnees horizontales
  */
-void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc, const bool arefr, const bool aos)
+void Corps::CalculCoordHoriz(const Observateur &observateur,
+                             const bool acalc,
+                             const bool arefr,
+                             const bool aos)
 {
     /* Declarations des variables locales */
 
@@ -242,7 +192,7 @@ void Corps::CalculCoordHoriz(const Observateur &observateur, const bool acalc, c
 /*
  * Calcul des coordonnees horizontales (avec condition de visibilite)
  */
-void Corps::CalculCoordHoriz2(const Observateur &observateur)
+void Corps::CalculCoordHoriz3(const Observateur &observateur)
 {
     /* Declarations des variables locales */
 
@@ -329,7 +279,7 @@ void Corps::CalculCoordTerrestres(const Date &date)
 /*
  * Calcul de la latitude geodesique
  */
-double Corps::CalculLatitude(const Vecteur3D &pos)
+void Corps::CalculLatitude()
 {
     /* Declarations des variables locales */
     double lat;
@@ -339,25 +289,28 @@ double Corps::CalculLatitude(const Vecteur3D &pos)
     _latitude = MATHS::PI;
 
     /* Corps de la methode */
-    _r0 = sqrt(pos.x() * pos.x() + pos.y() * pos.y());
-    _latitude = atan2(pos.z(), _r0);
+    _r0 = sqrt(_position.x() * _position.x() + _position.y() * _position.y());
+    _latitude = atan2(_position.z(), _r0);
 
     do {
         lat = _latitude;
         const double sph = sin(lat);
         _ct = 1. / sqrt(1. - TERRE::E2 * sph * sph);
-        _latitude = atan((pos.z() + RE2 * _ct * sph) / _r0);
+        _latitude = atan((_position.z() + RE2 * _ct * sph) / _r0);
 
     } while (fabs(_latitude - lat) > 1.e-7);
 
     /* Retour */
-    return (_latitude);
+    return;
 }
 
 /*
  * Calcul des lever/passage au meridien/coucher
  */
-void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst, const bool calculCrepuscules)
+void Corps::CalculLeverMeridienCoucher(const Date &date,
+                                       const DateSysteme &syst,
+                                       const Observateur &observateur,
+                                       const bool calculCrepuscules)
 {
     /* Declarations des variables locales */
     unsigned int fin;
@@ -373,6 +326,9 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
     int idx = 1;
 
     /* Corps de la methode */
+    // Calcul des ephemerides du corps
+    CalculEphemLeverMeridienCoucher(date, observateur);
+
     QListIterator it(_ephem);
     Ephemerides eph1 = it.next();
 
@@ -445,8 +401,8 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
     double dateEvt;
     double t_val;
     double yval;
-    std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
     std::array<double, MATHS::DEGRE_INTERPOLATION> val;
+    std::array<QPointF, MATHS::DEGRE_INTERPOLATION> tab;
 
     for(unsigned int i=0; i<taille; i++) {
 
@@ -469,10 +425,6 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
             t_val = 0.;
 
             // Calcul par interpolation des differentes dates
-            jjm[0] = eph0.jourJulienUTC;
-            jjm[1] = eph1.jourJulienUTC;
-            jjm[2] = eph2.jourJulienUTC;
-
             if (i == 1) {
 
                 // Passage au meridien
@@ -491,21 +443,28 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
 
                 // Crepuscules
                 if (calculCrepuscules) {
+
                     if ((i == 3) || (i == 6)) {
                         yval = -6. * MATHS::DEG2RAD;
+
                     } else if ((i == 4) || (i == 7)) {
                         yval = -12. * MATHS::DEG2RAD;
+
                     } else if ((i == 5) || (i == 8)) {
                         yval = -18. * MATHS::DEG2RAD;
                     }
                 }
             }
 
+            tab[0] = QPointF(eph0.jourJulienUTC, val[0]);
+            tab[1] = QPointF(eph1.jourJulienUTC, val[1]);
+            tab[2] = QPointF(eph2.jourJulienUTC, val[2]);
+
             iter = 0;
             while ((fabs(t_val - dateEvt) > DATE::EPS_DATES) && (iter < MATHS::ITERATIONS_MAX)) {
 
                 t_val = dateEvt;
-                dateEvt = Maths::CalculValeurXInterpolation3(jjm, val, yval, 1.e-8);
+                dateEvt = Maths::CalculValeurXInterpolation3(tab, yval, 1.e-8);
 
                 iter++;
             }
@@ -522,17 +481,17 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
     }
 
     _dateLever = (fabs(datesEvt[0].jourJulienUTC() - DATE::DATE_INFINIE) < DATE::EPS_DATES) ?
-                "-" : datesEvt[0].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
+                     "-" : datesEvt[0].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
     _dateMeridien = (fabs(datesEvt[1].jourJulienUTC() - DATE::DATE_INFINIE) < DATE::EPS_DATES) ?
-                "-" : datesEvt[1].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
+                        "-" : datesEvt[1].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
     _dateCoucher = (fabs(datesEvt[2].jourJulienUTC() - DATE::DATE_INFINIE) < DATE::EPS_DATES) ?
-                "-" : datesEvt[2].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
+                       "-" : datesEvt[2].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
 
     if (calculCrepuscules) {
         for(int i=3; i<9; i++) {
             _datesCrepuscules[i-3] =
-                    (fabs(datesEvt[i].jourJulienUTC() - DATE::DATE_INFINIE) < DATE::EPS_DATES) ?
-                        "-" : datesEvt[i].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
+                (fabs(datesEvt[i].jourJulienUTC() - DATE::DATE_INFINIE) < DATE::EPS_DATES) ?
+                    "-" : datesEvt[i].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
         }
     }
 
@@ -543,13 +502,14 @@ void Corps::CalculLeverMeridienCoucher(const Date &date, const DateSysteme &syst
 /*
  * Calcul de la position et de la vitesse dans le repere ECEF
  */
-void Corps::CalculPosVitECEF(const Date &date, Vecteur3D &positionECEF, Vecteur3D &vitesseECEF) const
+void Corps::CalculPosVitECEF(const Date &date,
+                             Vecteur3D &positionECEF,
+                             Vecteur3D &vitesseECEF) const
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
     const double gmst = Observateur::CalculTempsSideralGreenwich(date);
-    const Vecteur3D omegaTerre(0., 0., TERRE::OMEGA);
 
     /* Corps de la methode */
     positionECEF = _position.Rotation(AxeType::AXE_Z, gmst);
@@ -632,57 +592,55 @@ void Corps::Initialisation(const QString &dirCommonData)
         _saz[i] = sin(az);
     }
 
-    try {
+    // Lecture du fichier de constellations
+    const QString fichierConstellations = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "constellations.dat";
 
-        // Lecture du fichier de constellations
-        const QString fichierConstellations = dirCommonData + QDir::separator() + "stars" + QDir::separator() + "constellations.dat";
+    QFile fi(fichierConstellations);
+    if (!fi.exists() || (fi.size() == 0)) {
+        const QFileInfo ff(fi.fileName());
+        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME),
+                        MessageType::ERREUR);
+    }
 
-        QFile fi(fichierConstellations);
-        if (fi.exists() && (fi.size() != 0)) {
+    if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+#if (COVERAGE_TEST == false)
+        const QFileInfo ff(fi.fileName());
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::ERREUR);
+#endif
+    }
 
-            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    const QStringList contenu = QString(fi.readAll()).split("\n", Qt::SkipEmptyParts);
+    fi.close();
 
-                const QString contenuFichier = fi.readAll();
-                const QStringList listeConstellations = contenuFichier.split("\n", Qt::SkipEmptyParts);
+    ConstElem cst;
+    QStringListIterator it (contenu);
+    while (it.hasNext()) {
 
-                ConstElem cst;
-                QStringListIterator it (listeConstellations);
-                while (it.hasNext()) {
+        const QString ligne = it.next();
 
-                    const QString ligne = it.next();
+        if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
 
-                    if (!ligne.trimmed().isEmpty() && !ligne.trimmed().startsWith('#')) {
+            const QStringList list = ligne.split(" ", Qt::SkipEmptyParts);
 
-                        const QStringList list = ligne.split(" ", Qt::SkipEmptyParts);
+            cst.nom = list.first();
+            cst.ad1 = list.at(1).toDouble() * MATHS::HEUR2RAD;
+            cst.ad2 = list.at(2).toDouble() * MATHS::HEUR2RAD;
+            cst.dec = list.at(3).toDouble() * MATHS::DEG2RAD;
+            _tabConst.append(cst);
+        }
+    }
 
-                        cst.nom = list.first();
-                        cst.ad1 = list.at(1).toDouble() * MATHS::HEUR2RAD;
-                        cst.ad2 = list.at(2).toDouble() * MATHS::HEUR2RAD;
-                        cst.dec = list.at(3).toDouble() * MATHS::DEG2RAD;
-                        _tabConst.append(cst);
-                    }
-                }
-            }
-            fi.close();
-
-            if (_tabConst.isEmpty()) {
-                const QFileInfo ff(fi.fileName());
-                throw PreviSatException(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+    if (_tabConst.isEmpty()) {
+#if (COVERAGE_TEST == false)
+        const QFileInfo ff(fi.fileName());
+        throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
                                         .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
-            }
+#endif
+    }
 
 #if (BUILD_TEST == false)
-            qInfo() << "Lecture fichier constellations.dat OK";
+    qInfo() << "Lecture fichier constellations.dat OK";
 #endif
-
-        } else {
-            const QFileInfo ff(fi.fileName());
-            throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2")
-                                    .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
-        }
-
-    } catch (PreviSatException const &e) {
-    }
 
     /* Retour */
     return;
@@ -691,7 +649,8 @@ void Corps::Initialisation(const QString &dirCommonData)
 /*
  * Conversion d'un vecteur en coordonnees ecliptiques spheriques en coordonnees cartesiennes equatoriales
  */
-Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date) const
+Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur,
+                          const Date &date) const
 {
     /* Declarations des variables locales */
 
@@ -716,14 +675,9 @@ Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur, const Date &date) const
 /*
  * Accesseurs
  */
-double Corps::altitude() const
+double Corps::hauteur() const
 {
-    return _altitude;
-}
-
-double Corps::ascensionDroite() const
-{
-    return _ascensionDroite;
+    return _hauteur;
 }
 
 double Corps::azimut() const
@@ -731,9 +685,15 @@ double Corps::azimut() const
     return _azimut;
 }
 
-const QString &Corps::constellation() const
+double Corps::distance() const
 {
-    return _constellation;
+    return _distance;
+}
+
+
+double Corps::ascensionDroite() const
+{
+    return _ascensionDroite;
 }
 
 double Corps::declinaison() const
@@ -741,19 +701,15 @@ double Corps::declinaison() const
     return _declinaison;
 }
 
-const Vecteur3D &Corps::dist() const
+QString Corps::constellation() const
 {
-    return _dist;
+    return _constellation;
 }
 
-double Corps::distance() const
-{
-    return _distance;
-}
 
-double Corps::hauteur() const
+double Corps::longitude() const
 {
-    return _hauteur;
+    return _longitude;
 }
 
 double Corps::latitude() const
@@ -761,19 +717,37 @@ double Corps::latitude() const
     return _latitude;
 }
 
-double Corps::longitude() const
+double Corps::altitude() const
 {
-    return _longitude;
+    return _altitude;
 }
+
+
+Vecteur3D Corps::position() const
+{
+    return _position;
+}
+
+Vecteur3D Corps::vitesse() const
+{
+    return _vitesse;
+}
+
+Vecteur3D Corps::dist() const
+{
+    return _dist;
+}
+
 
 double Corps::lonEcl() const
 {
     return _lonEcl;
 }
 
-const Vecteur3D &Corps::position() const
+
+bool Corps::visible() const
 {
-    return _position;
+    return _visible;
 }
 
 double Corps::rangeRate() const
@@ -781,39 +755,40 @@ double Corps::rangeRate() const
     return _rangeRate;
 }
 
-bool Corps::isVisible() const
-{
-    return _visible;
-}
 
-const Vecteur3D &Corps::vitesse() const
-{
-    return _vitesse;
-}
-
-const std::array<QPointF, 360> &Corps::zone() const
+std::array<QPointF, 360> Corps::zone() const
 {
     return _zone;
 }
 
-const QString &Corps::dateLever() const
+
+QString Corps::dateLever() const
 {
     return _dateLever;
 }
 
-const QString &Corps::dateMeridien() const
+QString Corps::dateMeridien() const
 {
     return _dateMeridien;
 }
 
-const QString &Corps::dateCoucher() const
+QString Corps::dateCoucher() const
 {
     return _dateCoucher;
 }
 
-const std::array<QString, 6> &Corps::datesCrepuscules() const
+std::array<QString, 6> Corps::datesCrepuscules() const
 {
     return _datesCrepuscules;
+}
+
+
+/*
+ * Modificateurs
+ */
+void Corps::setPosition(const Vecteur3D &pos)
+{
+    _position = pos;
 }
 
 
@@ -824,6 +799,27 @@ const std::array<QString, 6> &Corps::datesCrepuscules() const
 /*
  * Methodes protegees
  */
+std::array<double, 3> Corps::CalculAnglesReductionEquat(const Date &date)
+{
+    /* Declarations des variables locales */
+    std::array<double, 3> res;
+
+    /* Initialisations */
+    const double t = date.jourJulienTT() * DATE::NB_MILLJ_PAR_JOURS;
+
+    /* Corps de la methode */
+    // Zeta
+    res[0] = t * (23060.9097 + t * (30.2226 + t * (18.0183 + t * (-0.0583 + t * (0.0285 - 0.0002 * t))))) * MATHS::ARCSEC2RAD;
+
+    // Theta
+    res[1] = t * (20042.0207 + t * (-42.6566 + t * (-41.8238 + t * (-0.0731 + t * (-0.0127 + 0.0004 * t))))) * MATHS::ARCSEC2RAD;
+
+    // z
+    res[2] = t * (23060.9097 + t * (109.5270 + t * (18.2667 + t * (-0.2821 + t * (-0.0301 - 0.0001 * t))))) * MATHS::ARCSEC2RAD;
+
+    /* Retour */
+    return res;
+}
 
 
 /***********
@@ -844,10 +840,10 @@ void Corps::CalculLatitudeAltitude()
 
     /* Corps de la methode */
     // Latitude
-    CalculLatitude(_position);
+    CalculLatitude();
 
     // Altitude
-    _altitude = CalculAltitude(_position);
+    CalculAltitude();
 
     /* Retour */
     return;

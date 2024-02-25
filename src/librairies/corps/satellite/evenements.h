@@ -43,11 +43,7 @@
 #ifndef EVENEMENTS_H
 #define EVENEMENTS_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QObject>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "evenementsconst.h"
 #include "librairies/dates/date.h"
 
@@ -76,8 +72,12 @@ public:
      * @param[in] refraction prise en compte de la refraction
      * @return elements de l'AOS (ou LOS) suivant ou precedent
      */
-    static ElementsAOS CalculAOS(const Date &dateInit, const Satellite &satellite, const Observateur &observateur,
-                                 const SensCalcul &sensCalcul = SensCalcul::CHRONOLOGIQUE, const double hauteurMin = 0., const bool refraction = true);
+    static ElementsAOS CalculAOS(const Date &dateInit,
+                                 const Satellite &satellite,
+                                 const Observateur &observateur,
+                                 const SensCalcul &sensCalcul = SensCalcul::CHRONOLOGIQUE,
+                                 const double hauteurMin = 0.,
+                                 const bool refraction = true);
 
     /**
      * @brief CalculNoeudOrbite Calcul du noeud (ascendant ou descendant) precedent ou suivant
@@ -87,7 +87,9 @@ public:
      * @param[in] typeNoeud noeud ascendant ou noeud descendant
      * @return date du noeud (ascendant ou descendant) precedent ou suivant
      */
-    static Date CalculNoeudOrbite(const Date &dateInit, const Satellite &satellite, const SensCalcul &sensCalcul = SensCalcul::CHRONOLOGIQUE,
+    static Date CalculNoeudOrbite(const Date &dateInit,
+                                  const Satellite &satellite,
+                                  const SensCalcul &sensCalcul = SensCalcul::CHRONOLOGIQUE,
                                   const TypeNoeudOrbite &typeNoeud = TypeNoeudOrbite::NOEUD_ASCENDANT);
 
     /**
@@ -99,8 +101,12 @@ public:
      * @param[in] refraction prise en compte de la refraction
      * @return date du prochain passage ombre->penombre ou penombre->ombre
      */
-    static Date CalculOmbrePenombre(const Date &dateInit, const Satellite &satellite, const int nbTrajectoires, const bool acalcEclipseLune,
+    static Date CalculOmbrePenombre(const Date &dateInit,
+                                    const Satellite &satellite,
+                                    const int nbTrajectoires,
+                                    const bool acalcEclipseLune,
                                     const bool refraction);
+
 
     /*
      * Accesseurs

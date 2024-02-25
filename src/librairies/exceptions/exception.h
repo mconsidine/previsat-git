@@ -18,7 +18,7 @@
  * _______________________________________________________________________________________________________
  *
  * Nom du fichier
- * >    previsatexception.h
+ * >    Exception.h
  *
  * Localisation
  * >    librairies.exceptions
@@ -40,16 +40,16 @@
  *
  */
 
-#ifndef PREVISATEXCEPTION_H
-#define PREVISATEXCEPTION_H
+#ifndef Exception_H
+#define Exception_H
 
-#include <exception>
+#include <QException>
 #include "messageconst.h"
 
 
 class QString;
 
-class PreviSatException : public std::exception
+class Exception : public QException
 {
 public:
 
@@ -57,21 +57,39 @@ public:
      *  Constructeurs
      */
     /**
-     * @brief PreviSatException Constructeur par defaut (propagation de l'exception)
+     * @brief Exception Constructeur par defaut (propagation de l'exception)
      */
-    PreviSatException() throw();
+    Exception() {}
 
     /**
-     * @brief PreviSatException Propagation de l'exception avec affichage d'un message
+     * @brief Exception Propagation de l'exception avec affichage d'un message
      * @param[in] message message
      * @param[in] typeMessage type du message (INFO, WARNING ou ERREUR)
      */
-    PreviSatException(const QString &message, const MessageType &typeMessage) throw();
+    Exception(const QString &message,
+              const MessageType &typeMessage);
+
+
+    /*
+     * Destructeur
+     */
+    virtual ~Exception() noexcept {
+    }
 
 
     /*
      * Methodes publiques
      */
+    void raise() const override
+    {
+        throw *this;
+    }
+
+    Exception * clone() const override
+    {
+        return new Exception(*this);
+    }
+
 
     /*
      * Accesseurs
@@ -94,7 +112,6 @@ private:
     /*
      * Variables privees
      */
-    MessageType _typeMessage;
 
     /*
      * Methodes privees
@@ -103,4 +120,4 @@ private:
 
 };
 
-#endif // PREVISATEXCEPTION_H
+#endif // Exception_H

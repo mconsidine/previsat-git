@@ -43,11 +43,7 @@
 #ifndef LISTWIDGETITEM_H
 #define LISTWIDGETITEM_H
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QListWidgetItem>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 
 
 class ListWidgetItem : public QListWidgetItem

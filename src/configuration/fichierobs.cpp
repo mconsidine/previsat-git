@@ -34,15 +34,13 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wconversion"
 #include <QDir>
 #include <QXmlStreamReader>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
 #include "configuration.h"
 #include "fichierobs.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "gestionnairexml.h"
+#include "librairies/exceptions/exception.h"
+#include "librairies/systeme/fichierxml.h"
 
 
 /**********
@@ -68,33 +66,36 @@ void FichierObs::Ecriture(const QString &ficObsXml)
     /* Corps de la methode */
     QFile fi(Configuration::instance()->dirCoord() + QDir::separator() + ficObsXml);
 
-    if (fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
-
-        QXmlStreamWriter cfg(&fi);
-
-        cfg.setAutoFormatting(true);
-        cfg.writeStartDocument();
-        cfg.writeStartElement("PreviSatObservateurs");
-
-        // Observateurs
-        QMapIterator it(Configuration::instance()->mapObs());
-        while (it.hasNext()) {
-            it.next();
-
-            const Observateur obs = it.value();
-            cfg.writeStartElement("Observateur");
-            cfg.writeTextElement("Nom", obs.nomlieu());
-
-            cfg.writeTextElement("Longitude", QString::number(obs.longitude() * MATHS::RAD2DEG, 'f', 9));
-            cfg.writeTextElement("Latitude", QString::number(obs.latitude() * MATHS::RAD2DEG, 'f', 9));
-            cfg.writeTextElement("Altitude", QString::number(obs.altitude() * 1000.));
-            cfg.writeEndElement();
-        }
-
-        cfg.writeEndElement();
-        cfg.writeEndDocument();
-        fi.close();
+    if (!fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        const QFileInfo ff(fi.fileName());
+        qWarning() << QString("Erreur lors de l'écriture du fichier %1").arg(ff.fileName());
+        throw Exception(QObject::tr("Erreur lors de l'écriture du fichier %1").arg(ff.fileName()), MessageType::WARNING);
     }
+
+    QXmlStreamWriter cfg(&fi);
+
+    cfg.setAutoFormatting(true);
+    cfg.writeStartDocument();
+    cfg.writeStartElement("PreviSatObservateurs");
+
+    // Observateurs
+    QMapIterator it(Configuration::instance()->mapObs());
+    while (it.hasNext()) {
+        it.next();
+
+        const Observateur obs = it.value();
+        cfg.writeStartElement("Observateur");
+        cfg.writeTextElement("Nom", obs.nomlieu());
+
+        cfg.writeTextElement("Longitude", QString::number(obs.longitude() * MATHS::RAD2DEG, 'f', 9));
+        cfg.writeTextElement("Latitude", QString::number(obs.latitude() * MATHS::RAD2DEG, 'f', 9));
+        cfg.writeTextElement("Altitude", QString::number(obs.altitude() * 1000.));
+        cfg.writeEndElement();
+    }
+
+    cfg.writeEndElement();
+    cfg.writeEndDocument();
+    fi.close();
 
     /* Retour */
     return;
@@ -103,76 +104,44 @@ void FichierObs::Ecriture(const QString &ficObsXml)
 /*
  * Lecture du fichier de lieu d'observation
  */
-QMap<QString, Observateur> FichierObs::Lecture(const QString &ficObsXml, const bool alarme)
+QMap<QString, Observateur> FichierObs::Lecture(const QString &ficObsXml,
+                                               const bool alarme)
 {
     /* Declarations des variables locales */
     QMap<QString, Observateur> mapObs;
 
     /* Initialisations */
+    FichierXml fi(Configuration::instance()->dirCoord() + QDir::separator() + ficObsXml);
 
-    /* Corps de la methode */
-    QFile fi1(Configuration::instance()->dirCoord() + QDir::separator() + ficObsXml);
+    try {
 
-    if (fi1.exists() && (fi1.size() != 0) && fi1.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        const QDomDocument document = fi.Ouverture(false);
 
-        QXmlStreamReader cfg(&fi1);
+        /* Corps de la methode */
+        const QDomElement root = document.firstChildElement();
+        if (root.nodeName() != "PreviSatObservateurs") {
+            throw Exception();
+        }
 
-        cfg.readNextStartElement();
-        if (cfg.name().toString() == "PreviSatObservateurs") {
+        const QList<Observateur> observateurs = GestionnaireXml::LectureLieuxObservation(root);
 
-            QString nom;
-            double lon;
-            double lat;
-            double alt;
+        QListIterator it(observateurs);
+        while (it.hasNext()) {
 
-            while (cfg.readNextStartElement()) {
+            const Observateur obs = it.next();
+            const QString nom = obs.nomlieu();
+            mapObs.insert(nom, obs);
+        }
 
-                if (cfg.name().toString() == "Observateur") {
+        qInfo() << QString("Lecture fichier %1 OK").arg(fi.nomfic());
 
-                    nom = "";
-                    lon = 0.;
-                    lat = 0.;
-                    alt = 0.;
-
-                    while (cfg.readNextStartElement()) {
-
-                        if (cfg.name().toString() == "Nom") {
-                            nom = cfg.readElementText();
-                        } else if (cfg.name().toString() == "Longitude") {
-                            lon = cfg.readElementText().toDouble();
-                        } else if (cfg.name().toString() == "Latitude") {
-                            lat = cfg.readElementText().toDouble();
-                        } else if (cfg.name().toString() == "Altitude") {
-                            alt = cfg.readElementText().toDouble();
-                        } else {
-                            cfg.skipCurrentElement();
-                        }
-                    }
-
-                    if (!nom.isEmpty()) {
-                        mapObs.insert(nom, Observateur(nom, lon, lat, alt));
-                    }
-                } else {
-                    cfg.skipCurrentElement();
-                }
-            }
-        } else {
-
-            fi1.close();
-
-            qWarning() << "Le fichier ne contient pas de lieux d'observation";
-
-            if (alarme) {
-                throw PreviSatException(QObject::tr("Le fichier ne contient pas de lieux d'observation"), MessageType::WARNING);
-            } else {
-                throw PreviSatException();
-            }
+    } catch (Exception const &e) {
+        qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic()).arg(APP_NAME);
+        if (alarme) {
+            throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                .arg(fi.nomfic()).arg(APP_NAME), MessageType::ERREUR);
         }
     }
-    fi1.close();
-
-    // Verifications
-
 
     /* Retour */
     return mapObs;

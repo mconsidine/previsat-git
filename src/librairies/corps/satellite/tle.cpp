@@ -34,14 +34,10 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QDir>
 #include <QMessageBox>
 #include <QTextStream>
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "gpformat.h"
 #include "tle.h"
 
@@ -75,8 +71,12 @@ TLE::TLE()
 /*
  * Definition a partir des composantes du TLE
  */
-TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2) :
-    _ligne0(lig0), _ligne1(lig1), _ligne2(lig2)
+TLE::TLE(const QString &lig0,
+         const QString &lig1,
+         const QString &lig2) :
+    _ligne0(lig0),
+    _ligne1(lig1),
+    _ligne2(lig2)
 {
     /* Declarations des variables locales */
 
@@ -138,8 +138,11 @@ TLE::TLE(const QString &lig0, const QString &lig1, const QString &lig2) :
 /*
  * Lecture du fichier TLE
  */
-QMap<QString, ElementsOrbitaux> TLE::LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
-                                                    const QStringList &listeSatellites, const bool ajoutDonnees)
+QMap<QString, ElementsOrbitaux> TLE::Lecture(const QString &nomFichier,
+                                             const QString &donneesSat,
+                                             const int lgRec,
+                                             const QStringList &listeSatellites,
+                                             const bool ajoutDonnees)
 {
     /* Declarations des variables locales */
     QMap<QString, ElementsOrbitaux> mapElem;
@@ -153,92 +156,96 @@ QMap<QString, ElementsOrbitaux> TLE::LectureFichier(const QString &nomFichier, c
 
         const QFileInfo ff(fi.fileName());
 #if (BUILD_TEST == false)
-        throw PreviSatException(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
+        qWarning() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
 #endif
+        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
     }
 
-    if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        const QFileInfo ff(fi.fileName());
+#if (BUILD_TEST == false)
+        qWarning() << QString("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName());
+#endif
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::ERREUR);
+    }
 
-        QString lig0;
-        QString lig1;
-        QString lig2;
-        QString numeroNorad;
-        TLE tle;
+    QString lig0;
+    QString lig1;
+    QString lig2;
+    QString numeroNorad;
+    TLE tle;
 
-        const QString contenuFichier = fi.readAll();
+    const QStringList contenu = QString(fi.readAll()).split("\n", Qt::SkipEmptyParts);
 
-        QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
-        while (it.hasNext()) {
+    QStringListIterator it(contenu);
+    while (it.hasNext()) {
 
-            const QString ligne = it.next();
+        const QString ligne = it.next();
 
-            if (ligne.startsWith("1 ")) {
+        if (ligne.startsWith("1 ")) {
 
-                // Cas des TLE a 2 lignes
-                lig1 = ligne;
+            // Cas des TLE a 2 lignes
+            lig1 = ligne;
 
-                if (it.hasNext()) {
-                    lig2 = it.next();
+            if (it.hasNext()) {
+                lig2 = it.next();
+            }
+
+            // Recuperation du nom du satellite dans le fichier de donnees
+            numeroNorad = lig1.mid(2, 5);
+            lig0 = numeroNorad;
+
+            if (ajoutDonnees) {
+
+                const int idx = lgRec * numeroNorad.toInt();
+                if ((idx >= 0) && (idx < donneesSat.size())) {
+
+                    const QString donnee = donneesSat.mid(idx, lgRec);
+                    tle._elements.donnees = Donnees(donnee);
+                    lig0 = donnee.mid(125).trimmed();
                 }
+            }
+        } else {
 
-                // Recuperation du nom du satellite dans le fichier de donnees
-                numeroNorad = lig1.mid(2, 5);
-                lig0 = numeroNorad;
+            // Cas des TLE a 3 lignes
+            lig0 = ligne;
 
-                if (ajoutDonnees) {
+            if (it.hasNext()) {
+                lig1 = it.next();
+            }
 
-                    const int idx = lgRec * numeroNorad.toInt();
-                    if ((idx >= 0) && (idx < donneesSat.size())) {
+            if (it.hasNext()) {
+                lig2 = it.next();
+            }
+        }
 
-                        const QString donnee = donneesSat.mid(idx, lgRec);
-                        tle._elements.donnees = Donnees(donnee);
-                        lig0 = donnee.mid(125).trimmed();
-                    }
-                }
-            } else {
+        const QString nomsat = GPFormat::RecupereNomsat(lig0);
 
-                // Cas des TLE a 3 lignes
-                lig0 = ligne;
+        // Sauvegarde du TLE
+        if ((listeSatellites.isEmpty() || listeSatellites.contains(lig1.mid(2, 5))) && !lig0.isEmpty() && !lig1.isEmpty() && !lig2.isEmpty()) {
 
-                if (it.hasNext()) {
-                    lig1 = it.next();
-                }
+            tle = TLE(lig0, lig1, lig2);
+            tle._elements.nom = nomsat.trimmed();
 
-                if (it.hasNext()) {
-                    lig2 = it.next();
+            if (ajoutDonnees) {
+
+                // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
+                const int idx = lgRec * tle._elements.norad.toInt();
+                if ((idx >= 0) && (idx < donneesSat.size())) {
+
+                    tle._elements.donnees = Donnees(donneesSat.mid(idx, lgRec));
+                    tle._elements.nbOrbitesEpoque = GPFormat::CalculNombreOrbitesEpoque(tle._elements);
                 }
             }
 
-            const QString nomsat = GPFormat::RecupereNomsat(lig0);
+            if (!mapElem.contains(tle._elements.norad)) {
 
-            // Sauvegarde du TLE
-            if (listeSatellites.isEmpty() || listeSatellites.contains(lig1.mid(2, 5))) {
-
-                if (!lig0.isEmpty() && !lig1.isEmpty() && !lig2.isEmpty()) {
-
-                    tle = TLE(lig0, lig1, lig2);
-                    tle._elements.nom = nomsat.trimmed();
-
-                    if (!mapElem.contains(tle._elements.norad)) {
-
-                        if (ajoutDonnees) {
-
-                            // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
-                            const int idx = lgRec * tle._elements.norad.toInt();
-                            if ((idx >= 0) && (idx < donneesSat.size())) {
-
-                                tle._elements.donnees = Donnees(donneesSat.mid(idx, lgRec));
-                                tle._elements.nbOrbitesEpoque = GPFormat::CalculNombreOrbitesEpoque(tle._elements);
-                            }
-                        }
-
-                        mapElem.insert(tle._elements.norad, tle._elements);
-                        _mapTLE.insert(tle._elements.norad, tle);
-                    }
-                }
+                mapElem.insert(tle._elements.norad, tle._elements);
+                _mapTLE.insert(tle._elements.norad, tle);
             }
         }
     }
+
     fi.close();
 
     /* Retour */
@@ -248,7 +255,11 @@ QMap<QString, ElementsOrbitaux> TLE::LectureFichier(const QString &nomFichier, c
 /*
  * Mise a jour du fichier TLE
  */
-QStringList TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, const QString &donneesSat, const int lgRec,  const int affMsg)
+QStringList TLE::MiseAJourFichier(const QString &ficOld,
+                                  const QString &ficNew,
+                                  const QString &donneesSat,
+                                  const int lgRec,
+                                  const int affMsg)
 {
     /* Declarations des variables locales */
     QStringList compteRendu;
@@ -263,21 +274,21 @@ QStringList TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, 
     // Verification du fichier contenant les anciens TLE
     const int nbOld = VerifieFichier(ficOld, false);
     if (nbOld == 0) {
-        throw PreviSatException(QObject::tr("Le fichier %1 n'est pas un TLE").arg(nomFicOld), MessageType::WARNING);
+        throw Exception(QObject::tr("Le fichier %1 n'est pas un TLE").arg(nomFicOld), MessageType::WARNING);
     }
 
     // Lecture du TLE
-    QMap<QString, ElementsOrbitaux> tleOld = LectureFichier(ficOld, donneesSat, lgRec, QStringList(), false);
+    QMap<QString, ElementsOrbitaux> tleOld = Lecture(ficOld, donneesSat, lgRec, QStringList(), false);
     QMap<QString, TLE> mapTleOld = _mapTLE;
 
     // Verification du fichier contenant les TLE recents
     const int nbNew = VerifieFichier(ficNew, false);
     if (nbNew == 0) {
-        throw PreviSatException(QObject::tr("Le fichier %1 n'est pas un TLE").arg(nomFicNew), MessageType::WARNING);
+        throw Exception(QObject::tr("Le fichier %1 n'est pas un TLE").arg(nomFicNew), MessageType::WARNING);
     }
 
     // Lecture du TLE
-    QMap<QString, ElementsOrbitaux> tleNew = LectureFichier(ficNew, donneesSat, lgRec, QStringList(), false);
+    QMap<QString, ElementsOrbitaux> tleNew = Lecture(ficNew, donneesSat, lgRec, QStringList(), false);
     QMap<QString, TLE> mapTleNew = _mapTLE;
 
     /* Corps de la methode */
@@ -409,6 +420,7 @@ QStringList TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, 
                 flux << tle._ligne2 << Qt::endl;
             }
         }
+
         fichier.close();
     }
 
@@ -422,7 +434,8 @@ QStringList TLE::MiseAJourFichier(const QString &ficOld, const QString &ficNew, 
 /*
  * Verification du fichier TLE
  */
-int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
+int TLE::VerifieFichier(const QString &nomFichier,
+                        const bool alarme)
 {
     /* Declarations des variables locales */
 
@@ -430,86 +443,84 @@ int TLE::VerifieFichier(const QString &nomFichier, const bool alarme)
     int nb = 0;
 
     /* Corps de la methode */
+    QFile fi(nomFichier);
+    if (!fi.exists() || (fi.size() == 0)) {
+
+        const QFileInfo ff(fi.fileName());
+#if (BUILD_TEST == false)
+        qWarning() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
+#endif
+        if (alarme) {
+            throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
+        }
+    }
+
+    if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+#if (COVERAGE_TEST == false)
+        const QFileInfo ff(fi.fileName());
+#if (BUILD_TEST == false)
+        qWarning() << QString("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName());
+#endif
+        if (alarme) {
+            throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::ERREUR);
+        }
+#endif
+    }
+
     try {
 
-        QFile fi(nomFichier);
-        if (fi.exists()) {
+        int itle = 0;
+        QString lig0;
+        QString lig1;
+        QString lig2;
 
-            if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        const QStringList contenu = QString(fi.readAll()).split("\n", Qt::SkipEmptyParts);
+        fi.close();
 
-                int itle = 0;
-                QString lig0;
-                QString lig1;
-                QString lig2;
+        QStringListIterator it(contenu);
+        while (it.hasNext()) {
 
-                const QString contenuFichier = fi.readAll();
+            const QString ligne = it.next();
 
-                QStringListIterator it(contenuFichier.split("\n", Qt::SkipEmptyParts));
-                while (it.hasNext()) {
+            if (ligne.startsWith("1 ")) {
 
-                    const QString ligne = it.next();
+                // Cas des TLE a 2 lignes
+                lig1 = ligne;
+                if (it.hasNext()) {
+                    lig2 = it.next();
+                    lig0 = lig1;
+                }
 
-                    if (ligne.startsWith("1 ")) {
+            } else {
 
-                        // Cas des TLE a 2 lignes
-                        lig1 = ligne;
-                        if (it.hasNext()) {
-                            lig2 = it.next();
-                            lig0 = lig1;
-                        }
+                // Cas des TLE a 3 lignes
+                lig0 = ligne;
+                if (it.hasNext()) {
+                    lig1 = it.next();
+                }
 
-                    } else {
-
-                        // Cas des TLE a 3 lignes
-                        lig0 = ligne;
-                        if (it.hasNext()) {
-                            lig1 = it.next();
-                        }
-
-                        if (it.hasNext()) {
-                            lig2 = it.next();
-                        }
-                    }
-
-                    const QString nomsat = GPFormat::RecupereNomsat(lig0);
-
-                    if (((lig1 == lig0) && (itle == 3))
-                            || ((lig1 != lig0) && (itle== 2))
-                            || (!lig1.startsWith("1 ") && !lig2.startsWith("2 "))) {
-
-                        throw PreviSatException((alarme) ? QObject::tr("Le fichier %1 n'est pas valide").arg(nomFichier) : "", MessageType::WARNING);
-                    }
-
-                    VerifieLignes(lig1, lig2, nomsat, alarme);
-
-                    itle = (lig1 == lig0) ? 2 : 3;
-                    nb++;
+                if (it.hasNext()) {
+                    lig2 = it.next();
                 }
             }
-            fi.close();
 
-        } else {
+            const QString nomsat = GPFormat::RecupereNomsat(lig0);
 
-            // Le fichier n'existe pas
-            throw PreviSatException((alarme) ? QObject::tr("Le fichier %1 n'existe pas").arg(nomFichier) : "", MessageType::WARNING);
+            if (((lig1 == lig0) && (itle == 3))
+                || ((lig1 != lig0) && (itle== 2))
+                || (!lig1.startsWith("1 ") && !lig2.startsWith("2 "))) {
+
+                throw Exception((alarme) ? QObject::tr("Le fichier %1 n'est pas valide").arg(nomFichier) : "", MessageType::WARNING);
+            }
+
+            VerifieLignes(lig1, lig2, nomsat, alarme);
+
+            itle = (lig1 == lig0) ? 2 : 3;
+            nb++;
         }
 
-        // Le fichier est vide
-        if (fi.size() == 0) {
-            throw PreviSatException((alarme) ? QObject::tr("Le fichier %1 est vide").arg(nomFichier) : "", MessageType::WARNING);
-        }
-
-        // Aucun satellite dans le fichier
-        if (nb == 0) {
-            throw PreviSatException(
-                        (alarme) ? QObject::tr("Le fichier %1 ne contient aucun satellite").arg(nomFichier) : "", MessageType::WARNING);
-        }
-
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         nb = 0;
-        if (alarme) {
-            throw PreviSatException();
-        }
     }
 
     /* Retour */
@@ -570,7 +581,10 @@ bool TLE::CheckSum(const QString &ligne)
 /*
  * Verification des lignes du TLE
  */
-void TLE::VerifieLignes(const QString &li1, const QString &li2, const QString &nomsat, const bool alarme)
+void TLE::VerifieLignes(const QString &li1,
+                        const QString &li2,
+                        const QString &nomsat,
+                        const bool alarme)
 {
     /* Declarations des variables locales */
 
@@ -579,21 +593,21 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2, const QString &n
     /* Corps de la methode */
     // Verification si les lignes sont vides
     if (li1.isEmpty() || li2.isEmpty()) {
-        throw PreviSatException((alarme) ? QObject::tr("Une des lignes du TLE est vide") : "", MessageType::WARNING);
+        throw Exception((alarme) ? QObject::tr("Une des lignes du TLE est vide") : "", MessageType::WARNING);
     }
 
     // Verification du numero des lignes
     if (!li1.startsWith("1 ") || !li2.startsWith("2 ")) {
-        throw PreviSatException(
-                    (alarme) ?
-                        QObject::tr("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects")
-                        .arg(nomsat).arg(li2.mid(2, 5)) : "", MessageType::WARNING);
+        const QString msg = QObject::tr("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects").arg(nomsat).
+                            arg(li2.mid(2, 5));
+        throw Exception((alarme) ? msg : "", MessageType::WARNING);
     }
 
     // Verification de la longueur des lignes
     if ((li1.size() != 69) || (li2.size() != 69)) {
-        throw PreviSatException((alarme) ? QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte")
-                                           .arg(nomsat).arg(li2.mid(1, 6).trimmed()) : "", MessageType::WARNING);
+        const QString msg = QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte").
+                            arg(nomsat).arg(li2.mid(1, 6).trimmed());
+        throw Exception((alarme) ? msg : "", MessageType::WARNING);
     }
 
     // Verification des espaces dans les lignes
@@ -601,34 +615,33 @@ void TLE::VerifieLignes(const QString &li1, const QString &li2, const QString &n
             (li1.at(52) != ' ') || (li1.at(61) != ' ') || (li1.at(63) != ' ') || (li2.at(1) != ' ') || (li2.at(7) != ' ') ||
             (li2.at(16) != ' ') || (li2.at(25) != ' ') || (li2.at(33) != ' ') || (li2.at(42) != ' ') || (li2.at(51) != ' ')) {
 
-        throw PreviSatException((alarme) ?
-                                    QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2")
-                                    .arg(nomsat).arg(li2.mid(2, 5)) : "", MessageType::WARNING);
+        const QString msg = QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li2.mid(2, 5));
+        throw Exception((alarme) ? msg : "", MessageType::WARNING);
     }
 
     // Verification de la ponctuation des lignes
     if ((li1.at(23) != '.') || (li1.at(34) != '.') || (li2.at(11) != '.') || (li2.at(20) != '.') || (li2.at(37) != '.') || (li2.at(46) != '.') ||
             (li2.at(54) != '.')) {
 
-        throw PreviSatException((alarme) ? QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2")
+        throw Exception((alarme) ? QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2")
                                            .arg(nomsat).arg(li2.mid(2, 5)) : "", MessageType::WARNING);
     }
 
     // Verification du numero NORAD
     if (li1.mid(2, 5) != li2.mid(2, 5)) {
 
-        throw PreviSatException((alarme) ? QObject::tr("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)")
+        throw Exception((alarme) ? QObject::tr("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)")
                                            .arg(nomsat).arg(li1.mid(2, 5)).arg(li2.mid(2, 5)) : "", MessageType::WARNING);
     }
 
     // Verification des checksums
     if (!CheckSum(li1)) {
-        throw PreviSatException((alarme) ? QObject::tr("Erreur CheckSum ligne 1 :\nSatellite %1 - numéro NORAD : %2")
+        throw Exception((alarme) ? QObject::tr("Erreur CheckSum ligne 1 :\nSatellite %1 - numéro NORAD : %2")
                                            .arg(nomsat).arg(li1.mid(2, 5)) : "", MessageType::WARNING);
     }
 
     if (!CheckSum(li2)) {
-        throw PreviSatException((alarme) ? QObject::tr("Erreur CheckSum ligne 2 :\nSatellite %1 - numéro NORAD : %2")
+        throw Exception((alarme) ? QObject::tr("Erreur CheckSum ligne 2 :\nSatellite %1 - numéro NORAD : %2")
                                            .arg(nomsat).arg(li1.mid(2, 5)) : "", MessageType::WARNING);
     }
 

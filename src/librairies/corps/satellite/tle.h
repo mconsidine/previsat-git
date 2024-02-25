@@ -72,23 +72,29 @@ public:
      * @param[in] lig1 ligne 1 du TLE
      * @param[in] lig2 ligne 2 du TLE
      */
-    TLE(const QString &lig0, const QString &lig1, const QString &lig2);
+    TLE(const QString &lig0,
+        const QString &lig1,
+        const QString &lig2);
 
 
     /*
      * Methodes publiques
      */
     /**
-     * @brief LectureFichier Lecture du fichier TLE
+     * @brief Lecture Lecture du fichier TLE
      * @param[in] nomFichier nom du fichier TLE
      * @param[in] donneesSat donnees satellites
      * @param[in] lgRec longueur d'une ligne dans les donnees satellite
      * @param[in] listeSatellites liste des numeros NORAD (si elle est vide on recupere tous les TLE)
      * @param[in] ajoutDonnees ajout des donnees satellite
      * @return tableau d'elements orbitaux
+     * @throw Exception
      */
-    static QMap<QString, ElementsOrbitaux> LectureFichier(const QString &nomFichier, const QString &donneesSat, const int lgRec,
-                                             const QStringList &listeSatellites = QStringList(), const bool ajoutDonnees = true);
+    static QMap<QString, ElementsOrbitaux> Lecture(const QString &nomFichier,
+                                                   const QString &donneesSat,
+                                                   const int lgRec,
+                                                   const QStringList &listeSatellites = QStringList(),
+                                                   const bool ajoutDonnees = true);
 
     /**
      * @brief MiseAJourFichier Mise a jour du fichier TLE
@@ -98,16 +104,23 @@ public:
      * @param[in] lgRec longueur d'une ligne dans les donnees satellite
      * @param[in] affMsg affichage des messages
      * @return compte rendu de mise a jour
+     * @throw Exception
      */
-    static QStringList MiseAJourFichier(const QString &ficOld, const QString &ficNew, const QString &donneesSat, const int lgRec, const int affMsg);
+    static QStringList MiseAJourFichier(const QString &ficOld,
+                                        const QString &ficNew,
+                                        const QString &donneesSat,
+                                        const int lgRec,
+                                        const int affMsg);
 
     /**
      * @brief VerifieFichier Verification du fichier TLE
      * @param[in] nomFichier nom du fichier TLE
      * @param[in] alarme affichage d'une boite de message
      * @return nombre de satellites dans le fichier
+     * @throw Exception
      */
-    static int VerifieFichier(const QString &nomFichier, const bool alarme = false);
+    static int VerifieFichier(const QString &nomFichier,
+                              const bool alarme = false);
 
 
     /*
@@ -157,8 +170,12 @@ private:
      * @param[in] li2 ligne 2 du TLE
      * @param[in] nomsat nom du satellite
      * @param[in] alarme affichage d'une boite de message
+     * @throw Exception
      */
-    static void VerifieLignes(const QString &li1, const QString &li2, const QString &nomsat, const bool alarme);
+    static void VerifieLignes(const QString &li1,
+                              const QString &li2,
+                              const QString &nomsat,
+                              const bool alarme);
 
 
 };

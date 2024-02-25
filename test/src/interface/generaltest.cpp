@@ -34,19 +34,14 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
+
 #include "generaltest.h"
 #include "configuration/configuration.h"
 #include "interface/onglets/general/general.h"
 #include "interface/onglets/osculateurs/osculateurs.h"
 #include "librairies/corps/satellite/tle.h"
-#include "test/src/testtools.h"
+#include "testtools.h"
 
 
 using namespace TestTools;
@@ -64,7 +59,6 @@ void GeneralTest::testSauveOngletGeneral()
     Osculateurs *osculateurs = nullptr;
 
     QDir dir = QDir::current();
-    dir.cdUp();
     dir.cdUp();
     dir.cdUp();
     dir.cd(qApp->applicationName());
@@ -89,34 +83,34 @@ void GeneralTest::testSauveOngletGeneral()
     Configuration::instance()->_observateurs = obs;
 
     Soleil soleil;
-    soleil.CalculPosition(date);
-    soleil.CalculCoordHoriz(observateur);
+    soleil.CalculPosVit(date);
+    soleil.CalculCoordHoriz(observateur, true);
     soleil.CalculCoordTerrestres(observateur);
     soleil.CalculCoordEquat(observateur);
-    soleil.CalculLeverMeridienCoucher(date, observateur, DateSysteme::SYSTEME_24H);
+    soleil.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, observateur);
     Configuration::instance()->soleil() = soleil;
 
     Lune lune;
-    lune.CalculPosition(date);
+    lune.CalculPosVit(date);
     lune.CalculPhase(soleil);
-    lune.CalculCoordHoriz(observateur);
+    lune.CalculCoordHoriz(observateur, true);
     lune.CalculMagnitude(soleil);
     lune.CalculCoordTerrestres(observateur);
     lune.CalculCoordEquat(observateur);
-    lune.CalculLeverMeridienCoucher(date, observateur, DateSysteme::SYSTEME_24H);
+    lune.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, observateur);
     lune.CalculDatesPhases(date);
     Configuration::instance()->lune() = lune;
 
-    const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "tle" + QDir::separator() + "visual.txt";
+    const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
 
     const int lgrec = Configuration::instance()->lgRec();
     const QStringList listeElem(QStringList () << "25544");
-    QMap<QString, ElementsOrbitaux> mapElem = TLE::LectureFichier(nomfic, Configuration::instance()->donneesSatellites(), lgrec, listeElem);
+    QMap<QString, ElementsOrbitaux> mapElem = TLE::Lecture(nomfic, Configuration::instance()->donneesSatellites(), lgrec, listeElem);
 
     Satellite sat(mapElem.first());
 
     sat.CalculPosVit(date);
-    sat.CalculCoordHoriz(observateur);
+    sat.CalculCoordHoriz(observateur, true);
 
     sat._conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, &lune, true);
     sat.CalculCoordTerrestres(observateur);

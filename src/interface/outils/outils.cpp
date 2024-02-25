@@ -34,8 +34,6 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
 #include <QClipboard>
 #include <QDir>
 #include <QFileDialog>
@@ -47,15 +45,13 @@
 #include <QSettings>
 #include <QStandardPaths>
 #include "ui_outils.h"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wconversion"
 #include "outils.h"
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
 #include "interface/onglets/donnees/informationssatellite.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/tle.h"
-#include "librairies/exceptions/previsatexception.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/systeme/telechargement.h"
 
 
@@ -92,9 +88,9 @@ Outils::Outils(QWidget *parent) :
 
         Initialisation();
 
-    } catch (PreviSatException &e) {
+    } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
-        throw PreviSatException();
+        throw Exception();
     }
 }
 
@@ -705,19 +701,19 @@ void Outils::on_valider_clicked()
         // Nom du domaine
         const QString domaine = _ui->domaine->text().trimmed();
         if (domaine.isEmpty()) {
-            throw PreviSatException(tr("Le nom du domaine n'est pas spécifié"), MessageType::WARNING);
+            throw Exception(tr("Le nom du domaine n'est pas spécifié"), MessageType::WARNING);
         }
 
         // Nom du groupe (dans la langue de l'utilisateur)
         const QString nomGroupe = _ui->nomGroupe->text().trimmed();
         if (nomGroupe.isEmpty()) {
-            throw PreviSatException(tr("Le nom du groupe n'est pas spécifié"), MessageType::WARNING);
+            throw Exception(tr("Le nom du groupe n'est pas spécifié"), MessageType::WARNING);
         }
 
         // Liste des fichiers d'elements orbitaux
         const QStringList listeFics = _ui->listeFichiers->document()->toPlainText().split("\n");
         if (listeFics.isEmpty()) {
-            throw PreviSatException(tr("La liste de fichiers est vide"), MessageType::WARNING);
+            throw Exception(tr("La liste de fichiers est vide"), MessageType::WARNING);
         }
 
         QMap<QString, QList<CategorieElementsOrbitaux> > &mapElem = Configuration::instance()->mapCategoriesElementsOrbitaux();
@@ -751,7 +747,7 @@ void Outils::on_valider_clicked()
         GestionnaireXml::EcritureGestionnaireElementsOrbitaux();
         InitListeDomaines();
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
     }
 
     /* Retour */
@@ -790,7 +786,7 @@ void Outils::on_listeFichiersElem_currentRowChanged(int currentRow)
         QFileInfo ff(fichier);
         if (ff.exists()) {
 
-            _mapElem = GPFormat::LectureFichier(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+            _mapElem = GPFormat::Lecture(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
 
             QMapIterator it(_mapElem);
             while (it.hasNext()) {
@@ -984,11 +980,11 @@ void Outils::on_mettreAJourTLE_clicked()
     try {
 
         if (_ui->fichierAMettreAJour->text().isEmpty()) {
-            throw PreviSatException(tr("Le nom du fichier à mettre à jour n'est pas spécifié"), MessageType::WARNING);
+            throw Exception(tr("Le nom du fichier à mettre à jour n'est pas spécifié"), MessageType::WARNING);
         }
 
         if (_ui->fichierALire->text().isEmpty()) {
-            throw PreviSatException(tr("Le nom du fichier à lire n'est pas spécifié"), MessageType::WARNING);
+            throw Exception(tr("Le nom du fichier à lire n'est pas spécifié"), MessageType::WARNING);
         }
 
         QFileInfo fi(_ui->fichierALire->text());
@@ -999,7 +995,7 @@ void Outils::on_mettreAJourTLE_clicked()
             fi = QFileInfo(file);
             if (!fi.exists()) {
                 const QString msg = tr("Le fichier %1 n'existe pas");
-                throw PreviSatException(msg.arg(fi.absoluteFilePath()), MessageType::WARNING);
+                throw Exception(msg.arg(fi.absoluteFilePath()), MessageType::WARNING);
             }
         }
 
@@ -1012,7 +1008,7 @@ void Outils::on_mettreAJourTLE_clicked()
         _ui->compteRenduMajManuel->setVisible(true);
 
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
     }
 
     /* Retour */
@@ -1087,7 +1083,7 @@ void Outils::on_importerTLE_clicked()
                 if (fo.exists()) {
 
                     qWarning() << "Le fichier TLE existe déjà";
-                    throw PreviSatException(tr("Le fichier %1 existe déjà").arg(ff.fileName()), MessageType::WARNING);
+                    throw Exception(tr("Le fichier %1 existe déjà").arg(ff.fileName()), MessageType::WARNING);
 
                 } else {
 
@@ -1109,11 +1105,11 @@ void Outils::on_importerTLE_clicked()
 
             } else {
                 qWarning() << QString("Le fichier TLE %1 ne contient pas d'éléments orbitaux").arg(ff.fileName());
-                throw PreviSatException(tr("Le fichier %1 ne contient pas d'éléments orbitaux").arg(ff.fileName()), MessageType::WARNING);
+                throw Exception(tr("Le fichier %1 ne contient pas d'éléments orbitaux").arg(ff.fileName()), MessageType::WARNING);
             }
         }
 
-    } catch (PreviSatException const &e) {
+    } catch (Exception const &e) {
     }
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;

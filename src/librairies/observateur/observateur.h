@@ -75,7 +75,10 @@ public:
      * @param[in] lat latitude en degres (negative au sud)
      * @param[in] alt altitude en metres
      */
-    Observateur(const QString &nom, const double lon, const double lat, const double alt = 0.);
+    Observateur(const QString &nom,
+                const double lon,
+                const double lat,
+                const double alt = 0.);
 
     /**
      * @brief Observateur Constructeur a partir des donnees relatives au lieu d'observation a une date donnee
@@ -86,7 +89,11 @@ public:
      * @param[in] aaerVal aray
      * @param[in] arayVal aaer
      */
-    Observateur(const Vecteur3D &pos, const Vecteur3D &vit, const Matrice3D &matRotHz, const double aaerVal, const double arayVal);
+    Observateur(const Vecteur3D &pos,
+                const Vecteur3D &vit,
+                const Matrice3D &matRotHz,
+                const double aaerVal,
+                const double arayVal);
 
 
     /*
@@ -99,8 +106,9 @@ public:
     void CalculPosVit(const Date &date);
 
     /**
-     * @brief CalculTempsSideralGreenwich Calcul du temps sideral de Greenwich
-     * D'apres la formule donnee dans l'Astronomical Algorithms 2nd edition de Jean Meeus, p88
+     * @brief CalculTempsSideralGreenwich Calcul du temps sideral moyen de Greenwich
+     * @cite Aoki et al., Astron.Astrophys., 105, 359-361 (1982).
+     *
      * @param[in] date date
      * @return temps sideral de Greenwich
      */
@@ -108,15 +116,21 @@ public:
 
     /**
      * @brief CalculCap Calcul du cap d'un lieu d'observation par rapport a un autre
+     * @cite https://www.movable-type.co.uk/scripts/latlong.html
+     *
      * @param[in] lieuDistant lieu distant
      * @return nom et valeur du cap
      */
     QPair<QString, double> CalculCap(const Observateur &lieuDistant) const;
 
     /**
-     * @brief CalculDistance Calcul de la distance entre 2 lieux d'observation mesuree le long de la surface terrestre
-     * en tenant compte de l'applatissement du globe terrestre, mais sans prise en compte de l'altitude
-     * Astronomical Algorithms 2nd edition de Jean Meeus, p85
+     * @brief CalculDistance Calcul de la distance entre 2 lieux d'observation
+     * @details La distance est mesuree le long de la surface terrestre
+     * en tenant compte de l'applatissement du globe terrestre,
+     * mais sans prise en compte de l'altitude
+     *
+     * @cite Astronomical Algorithms 2nd edition de Jean Meeus, p85
+     *
      * @param[in] observateur lieu d'observation distant
      * @return distance entre les 2 lieux d'observation
      */
@@ -125,12 +139,15 @@ public:
     /**
      * @brief CalculIntersectionEllipsoide Calcul des coordonnees geographiques du lieu a l'intersection d'un vecteur pointant
      * vers la Terre et de l'ellipsoide terrestre
+     *
      * @param[in] date date
      * @param[in] origine vecteur origine
      * @param[in] direction direction du vecteur vers l'ellipsoide
      * @return lieu pointe par le vecteur
      */
-    static Observateur CalculIntersectionEllipsoide(const Date &date, const Vecteur3D &origine, const Vecteur3D &direction);
+    static Observateur CalculIntersectionEllipsoide(const Date &date,
+                                                    const Vecteur3D &origine,
+                                                    const Vecteur3D &direction);
 
     /**
      * @brief operator = Affectation d'un observateur
@@ -149,9 +166,9 @@ public:
     double aaer() const;
     double aray() const;
     double tempsSideralGreenwich() const;
-    const Vecteur3D &position() const;
-    const Vecteur3D &vitesse() const;
-    const Matrice3D &rotHz() const;
+    Vecteur3D position() const;
+    Vecteur3D vitesse() const;
+    Matrice3D rotHz() const;
 
 
 protected:
