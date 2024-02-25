@@ -363,7 +363,7 @@
     <item row="1" column="0">
      <widget class="QLabel" name="lbl_masseSecTot">
       <property name="text">
-       <string>Masse sec/Totale :</string>
+       <string>Masse sec/totale :</string>
       </property>
      </widget>
     </item>

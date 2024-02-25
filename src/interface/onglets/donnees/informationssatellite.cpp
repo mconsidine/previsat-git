@@ -278,7 +278,7 @@ void InformationsSatellite::SauveOngletInformations(const QString &fichier)
             chaine = tr("Excentricité            : %1\t\tModèle orbital              : %2");
             flux << chaine.arg(_ui->excentriciteMoy->text()).arg(_ui->modele->text()) << Qt::endl;
 
-            chaine = tr("Argument du périgée     : %1\t\tDimensions/Section          : %2");
+            chaine = tr("Argument du périgée     : %1\t\tForme/Dimensions            : %2");
             flux << chaine.arg(_ui->argumentPerigeeMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->dimensions->text()) << Qt::endl;
 
             chaine = tr("Anomalie moyenne        : %1\t\tClasse/Catégorie/Discipline : %2");

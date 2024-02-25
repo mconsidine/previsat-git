@@ -4,577 +4,577 @@
 <context>
     <name>AfficherResultats</name>
     <message>
-        <location filename="../src/interface/afficherresultats.ui" line="125"/>
+        <location filename="../src/interface/afficherresultats.ui" line="164"/>
         <source>Afficher la carte</source>
         <translation>地図を表示する</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.ui" line="201"/>
-        <location filename="../src/interface/afficherresultats.ui" line="204"/>
+        <location filename="../src/interface/afficherresultats.ui" line="244"/>
+        <location filename="../src/interface/afficherresultats.ui" line="247"/>
         <source>Enregistrer</source>
         <translation>保存する</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.ui" line="213"/>
-        <location filename="../src/interface/afficherresultats.ui" line="216"/>
+        <location filename="../src/interface/afficherresultats.ui" line="256"/>
+        <location filename="../src/interface/afficherresultats.ui" line="259"/>
         <source>Enregistrer fichier texte</source>
         <translation>テキスト形式で保存する</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="127"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="123"/>
         <source>Prévisions de passage</source>
         <translation>通過予報</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="128"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="139"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="147"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="157"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1194"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1204"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1216"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="124"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="135"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="143"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="153"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1190"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1200"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1212"/>
         <source>Satellite</source>
         <translation>衛星</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="128"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="139"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="157"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="124"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="135"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="153"/>
         <source>Date de début</source>
         <comment>Date and hour</comment>
         <translation>開始日時</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="128"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="139"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="157"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="124"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="135"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="153"/>
         <source>Date de fin</source>
         <comment>Date and hour</comment>
         <translation>終了日時</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="129"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="158"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="191"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1247"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1255"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="125"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="154"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="187"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1243"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1251"/>
         <source>Magnitude</source>
         <translation>等級</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="129"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="148"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="158"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="193"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1249"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1258"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1272"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="125"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="144"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="154"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="189"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1245"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1254"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1268"/>
         <source>Hauteur Soleil</source>
         <translation>太陽仰角</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="133"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="129"/>
         <source>Évènements orbitaux</source>
         <translation>軌道上事象</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="137"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="133"/>
         <source>Flashs</source>
         <translation>フレア</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="140"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1197"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1208"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="136"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1193"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1204"/>
         <source>Magn</source>
         <comment>Magnitude</comment>
         <translation>等級</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="140"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1207"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="136"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1203"/>
         <source>Mir</source>
         <comment>Mirror</comment>
         <translation>鏡面</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="140"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1199"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1209"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1221"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="136"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1195"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1205"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1217"/>
         <source>Haut Soleil</source>
         <comment>Solar elevation</comment>
         <translation>太陽仰角</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="144"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="140"/>
         <source>Transits</source>
         <translation>太陽面・月面通過</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="147"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1219"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="143"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1215"/>
         <source>Cst</source>
         <comment>Constellation</comment>
         <translation>星座</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="147"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1253"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1266"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="143"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1249"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1262"/>
         <source>Angle</source>
         <translation>角度</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="148"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1219"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="144"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1215"/>
         <source>Type</source>
         <comment>Transit or conjunction</comment>
         <translation>種類</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="148"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1220"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="144"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1216"/>
         <source>Corps</source>
         <translation>天体</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1220"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1216"/>
         <source>Ill</source>
         <comment>Illumination</comment>
         <translation>照射</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="148"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1220"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="144"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1216"/>
         <source>Durée</source>
         <translation>継続時間</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="129"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="158"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="125"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="154"/>
         <source>Hauteur max</source>
         <comment>Maximum elevation</comment>
         <translation>最大仰角</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="140"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="136"/>
         <source>Hauteur Max</source>
         <comment>Maximum elevation</comment>
         <translation>最大仰角</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="147"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="143"/>
         <source>Date du maximum</source>
         <comment>Date and hour</comment>
         <translation>最適日時</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="148"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="144"/>
         <source>Illum</source>
         <comment>Illumination</comment>
         <translation>照射</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="156"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="152"/>
         <source>Passages des Starlink</source>
         <translation>Starlinkの通過</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="190"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="186"/>
         <source>Hauteur maximale</source>
         <translation>最大仰角</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="192"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1254"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="188"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1250"/>
         <source>Miroir</source>
         <translation>鏡面</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="198"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1241"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="194"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1237"/>
         <source>Constellation</source>
         <translation>星座</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="199"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1267"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="195"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1263"/>
         <source>Illumination</source>
         <translation>照射</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="200"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1268"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="196"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1264"/>
         <source>secondes</source>
         <translation>秒</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="691"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="687"/>
         <source>Unité de distance               : %1</source>
         <translation>距離の単位     : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="699"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="695"/>
         <source>Age de l&apos;élément                : %1 jours (au %2)</source>
         <translation>要素の年齢                : %1日 (%2現在)</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1194"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1204"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1216"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1190"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1200"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1212"/>
         <source>Date</source>
         <comment>Date and hour</comment>
         <translation>日時</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1195"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1205"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1217"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1191"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1201"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1213"/>
         <source>Azimut Sat</source>
         <comment>Satellite azimuth</comment>
         <translation>衛星方位角</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1195"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1205"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1217"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1191"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1201"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1213"/>
         <source>Hauteur Sat</source>
         <comment>Satellite elevation</comment>
         <translation>衛星仰角</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1196"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1206"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1218"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1192"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1202"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1214"/>
         <source>AD Sat</source>
         <comment>Satellite right ascension</comment>
         <translation>衛星赤経</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1196"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1206"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1218"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1192"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1202"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1214"/>
         <source>Decl Sat</source>
         <comment>Satellite declination</comment>
         <translation>衛星赤緯</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1197"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1207"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1193"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1203"/>
         <source>Const</source>
         <comment>Constellation</comment>
         <translation>星座</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1198"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1208"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1269"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1194"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1204"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1265"/>
         <source>Altitude</source>
         <comment>Altitude of satellite</comment>
         <translation>高度</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1198"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1211"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1223"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1256"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1270"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1194"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1207"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1219"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1252"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1266"/>
         <source>Distance</source>
         <translation>距離</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1198"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1209"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1221"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1194"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1205"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1217"/>
         <source>Az Soleil</source>
         <comment>Solar azimuth</comment>
         <translation>太陽の方位角</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1207"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1219"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1203"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1215"/>
         <source>Ang</source>
         <comment>Angle</comment>
         <translation>角度</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1208"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1221"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1204"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1217"/>
         <source>Dist</source>
         <comment>Range</comment>
         <translation>距離</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1210"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1222"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1206"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1218"/>
         <source>Long Max</source>
         <comment>Longitude of the maximum</comment>
         <translation>最適経度</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1210"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1222"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1206"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1218"/>
         <source>Lat Max</source>
         <comment>Latitude of the maximum</comment>
         <translation>最適緯度</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1211"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1207"/>
         <source>Magn Max</source>
         <comment>Magnitude at the maximum</comment>
         <translation>最大等級</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1220"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1216"/>
         <source>Alt</source>
         <comment>Altitude of satellite</comment>
         <translation>高度</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1237"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1233"/>
         <source>Azimut satellite</source>
         <translation>衛星方位角</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1238"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1234"/>
         <source>Hauteur satellite</source>
         <translation>衛星仰角</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1239"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1235"/>
         <source>Ascension droite satellite</source>
         <translation>衛星赤経</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1240"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1236"/>
         <source>Déclinaison satellite</source>
         <translation>衛星赤緯</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1248"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1257"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1271"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1244"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1253"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1267"/>
         <source>Azimut Soleil</source>
         <translation>太陽方位角</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1259"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1273"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1255"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1269"/>
         <source>Longitude du maximum</source>
         <translation>最適地点の経度</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1260"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1274"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1256"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1270"/>
         <source>Latitude du maximum</source>
         <translation>最適地点の緯度</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1261"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1257"/>
         <source>Magnitude au maximum</source>
         <translation>最適地点の等級</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1262"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1275"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1258"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1271"/>
         <source>Distance au maximum</source>
         <translation>最適地点からの距離</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1382"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1378"/>
         <source>Détail du passage</source>
         <translation>通過の詳細</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1386"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1382"/>
         <source>Détail du flash</source>
         <translation>フレアの詳細</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1390"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1386"/>
         <source>Détail du transit ou conjonction</source>
         <translation>通過又は合の詳細</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1434"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1430"/>
         <source>Enregistrer sous</source>
         <translation>名前を付けて保存</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1435"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1431"/>
         <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;Tous les fichiers (*.*)</source>
         <translation>PNGファイル (*.png);;JPEGファイル (*.jpg *.jpeg);;BMPファイル (*.bmp);;すべてのファイル (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1465"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1461"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*.*)</source>
         <translation>テキストファイル (*.txt);;すべてのファイル (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1531"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1527"/>
         <source>   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance</source>
         <comment>Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, Angle, Type, Body, Illumination, Duration, Altitude of satellite, Range, Solar azimuth, Solar elevation, Longitude of the maximum, Latitude of the maximum, Range from the maximum</comment>
         <translation>    日付      時刻       衛星方位角   衛星仰角    衛星赤経   衛星赤緯  星座  角度   種類    天体   照射 継続時間   高度      距離  太陽方位角   太陽仰角      最適経度    最適緯度       距離</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1464"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1460"/>
         <source>Enregistrer sous...</source>
         <translation>名前を付けて保存...</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1502"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1498"/>
         <source>(numéro NORAD : %1)</source>
         <translation>(NORAD番号 : %1)</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1510"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1541"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1506"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1537"/>
         <source>   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  Haut Soleil</source>
         <comment>Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation</comment>
         <translation>   日付      時刻      衛星方位角   衛星仰角   衛星赤経    衛星赤緯  星座  等級      高度      距離   太陽方位角   太陽仰角</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1519"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1515"/>
         <source>Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang   Mir Magn       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance</source>
         <comment>Satellite, Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, Angle, Mirror, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation, Longitude of the maximum, Latitude of the maximum, Magnitude at the maximum, Range from the maximum</comment>
         <translation>衛星           日付      時刻       衛星方位角   衛星仰角    衛星赤経   衛星赤緯  星座  角度  鏡面 等級      高度      距離  太陽方位角   太陽仰角      最適経度     最適緯度    最大等級    距離</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1550"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1546"/>
         <source>   Date      Heure     PSO    Longitude  Latitude  Évènements</source>
         <comment>Date, Hour, In orbit position, Longitude, Latitude, Events</comment>
         <translation>    日付      時刻     位置       経度         緯度     事象</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1682"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1678"/>
         <source>Temps écoulé : %1s</source>
         <translation>経過時間 : %1s</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="420"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="416"/>
         <source>km</source>
         <comment>Kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="420"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="421"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="416"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="417"/>
         <source>m</source>
         <comment>meter</comment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="420"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="416"/>
         <source>ft</source>
         <comment>foot</comment>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="446"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="442"/>
         <source>Longitude</source>
         <translation>経度</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="447"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="443"/>
         <source>Latitude</source>
         <translation>緯度</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="448"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="444"/>
         <source>Altitude</source>
         <comment>Altitude of observer</comment>
         <translation>高さ</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="564"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="560"/>
         <source>Double-cliquez sur une ligne pour afficher plus de détails</source>
         <translation>行をダブルクリックすると詳細が表示されます</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="703"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="699"/>
         <source>Age de l&apos;élément le plus récent : %1 jours (au %2)
 Age de l&apos;élément le plus ancien : %3 jours</source>
         <translation>最新要素の年齢 : %1日 (%2現在)
 最古要素の年齢 : %3日</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="755"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="751"/>
         <source>W</source>
         <comment>West</comment>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="755"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="751"/>
         <source>E</source>
         <comment>East</comment>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="757"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="753"/>
         <source>N</source>
         <comment>North</comment>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="757"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="753"/>
         <source>S</source>
         <comment>South</comment>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="875"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1021"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1139"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="871"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1017"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1135"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1063"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1118"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1059"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1114"/>
         <source>T</source>
         <comment>transit</comment>
         <translation>通過</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1063"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1118"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1059"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1114"/>
         <source>C</source>
         <comment>conjunction</comment>
         <translation> 合 </translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1064"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1119"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1060"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1115"/>
         <source>S</source>
         <comment>Sun</comment>
         <translation>太陽</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1064"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1119"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1060"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1115"/>
         <source>L</source>
         <comment>Moon</comment>
         <translation> 月 </translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1067"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1122"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1063"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1118"/>
         <source>Lum</source>
         <comment>Lit</comment>
         <translation>照射</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1069"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1124"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1065"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1120"/>
         <source>Omb</source>
         <comment>Shadow</comment>
         <translation>本影</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1073"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1128"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1069"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1124"/>
         <source>Pen</source>
         <comment>Penumbra</comment>
         <translation>半影</translation>
@@ -710,7 +710,7 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="530"/>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="456"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="452"/>
         <source>Connecter</source>
         <translation>接続する</translation>
     </message>
@@ -721,7 +721,7 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="565"/>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="491"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="487"/>
         <source>Ouvrir CatRotator</source>
         <translation>CatRotatorを開く</translation>
     </message>
@@ -731,57 +731,57 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
         <translation>名称 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="277"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="273"/>
         <source>h</source>
         <comment>hour</comment>
         <translation>h</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="273"/>
         <location filename="../src/interface/onglets/antenne/antenne.cpp" line="277"/>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="281"/>
         <source>min</source>
         <comment>minute</comment>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="281"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="277"/>
         <source>s</source>
         <comment>second</comment>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="284"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="280"/>
         <source>Prochain %1 dans %2</source>
         <comment>Next AOS or LOS, and delay</comment>
         <translation>次の%1まであと%2です</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="286"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="282"/>
         <source>AOS</source>
         <translation>AOS</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="286"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="282"/>
         <source>Acquisition du signal</source>
         <translation>信号受信開始</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="286"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="282"/>
         <source>Perte du signal</source>
         <translation>信号受信終了</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="412"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="408"/>
         <source>Déconnecter</source>
         <translation>切断する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="442"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="438"/>
         <source>Connexion en cours...</source>
         <translation>接続中です...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="491"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="487"/>
         <source>Fichiers exécutables (*.exe)</source>
         <translation>実行ファイル (*.exe)</translation>
     </message>
@@ -817,28 +817,28 @@ PreviSatは、完全無料です!</translation>
         <translation>更新の確認...</translation>
     </message>
     <message>
-        <location filename="../src/interface/apropos/apropos.cpp" line="110"/>
+        <location filename="../src/interface/apropos/apropos.cpp" line="106"/>
         <source>À propos de %1 %2</source>
         <translation>%1 %2について</translation>
     </message>
     <message>
-        <location filename="../src/interface/apropos/apropos.cpp" line="129"/>
+        <location filename="../src/interface/apropos/apropos.cpp" line="125"/>
         <source>Version %1  (%2)</source>
         <translation>バージョン %1  (%2)</translation>
     </message>
     <message>
-        <location filename="../src/interface/apropos/apropos.cpp" line="132"/>
+        <location filename="../src/interface/apropos/apropos.cpp" line="128"/>
         <source>d MMMM yyyy</source>
         <comment>Date format</comment>
         <translation>yyyy年MM月dd日</translation>
     </message>
     <message>
-        <location filename="../src/interface/apropos/apropos.cpp" line="165"/>
+        <location filename="../src/interface/apropos/apropos.cpp" line="161"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/interface/apropos/apropos.cpp" line="165"/>
+        <location filename="../src/interface/apropos/apropos.cpp" line="161"/>
         <source>Vous utilisez la dernière version de %1</source>
         <translation>最新バージョンの「%1」を使用しています</translation>
     </message>
@@ -928,55 +928,55 @@ PreviSatは、完全無料です!</translation>
         <translation>軌道要素を更新する...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="315"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="309"/>
         <source>Aucun</source>
         <translation>無し</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="318"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="312"/>
         <source>Tous</source>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="369"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="363"/>
         <source>Aucun satellite n&apos;est sélectionné dans la liste</source>
         <translation>リストで衛星が選択されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="399"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="393"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="399"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="393"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="434"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="428"/>
         <source>evenements</source>
         <comment>file name (without accent)</comment>
         <translation>events</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="444"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="438"/>
         <source>Calculs en cours...</source>
         <translation>進行中の計算...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="445"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="439"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="468"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="462"/>
         <source>Calculs terminés</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="471"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="465"/>
         <source>Aucun évènement n&apos;a été trouvé sur la période donnée</source>
         <translation>指定された期間に事象が見つかりませんでした</translation>
     </message>
@@ -1113,55 +1113,55 @@ PreviSatは、完全無料です!</translation>
         <translation>flares-spctrk.xmlを更新する...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="348"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="342"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="348"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="342"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="403"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="397"/>
         <source>Aucun satellite produisant des flashs n&apos;a été trouvé dans le fichier d&apos;éléments orbitaux</source>
         <translation>軌道要素ファイルにはフレアを生成する衛星が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="437"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="431"/>
         <source>flashs</source>
         <comment>file name (without accent)</comment>
         <translation>flares</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="447"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="441"/>
         <source>Calculs en cours...</source>
         <translation>進行中の計算...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="448"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="442"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="471"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="465"/>
         <source>Calculs terminés</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="475"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="469"/>
         <source>Aucun flash n&apos;a été trouvé sur la période donnée</source>
         <translation>指定された期間にフレアが見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="583"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="577"/>
         <source>Mise à jour du fichier GP %1 en cours...</source>
         <translation>GPファイル「%1」を更新しています...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="588"/>
+        <location filename="../src/interface/onglets/previsions/calculsflashs.cpp" line="582"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
     </message>
@@ -1348,55 +1348,55 @@ PreviSatは、完全無料です!</translation>
         <translation>軌道要素を更新する...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="348"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="342"/>
         <source>Aucun</source>
         <translation>無し</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="351"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="345"/>
         <source>Tous</source>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="405"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="399"/>
         <source>Aucun satellite n&apos;est sélectionné dans la liste</source>
         <translation>リストで衛星が選択されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="446"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="440"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="446"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="440"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="517"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="511"/>
         <source>previsions</source>
         <comment>filename (without accent)</comment>
         <translation>predictions</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="527"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="521"/>
         <source>Calculs en cours...</source>
         <translation>進行中の計算...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="528"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="522"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="551"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="545"/>
         <source>Calculs terminés</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="555"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="549"/>
         <source>Aucun passage n&apos;a été trouvé sur la période donnée</source>
         <translation>指定された期間に通過が見つかりませんでした</translation>
     </message>
@@ -1564,63 +1564,63 @@ PreviSatは、完全無料です!</translation>
         <translation>展開 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="210"/>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="211"/>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="309"/>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="310"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="204"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="205"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="303"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="304"/>
         <source>UTC</source>
         <translation>UTC</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="215"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="209"/>
         <source>Aucun groupe Starlink trouvé</source>
         <translation>Starlinkグループが見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="454"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="448"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="454"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="448"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="523"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="517"/>
         <source>starlink</source>
         <comment>filename (without accent)</comment>
         <translation>starlink</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="533"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="527"/>
         <source>Calculs en cours...</source>
         <translation>進行中の計算...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="534"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="528"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="557"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="551"/>
         <source>Calculs terminés</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="561"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="555"/>
         <source>Aucun passage n&apos;a été trouvé sur la période donnée</source>
         <translation>指定された期間に通過が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="588"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="582"/>
         <source>Mise à jour des éléments orbitaux...</source>
         <translation>軌道要素を更新しています...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="594"/>
+        <location filename="../src/interface/onglets/previsions/calculsstarlink.cpp" line="588"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
     </message>
@@ -1750,65 +1750,65 @@ PreviSatは、完全無料です!</translation>
         <translation>フィルター</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="351"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="345"/>
         <source>Les éléments orbitaux de l&apos;ISS sont vieux, il est conseillé de les mettre à jour</source>
         <translation>ISSの軌道要素は古くなっているため更新することをお勧めします</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="389"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="383"/>
         <source>Aucun</source>
         <translation>無し</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="392"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="386"/>
         <source>Tous</source>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="470"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="464"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="470"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="464"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="526"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="520"/>
         <source>transits</source>
         <comment>file name (without accent)</comment>
         <translation>transits</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="536"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="530"/>
         <source>Calculs en cours...</source>
         <translation>進行中の計算...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="537"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="531"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="560"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="554"/>
         <source>Calculs terminés</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="563"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="557"/>
         <source>Aucun transit ISS n&apos;a été trouvé sur la période donnée</source>
         <translation>指定された期間にISSの通過が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="692"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="686"/>
         <source>Téléchargement du fichier d&apos;élements orbitaux de l&apos;ISS...</source>
         <translation>ISSの軌道要素ファイルのダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="696"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="690"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
     </message>
@@ -1816,83 +1816,83 @@ PreviSatは、完全無料です!</translation>
 <context>
     <name>Carte</name>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="150"/>
+        <location filename="../src/interface/carte/carte.cpp" line="146"/>
         <source>Est</source>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="150"/>
+        <location filename="../src/interface/carte/carte.cpp" line="146"/>
         <source>Ouest</source>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="154"/>
+        <location filename="../src/interface/carte/carte.cpp" line="150"/>
         <source>Sud</source>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="154"/>
+        <location filename="../src/interface/carte/carte.cpp" line="150"/>
         <source>Nord</source>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="157"/>
+        <location filename="../src/interface/carte/carte.cpp" line="153"/>
         <source>Longitude : %1° %2</source>
         <translation>経度 : %1° %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="158"/>
+        <location filename="../src/interface/carte/carte.cpp" line="154"/>
         <source>Latitude : %1° %2</source>
         <translation>緯度 : %1° %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="177"/>
+        <location filename="../src/interface/carte/carte.cpp" line="173"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="180"/>
+        <location filename="../src/interface/carte/carte.cpp" line="176"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="205"/>
-        <location filename="../src/interface/carte/carte.cpp" line="206"/>
+        <location filename="../src/interface/carte/carte.cpp" line="201"/>
+        <location filename="../src/interface/carte/carte.cpp" line="202"/>
         <source>Soleil</source>
         <translation>太陽</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="231"/>
-        <location filename="../src/interface/carte/carte.cpp" line="232"/>
+        <location filename="../src/interface/carte/carte.cpp" line="227"/>
+        <location filename="../src/interface/carte/carte.cpp" line="228"/>
         <source>Lune</source>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1446"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1447"/>
         <source>W</source>
         <comment>Symbol for West</comment>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1452"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1453"/>
         <source>E</source>
         <comment>Symbol for East</comment>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1480"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1481"/>
         <source>N</source>
         <comment>Symbol for North</comment>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1486"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1487"/>
         <source>S</source>
         <comment>Symbol for South</comment>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1782"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1783"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
@@ -1920,39 +1920,39 @@ PreviSatは、完全無料です!</translation>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="1069"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="1066"/>
         <source>Flash %1</source>
         <translation>フレア %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="387"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="384"/>
         <source>Ascension droite : %1</source>
         <translation>赤経 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="389"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="386"/>
         <source>Déclinaison : %1</source>
         <translation>赤緯 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="406"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="403"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="409"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="406"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="468"/>
-        <location filename="../src/interface/ciel/ciel.cpp" line="469"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="465"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="466"/>
         <source>Soleil</source>
         <translation>太陽</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="495"/>
-        <location filename="../src/interface/ciel/ciel.cpp" line="496"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="492"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="493"/>
         <source>Lune</source>
         <translation>月</translation>
     </message>
@@ -1973,7 +1973,7 @@ PreviSatは、完全無料です!</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="189"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="842"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="838"/>
         <source>Lieu d&apos;observation :</source>
         <translation>観測地 :</translation>
     </message>
@@ -2010,7 +2010,7 @@ PreviSatは、完全無料です!</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="495"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="893"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="889"/>
         <source>Coordonnées du Soleil :</source>
         <translation>太陽の座標 :</translation>
     </message>
@@ -2059,7 +2059,7 @@ PreviSatは、完全無料です!</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="743"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="920"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="916"/>
         <source>Coordonnées de la Lune :</source>
         <translation>月の座標 :</translation>
     </message>
@@ -2092,7 +2092,7 @@ PreviSatは、完全無料です!</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1303"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="906"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="902"/>
         <source>Évènements Soleil :</source>
         <translation>太陽関連のイベント :</translation>
     </message>
@@ -2154,7 +2154,7 @@ PreviSatは、完全無料です!</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1437"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="931"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="927"/>
         <source>Évènements Lune :</source>
         <translation>月関連のイベント :</translation>
     </message>
@@ -2240,454 +2240,454 @@ PreviSatは、完全無料です!</translation>
         <translation>名称 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="64"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="60"/>
         <source>Coordonnées du Soleil</source>
         <translation>太陽の座標</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="65"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="61"/>
         <source>Coordonnées de la Lune</source>
         <translation>月の座標</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="66"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="62"/>
         <source>Évènements Soleil</source>
         <translation>太陽関連のイベント</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="67"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="63"/>
         <source>Évènements Lune</source>
         <translation>月関連のイベント</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="240"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="236"/>
         <source>UTC %1 %2</source>
         <comment>Universal Time Coordinated</comment>
         <translation>UTC %1 %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="243"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="239"/>
         <source>UTC</source>
         <comment>Universal Time Coordinated</comment>
         <translation>UTC</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="267"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="624"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="263"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="621"/>
         <source>km</source>
         <comment>Kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="267"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="624"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="263"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="621"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="291"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="287"/>
         <source>jours</source>
         <translation>日</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="294"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="594"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="791"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="290"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="591"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="788"/>
         <source>Ouest</source>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="294"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="594"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="791"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="290"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="591"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="788"/>
         <source>Est</source>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="296"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="596"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="792"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="292"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="593"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="789"/>
         <source>Nord</source>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="296"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="596"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="792"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="292"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="593"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="789"/>
         <source>Sud</source>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="319"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="315"/>
         <source>Ascendant</source>
         <translation>上昇軌道</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="319"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="315"/>
         <source>Descendant</source>
         <translation>下降軌道</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="323"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="319"/>
         <source>Orbite n°%1</source>
         <translation>軌道 #%1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="329"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="325"/>
         <source>Lune</source>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="343"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="661"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="339"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="658"/>
         <source>Satellite en éclipse totale%1</source>
         <translation>現在、衛星の皆既食中です%1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="347"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="343"/>
         <source>Magnitude (Illumination) : %1 (%2%)</source>
         <translation>等級 (照射) : %1 (%2%)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="406"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="402"/>
         <source>S</source>
         <comment>Sun</comment>
         <translation>太陽</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="406"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="402"/>
         <source>L</source>
         <comment>Moon</comment>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="409"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="405"/>
         <source>P</source>
         <comment>partial eclipse</comment>
         <translation>部分食</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="413"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="409"/>
         <source>A</source>
         <comment>annular eclipse</comment>
         <translation>金環食</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="440"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="489"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="436"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="486"/>
         <source>Prochain %1 :</source>
         <translation>次の%1 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="442"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="438"/>
         <source>N&gt;J</source>
         <comment>Night to day</comment>
         <translation>「夜&gt;昼」</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="442"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="438"/>
         <source>J&gt;N</source>
         <comment>Day to night</comment>
         <translation>「昼&gt;夜」</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="443"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="439"/>
         <source>Nuit &gt; Jour</source>
         <translation>夜間 &gt; 昼間</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="443"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="439"/>
         <source>Jour &gt; Nuit</source>
         <translation>昼間 &gt; 夜間</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="458"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="511"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="454"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="508"/>
         <source>h</source>
         <comment>hour</comment>
         <translation>h</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="454"/>
         <location filename="../src/interface/onglets/general/general.cpp" line="458"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="462"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="511"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="515"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="508"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="512"/>
         <source>min</source>
         <comment>minute</comment>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="462"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="515"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="458"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="512"/>
         <source>s</source>
         <comment>second</comment>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="492"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="489"/>
         <source>AOS</source>
         <translation>AOS</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="492"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="489"/>
         <source>Acquisition du signal</source>
         <translation>信号受信開始</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="492"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="489"/>
         <source>Perte du signal</source>
         <translation>信号受信終了</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="446"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="496"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="442"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="493"/>
         <source>%1  (dans %2).</source>
         <comment>Delay in hours, minutes or seconds</comment>
         <translation>%1  (あと%2で).</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="525"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="522"/>
         <source>Azimut : %1</source>
         <translation>方位角 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="541"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="538"/>
         <source>Beta : %1</source>
         <comment>Beta angle (angle between orbit plane and direction of Sun)</comment>
         <translation>ベータ角 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="575"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="572"/>
         <source>Nuit</source>
         <translation>夜間</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="586"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="583"/>
         <source>%1 UA</source>
         <translation>%1 AU</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="664"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="661"/>
         <source>Satellite non éclipsé</source>
         <translation>現在、衛星に太陽光が当たっている</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="666"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="663"/>
         <source>Satellite en éclipse partielle%1</source>
         <translation>現在、衛星の部分食中です%1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="669"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="666"/>
         <source>Satellite en éclipse annulaire%1</source>
         <translation>現在、衛星の金環食中です%1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="705"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="702"/>
         <source>km/h</source>
         <comment>Kilometer per hour</comment>
         <translation>km/h</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="705"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="702"/>
         <source>km/s</source>
         <comment>Kilometer per second</comment>
         <translation>km/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="707"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="704"/>
         <source>kn</source>
         <comment>Knot</comment>
         <translation>kn</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="707"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="704"/>
         <source>nmi/s</source>
         <comment>Nautical mile per second</comment>
         <translation>nmi/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="800"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="797"/>
         <source>m</source>
         <comment>meter</comment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="800"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="797"/>
         <source>ft</source>
         <comment>foot</comment>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="828"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="824"/>
         <source>Problème de droits d&apos;écriture du fichier %1</source>
         <translation>ファイル「%1」の書き込み権限に問題があります</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="840"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="836"/>
         <source>Date :</source>
         <comment>Date and hour</comment>
         <translation>日時 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="843"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="839"/>
         <source>Longitude  : %1	Latitude : %2	Altitude : %3</source>
         <comment>Observer coordinates</comment>
         <translation>経度   : %1	緯度 : %2	高さ : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="845"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="841"/>
         <source>Conditions : %1</source>
         <comment>Conditions of observation</comment>
         <translation>状況   : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="853"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="849"/>
         <source>Nom du satellite :</source>
         <translation>衛星名 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="859"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="855"/>
         <source>Latitude  :  %1		Azimut (N) : %2	Déclinaison      : %3</source>
         <translation>緯度  :  %1		方位角 (北) : %2	赤緯 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="863"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="859"/>
         <source>Altitude  :  %1		Distance   : %2	Constellation    : %3</source>
         <comment>Altitude of satellite</comment>
         <translation>高度  :  %1		距離        : %2	星座 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="867"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="863"/>
         <source>Direction          : %1  	%2      		%3</source>
         <translation>方向     : %1      		%2      		%3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="881"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="877"/>
         <source>Variation distance : %1  	%2</source>
         <comment>Range rate</comment>
         <translation>レンジレート : %1  		%2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="894"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="890"/>
         <source>Hauteur    : %1		Ascension droite  :  %2 	Longitude                : %3</source>
         <translation>仰角        : %1	赤経 :  %2 		経度       : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="898"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="894"/>
         <source>Azimut (N) : %1		Déclinaison       : %2 	Latitude                 : %3</source>
         <comment>Azimuth from the North</comment>
         <translation>方位角 (北) : %1 	赤緯 : %2 		緯度       : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="902"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="898"/>
         <source>Distance   : %1   		Constellation     : %2			Diamètre apparent        : %3</source>
         <translation>距離        : %1   	星座 : %2			見かけの直径 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="907"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="903"/>
         <source>Lever    : %1			Aube astronomique : %2		Crépuscule civil         : %3</source>
         <comment>Sunrise</comment>
         <translation>日の出    : %1			天文明け方 : %2		市民薄暮 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="910"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="906"/>
         <source>Méridien : %1			Aube nautique     : %2		Crépuscule nautique      : %3</source>
         <comment>Meridian pass for the Sun</comment>
         <translation>子午線越え : %1		航海明け方 : %2		航海薄暮 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="914"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="910"/>
         <source>Coucher  : %1			Aube civile       : %2		Crépuscule astronomique  : %3</source>
         <comment>Sunset</comment>
         <translation>日の入り   : %1			市民明け方 : %2		天文薄暮 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="921"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="917"/>
         <source>Hauteur    : %1		Ascension droite :  %2 	Phase                    : %3</source>
         <comment>Moon phase</comment>
         <translation>仰角        : %1	赤経 :  %2 		月相        : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="924"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="920"/>
         <source>Azimut (N) : %1		Déclinaison      : %2 	Magnitude (Illumination) : %3</source>
         <comment>Azimuth from the North</comment>
         <translation>方位角 (北) : %1 	赤緯 : %2 		等級 (照射) : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="927"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="923"/>
         <source>Distance   : %1  		Constellation    : %2 			Diamètre apparent        : %3</source>
         <translation>距離        : %1   	星座 : %2			見かけの直径 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="932"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="928"/>
         <source>Lever    : %1</source>
         <comment>Moonrise</comment>
         <translation>月の出     : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="933"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="929"/>
         <source>Méridien : %1</source>
         <comment>Meridian pass for the Moon</comment>
         <translation>子午線越え : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="934"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="930"/>
         <source>Coucher  : %1</source>
         <comment>Moonset</comment>
         <translation>月の入り    : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="567"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="564"/>
         <source>Jour</source>
         <comment>Sun is above horizon</comment>
         <translation>昼間</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="569"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="566"/>
         <source>Crépuscule civil</source>
         <comment>Sun is 6 degrees below horizon</comment>
         <translation>市民薄明</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="571"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="568"/>
         <source>Crépuscule nautique</source>
         <comment>Sun is 12 degrees below horizon</comment>
         <translation>航海薄明</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="573"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="570"/>
         <source>Crépuscule astronomique</source>
         <comment>Sun is 18 degrees below horizon</comment>
         <translation>天文薄明</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="855"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="851"/>
         <source>Longitude : %1  	Hauteur    : %2	Ascension droite :  %3</source>
         <translation>経度  : %1		仰角        : %2	赤経 :  %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="871"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="867"/>
         <source>Vitesse orbitale   : %1	%2  %3</source>
         <translation>軌道速度 : %1		%2 %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="936"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="932"/>
         <source>Nouvelle Lune    : %1</source>
         <translation>ニュームーン     : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="937"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="933"/>
         <source>Premier quartier : %1</source>
         <translation>ファーストクォーター : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="938"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="934"/>
         <source>Pleine Lune      : %1</source>
         <translation>フルムーン      : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="939"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="935"/>
         <source>Dernier quartier : %1</source>
         <translation>サードクォーター   : %1</translation>
     </message>
@@ -2781,65 +2781,65 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
 「ISSの情報を更新する」をクリックしてください</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="135"/>
+        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="131"/>
         <source>km</source>
         <comment>Kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="136"/>
+        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="132"/>
         <source>m/s</source>
         <comment>meter per second</comment>
         <translation>m/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="137"/>
+        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="133"/>
         <source>kg</source>
         <comment>Kilogram</comment>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="138"/>
+        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="134"/>
         <source>m^2</source>
         <comment>meter square</comment>
         <translation>m^2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="145"/>
+        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="141"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="146"/>
+        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="142"/>
         <source>ft/s</source>
         <comment>foot per second</comment>
         <translation>ft/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="147"/>
+        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="143"/>
         <source>lb</source>
         <comment>pound</comment>
         <translation>lb</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="148"/>
+        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="144"/>
         <source>ft^2</source>
         <comment>foot square</comment>
         <translation>ft^2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="171"/>
+        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="167"/>
         <source>Aucun évènement contenu dans le fichier ISS</source>
         <translation>ISSファイルには事象が含まれていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="288"/>
+        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="284"/>
         <source>Téléchargement du fichier d&apos;informations ISS...</source>
         <translation>ISS情報ファイルのダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="290"/>
+        <location filename="../src/interface/onglets/donnees/informationsiss.cpp" line="286"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
     </message>
@@ -2873,209 +2873,206 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>近地点引数 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="333"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="362"/>
         <source>Numéro NORAD :</source>
         <translation>NORAD番号 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="346"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="375"/>
         <source>Désignation COSPAR :</source>
         <translation>国際衛星識別符号 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="359"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="388"/>
         <source>Époque (UTC) :</source>
         <extracomment>Universal Time Coordinated</extracomment>
         <translation>元期 (UTC) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="372"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="401"/>
         <source>Coeff pseudo-balistique :</source>
         <extracomment>Pseudo-ballistic coefficient</extracomment>
         <translation>大気抵抗係数項 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="458"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="487"/>
         <source>Date de lancement :</source>
         <translation>打ち上げ日 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="468"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="497"/>
         <source>Catégorie d&apos;orbite :</source>
         <translation>軌道種類 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="478"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="507"/>
         <source>Pays/Organisation :</source>
         <translation>国/組織 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="488"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="517"/>
         <source>Site de lancement :</source>
         <translation>発射場 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="576"/>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="676"/>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="702"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="605"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="705"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="731"/>
         <source>rev/jour</source>
         <extracomment>revolution per day</extracomment>
         <translation>回転/day</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="650"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="679"/>
         <source>n&quot; / 6 :</source>
         <extracomment>second derivative of the mean motion divided by six (in revolution per day cube)</extracomment>
         <translation>n&quot; / 6 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="663"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="692"/>
         <source>Moyen mouvement :</source>
         <translation>平均運動 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="689"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="718"/>
         <source>Nb orbites à l&apos;époque :</source>
         <translation>元期での周回数 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="715"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="744"/>
         <source>n&apos; / 2 :</source>
         <extracomment>derivative of the mean motion divided by two (in revolution per day square)</extracomment>
         <translation>n&apos; / 2 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="795"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="885"/>
+        <source>Forme/Dimensions :</source>
+        <translation type="unfinished">断面積・TODO :</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="905"/>
+        <source>Classe/Categorie/Discipline :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="309"/>
         <source>Anomalie moyenne :</source>
         <translation>平均近点角 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="824"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="813"/>
+        <source>Masse sec/totale :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="846"/>
         <source>Magnitude std/max :</source>
         <extracomment>Standard/maximum magnitude</extracomment>
         <translation>標準・最大等級 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="850"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="859"/>
         <source>Modèle orbital :</source>
         <translation>軌道モデル :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="876"/>
-        <source>Dimensions/Section :</source>
-        <translation>大きさ・断面積 :</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="144"/>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="147"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="139"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="142"/>
         <source>Inconnue</source>
         <translation>不明</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="150"/>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="153"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="145"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="148"/>
         <source>Inconnu</source>
         <translation>不明</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="192"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="193"/>
         <source>Modèle haute orbite</source>
         <translation>高軌道モデル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="192"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="193"/>
         <source>Modèle basse orbite</source>
         <translation>低軌道モデル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="199"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="200"/>
         <source>m</source>
         <comment>meter</comment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="199"/>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="200"/>
         <source>ft</source>
         <comment>foot</comment>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="209"/>
-        <source>Sphérique. R=%1 %2</source>
-        <comment>R = radius</comment>
-        <translation>球形。 R=%1 %2</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="213"/>
-        <source>Cylindrique. L=%1 %2, R=%3 %2</source>
-        <comment>L = height; R = radius</comment>
-        <translation>円筒形。 L=%1 %2, R=%3 %2</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="217"/>
-        <source>Boîte. %1 x %2 x %3 %4</source>
-        <translation>直方体。 %1 x %2 x %3 %4</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="221"/>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="298"/>
-        <source>Inconnues</source>
-        <translation>不明</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="255"/>
-        <source>Problème de droits d&apos;écriture du fichier %1</source>
-        <translation>ファイル「%1」の書き込み権限に問題があります</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="267"/>
-        <source>Nom du satellite :</source>
-        <translation>衛星名 :</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="269"/>
-        <source>Numéro NORAD            : %1 		Moyen mouvement       : %2 rev/jour	 Date de lancement  : %3</source>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="254"/>
+        <source>Numéro NORAD            : %1 		Moyen mouvement             : %2 rev/jour	 Date de lancement  : %3</source>
         <comment>revolution per day</comment>
         <translation>NORAD番号       : %1 				平均運動     : %2 回転/day	打ち上げ日  : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="273"/>
-        <source>Désignation COSPAR      : %1		n&apos;/2                  : %2 rev/jour^2	 Catégorie d&apos;orbite : %3</source>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="258"/>
+        <source>Désignation COSPAR      : %1		n&apos;/2                        : %2 rev/jour^2	 Catégorie d&apos;orbite : %3</source>
         <comment>n&apos;/2 = derivative of the mean motion divided by two (in revolution per day square)</comment>
         <translation>国際衛星識別符号 : %1				n&apos;/2         : %2 回転/day^2	軌道種類 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="285"/>
-        <source>Inclinaison             : %1		Anomalie moyenne      : %2</source>
-        <translation>軌道傾斜角       : %1				平均近点角     : %2</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="289"/>
-        <source>AD noeud ascendant      : %1		Magnitude std/max     : %2</source>
-        <comment>Right ascension of the ascending node, Standard/Maximum magnitude</comment>
-        <translation>昇交点赤経       : %1				標準・最大等級  : %2</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="293"/>
-        <source>Excentricité            : %1		Modèle orbital        : %2</source>
-        <translation>離心率           : %1				軌道モデル      : %2</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="296"/>
-        <source>Argument du périgée     : %1		Dimensions/Section    : %2%3</source>
-        <translation>近地点引数       : %1				大きさ・断面積   : %2%3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="277"/>
-        <source>Époque (UTC)            : %1	n&quot;/6                  : %2 rev/jour^3	 Pays/Organisation  : %3</source>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="262"/>
+        <source>Époque (UTC)            : %1	n&quot;/6                        : %2 rev/jour^3	 Pays/Organisation  : %3</source>
         <comment>n&quot;/6 = second derivative of the mean motion divided by six (in revolution per day cube)</comment>
         <translation>元期 (UTC)      : %1		n&quot;/6         : %2 回転/day^3	国/組織  : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="281"/>
-        <source>Coeff pseudo-balistique : %1 (1/Re)	Nb orbites à l&apos;époque : %2			 Site de lancement  : %3</source>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="266"/>
+        <source>Coeff pseudo-balistique : %1 (1/Re)	Nb orbites à l&apos;époque       : %2			 Site de lancement  : %3</source>
         <comment>Pseudo-ballistic coefficient in 1/Earth radius</comment>
         <translation>大気抵抗係数項   : %1 (1/Re)			元期での周回数 : %2			発射場  : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="271"/>
+        <source>Inclinaison             : %1		Masse sec/totale            : %2</source>
+        <translation type="unfinished">軌道傾斜角       : %1				TODO : %2</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="274"/>
+        <source>AD noeud ascendant      : %1		Magnitude std/max           : %2</source>
+        <comment>Right ascension of the ascending node, Standard/Maximum magnitude</comment>
+        <translation>昇交点赤経       : %1				標準・最大等級  : %2</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="278"/>
+        <source>Excentricité            : %1		Modèle orbital              : %2</source>
+        <translation>離心率           : %1				軌道モデル      : %2</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="281"/>
+        <source>Argument du périgée     : %1		Forme/Dimensions            : %2</source>
+        <translation type="unfinished">近地点引数       : %1				断面積・TODO   : %2</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="284"/>
+        <source>Anomalie moyenne        : %1		Classe/Catégorie/Discipline : %2</source>
+        <translation type="unfinished">平均近点角     : %1		TODO : %2</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="209"/>
+        <source>Inconnues</source>
+        <translation>不明</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="240"/>
+        <source>Problème de droits d&apos;écriture du fichier %1</source>
+        <translation>ファイル「%1」の書き込み権限に問題があります</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/informationssatellite.cpp" line="252"/>
+        <source>Nom du satellite :</source>
+        <translation>衛星名 :</translation>
     </message>
 </context>
 <context>
@@ -3102,42 +3099,42 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>メッセージ数</translation>
     </message>
     <message>
-        <location filename="../src/interface/logging/logging.cpp" line="157"/>
+        <location filename="../src/interface/logging/logging.cpp" line="152"/>
         <source>FATAL</source>
         <translation>致命的なエラー</translation>
     </message>
     <message>
-        <location filename="../src/interface/logging/logging.cpp" line="163"/>
+        <location filename="../src/interface/logging/logging.cpp" line="158"/>
         <source>ERREUR</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../src/interface/logging/logging.cpp" line="169"/>
+        <location filename="../src/interface/logging/logging.cpp" line="164"/>
         <source>WARNING</source>
         <translation>ワーニング</translation>
     </message>
     <message>
-        <location filename="../src/interface/logging/logging.cpp" line="175"/>
+        <location filename="../src/interface/logging/logging.cpp" line="170"/>
         <source>DEBUG</source>
         <translation>デバッグ</translation>
     </message>
     <message>
-        <location filename="../src/interface/logging/logging.cpp" line="180"/>
+        <location filename="../src/interface/logging/logging.cpp" line="175"/>
         <source>INFO</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/interface/logging/logging.cpp" line="215"/>
+        <location filename="../src/interface/logging/logging.cpp" line="210"/>
         <source>Exporter ...</source>
         <translation>エクスポートする...</translation>
     </message>
     <message>
-        <location filename="../src/interface/logging/logging.cpp" line="275"/>
+        <location filename="../src/interface/logging/logging.cpp" line="270"/>
         <source>Enregistrer sous...</source>
         <translation>名前を付けて保存...</translation>
     </message>
     <message>
-        <location filename="../src/interface/logging/logging.cpp" line="275"/>
+        <location filename="../src/interface/logging/logging.cpp" line="270"/>
         <source>Fichiers log (*.log)</source>
         <translation>ログファイル (*.log)</translation>
     </message>
@@ -3156,43 +3153,43 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/onglets.ui" line="56"/>
-        <location filename="../src/interface/onglets/onglets.cpp" line="278"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="274"/>
         <source>Éléments osculateurs</source>
         <translation>接触軌道要素</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/onglets.ui" line="64"/>
-        <location filename="../src/interface/onglets/onglets.cpp" line="395"/>
-        <location filename="../src/interface/onglets/onglets.cpp" line="416"/>
-        <location filename="../src/interface/onglets/onglets.cpp" line="432"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="391"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="412"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="428"/>
         <source>Informations satellite</source>
         <translation>衛星情報</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/onglets.ui" line="157"/>
-        <location filename="../src/interface/onglets/onglets.cpp" line="70"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="66"/>
         <source>Prévisions</source>
         <translation>予報</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/onglets.cpp" line="71"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="67"/>
         <source>Flashs</source>
         <translation>フレア</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/onglets.cpp" line="72"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="68"/>
         <source>Transits</source>
         <translation>太陽面・月面通過</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/onglets.cpp" line="74"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="70"/>
         <source>Starlink</source>
         <translation>Starlink</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/onglets.cpp" line="397"/>
-        <location filename="../src/interface/onglets/onglets.cpp" line="410"/>
-        <location filename="../src/interface/onglets/onglets.cpp" line="425"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="393"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="406"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="421"/>
         <source>Informations ISS</source>
         <translation>ISS情報</translation>
     </message>
@@ -3202,15 +3199,15 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>望遠鏡</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/onglets.cpp" line="73"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="69"/>
         <source>Évènements orbitaux</source>
         <translation>軌道上事象</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/onglets.cpp" line="399"/>
-        <location filename="../src/interface/onglets/onglets.cpp" line="404"/>
-        <location filename="../src/interface/onglets/onglets.cpp" line="409"/>
-        <location filename="../src/interface/onglets/onglets.cpp" line="426"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="395"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="400"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="405"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="422"/>
         <source>Recherche données</source>
         <translation>データを検索する</translation>
     </message>
@@ -3224,7 +3221,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="58"/>
-        <location filename="../src/interface/options/options.cpp" line="1138"/>
+        <location filename="../src/interface/options/options.cpp" line="1129"/>
         <source>Lieu d&apos;observation</source>
         <translation>観測地</translation>
     </message>
@@ -3291,8 +3288,8 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="309"/>
         <location filename="../src/interface/options/options.ui" line="374"/>
-        <location filename="../src/interface/options/options.cpp" line="981"/>
-        <location filename="../src/interface/options/options.cpp" line="1143"/>
+        <location filename="../src/interface/options/options.cpp" line="972"/>
+        <location filename="../src/interface/options/options.cpp" line="1134"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
@@ -3304,27 +3301,27 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="515"/>
-        <location filename="../src/interface/options/options.cpp" line="419"/>
+        <location filename="../src/interface/options/options.cpp" line="415"/>
         <source>Nord</source>
         <translation>北</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="520"/>
-        <location filename="../src/interface/options/options.cpp" line="419"/>
-        <location filename="../src/interface/options/options.cpp" line="1529"/>
+        <location filename="../src/interface/options/options.cpp" line="415"/>
+        <location filename="../src/interface/options/options.cpp" line="1520"/>
         <source>Sud</source>
         <translation>南</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="532"/>
-        <location filename="../src/interface/options/options.cpp" line="418"/>
-        <location filename="../src/interface/options/options.cpp" line="1527"/>
+        <location filename="../src/interface/options/options.cpp" line="414"/>
+        <location filename="../src/interface/options/options.cpp" line="1518"/>
         <source>Est</source>
         <translation>東</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="537"/>
-        <location filename="../src/interface/options/options.cpp" line="418"/>
+        <location filename="../src/interface/options/options.cpp" line="414"/>
         <source>Ouest</source>
         <translation>西</translation>
     </message>
@@ -3749,201 +3746,201 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>ステーション :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="170"/>
-        <location filename="../src/interface/options/options.cpp" line="544"/>
+        <location filename="../src/interface/options/options.cpp" line="166"/>
+        <location filename="../src/interface/options/options.cpp" line="537"/>
         <source>Créer une catégorie</source>
         <translation>カテゴリーを作成する</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="172"/>
-        <location filename="../src/interface/options/options.cpp" line="559"/>
+        <location filename="../src/interface/options/options.cpp" line="168"/>
+        <location filename="../src/interface/options/options.cpp" line="552"/>
         <source>Créer un nouveau lieu</source>
         <translation>新しい観測地を作成する</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="182"/>
-        <location filename="../src/interface/options/options.cpp" line="426"/>
-        <location filename="../src/interface/options/options.cpp" line="1080"/>
-        <location filename="../src/interface/options/options.cpp" line="1216"/>
+        <location filename="../src/interface/options/options.cpp" line="178"/>
+        <location filename="../src/interface/options/options.cpp" line="422"/>
+        <location filename="../src/interface/options/options.cpp" line="1071"/>
+        <location filename="../src/interface/options/options.cpp" line="1207"/>
         <source>m</source>
         <comment>meter</comment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="182"/>
-        <location filename="../src/interface/options/options.cpp" line="426"/>
-        <location filename="../src/interface/options/options.cpp" line="1080"/>
-        <location filename="../src/interface/options/options.cpp" line="1216"/>
+        <location filename="../src/interface/options/options.cpp" line="178"/>
+        <location filename="../src/interface/options/options.cpp" line="422"/>
+        <location filename="../src/interface/options/options.cpp" line="1071"/>
+        <location filename="../src/interface/options/options.cpp" line="1207"/>
         <source>ft</source>
         <comment>foot</comment>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="193"/>
+        <location filename="../src/interface/options/options.cpp" line="189"/>
         <source>L&apos;altitude doit être comprise entre %1%2 et %3%2</source>
         <comment>Observer altitude</comment>
         <translation>高さは%1%2から%3%2の間でなければなりません</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="412"/>
+        <location filename="../src/interface/options/options.cpp" line="408"/>
         <source>Lieu : %1</source>
         <translation>場所 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="548"/>
-        <location filename="../src/interface/options/options.cpp" line="567"/>
+        <location filename="../src/interface/options/options.cpp" line="541"/>
+        <location filename="../src/interface/options/options.cpp" line="560"/>
         <source>Renommer</source>
         <translation>名称変更</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="551"/>
-        <location filename="../src/interface/options/options.cpp" line="574"/>
+        <location filename="../src/interface/options/options.cpp" line="544"/>
+        <location filename="../src/interface/options/options.cpp" line="567"/>
         <source>Supprimer</source>
         <translation>削除する</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="555"/>
-        <location filename="../src/interface/options/options.cpp" line="675"/>
-        <location filename="../src/interface/options/options.cpp" line="782"/>
+        <location filename="../src/interface/options/options.cpp" line="548"/>
+        <location filename="../src/interface/options/options.cpp" line="668"/>
+        <location filename="../src/interface/options/options.cpp" line="775"/>
         <source>Télécharger...</source>
         <translation>ダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="563"/>
+        <location filename="../src/interface/options/options.cpp" line="556"/>
         <source>Ajouter à Mes Préférés</source>
         <translation>お気に入りに追加</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="570"/>
+        <location filename="../src/interface/options/options.cpp" line="563"/>
         <source>Modifier</source>
         <translation>編集する</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="637"/>
+        <location filename="../src/interface/options/options.cpp" line="630"/>
         <source>Langue</source>
         <comment>Translate by the name of language, for example : English, Français, Español</comment>
         <translation>日本語</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="664"/>
-        <location filename="../src/interface/options/options.cpp" line="745"/>
-        <location filename="../src/interface/options/options.cpp" line="776"/>
+        <location filename="../src/interface/options/options.cpp" line="657"/>
+        <location filename="../src/interface/options/options.cpp" line="738"/>
+        <location filename="../src/interface/options/options.cpp" line="769"/>
         <source>* Défaut</source>
         <translation>* デフォルト</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="705"/>
+        <location filename="../src/interface/options/options.cpp" line="698"/>
         <source>Mes Préférés</source>
         <translation>お気に入り</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="751"/>
+        <location filename="../src/interface/options/options.cpp" line="744"/>
         <source>Enregistrer sous...</source>
         <translation>名前を付けて保存...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="752"/>
+        <location filename="../src/interface/options/options.cpp" line="745"/>
         <source>Supprimer...</source>
         <translation>削除する...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="879"/>
+        <location filename="../src/interface/options/options.cpp" line="871"/>
         <source>Problème de droits d&apos;écriture du fichier %1</source>
         <translation>ファイル「%1」の書き込み権限に問題があります</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="976"/>
+        <location filename="../src/interface/options/options.cpp" line="967"/>
         <source>Catégorie</source>
         <translation>カテゴリー</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="977"/>
+        <location filename="../src/interface/options/options.cpp" line="968"/>
         <source>Nouveau nom de la catégorie :</source>
         <translation>新しいカテゴリー名 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="980"/>
-        <location filename="../src/interface/options/options.cpp" line="1142"/>
+        <location filename="../src/interface/options/options.cpp" line="971"/>
+        <location filename="../src/interface/options/options.cpp" line="1133"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="996"/>
-        <location filename="../src/interface/options/options.cpp" line="1028"/>
+        <location filename="../src/interface/options/options.cpp" line="987"/>
+        <location filename="../src/interface/options/options.cpp" line="1019"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="996"/>
+        <location filename="../src/interface/options/options.cpp" line="987"/>
         <source>La catégorie existe déjà. Voulez-vous l&apos;écraser ?</source>
         <translation>このカテゴリーは既に存在します。置き換えますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="997"/>
-        <location filename="../src/interface/options/options.cpp" line="1029"/>
-        <location filename="../src/interface/options/options.cpp" line="1240"/>
+        <location filename="../src/interface/options/options.cpp" line="988"/>
+        <location filename="../src/interface/options/options.cpp" line="1020"/>
+        <location filename="../src/interface/options/options.cpp" line="1231"/>
         <source>Oui</source>
         <translation>はい</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="998"/>
-        <location filename="../src/interface/options/options.cpp" line="1030"/>
-        <location filename="../src/interface/options/options.cpp" line="1241"/>
+        <location filename="../src/interface/options/options.cpp" line="989"/>
+        <location filename="../src/interface/options/options.cpp" line="1021"/>
+        <location filename="../src/interface/options/options.cpp" line="1232"/>
         <source>Non</source>
         <translation>いいえ</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1028"/>
+        <location filename="../src/interface/options/options.cpp" line="1019"/>
         <source>Voulez-vous vraiment supprimer la catégorie &lt;b&gt;%1&lt;/b&gt; ?</source>
         <translation>カテゴリー&lt;b&gt;%1&lt;/b&gt;を本当に削除しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1110"/>
+        <location filename="../src/interface/options/options.cpp" line="1101"/>
         <source>Le lieu d&apos;observation &lt;b&gt;%1&lt;/b&gt; fait déjà partie de &lt;b&gt;Mes Préférés&lt;/b&gt;</source>
         <translation>観測地&lt;b&gt;%1&lt;/b&gt;は既に&lt;b&gt;お気に入り&lt;/b&gt;に存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1139"/>
+        <location filename="../src/interface/options/options.cpp" line="1130"/>
         <source>Nouveau nom du lieu d&apos;observation :</source>
         <translation>新しい観測地の名前 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1237"/>
+        <location filename="../src/interface/options/options.cpp" line="1228"/>
         <source>Voulez-vous vraiment supprimer &lt;b&gt;%1&lt;/b&gt; de la catégorie &lt;b&gt;%2&lt;/b&gt; ?</source>
         <translation>&lt;b&gt;%1&lt;/b&gt;をカテゴリー&lt;b&gt;%2&lt;/b&gt;から本当に削除しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1239"/>
+        <location filename="../src/interface/options/options.cpp" line="1230"/>
         <source>Avertissement</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1366"/>
+        <location filename="../src/interface/options/options.cpp" line="1357"/>
         <source>Le nom de la catégorie n&apos;est pas spécifié</source>
         <translation>カテゴリー名が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1386"/>
+        <location filename="../src/interface/options/options.cpp" line="1377"/>
         <source>La catégorie spécifiée existe déjà</source>
         <translation>指定されたカテゴリーは既に存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1497"/>
+        <location filename="../src/interface/options/options.cpp" line="1488"/>
         <source>Le nom du lieu d&apos;observation n&apos;est pas spécifié</source>
         <translation>観測地の名前が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1506"/>
+        <location filename="../src/interface/options/options.cpp" line="1497"/>
         <source>Le lieu existe déjà dans la catégorie &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>この観測地は既にカテゴリー&lt;b&gt;%1&lt;/b&gt;に存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1567"/>
+        <location filename="../src/interface/options/options.cpp" line="1558"/>
         <source>Lieu d&apos;observation déjà sélectionné</source>
         <translation>観測地はすでに選択されています</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1672"/>
+        <location filename="../src/interface/options/options.cpp" line="1663"/>
         <source>UTC</source>
         <comment>Universal Time Coordinated</comment>
         <translation>UTC</translation>
@@ -3970,7 +3967,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/osculateurs/osculateurs.ui" line="296"/>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="218"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="213"/>
         <source>Vecteur d&apos;état</source>
         <translation>状態ベクトル</translation>
     </message>
@@ -4208,168 +4205,168 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>準回帰パラメータ :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="133"/>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="351"/>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="430"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="129"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="345"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="424"/>
         <source>km</source>
         <comment>Kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="133"/>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="351"/>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="430"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="129"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="345"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="424"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="176"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="172"/>
         <source>N/A</source>
         <comment>Not applicable</comment>
         <translation>該当なし</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="203"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="198"/>
         <source>Problème de droits d&apos;écriture du fichier %1</source>
         <translation>ファイル「%1」の書き込み権限に問題があります</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="213"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="208"/>
         <source>Date :</source>
         <comment>Date and hour</comment>
         <translation>日時 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="216"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="211"/>
         <source>Nom du satellite :</source>
         <translation>衛星名 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="219"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="214"/>
         <source>x : %1			vx : %2</source>
         <comment>Position, velocity</comment>
         <translation>x : %1 	vx : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="222"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="217"/>
         <source>y : %1			vy : %2</source>
         <comment>Position, velocity</comment>
         <translation>y : %1 	vy : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="225"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="220"/>
         <source>z : %1			vz : %2</source>
         <comment>Position, velocity</comment>
         <translation>z : %1 	vz : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="228"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="223"/>
         <source>Éléments osculateurs :</source>
         <translation>接触軌道要素 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="233"/>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="246"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="228"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="241"/>
         <source>Demi-grand axe       : %1	Ascension droite du noeud ascendant : %2</source>
         <translation>軌道長半径 : %1   	昇交点赤経    : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="236"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="231"/>
         <source>Excentricité         : %1	Argument du périgée                 : %2</source>
         <translation>離心率     : %1	近地点引数    : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="239"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="234"/>
         <source>Inclinaison          : %1	Anomalie moyenne                    : %2</source>
         <translation>軌道傾斜角 : %1	平均近点角    : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="249"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="244"/>
         <source>Ex                   : %1	Inclinaison                         : %2</source>
         <comment>Ex = Component X of eccentricity vector</comment>
         <translation>Ex        : %1	軌道傾斜角    : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="252"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="247"/>
         <source>Ey                   : %1	Position sur orbite                 : %2</source>
         <comment>Ey = Component Y of eccentricity vector</comment>
         <translation>Ey        : %1	軌道上の位置  : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="259"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="254"/>
         <source>Demi-grand axe       : %1	Ix                 : %2</source>
         <comment>Ix = Component X of inclination vector</comment>
         <translation>軌道長半径 : %1   	Ix        : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="262"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="257"/>
         <source>Excentricité         : %1	Iy                 : %2</source>
         <comment>Iy = Component Y of inclination vector</comment>
         <translation>離心率     : %1   Iy        : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="265"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="260"/>
         <source>Longitude du périgée : %1	Anomalie moyenne   : %2</source>
         <translation>近地点黄経 : %1   	平均近点角 : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="272"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="267"/>
         <source>Demi-grand axe       : %1	Ix                          : %2</source>
         <comment>Ix = Component X of inclination vector</comment>
         <translation>軌道長半径 : %1   	Ix     : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="275"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="270"/>
         <source>Ex                   : %1	Iy                          : %2</source>
         <comment>Ex = Component X of eccentricity vector, Iy = Component Y of inclination vector</comment>
         <translation>Ex        : %1  Iy     : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="279"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="274"/>
         <source>Ey                   : %1	Argument de longitude vraie : %2</source>
         <comment>Ey = Component Y of eccentricity vector</comment>
         <translation>Ey        : %1  真黄経 : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="288"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="283"/>
         <source>Anomalie vraie       : %1	Apogée  (Altitude) : %2</source>
         <translation>真近点角   : %1	遠地点 (高度) : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="291"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="286"/>
         <source>Anomalie excentrique : %1	Périgée (Altitude) : %2</source>
         <translation>離心近点角 : %1	近地点 (高度) : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="294"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="289"/>
         <source>Champ de vue         : %1  	Période orbitale   : %2</source>
         <translation>視野       : %1  	軌道周期      : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="298"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="293"/>
         <source>Divers :</source>
         <translation>雑多 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="299"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="294"/>
         <source>Doppler @ 100 MHz    : %1</source>
         <comment>Doppler effect at 100 MegaHertz</comment>
         <translation>100MHzのドップラー : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="302"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="297"/>
         <source>Atténuation          : %1</source>
         <translation>減衰           : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="305"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="300"/>
         <source>Délai                : %1</source>
         <comment>Delay of signal at light speed</comment>
         <translation>遅延           : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="308"/>
+        <location filename="../src/interface/onglets/osculateurs/osculateurs.cpp" line="303"/>
         <source>Phasage              : %1</source>
         <translation>準回帰パラメータ   : %1</translation>
     </message>
@@ -4515,172 +4512,172 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="949"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1071"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1067"/>
         <source>Importer TLE...</source>
         <translation>TLEをインポートする...</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="146"/>
+        <location filename="../src/interface/outils/outils.cpp" line="142"/>
         <source>Créer un groupe d&apos;éléments orbitaux</source>
         <translation>軌道要素グループを作成する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="148"/>
+        <location filename="../src/interface/outils/outils.cpp" line="144"/>
         <source>Ajouter des fichiers d&apos;éléments orbitaux</source>
         <translation>軌道要素ファイルを追加する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="163"/>
+        <location filename="../src/interface/outils/outils.cpp" line="159"/>
         <source>Aucun fichier TLE dans le répertoire d&apos;éléments orbitaux</source>
         <translation>軌道要素フォルダにTLEファイルがありません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="219"/>
+        <location filename="../src/interface/outils/outils.cpp" line="215"/>
         <source>Copier dans le presse-papier</source>
         <translation>クリップボードにコピー</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="222"/>
+        <location filename="../src/interface/outils/outils.cpp" line="218"/>
         <source>Créer un groupe</source>
         <translation>グループを作成する</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="923"/>
-        <location filename="../src/interface/outils/outils.cpp" line="226"/>
-        <location filename="../src/interface/outils/outils.cpp" line="234"/>
+        <location filename="../src/interface/outils/outils.cpp" line="222"/>
+        <location filename="../src/interface/outils/outils.cpp" line="230"/>
         <source>Supprimer</source>
         <translation>削除する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="230"/>
+        <location filename="../src/interface/outils/outils.cpp" line="226"/>
         <source>Ajouter des fichiers</source>
         <translation>ファイルを追加する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="263"/>
+        <location filename="../src/interface/outils/outils.cpp" line="259"/>
         <source>Fichier %1 :</source>
         <translation>ファイル「%1」 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="268"/>
+        <location filename="../src/interface/outils/outils.cpp" line="264"/>
         <source>TLE du satellite %1 (%2) non réactualisé</source>
         <translation>衛星「%1」(%2)のTLEは既に最新です</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="278"/>
+        <location filename="../src/interface/outils/outils.cpp" line="274"/>
         <source>Nombre de TLE(s) supprimés : %1</source>
         <translation>削除されたTLE数 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="283"/>
+        <location filename="../src/interface/outils/outils.cpp" line="279"/>
         <source>Nombre de TLE(s) ajoutés : %1</source>
         <translation>追加されたTLE数 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="288"/>
+        <location filename="../src/interface/outils/outils.cpp" line="284"/>
         <source>%1 TLE(s) sur %2 mis à jour</source>
         <translation>%1つのTLEのうち%2つが更新されました</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="293"/>
+        <location filename="../src/interface/outils/outils.cpp" line="289"/>
         <source>Mise à jour de tous les TLE effectuée (fichier de %1 satellite(s))</source>
         <translation>すべてのTLEが更新されました (%1基の衛星が含まれているファイル)</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="298"/>
+        <location filename="../src/interface/outils/outils.cpp" line="294"/>
         <source>Aucun TLE mis à jour</source>
         <translation>更新されたTLEはありません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="401"/>
-        <location filename="../src/interface/outils/outils.cpp" line="431"/>
+        <location filename="../src/interface/outils/outils.cpp" line="397"/>
+        <location filename="../src/interface/outils/outils.cpp" line="427"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="401"/>
+        <location filename="../src/interface/outils/outils.cpp" line="397"/>
         <source>Voulez-vous vraiment supprimer ce fichier du groupe &lt;b&gt;%1&lt;/b&gt; ?</source>
         <translation>ファイルを&lt;b&gt;%1&lt;/b&gt;グループから本当に削除しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="402"/>
-        <location filename="../src/interface/outils/outils.cpp" line="432"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1140"/>
+        <location filename="../src/interface/outils/outils.cpp" line="398"/>
+        <location filename="../src/interface/outils/outils.cpp" line="428"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1136"/>
         <source>Oui</source>
         <translation>はい</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="403"/>
-        <location filename="../src/interface/outils/outils.cpp" line="433"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1141"/>
+        <location filename="../src/interface/outils/outils.cpp" line="399"/>
+        <location filename="../src/interface/outils/outils.cpp" line="429"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1137"/>
         <source>Non</source>
         <translation>いいえ</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="431"/>
+        <location filename="../src/interface/outils/outils.cpp" line="427"/>
         <source>Voulez-vous vraiment supprimer le groupe &lt;b&gt;%1&lt;/b&gt; ?</source>
         <translation>&lt;b&gt;%1&lt;/b&gt;グループを本当に削除しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="708"/>
+        <location filename="../src/interface/outils/outils.cpp" line="704"/>
         <source>Le nom du domaine n&apos;est pas spécifié</source>
         <translation>ドメイン名が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="714"/>
+        <location filename="../src/interface/outils/outils.cpp" line="710"/>
         <source>Le nom du groupe n&apos;est pas spécifié</source>
         <translation>グループ名が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="720"/>
+        <location filename="../src/interface/outils/outils.cpp" line="716"/>
         <source>La liste de fichiers est vide</source>
         <translation>ファイルリストが空です</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="938"/>
-        <location filename="../src/interface/outils/outils.cpp" line="960"/>
+        <location filename="../src/interface/outils/outils.cpp" line="934"/>
+        <location filename="../src/interface/outils/outils.cpp" line="956"/>
         <source>Ouvrir fichier TLE</source>
         <translation>TLEファイルを開く</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="940"/>
-        <location filename="../src/interface/outils/outils.cpp" line="962"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1073"/>
+        <location filename="../src/interface/outils/outils.cpp" line="936"/>
+        <location filename="../src/interface/outils/outils.cpp" line="958"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1069"/>
         <source>Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)</source>
         <translation>TLEファイル (*.txt *.tle);;すべてのファイル (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="987"/>
+        <location filename="../src/interface/outils/outils.cpp" line="983"/>
         <source>Le nom du fichier à mettre à jour n&apos;est pas spécifié</source>
         <translation>更新するファイル名が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="991"/>
+        <location filename="../src/interface/outils/outils.cpp" line="987"/>
         <source>Le nom du fichier à lire n&apos;est pas spécifié</source>
         <translation>読むファイルの名前が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1001"/>
+        <location filename="../src/interface/outils/outils.cpp" line="997"/>
         <source>Le fichier %1 n&apos;existe pas</source>
         <translation>ファイル「%1」が存在しません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1090"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1086"/>
         <source>Le fichier %1 existe déjà</source>
         <translation>ファイル「%1」は既に存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1112"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1108"/>
         <source>Le fichier %1 ne contient pas d&apos;éléments orbitaux</source>
         <translation>ファイル「%1」に軌道要素が含まれていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1139"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1135"/>
         <source>Avertissement</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1139"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1135"/>
         <source>Voulez-vous vraiment supprimer les fichiers TLE sélectionnés ?</source>
         <translation>選択したTLEファイルを本当に削除しますか ?</translation>
     </message>
@@ -4688,585 +4685,585 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
 <context>
     <name>PreviSat</name>
     <message>
-        <location filename="../src/interface/previsat.ui" line="510"/>
-        <location filename="../src/interface/previsat.ui" line="577"/>
+        <location filename="../src/interface/previsat.ui" line="540"/>
+        <location filename="../src/interface/previsat.ui" line="607"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="515"/>
-        <location filename="../src/interface/previsat.ui" line="582"/>
+        <location filename="../src/interface/previsat.ui" line="545"/>
+        <location filename="../src/interface/previsat.ui" line="612"/>
         <source>5</source>
         <translation>5</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="520"/>
-        <location filename="../src/interface/previsat.ui" line="587"/>
+        <location filename="../src/interface/previsat.ui" line="550"/>
+        <location filename="../src/interface/previsat.ui" line="617"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="525"/>
-        <location filename="../src/interface/previsat.ui" line="592"/>
+        <location filename="../src/interface/previsat.ui" line="555"/>
+        <location filename="../src/interface/previsat.ui" line="622"/>
         <source>20</source>
         <translation>20</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="530"/>
-        <location filename="../src/interface/previsat.ui" line="597"/>
+        <location filename="../src/interface/previsat.ui" line="560"/>
+        <location filename="../src/interface/previsat.ui" line="627"/>
         <source>30</source>
         <translation>30</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="535"/>
-        <location filename="../src/interface/previsat.ui" line="602"/>
+        <location filename="../src/interface/previsat.ui" line="565"/>
+        <location filename="../src/interface/previsat.ui" line="632"/>
         <source>60</source>
         <translation>60</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="274"/>
+        <location filename="../src/interface/previsat.ui" line="304"/>
         <source>ISS Live</source>
         <translation>ISSライブ</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="357"/>
+        <location filename="../src/interface/previsat.ui" line="387"/>
         <source>Fichier :</source>
         <translation>ファイル :</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="543"/>
-        <location filename="../src/interface/previsat.ui" line="617"/>
-        <location filename="../src/interface/previsat.cpp" line="2966"/>
-        <location filename="../src/interface/previsat.cpp" line="2983"/>
+        <location filename="../src/interface/previsat.ui" line="573"/>
+        <location filename="../src/interface/previsat.ui" line="647"/>
+        <location filename="../src/interface/previsat.cpp" line="2921"/>
+        <location filename="../src/interface/previsat.cpp" line="2938"/>
         <source>secondes</source>
         <translation>秒</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="440"/>
+        <location filename="../src/interface/previsat.ui" line="470"/>
         <source>Menu</source>
         <translation>メニュー</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="287"/>
+        <location filename="../src/interface/previsat.ui" line="317"/>
         <source>Configuration</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="316"/>
+        <location filename="../src/interface/previsat.ui" line="346"/>
         <source>Dons</source>
         <translation>ご寄付</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="379"/>
+        <location filename="../src/interface/previsat.ui" line="409"/>
         <source>Météo du lieu d&apos;observation</source>
         <translation>観測地の天気予報</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="408"/>
+        <location filename="../src/interface/previsat.ui" line="438"/>
         <source>Météo des bases de la NASA</source>
         <translation>NASA施設の天気予報</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="456"/>
-        <location filename="../src/interface/previsat.ui" line="1071"/>
+        <location filename="../src/interface/previsat.ui" line="486"/>
+        <location filename="../src/interface/previsat.ui" line="1105"/>
         <source>Outils</source>
         <translation>ツール</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="485"/>
-        <location filename="../src/interface/previsat.cpp" line="1098"/>
+        <location filename="../src/interface/previsat.ui" line="515"/>
+        <location filename="../src/interface/previsat.cpp" line="1093"/>
         <source>Mode de fonctionnement</source>
         <translation>モード</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="553"/>
-        <location filename="../src/interface/previsat.cpp" line="2658"/>
+        <location filename="../src/interface/previsat.ui" line="583"/>
+        <location filename="../src/interface/previsat.cpp" line="2613"/>
         <source>Temps réel</source>
         <translation>リアルタイム</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="563"/>
-        <location filename="../src/interface/previsat.cpp" line="2661"/>
+        <location filename="../src/interface/previsat.ui" line="593"/>
+        <location filename="../src/interface/previsat.cpp" line="2616"/>
         <source>Mode manuel</source>
         <translation>手動モード</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="245"/>
+        <location filename="../src/interface/previsat.ui" line="275"/>
         <source>Aide</source>
         <translation>ヘルプ</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="411"/>
+        <location filename="../src/interface/previsat.ui" line="441"/>
         <source>NASA</source>
         <translation>NASA</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="622"/>
-        <location filename="../src/interface/previsat.cpp" line="2984"/>
+        <location filename="../src/interface/previsat.ui" line="652"/>
+        <location filename="../src/interface/previsat.cpp" line="2939"/>
         <source>minutes</source>
         <translation>分</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="627"/>
-        <location filename="../src/interface/previsat.cpp" line="2985"/>
+        <location filename="../src/interface/previsat.ui" line="657"/>
+        <location filename="../src/interface/previsat.cpp" line="2940"/>
         <source>heures</source>
         <translation>時</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="632"/>
-        <location filename="../src/interface/previsat.cpp" line="2986"/>
+        <location filename="../src/interface/previsat.ui" line="662"/>
+        <location filename="../src/interface/previsat.cpp" line="2941"/>
         <source>jours</source>
         <translation>日</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="849"/>
+        <location filename="../src/interface/previsat.ui" line="879"/>
         <source>Cliquer pour activer
 le flux vidéo</source>
         <translation>クリックしてビデオストリームを
 アクティブになります</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="998"/>
+        <location filename="../src/interface/previsat.ui" line="1032"/>
         <source>Enregistrer</source>
         <translation>保存する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1039"/>
+        <location filename="../src/interface/previsat.ui" line="1073"/>
         <source>Fichier d&apos;aide</source>
         <translation>ヘルプファイル</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1042"/>
+        <location filename="../src/interface/previsat.ui" line="1076"/>
         <source>F1</source>
         <translation>F1キー</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1138"/>
+        <location filename="../src/interface/previsat.ui" line="1172"/>
         <source>Télécharger la mise à jour</source>
         <translation>更新をダウンロードする</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1098"/>
+        <location filename="../src/interface/previsat.ui" line="1132"/>
         <source>À propos</source>
         <translation>PreviSatについて</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="656"/>
+        <location filename="../src/interface/previsat.ui" line="686"/>
         <source>Filtre</source>
         <translation>フィルター</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="975"/>
+        <location filename="../src/interface/previsat.ui" line="1009"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="984"/>
+        <location filename="../src/interface/previsat.ui" line="1018"/>
         <source>PayPal</source>
         <translation>ペイパル</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="993"/>
+        <location filename="../src/interface/previsat.ui" line="1027"/>
         <source>Tipeee</source>
         <translation>Tipeee</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1001"/>
+        <location filename="../src/interface/previsat.ui" line="1035"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1006"/>
+        <location filename="../src/interface/previsat.ui" line="1040"/>
         <source>Mettre à jour GP courant</source>
         <translation>現在のGPを更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1014"/>
+        <location filename="../src/interface/previsat.ui" line="1048"/>
         <source>Mettre à jour GP communs</source>
         <translation>一般的なGPを更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1022"/>
+        <location filename="../src/interface/previsat.ui" line="1056"/>
         <source>Mettre à jour tous les groupes de GP</source>
         <translation>すべてのGPグループを更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1059"/>
+        <location filename="../src/interface/previsat.ui" line="1093"/>
         <source>Options</source>
         <translation>オプション</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1074"/>
+        <location filename="../src/interface/previsat.ui" line="1108"/>
         <source>F4</source>
         <translation>F4キー</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1083"/>
+        <location filename="../src/interface/previsat.ui" line="1117"/>
         <source>Dons ...</source>
         <translation>ご寄付 ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1088"/>
+        <location filename="../src/interface/previsat.ui" line="1122"/>
         <source>Contact</source>
         <translation>連絡先</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1093"/>
+        <location filename="../src/interface/previsat.ui" line="1127"/>
         <source>Partenaires ...</source>
         <translation>パートナー ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1103"/>
+        <location filename="../src/interface/previsat.ui" line="1137"/>
         <source>Exporter fichier log ...</source>
         <translation>ログファイルをエクスポートする...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1108"/>
+        <location filename="../src/interface/previsat.ui" line="1142"/>
         <source>Sky-Watcher</source>
         <translation>Sky-Watcher</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1113"/>
+        <location filename="../src/interface/previsat.ui" line="1147"/>
         <source>PianetaRadio.it / CatRotator</source>
         <translation>PianetaRadio.it / CatRotator</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1118"/>
+        <location filename="../src/interface/previsat.ui" line="1152"/>
         <source>Éléments orbitaux ...</source>
         <translation>軌道要素 ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1123"/>
+        <location filename="../src/interface/previsat.ui" line="1157"/>
         <source>celestrak.org</source>
         <translation>celestrak.org</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1128"/>
+        <location filename="../src/interface/previsat.ui" line="1162"/>
         <source>space-track.org</source>
         <translation>space-track.org</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1133"/>
+        <location filename="../src/interface/previsat.ui" line="1167"/>
         <source>Définir par défaut</source>
         <translation>デフォルトとして設定する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1146"/>
+        <location filename="../src/interface/previsat.ui" line="1180"/>
         <source>Mode sombre</source>
         <translation>ダークモード</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1149"/>
+        <location filename="../src/interface/previsat.ui" line="1183"/>
         <source>Ctrl+N</source>
         <translation>Ctrl+N</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1009"/>
+        <location filename="../src/interface/previsat.ui" line="1043"/>
         <source>F5</source>
         <translation>F5キー</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1017"/>
+        <location filename="../src/interface/previsat.ui" line="1051"/>
         <source>Ctrl+F5</source>
         <translation>Ctrl+F5</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1025"/>
+        <location filename="../src/interface/previsat.ui" line="1059"/>
         <source>Shift+F5</source>
         <translation>Shift+F5</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1047"/>
+        <location filename="../src/interface/previsat.ui" line="1081"/>
         <source>Informations</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1050"/>
+        <location filename="../src/interface/previsat.ui" line="1084"/>
         <source>F2</source>
         <translation>F2キー</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="1030"/>
+        <location filename="../src/interface/previsat.ui" line="1064"/>
         <source>Mettre à jour les fichiers de données</source>
         <translation>データファイルを更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1080"/>
+        <location filename="../src/interface/previsat.cpp" line="1075"/>
         <source>Messages</source>
         <translation>メッセージ</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1104"/>
-        <location filename="../src/interface/previsat.cpp" line="2680"/>
+        <location filename="../src/interface/previsat.cpp" line="1099"/>
+        <location filename="../src/interface/previsat.cpp" line="2635"/>
         <source>Date</source>
         <translation>日付</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1110"/>
-        <location filename="../src/interface/previsat.cpp" line="2681"/>
+        <location filename="../src/interface/previsat.cpp" line="1105"/>
+        <location filename="../src/interface/previsat.cpp" line="2636"/>
         <source>Heure</source>
         <translation>時刻</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="347"/>
+        <location filename="../src/interface/previsat.cpp" line="342"/>
         <source>Vérification du fichier TLE %1 ...</source>
         <translation>TLEファイル「%1」をチェックしています...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1496"/>
-        <location filename="../src/interface/previsat.cpp" line="1576"/>
+        <location filename="../src/interface/previsat.cpp" line="1481"/>
+        <location filename="../src/interface/previsat.cpp" line="1559"/>
         <source>Une mise à jour %1 est disponible. Souhaitez-vous la télécharger?</source>
         <translation>%1更新が利用可能です。ダウンロードしますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1177"/>
-        <location filename="../src/interface/previsat.cpp" line="1390"/>
-        <location filename="../src/interface/previsat.cpp" line="1498"/>
-        <location filename="../src/interface/previsat.cpp" line="1578"/>
+        <location filename="../src/interface/previsat.cpp" line="1172"/>
+        <location filename="../src/interface/previsat.cpp" line="1378"/>
+        <location filename="../src/interface/previsat.cpp" line="1483"/>
+        <location filename="../src/interface/previsat.cpp" line="1561"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="293"/>
+        <location filename="../src/interface/previsat.cpp" line="288"/>
         <source>Mise à jour automatique des éléments orbitaux</source>
         <translation>軌道要素の自動更新</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1173"/>
+        <location filename="../src/interface/previsat.cpp" line="1168"/>
         <source>Cette version comporte %1 lignes de code,
 ce qui représente environ %2 pages.</source>
         <translation>このバージョンには%1行のコードがあり、
 これは約%2ページです。</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2028"/>
-        <location filename="../src/interface/previsat.cpp" line="2067"/>
-        <location filename="../src/interface/previsat.cpp" line="2185"/>
+        <location filename="../src/interface/previsat.cpp" line="1983"/>
+        <location filename="../src/interface/previsat.cpp" line="2022"/>
+        <location filename="../src/interface/previsat.cpp" line="2140"/>
         <source>dddd dd MMMM yyyy  HH:mm:ss</source>
         <translation>yyyy年MM月dd日 (dddd)  HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2321"/>
+        <location filename="../src/interface/previsat.cpp" line="2276"/>
         <source>Mise à jour du fichier GP %1 en cours...</source>
         <translation>GPファイル「%1」を更新しています...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2327"/>
+        <location filename="../src/interface/previsat.cpp" line="2282"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1391"/>
-        <location filename="../src/interface/previsat.cpp" line="1499"/>
-        <location filename="../src/interface/previsat.cpp" line="1579"/>
+        <location filename="../src/interface/previsat.cpp" line="1379"/>
+        <location filename="../src/interface/previsat.cpp" line="1484"/>
+        <location filename="../src/interface/previsat.cpp" line="1562"/>
         <source>Oui</source>
         <translation>はい</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1498"/>
+        <location filename="../src/interface/previsat.cpp" line="1483"/>
         <source>des fichiers internes</source>
         <translation>内部ファイルの</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1181"/>
-        <location filename="../src/interface/previsat.cpp" line="1392"/>
-        <location filename="../src/interface/previsat.cpp" line="1500"/>
-        <location filename="../src/interface/previsat.cpp" line="1581"/>
+        <location filename="../src/interface/previsat.cpp" line="1176"/>
+        <location filename="../src/interface/previsat.cpp" line="1380"/>
+        <location filename="../src/interface/previsat.cpp" line="1485"/>
+        <location filename="../src/interface/previsat.cpp" line="1564"/>
         <source>Non</source>
         <translation>いいえ</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1388"/>
+        <location filename="../src/interface/previsat.cpp" line="1376"/>
         <source>Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?</source>
         <translation>軌道要素の年齢は%1日以上です。それらを更新しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2670"/>
+        <location filename="../src/interface/previsat.cpp" line="2625"/>
         <source>Jour julien</source>
         <translation>ユリウス通日</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2671"/>
+        <location filename="../src/interface/previsat.cpp" line="2626"/>
         <source>Jour</source>
         <translation>日</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2677"/>
+        <location filename="../src/interface/previsat.cpp" line="2632"/>
         <source>dd/MM/yyyy</source>
         <comment>date format</comment>
         <translation>yyyy年MM月dd日</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2352"/>
+        <location filename="../src/interface/previsat.cpp" line="2307"/>
         <source>Mise à jour du groupe d&apos;éléments orbitaux &quot;%1&quot;...</source>
         <translation>軌道要素グループ「%1」を更新しています...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2387"/>
+        <location filename="../src/interface/previsat.cpp" line="2342"/>
         <source>Mise à jour du groupe d&apos;éléments orbitaux &quot;%1&quot; terminée</source>
         <translation>軌道要素グループ「%1」の更新が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2875"/>
+        <location filename="../src/interface/previsat.cpp" line="2830"/>
         <source>Impossible d&apos;afficher l&apos;aide en ligne</source>
         <translation>オンラインヘルプを表示できません</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.ui" line="972"/>
-        <location filename="../src/interface/previsat.cpp" line="3153"/>
+        <location filename="../src/interface/previsat.ui" line="1006"/>
+        <location filename="../src/interface/previsat.cpp" line="3108"/>
         <source>Importer fichier GP / TLE...</source>
         <translation>GP・TLEファイルをインポートする...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3155"/>
+        <location filename="../src/interface/previsat.cpp" line="3110"/>
         <source>Fichiers GP (*.xml);;Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)</source>
         <translation>GPファイル (*.xml);;TLEファイル (*.txt *.tle);;すべてのファイル (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3173"/>
-        <location filename="../src/interface/previsat.cpp" line="3233"/>
+        <location filename="../src/interface/previsat.cpp" line="3128"/>
+        <location filename="../src/interface/previsat.cpp" line="3188"/>
         <source>Le fichier %1 ne contient pas d&apos;éléments orbitaux</source>
         <translation>ファイル「%1」に軌道要素が含まれていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3182"/>
-        <location filename="../src/interface/previsat.cpp" line="3212"/>
+        <location filename="../src/interface/previsat.cpp" line="3137"/>
+        <location filename="../src/interface/previsat.cpp" line="3167"/>
         <source>Le fichier %1 existe déjà</source>
         <translation>ファイル「%1」は既に存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3265"/>
+        <location filename="../src/interface/previsat.cpp" line="3220"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*.*)</source>
         <translation>テキストファイル (*.txt);;すべてのファイル (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3439"/>
+        <location filename="../src/interface/previsat.cpp" line="3397"/>
         <source>Commun</source>
         <comment>common orbital elements groups</comment>
         <translation>一般的</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3444"/>
+        <location filename="../src/interface/previsat.cpp" line="3402"/>
         <source>Tous</source>
         <comment>all orbital elements groups</comment>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3529"/>
-        <location filename="../src/interface/previsat.cpp" line="3532"/>
+        <location filename="../src/interface/previsat.cpp" line="3487"/>
+        <location filename="../src/interface/previsat.cpp" line="3490"/>
         <source>Devise</source>
         <translation>通貨</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3530"/>
-        <location filename="../src/interface/previsat.cpp" line="3532"/>
+        <location filename="../src/interface/previsat.cpp" line="3488"/>
+        <location filename="../src/interface/previsat.cpp" line="3490"/>
         <source>Choisissez la devise :</source>
         <translation>通貨を選んでください ：</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3546"/>
+        <location filename="../src/interface/previsat.cpp" line="3504"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires</source>
         <translation>ご注意 : Tipeeeでペイパルのご寄付をすることは可能ですが、これには追加料金がかかります</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3613"/>
+        <location filename="../src/interface/previsat.cpp" line="3571"/>
         <source>Ouverture du fichier d&apos;éléments orbitaux %1 ...</source>
         <translation>軌道要素ファイル「%1」を読み込んでいます ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3258"/>
+        <location filename="../src/interface/previsat.cpp" line="3213"/>
         <source>onglet_general</source>
         <comment>file name (without accent)</comment>
         <translation>main_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1176"/>
+        <location filename="../src/interface/previsat.cpp" line="1171"/>
         <source>Vous venez de mettre à jour %1.
 %2Souhaitez-vous faire un don pour soutenir son auteur ?</source>
         <translation>%1を更新しました。
 %2作者を支援したい場合は寄付をご検討ください</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1875"/>
+        <location filename="../src/interface/previsat.cpp" line="1830"/>
         <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;Tous les fichiers (*.*)</source>
         <translation>PNGファイル (*.png);;JPEGファイル (*.jpg *.jpeg);;BMPファイル (*.bmp);;すべてのファイル (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2966"/>
-        <location filename="../src/interface/previsat.cpp" line="2983"/>
+        <location filename="../src/interface/previsat.cpp" line="2921"/>
+        <location filename="../src/interface/previsat.cpp" line="2938"/>
         <source>seconde</source>
         <translation>秒</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2984"/>
+        <location filename="../src/interface/previsat.cpp" line="2939"/>
         <source>minute</source>
         <translation>分</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2985"/>
+        <location filename="../src/interface/previsat.cpp" line="2940"/>
         <source>heure</source>
         <translation>時</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2986"/>
+        <location filename="../src/interface/previsat.cpp" line="2941"/>
         <source>jour</source>
         <translation>日</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3003"/>
+        <location filename="../src/interface/previsat.cpp" line="2958"/>
         <source>Agrandir</source>
         <translation>拡大する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3012"/>
+        <location filename="../src/interface/previsat.cpp" line="2967"/>
         <source>Réduire</source>
         <translation>縮小する</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3038"/>
+        <location filename="../src/interface/previsat.cpp" line="2993"/>
         <source>Carte du monde</source>
         <translation>世界地図</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3046"/>
+        <location filename="../src/interface/previsat.cpp" line="3001"/>
         <source>Carte du ciel</source>
         <translation>星図</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3259"/>
+        <location filename="../src/interface/previsat.cpp" line="3214"/>
         <source>onglet_elements</source>
         <comment>file name (without accent)</comment>
         <translation>elements_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3259"/>
+        <location filename="../src/interface/previsat.cpp" line="3214"/>
         <source>onglet_informations</source>
         <comment>file name (without accent)</comment>
         <translation>information_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1874"/>
-        <location filename="../src/interface/previsat.cpp" line="3264"/>
+        <location filename="../src/interface/previsat.cpp" line="1829"/>
+        <location filename="../src/interface/previsat.cpp" line="3219"/>
         <source>Enregistrer sous...</source>
         <translation>名前を付けて保存...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="1724"/>
+        <location filename="../src/interface/previsat.cpp" line="1679"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3335"/>
+        <location filename="../src/interface/previsat.cpp" line="3290"/>
         <source>Pas d&apos;informations à afficher</source>
         <translation>表示する情報がありません</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3615"/>
+        <location filename="../src/interface/previsat.cpp" line="3573"/>
         <source>Fichier d&apos;éléments orbitaux de %1 satellites</source>
         <translation>%1基衛星の軌道要素が含まれているファイル</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3783"/>
+        <location filename="../src/interface/previsat.cpp" line="3741"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>
@@ -5274,640 +5271,629 @@ ce qui représente environ %2 pages.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/configuration/fichierobs.cpp" line="166"/>
-        <source>Le fichier ne contient pas de lieux d&apos;observation</source>
-        <translation>ファイルには観測地が含まれていません</translation>
-    </message>
-    <message>
-        <location filename="../src/configuration/configuration.cpp" line="864"/>
-        <location filename="../src/configuration/configuration.cpp" line="903"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="366"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="459"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="593"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="705"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="909"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1067"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1161"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1251"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1345"/>
-        <location filename="../src/librairies/corps/corps.cpp" line="680"/>
+        <location filename="../src/configuration/configuration.cpp" line="1069"/>
+        <location filename="../src/configuration/configuration.cpp" line="1107"/>
+        <location filename="../src/librairies/corps/corps.cpp" line="601"/>
+        <location filename="../src/librairies/corps/etoiles/constellation.cpp" line="126"/>
+        <location filename="../src/librairies/corps/etoiles/etoile.cpp" line="129"/>
+        <location filename="../src/librairies/corps/etoiles/ligneconstellation.cpp" line="114"/>
+        <location filename="../src/librairies/dates/date.cpp" line="404"/>
         <source>Le fichier %1 n&apos;existe pas ou est vide, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないまたはファイルが空ので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="876"/>
-        <location filename="../src/configuration/configuration.cpp" line="917"/>
-        <location filename="../src/configuration/evenementsstationspatiale.cpp" line="116"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="411"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="560"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="821"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="954"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1124"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1214"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1308"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1411"/>
-        <location filename="../src/librairies/corps/corps.cpp" line="670"/>
-        <location filename="../src/librairies/dates/date.cpp" line="445"/>
+        <location filename="../src/configuration/configuration.cpp" line="1039"/>
+        <location filename="../src/configuration/configuration.cpp" line="1047"/>
+        <location filename="../src/configuration/configuration.cpp" line="1080"/>
+        <location filename="../src/configuration/configuration.cpp" line="1124"/>
+        <location filename="../src/configuration/evenementsstationspatiale.cpp" line="132"/>
+        <location filename="../src/configuration/fichierobs.cpp" line="141"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="373"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="422"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="477"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="559"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="612"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="662"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="761"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="815"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="870"/>
+        <location filename="../src/librairies/corps/corps.cpp" line="636"/>
         <source>Erreur lors de la lecture du fichier %1, veuillez réinstaller %2</source>
         <translation>ファイル「%1」の読み込み中にエラーが発生しましたので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1016"/>
+        <location filename="../src/configuration/configuration.cpp" line="194"/>
+        <location filename="../src/configuration/fichierobs.cpp" line="72"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="75"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="138"/>
+        <source>Erreur lors de l&apos;écriture du fichier %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/configuration/configuration.cpp" line="1220"/>
         <source>Le répertoire %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>フォルダ「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1081"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1443"/>
+        <location filename="../src/configuration/configuration.cpp" line="1285"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1088"/>
+        <location filename="../src/configuration/configuration.cpp" line="1292"/>
         <source>Le fichier %1 est vide, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が空なので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="648"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="644"/>
         <source>Lieu d&apos;observation              : %1     %2 %3   %4 %5   %6 %7</source>
         <translation>観測地        : %1     %2 %3   %4 %5   %6 %7</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="650"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="646"/>
         <source>Ouest</source>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="650"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="646"/>
         <source>Est</source>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="653"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="649"/>
         <source>Nord</source>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="653"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="649"/>
         <source>Sud</source>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="655"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="657"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="651"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="653"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="657"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="653"/>
         <source>m</source>
         <comment>meter</comment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="657"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="653"/>
         <source>ft</source>
         <comment>foot</comment>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="664"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="660"/>
         <source>Fuseau horaire                  : %1</source>
         <translation>時間帯        : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="679"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="675"/>
         <source>Conditions d&apos;observations       :</source>
         <translation>観測条件      :</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="665"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="661"/>
         <source>UTC</source>
         <comment>Universal Time Coordinated</comment>
         <translation>UTC</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="680"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="676"/>
         <source>Hauteur minimale du satellite = %1°</source>
         <translation>最小衛星仰角 = %1°</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="686"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="682"/>
         <source>Hauteur maximale du Soleil = %1°</source>
         <translation>最大太陽仰角 = %1°</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="888"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1152"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="884"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1148"/>
         <source>W</source>
         <comment>West</comment>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="888"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1152"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="884"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1148"/>
         <source>E</source>
         <comment>East</comment>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="889"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1153"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="885"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1149"/>
         <source>N</source>
         <comment>North</comment>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="889"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1153"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="885"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1149"/>
         <source>S</source>
         <comment>South</comment>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/corps.cpp" line="165"/>
+        <location filename="../src/librairies/corps/corps.cpp" line="121"/>
         <source>Tableau de constellations vide</source>
         <translation>星座の表が空です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/etoiles/constellation.cpp" line="101"/>
+        <location filename="../src/librairies/corps/corps.cpp" line="608"/>
+        <location filename="../src/librairies/corps/etoiles/constellation.cpp" line="132"/>
+        <location filename="../src/librairies/corps/etoiles/etoile.cpp" line="135"/>
+        <location filename="../src/librairies/corps/etoiles/ligneconstellation.cpp" line="120"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="169"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="465"/>
+        <location filename="../src/librairies/dates/date.cpp" line="411"/>
+        <location filename="../src/librairies/systeme/fichierxml.cpp" line="102"/>
+        <source>Erreur lors de l&apos;ouverture du fichier %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/librairies/corps/etoiles/constellation.cpp" line="100"/>
         <source>Le tableau de constellations n&apos;est pas initialisé</source>
         <translation>星座の表が初期化されていません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/etoiles/etoile.cpp" line="103"/>
-        <location filename="../src/librairies/corps/etoiles/ligneconstellation.cpp" line="92"/>
+        <location filename="../src/librairies/corps/etoiles/etoile.cpp" line="102"/>
+        <location filename="../src/librairies/corps/etoiles/ligneconstellation.cpp" line="86"/>
         <source>Le tableau d&apos;étoiles n&apos;est pas initialisé</source>
         <translation>星の表が初期化されていません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/etoiles/ligneconstellation.cpp" line="88"/>
+        <location filename="../src/librairies/corps/etoiles/ligneconstellation.cpp" line="82"/>
         <source>Le tableau de lignes de constellation n&apos;est pas initialisé</source>
         <translation>星座線の表が初期化されていません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="480"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="513"/>
         <source>Le fichier %1 n&apos;est pas valide</source>
         <translation>ファイル「%1」が無効です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="494"/>
-        <source>Le fichier %1 n&apos;existe pas</source>
-        <translation>ファイル「%1」が存在しません</translation>
-    </message>
-    <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="499"/>
-        <source>Le fichier %1 est vide</source>
-        <translation>ファイル「%1」が空です</translation>
-    </message>
-    <message>
-        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="119"/>
-        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="199"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="156"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="161"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="454"/>
+        <location filename="../src/librairies/systeme/fichierxml.cpp" line="89"/>
         <source>Le fichier %1 n&apos;existe pas ou est vide</source>
         <translation>ファイル「%1」が存在しないまたはファイルが空です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="130"/>
-        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="142"/>
-        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="210"/>
-        <location filename="../src/librairies/corps/satellite/gpformat.cpp" line="222"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="505"/>
-        <source>Le fichier %1 ne contient aucun satellite</source>
-        <translation>ファイル「%1」には衛星が含まれていません</translation>
-    </message>
-    <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="364"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="375"/>
         <source>Le satellite %1 (numéro NORAD : %2) n&apos;existe pas dans le fichier à mettre à jour.
 Voulez-vous ajouter ce TLE dans le fichier à mettre à jour ?</source>
         <translation>衛星「%1」(NORAD番号 : %2)は更新するファイルに存在しません。
 このTLEを更新するファイルに追加しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="367"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="378"/>
         <source>Ajout du nouveau TLE</source>
         <translation>新しいTLEを追加する</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="449"/>
+        <location filename="../src/configuration/configuration.cpp" line="970"/>
         <source>Le fichier de configuration de %1 a évolué.
 Souhaitez-vous tenter de récupérer les lieux d&apos;observation ?</source>
         <translation>設定ファイル「%1」の形式が変更されました。
 観測地の回復を試みますか ?</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1501"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="337"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="370"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="944"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="348"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="381"/>
         <source>Oui</source>
         <translation>はい</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="338"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="371"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="349"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="382"/>
         <source>Oui à tout</source>
         <translation>すべてにはい</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1502"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="339"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="372"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="945"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="350"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="383"/>
         <source>Non</source>
         <translation>いいえ</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="340"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="373"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="351"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="384"/>
         <source>Non à tout</source>
         <translation>すべてにいいえ</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="331"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="342"/>
         <source>Le satellite %1 (numéro NORAD : %2) n&apos;existe pas dans le fichier de TLE récents.
 Voulez-vous supprimer ce TLE du fichier à mettre à jour ?</source>
         <translation>衛星「%1」(NORAD番号 : %2)は最近のTLEファイルに存在しません。
 更新するファイルからこのTLEを削除しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="266"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="276"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="277"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="287"/>
         <source>Le fichier %1 n&apos;est pas un TLE</source>
         <translation>ファイル「%1」はTLEファイルではありません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="334"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="345"/>
         <source>Suppression du TLE</source>
         <translation>TLEの削除</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="582"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="596"/>
         <source>Une des lignes du TLE est vide</source>
         <translation>TLEの1行が空です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="589"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="601"/>
         <source>Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects</source>
         <translation>衛星「%1」(NORAD番号 : %2)のTLEは行番号が正しくありません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="595"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="608"/>
         <source>La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte</source>
         <translation>衛星「%1」(NORAD番号 : %2)のTLEは行の長さが正しくありません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="605"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="618"/>
         <source>Erreur position des espaces du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>TLEの空白文字の位置によるエラー :
 衛星「%1」 - NORAD番号 : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="613"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="626"/>
         <source>Erreur Ponctuation du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>TLEの約物によるエラー :
 衛星「%1」 - NORAD番号 : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="620"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="633"/>
         <source>Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)</source>
         <translation>衛星「%1」のTLEの2行はNORAD番号が異なります (%2と%3)</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="626"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="639"/>
         <source>Erreur CheckSum ligne 1 :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>1行目のチェックサムが正しくありません :
 衛星「%1」 - NORAD番号 : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="631"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="644"/>
         <source>Erreur CheckSum ligne 2 :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>2行目のチェックサムが正しくありません :
 衛星「%1」 - NORAD番号 : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="267"/>
-        <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="119"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="227"/>
         <source>Nouvelle Lune</source>
         <translation>ニュームーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="271"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="231"/>
         <source>Premier croissant</source>
         <translation>クレセントムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="271"/>
-        <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="108"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="231"/>
         <source>Dernier croissant</source>
         <translation>バルサミックムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="275"/>
-        <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="86"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="235"/>
         <source>Premier quartier</source>
         <translation>ファーストクォーター</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="275"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="235"/>
         <source>Dernier quartier</source>
         <translation>サードクォーター</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="279"/>
-        <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="97"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="239"/>
         <source>Gibbeuse croissante</source>
         <translation>ギバウスムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="279"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="239"/>
         <source>Gibbeuse décroissante</source>
         <translation>ディセミネイティングムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="283"/>
-        <location filename="../test/src/librairies/corps/systemesolaire/lunetest.cpp" line="130"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="243"/>
         <source>Pleine Lune</source>
         <translation>フルムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="516"/>
+        <location filename="../src/librairies/dates/date.cpp" line="511"/>
         <source>dd/MM/yyyy</source>
         <comment>Date format</comment>
         <translation>yyyy年MM月dd日</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="295"/>
+        <location filename="../src/librairies/dates/date.cpp" line="303"/>
         <source>Date au format ISO vide</source>
         <translation>ISO形式の日時が空です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="304"/>
+        <location filename="../src/librairies/dates/date.cpp" line="312"/>
         <source>Date au format ISO invalide</source>
         <translation>ISO形式の日時が無効です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="342"/>
+        <location filename="../src/librairies/dates/date.cpp" line="344"/>
         <source>Date au format NASA vide</source>
         <translation>NASA形式の日時が空です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="351"/>
-        <location filename="../src/librairies/dates/date.cpp" line="360"/>
-        <location filename="../src/librairies/dates/date.cpp" line="374"/>
+        <location filename="../src/librairies/dates/date.cpp" line="353"/>
+        <location filename="../src/librairies/dates/date.cpp" line="362"/>
+        <location filename="../src/librairies/dates/date.cpp" line="376"/>
         <source>Date au format NASA invalide</source>
         <translation>NASA形式の日時が無効です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="409"/>
-        <source>Le fichier taiutc.dat n&apos;existe pas</source>
-        <translation>taiutc.datファイルが存在しません</translation>
-    </message>
-    <message>
-        <location filename="../src/librairies/dates/date.cpp" line="474"/>
+        <location filename="../src/librairies/dates/date.cpp" line="467"/>
         <source>dddd dd MMMM yyyy HH:mm:ss</source>
         <comment>Date format</comment>
         <translation>yyyy年MM月dd日 (dddd)  HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="691"/>
+        <location filename="../src/librairies/dates/date.cpp" line="686"/>
         <source>Ecarts TAI-UTC non initialisés</source>
         <translation>TAIとUTCの差が初期化されていません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/exceptions/message.cpp" line="75"/>
+        <location filename="../src/librairies/exceptions/message.cpp" line="72"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1500"/>
-        <location filename="../src/librairies/exceptions/message.cpp" line="80"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="943"/>
+        <location filename="../src/librairies/exceptions/message.cpp" line="77"/>
         <source>Avertissement</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../src/librairies/exceptions/message.cpp" line="85"/>
+        <location filename="../src/librairies/exceptions/message.cpp" line="82"/>
         <source>Erreur</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../src/librairies/maths/maths.cpp" line="201"/>
+        <location filename="../src/librairies/maths/maths.cpp" line="197"/>
         <source>h</source>
         <comment>hour (angle)</comment>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../src/librairies/maths/maths.cpp" line="202"/>
+        <location filename="../src/librairies/maths/maths.cpp" line="198"/>
         <source>m</source>
         <comment>minute (angle)</comment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/librairies/maths/maths.cpp" line="203"/>
+        <location filename="../src/librairies/maths/maths.cpp" line="199"/>
         <source>s</source>
         <comment>second (angle)</comment>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="96"/>
+        <location filename="../src/main.cpp" line="91"/>
         <source>Une instance de %1 est déjà ouverte</source>
         <translation>%1のインスタンスは既に実行中です</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="151"/>
+        <location filename="../src/main.cpp" line="146"/>
         <source>Initialisation de la configuration...</source>
         <translation>構成を初期化しています...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="167"/>
+        <location filename="../src/main.cpp" line="162"/>
         <source>Ouverture du fichier GP...</source>
         <translation>GPファイルを読み込んでいます...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="173"/>
+        <location filename="../src/main.cpp" line="168"/>
         <source>Mise à jour des éléments orbitaux...</source>
         <translation>軌道要素を更新しています...</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="179"/>
+        <location filename="../src/main.cpp" line="174"/>
         <source>Démarrage de l&apos;application...</source>
         <translation>アプリが起動しています...</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="237"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="234"/>
         <source>Noeud Ascendant - PSO = 0°</source>
         <comment>In orbit position</comment>
         <translation>昇交点 (位置 = 0°)</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="238"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="235"/>
         <source>Noeud Descendant - PSO = 180°</source>
         <comment>In orbit position</comment>
         <translation>降交点 (位置 = 180°)</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="265"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="262"/>
         <source>Pénombre -&gt; Ombre</source>
         <translation>半影 -&gt; 本影</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="265"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="262"/>
         <source>Ombre -&gt; Pénombre</source>
         <translation>本影 -&gt; 半影</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="284"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="281"/>
         <source>Lumière -&gt; Pénombre</source>
         <translation>太陽光 -&gt; 半影</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="284"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="281"/>
         <source>Pénombre -&gt; Lumière</source>
         <translation>半影 -&gt; 太陽光</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="306"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="303"/>
         <source>Pénombre -&gt; Ombre (Lune)</source>
         <translation>半影 -&gt; 本影 (月)</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="306"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="303"/>
         <source>Ombre -&gt; Pénombre (Lune)</source>
         <translation>本影 -&gt; 半影 (月)</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="325"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="322"/>
         <source>Lumière -&gt; Pénombre (Lune)</source>
         <translation>太陽光 -&gt; 半影 (月)</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="325"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="322"/>
         <source>Pénombre -&gt; Lumière (Lune)</source>
         <translation>半影 -&gt; 太陽光 (月)</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="366"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="363"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="371"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="368"/>
         <source>Périgée : %1%2 (%3%2)</source>
         <translation>近地点 : %1%2 (%3%2)</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="371"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="368"/>
         <source>Apogée : %1%2 (%3%2)</source>
         <translation>遠地点 : %1%2 (%3%2)</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="392"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="389"/>
         <source>Passage terminateur Jour -&gt; Nuit</source>
         <translation>明暗境界線の通過 (昼 -&gt; 夜)</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="393"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="390"/>
         <source>Passage terminateur Nuit -&gt; Jour</source>
         <translation>明暗境界線の通過 (夜 -&gt; 昼)</translation>
     </message>
     <message>
-        <location filename="../src/previsions/evenementsorbitaux.cpp" line="417"/>
+        <location filename="../src/previsions/evenementsorbitaux.cpp" line="414"/>
         <source>Passage à PSO = %1°</source>
         <comment>In orbit position</comment>
         <translation>位置が%1°のとき通過</translation>
     </message>
     <message>
-        <location filename="../src/previsions/flashs.cpp" line="76"/>
+        <location filename="../src/previsions/flashs.cpp" line="72"/>
         <source>FCB</source>
         <comment>Front, Central, Backward panels of MetOp satellite</comment>
         <translation>FCB</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/evenements.cpp" line="75"/>
-        <location filename="../test/src/librairies/corps/satellite/evenementstest.cpp" line="102"/>
-        <location filename="../test/src/librairies/corps/satellite/evenementstest.cpp" line="114"/>
+        <location filename="../src/librairies/corps/satellite/evenements.cpp" line="79"/>
         <source>LOS</source>
         <comment>Loss of signal</comment>
         <translation>LOS</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/evenements.cpp" line="107"/>
-        <location filename="../src/librairies/corps/satellite/evenementsconst.h" line="73"/>
-        <location filename="../test/src/librairies/corps/satellite/evenementstest.cpp" line="83"/>
-        <location filename="../test/src/librairies/corps/satellite/evenementstest.cpp" line="95"/>
+        <location filename="../src/librairies/corps/satellite/evenements.cpp" line="111"/>
+        <location filename="../src/librairies/corps/satellite/evenementsconst.h" line="74"/>
         <source>AOS</source>
         <comment>Acquisition of signal</comment>
         <translation>AOS</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/donnees.cpp" line="86"/>
+        <location filename="../src/librairies/corps/satellite/donnees.cpp" line="90"/>
         <source>N/A</source>
         <translation>該当なし</translation>
+    </message>
+    <message>
+        <location filename="../src/librairies/corps/satellite/sgp4.cpp" line="260"/>
+        <source>Erreur lors du calcul de la position du satellite %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/librairies/systeme/fichierxml.cpp" line="117"/>
+        <source>Erreur lors du chargement du fichier %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Radar</name>
     <message>
         <location filename="../src/interface/radar/radar.ui" line="58"/>
-        <location filename="../src/interface/radar/radar.cpp" line="347"/>
-        <location filename="../src/interface/radar/radar.cpp" line="350"/>
+        <location filename="../src/interface/radar/radar.cpp" line="343"/>
+        <location filename="../src/interface/radar/radar.cpp" line="346"/>
         <source>Nord</source>
         <translation>北</translation>
     </message>
     <message>
         <location filename="../src/interface/radar/radar.ui" line="73"/>
-        <location filename="../src/interface/radar/radar.cpp" line="357"/>
-        <location filename="../src/interface/radar/radar.cpp" line="360"/>
+        <location filename="../src/interface/radar/radar.cpp" line="353"/>
+        <location filename="../src/interface/radar/radar.cpp" line="356"/>
         <source>Ouest</source>
         <translation>西</translation>
     </message>
     <message>
         <location filename="../src/interface/radar/radar.ui" line="114"/>
-        <location filename="../src/interface/radar/radar.cpp" line="356"/>
-        <location filename="../src/interface/radar/radar.cpp" line="361"/>
+        <location filename="../src/interface/radar/radar.cpp" line="352"/>
+        <location filename="../src/interface/radar/radar.cpp" line="357"/>
         <source>Est</source>
         <translation>東</translation>
     </message>
     <message>
         <location filename="../src/interface/radar/radar.ui" line="126"/>
-        <location filename="../src/interface/radar/radar.cpp" line="346"/>
-        <location filename="../src/interface/radar/radar.cpp" line="351"/>
+        <location filename="../src/interface/radar/radar.cpp" line="342"/>
+        <location filename="../src/interface/radar/radar.cpp" line="347"/>
         <source>Sud</source>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/radar/radar.cpp" line="139"/>
+        <location filename="../src/interface/radar/radar.cpp" line="135"/>
         <source>Azimut : %1°</source>
         <translation>方位角 : %1°</translation>
     </message>
     <message>
-        <location filename="../src/interface/radar/radar.cpp" line="140"/>
+        <location filename="../src/interface/radar/radar.cpp" line="136"/>
         <source>Hauteur : %1°</source>
         <translation>仰角 : %1°</translation>
     </message>
     <message>
-        <location filename="../src/interface/radar/radar.cpp" line="158"/>
+        <location filename="../src/interface/radar/radar.cpp" line="154"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/radar/radar.cpp" line="161"/>
+        <location filename="../src/interface/radar/radar.cpp" line="157"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/interface/radar/radar.cpp" line="188"/>
-        <location filename="../src/interface/radar/radar.cpp" line="189"/>
+        <location filename="../src/interface/radar/radar.cpp" line="184"/>
+        <location filename="../src/interface/radar/radar.cpp" line="185"/>
         <source>Soleil</source>
         <translation>太陽</translation>
     </message>
     <message>
-        <location filename="../src/interface/radar/radar.cpp" line="215"/>
-        <location filename="../src/interface/radar/radar.cpp" line="216"/>
+        <location filename="../src/interface/radar/radar.cpp" line="211"/>
+        <location filename="../src/interface/radar/radar.cpp" line="212"/>
         <source>Lune</source>
         <translation>月</translation>
     </message>
@@ -5916,7 +5902,7 @@ Satellite %1 - numéro NORAD : %2</source>
     <name>RechercheSatellite</name>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="54"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="228"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="222"/>
         <source>Objets trouvés :</source>
         <translation>見つかったオブジェクト :</translation>
     </message>
@@ -5927,264 +5913,274 @@ Satellite %1 - numéro NORAD : %2</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="95"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="187"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="772"/>
         <source>Nom :</source>
         <translation>名称 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="221"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="366"/>
+        <source>Masse sec/totale :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="380"/>
+        <source>Classe/Categorie/Discipline :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="421"/>
         <source>Numéro NORAD :</source>
         <translation>NORAD番号 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="234"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="434"/>
         <source>Désignation COSPAR :</source>
         <translation>国際衛星識別符号 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="302"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="630"/>
         <source>Magnitude std/max :</source>
         <translation>標準・最大等級 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="315"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="643"/>
         <source>Modèle orbital :</source>
         <translation>軌道モデル :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="328"/>
-        <source>Dimensions/Section :</source>
-        <translation>大きさ・断面積 :</translation>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="656"/>
+        <source>Forme/Dimensions :</source>
+        <translation type="unfinished">断面積・TODO :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="435"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="494"/>
         <source>Date de lancement :</source>
         <translation>打ち上げ日 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="445"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="504"/>
         <source>Date de rentrée :</source>
         <translation>再突入日付 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="455"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="514"/>
         <source>Catégorie d&apos;orbite :</source>
         <translation>軌道種類 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="465"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="524"/>
         <source>Pays/Organisation :</source>
         <translation>国/組織 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="475"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="534"/>
         <source>Site de lancement :</source>
         <translation>発射場 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="568"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="274"/>
         <source>Apogée (Altitude) :</source>
         <translation>遠地点 (高度) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="578"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="284"/>
         <source>Périgée (Altitude) :</source>
         <translation>近地点 (高度) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="588"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="294"/>
         <source>Période orbitale :</source>
         <translation>軌道周期 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="601"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="307"/>
         <source>Inclinaison :</source>
         <translation>軌道傾斜角 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="681"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="138"/>
         <source>Fichiers :</source>
         <translation>ファイル :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="739"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="196"/>
         <source>COSPAR :</source>
         <translation>COSPAR :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="783"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="240"/>
         <source>NORAD :</source>
         <translation>NORAD :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="116"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="111"/>
         <source>Problème de droits d&apos;écriture du fichier %1</source>
         <translation>ファイル「%1」の書き込み権限に問題があります</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="128"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="123"/>
         <source>Nom                :</source>
         <translation>名称 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="130"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="125"/>
         <source>Numéro NORAD       : %1		Magnitude std/max  : %2</source>
         <comment>Standard/Maximum magnitude</comment>
         <translation>NORAD番号       : %1			標準・最大等級  : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="133"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="128"/>
         <source>Désignation COSPAR : %1		Modèle orbital     : %2</source>
         <translation>国際衛星識別符号 : %1		軌道モデル      : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="136"/>
-        <source>Dimensions/Section : %1%2</source>
-        <translation>大きさ・断面積     : %1%2</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="137"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="495"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="476"/>
         <source>Inconnues</source>
         <translation>不明</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="140"/>
-        <source>Date de lancement  : %1		Apogée  (Altitude) : %2</source>
-        <translation>打ち上げ日 : %1			遠地点 (高度) : %2</translation>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="131"/>
+        <source>Forme/Dimensions : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="135"/>
+        <source>Date de lancement  : %1</source>
+        <translation>打ち上げ日 : %1</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="138"/>
+        <source>Date de rentrée    : %1</source>
+        <translation>再突入日付    : %1</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="141"/>
+        <source>Catégorie d&apos;orbite : %1</source>
+        <translation>軌道種類  : %1</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="142"/>
+        <source>Pays/Organisation  : %1</source>
+        <translation>国/組織   : %1</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="143"/>
-        <source>Date de rentrée    : %1		</source>
-        <translation>再突入日付    : %1			</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="144"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="147"/>
-        <source>Catégorie d&apos;orbite : %1		</source>
-        <translation>軌道種類  : %1				</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="145"/>
-        <source>Périgée (Altitude) : %1</source>
-        <translation>近地点 (高度) : %1</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="148"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="151"/>
-        <source>Pays/Organisation  : %1		</source>
-        <translation>国/組織   : %1				</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="149"/>
-        <source>Période orbitale   : %1</source>
-        <translation>軌道周期      : %1</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="152"/>
-        <source>Site de lancement  : %1		</source>
-        <translation>発射場    : %1			</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="153"/>
-        <source>Inclinaison        : %1</source>
-        <translation>軌道傾斜角    : %1</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="156"/>
         <source>Site de lancement  : %1</source>
         <translation>発射場  : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="231"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="146"/>
+        <source>Classe/Catégorie/Discipline : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="147"/>
+        <source>Masse sec/totale            : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="148"/>
+        <source>Apogée  (Altitude)          : %1</source>
+        <translation>遠地点 (高度) : %1</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="149"/>
+        <source>Périgée (Altitude)          : %1</source>
+        <translation>近地点 (高度) : %1</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="150"/>
+        <source>Période orbitale            : %1</source>
+        <translation>軌道周期      : %1</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="151"/>
+        <source>Inclinaison                 : %1</source>
+        <translation>軌道傾斜角    : %1</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="225"/>
         <source>Objets trouvés (%1) :</source>
         <translation>見つかったオブジェクト (%1) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="417"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="512"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="518"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="561"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="564"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="411"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="496"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="502"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="553"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="556"/>
         <source>Inconnu</source>
         <translation>不明</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="423"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="525"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="530"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="533"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="558"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="417"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="509"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="518"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="521"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="550"/>
         <source>Inconnue</source>
         <translation>不明</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="448"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="442"/>
         <source>SGP4 (DS)</source>
         <comment>Orbital model SGP4 (deep space)</comment>
         <translation>SGP4 (深宇宙)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="448"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="442"/>
         <source>SGP4 (NE)</source>
         <comment>Orbital model SGP4 (near Earth)</comment>
         <translation>SGP4 (近地球域)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="449"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="443"/>
         <source>Non applicable</source>
         <translation>該当なし</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="453"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="448"/>
         <source>Modèle haute orbite</source>
         <translation>高軌道モデル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="453"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="448"/>
         <source>Modèle basse orbite</source>
         <translation>低軌道モデル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="461"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="456"/>
         <source>m</source>
         <comment>meter</comment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="462"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="457"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="474"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="470"/>
         <source>ft</source>
         <comment>foot</comment>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="475"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="471"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="480"/>
-        <source>Sphérique. R=%1 %2</source>
-        <comment>R = radius</comment>
-        <translation>球形。 R=%1 %2</translation>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="539"/>
+        <source>Date de rentrée incertaine</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="485"/>
-        <source>Cylindrique. L=%1 %2, R=%3 %2</source>
-        <comment>L = height, R = radius</comment>
-        <translation>円筒形。 L=%1 %2, R=%3 %2</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="490"/>
-        <source>Boîte. %1 x %2 x %3 %4</source>
-        <translation>直方体。 %1 x %2 x %3 %4</translation>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="542"/>
+        <source>Heure de rentrée incertaine</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6267,7 +6263,7 @@ Satellite %1 - numéro NORAD : %2</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="470"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="973"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="968"/>
         <source>Ouvrir Satellite Tracker</source>
         <translation>Satellite Trackerを開く</translation>
     </message>
@@ -6318,89 +6314,89 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>フィルター</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="329"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="323"/>
         <source>Satellite en éclipse</source>
         <translation>現在、衛星の食中です</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="329"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="323"/>
         <source>Satellite éclairé</source>
         <translation>現在、衛星に太陽光が当たっている</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="342"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="336"/>
         <source>%1 (dans %2). Azimut : %3</source>
         <comment>Delay in hour, minutes, seconds</comment>
         <translation>%1 (あと%2で)。方位角 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="344"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="338"/>
         <source>AOS</source>
         <comment>Acquisition of signal</comment>
         <translation>AOS</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="363"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="357"/>
         <source>%1%2. Azimut : %3</source>
         <translation>%1%2。 方位角 : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="368"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="428"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="362"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="422"/>
         <source>h</source>
         <comment>hour</comment>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="368"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="373"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="428"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="432"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="362"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="367"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="422"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="426"/>
         <source>min</source>
         <comment>minute</comment>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="373"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="432"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="367"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="426"/>
         <source>s</source>
         <comment>second</comment>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="404"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="482"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="398"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="476"/>
         <source>Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3</source>
         <translation>衛星が上空を通過している. 現在の仰角 : %1. 方位角 : %2. %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="620"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="614"/>
         <source>Aucun satellite n&apos;est sélectionné dans la liste</source>
         <translation>リストで衛星が選択されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="645"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="639"/>
         <source>LOS</source>
         <comment>Loss of signal</comment>
         <translation>LOS</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="704"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="698"/>
         <source>Calculs en cours...</source>
         <translation>進行中の計算...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="705"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="699"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="734"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="728"/>
         <source>Calculs terminés</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="974"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="969"/>
         <source>Fichiers exécutables (*.exe)</source>
         <translation>実行ファイル (*.exe)</translation>
     </message>
@@ -6408,27 +6404,27 @@ Satellite %1 - numéro NORAD : %2</source>
 <context>
     <name>Telechargement</name>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="98"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="94"/>
         <source>Erreur lors du téléchargement du fichier %1</source>
         <translation>ファイル「%1」のダウンロード中にエラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="124"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="120"/>
         <source>Impossible d&apos;écrire le fichier %1 dans le répertoire %2</source>
         <translation>ファイル「%1」をディレクトリ「%2」に書き込めません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="209"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="206"/>
         <source>o/s</source>
         <translation>B/s</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="212"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="209"/>
         <source>ko/s</source>
         <translation>KB/s</translation>
     </message>
     <message>
-        <location filename="../src/librairies/systeme/telechargement.cpp" line="215"/>
+        <location filename="../src/librairies/systeme/telechargement.cpp" line="212"/>
         <source>Mo/s</source>
         <translation>MB/s</translation>
     </message>
@@ -6451,27 +6447,27 @@ Satellite %1 - numéro NORAD : %2</source>
         <translation>フィルター</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/telechargementoptions.cpp" line="132"/>
+        <location filename="../src/interface/options/telechargementoptions.cpp" line="128"/>
         <source>Télécharger des lieux d&apos;observation...</source>
         <translation>観測地をダウンロードする...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/telechargementoptions.cpp" line="136"/>
+        <location filename="../src/interface/options/telechargementoptions.cpp" line="132"/>
         <source>Télécharger des cartes du monde...</source>
         <translation>世界地図をダウンロードする...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/telechargementoptions.cpp" line="140"/>
+        <location filename="../src/interface/options/telechargementoptions.cpp" line="136"/>
         <source>Télécharger des fichiers de notification sonore...</source>
         <translation>通知音ファイルをダウンロードする...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/telechargementoptions.cpp" line="283"/>
+        <location filename="../src/interface/options/telechargementoptions.cpp" line="276"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/telechargementoptions.cpp" line="283"/>
+        <location filename="../src/interface/options/telechargementoptions.cpp" line="276"/>
         <source>Veuillez redémarrer %1 pour prendre en compte la mise à jour</source>
         <translation>更新を完了するために「%1」の再起動が必要です</translation>
     </message>
@@ -6479,82 +6475,82 @@ Satellite %1 - numéro NORAD : %2</source>
 <context>
     <name>cardinal point</name>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="50"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="46"/>
         <source>N</source>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="51"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="47"/>
         <source>NNE</source>
         <translation>北北東</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="52"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="48"/>
         <source>NE</source>
         <translation>北東</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="53"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="49"/>
         <source>ENE</source>
         <translation>東北東</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="54"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="50"/>
         <source>E</source>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="55"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="51"/>
         <source>ESE</source>
         <translation>東南東</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="56"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="52"/>
         <source>SE</source>
         <translation>南東</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="57"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="53"/>
         <source>SSE</source>
         <translation>南南東</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="58"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="54"/>
         <source>S</source>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="59"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="55"/>
         <source>SSW</source>
         <translation>南南西</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="60"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="56"/>
         <source>SW</source>
         <translation>南西</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="61"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="57"/>
         <source>WSW</source>
         <translation>西南西</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="62"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="58"/>
         <source>W</source>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="63"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="59"/>
         <source>WNW</source>
         <translation>西北西</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="64"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="60"/>
         <source>NW</source>
         <translation>北西</translation>
     </message>
     <message>
-        <location filename="../src/librairies/observateur/observateur.cpp" line="65"/>
+        <location filename="../src/librairies/observateur/observateur.cpp" line="61"/>
         <source>NNW</source>
         <translation>北北西</translation>
     </message>
@@ -6562,37 +6558,37 @@ Satellite %1 - numéro NORAD : %2</source>
 <context>
     <name>planet</name>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/planeteconst.h" line="73"/>
+        <location filename="../src/librairies/corps/systemesolaire/planeteconst.h" line="75"/>
         <source>Mercure</source>
         <translation>水星</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/planeteconst.h" line="74"/>
+        <location filename="../src/librairies/corps/systemesolaire/planeteconst.h" line="76"/>
         <source>Vénus</source>
         <translation>金星</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/planeteconst.h" line="75"/>
+        <location filename="../src/librairies/corps/systemesolaire/planeteconst.h" line="77"/>
         <source>Mars</source>
         <translation>火星</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/planeteconst.h" line="76"/>
+        <location filename="../src/librairies/corps/systemesolaire/planeteconst.h" line="78"/>
         <source>Jupiter</source>
         <translation>木星</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/planeteconst.h" line="77"/>
+        <location filename="../src/librairies/corps/systemesolaire/planeteconst.h" line="79"/>
         <source>Saturne</source>
         <translation>土星</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/planeteconst.h" line="78"/>
+        <location filename="../src/librairies/corps/systemesolaire/planeteconst.h" line="80"/>
         <source>Uranus</source>
         <translation>天王星</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/planeteconst.h" line="79"/>
+        <location filename="../src/librairies/corps/systemesolaire/planeteconst.h" line="81"/>
         <source>Neptune</source>
         <translation>海王星</translation>
     </message>

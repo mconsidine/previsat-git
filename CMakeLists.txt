@@ -76,7 +76,7 @@ add_compile_definitions(
     VERSION="${VERSION}"
     VER_MAJ="${VER_MAJ}"
     ANNEES_DEV="${ANNEES_DEV}"
-    NB_LIGNES="${NB_LINES}"
+    NB_LIGNES="${NB_LIGNES}"
     NB_COL_DONNEES="${NB_COL_DONNEES}"
 )
 
@@ -205,6 +205,14 @@ else()
     )
 
     qt_finalize_executable(${TARGET})
+
+    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS LinguistTools)
+    qt_add_translations(${TARGET}
+        TS_FILES translations/PreviSat_en.ts translations/PreviSat_ja.ts
+    )
+
+    add_dependencies(${TARGET} ${TARGET}_lupdate)
+    add_dependencies(${TARGET} update_translations)
 
 endif()
 
