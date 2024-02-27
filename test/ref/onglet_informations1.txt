@@ -8,5 +8,5 @@ Coeff pseudo-balistique : 1.7022e-05 (1/Re)	Nb orbites à l'époque       : 1241
 Inclinaison             : 051.6460°		Masse sec/totale            : 19000/20351 kg
 AD noeud ascendant      : 055.5526°		Magnitude std/max           : -0.43v/-2.3
 Excentricité            : 0.0001465		Modèle orbital              : SGP4 (NE)
-Argument du périgée     : 045.7523°		Dimensions/Section          : Cyl + 2 Pan. 12.6 x 4.2 x 23.9 m
+Argument du périgée     : 045.7523°		Forme/Dimensions            : Cyl + 2 Pan. 12.6 x 4.2 x 23.9 m
 Anomalie moyenne        : 018.7733°		Classe/Catégorie/Discipline : C / SS / -
