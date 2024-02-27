@@ -218,11 +218,31 @@ else()
     add_dependencies(${TARGET} ${TARGET}_lupdate)
     add_dependencies(${TARGET} update_translations)
 
+    if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+        set(RELEASE_FLAGS
+            -Os
+            -fbounds-check
+            -fbranch-target-load-optimize
+            -fcaller-saves
+            -fcommon
+            -fcprop-registers
+            -fcrossjumping
+            -floop-optimize
+            -foptimize-register-move
+            -fpeephole
+            -fpeephole2
+            -frerun-cse-after-loop
+            -fstrength-reduce
+            -malign-double
+            -s
+        )
+    endif()
 endif()
 
 target_compile_options(${TARGET}
     PUBLIC
     ${COV_FLAGS}
+    ${RELEASE_FLAGS}
     -W
     -Wall
     -Wcast-align
