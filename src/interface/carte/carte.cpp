@@ -56,7 +56,11 @@
 
 
 // Registre
+#if (PORTABLE_BUILD == true)
+static QSettings settings(QString("%1.ini").arg(APP_NAME), QSettings::IniFormat);
+#else
 static QSettings settings(ORG_NAME, APP_NAME);
+#endif
 
 
 // SAA
@@ -1221,7 +1225,7 @@ void Carte::AffichageZoneOmbre()
     Soleil &soleil = Configuration::instance()->soleil();
 
     /* Corps de la methode */
-    if (settings.value("affichage/affnuit").toUInt() != Qt::Unchecked) {
+    if (settings.value("affichage/affnuit", Qt::Checked).toUInt() != Qt::Unchecked) {
 
         double beta = MATHS::PI_SUR_DEUX - TERRE::REFRACTION_HZ;
         const int imax = ((settings.value("affichage/affnuit").toUInt() == Qt::PartiallyChecked) || _mcc) ? 1 : 4;

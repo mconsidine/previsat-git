@@ -574,10 +574,10 @@ QMap<QString, SatellitesStarlink> GestionnaireXml::LecturePreLaunchStarlink()
 
     /* Initialisations */
     const QString nomficXml = "pre-launch.xml";
+    FichierXml fi(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
 
     try {
 
-        FichierXml fi(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
         const QDomDocument document = fi.Ouverture(false);
 
         /* Corps de la methode */
@@ -608,9 +608,11 @@ QMap<QString, SatellitesStarlink> GestionnaireXml::LecturePreLaunchStarlink()
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
     } catch (Exception const &e) {
-        qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
-                            .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+        if (fi.exists()) {
+            qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                                .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+        }
     }
 
     /* Retour */

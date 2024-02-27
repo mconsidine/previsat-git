@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.24)
 
 #----------------------------------
 set(VERSION 7.0.0.0)
-set(QT_PREFERRED_VERSION 6.6.1)
+set(QT_PREFERRED_VERSION 6.6.2)
 set(ANNEES_DEV 2005-2024)
 set(NB_COL_DONNEES 249)
 
@@ -171,7 +171,11 @@ if(${BUILD_TEST})
 
 else()
 
-    message("Build software configuration")
+    if(${PORTABLE_BUILD})
+        message("Build portable software configuration")
+    else()
+        message("Build software configuration")
+    endif()
 
     # Definition des classes d'interface graphique
     file(GLOB_RECURSE

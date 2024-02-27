@@ -42,6 +42,7 @@
 #include "evenementsstationspatiale.h"
 #include "librairies/exceptions/exception.h"
 #include "librairies/systeme/fichierxml.h"
+#include "librairies/systeme/telechargement.h"
 
 
 /**********
@@ -68,6 +69,13 @@ EvenementsStation EvenementsStationSpatiale::LectureEvenementsStationSpatiale()
     evenements.coefficientTraineeAtmospherique = -1.;
     evenements.surfaceTraineeAtmospherique = -1.;
     FichierXml fi(Configuration::instance()->dirLocalData() + QDir::separator() + Configuration::instance()->nomFichierEvenementsStationSpatiale());
+
+    if (!fi.exists()) {
+
+        // Telechargement du fichier
+        Telechargement tel(Configuration::instance()->dirLocalData());
+        tel.TelechargementFichier(QUrl(QString("%1data/%2").arg(DOMAIN_NAME).arg(Configuration::instance()->nomFichierEvenementsStationSpatiale())));
+    }
 
     /* Corps de la methode */
     try {

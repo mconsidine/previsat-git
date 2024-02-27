@@ -56,7 +56,11 @@
 
 
 // Registre
+#if (PORTABLE_BUILD == true)
+static QSettings settings(QString("%1.ini").arg(APP_NAME), QSettings::IniFormat);
+#else
 static QSettings settings(ORG_NAME, APP_NAME);
+#endif
 
 
 /**********
