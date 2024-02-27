@@ -115,13 +115,11 @@ void TLETest::testMiseAJourFichier()
 {
     qInfo(Q_FUNC_INFO);
 
-    QString dest = dir.path();
-
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
     const QString ficnew = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + "visual.txt";
 
     QFile fi(fic);
-    const QString ficold = dest + QDir::separator() + "test" + QDir::separator() + QFileInfo(fic).fileName();
+    const QString ficold = QDir::currentPath() + QDir::separator() + "test" + QDir::separator() + QFileInfo(fic).fileName();
     fi.copy(ficold);
     const QStringList compteRendu = TLE::MiseAJourFichier(ficold, ficnew, "", -1, 1);
 
