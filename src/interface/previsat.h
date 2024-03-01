@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 decembre 2023
+ * >    1er mars 2024
  *
  */
 
@@ -413,8 +413,9 @@ private slots:
 
     /**
      * @brief TelechargementGroupesStarlink Telechargement des groupes Starlink
+     * @param maj mise a jour
      */
-    void TelechargementGroupesStarlink();
+    void TelechargementGroupesStarlink(const bool maj);
 
     /**
      * @brief TempsReel Affichage en temps reel

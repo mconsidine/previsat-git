@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 janvier 2024
+ * >    1er mars 2024
  *
  */
 
@@ -297,7 +297,7 @@ void PreviSat::MajGP()
     }
 
     // Telechargement des groupes Starlink
-    TelechargementGroupesStarlink();
+    TelechargementGroupesStarlink(false);
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
 
@@ -2461,7 +2461,7 @@ void PreviSat::ReinitCalculEvenementsSoleilLune()
 /*
  * Telechargement des groupes Starlink
  */
-void PreviSat::TelechargementGroupesStarlink()
+void PreviSat::TelechargementGroupesStarlink(const bool maj)
 {
     /* Declarations des variables locales */
 
@@ -2472,7 +2472,7 @@ void PreviSat::TelechargementGroupesStarlink()
 
         qInfo() << "Telechargement des groupes Starlink";
 
-        if (!settings.value("affichage/verifMAJ").toBool()) {
+        if (!settings.value("affichage/verifMAJ").toBool() && !maj) {
             throw Exception();
         }
 

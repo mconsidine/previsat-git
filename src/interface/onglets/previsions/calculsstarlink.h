@@ -36,7 +36,7 @@
  * >    25 septembre 2023
  *
  * Date de revision
- * >    12 novembre 2023
+ * >    1er mars 2024
  *
  */
 
@@ -107,7 +107,7 @@ public slots:
 signals:
 
     void AfficherMessageStatut(const QString &, const int );
-    void MajElementsOrbitaux();
+    void MajElementsOrbitaux(const bool);
 
 
 protected:
