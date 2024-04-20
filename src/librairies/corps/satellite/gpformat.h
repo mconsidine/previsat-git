@@ -144,6 +144,7 @@ private:
      * @brief LectureElements Lecture des elements orbitaux
      * @param sat noeud du fichier xml correspondant a un satellite
      * @return elements orbitaux
+     * @throw Exception
      */
     static ElementsOrbitaux LectureElements(const QDomNode &sat);
 

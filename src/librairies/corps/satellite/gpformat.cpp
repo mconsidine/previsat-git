@@ -261,32 +261,36 @@ ElementsOrbitaux GPFormat::LectureElements(const QDomNode &sat)
     /* Initialisations */
 
     /* Corps de la methode */
-    if (!sat.isNull()) {
+    try {
 
-        // Lecture section metadata
-        const QDomNode metadata = sat.toElement().elementsByTagName("metadata").at(0);
-        const QString nomsat = metadata.firstChildElement("OBJECT_NAME").text();
-        elem.nom = RecupereNomsat(nomsat);
-        elem.cospar = metadata.firstChildElement("OBJECT_ID").text();
+        if (!sat.isNull()) {
 
-        // Lecture section meanElements
-        const QDomNode meanElements = sat.toElement().elementsByTagName("meanElements").at(0);
-        elem.epoque = Date::ConversionDateIso(meanElements.firstChildElement("EPOCH").text());
-        elem.no = meanElements.firstChildElement("MEAN_MOTION").text().toDouble();
-        elem.ecco = meanElements.firstChildElement("ECCENTRICITY").text().toDouble();
-        elem.inclo = meanElements.firstChildElement("INCLINATION").text().toDouble();
-        elem.omegao = meanElements.firstChildElement("RA_OF_ASC_NODE").text().toDouble();
-        elem.argpo = meanElements.firstChildElement("ARG_OF_PERICENTER").text().toDouble();
-        elem.mo = meanElements.firstChildElement("MEAN_ANOMALY").text().toDouble();
+            // Lecture section metadata
+            const QDomNode metadata = sat.toElement().elementsByTagName("metadata").at(0);
+            const QString nomsat = metadata.firstChildElement("OBJECT_NAME").text();
+            elem.nom = RecupereNomsat(nomsat);
+            elem.cospar = metadata.firstChildElement("OBJECT_ID").text();
 
-        // Lecture section tleParameters
-        const QDomNode tleParameters = sat.toElement().elementsByTagName("tleParameters").at(0);
-        //elem.norad = tleParameters.firstChildElement("NORAD_CAT_ID").text();
-        elem.norad = QString("%1").arg(tleParameters.firstChildElement("NORAD_CAT_ID").text(), 6, QChar('0'));
-        elem.nbOrbitesEpoque = tleParameters.firstChildElement("REV_AT_EPOCH").text().toUInt();
-        elem.bstar = tleParameters.firstChildElement("BSTAR").text().toDouble();
-        elem.ndt20 = tleParameters.firstChildElement("MEAN_MOTION_DOT").text().toDouble();
-        elem.ndd60 = tleParameters.firstChildElement("MEAN_MOTION_DDOT").text().toDouble();
+            // Lecture section meanElements
+            const QDomNode meanElements = sat.toElement().elementsByTagName("meanElements").at(0);
+            elem.epoque = Date::ConversionDateIso(meanElements.firstChildElement("EPOCH").text());
+            elem.no = meanElements.firstChildElement("MEAN_MOTION").text().toDouble();
+            elem.ecco = meanElements.firstChildElement("ECCENTRICITY").text().toDouble();
+            elem.inclo = meanElements.firstChildElement("INCLINATION").text().toDouble();
+            elem.omegao = meanElements.firstChildElement("RA_OF_ASC_NODE").text().toDouble();
+            elem.argpo = meanElements.firstChildElement("ARG_OF_PERICENTER").text().toDouble();
+            elem.mo = meanElements.firstChildElement("MEAN_ANOMALY").text().toDouble();
+
+            // Lecture section tleParameters
+            const QDomNode tleParameters = sat.toElement().elementsByTagName("tleParameters").at(0);
+            //elem.norad = tleParameters.firstChildElement("NORAD_CAT_ID").text();
+            elem.norad = QString("%1").arg(tleParameters.firstChildElement("NORAD_CAT_ID").text(), 6, QChar('0'));
+            elem.nbOrbitesEpoque = tleParameters.firstChildElement("REV_AT_EPOCH").text().toUInt();
+            elem.bstar = tleParameters.firstChildElement("BSTAR").text().toDouble();
+            elem.ndt20 = tleParameters.firstChildElement("MEAN_MOTION_DOT").text().toDouble();
+            elem.ndd60 = tleParameters.firstChildElement("MEAN_MOTION_DDOT").text().toDouble();
+        }
+    } catch (Exception const &e) {
     }
 
     /* Retour */
