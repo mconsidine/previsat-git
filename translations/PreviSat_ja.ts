@@ -4,19 +4,19 @@
 <context>
     <name>AfficherResultats</name>
     <message>
-        <location filename="../src/interface/afficherresultats.ui" line="125"/>
+        <location filename="../src/interface/afficherresultats.ui" line="128"/>
         <source>Afficher la carte</source>
         <translation>地図を表示する</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.ui" line="201"/>
         <location filename="../src/interface/afficherresultats.ui" line="204"/>
+        <location filename="../src/interface/afficherresultats.ui" line="207"/>
         <source>Enregistrer</source>
         <translation>保存する</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.ui" line="213"/>
         <location filename="../src/interface/afficherresultats.ui" line="216"/>
+        <location filename="../src/interface/afficherresultats.ui" line="219"/>
         <source>Enregistrer fichier texte</source>
         <translation>テキスト形式で保存する</translation>
     </message>

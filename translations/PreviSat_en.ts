@@ -4,19 +4,19 @@
 <context>
     <name>AfficherResultats</name>
     <message>
-        <location filename="../src/interface/afficherresultats.ui" line="125"/>
+        <location filename="../src/interface/afficherresultats.ui" line="128"/>
         <source>Afficher la carte</source>
         <translation>Show the map</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.ui" line="201"/>
         <location filename="../src/interface/afficherresultats.ui" line="204"/>
+        <location filename="../src/interface/afficherresultats.ui" line="207"/>
         <source>Enregistrer</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.ui" line="213"/>
         <location filename="../src/interface/afficherresultats.ui" line="216"/>
+        <location filename="../src/interface/afficherresultats.ui" line="219"/>
         <source>Enregistrer fichier texte</source>
         <translation>Save text file</translation>
     </message>
