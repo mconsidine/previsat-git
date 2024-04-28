@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    29 janvier 2024
+ * >    28 avril 2024
  *
  */
 
@@ -31,8 +31,8 @@
 \page Historique Version history
 
 
-<b><span style="color:red;">Version 6.1 (revision 4) :</span><br />
-September 2023 - January 2024 :</b>
+<b><span style="color:red;">Version 6.1 (revision 5) :</span><br />
+September 2023 - April 2024 :</b>
 <ul>
 <li>Add Starlink predictions.
 <li>Add checkboxes to filter chosen satellites in the lists.
