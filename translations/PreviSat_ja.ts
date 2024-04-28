@@ -4,19 +4,19 @@
 <context>
     <name>AfficherResultats</name>
     <message>
-        <location filename="../src/interface/afficherresultats.ui" line="164"/>
+        <location filename="../src/interface/afficherresultats.ui" line="167"/>
         <source>Afficher la carte</source>
         <translation>地図を表示する</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.ui" line="244"/>
         <location filename="../src/interface/afficherresultats.ui" line="247"/>
+        <location filename="../src/interface/afficherresultats.ui" line="250"/>
         <source>Enregistrer</source>
         <translation>保存する</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.ui" line="256"/>
         <location filename="../src/interface/afficherresultats.ui" line="259"/>
+        <location filename="../src/interface/afficherresultats.ui" line="262"/>
         <source>Enregistrer fichier texte</source>
         <translation>テキスト形式で保存する</translation>
     </message>
@@ -1910,12 +1910,12 @@ PreviSatは、完全無料です!</translation>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.ui" line="132"/>
+        <location filename="../src/interface/ciel/ciel.ui" line="138"/>
         <source>Ouest</source>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.ui" line="156"/>
+        <location filename="../src/interface/ciel/ciel.ui" line="162"/>
         <source>Sud</source>
         <translation>南</translation>
     </message>

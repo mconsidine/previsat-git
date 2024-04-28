@@ -135,7 +135,7 @@ QList<Etoile> Etoile::Initialisation(const QString &dirCommonData)
         throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::ERREUR);
     }
 
-    const QStringList contenu = QString(fi.readAll()).split("\n", Qt::SkipEmptyParts);
+    const QStringList contenu = QString(fi.readAll()).split("\n");
     fi.close();
 
     QStringListIterator it(contenu);
@@ -143,21 +143,27 @@ QList<Etoile> Etoile::Initialisation(const QString &dirCommonData)
 
         const QString ligne = it.next();
 
-        const int ad1 = ligne.mid(0, 2).toInt();
-        const int ad2 = ligne.mid(2, 2).toInt();
-        const double ad3 = ligne.mid(4, 4).toDouble();
-        const double ad = ad1 + ad2 * MATHS::DEG_PAR_ARCMIN + ad3 * MATHS::DEG_PAR_ARCSEC;
+        if (ligne.length() > 34) {
 
-        const int sgnd = (ligne.at(9) == '-') ? -1 : 1;
-        const int de1 = ligne.mid(10, 2).toInt();
-        const int de2 = ligne.mid(12, 2).toInt();
-        const int de3 = ligne.mid(14, 2).toInt();
-        const double dec = sgnd * (de1 + de2 * MATHS::DEG_PAR_ARCMIN + de3 * MATHS::DEG_PAR_ARCSEC);
+            const int ad1 = ligne.mid(0, 2).toInt();
+            const int ad2 = ligne.mid(2, 2).toInt();
+            const double ad3 = ligne.mid(4, 4).toDouble();
+            const double ad = ad1 + ad2 * MATHS::DEG_PAR_ARCMIN + ad3 * MATHS::DEG_PAR_ARCSEC;
 
-        const double mag = ligne.mid(31, 5).toDouble();
-        const QString nomEtoile = (ligne.length() > 37) ? ligne.mid(37, ligne.length()) : "";
+            const int sgnd = (ligne.at(9) == '-') ? -1 : 1;
+            const int de1 = ligne.mid(10, 2).toInt();
+            const int de2 = ligne.mid(12, 2).toInt();
+            const int de3 = ligne.mid(14, 2).toInt();
+            const double dec = sgnd * (de1 + de2 * MATHS::DEG_PAR_ARCMIN + de3 * MATHS::DEG_PAR_ARCSEC);
 
-        etoiles.append(Etoile(nomEtoile, ad, dec, mag));
+            const double mag = ligne.mid(31, 5).toDouble();
+            const QString nomEtoile = (ligne.length() > 37) ? ligne.mid(37, ligne.length()) : "";
+
+            etoiles.append(Etoile(nomEtoile, ad, dec, mag));
+
+        } else {
+            etoiles.append(Etoile());
+        }
     }
 
     qInfo() << "Lecture fichier etoiles.dat OK";
