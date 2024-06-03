@@ -1,3 +1,7 @@
+From https://previsat.sourceforge.net/
+Note that I am not the author of this package.  I place it here to preserve it.
+-mconsidine
+==========================
 Description of available files :
 
 - previsat-6.1.5.2-exe-win64.zip       : Complete binaries for Windows 64-bit (French, English, Japanese)
