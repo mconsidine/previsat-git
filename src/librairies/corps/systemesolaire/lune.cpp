@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 mai 2023
+ * >    7 juin 2024
  *
  */
 
@@ -420,8 +420,6 @@ double Lune::CalculJourJulienPhase(const double k)
 {
     const double t = k / 1236.85;
     const double t2 = t * t;
-    const double t3 = t2 * t;
-    const double t4 = t3 * t;
 
-    return (5.09766 + 29.530588861 * k + 0.00015437 * t2 - 0.000000150 * t3 + 0.00000000073 * t4);
+    return (5.09766 + 29.530588861 * k + t2 * (0.00015437 + t * (-0.000000150 + 0.00000000073 * t)));
 }
