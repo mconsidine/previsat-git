@@ -160,9 +160,11 @@ private:
     /**
      * @brief CheckSum Verification du checksum d'une ligne de TLE
      * @param[in] ligne ligne d'un TLE
+     * @param[out] checksum valeur calculee du checksum
      * @return vrai si le checksum est correct
      */
-    static bool CheckSum(const QString &ligne);
+    static bool CheckSum(const QString &ligne,
+                         int &checksum);
 
     /**
      * @brief VerifieLignes Verification des lignes d'un TLE

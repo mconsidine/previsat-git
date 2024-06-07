@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er mars 2024
+ * >    7 juin 2024
  *
  */
 
@@ -3159,7 +3159,7 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
             } else {
 
                 // Cas d'un fichier TLE
-                const int nbElem = TLE::VerifieFichier(fichier);
+                const int nbElem = TLE::VerifieFichier(fichier, true);
 
                 if (nbElem > 0) {
 
@@ -3186,10 +3186,6 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
                             qWarning() << "Import du fichier TLE" << ff.fileName() << "KO";
                         }
                     }
-
-                } else {
-                    qWarning() << QString("Le fichier TLE %1 ne contient pas d'éléments orbitaux").arg(ff.fileName());
-                    throw Exception(tr("Le fichier %1 ne contient pas d'éléments orbitaux").arg(ff.fileName()), MessageType::WARNING);
                 }
             }
         }

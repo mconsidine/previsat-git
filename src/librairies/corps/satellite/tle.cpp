@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 mai 2023
+ * >    7 juin 2024
  *
  */
 
@@ -556,26 +556,28 @@ const ElementsOrbitaux &TLE::elements() const
 /*
  * Verification du checksum de la ligne
  */
-bool TLE::CheckSum(const QString &ligne)
+bool TLE::CheckSum(const QString &ligne, int &checksum)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    int check = 0;
+    checksum = 0;
 
     /* Corps de la methode */
     for (int i=0; i<68; i++) {
 
         const int chr = ligne.at(i).digitValue();
         if ((chr >= 0) && (chr <= 9)) {
-            check += chr;
+            checksum += chr;
         } else if (ligne.at(i) == '-') {
-            check++;
+            checksum++;
         }
     }
 
+    checksum %= 10;
+
     /* Retour */
-    return ((check % 10) == ligne.at(68).digitValue());
+    return (checksum == ligne.at(68).digitValue());
 }
 
 /*
@@ -587,6 +589,8 @@ void TLE::VerifieLignes(const QString &li1,
                         const bool alarme)
 {
     /* Declarations des variables locales */
+    int checksum1;
+    int checksum2;
 
     /* Initialisations */
 
@@ -635,14 +639,14 @@ void TLE::VerifieLignes(const QString &li1,
     }
 
     // Verification des checksums
-    if (!CheckSum(li1)) {
-        throw Exception((alarme) ? QObject::tr("Erreur CheckSum ligne 1 :\nSatellite %1 - numéro NORAD : %2")
-                                           .arg(nomsat).arg(li1.mid(2, 5)) : "", MessageType::WARNING);
+    if (!CheckSum(li1, checksum1)) {
+        throw Exception((alarme) ? QObject::tr("Erreur CheckSum ligne 1 :\nSatellite %1 - numéro NORAD : %2\nValeur attendue : %3 - Valeur calculée : %4")
+                                       .arg(nomsat).arg(li1.mid(2, 5)).arg(li1.at(68)).arg(checksum1) : "", MessageType::WARNING);
     }
 
-    if (!CheckSum(li2)) {
-        throw Exception((alarme) ? QObject::tr("Erreur CheckSum ligne 2 :\nSatellite %1 - numéro NORAD : %2")
-                                           .arg(nomsat).arg(li1.mid(2, 5)) : "", MessageType::WARNING);
+    if (!CheckSum(li2, checksum2)) {
+        throw Exception((alarme) ? QObject::tr("Erreur CheckSum ligne 2 :\nSatellite %1 - numéro NORAD : %2\nValeur attendue : %3 - Valeur calculée : %4")
+                                           .arg(nomsat).arg(li1.mid(2, 5)).arg(li2.at(68)).arg(checksum2) : "", MessageType::WARNING);
     }
 
     /* Retour */

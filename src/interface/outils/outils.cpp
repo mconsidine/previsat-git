@@ -30,7 +30,7 @@
  * >    14 aout 2022
  *
  * Date de revision
- * >    27 decembre 2023
+ * >    7 juin 2024
  *
  */
 
@@ -1078,7 +1078,7 @@ void Outils::on_importerTLE_clicked()
             qInfo() << "Ouverture du fichier" << fichier;
 
             QFileInfo ff(fichier);
-            const int nbElem = TLE::VerifieFichier(fichier);
+            const int nbElem = TLE::VerifieFichier(fichier, true);
 
             if (nbElem > 0) {
 
@@ -1106,10 +1106,6 @@ void Outils::on_importerTLE_clicked()
                         qWarning() << "Import du fichier TLE" << ff.fileName() << "KO";
                     }
                 }
-
-            } else {
-                qWarning() << QString("Le fichier TLE %1 ne contient pas d'éléments orbitaux").arg(ff.fileName());
-                throw Exception(tr("Le fichier %1 ne contient pas d'éléments orbitaux").arg(ff.fileName()), MessageType::WARNING);
             }
         }
 

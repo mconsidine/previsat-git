@@ -4602,14 +4602,14 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="402"/>
         <location filename="../src/interface/outils/outils.cpp" line="432"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1140"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1136"/>
         <source>Oui</source>
         <translation>はい</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="403"/>
         <location filename="../src/interface/outils/outils.cpp" line="433"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1141"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1137"/>
         <source>Non</source>
         <translation>いいえ</translation>
     </message>
@@ -4667,17 +4667,16 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>ファイル「%1」は既に存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1112"/>
         <source>Le fichier %1 ne contient pas d&apos;éléments orbitaux</source>
-        <translation>ファイル「%1」に軌道要素が含まれていません</translation>
+        <translation type="vanished">ファイル「%1」に軌道要素が含まれていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1139"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1135"/>
         <source>Avertissement</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1139"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1135"/>
         <source>Voulez-vous vraiment supprimer les fichiers TLE sélectionnés ?</source>
         <translation>選択したTLEファイルを本当に削除しますか ?</translation>
     </message>
@@ -5121,7 +5120,6 @@ ce qui représente environ %2 pages.</source>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="3132"/>
-        <location filename="../src/interface/previsat.cpp" line="3192"/>
         <source>Le fichier %1 ne contient pas d&apos;éléments orbitaux</source>
         <translation>ファイル「%1」に軌道要素が含まれていません</translation>
     </message>
@@ -5132,46 +5130,46 @@ ce qui représente environ %2 pages.</source>
         <translation>ファイル「%1」は既に存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3224"/>
+        <location filename="../src/interface/previsat.cpp" line="3220"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*.*)</source>
         <translation>テキストファイル (*.txt);;すべてのファイル (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3401"/>
+        <location filename="../src/interface/previsat.cpp" line="3397"/>
         <source>Commun</source>
         <comment>common orbital elements groups</comment>
         <translation>一般的</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3406"/>
+        <location filename="../src/interface/previsat.cpp" line="3402"/>
         <source>Tous</source>
         <comment>all orbital elements groups</comment>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3495"/>
-        <location filename="../src/interface/previsat.cpp" line="3498"/>
+        <location filename="../src/interface/previsat.cpp" line="3491"/>
+        <location filename="../src/interface/previsat.cpp" line="3494"/>
         <source>Devise</source>
         <translation>通貨</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3496"/>
-        <location filename="../src/interface/previsat.cpp" line="3498"/>
+        <location filename="../src/interface/previsat.cpp" line="3492"/>
+        <location filename="../src/interface/previsat.cpp" line="3494"/>
         <source>Choisissez la devise :</source>
         <translation>通貨を選んでください ：</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3512"/>
+        <location filename="../src/interface/previsat.cpp" line="3508"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires</source>
         <translation>ご注意 : Tipeeeでペイパルのご寄付をすることは可能ですが、これには追加料金がかかります</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3579"/>
+        <location filename="../src/interface/previsat.cpp" line="3575"/>
         <source>Ouverture du fichier d&apos;éléments orbitaux %1 ...</source>
         <translation>軌道要素ファイル「%1」を読み込んでいます ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3217"/>
+        <location filename="../src/interface/previsat.cpp" line="3213"/>
         <source>onglet_general</source>
         <comment>file name (without accent)</comment>
         <translation>main_tab</translation>
@@ -5230,20 +5228,20 @@ ce qui représente environ %2 pages.</source>
         <translation>星図</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3218"/>
+        <location filename="../src/interface/previsat.cpp" line="3214"/>
         <source>onglet_elements</source>
         <comment>file name (without accent)</comment>
         <translation>elements_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3218"/>
+        <location filename="../src/interface/previsat.cpp" line="3214"/>
         <source>onglet_informations</source>
         <comment>file name (without accent)</comment>
         <translation>information_tab</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1833"/>
-        <location filename="../src/interface/previsat.cpp" line="3223"/>
+        <location filename="../src/interface/previsat.cpp" line="3219"/>
         <source>Enregistrer sous...</source>
         <translation>名前を付けて保存...</translation>
     </message>
@@ -5253,17 +5251,17 @@ ce qui représente environ %2 pages.</source>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3294"/>
+        <location filename="../src/interface/previsat.cpp" line="3290"/>
         <source>Pas d&apos;informations à afficher</source>
         <translation>表示する情報がありません</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3581"/>
+        <location filename="../src/interface/previsat.cpp" line="3577"/>
         <source>Fichier d&apos;éléments orbitaux de %1 satellites</source>
         <translation>%1基衛星の軌道要素が含まれているファイル</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3749"/>
+        <location filename="../src/interface/previsat.cpp" line="3745"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>
@@ -5531,52 +5529,56 @@ Voulez-vous supprimer ce TLE du fichier à mettre à jour ?</source>
         <translation>TLEの削除</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="596"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="600"/>
         <source>Une des lignes du TLE est vide</source>
         <translation>TLEの1行が空です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="601"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="605"/>
         <source>Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects</source>
         <translation>衛星「%1」(NORAD番号 : %2)のTLEは行番号が正しくありません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="608"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="612"/>
         <source>La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte</source>
         <translation>衛星「%1」(NORAD番号 : %2)のTLEは行の長さが正しくありません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="618"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="622"/>
         <source>Erreur position des espaces du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>TLEの空白文字の位置によるエラー :
 衛星「%1」 - NORAD番号 : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="626"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="630"/>
         <source>Erreur Ponctuation du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>TLEの約物によるエラー :
 衛星「%1」 - NORAD番号 : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="633"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="637"/>
         <source>Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)</source>
         <translation>衛星「%1」のTLEの2行はNORAD番号が異なります (%2と%3)</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="639"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="643"/>
         <source>Erreur CheckSum ligne 1 :
-Satellite %1 - numéro NORAD : %2</source>
-        <translation>1行目のチェックサムが正しくありません :
-衛星「%1」 - NORAD番号 : %2</translation>
+Satellite %1 - numéro NORAD : %2
+Valeur attendue : %3 - Valeur calculée : %4</source>
+        <translation type="unfinished">1行目のチェックサムが正しくありません :
+衛星「%1」 - NORAD番号 : %2
+Expected value : %3 - Calculated value : %4</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="644"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="648"/>
         <source>Erreur CheckSum ligne 2 :
-Satellite %1 - numéro NORAD : %2</source>
-        <translation>2行目のチェックサムが正しくありません :
-衛星「%1」 - NORAD番号 : %2</translation>
+Satellite %1 - numéro NORAD : %2
+Valeur attendue : %3 - Valeur calculée : %4</source>
+        <translation type="unfinished">2行目のチェックサムが正しくありません :
+衛星「%1」 - NORAD番号 : %2
+Expected value : %3 - Calculated value : %4</translation>
     </message>
     <message>
         <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="227"/>
