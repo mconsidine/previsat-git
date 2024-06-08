@@ -36,7 +36,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    20 janvier 2024
+ * >    8 juin 2024
  *
  */
 
@@ -265,7 +265,7 @@ private slots:
     void on_afficone_toggled(bool checked);
     void on_afftraj_toggled(bool checked);
     void on_affnotif_toggled(bool checked);
-    void on_affnuit_toggled(bool checked);
+    void on_affnuit_stateChanged(int arg1);
     void on_afflune_toggled(bool checked);
     void on_affradar_toggled(bool checked);
 

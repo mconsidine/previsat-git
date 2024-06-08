@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    20 janvier 2024
+ * >    8 juin 2024
  *
  */
 
@@ -288,6 +288,7 @@ void Options::EcritureRegistre()
     settings.setValue("affichage/affplanetes", _ui->affplanetes->checkState());
     settings.setValue("affichage/affradar", _ui->affradar->checkState());
     settings.setValue("affichage/affsoleil", _ui->affsoleil->isChecked());
+    settings.setValue("affichage/affterminateur", _ui->affterminateur->isChecked());
     settings.setValue("affichage/afftraceCiel", _ui->afftraceCiel->isChecked());
     settings.setValue("affichage/afftraj", _ui->afftraj->isChecked());
     settings.setValue("affichage/affvisib", _ui->affvisib->checkState());
@@ -295,6 +296,7 @@ void Options::EcritureRegistre()
     settings.setValue("affichage/eclipsesLune", _ui->eclipsesLune->isChecked());
     settings.setValue("affichage/effetEclipsesMagnitude", _ui->effetEclipsesMagnitude->isChecked());
     settings.setValue("affichage/extinctionAtmospherique", _ui->extinctionAtmospherique->isChecked());
+    settings.setValue("affichage/hauteurTerminateur", _ui->hauteurTerminateur->value());
     settings.setValue("affichage/intensiteOmbre", _ui->intensiteOmbre->value());
     settings.setValue("affichage/langue", Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex()));
     settings.setValue("affichage/modeSombre", _ui->modeSombre->isChecked());
@@ -469,7 +471,8 @@ void Options::ChargementPref()
                 } else if ((item.first() == "affichage/affconst") || (item.first() == "affichage/affnomlieu")
                            || (item.first() == "affichage/affnomsat") || (item.first() == "affichage/affplanetes")
                            || (item.first() == "affichage/affradar") || (item.first() == "affichage/affvisib")
-                           || (item.first() == "affichage/intensiteOmbre") || (item.first() == "affichage/intensiteVision")) {
+                           || (item.first() == "affichage/hauteurTerminateur") || (item.first() == "affichage/intensiteOmbre")
+                           || (item.first() == "affichage/intensiteVision")) {
                     settings.setValue(item.first(), item.at(1).toUInt());
                 }
             }
@@ -492,6 +495,8 @@ void Options::ChargementPref()
         _ui->affradar->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affradar", Qt::Checked).toUInt()));
         _ui->affSAA->setChecked(settings.value("affichage/affSAA", false).toBool());
         _ui->affsoleil->setChecked(settings.value("affichage/affsoleil", true).toBool());
+        _ui->affterminateur->setChecked(settings.value("affichage/affterminateur", false).toBool() &&
+                                        (_ui->affnuit->checkState() == Qt::PartiallyChecked));
         _ui->afftraceCiel->setChecked(settings.value("affichage/afftraceCiel", true).toBool());
         _ui->afftraj->setChecked(settings.value("affichage/afftraj", true).toBool());
         _ui->affvisib->setCheckState(static_cast<Qt::CheckState> (settings.value("affichage/affvisib", Qt::Checked).toUInt()));
@@ -500,7 +505,6 @@ void Options::ChargementPref()
         _ui->refractionAtmospherique->setChecked(settings.value("affichage/refractionAtmospherique", true).toBool());
         _ui->effetEclipsesMagnitude->setChecked(settings.value("affichage/effetEclipsesMagnitude", true).toBool());
         _ui->eclipsesLune->setChecked(settings.value("affichage/eclipsesLune", true).toBool());
-        _ui->intensiteOmbre->setValue(settings.value("affichage/intensiteOmbre", 30).toInt());
         _ui->modeSombre->setChecked(settings.value("affichage/intensiteVision", false).toBool());
         _ui->langue->setCurrentIndex(static_cast<int> (Configuration::instance()->listeFicLang()
                                                        .indexOf(settings.value("affichage/langue", "en").toString())));
@@ -518,6 +522,8 @@ void Options::ChargementPref()
         _ui->nombreTrajectoires->setEnabled(_ui->afftraj->isChecked());
         _ui->listeSons->setEnabled(_ui->affnotif->isChecked());
         _ui->intensiteOmbre->setEnabled(_ui->affnuit->isChecked());
+        _ui->affterminateur->setEnabled(_ui->affnuit->checkState() == Qt::PartiallyChecked);
+        _ui->hauteurTerminateur->setEnabled(_ui->affnuit->checkState() == Qt::PartiallyChecked);
         _ui->affphaselune->setEnabled(_ui->afflune->isChecked());
         _ui->rotationLune->setEnabled(_ui->afflune->isChecked());
         _ui->affinvew->setEnabled(_ui->affradar->checkState() != Qt::Unchecked);
@@ -896,6 +902,7 @@ void Options::SauvePreferences(const QString &fichierPref)
              << "affichage/affplanetes " << _ui->affplanetes->checkState() << Qt::endl
              << "affichage/affradar " << _ui->affradar->checkState() << Qt::endl
              << "affichage/affsoleil " << QVariant(_ui->affsoleil->isChecked()).toString() << Qt::endl
+             << "affichage/affterminateur " << QVariant(_ui->affterminateur->isChecked()).toString() << Qt::endl
              << "affichage/afftraceCiel " << QVariant(_ui->afftraceCiel->isChecked()).toString() << Qt::endl
              << "affichage/afftraj " << QVariant(_ui->afftraj->isChecked()).toString() << Qt::endl
              << "affichage/affvisib " << _ui->affvisib->checkState() << Qt::endl
@@ -903,6 +910,7 @@ void Options::SauvePreferences(const QString &fichierPref)
              << "affichage/eclipsesLune " << QVariant(_ui->eclipsesLune->isChecked()).toString() << Qt::endl
              << "affichage/effetEclipsesMagnitude " << QVariant(_ui->effetEclipsesMagnitude->isChecked()).toString() << Qt::endl
              << "affichage/extinctionAtmospherique " << QVariant(_ui->extinctionAtmospherique->isChecked()).toString() << Qt::endl
+             << "affichage/hauteurTerminateur " << _ui->hauteurTerminateur->value() << Qt::endl
              << "affichage/intensiteOmbre " << _ui->intensiteOmbre->value() << Qt::endl
              << "affichage/modeSombre " << QVariant(_ui->modeSombre->isChecked()).toString() << Qt::endl
              << "affichage/magnitudeEtoiles " << _ui->magnitudeEtoiles->value() << Qt::endl
@@ -1613,9 +1621,13 @@ void Options::on_affnotif_toggled(bool checked)
     _ui->listeSons->setEnabled(checked);
 }
 
-void Options::on_affnuit_toggled(bool checked)
+void Options::on_affnuit_stateChanged(int arg1)
 {
-    _ui->intensiteOmbre->setEnabled(checked);
+    _ui->intensiteOmbre->setEnabled(arg1 != Qt::Unchecked);
+    const bool term = (arg1 == Qt::PartiallyChecked);
+    _ui->affterminateur->setEnabled(term);
+    _ui->affterminateur->setChecked(_ui->affterminateur->isEnabled());
+    _ui->hauteurTerminateur->setEnabled(term);
 }
 
 void Options::on_afflune_toggled(bool checked)

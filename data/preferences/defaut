@@ -16,13 +16,15 @@ affichage/affphaselune true
 affichage/affplanetes 2
 affichage/affradar 2
 affichage/affsoleil true
+affichage/affterminateur false
 affichage/afftraceCiel true
 affichage/afftraj true
 affichage/affvisib 2
 affichage/calJulien false
 affichage/eclipsesLune true
 affichage/effetEclipsesMagnitude true
-affichage/extinction true
+affichage/extinctionAtmospherique true
+affichage/hauteurTerminateur 0
 affichage/intensiteOmbre 30
 affichage/modeSombre false
 affichage/magnitudeEtoiles 4

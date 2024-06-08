@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    20 janvier 2024
+ * >    8 juin 2024
  *
  */
 
@@ -1227,15 +1227,23 @@ void Carte::AffichageZoneOmbre()
     /* Corps de la methode */
     if (settings.value("affichage/affnuit", Qt::Checked).toUInt() != Qt::Unchecked) {
 
+        QBrush alpha = QBrush(QColor::fromRgb(0, 0, 0, static_cast<int> (2.55 * settings.value("affichage/intensiteOmbre").toDouble())));
+
+        QPen stylo = (settings.value("affichage/affterminateur").toBool()
+                      && (settings.value("affichage/affnuit").toUInt() == Qt::PartiallyChecked)) ? QPen(Qt::red, 1) : QPen(Qt::NoBrush, 0);
+
         double beta = MATHS::PI_SUR_DEUX - TERRE::REFRACTION_HZ;
         const int imax = ((settings.value("affichage/affnuit").toUInt() == Qt::PartiallyChecked) || _mcc) ? 1 : 4;
 
-        const QBrush alpha1 = QBrush(QColor::fromRgb(0, 0, 0, static_cast<int> (2.55 * settings.value("affichage/intensiteOmbre").toDouble())));
-        const QBrush alpha = (_mcc) ? QBrush(QColor::fromRgb(0, 0, 0, qMin(255, 2 * alpha1.color().alpha()))) : alpha1;
+        if (_mcc) {
 
-        const QPen stylo1 = (settings.value("affichage/coulTerminateur").toUInt() == 0) ?
-                    QPen(QColor::fromRgb(102, 50, 16), 2) : QPen(Qt::darkYellow, 2);
-        QPen stylo((_mcc) ? stylo1 : QPen(Qt::NoBrush, 0));
+            alpha = QBrush(QColor::fromRgb(0, 0, 0, qMin(255, 2 * alpha.color().alpha())));
+            stylo = (settings.value("affichage/coulTerminateur").toUInt() == 0) ? QPen(QColor::fromRgb(102, 50, 16), 2) : QPen(Qt::darkYellow, 2);
+
+        } else {
+            beta -= (imax == 1) ? settings.value("affichage/hauteurTerminateur", 0).toDouble() * MATHS::DEG2RAD : 0;
+        }
+
         stylo.setCosmetic(true);
 
         QVector<QPointF> zone;

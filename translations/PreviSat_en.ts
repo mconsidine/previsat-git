@@ -1868,31 +1868,31 @@ PreviSat is free !</translation>
         <translation>Moon</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1451"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1459"/>
         <source>W</source>
         <comment>Symbol for West</comment>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1457"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1465"/>
         <source>E</source>
         <comment>Symbol for East</comment>
         <translation>E</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1485"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1493"/>
         <source>N</source>
         <comment>Symbol for North</comment>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1491"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1499"/>
         <source>S</source>
         <comment>Symbol for South</comment>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1787"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1795"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>The file %1 does not exist, please re-install %2</translation>
     </message>
@@ -3221,7 +3221,7 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="58"/>
-        <location filename="../src/interface/options/options.cpp" line="1133"/>
+        <location filename="../src/interface/options/options.cpp" line="1141"/>
         <source>Lieu d&apos;observation</source>
         <translation>Name of location</translation>
     </message>
@@ -3288,8 +3288,8 @@ click on &apos;Update ISS information&apos;</translation>
     <message>
         <location filename="../src/interface/options/options.ui" line="309"/>
         <location filename="../src/interface/options/options.ui" line="374"/>
-        <location filename="../src/interface/options/options.cpp" line="976"/>
-        <location filename="../src/interface/options/options.cpp" line="1138"/>
+        <location filename="../src/interface/options/options.cpp" line="984"/>
+        <location filename="../src/interface/options/options.cpp" line="1146"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
@@ -3301,27 +3301,27 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="515"/>
-        <location filename="../src/interface/options/options.cpp" line="419"/>
+        <location filename="../src/interface/options/options.cpp" line="421"/>
         <source>Nord</source>
         <translation>North</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="520"/>
-        <location filename="../src/interface/options/options.cpp" line="419"/>
-        <location filename="../src/interface/options/options.cpp" line="1524"/>
+        <location filename="../src/interface/options/options.cpp" line="421"/>
+        <location filename="../src/interface/options/options.cpp" line="1532"/>
         <source>Sud</source>
         <translation>South</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="532"/>
-        <location filename="../src/interface/options/options.cpp" line="418"/>
-        <location filename="../src/interface/options/options.cpp" line="1522"/>
+        <location filename="../src/interface/options/options.cpp" line="420"/>
+        <location filename="../src/interface/options/options.cpp" line="1530"/>
         <source>Est</source>
         <translation>East</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="537"/>
-        <location filename="../src/interface/options/options.cpp" line="418"/>
+        <location filename="../src/interface/options/options.cpp" line="420"/>
         <source>Ouest</source>
         <translation>West</translation>
     </message>
@@ -3454,323 +3454,328 @@ click on &apos;Update ISS information&apos;</translation>
         <translation>Moon</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1371"/>
-        <location filename="../src/interface/options/options.ui" line="2138"/>
+        <location filename="../src/interface/options/options.ui" line="1378"/>
+        <source>Terminateur</source>
+        <translation>Terminator</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/options/options.ui" line="1409"/>
+        <location filename="../src/interface/options/options.ui" line="2176"/>
         <source>Affichage</source>
         <translation>Display</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1386"/>
+        <location filename="../src/interface/options/options.ui" line="1424"/>
         <source>Prise en compte des éclipses produites par la Lune</source>
         <translation>Set eclipses produced by the Moon</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1402"/>
+        <location filename="../src/interface/options/options.ui" line="1440"/>
         <source>Prise en compte de la réfraction atmosphérique</source>
         <translation>Set the atmospheric refraction</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1418"/>
+        <location filename="../src/interface/options/options.ui" line="1456"/>
         <source>Inversion Nord/Sud sur le radar</source>
         <translation>North/South inversion on radar</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1434"/>
+        <location filename="../src/interface/options/options.ui" line="1472"/>
         <source>Nom des lieux d&apos;observation</source>
         <translation>Name of locations</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1453"/>
+        <location filename="../src/interface/options/options.ui" line="1491"/>
         <source>Prise en compte des éclipses partielles sur la magnitude</source>
         <translation>Set the effect of partial eclipses on the magnitude</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1469"/>
+        <location filename="../src/interface/options/options.ui" line="1507"/>
         <source>Affichage du jour julien</source>
         <translation>Display of julian date</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1500"/>
+        <location filename="../src/interface/options/options.ui" line="1538"/>
         <source>Carte du monde :</source>
         <translation>World map :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1532"/>
+        <location filename="../src/interface/options/options.ui" line="1570"/>
         <source>Grille</source>
         <translation>Grid</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1548"/>
+        <location filename="../src/interface/options/options.ui" line="1586"/>
         <source>Affichage de la SAA</source>
         <translation>Display of SAA</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1564"/>
+        <location filename="../src/interface/options/options.ui" line="1602"/>
         <source>Radar</source>
         <translation>Radar</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1583"/>
+        <location filename="../src/interface/options/options.ui" line="1621"/>
         <source>Prise en compte de l&apos;extinction atmosphérique</source>
         <translation>Set the atmospheric extinction</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1599"/>
+        <location filename="../src/interface/options/options.ui" line="1637"/>
         <source>Affichage des frontières</source>
         <translation>Display of boundaries</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1615"/>
+        <location filename="../src/interface/options/options.ui" line="1653"/>
         <source>Inversion Est/Ouest sur le radar</source>
         <translation>East/West inversion on radar</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1631"/>
+        <location filename="../src/interface/options/options.ui" line="1669"/>
         <source>Affichage des coordonnées</source>
         <translation>Display of coordinates</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1659"/>
+        <location filename="../src/interface/options/options.ui" line="1697"/>
         <source>Valeur du zoom pour les cartes du monde dans le navigateur :</source>
         <translation>Zoom value for maps :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1694"/>
+        <location filename="../src/interface/options/options.ui" line="1732"/>
         <source>Mode sombre</source>
         <translation>Dark mode</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1703"/>
+        <location filename="../src/interface/options/options.ui" line="1741"/>
         <source>Système</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1718"/>
+        <location filename="../src/interface/options/options.ui" line="1756"/>
         <source>Vérification des mises à jour au démarrage</source>
         <translation>Check for updates at startup</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1734"/>
+        <location filename="../src/interface/options/options.ui" line="1772"/>
         <source>Écart Heure locale - UTC</source>
         <translation>Local hour - UTC offset</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1749"/>
+        <location filename="../src/interface/options/options.ui" line="1787"/>
         <source>Temps Universel Coordonné (UTC)</source>
         <translation>Universal Time Coordinated (UTC)</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1777"/>
+        <location filename="../src/interface/options/options.ui" line="1815"/>
         <source>Heure locale = </source>
         <translation>Local hour = </translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1825"/>
+        <location filename="../src/interface/options/options.ui" line="1863"/>
         <source>Auto</source>
         <extracomment>Automatic</extracomment>
         <translation>Auto</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1848"/>
+        <location filename="../src/interface/options/options.ui" line="1886"/>
         <source>Unités</source>
         <translation>Units</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1863"/>
+        <location filename="../src/interface/options/options.ui" line="1901"/>
         <source>Système métrique</source>
         <translation>Metric system</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1882"/>
+        <location filename="../src/interface/options/options.ui" line="1920"/>
         <source>Système anglo-saxon</source>
         <translation>US customary units</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1902"/>
+        <location filename="../src/interface/options/options.ui" line="1940"/>
         <source>Système horaire</source>
         <translation>Time convention</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1917"/>
+        <location filename="../src/interface/options/options.ui" line="1955"/>
         <source>24 heures</source>
         <translation>24 hours</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1936"/>
+        <location filename="../src/interface/options/options.ui" line="1974"/>
         <source>12 heures (AM/PM)</source>
         <translation>12 hours (AM/PM)</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1968"/>
+        <location filename="../src/interface/options/options.ui" line="2006"/>
         <source>Nombre de fichiers log :</source>
         <translation>Number of log files :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2014"/>
+        <location filename="../src/interface/options/options.ui" line="2052"/>
         <source>Langue :</source>
         <extracomment>Name of language</extracomment>
         <translation>Language :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2057"/>
+        <location filename="../src/interface/options/options.ui" line="2095"/>
         <source>Préférences d&apos;affichage :</source>
         <translation>Display preferences :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2094"/>
+        <location filename="../src/interface/options/options.ui" line="2132"/>
         <source>Enregistrer les préférences d&apos;affichage</source>
         <translation>Save display preferences</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2119"/>
+        <location filename="../src/interface/options/options.ui" line="2157"/>
         <source>Style &quot;Wall Command Center&quot;</source>
         <translation>&quot;Wall Command Center&quot; style</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2150"/>
+        <location filename="../src/interface/options/options.ui" line="2188"/>
         <source>Nombre d&apos;orbites</source>
         <translation>Orbit number</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2166"/>
+        <location filename="../src/interface/options/options.ui" line="2204"/>
         <source>Anomalie Atlantique Sud et Zone d&apos;exclusion</source>
         <translation>South Atlantic anomaly and Zone of exclusion</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2169"/>
+        <location filename="../src/interface/options/options.ui" line="2207"/>
         <source>SAA et ZOE</source>
         <extracomment>South Atlantic Anomaly and Zone of Exclusion</extracomment>
         <translation>SAA and ZOE</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2191"/>
+        <location filename="../src/interface/options/options.ui" line="2229"/>
         <source>Cercles d&apos;acquisition</source>
         <translation>Acquisition circles</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2210"/>
+        <location filename="../src/interface/options/options.ui" line="2248"/>
         <source>Angle entre le plan de l&apos;orbite et la direction du Soleil</source>
         <translation>Angle between orbit plane and direction of Sun</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2213"/>
+        <location filename="../src/interface/options/options.ui" line="2251"/>
         <source>Angle beta</source>
         <extracomment>Beta angle (angle between orbit plane and direction of Sun)</extracomment>
         <translation>Beta angle</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2239"/>
+        <location filename="../src/interface/options/options.ui" line="2277"/>
         <source>Choix de la police :</source>
         <translation>Set the font :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2278"/>
+        <location filename="../src/interface/options/options.ui" line="2316"/>
         <source>Couleurs</source>
         <translation>Colors</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2302"/>
+        <location filename="../src/interface/options/options.ui" line="2340"/>
         <source>Greenwich Mean Time</source>
         <translation>Greenwich Mean Time</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2305"/>
+        <location filename="../src/interface/options/options.ui" line="2343"/>
         <source>GMT :</source>
         <extracomment>Greenwich Mean Time</extracomment>
         <translation>GMT :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2312"/>
+        <location filename="../src/interface/options/options.ui" line="2350"/>
         <source>Zone d&apos;exclusion</source>
         <translation>Zone of exclusion</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2315"/>
+        <location filename="../src/interface/options/options.ui" line="2353"/>
         <source>ZOE :</source>
         <extracomment>Zone of exclusion</extracomment>
         <translation>ZOE :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2322"/>
+        <location filename="../src/interface/options/options.ui" line="2360"/>
         <source>Équateur :</source>
         <translation>Equator :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2329"/>
+        <location filename="../src/interface/options/options.ui" line="2367"/>
         <source>Terminateur :</source>
         <translation>Terminator :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2336"/>
+        <location filename="../src/interface/options/options.ui" line="2374"/>
         <source>Cercle de visibilité :</source>
         <translation>Footprint :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2344"/>
-        <location filename="../src/interface/options/options.ui" line="2377"/>
-        <location filename="../src/interface/options/options.ui" line="2410"/>
+        <location filename="../src/interface/options/options.ui" line="2382"/>
+        <location filename="../src/interface/options/options.ui" line="2415"/>
+        <location filename="../src/interface/options/options.ui" line="2448"/>
         <source>Rouge</source>
         <translation>Red</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2349"/>
-        <location filename="../src/interface/options/options.ui" line="2368"/>
-        <location filename="../src/interface/options/options.ui" line="2382"/>
-        <location filename="../src/interface/options/options.ui" line="2405"/>
+        <location filename="../src/interface/options/options.ui" line="2387"/>
+        <location filename="../src/interface/options/options.ui" line="2406"/>
+        <location filename="../src/interface/options/options.ui" line="2420"/>
+        <location filename="../src/interface/options/options.ui" line="2443"/>
         <source>Blanc</source>
         <translation>White</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2354"/>
+        <location filename="../src/interface/options/options.ui" line="2392"/>
         <source>Cyan</source>
         <translation>Cyan</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2363"/>
+        <location filename="../src/interface/options/options.ui" line="2401"/>
         <source>Noir</source>
         <translation>Black</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2391"/>
+        <location filename="../src/interface/options/options.ui" line="2429"/>
         <source>Brun</source>
         <translation>Brown</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2396"/>
+        <location filename="../src/interface/options/options.ui" line="2434"/>
         <source>Jaune</source>
         <translation>Yellow</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2428"/>
+        <location filename="../src/interface/options/options.ui" line="2466"/>
         <source>Stations :</source>
         <translation>Stations :</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.cpp" line="170"/>
-        <location filename="../src/interface/options/options.cpp" line="541"/>
+        <location filename="../src/interface/options/options.cpp" line="547"/>
         <source>Créer une catégorie</source>
         <translation>Create a category</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.cpp" line="172"/>
-        <location filename="../src/interface/options/options.cpp" line="556"/>
+        <location filename="../src/interface/options/options.cpp" line="562"/>
         <source>Créer un nouveau lieu</source>
         <translation>Create a new location</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.cpp" line="182"/>
-        <location filename="../src/interface/options/options.cpp" line="426"/>
-        <location filename="../src/interface/options/options.cpp" line="1075"/>
-        <location filename="../src/interface/options/options.cpp" line="1211"/>
+        <location filename="../src/interface/options/options.cpp" line="428"/>
+        <location filename="../src/interface/options/options.cpp" line="1083"/>
+        <location filename="../src/interface/options/options.cpp" line="1219"/>
         <source>m</source>
         <comment>meter</comment>
         <translation>m</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.cpp" line="182"/>
-        <location filename="../src/interface/options/options.cpp" line="426"/>
-        <location filename="../src/interface/options/options.cpp" line="1075"/>
-        <location filename="../src/interface/options/options.cpp" line="1211"/>
+        <location filename="../src/interface/options/options.cpp" line="428"/>
+        <location filename="../src/interface/options/options.cpp" line="1083"/>
+        <location filename="../src/interface/options/options.cpp" line="1219"/>
         <source>ft</source>
         <comment>foot</comment>
         <translation>ft</translation>
@@ -3782,165 +3787,165 @@ click on &apos;Update ISS information&apos;</translation>
         <translation>The altitude must be between %1%2 et %3%2</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="412"/>
+        <location filename="../src/interface/options/options.cpp" line="414"/>
         <source>Lieu : %1</source>
         <translation>Location : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="545"/>
-        <location filename="../src/interface/options/options.cpp" line="564"/>
+        <location filename="../src/interface/options/options.cpp" line="551"/>
+        <location filename="../src/interface/options/options.cpp" line="570"/>
         <source>Renommer</source>
         <translation>Rename</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="548"/>
-        <location filename="../src/interface/options/options.cpp" line="571"/>
+        <location filename="../src/interface/options/options.cpp" line="554"/>
+        <location filename="../src/interface/options/options.cpp" line="577"/>
         <source>Supprimer</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="552"/>
-        <location filename="../src/interface/options/options.cpp" line="672"/>
-        <location filename="../src/interface/options/options.cpp" line="779"/>
+        <location filename="../src/interface/options/options.cpp" line="558"/>
+        <location filename="../src/interface/options/options.cpp" line="678"/>
+        <location filename="../src/interface/options/options.cpp" line="785"/>
         <source>Télécharger...</source>
         <translation>Download...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="560"/>
+        <location filename="../src/interface/options/options.cpp" line="566"/>
         <source>Ajouter à Mes Préférés</source>
         <translation>Add in My Favorites</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="567"/>
+        <location filename="../src/interface/options/options.cpp" line="573"/>
         <source>Modifier</source>
         <translation>Modify</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="634"/>
+        <location filename="../src/interface/options/options.cpp" line="640"/>
         <source>Langue</source>
         <comment>Translate by the name of language, for example : English, Français, Español</comment>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="661"/>
-        <location filename="../src/interface/options/options.cpp" line="742"/>
-        <location filename="../src/interface/options/options.cpp" line="773"/>
+        <location filename="../src/interface/options/options.cpp" line="667"/>
+        <location filename="../src/interface/options/options.cpp" line="748"/>
+        <location filename="../src/interface/options/options.cpp" line="779"/>
         <source>* Défaut</source>
         <translation>* Default</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="702"/>
+        <location filename="../src/interface/options/options.cpp" line="708"/>
         <source>Mes Préférés</source>
         <translation>My Favorites</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="748"/>
+        <location filename="../src/interface/options/options.cpp" line="754"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="749"/>
+        <location filename="../src/interface/options/options.cpp" line="755"/>
         <source>Supprimer...</source>
         <translation>Remove...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="875"/>
+        <location filename="../src/interface/options/options.cpp" line="881"/>
         <source>Problème de droits d&apos;écriture du fichier %1</source>
         <translation>Unable to write file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="971"/>
+        <location filename="../src/interface/options/options.cpp" line="979"/>
         <source>Catégorie</source>
         <translation>Category</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="972"/>
+        <location filename="../src/interface/options/options.cpp" line="980"/>
         <source>Nouveau nom de la catégorie :</source>
         <translation>New name of the category :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="975"/>
-        <location filename="../src/interface/options/options.cpp" line="1137"/>
+        <location filename="../src/interface/options/options.cpp" line="983"/>
+        <location filename="../src/interface/options/options.cpp" line="1145"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="991"/>
-        <location filename="../src/interface/options/options.cpp" line="1023"/>
+        <location filename="../src/interface/options/options.cpp" line="999"/>
+        <location filename="../src/interface/options/options.cpp" line="1031"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="991"/>
+        <location filename="../src/interface/options/options.cpp" line="999"/>
         <source>La catégorie existe déjà. Voulez-vous l&apos;écraser ?</source>
         <translation>The category already exists. Do you want to overwrite it?</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="992"/>
-        <location filename="../src/interface/options/options.cpp" line="1024"/>
-        <location filename="../src/interface/options/options.cpp" line="1235"/>
+        <location filename="../src/interface/options/options.cpp" line="1000"/>
+        <location filename="../src/interface/options/options.cpp" line="1032"/>
+        <location filename="../src/interface/options/options.cpp" line="1243"/>
         <source>Oui</source>
         <translation>Yes</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="993"/>
-        <location filename="../src/interface/options/options.cpp" line="1025"/>
-        <location filename="../src/interface/options/options.cpp" line="1236"/>
+        <location filename="../src/interface/options/options.cpp" line="1001"/>
+        <location filename="../src/interface/options/options.cpp" line="1033"/>
+        <location filename="../src/interface/options/options.cpp" line="1244"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1023"/>
+        <location filename="../src/interface/options/options.cpp" line="1031"/>
         <source>Voulez-vous vraiment supprimer la catégorie &lt;b&gt;%1&lt;/b&gt; ?</source>
         <translation>Do you really want to remove the &lt;b&gt;%1&lt;/b&gt; category?</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1105"/>
+        <location filename="../src/interface/options/options.cpp" line="1113"/>
         <source>Le lieu d&apos;observation &lt;b&gt;%1&lt;/b&gt; fait déjà partie de &lt;b&gt;Mes Préférés&lt;/b&gt;</source>
         <translation>The location &lt;b&gt;%1&lt;/b&gt; is already in &lt;b&gt;My Favorites&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1134"/>
+        <location filename="../src/interface/options/options.cpp" line="1142"/>
         <source>Nouveau nom du lieu d&apos;observation :</source>
         <translation>New name of the location :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1232"/>
+        <location filename="../src/interface/options/options.cpp" line="1240"/>
         <source>Voulez-vous vraiment supprimer &lt;b&gt;%1&lt;/b&gt; de la catégorie &lt;b&gt;%2&lt;/b&gt; ?</source>
         <translation>Do you really want to remove &lt;b&gt;%1&lt;/b&gt; from the category &lt;b&gt;%2&lt;/b&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1234"/>
+        <location filename="../src/interface/options/options.cpp" line="1242"/>
         <source>Avertissement</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1361"/>
+        <location filename="../src/interface/options/options.cpp" line="1369"/>
         <source>Le nom de la catégorie n&apos;est pas spécifié</source>
         <translation>The name of the category is not given</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1381"/>
+        <location filename="../src/interface/options/options.cpp" line="1389"/>
         <source>La catégorie spécifiée existe déjà</source>
         <translation>The category already exists</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1492"/>
+        <location filename="../src/interface/options/options.cpp" line="1500"/>
         <source>Le nom du lieu d&apos;observation n&apos;est pas spécifié</source>
         <translation>The name of location is not given</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1501"/>
+        <location filename="../src/interface/options/options.cpp" line="1509"/>
         <source>Le lieu existe déjà dans la catégorie &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>The location already exists in the category &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1562"/>
+        <location filename="../src/interface/options/options.cpp" line="1570"/>
         <source>Lieu d&apos;observation déjà sélectionné</source>
         <translation>Location already selected</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1667"/>
+        <location filename="../src/interface/options/options.cpp" line="1679"/>
         <source>UTC</source>
         <comment>Universal Time Coordinated</comment>
         <translation>UTC</translation>
