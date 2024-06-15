@@ -5832,11 +5832,6 @@ Expected value : %3 - Calculated value : %4</translation>
         <translation>該当なし</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/sgp4.cpp" line="260"/>
-        <source>Erreur lors du calcul de la position du satellite %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/librairies/systeme/fichierxml.cpp" line="117"/>
         <source>Erreur lors du chargement du fichier %1</source>
         <translation type="unfinished"></translation>

@@ -5840,9 +5840,8 @@ Expected value : %3 - Calculated value : %4</translation>
         <translation>N/A</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/sgp4.cpp" line="260"/>
         <source>Erreur lors du calcul de la position du satellite %1</source>
-        <translation>Error while calculating satellite %1 position</translation>
+        <translation type="vanished">Error while calculating satellite %1 position</translation>
     </message>
     <message>
         <location filename="../src/librairies/systeme/fichierxml.cpp" line="117"/>

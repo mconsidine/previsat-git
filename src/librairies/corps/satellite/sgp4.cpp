@@ -30,7 +30,7 @@
  * >    25 octobre 2015
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    15 juin 2024
  *
  */
 
@@ -255,9 +255,6 @@ void SGP4::Calcul(const Date &date,
         // Position et vitesse
         _position = uu * mrt;
         _vitesse = (uu * mvt + vv * rvdot) * SGP::RTMS;
-
-    } else {
-        throw Exception(QObject::tr("Erreur lors du calcul de la position du satellite %1").arg(elements.nom), MessageType::WARNING);
     }
 
     /* Retour */
