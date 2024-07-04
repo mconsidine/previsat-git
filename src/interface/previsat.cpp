@@ -469,7 +469,7 @@ void PreviSat::DemarrageApplication()
 
     if (!_chronometre->isActive() && settings.value("affichage/informationsDemarrage", true).toBool() && Telechargement::UrlExiste(urlLastNews)) {
         on_actionInformations_triggered();
-        const QRect tailleEcran = QApplication::primaryScreen()->availableGeometry();
+        const QRect tailleEcran = QGuiApplication::primaryScreen()->availableGeometry();
         _informations->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, _informations->size(), tailleEcran));
     }
 
@@ -2681,29 +2681,34 @@ void PreviSat::closeEvent(QCloseEvent *evt)
     qInfo() << "Début Fonction" << __FUNCTION__;
 
     /* Corps de la methode */
-    // Suppression des fichiers du cache
-    const QDir di = QDir(Configuration::instance()->dirTmp());
-    const QStringList listeFic = di.entryList(QDir::Files);
-    foreach(const QString &fic, listeFic) {
-        if (!(_options->ui()->verifMAJ->isChecked() && ((fic == "versionPreviSat") || (fic == "majFichiersInternes") || (fic == "verrouStarlink")))) {
-            QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + fic);
-            fi.remove();
+    try {
+
+        // Suppression des fichiers du cache
+        const QDir di = QDir(Configuration::instance()->dirTmp());
+        const QStringList listeFic = di.entryList(QDir::Files);
+        foreach(const QString &fic, listeFic) {
+            if (!(_options->ui()->verifMAJ->isChecked() &&
+                  ((fic == "versionPreviSat") || (fic == "majFichiersInternes") || (fic == "verrouStarlink")))) {
+                QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + fic);
+                fi.remove();
+            }
         }
+
+        // Sauvegarde des donnees du logiciel
+        settings.setValue("temps/valManuel", _ui->valManuel->currentIndex());
+        settings.setValue("temps/pasManuel", _ui->pasManuel->currentIndex());
+        settings.setValue("temps/pasReel", _ui->pasReel->currentIndex());
+        settings.setValue("temps/dtu", _options->ui()->updown->value() * DATE::NB_JOUR_PAR_SEC);
+
+        settings.setValue("affichage/geometrie", saveGeometry());
+        settings.setValue("affichage/etat", saveState());
+        settings.setValue("affichage/issLive", _ui->issLive->isChecked());
+
+        emit EcritureRegistre();
+        Configuration::instance()->EcritureConfiguration();
+        GestionnaireXml::EcriturePreLaunchStarlink();
+    } catch (Exception const &e) {
     }
-
-    // Sauvegarde des donnees du logiciel
-    settings.setValue("temps/valManuel", _ui->valManuel->currentIndex());
-    settings.setValue("temps/pasManuel", _ui->pasManuel->currentIndex());
-    settings.setValue("temps/pasReel", _ui->pasReel->currentIndex());
-    settings.setValue("temps/dtu", _options->ui()->updown->value() * DATE::NB_JOUR_PAR_SEC);
-
-    settings.setValue("affichage/geometrie", saveGeometry());
-    settings.setValue("affichage/etat", saveState());
-    settings.setValue("affichage/issLive", _ui->issLive->isChecked());
-
-    emit EcritureRegistre();
-    Configuration::instance()->EcritureConfiguration();
-    GestionnaireXml::EcriturePreLaunchStarlink();
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
 
