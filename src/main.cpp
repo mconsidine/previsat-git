@@ -37,6 +37,7 @@
  *
  */
 
+#include <QApplication>
 #include <QDir>
 #include <QLabel>
 #include <QScreen>
@@ -47,7 +48,6 @@
 #include "interface/previsat.h"
 #include "librairies/exceptions/exception.h"
 #include "librairies/systeme/logmessage.h"
-#include <QApplication>
 
 
 // Registre
