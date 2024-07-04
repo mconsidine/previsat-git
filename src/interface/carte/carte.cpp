@@ -412,7 +412,7 @@ void Carte::show()
     AffichageSatellites();
 
     _ui->carte->setScene(scene);
-    _ui->carte->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    _ui->carte->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing);
 
     /* Retour */
     return;
@@ -1730,7 +1730,7 @@ void Carte::Initialisation()
     _ui->carte->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     _ui->carte->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
-    _ui->carte->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    _ui->carte->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing);
 
     _ui->carte->setCursor(Qt::ArrowCursor);
     _ui->carte->viewport()->setCursor(Qt::ArrowCursor);

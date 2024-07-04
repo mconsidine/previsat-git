@@ -508,7 +508,7 @@ void Radar::show()
     scene->addEllipse(1, 1, 197, 197, QPen(QBrush(Qt::gray), 3));
 
     _ui->vueRadar->setScene(scene);
-    _ui->vueRadar->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    _ui->vueRadar->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing);
 
     /* Retour */
     return;

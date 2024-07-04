@@ -239,7 +239,7 @@ void Ciel::show(const Observateur &observateur,
     }
 
     _ui->vueCiel->setScene(scene);
-    _ui->vueCiel->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    _ui->vueCiel->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing);
 
     /* Retour */
     return;

@@ -400,7 +400,7 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
     }
 
     _ui->detailsTransit->setScene(scene);
-    _ui->detailsTransit->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    _ui->detailsTransit->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing);
 
     /* Retour */
     return;
