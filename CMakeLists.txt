@@ -40,23 +40,23 @@ cmake_minimum_required(VERSION 3.24)
 
 #----------------------------------
 set(VERSION 7.0.0.0)
-set(QT_PREFERRED_VERSION 6.6.3)
+set(QT_PREFERRED_VERSION 6.7.2)
 set(ANNEES_DEV 2005-2024)
 set(NB_COL_DONNEES 249)
 
-if(NOT PORTABLE_BUILD)
+if(NOT DEFINED PORTABLE_BUILD)
     set(PORTABLE_BUILD false)
 endif()
 
-if(NOT BUILD_TEST)
+if(NOT DEFINED BUILD_TEST)
     set(BUILD_TEST false)
 endif()
 
-if(NOT CLEANUP_TEST)
+if(NOT DEFINED CLEANUP_TEST)
     set(CLEANUP_TEST true)
 endif()
 
-if(NOT COVERAGE_TEST)
+if(NOT DEFINED COVERAGE_TEST)
     set(COVERAGE_TEST false)
 endif()
 #----------------------------------
@@ -82,6 +82,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Icone
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set(app_icon "${CMAKE_CURRENT_SOURCE_DIR}/icone.rc")
+    set(win_flag WIN32)
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -118,8 +119,8 @@ add_compile_definitions(
 )
 
 add_definitions(
-    -DPORTABLE_BUILD=${PORTABLE_BUILD}
     -DBUILD_TEST=${BUILD_TEST}
+    -DPORTABLE_BUILD=${PORTABLE_BUILD}
     -DCLEANUP_TEST=${CLEANUP_TEST}
     -DCOVERAGE_TEST=${COVERAGE_TEST}
 )
@@ -226,6 +227,7 @@ else()
 
     qt_add_executable(${TARGET}
         MANUAL_FINALIZATION
+        ${win_flag}
         src/main.cpp
         ${INTERFACE_SOURCES}
         ${PREVISIONS_SOURCES}
@@ -332,4 +334,31 @@ get_target_property(MAIN_CFLAGS ${TARGET} COMPILE_OPTIONS)
 message("-- Compiler flags are ${MAIN_CFLAGS}")
 
 add_custom_command(TARGET ${TARGET} POST_BUILD
-COMMAND echo Compiler flags are ${MAIN_CFLAGS})
+    COMMAND echo Compiler flags are ${MAIN_CFLAGS}
+    COMMAND echo "QT_VERSION     = ${QT_VERSION}"
+    COMMAND echo "APP_NAME       = ${TARGET}"
+    COMMAND echo "DOMAIN_NAME    = ${DOMAIN_NAME}"
+    COMMAND echo "ORG_NAME       = ${ORG_NAME}"
+    COMMAND echo "VERSION        = ${VERSION}"
+    COMMAND echo "VER_MAJ        = ${VER_MAJ}"
+    COMMAND echo "ANNEES_DEV     = ${ANNEES_DEV}"
+    COMMAND echo "PORTABLE_BUILD = ${PORTABLE_BUILD}"
+    COMMAND echo "CLEANUP_TEST   = ${CLEANUP_TEST}"
+    COMMAND echo "COVERAGE_TEST  = ${COVERAGE_TEST}"
+    COMMAND echo "BUILD_TEST     = ${BUILD_TEST}"
+)
+
+message(
+    "Compiler flags are ${MAIN_CFLAGS}\n\n"
+    "QT_VERSION     = ${QT_VERSION}\n"
+    "APP_NAME       = ${TARGET}\n"
+    "DOMAIN_NAME    = ${DOMAIN_NAME}\n"
+    "ORG_NAME       = ${ORG_NAME}\n"
+    "VERSION        = ${VERSION}\n"
+    "VER_MAJ        = ${VER_MAJ}\n"
+    "ANNEES_DEV     = ${ANNEES_DEV}\n"
+    "PORTABLE_BUILD = ${PORTABLE_BUILD}\n"
+    "CLEANUP_TEST   = ${CLEANUP_TEST}\n"
+    "COVERAGE_TEST  = ${COVERAGE_TEST}\n"
+    "BUILD_TEST     = ${BUILD_TEST}\n"
+)
