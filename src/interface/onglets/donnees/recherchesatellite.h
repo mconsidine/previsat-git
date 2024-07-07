@@ -36,7 +36,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >
+ * >    7 juillet 2024
  *
  */
 
@@ -124,7 +124,7 @@ private:
      */
     Ui::RechercheSatellite *_ui;
 
-    QStringList _resultatsSatellitesTrouves;
+    QList<Donnees> _resultatsSatellitesTrouves;
 
 
     /*

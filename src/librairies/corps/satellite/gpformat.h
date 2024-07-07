@@ -36,7 +36,7 @@
  * >    5 juin 2022
  *
  * Date de revision
- * >
+ * >    7 juillet 2024
  *
  */
 
@@ -77,8 +77,7 @@ public:
     /**
      * @brief LectureFichier Lecture d'un fichier au format GP
      * @param[in] fichier nom du fichier d'elements orbitaux
-     * @param[in] donneesSat donnees satellites
-     * @param[in] lgRec longueur d'une ligne dans les donnees satellite
+     * @param[in] db donnees satellites
      * @param[in] listeSatellites liste des numeros NORAD ou des designations COSPAR (si elle est vide on recupere tous les elements orbitaux)
      * @param[in] ajoutDonnees ajout des donnees satellite
      * @param[in] alarme affichage des messages d'erreurs ou de warnings
@@ -86,8 +85,7 @@ public:
      * @throw Exception
      */
     static QMap<QString, ElementsOrbitaux> Lecture(const QString &fichier,
-                                                   const QString &donneesSat,
-                                                   const int lgRec,
+                                                   const QSqlDatabase &db = QSqlDatabase(),
                                                    const QStringList &listeSatellites = QStringList(),
                                                    const bool ajoutDonnees = true,
                                                    const bool alarme = true);
@@ -95,15 +93,13 @@ public:
     /**
      * @brief LectureFichierListeGP Lecture d'un fichier GP contenant une liste d'elements orbitaux pour un meme satellite
      * @param[in] fichier nom du fichier d'elements orbitaux
-     * @param[in] donneesSat donnees satellites
-     * @param[in] lgRec longueur d'une ligne dans les donnees satellite
+     * @param[in] db donnees satellites
      * @param[in] alarme affichage des messages d'erreurs ou de warnings
      * @return liste d'elements orbitaux
      * @throw Exception
      */
     static QList<ElementsOrbitaux> LectureListeGP(const QString &fichier,
-                                                  const QString &donneesSat,
-                                                  const int lgRec,
+                                                  const QSqlDatabase &db = QSqlDatabase(),
                                                   const bool alarme = false);
 
     /**

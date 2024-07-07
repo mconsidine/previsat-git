@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 juin 2024
+ * >    7 juillet 2024
  *
  */
 
@@ -139,8 +139,7 @@ TLE::TLE(const QString &lig0,
  * Lecture du fichier TLE
  */
 QMap<QString, ElementsOrbitaux> TLE::Lecture(const QString &nomFichier,
-                                             const QString &donneesSat,
-                                             const int lgRec,
+                                             const QSqlDatabase &db,
                                              const QStringList &listeSatellites,
                                              const bool ajoutDonnees)
 {
@@ -195,15 +194,10 @@ QMap<QString, ElementsOrbitaux> TLE::Lecture(const QString &nomFichier,
             numeroNorad = lig1.mid(2, 5);
             lig0 = numeroNorad;
 
-            if (ajoutDonnees) {
+            if (ajoutDonnees && db.isValid()) {
 
-                const int idx = lgRec * numeroNorad.toInt();
-                if ((idx >= 0) && (idx < donneesSat.size())) {
-
-                    const QString donnee = donneesSat.mid(idx, lgRec);
-                    tle._elements.donnees = Donnees(donnee);
-                    lig0 = donnee.mid(125).trimmed();
-                }
+                tle._elements.donnees = Donnees::RequeteNorad(db, tle._elements.norad).first();
+                lig0 = tle._elements.donnees.nom();
             }
         } else {
 
@@ -227,15 +221,13 @@ QMap<QString, ElementsOrbitaux> TLE::Lecture(const QString &nomFichier,
             tle = TLE(lig0, lig1, lig2);
             tle._elements.nom = nomsat.trimmed();
 
-            if (ajoutDonnees) {
+            if (ajoutDonnees && db.isValid()) {
 
                 // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
-                const int idx = lgRec * tle._elements.norad.toInt();
-                if ((idx >= 0) && (idx < donneesSat.size())) {
+                tle._elements.donnees = Donnees::RequeteNorad(db, tle._elements.norad).first();
 
-                    tle._elements.donnees = Donnees(donneesSat.mid(idx, lgRec));
-                    tle._elements.nbOrbitesEpoque = GPFormat::CalculNombreOrbitesEpoque(tle._elements);
-                }
+                // Correction eventuelle du nombre d'orbites a l'epoque
+                tle._elements.nbOrbitesEpoque = GPFormat::CalculNombreOrbitesEpoque(tle._elements);
             }
 
             if (!mapElem.contains(tle._elements.norad)) {
@@ -257,8 +249,7 @@ QMap<QString, ElementsOrbitaux> TLE::Lecture(const QString &nomFichier,
  */
 QStringList TLE::MiseAJourFichier(const QString &ficOld,
                                   const QString &ficNew,
-                                  const QString &donneesSat,
-                                  const int lgRec,
+                                  const QSqlDatabase &donneesSat,
                                   const int affMsg)
 {
     /* Declarations des variables locales */
@@ -278,7 +269,7 @@ QStringList TLE::MiseAJourFichier(const QString &ficOld,
     }
 
     // Lecture du TLE
-    QMap<QString, ElementsOrbitaux> tleOld = Lecture(ficOld, donneesSat, lgRec, QStringList(), false);
+    QMap<QString, ElementsOrbitaux> tleOld = Lecture(ficOld, donneesSat, QStringList(), false);
     QMap<QString, TLE> mapTleOld = _mapTLE;
 
     // Verification du fichier contenant les TLE recents
@@ -288,7 +279,7 @@ QStringList TLE::MiseAJourFichier(const QString &ficOld,
     }
 
     // Lecture du TLE
-    QMap<QString, ElementsOrbitaux> tleNew = Lecture(ficNew, donneesSat, lgRec, QStringList(), false);
+    QMap<QString, ElementsOrbitaux> tleNew = Lecture(ficNew, donneesSat, QStringList(), false);
     QMap<QString, TLE> mapTleNew = _mapTLE;
 
     /* Corps de la methode */

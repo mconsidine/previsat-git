@@ -36,13 +36,14 @@
  * >    20 novembre 2019
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    7 juillet 2024
  *
  */
 
 #ifndef DONNEES_H
 #define DONNEES_H
 
+#include <QtSql>
 #include <QString>
 #include "librairies/dates/date.h"
 
@@ -61,21 +62,45 @@ public:
 
     /**
      * @brief Donnees Definition a partir des informations
-     * @param[in] donnee informations sur le satellite
+     * @param[in] req requete
      */
-    explicit Donnees(const QString &donnee);
+    Donnees(const QSqlQuery &req);
 
 
     /*
      * Methodes publiques
      */
+    /**
+     * @brief RequeteCospar Recherche des donnees satellites par designation COSPAR
+     * @param[in] db base de donnees
+     * @param[in] cospar designation COSPAR
+     * @return Liste des donnees satellites
+     */
+    static QList<Donnees> RequeteCospar(const QSqlDatabase &db, const QString &cospar);
+
+    /**
+     * @brief RequeteNom Recherche des donnees satellites par nom de satellite
+     * @param[in] db base de donnees
+     * @param[in] nom nom
+     * @return Liste des donnees satellites
+     */
+    static QList<Donnees> RequeteNom(const QSqlDatabase &db, const QString &nom);
+
+    /**
+     * @brief RequeteNorad Recherche des donnees satellites par numero NORAD
+     * @param[in] db base de donnees
+     * @param[in] norad numero NORAD
+     * @return Liste des donnees satellites
+     */
+    static QList<Donnees> RequeteNorad(const QSqlDatabase &db, const QString &norad);
+
 
     /*
      * Accesseurs
      */
-    char methMagnitude() const;
-    char stsDateRentree() const;
-    char stsHeureRentree() const;
+    QString methMagnitude() const;
+    QString stsDateRentree() const;
+    QString stsHeureRentree() const;
     double magnitudeStandard() const;
     double longueur() const;
     double diametre() const;
@@ -121,10 +146,10 @@ private:
 
     /*
      * Variables privees
-     */
-    char _methMagnitude;
-    char _stsDateRentree;
-    char _stsHeureRentree;
+     */   
+    QString _methMagnitude;
+    QString _stsDateRentree;
+    QString _stsHeureRentree;
     double _magnitudeStandard;
     double _longueur;
     double _diametre;
@@ -152,6 +177,13 @@ private:
     /*
      * Methodes privees
      */
+    /**
+     * @brief Requete Requete generique dans la base de donnees
+     * @param db base de donnees
+     * @param requete requete
+     * @return Liste des donnees satellites
+     */
+    static QList<Donnees> Requete(const QSqlDatabase &db, const QString &requete);
 
 
 };

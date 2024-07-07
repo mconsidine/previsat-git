@@ -30,7 +30,7 @@
  * >    25 septembre 2023
  *
  * Date de revision
- * >    1er mars 2024
+ * >    7 juillet 2024
  *
  */
 
@@ -398,7 +398,7 @@ void CalculsStarlink::on_calculs_clicked()
 
         // Elements orbitaux du train de satellites
         const QMap<QString, ElementsOrbitaux> tabElem =
-            GPFormat::Lecture(Configuration::instance()->dirStarlink() + QDir::separator() + fichier + ".xml", "", -1, listeStarlink, true, true);
+            GPFormat::Lecture(Configuration::instance()->dirStarlink() + QDir::separator() + fichier + ".xml", QSqlDatabase(), listeStarlink, true, true);
 
         // Cas ou les elements orbitaux des satellites sont connus
         if (fichier == "starlink") {

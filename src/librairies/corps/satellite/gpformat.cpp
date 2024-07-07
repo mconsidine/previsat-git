@@ -30,7 +30,7 @@
  * >    5 juin 2022
  *
  * Date de revision
- * >
+ * >    7 juillet 2024
  *
  */
 
@@ -87,8 +87,7 @@ int GPFormat::CalculNombreOrbitesEpoque(const ElementsOrbitaux &elements)
  * Lecture d'un fichier au format GP
  */
 QMap<QString, ElementsOrbitaux> GPFormat::Lecture(const QString &fichier,
-                                                  const QString &donneesSat,
-                                                  const int lgRec,
+                                                  const QSqlDatabase &db,
                                                   const QStringList &listeSatellites,
                                                   const bool ajoutDonnees,
                                                   const bool alarme)
@@ -115,10 +114,9 @@ QMap<QString, ElementsOrbitaux> GPFormat::Lecture(const QString &fichier,
                 && !mapElem.contains(elem.norad)) {
 
                 // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
-                const int idx = lgRec * elem.norad.toInt();
-                if (ajoutDonnees && (idx >= 0) && (idx < donneesSat.size())) {
+                if (ajoutDonnees && db.isValid()) {
 
-                    elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
+                    elem.donnees = Donnees::RequeteNorad(db, elem.norad).first();
 
                     // Correction eventuelle du nombre d'orbites a l'epoque
                     elem.nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
@@ -139,8 +137,7 @@ QMap<QString, ElementsOrbitaux> GPFormat::Lecture(const QString &fichier,
  * Lecture d'un fichier GP contenant une liste d'elements orbitaux pour un meme satellite
  */
 QList<ElementsOrbitaux> GPFormat::LectureListeGP(const QString &fichier,
-                                                 const QString &donneesSat,
-                                                 const int lgRec,
+                                                 const QSqlDatabase &db,
                                                  const bool alarme)
 {
     /* Declarations des variables locales */
@@ -148,12 +145,9 @@ QList<ElementsOrbitaux> GPFormat::LectureListeGP(const QString &fichier,
 
     try {
 
-        QString norad;
-        Donnees donnees;
         ElementsOrbitaux elem;
 
         /* Initialisations */
-        int nbOrbitesEpoque = 0;
         FichierXml fi(fichier);
         const QDomDocument document = fi.Ouverture(alarme);
 
@@ -165,23 +159,15 @@ QList<ElementsOrbitaux> GPFormat::LectureListeGP(const QString &fichier,
 
             elem = LectureElements(elems.at(i));
 
-            if (norad.isEmpty()) {
-
-                norad = elem.norad;
+            if (!elem.norad.isEmpty() && db.isValid()) {
 
                 // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
-                const int idx = lgRec * elem.norad.toInt();
-                if ((idx >= 0) && (idx < donneesSat.size())) {
+                elem.donnees = Donnees::RequeteNorad(db, elem.norad).first();
 
-                    elem.donnees = Donnees(donneesSat.mid(idx, lgRec));
-
-                    // Correction eventuelle du nombre d'orbites a l'epoque
-                    nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
-                }
+                // Correction eventuelle du nombre d'orbites a l'epoque
+                elem.nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
             }
 
-            elem.donnees = donnees;
-            elem.nbOrbitesEpoque = nbOrbitesEpoque;
             listeElem.append(elem);
         }
 

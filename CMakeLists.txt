@@ -42,7 +42,6 @@ cmake_minimum_required(VERSION 3.24)
 set(VERSION 7.0.0.0)
 set(QT_PREFERRED_VERSION 6.7.2)
 set(ANNEES_DEV 2005-2024)
-set(NB_COL_DONNEES 249)
 
 if(NOT DEFINED PORTABLE_BUILD)
     set(PORTABLE_BUILD false)
@@ -94,8 +93,8 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     )
 endif()
 
-find_package(QT NAMES Qt6 REQUIRED COMPONENTS Concurrent Multimedia Network PrintSupport Widgets Xml)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Concurrent Core Multimedia Network PrintSupport Widgets Xml)
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Concurrent Multimedia Network PrintSupport Sql Widgets Xml)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Concurrent Core Multimedia Network PrintSupport Sql Widgets Xml)
 
 # Verification de la version de Qt
 string(SUBSTRING ${QT_PREFERRED_VERSION} 0 1 QT_PREFERRED_VERSION_MAJOR)
@@ -115,7 +114,6 @@ add_compile_definitions(
     VER_MAJ="${VER_MAJ}"
     ANNEES_DEV="${ANNEES_DEV}"
     NB_LIGNES="${NB_LIGNES}"
-    NB_COL_DONNEES="${NB_COL_DONNEES}"
 )
 
 add_definitions(
@@ -201,6 +199,7 @@ if(${BUILD_TEST})
         Qt${QT_VERSION_MAJOR}::Concurrent
         Qt${QT_VERSION_MAJOR}::Multimedia
         Qt${QT_VERSION_MAJOR}::Network
+        Qt${QT_VERSION_MAJOR}::Sql
         Qt${QT_VERSION_MAJOR}::Test
         Qt${QT_VERSION_MAJOR}::Widgets
         Qt${QT_VERSION_MAJOR}::Xml
@@ -243,6 +242,7 @@ else()
         Qt${QT_VERSION_MAJOR}::Multimedia
         Qt${QT_VERSION_MAJOR}::Network
         Qt${QT_VERSION_MAJOR}::PrintSupport
+        Qt${QT_VERSION_MAJOR}::Sql
         Qt${QT_VERSION_MAJOR}::Widgets
         Qt${QT_VERSION_MAJOR}::Xml
     )

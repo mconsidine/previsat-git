@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    29 decembre 2023
+ * >    7 juillet 2024
  *
  */
 
@@ -103,8 +103,8 @@ void Configuration::Chargement()
         // Lecture du fichier NASA contenant les evenements de la Station Spatiale
         _evenementsStation = EvenementsStationSpatiale::LectureEvenementsStationSpatiale();
 
-        // Lecture du fichier de donnees satellites
-        LectureDonneesSatellites();
+        // Ouverture de la base de donnees satellites
+        OuvertureBaseDonneesSatellites();
 
         // Lecture du fichier des chaines NASA
         LectureChainesNasa();
@@ -272,6 +272,24 @@ void Configuration::EcritureConfiguration()
     cfg.writeEndElement();
     cfg.writeEndDocument();
     fi.close();
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Fermeture de la base de donnees satellites
+ */
+void Configuration::FermetureBaseDonneesSatellites()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString nomDb = _dbSatellites.connectionName();
+
+    /* Corps de la methode */
+    _dbSatellites = QSqlDatabase();
+    _dbSatellites.removeDatabase(nomDb);
 
     /* Retour */
     return;
@@ -598,14 +616,10 @@ const QMap<QString, SatellitesFlashs> &Configuration::mapFlashs() const
     return _mapFlashs;
 }
 
-const QString &Configuration::donneesSatellites() const
-{
-    return _donneesSatellites;
-}
 
-int Configuration::lgRec() const
+QSqlDatabase Configuration::dbSatellites() const
 {
-    return _lgRec;
+    return _dbSatellites;
 }
 
 const QStringList &Configuration::listeChainesNasa() const
@@ -1088,45 +1102,38 @@ void Configuration::LectureChainesNasa()
 }
 
 /*
- * Lecture du fichier de donnees satellites
+ * OuvertureBaseDonneesSatellites Ouverture de la base de donnees satellites
  */
-void Configuration::LectureDonneesSatellites()
+void Configuration::OuvertureBaseDonneesSatellites()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString fic = _dirLocalData + QDir::separator() + "donnees.bin";
-    _donneesSatellites.clear();
+    const QString fichierDb = _dirLocalData + QDir::separator() + "satellites.db";
 
     /* Corps de la methode */
-    QFile fi(fic);
+    // Verification de l'existence du fichier
+    QFile fi(fichierDb);
     const QFileInfo ff(fi.fileName());
 
     if (!fi.exists() || (fi.size() == 0)) {
-        qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME);
-        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME), MessageType::ERREUR);
+        qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
+        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME),
+                        MessageType::ERREUR);
     }
 
-    if (fi.open(QIODevice::ReadOnly)) {
-        const QByteArray donneesCompressees = fi.readAll();
-        _donneesSatellites = QString(qUncompress(donneesCompressees));
-    }
+    // Ouverture de la base de donnees
+    _dbSatellites = QSqlDatabase::addDatabase("QSQLITE");
+    _dbSatellites.setDatabaseName(fichierDb);
 
-    fi.close();
-
-    const int cpt = static_cast<int> (_donneesSatellites.count('\n'));
-    _lgRec = (cpt == 0) ? -1 : static_cast<int> (_donneesSatellites.size() / cpt);
-
-    if (_donneesSatellites.isEmpty() || (_lgRec != QString("%1").arg(NB_COL_DONNEES).toInt())) {
-
-        _lgRec = -1;
-        qCritical() <<  QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
-                            .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+    if (!_dbSatellites.open()) {
+        qCritical() << "Erreur lors de l'ouverture de la base de données satellites : " + _dbSatellites.lastError().text();
+        throw Exception(QObject::tr("Erreur lors de l'ouverture de la base de données satellites, veuillez réinstaller %1").arg(APP_NAME),
+                        MessageType::ERREUR);
     }
 
 #if (BUILD_TEST == false)
-    qInfo() << "Lecture fichier donnees.bin OK";
+    qInfo() << "Ouverture base de données satellites.db OK";
 #endif
 
     /* Retour */

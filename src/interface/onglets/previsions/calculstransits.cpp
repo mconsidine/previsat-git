@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    28 decembre 2023
+ * >    7 juillet 2024
  *
  */
 
@@ -316,7 +316,7 @@ void CalculsTransits::CalculAgeElementsOrbitaux()
 
         // Lecture du fichier d'elements orbitaux de l'ISS
         const QString fichier = Configuration::instance()->dirElem() + QDir::separator() + "iss.gp";
-        _listeElemIss = GPFormat::LectureListeGP(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+        _listeElemIss = GPFormat::LectureListeGP(fichier, Configuration::instance()->dbSatellites());
 
         if (!_listeElemIss.isEmpty()) {
 

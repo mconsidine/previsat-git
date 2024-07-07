@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    29 decembre 2023
+ * >    7 juillet 2024
  *
  */
 
@@ -103,6 +103,11 @@ public:
      * @throw Exception
      */
     void EcritureConfiguration();
+
+    /**
+     * @brief FermetureBaseDonneesSatellites Fermeture de la base de donnees satellites
+     */
+    void FermetureBaseDonneesSatellites();
 
     /**
      * @brief Initialisation Definitions preliminaires pour le logiciel
@@ -201,8 +206,7 @@ public:
     const QMap<QString, SatellitesFlashs> &mapFlashs() const;
 
     // Donnees satellites
-    const QString &donneesSatellites() const;
-    int lgRec() const;
+    QSqlDatabase dbSatellites() const;
 
     const QStringList &listeChainesNasa() const;
 
@@ -278,7 +282,6 @@ private:
     Configuration() {
         _isCarteMaximisee = false;
         _issLive = false;
-        _lgRec = 0;
         _notifAOS = NotificationSonore::ATTENTE_LOS;
         _notifFlashs = NotificationSonore::ATTENTE_LOS;
     }
@@ -361,9 +364,9 @@ private:
 
 
     // Donnees provenant d'autres fichiers de configuration
-    // Donnees satellite
-    QString _donneesSatellites;
-    int _lgRec;
+
+    // Donnees satellites
+    QSqlDatabase _dbSatellites;
 
     // Liste des chaines de la NASA
     QStringList _listeChainesNasa;
@@ -486,10 +489,10 @@ private:
     void LectureChainesNasa();
 
     /**
-     * @brief LectureDonneesSatellites Lecture du fichier de donnees satellites
+     * @brief OuvertureBaseDonneesSatellites Ouverture de la base de donnees satellites
      * @throw Exception
      */
-    void LectureDonneesSatellites();
+    void OuvertureBaseDonneesSatellites();
 
     /**
      * @brief VerificationArborescences Verification des arborescences

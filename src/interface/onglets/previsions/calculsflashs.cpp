@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >
+ * >    7 juillet 2024
  *
  */
 
@@ -199,8 +199,7 @@ void CalculsFlashs::CalculAgeElementsOrbitaux()
 
     /* Corps de la methode */
     const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::Lecture(Configuration::instance()->dirElem() + QDir::separator() + "flares-spctrk.xml",
-                                                                      Configuration::instance()->donneesSatellites(),
-                                                                      Configuration::instance()->lgRec());
+                                                                      Configuration::instance()->dbSatellites());
 
     if (mapElem.isEmpty()) {
 
@@ -383,8 +382,7 @@ void CalculsFlashs::on_calculsFlashs_clicked()
         QStringList listeSatellites = Configuration::instance()->mapFlashs().keys();
 
         // Lecture du fichier d'elements orbitaux
-        QMap<QString, ElementsOrbitaux> tabElem = GPFormat::Lecture(fichier, Configuration::instance()->donneesSatellites(),
-                                                                    Configuration::instance()->lgRec(), listeSatellites);
+        QMap<QString, ElementsOrbitaux> tabElem = GPFormat::Lecture(fichier, Configuration::instance()->dbSatellites(), listeSatellites);
 
         // Mise a jour de la liste de satellites et creation du tableau de satellites
         QMutableStringListIterator it(listeSatellites);

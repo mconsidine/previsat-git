@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 fevrier 2023
+ * >    7 juillet 2024
  *
  */
 
@@ -83,16 +83,14 @@ public:
     /**
      * @brief Lecture Lecture du fichier TLE
      * @param[in] nomFichier nom du fichier TLE
-     * @param[in] donneesSat donnees satellites
-     * @param[in] lgRec longueur d'une ligne dans les donnees satellite
+     * @param[in] db donnees satellites
      * @param[in] listeSatellites liste des numeros NORAD (si elle est vide on recupere tous les TLE)
      * @param[in] ajoutDonnees ajout des donnees satellite
      * @return tableau d'elements orbitaux
      * @throw Exception
      */
     static QMap<QString, ElementsOrbitaux> Lecture(const QString &nomFichier,
-                                                   const QString &donneesSat,
-                                                   const int lgRec,
+                                                   const QSqlDatabase &db = QSqlDatabase(),
                                                    const QStringList &listeSatellites = QStringList(),
                                                    const bool ajoutDonnees = true);
 
@@ -101,15 +99,13 @@ public:
      * @param[in] ficOld fichier avec les anciens TLE
      * @param[in] ficNew fichier avec les nouveaux TLE
      * @param[in] donneesSat donnees satellites
-     * @param[in] lgRec longueur d'une ligne dans les donnees satellite
      * @param[in] affMsg affichage des messages
      * @return compte rendu de mise a jour
      * @throw Exception
      */
     static QStringList MiseAJourFichier(const QString &ficOld,
                                         const QString &ficNew,
-                                        const QString &donneesSat,
-                                        const int lgRec,
+                                        const QSqlDatabase &donneesSat,
                                         const int affMsg);
 
     /**

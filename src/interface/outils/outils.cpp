@@ -30,7 +30,7 @@
  * >    14 aout 2022
  *
  * Date de revision
- * >    7 juin 2024
+ * >    7 juillet 2024
  *
  */
 
@@ -790,7 +790,7 @@ void Outils::on_listeFichiersElem_currentRowChanged(int currentRow)
         QFileInfo ff(fichier);
         if (ff.exists()) {
 
-            _mapElem = GPFormat::Lecture(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+            _mapElem = GPFormat::Lecture(fichier, Configuration::instance()->dbSatellites());
 
             QMapIterator it(_mapElem);
             while (it.hasNext()) {
@@ -886,8 +886,7 @@ void Outils::on_majMaintenant_clicked()
         const QString fichierAlire = Configuration::instance()->dirTmp() + QDir::separator() + fic;
         const QString fichierAmettreAjour = Configuration::instance()->dirElem() + QDir::separator() + fic;
 
-        const QStringList compteRendu = TLE::MiseAJourFichier(fichierAmettreAjour, fichierAlire, Configuration::instance()->donneesSatellites(),
-                                                              Configuration::instance()->lgRec(), affMsg);
+        const QStringList compteRendu = TLE::MiseAJourFichier(fichierAmettreAjour, fichierAlire, Configuration::instance()->dbSatellites(), affMsg);
 
         EcritureCompteRenduMaj(compteRendu, _ui->compteRenduMajAuto);
     }
@@ -1004,8 +1003,7 @@ void Outils::on_mettreAJourTLE_clicked()
         }
 
         const int affMsg = _ui->affichageMsgMAJ->currentIndex();
-        const QStringList compteRendu = TLE::MiseAJourFichier(_ui->fichierAMettreAJour->text(), fic, Configuration::instance()->donneesSatellites(),
-                                                              Configuration::instance()->lgRec(), affMsg);
+        const QStringList compteRendu = TLE::MiseAJourFichier(_ui->fichierAMettreAJour->text(), fic, Configuration::instance()->dbSatellites(), affMsg);
 
         EcritureCompteRenduMaj(compteRendu, _ui->compteRenduMajManuel);
 

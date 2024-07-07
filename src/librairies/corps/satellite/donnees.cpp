@@ -30,7 +30,7 @@
  * >    20 novembre 2019
  *
  * Date de revision
- * >    31 octobre 2023
+ * >    7 juillet 2024
  *
  */
 
@@ -72,79 +72,121 @@ Donnees::Donnees()
     return;
 }
 
-/*
- * Definition a partir des informations
- */
-Donnees::Donnees(const QString &donnee)
+Donnees::Donnees(const QSqlQuery &req)
 {
-    /* Declarations des variables locales */
+    QMap<QString, QVariant> res;
 
-    /* Initialisations */
+    QSqlRecord record = req.record();
 
-    /* Corps du constructeur */
-    if (!donnee.isEmpty()) {
-
-        _norad = donnee.mid(0, 6);
-        _cospar = donnee.mid(7, 11).trimmed();
-        if (_cospar.isEmpty()) {
-            _cospar = QObject::tr("N/A");
-        }
-
-        _dateLancement = donnee.mid(19, 19).trimmed();
-        _dateRentree = donnee.mid(39, 19).trimmed();
-        _stsDateRentree = donnee.at(59).toLatin1();
-        _stsHeureRentree = donnee.at(60).toLatin1();
-
-        _masseSec = donnee.mid(62, 8).trimmed();
-        _masseTot = donnee.mid(71, 9).trimmed();
-
-        _longueur = donnee.mid(81, 7).toDouble();
-        _diametre = donnee.mid(89, 6).toDouble();
-        _envergure = donnee.mid(96, 8).toDouble();
-
-        _forme = donnee.mid(105, 32).trimmed();
-        _classe = donnee.at(138).toLatin1();
-        _categorie = donnee.mid(140, 4).trimmed();
-        _discipline = donnee.mid(145, 16).trimmed();
-
-        _magnitudeStandard = donnee.mid(162, 5).toDouble();
-        _methMagnitude = donnee.at(168).toLatin1();
-
-        _periode = donnee.mid(170, 10).trimmed();
-        _perigee = donnee.mid(181, 7).toDouble();
-        _apogee = donnee.mid(189, 7).toDouble();
-
-        _inclinaison = donnee.mid(197, 6).trimmed();
-        _orbite = donnee.mid(204, 6).trimmed();
-
-        _pays = donnee.mid(211, 5).trimmed();
-        _siteLancement = donnee.mid(217, 5).trimmed();
-        _nom = donnee.mid(223).trimmed();
+    for(int i=0; i<record.count(); i++) {
+        res.insert(record.fieldName(i), req.value(i));
     }
 
-    /* Retour */
-    return;
+    _norad = res["norad"].toString();
+    _cospar = res["cospar"].toString();
+    if (_cospar.isEmpty()) {
+        _cospar = QObject::tr("N/A");
+    }
+
+    _dateLancement = res["dateLancement"].toString();
+    _dateRentree = res["dateRentree"].toString();
+    _stsDateRentree = res["stsDateRentree"].toString();
+    _stsHeureRentree = res["stsHeureRentree"].toString();
+
+    _masseSec = res["masseSec"].toString();
+    _masseTot = res["masseTot"].toString();
+
+    _longueur = res["longueur"].toDouble();
+    _diametre = res["diametre"].toDouble();
+    _envergure = res["envergure"].toDouble();
+
+    _forme = res["forme"].toString();
+    _classe = res["classe"].toString().toLatin1();
+    _categorie = res["categorie"].toString();
+    _discipline = res["discipline"].toString();
+
+    _magnitudeStandard = res["magnitudeStandard"].toDouble();
+    _methMagnitude = res["methMagnitude"].toString();
+
+    _periode = res["periode"].toString();
+    _perigee = res["perigee"].toDouble();
+    _apogee = res["apogee"].toDouble();
+
+    _inclinaison = res["inclinaison"].toString();
+    _orbite = res["orbite"].toString();
+
+    _pays = res["pays"].toString();
+    _siteLancement = res["siteLancement"].toString();
+    _nom = res["nom"].toString();
 }
 
 
 /*
  * Methodes publiques
  */
+/*
+ * Recherche des donnees satellites par designation COSPAR
+ */
+QList<Donnees> Donnees::RequeteCospar(const QSqlDatabase &db, const QString &cospar)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString qLect = QString("select * from Satellite where cospar like '%%1%';").arg(cospar);
+
+    /* Corps de la methode */
+
+    /* Retour */
+    return Requete(db, qLect);
+}
+
+/*
+ * Recherche des donnees satellites par nom de satellite
+ */
+QList<Donnees> Donnees::RequeteNom(const QSqlDatabase &db, const QString &nom)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString qLect = QString("select * from Satellite where nom like '%%1%';").arg(nom);
+
+    /* Corps de la methode */
+
+    /* Retour */
+    return Requete(db, qLect);
+}
+
+/*
+ * Recherche des donnees satellites par numero NORAD
+ */
+QList<Donnees> Donnees::RequeteNorad(const QSqlDatabase &db, const QString &norad)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString qLect = QString("select * from Satellite where norad = %1;").arg(norad);
+
+    /* Corps de la methode */
+
+    /* Retour */
+    return Requete(db, qLect);
+}
+
 
 /*
  * Accesseurs
  */
-char Donnees::methMagnitude() const
+QString Donnees::methMagnitude() const
 {
     return _methMagnitude;
 }
 
-char Donnees::stsDateRentree() const
+QString Donnees::stsDateRentree() const
 {
     return _stsDateRentree;
 }
 
-char Donnees::stsHeureRentree() const
+QString Donnees::stsHeureRentree() const
 {
     return _stsHeureRentree;
 }
@@ -285,4 +327,24 @@ void Donnees::setMagnitudeStandard(const double m)
 /*
  * Methodes privees
  */
+/*
+ * Requete generique dans la base de donnees
+ */
+QList<Donnees> Donnees::Requete(const QSqlDatabase &db, const QString &requete)
+{
+    /* Declarations des variables locales */
+    QList<Donnees> res;
 
+    /* Initialisations */
+    QSqlQuery q(db);
+
+    /* Corps de la methode */
+    if (q.exec(requete)) {
+        while (q.next()) {
+            res.append(Donnees(q));
+        }
+    }
+
+    /* Retour */
+    return res;
+}

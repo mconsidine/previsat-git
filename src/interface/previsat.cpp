@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 juin 2024
+ * >    7 juillet 2024
  *
  */
 
@@ -333,8 +333,7 @@ void PreviSat::ChargementGP()
             if (ff.suffix() == "xml") {
 
                 // Cas d'un fichier au format GP
-                Configuration::instance()->mapElementsOrbitaux() = GPFormat::Lecture(nomfic, Configuration::instance()->donneesSatellites(),
-                                                                                     Configuration::instance()->lgRec());
+                Configuration::instance()->mapElementsOrbitaux() = GPFormat::Lecture(nomfic, Configuration::instance()->dbSatellites());
 
                 qInfo() << QString("Lecture du fichier GP %1 OK (%2 satellites)").arg(ff.fileName())
                                .arg(Configuration::instance()->mapElementsOrbitaux().size());
@@ -348,8 +347,7 @@ void PreviSat::ChargementGP()
                 if (TLE::VerifieFichier(nomfic, true) > 0) {
 
                     // Lecture du fichier TLE en entier
-                    Configuration::instance()->mapElementsOrbitaux() = TLE::Lecture(nomfic, Configuration::instance()->donneesSatellites(),
-                                                                                    Configuration::instance()->lgRec());
+                    Configuration::instance()->mapElementsOrbitaux() = TLE::Lecture(nomfic, Configuration::instance()->dbSatellites());
 
                     qInfo() << QString("Lecture du fichier TLE %1 OK (%2 satellites)").arg(ff.fileName())
                                    .arg(Configuration::instance()->mapElementsOrbitaux().size());
@@ -2195,8 +2193,7 @@ void PreviSat::InitFicGP()
             if (ff.suffix() == "xml") {
 
                 // Cas des fichiers GP
-                mapElem = GPFormat::Lecture(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
-                                            QStringList(), false);
+                mapElem = GPFormat::Lecture(fic, Configuration::instance()->dbSatellites(), QStringList(), false);
 
                 ajout = !mapElem.isEmpty();
                 nomfic = ff.baseName();
@@ -2206,8 +2203,7 @@ void PreviSat::InitFicGP()
                 // Cas des fichiers TLE
                 ajout = (TLE::VerifieFichier(fic) > 0);
                 if (ajout) {
-                    mapElem = TLE::Lecture(fic, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
-                                           QStringList(), false);
+                    mapElem = TLE::Lecture(fic, Configuration::instance()->dbSatellites(), QStringList(), false);
                     nomfic = ff.baseName() + " (TLE)";
                 }
             }
@@ -2706,7 +2702,9 @@ void PreviSat::closeEvent(QCloseEvent *evt)
 
         emit EcritureRegistre();
         Configuration::instance()->EcritureConfiguration();
+        Configuration::instance()->FermetureBaseDonneesSatellites();
         GestionnaireXml::EcriturePreLaunchStarlink();
+
     } catch (Exception const &e) {
     }
 
@@ -3128,8 +3126,7 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
 
                 // Cas d'un fichier GP
                 const QMap<QString, ElementsOrbitaux> mapElements =
-                        GPFormat::Lecture(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
-                                          QStringList(), true, true);
+                        GPFormat::Lecture(fichier, Configuration::instance()->dbSatellites(), QStringList(), true, true);
 
                 if (mapElements.isEmpty()) {
 
