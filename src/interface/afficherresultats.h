@@ -61,7 +61,7 @@ class Soleil;
 class AfficherResultats : public QMainWindow
 {
     Q_OBJECT
-#if (BUILD_TEST == true)
+#if (BUILD_TEST)
     friend class EvenementsOrbitauxTest;
     friend class FlashsTest;
     friend class PrevisionTest;

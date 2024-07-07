@@ -48,7 +48,7 @@ class QString;
 
 class LogMessage
 {
-#if (BUILD_TEST == true)
+#if (BUILD_TEST)
     friend class LogMessageTest;
 #endif
 public:

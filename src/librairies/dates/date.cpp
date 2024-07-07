@@ -297,7 +297,7 @@ Date Date::ConversionDateIso(const QString &dateFormatIso)
 
     /* Corps de la methode */
     if (dateFormatIso.isEmpty()) {
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         qWarning() << "Date au format ISO vide";
 #endif
         throw Exception(QObject::tr("Date au format ISO vide"), MessageType::WARNING);
@@ -306,7 +306,7 @@ Date Date::ConversionDateIso(const QString &dateFormatIso)
     const QDateTime dateTime = QDateTime::fromString(dateFormatIso, Qt::ISODate);
 
     if (!dateTime.isValid()) {
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         qWarning() << QString("Date au format ISO invalide (%1)").arg(dateFormatIso);
 #endif
         throw Exception(QObject::tr("Date au format ISO invalide"), MessageType::WARNING);
@@ -338,7 +338,7 @@ Date Date::ConversionDateNasa(const QString &dateFormatNasa)
 
     /* Corps de la methode */
     if (dateFormatNasa.isEmpty()) {
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         qWarning() << "Date au format NASA vide";
 #endif
         throw Exception(QObject::tr("Date au format NASA vide"), MessageType::WARNING);
@@ -347,7 +347,7 @@ Date Date::ConversionDateNasa(const QString &dateFormatNasa)
     const QStringList dateNasa = dateFormatNasa.split("T", Qt::SkipEmptyParts);
 
     if (dateNasa.size() != 2) {
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         qWarning() << QString("Date au format NASA invalide (%1)").arg(dateFormatNasa);
 #endif
         throw Exception(QObject::tr("Date au format NASA invalide"), MessageType::WARNING);
@@ -356,7 +356,7 @@ Date Date::ConversionDateNasa(const QString &dateFormatNasa)
     const QStringList anneeNbJours = dateNasa.first().split("-", Qt::SkipEmptyParts);
 
     if (anneeNbJours.size() != 2) {
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         qWarning() << QString("Date au format NASA invalide (%1)").arg(dateFormatNasa);
 #endif
         throw Exception(QObject::tr("Date au format NASA invalide"), MessageType::WARNING);
@@ -370,7 +370,7 @@ Date Date::ConversionDateNasa(const QString &dateFormatNasa)
     const QTime hrs = QTime::fromString(heures, Qt::ISODateWithMs);
 
     if (!hrs.isValid()) {
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         qWarning() << QString("Date au format NASA invalide (%1)").arg(dateFormatNasa);
 #endif
         throw Exception(QObject::tr("Date au format NASA invalide"), MessageType::WARNING);
@@ -406,7 +406,7 @@ void Date::Initialisation(const QString &dirLocalData)
     }
 
     if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-#if (COVERAGE_TEST == false)
+#if (!COVERAGE_TEST)
         const QFileInfo ff(fi.fileName());
         throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::ERREUR);
 #endif
@@ -442,7 +442,7 @@ void Date::Initialisation(const QString &dirLocalData)
         }
     }
 
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
     qInfo() << "Lecture fichier taiutc.dat OK";
 #endif
 

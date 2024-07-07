@@ -168,13 +168,13 @@ void messageHandler(QtMsgType type,
 
     /* Corps de la methode */
     QTextStream out(_fichierLog.data());
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
     out << QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd HH:mm:ss.zzz : ");
 #endif
 
     out << typeMessage.value(type) << " : ";
     if (!nomFichier.isEmpty()) {
-#if (BUILD_TEST == true)
+#if (BUILD_TEST)
         const QString fic = nomFichier;
 #else
         const QString fic = QString("%1 (ligne %2)").arg(nomFichier).arg(context.line);

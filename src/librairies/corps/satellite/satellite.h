@@ -56,7 +56,7 @@
 
 class Satellite : public Corps
 {
-#if (BUILD_TEST == true)
+#if (BUILD_TEST)
     friend class GeneralTest;
     friend class OsculateursTest;
     friend class SatelliteTest;

@@ -1132,7 +1132,7 @@ void Configuration::OuvertureBaseDonneesSatellites()
                         MessageType::ERREUR);
     }
 
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
     qInfo() << "Ouverture base de données satellites.db OK";
 #endif
 

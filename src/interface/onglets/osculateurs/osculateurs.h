@@ -56,7 +56,7 @@ class Date;
 class Osculateurs : public QFrame
 {
     Q_OBJECT
-#if (BUILD_TEST == true)
+#if (BUILD_TEST)
     friend class OsculateursTest;
 #endif
 

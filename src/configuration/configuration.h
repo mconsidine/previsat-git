@@ -67,7 +67,7 @@
 
 class Configuration
 {
-#if (BUILD_TEST == true)
+#if (BUILD_TEST)
     friend class PrevisionTest;
     friend class TransitsTest;
     friend class FlashsTest;

@@ -54,7 +54,7 @@
 
 
 // Registre
-#if (PORTABLE_BUILD == true)
+#if (PORTABLE_BUILD)
 static QSettings settings(QString("%1.ini").arg(APP_NAME), QSettings::IniFormat);
 #else
 static QSettings settings(ORG_NAME, APP_NAME);
@@ -102,7 +102,7 @@ General::General(CalculsFlashs *flashs, Osculateurs *osculateurs, QWidget *paren
 
     try {
 
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         Initialisation();
 #endif
 
@@ -831,7 +831,7 @@ void General::SauveOngletGeneral(const QString &fichier)
         QTextStream flux(&sw);
         flux.setEncoding(QStringConverter::Utf8);
 
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         const QString titre = "%1 %2 / %3 (c) %4";
         flux << titre.arg(APP_NAME).arg(QString(VER_MAJ)).arg(ORG_NAME).arg(QString(ANNEES_DEV))
              << Qt::endl << Qt::endl << Qt::endl;
@@ -845,7 +845,7 @@ void General::SauveOngletGeneral(const QString &fichier)
         chaine = tr("Conditions : %1", "Conditions of observation");
         flux << chaine.arg(_ui->conditionsObservation->text()) << Qt::endl << Qt::endl << Qt::endl;
 
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         if (_ui->frame_satellite->isVisible())
 #endif
         {
@@ -870,7 +870,7 @@ void General::SauveOngletGeneral(const QString &fichier)
 
             chaine = tr("Vitesse orbitale   : %1\t%2  %3");
             flux << chaine.arg(_ui->vitesseSat->text().rightJustified(11, ' '))
-#if (BUILD_TEST == true)
+#if (BUILD_TEST)
                         .arg(_ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " ")
                         .arg(_ui->lbl_beta1->text()).trimmed() << Qt::endl;
 #else
@@ -880,7 +880,7 @@ void General::SauveOngletGeneral(const QString &fichier)
 
             chaine = tr("Variation distance : %1  \t%2", "Range rate");
             flux << chaine.arg(_ui->rangeRate->text().rightJustified(11, ' '))
-#if (BUILD_TEST == true)
+#if (BUILD_TEST)
                             .arg(_ui->lbl_prochainAOS1->text() + " " + _ui->dateAOS1->text()).trimmed() + " " + _ui->lbl_azimut1->text()
                  << Qt::endl << Qt::endl << Qt::endl;
 #else

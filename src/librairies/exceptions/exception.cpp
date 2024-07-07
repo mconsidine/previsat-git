@@ -59,7 +59,7 @@ Exception::Exception(const QString &message,
 
     /* Corps du constructeur */
     if (!message.trimmed().isEmpty()) {
-#if (BUILD_TEST == true)
+#if (BUILD_TEST)
         Q_UNUSED(typeMessage)
 #else
         Message::Afficher(message, typeMessage);

@@ -141,7 +141,7 @@ void PreviSatTest::testAll()
 
 void PreviSatTest::cleanupTestCase()
 {
-#if (CLEANUP_TEST == true)
+#if (CLEANUP_TEST)
     qInfo("Nettoyage des fichiers produits");
     QDir di(QDir::current().path() + QDir::separator() + "test");
     di.removeRecursively();

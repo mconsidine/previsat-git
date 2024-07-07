@@ -655,7 +655,7 @@ QMap<QString, SatellitesFlashs> GestionnaireXml::LectureSatellitesFlashs()
             }
         }
 
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
 #endif
 

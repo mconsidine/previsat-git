@@ -121,6 +121,7 @@ add_definitions(
     -DPORTABLE_BUILD=${PORTABLE_BUILD}
     -DCLEANUP_TEST=${CLEANUP_TEST}
     -DCOVERAGE_TEST=${COVERAGE_TEST}
+    -DQT_MESSAGELOGCONTEXT
 )
 
 include_directories(src)

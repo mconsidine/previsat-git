@@ -92,7 +92,7 @@
 
 
 // Registre
-#if (PORTABLE_BUILD == true)
+#if (PORTABLE_BUILD)
 static QSettings settings(QString("%1.ini").arg(APP_NAME), QSettings::IniFormat);
 #else
 static QSettings settings(ORG_NAME, APP_NAME);
@@ -3406,7 +3406,7 @@ void PreviSat::on_actionMettre_a_jour_tous_les_groupes_de_GP_triggered()
 
 void PreviSat::on_actionTelecharger_la_mise_a_jour_triggered()
 {
-#if (PORTABLE_BUILD == true)
+#if (PORTABLE_BUILD)
     QDesktopServices::openUrl(QUrl("https://sourceforge.net/projects/previsat/files/previsat"));
 #else
     QDesktopServices::openUrl(QUrl("https://sourceforge.net/projects/previsat/files/latest/download"));

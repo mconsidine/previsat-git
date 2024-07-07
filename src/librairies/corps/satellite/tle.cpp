@@ -154,7 +154,7 @@ QMap<QString, ElementsOrbitaux> TLE::Lecture(const QString &nomFichier,
     if (!fi.exists() || (fi.size() == 0)) {
 
         const QFileInfo ff(fi.fileName());
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         qWarning() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
 #endif
         throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
@@ -162,7 +162,7 @@ QMap<QString, ElementsOrbitaux> TLE::Lecture(const QString &nomFichier,
 
     if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
         const QFileInfo ff(fi.fileName());
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         qWarning() << QString("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName());
 #endif
         throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::ERREUR);
@@ -327,7 +327,7 @@ QStringList TLE::MiseAJourFichier(const QString &ficOld,
             const QString numeroNorad = it2.next();
 
             // TLE absent du fichier de TLE recents
-#if (COVERAGE_TEST == false)
+#if (!COVERAGE_TEST)
             // Demande de suppression
             if ((res2 != QMessageBox::YesToAll) && (res2 != QMessageBox::NoToAll)) {
                 const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier de TLE récents.\n" \
@@ -360,7 +360,7 @@ QStringList TLE::MiseAJourFichier(const QString &ficOld,
             const QString numeroNorad = it3.next();
 
             // TLE absent du fichier de TLE anciens
-#if (COVERAGE_TEST == false)
+#if (!COVERAGE_TEST)
             // Demande d'ajout
             if ((res1 != QMessageBox::YesToAll) && (res1 != QMessageBox::NoToAll)) {
                 const QString message = QObject::tr("Le satellite %1 (numéro NORAD : %2) n'existe pas dans le fichier " \
@@ -438,7 +438,7 @@ int TLE::VerifieFichier(const QString &nomFichier,
     if (!fi.exists() || (fi.size() == 0)) {
 
         const QFileInfo ff(fi.fileName());
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         qWarning() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
 #endif
         if (alarme) {
@@ -447,9 +447,9 @@ int TLE::VerifieFichier(const QString &nomFichier,
     }
 
     if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-#if (COVERAGE_TEST == false)
+#if (!COVERAGE_TEST)
         const QFileInfo ff(fi.fileName());
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         qWarning() << QString("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName());
 #endif
         if (alarme) {

@@ -48,7 +48,7 @@
 
 
 // Registre
-#if (PORTABLE_BUILD == true)
+#if (PORTABLE_BUILD)
 static QSettings settings(QString("%1.ini").arg(APP_NAME), QSettings::IniFormat);
 #else
 static QSettings settings(ORG_NAME, APP_NAME);
@@ -118,7 +118,7 @@ void RechercheSatellite::SauveOngletRecherche(const QString &fichier)
         QTextStream flux(&sw);
         flux.setEncoding(QStringConverter::Utf8);
 
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         const QString titre = "%1 %2 / %3 (c) %4";
         flux << titre.arg(APP_NAME).arg(QString(VER_MAJ)).arg(ORG_NAME).arg(QString(ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
 #endif

@@ -51,7 +51,7 @@
 
 class TLE
 {
-#if (BUILD_TEST == true)
+#if (BUILD_TEST)
     friend class OngletsTest;
     friend class SatelliteTest;
     friend class TLETest;

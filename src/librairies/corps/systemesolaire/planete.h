@@ -51,7 +51,7 @@ class Soleil;
 
 class Planete : public Corps
 {
-#if (BUILD_TEST == true)
+#if (BUILD_TEST)
     friend class PlaneteTest;
 #endif
 public:

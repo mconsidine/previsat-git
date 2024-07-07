@@ -55,7 +55,7 @@ Q_DECLARE_METATYPE(QList<ResultatPrevisions>)
 
 
 // Registre
-#if (PORTABLE_BUILD == true)
+#if (PORTABLE_BUILD)
 static QSettings settings(QString("%1.ini").arg(APP_NAME), QSettings::IniFormat);
 #else
 static QSettings settings(ORG_NAME, APP_NAME);
@@ -93,7 +93,7 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const Conditi
     _zoom = zoom;
 
     /* Corps du constructeur */
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
     _ui->setupUi(this);
 
     etoiles = Etoile::Initialisation(Configuration::instance()->dirCommonData());
@@ -638,7 +638,7 @@ void AfficherResultats::EcrireEntete() const
         flux.setEncoding(QStringConverter::Utf8);
 
         // Ligne d'entete
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         flux << QString("%1 %2 / %3 (c) %4").arg(APP_NAME).arg(QString(VERSION)).arg(ORG_NAME).arg(QString(ANNEES_DEV)) << Qt::endl << Qt::endl;
 #endif
 
@@ -664,7 +664,7 @@ void AfficherResultats::EcrireEntete() const
         ligne = QObject::tr("Fuseau horaire                  : %1");
         QString chaine = QObject::tr("UTC", "Universal Time Coordinated");
         if (
-        #if (BUILD_TEST == false)
+        #if (!BUILD_TEST)
                 !settings.value("affichage/utc").toBool() &&
         #endif
                 (fabs(_conditions.offset) > MATHS::EPSDBL100)) {
@@ -1452,7 +1452,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
     /* Initialisations */
 
     /* Corps de la methode */
-#if (BUILD_TEST == true)
+#if (BUILD_TEST)
     const QString fic = _conditions.ficRes;
 #else
     QString fic;
@@ -1678,13 +1678,13 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
                 }
             }
 
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
             flux << Qt::endl << tr("Temps écoulé : %1s").arg(1.e-3 * static_cast<double> (_donnees.tempsEcoule), 0, 'f', 2) << Qt::endl;
 #endif
         }
         fichier.close();
 
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
         QFile fi2(fic);
         if (fi2.exists() && (fic != _conditions.ficRes)) {
             fi2.remove();
