@@ -30,7 +30,7 @@
  * >    29 octobre 2022
  *
  * Date de revision
- * >
+ * >    7 juillet 2024
  *
  */
 
@@ -78,7 +78,7 @@ void OsculateursTest::testSauveOngletOsculateurs()
     Configuration::instance()->_dirLocalData = dirLocalData;
     Date::Initialisation(dirLocalData);
 
-    Configuration::instance()->LectureDonneesSatellites();
+    Configuration::instance()->OuvertureBaseDonneesSatellites();
 
     const Date date(2020, 8, 15, 10, 0, 0., 2. / 24.);
 
@@ -90,9 +90,8 @@ void OsculateursTest::testSauveOngletOsculateurs()
 
     const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
 
-    const int lgrec = Configuration::instance()->lgRec();
     const QStringList listeElem(QStringList () << "25544");
-    QMap<QString, ElementsOrbitaux> mapElem = TLE::Lecture(nomfic, Configuration::instance()->donneesSatellites(), lgrec, listeElem);
+    QMap<QString, ElementsOrbitaux> mapElem = TLE::Lecture(nomfic, Configuration::instance()->dbSatellites(), listeElem);
 
     Satellite sat(mapElem.first());
 
@@ -139,4 +138,6 @@ void OsculateursTest::testSauveOngletOsculateurs()
 
         CompareFichiers(ficRes, ficRef);
     }
+
+    Configuration::instance()->FermetureBaseDonneesSatellites();
 }

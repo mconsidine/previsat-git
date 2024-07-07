@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    22 mai 2022
+ * >    7 juillet 2024
  *
  */
 
@@ -160,7 +160,7 @@ void SatelliteTest::testCalculPosVit1()
     const QString fmt = "%1 %2 %3 %4 %5 %6 %7";
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "sgp4.txt";
-    const QMap<QString, ElementsOrbitaux> mapElem = TLE::Lecture(fic, QString(), 0);
+    const QMap<QString, ElementsOrbitaux> mapElem = TLE::Lecture(fic);
 
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "sgp4_res.txt";
     QFileInfo ff(ficRes);
@@ -221,7 +221,7 @@ void SatelliteTest::testCalculPosVit2()
     qInfo(Q_FUNC_INFO);
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "iss.gp";
-    const QList<ElementsOrbitaux> listeElem = GPFormat::LectureListeGP(fic, "", -1);
+    const QList<ElementsOrbitaux> listeElem = GPFormat::LectureListeGP(fic);
 
     Satellite sat(listeElem);
     QCOMPARE(sat._listElements.size(), listeElem.size());
@@ -277,7 +277,7 @@ void SatelliteTest::testCalculElementsOsculateurs()
     qInfo(Q_FUNC_INFO);
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
-    const QMap<QString, ElementsOrbitaux> mapTLE = TLE::Lecture(fic, "", -1);
+    const QMap<QString, ElementsOrbitaux> mapTLE = TLE::Lecture(fic);
 
     const Date date(2020, 8, 16, 0, 0, 0., 0.);
 
@@ -315,7 +315,7 @@ void SatelliteTest::testCalculPosVitListeSatellites()
     qInfo(Q_FUNC_INFO);
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
-    QMap<QString, ElementsOrbitaux> mapTLE = TLE::Lecture(fic, "", -1);
+    QMap<QString, ElementsOrbitaux> mapTLE = TLE::Lecture(fic);
 
     const Date date(2020, 8, 15, 13, 42, 0., 0.);
     Observateur obs("Paris", -2.348640000, +48.853390000, 30);

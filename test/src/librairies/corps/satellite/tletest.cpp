@@ -30,7 +30,7 @@
  * >    5 juin 2022
  *
  * Date de revision
- * >
+ * >    7 juillet 2024
  *
  */
 
@@ -92,13 +92,13 @@ void TLETest::testLectureFichier1()
     qInfo(Q_FUNC_INFO);
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
-    const QMap<QString, ElementsOrbitaux> mapTLE = TLE::Lecture(fic, "", -1);
+    const QMap<QString, ElementsOrbitaux> mapTLE = TLE::Lecture(fic);
 
     QCOMPARE(mapTLE.keys().size(), 163);
 
     // TLE a 2 lignes
     const QString fic2 = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual2.txt";
-    const QMap<QString, ElementsOrbitaux> mapTLE2 = TLE::Lecture(fic2, "", -1);
+    const QMap<QString, ElementsOrbitaux> mapTLE2 = TLE::Lecture(fic2);
 
     QCOMPARE(mapTLE2.keys().size(), 163);
 }
@@ -108,7 +108,7 @@ void TLETest::testLectureFichier2()
     qInfo(Q_FUNC_INFO);
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual3.txt";
-    QVERIFY_THROWS_EXCEPTION(Exception, TLE::Lecture(fic, "", -1));
+    QVERIFY_THROWS_EXCEPTION(Exception, TLE::Lecture(fic));
 }
 
 void TLETest::testMiseAJourFichier()
@@ -121,7 +121,7 @@ void TLETest::testMiseAJourFichier()
     QFile fi(fic);
     const QString ficold = QDir::currentPath() + QDir::separator() + "test" + QDir::separator() + QFileInfo(fic).fileName();
     fi.copy(ficold);
-    const QStringList compteRendu = TLE::MiseAJourFichier(ficold, ficnew, "", -1, 1);
+    const QStringList compteRendu = TLE::MiseAJourFichier(ficold, ficnew, QSqlDatabase(), 1);
 
     QCOMPARE(compteRendu.first(), "visual.txt");
     QCOMPARE(compteRendu.at(1), "157");

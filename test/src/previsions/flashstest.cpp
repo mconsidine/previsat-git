@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    22 mai 2022
+ * >    7 juillet 2024
  *
  */
 
@@ -66,7 +66,7 @@ void FlashsTest::testAll()
 
     Configuration::instance()->_dirLocalData = dirLocalData;
     Configuration::instance()->_dirCfg = dirLocalData + QDir::separator() + "config";
-    Configuration::instance()->LectureDonneesSatellites();
+    Configuration::instance()->OuvertureBaseDonneesSatellites();
     Configuration::instance()->_mapFlashs = GestionnaireXml::LectureSatellitesFlashs();
 
     conditions.jj1 = 7531.416666666667;
@@ -88,6 +88,8 @@ void FlashsTest::testAll()
 
     testCalculFlashs();
     testCalculMagnitudeFlash();
+
+    Configuration::instance()->FermetureBaseDonneesSatellites();
 }
 
 void FlashsTest::testCalculFlashs()
@@ -98,7 +100,7 @@ void FlashsTest::testCalculFlashs()
     const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "flares-spctrk.txt";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "flashs1_20200815_20200915.txt";
 
-    conditions.tabElem = TLE::Lecture(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+    conditions.tabElem = TLE::Lecture(fichier, Configuration::instance()->dbSatellites());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul des flashs
@@ -111,6 +113,8 @@ void FlashsTest::testCalculFlashs()
     // Comparaison avec les resultats de reference
     const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator() + "flashs1_20200815_20200915.txt";
     CompareFichiers(ficRes, ficRef);
+
+    Configuration::instance()->FermetureBaseDonneesSatellites();
 }
 
 void FlashsTest::testCalculMagnitudeFlash()
@@ -119,11 +123,10 @@ void FlashsTest::testCalculMagnitudeFlash()
 
     const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
+    Configuration::instance()->OuvertureBaseDonneesSatellites();
 
     const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "flares-spctrk.txt";
-    const QMap<QString, ElementsOrbitaux> mapTle = TLE::Lecture(fichier, Configuration::instance()->donneesSatellites(),
-                                                                Configuration::instance()->lgRec());
+    const QMap<QString, ElementsOrbitaux> mapTle = TLE::Lecture(fichier, Configuration::instance()->dbSatellites());
 
     Date date(2020, 9, 13, 4, 48, 3.5, 0.);
 
@@ -139,4 +142,6 @@ void FlashsTest::testCalculMagnitudeFlash()
     soleil.CalculCoordHoriz(obs, true);
 
     QCOMPARE(Flashs::CalculMagnitudeFlash(date, sat, soleil, true, true), -1.8325270487881304);
+
+    Configuration::instance()->FermetureBaseDonneesSatellites();
 }

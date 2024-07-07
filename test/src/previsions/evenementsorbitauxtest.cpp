@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    4 fevrier 2023
+ * >    7 juillet 2024
  *
  */
 
@@ -64,7 +64,7 @@ void EvenementsOrbitauxTest::testAll()
     Date::Initialisation(dirLocalData);
 
     Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
+    Configuration::instance()->OuvertureBaseDonneesSatellites();
 
     conditions.jj1 = 7531.416666666667;
     conditions.jj2 = 7538.416666666667;
@@ -82,6 +82,8 @@ void EvenementsOrbitauxTest::testAll()
     conditions.transitionsJourNuit = true;
 
     testCalculEvenements1();
+
+    Configuration::instance()->FermetureBaseDonneesSatellites();
 }
 
 void EvenementsOrbitauxTest::testCalculEvenements1()
@@ -92,8 +94,7 @@ void EvenementsOrbitauxTest::testCalculEvenements1()
     const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "evenements1_20200815_20200822.txt";
 
-    conditions.tabElem = TLE::Lecture(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
-                                      conditions.listeSatellites);
+    conditions.tabElem = TLE::Lecture(fichier, Configuration::instance()->dbSatellites(), conditions.listeSatellites);
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions

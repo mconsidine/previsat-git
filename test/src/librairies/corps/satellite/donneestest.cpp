@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >
+ * >    7 juillet 2024
  *
  */
 
@@ -42,26 +42,76 @@
 
 using namespace TestTools;
 
+
+QSqlDatabase dbSatellites;
+
+
 void DonneesTest::testAll()
 {
-    testDonnees();
+    QDir dir = QDir::current();
+    dir.cdUp();
+    dir.cdUp();
+    static_cast<void> (dir.cd(APP_NAME));
+
+    const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
+
+    dbSatellites = QSqlDatabase::addDatabase("QSQLITE");
+    dbSatellites.setDatabaseName(dirLocalData + QDir::separator() + "satellites.db");
+    dbSatellites.open();
+
+    testRequeteCospar();
+    testRequeteNom();
+    testRequeteNorad();
+
+    const QString nomDb = dbSatellites.connectionName();
+    dbSatellites = QSqlDatabase();
+    dbSatellites.removeDatabase(nomDb);
 }
 
-void DonneesTest::testDonnees()
+void DonneesTest::testRequeteCospar()
 {
     qInfo(Q_FUNC_INFO);
 
-    const QString donnees = "025544 1998-067A   1998-11-20T06:40:00                           19000     20351    12.6    4.2     23.9 " \
-        "Cyl + 2 Pan                      C SS   -                -0.43 v      92.94     416     421  51.64 LEO/I  ISS   TTMTR ISS (ZARYA)";
+    const Donnees donneeIss = Donnees::RequeteCospar(dbSatellites, "1998-067A").first();
+    CompareDonneesSatellite(donneeIss);
+}
 
-    const Donnees donneeIss(donnees);
+void DonneesTest::testRequeteNom()
+{
+    qInfo(Q_FUNC_INFO);
 
-    QCOMPARE(donneeIss.norad(), "025544");
+    const QList<Donnees> listeDonnees = Donnees::RequeteNom(dbSatellites, "ISS");
+
+    Donnees donneeIss;
+    QListIterator it(listeDonnees);
+    while (it.hasNext()) {
+
+        const Donnees donnee = it.next();
+        if (donnee.nom() == "ISS (ZARYA)") {
+            donneeIss = donnee;
+            it.toBack();
+        }
+    }
+
+    CompareDonneesSatellite(donneeIss);
+}
+
+void DonneesTest::testRequeteNorad()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const Donnees donneeIss = Donnees::RequeteNorad(dbSatellites, "25544").first();
+    CompareDonneesSatellite(donneeIss);
+}
+
+void DonneesTest::CompareDonneesSatellite(const Donnees &donneeIss)
+{
+    QCOMPARE(donneeIss.norad(), "25544");
     QCOMPARE(donneeIss.cospar(), "1998-067A");
     QCOMPARE(donneeIss.dateLancement(), "1998-11-20T06:40:00");
     QCOMPARE(donneeIss.dateRentree(), "");
-    QCOMPARE(donneeIss.stsDateRentree(), ' ');
-    QCOMPARE(donneeIss.stsHeureRentree(), ' ');
+    QCOMPARE(donneeIss.stsDateRentree(), "");
+    QCOMPARE(donneeIss.stsHeureRentree(), "");
     QCOMPARE(donneeIss.masseSec(), "19000");
     QCOMPARE(donneeIss.masseTot(), "20351");
     QCOMPARE(donneeIss.longueur(), 12.6);
@@ -73,9 +123,9 @@ void DonneesTest::testDonnees()
     QCOMPARE(donneeIss.discipline(), "-");
     QCOMPARE(donneeIss.magnitudeStandard(), -0.43);
     QCOMPARE(donneeIss.methMagnitude(), 'v');
-    QCOMPARE(donneeIss.periode(), "92.94");
-    QCOMPARE(donneeIss.perigee(), 416);
-    QCOMPARE(donneeIss.apogee(), 421);
+    QCOMPARE(donneeIss.periode(), "92.93");
+    QCOMPARE(donneeIss.perigee(), 412);
+    QCOMPARE(donneeIss.apogee(), 425);
     QCOMPARE(donneeIss.inclinaison(), "51.64");
     QCOMPARE(donneeIss.orbite(), "LEO/I");
     QCOMPARE(donneeIss.pays(), "ISS");

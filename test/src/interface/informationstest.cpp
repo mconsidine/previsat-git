@@ -30,7 +30,7 @@
  * >    29 octobre 2022
  *
  * Date de revision
- * >
+ * >    7 juillet 2024
  *
  */
 
@@ -78,13 +78,12 @@ void InformationsTest::testSauveOngletInformations()
     Configuration::instance()->_dirLocalData = dirLocalData;
     Date::Initialisation(dirLocalData);
 
-    Configuration::instance()->LectureDonneesSatellites();
+    Configuration::instance()->OuvertureBaseDonneesSatellites();
 
     const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
 
-    const int lgrec = Configuration::instance()->lgRec();
     const QStringList listeElem(QStringList () << "25544");
-    QMap<QString, ElementsOrbitaux> mapElem = TLE::Lecture(nomfic, Configuration::instance()->donneesSatellites(), lgrec, listeElem);
+    QMap<QString, ElementsOrbitaux> mapElem = TLE::Lecture(nomfic, Configuration::instance()->dbSatellites(), listeElem);
 
     Satellite sat(mapElem.first());
     Configuration::instance()->listeSatellites().append(sat);
@@ -105,4 +104,6 @@ void InformationsTest::testSauveOngletInformations()
 
         CompareFichiers(ficRes, ficRef);
     }
+
+    Configuration::instance()->FermetureBaseDonneesSatellites();
 }

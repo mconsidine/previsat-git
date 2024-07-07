@@ -30,7 +30,7 @@
  * >    1er octobre 223
  *
  * Date de revision
- * >
+ * >    7 juillet 2024
  *
  */
 
@@ -69,13 +69,13 @@ void StarlinkTest::testStarlink1()
     Date::Initialisation(dirLocalData);
 
     Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
+    Configuration::instance()->OuvertureBaseDonneesSatellites();
     Configuration::instance()->AjoutDonneesSatellitesStarlink("Starlink G6-19 Pre-Launch", "starlink-g6-19", "2023-09-30 02:00:00", "2023-09-30 03:05:19");
 
     const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "starlink-g6-19.xml";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "starlink_20230930_20231007.txt";
 
-    const QMap<QString, ElementsOrbitaux> tabElem = GPFormat::Lecture(fichier, "", -1);
+    const QMap<QString, ElementsOrbitaux> tabElem = GPFormat::Lecture(fichier);
 
     ConditionsPrevisions conditions;
     conditions.jj1 = 8672.586805555557;
@@ -108,4 +108,6 @@ void StarlinkTest::testStarlink1()
     const QString ficRef = dir.path() + QDir::separator() + "test" + QDir::separator() + "ref" + QDir::separator()
                            + "starlink_20230930_20231007.txt";
     CompareFichiers(ficRes, ficRef);
+
+    Configuration::instance()->FermetureBaseDonneesSatellites();
 }

@@ -1,6 +1,6 @@
 Nom                : ISS (ZARYA)
 
-Numéro NORAD       : 025544		Magnitude std/max  : -0.43v/-2.3
+Numéro NORAD       : 25544		Magnitude std/max  : -0.43v/-2.3
 Désignation COSPAR : 1998-067A		Modèle orbital     : SGP4 (NE)
 Forme/Dimensions : Cyl + 2 Pan. 12.6 x 4.2 x 23.9 m
 
@@ -11,7 +11,7 @@ Site de lancement  : TTMTR
 
 Classe/Catégorie/Discipline : C / SS / -
 Masse sec/totale            : 19000/20351 kg
-Apogée  (Altitude)          : 6799 km (421 km)
-Périgée (Altitude)          : 6794 km (416 km)
+Apogée  (Altitude)          : 6803 km (425 km)
+Périgée (Altitude)          : 6790 km (412 km)
 Période orbitale            : 1h 32m 56s
 Inclinaison                 : 51.64°

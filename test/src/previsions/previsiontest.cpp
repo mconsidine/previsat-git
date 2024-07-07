@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    4 fevrier 2023
+ * >    7 juillet 2024
  *
  */
 
@@ -64,7 +64,7 @@ void PrevisionTest::testAll()
     Date::Initialisation(dirLocalData);
 
     Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
+    Configuration::instance()->OuvertureBaseDonneesSatellites();
 
     conditions.jj1 = 7531.416666666667;
     conditions.jj2 = 7538.416666666667;
@@ -85,6 +85,8 @@ void PrevisionTest::testAll()
     testCalculPrevisions1();
     testCalculPrevisions2();
     testCalculPrevisions3();
+
+    Configuration::instance()->FermetureBaseDonneesSatellites();
 }
 
 void PrevisionTest::testCalculPrevisions1()
@@ -96,7 +98,7 @@ void PrevisionTest::testCalculPrevisions1()
     const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "previsions1_20200815_20200822.txt";
 
-    conditions.tabElem = TLE::Lecture(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+    conditions.tabElem = TLE::Lecture(fichier, Configuration::instance()->dbSatellites());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions
@@ -124,7 +126,7 @@ void PrevisionTest::testCalculPrevisions2()
     conditions.pas = 0.0034722222222222222;
     conditions.hauteur = 10. * MATHS::DEG2RAD;
     conditions.crepuscule = -6. * MATHS::DEG2RAD;
-    conditions.tabElem = TLE::Lecture(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+    conditions.tabElem = TLE::Lecture(fichier, Configuration::instance()->dbSatellites());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions
@@ -152,7 +154,7 @@ void PrevisionTest::testCalculPrevisions3()
     conditions.pas = 0.0034722222222222222;
     conditions.hauteur = 5. * MATHS::DEG2RAD;
     conditions.crepuscule = -6. * MATHS::DEG2RAD;
-    conditions.tabElem = TLE::Lecture(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+    conditions.tabElem = TLE::Lecture(fichier, Configuration::instance()->dbSatellites());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions

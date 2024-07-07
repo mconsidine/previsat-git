@@ -36,13 +36,15 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >
+ * >    7 juillet 2024
  *
  */
 
 #ifndef DONNEESTEST_H
 #define DONNEESTEST_H
 
+
+class Donnees;
 
 class DonneesTest
 {
@@ -52,7 +54,11 @@ public:
 
 private:
 
-    static void testDonnees();
+    static void testRequeteCospar();
+    static void testRequeteNom();
+    static void testRequeteNorad();
+
+    static void CompareDonneesSatellite(const Donnees &donneeIss);
 
 };
 

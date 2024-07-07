@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    4 fevrier 2023
+ * >    7 juillet 2024
  *
  */
 
@@ -65,7 +65,7 @@ void TransitsTest::testAll()
 
     Configuration::instance()->_dirLocalData = dirLocalData;
     Configuration::instance()->_noradStationSpatiale = "025544";
-    Configuration::instance()->LectureDonneesSatellites();
+    Configuration::instance()->OuvertureBaseDonneesSatellites();
 
     conditions.jj1 = 8435.416666666667;
     conditions.jj2 = 8465.416666666667;
@@ -88,6 +88,8 @@ void TransitsTest::testAll()
     conditions.listeSatellites << "025544" << "027386" << "027424" << "048274";
 
     testCalculTransits();
+
+    Configuration::instance()->FermetureBaseDonneesSatellites();
 }
 
 void TransitsTest::testCalculTransits()
@@ -99,9 +101,8 @@ void TransitsTest::testCalculTransits()
     const QString fichierIss = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "iss.gp";
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + "transits_20230205_20230307.txt";
 
-    conditions.tabElem = GPFormat::Lecture(fichier, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec(),
-                                           conditions.listeSatellites);
-    conditions.listeElemIss = GPFormat::LectureListeGP(fichierIss, Configuration::instance()->donneesSatellites(), Configuration::instance()->lgRec());
+    conditions.tabElem = GPFormat::Lecture(fichier, Configuration::instance()->dbSatellites(), conditions.listeSatellites);
+    conditions.listeElemIss = GPFormat::LectureListeGP(fichierIss, Configuration::instance()->dbSatellites());
     conditions.ficRes = ficRes;
 
     // Lancement du calcul de previsions

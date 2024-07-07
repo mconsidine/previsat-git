@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    19 juin 2022
+ * >    7 juillet 2024
  *
  */
 
@@ -64,7 +64,7 @@ void TelescopeTest::testAll()
     Date::Initialisation(dirLocalData);
 
     Configuration::instance()->_dirLocalData = dirLocalData;
-    Configuration::instance()->LectureDonneesSatellites();
+    Configuration::instance()->OuvertureBaseDonneesSatellites();
 
     conditions.jj1 = 7531.416666666667;
     conditions.offset = 0.08333333333333333;
@@ -75,6 +75,8 @@ void TelescopeTest::testAll()
     conditions.listeSatellites.append("25544");
 
     testCalculSuiviTelescope1();
+
+    Configuration::instance()->FermetureBaseDonneesSatellites();
 }
 
 void TelescopeTest::testCalculSuiviTelescope1()
@@ -85,9 +87,8 @@ void TelescopeTest::testCalculSuiviTelescope1()
     int n = 0;
     const QString fichier = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
 
-    const int lgrec = Configuration::instance()->lgRec();
     const QStringList listeTLE(QStringList () << "25544");
-    QMap<QString, ElementsOrbitaux> mapTLE = TLE::Lecture(fichier, Configuration::instance()->donneesSatellites(), lgrec, listeTLE);
+    QMap<QString, ElementsOrbitaux> mapTLE = TLE::Lecture(fichier, Configuration::instance()->dbSatellites(), listeTLE);
     conditions.tabElem = mapTLE;
 
     Satellite sat(mapTLE.first());
