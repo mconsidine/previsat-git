@@ -269,7 +269,6 @@ ElementsOrbitaux GPFormat::LectureElements(const QDomNode &sat)
 
             // Lecture section tleParameters
             const QDomNode tleParameters = sat.toElement().elementsByTagName("tleParameters").at(0);
-            //elem.norad = tleParameters.firstChildElement("NORAD_CAT_ID").text();
             elem.norad = QString("%1").arg(tleParameters.firstChildElement("NORAD_CAT_ID").text(), 6, QChar('0'));
             elem.nbOrbitesEpoque = tleParameters.firstChildElement("REV_AT_EPOCH").text().toUInt();
             elem.bstar = tleParameters.firstChildElement("BSTAR").text().toDouble();

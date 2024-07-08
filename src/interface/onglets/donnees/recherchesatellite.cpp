@@ -30,7 +30,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    8 juillet 2024
  *
  */
 
@@ -530,10 +530,11 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
 
         // Recherche des fichiers d'elements orbitaux dans lesquels le satellite est present
         _ui->fichiersElementsOrbitaux->clear();
+        const QString norad = QString("%1").arg(donnees.norad(), 6, QChar('0'));
 
         for(const QString &fic : Configuration::instance()->mapFichierElemNorad().keys()) {
 
-            if (Configuration::instance()->mapFichierElemNorad()[fic].contains(donnees.norad())) {
+            if (Configuration::instance()->mapFichierElemNorad()[fic].contains(norad)) {
                 _ui->fichiersElementsOrbitaux->addItem(fic);
             }
         }
