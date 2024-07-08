@@ -223,6 +223,21 @@ else()
         src/interface/*.ui
     )
 
+    if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+
+        file(GLOB_RECURSE
+            TELESCOPE_SOURCES
+            src/interface/onglets/telescope/*.cpp
+            src/interface/onglets/telescope/*.h
+            src/interface/onglets/telescope/*.ui
+        )
+
+        list(REMOVE_ITEM
+            INTERFACE_SOURCES
+            ${TELESCOPE_SOURCES}
+        )
+    endif()
+
     qt_add_resources(${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc)
 
     qt_add_executable(${TARGET}
