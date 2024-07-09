@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 decembre 2023
+ * >    9 juillet 2024
  *
  */
 
@@ -76,8 +76,7 @@ int main(int argc, char *argv[])
         Configuration::instance()->Initialisation();
 
         // Installation de la gestion du fichier de log
-        const LogMessage msg(Configuration::instance()->dirLog() + QDir::separator() + APP_NAME, settings.value("fichier/nbFichiersLog", 10).toUInt());
-        Q_UNUSED(msg)
+        LogMessage(Configuration::instance()->dirLog() + QDir::separator() + APP_NAME, settings.value("fichier/nbFichiersLog", 10).toUInt());
 
         // Creation de la fenetre principale
         PreviSat w;

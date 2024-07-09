@@ -36,7 +36,7 @@
  * >    21 mai 2022
  *
  * Date de revision
- * >
+ * >    9 juillet 2024
  *
  */
 
@@ -67,12 +67,14 @@ public:
     /*
      * Destructeur
      */
-    ~LogMessage();
-
 
     /*
      * Methodes publiques
      */
+    /**
+     * @brief Fermeture Fermeture du fichier de log
+     */
+    static void Fermeture();
 
     /*
      * Accesseurs

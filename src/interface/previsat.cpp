@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    9 juillet 2024
  *
  */
 
@@ -88,6 +88,7 @@
 #include "librairies/exceptions/exception.h"
 #include "librairies/exceptions/message.h"
 #include "librairies/maths/maths.h"
+#include "librairies/systeme/logmessage.h"
 #include "librairies/systeme/telechargement.h"
 
 
@@ -2705,10 +2706,11 @@ void PreviSat::closeEvent(QCloseEvent *evt)
         Configuration::instance()->FermetureBaseDonneesSatellites();
         GestionnaireXml::EcriturePreLaunchStarlink();
 
+        qInfo() << "Fin   Fonction" << __FUNCTION__;
+        LogMessage::Fermeture();
+
     } catch (Exception const &e) {
     }
-
-    qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
     return;

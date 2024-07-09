@@ -30,7 +30,7 @@
  * >    21 mai 2022
  *
  * Date de revision
- * >
+ * >    9 juillet 2024
  *
  */
 
@@ -76,7 +76,7 @@ LogMessage::LogMessage(const QString &baseNomFichier,
 
     /* Initialisations */
 
-#if (BUILD_TEST == true)
+#if (BUILD_TEST)
     Q_UNUSED(nbMaxFic)
     const QString dateFichierLog = "";
 #else
@@ -101,7 +101,7 @@ LogMessage::LogMessage(const QString &baseNomFichier,
     _fichierLog.data()->open(QFile::WriteOnly | QFile::Text);
     qInstallMessageHandler(messageHandler);
 
-#if (BUILD_TEST == false)
+#if (!BUILD_TEST)
     QTextStream out(_fichierLog.data());
     out << QString("       Date (UTC)       : Type    : %1 : %2 : Message").arg("Fichier", -45).arg("Fonction", -45) << Qt::endl;
     out << QString(162, '-') << Qt::endl;
@@ -115,12 +115,6 @@ LogMessage::LogMessage(const QString &baseNomFichier,
 /*
  * Destructeur
  */
-LogMessage::~LogMessage()
-{
-    _fichierLog.data()->close();
-    qInstallMessageHandler(0);
-}
-
 
 /*
  * Accesseurs
@@ -134,6 +128,14 @@ const QString &LogMessage::nomFicLog()
 /*
  * Methodes publiques
  */
+/*
+ * Fermeture du fichier de log
+ */
+void LogMessage::Fermeture()
+{
+    _fichierLog.data()->close();
+    qInstallMessageHandler(0);
+}
 
 
 /*************
