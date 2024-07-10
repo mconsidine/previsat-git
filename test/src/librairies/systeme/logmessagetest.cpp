@@ -59,8 +59,7 @@ void LogMessageTest::testLogMessage()
     static_cast<bool> (dir.cd(APP_NAME));
 
     const QString ficRes = QDir::current().path() + QDir::separator() + "test" + QDir::separator() + APP_NAME;
-    LogMessage logMessage(ficRes, 1);
-    Q_UNUSED(logMessage)
+    LogMessage(ficRes, 1);
 
     // Ecriture de messages informatifs
     qInfo() << APP_NAME;
@@ -82,4 +81,5 @@ void LogMessageTest::testLogMessage()
     CompareFichiers(ficRes + ".log", ficRef);
 
     QCOMPARE(LogMessage::nomFicLog(), QDir::toNativeSeparators(ficRes + ".log"));
+    LogMessage::Fermeture();
 }
