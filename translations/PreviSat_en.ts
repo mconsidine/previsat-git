@@ -4672,10 +4672,6 @@ click on &apos;Update ISS information&apos;</translation>
         <translation>The file %1 already exists</translation>
     </message>
     <message>
-        <source>Le fichier %1 ne contient pas d&apos;éléments orbitaux</source>
-        <translation type="vanished">The file %1 does not contain orbital elements</translation>
-    </message>
-    <message>
         <location filename="../src/interface/outils/outils.cpp" line="1133"/>
         <source>Avertissement</source>
         <translation>Warning</translation>
@@ -5842,10 +5838,6 @@ Expected value : %3 - Calculated value : %4</translation>
         <location filename="../src/librairies/corps/satellite/donnees.cpp" line="88"/>
         <source>N/A</source>
         <translation>N/A</translation>
-    </message>
-    <message>
-        <source>Erreur lors du calcul de la position du satellite %1</source>
-        <translation type="vanished">Error while calculating satellite %1 position</translation>
     </message>
     <message>
         <location filename="../src/librairies/systeme/fichierxml.cpp" line="117"/>

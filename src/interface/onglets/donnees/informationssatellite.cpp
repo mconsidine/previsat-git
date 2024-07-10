@@ -30,7 +30,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    10 juillet 2024
  *
  */
 
@@ -113,7 +113,7 @@ void InformationsSatellite::show(const Satellite &satellite)
 
     /* Corps de la methode */
     // Nom du satellite
-    _ui->nomsat->setText(elem.nom);
+    _ui->nomsat->setText(donnee.nom());
 
     // Numero NORAD
     _ui->norad->setText(elem.norad);

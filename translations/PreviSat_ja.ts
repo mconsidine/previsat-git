@@ -4672,10 +4672,6 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>ファイル「%1」は既に存在します</translation>
     </message>
     <message>
-        <source>Le fichier %1 ne contient pas d&apos;éléments orbitaux</source>
-        <translation type="vanished">ファイル「%1」に軌道要素が含まれていません</translation>
-    </message>
-    <message>
         <location filename="../src/interface/outils/outils.cpp" line="1133"/>
         <source>Avertissement</source>
         <translation>警告</translation>
