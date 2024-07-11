@@ -30,13 +30,12 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >
+ * >    10 juillet 2024
  *
  */
 
 #include <QDir>
 #include <QFile>
-#include <QXmlStreamReader>
 #include "configuration.h"
 #include "evenementsstation.h"
 #include "evenementsstationspatiale.h"

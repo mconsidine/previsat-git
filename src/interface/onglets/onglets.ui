@@ -35,7 +35,7 @@
    <enum>QTabWidget::Triangular</enum>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>2</number>
   </property>
   <property name="documentMode">
    <bool>true</bool>
@@ -76,7 +76,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="informationsSat">
      <property name="autoFillBackground">
@@ -93,6 +93,7 @@
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="QWidget" name="informationsLancements"/>
    </widget>
    <widget class="QToolButton" name="infoSuiv">
     <property name="geometry">

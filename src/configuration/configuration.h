@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    10 juillet 2024
  *
  */
 
@@ -47,6 +47,7 @@
 #include <QList>
 #include <QMap>
 #include <QString>
+#include "calendrierlancements.h"
 #include "categorieelementsorbitaux.h"
 #include "configurationconst.h"
 #include "evenementsstation.h"
@@ -227,6 +228,7 @@ public:
     QMap<QString, ElementsOrbitaux> &mapElementsOrbitaux();
 
     EvenementsStation &evenementsStation();
+    QList<CalendrierLancements> &calendrierLancements();
 
     // Frequences radio des satellites
     const QMap<QString, QList<FrequenceRadio> > &mapFrequencesRadio() const;
@@ -375,6 +377,7 @@ private:
     QString _nomFichierEvenementsStationSpatiale;
     QString _noradStationSpatiale;
     EvenementsStation _evenementsStation {};
+    QList<CalendrierLancements> _calendrierLancements;
 
     // Frequences radio des satellites
     QMap<QString, QList<FrequenceRadio> > _mapFrequencesRadio;

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 juillet 2024
+ * >    10 juillet 2024
  *
  */
 
@@ -67,6 +67,7 @@
 #include "logging/logging.h"
 #include "onglets/antenne/antenne.h"
 #include "onglets/donnees/informationsiss.h"
+#include "onglets/donnees/informationslancements.h"
 #include "onglets/donnees/informationssatellite.h"
 #include "onglets/donnees/recherchesatellite.h"
 #include "onglets/general/general.h"
@@ -153,6 +154,7 @@ PreviSat::~PreviSat()
     EFFACE_OBJET(_informationsSatellite);
     EFFACE_OBJET(_recherche);
     EFFACE_OBJET(_station);
+    EFFACE_OBJET(_lancements);
     EFFACE_OBJET(_captureEcran);
     EFFACE_OBJET(_etapePrec);
     EFFACE_OBJET(_etapeSuiv);
@@ -618,6 +620,9 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_onglets->rechercheSatellite(), &RechercheSatellite::AffichageSiteLancement, _carte, &Carte::AffichageSiteLancement);
     connect(_onglets->rechercheSatellite(), &RechercheSatellite::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
 
+    // Connexions avec l'onglet Lancements
+    connect(_onglets->informationsLancements(), &InformationsLancements::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+
     // Connexions avec l'onglet Antenne
     connect(this, &PreviSat::DeconnecterUdp, _onglets->antenne(), &Antenne::DeconnecterUdp);
 
@@ -752,6 +757,12 @@ void PreviSat::CreationRaccourcis()
     _station->setShortcut(Qt::ALT | Qt::Key_I);
     connect(_station, &QAction::triggered, this, &PreviSat::RaccourciStation);
     this->addAction(_station);
+
+    // Raccourci Onglet Lancements
+    _lancements = new QAction(this);
+    _lancements->setShortcut(Qt::ALT | Qt::Key_L);
+    connect(_lancements, &QAction::triggered, this, &PreviSat::RaccourciLancements);
+    this->addAction(_lancements);
 
     // Raccourci Capture ecran
     _captureEcran = new QAction(this);
@@ -1008,6 +1019,7 @@ void PreviSat::Initialisation()
     _informationsSatellite = nullptr;
     _recherche = nullptr;
     _station = nullptr;
+    _lancements = nullptr;
     _captureEcran = nullptr;
     _etapePrec = nullptr;
     _etapeSuiv = nullptr;
@@ -2444,6 +2456,14 @@ void PreviSat::RaccourciStation()
     _onglets->setCurrentWidget(_onglets->ui()->informations);
     _onglets->ui()->stackedWidget_informations->setCurrentWidget(_onglets->ui()->informationsStationSpatiale);
     const unsigned int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->informationsStationSpatiale);
+    _onglets->setIndexInformations(index);
+}
+
+void PreviSat::RaccourciLancements()
+{
+    _onglets->setCurrentWidget(_onglets->ui()->informations);
+    _onglets->ui()->stackedWidget_informations->setCurrentWidget(_onglets->ui()->informationsLancements);
+    const unsigned int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->informationsLancements);
     _onglets->setIndexInformations(index);
 }
 

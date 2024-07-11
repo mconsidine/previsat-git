@@ -30,12 +30,11 @@
  * >    21 juin 2022
  *
  * Date de revision
- * >
+ * >    10 juillet 2024
  *
  */
 
 #include <QDir>
-#include <QXmlStreamReader>
 #include "configuration.h"
 #include "fichierobs.h"
 #include "gestionnairexml.h"

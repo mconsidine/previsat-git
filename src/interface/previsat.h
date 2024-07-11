@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er mars 2024
+ * >    10 juillet 2024
  *
  */
 
@@ -176,6 +176,7 @@ private:
     QAction *_evenements;
     QAction *_informationsSatellite;
     QAction *_recherche;
+    QAction *_lancements;
     QAction *_station;
     QAction *_captureEcran;
     QAction *_etapePrec;
@@ -405,6 +406,7 @@ private slots:
     void RaccourciInformations();
     void RaccourciRecherche();
     void RaccourciStation();
+    void RaccourciLancements();
 
     /**
      * @brief ReinitCalculEvenementsSoleilLune Reinitialisation du calcul des evenements Soleil/Lune

@@ -36,18 +36,14 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >
+ * >    10 juillet 2024
  *
  */
 
 #ifndef EVENEMENTSSTATIONSPATIALE_H
 #define EVENEMENTSSTATIONSPATIALE_H
 
-#include <QList>
-#include <QStringList>
 
-
-class QXmlStreamReader;
 struct EvenementsStation;
 
 class EvenementsStationSpatiale

@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    10 juillet 2024
  *
  */
 
@@ -39,6 +39,7 @@
 #include "configuration.h"
 #include "evenementsstationspatiale.h"
 #include "gestionnairexml.h"
+#include "lancements.h"
 #include "librairies/exceptions/exception.h"
 #include "librairies/systeme/fichierxml.h"
 
@@ -102,6 +103,9 @@ void Configuration::Chargement()
 
         // Lecture du fichier NASA contenant les evenements de la Station Spatiale
         _evenementsStation = EvenementsStationSpatiale::LectureEvenementsStationSpatiale();
+
+        // Lecture du fichier contenant le calendrier des lancements
+        _calendrierLancements = Lancements::LectureCalendrierLancements();
 
         // Ouverture de la base de donnees satellites
         OuvertureBaseDonneesSatellites();
@@ -674,6 +678,11 @@ QMap<QString, ElementsOrbitaux> &Configuration::mapElementsOrbitaux()
 EvenementsStation &Configuration::evenementsStation()
 {
     return _evenementsStation;
+}
+
+QList<CalendrierLancements> &Configuration::calendrierLancements()
+{
+    return _calendrierLancements;
 }
 
 const QMap<QString, QList<FrequenceRadio> > &Configuration::mapFrequencesRadio() const

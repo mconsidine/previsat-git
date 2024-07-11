@@ -36,7 +36,7 @@
  * >    25 fevrier 2023
  *
  * Date de revision
- * >    27 decembre 2023
+ * >    10 juillet 2024
  *
  */
 
@@ -56,6 +56,7 @@ class Osculateurs;
 class InformationsSatellite;
 class RechercheSatellite;
 class InformationsISS;
+class InformationsLancements;
 
 class CalculsPrevisions;
 class CalculsFlashs;
@@ -102,6 +103,7 @@ public:
     InformationsSatellite *informationsSatellite() const;
     InformationsISS *informationsISS() const;
     RechercheSatellite *rechercheSatellite() const;
+    InformationsLancements *informationsLancements() const;
 
     CalculsPrevisions *previsions() const;
     CalculsFlashs *flashs() const;
@@ -176,6 +178,7 @@ private:
     InformationsSatellite *_informationsSatellite;
     RechercheSatellite *_rechercheSatellite;
     InformationsISS *_informationsISS;
+    InformationsLancements *_informationsLancements;
 
     CalculsPrevisions *_previsions;
     CalculsFlashs *_flashs;

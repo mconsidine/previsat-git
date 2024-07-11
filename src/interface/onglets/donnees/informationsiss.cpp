@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >
+ * >    10 juillet 2024
  *
  */
 
@@ -38,8 +38,9 @@
 #include "configuration/configuration.h"
 #include "configuration/evenementsstationspatiale.h"
 #include "informationsiss.h"
-#include "ui_informationsiss.h"
+#include "librairies/exceptions/exception.h"
 #include "librairies/systeme/telechargement.h"
+#include "ui_informationsiss.h"
 
 
 // Registre
@@ -285,12 +286,17 @@ void InformationsISS::on_majEvenementsIss_clicked()
     Telechargement tel(Configuration::instance()->dirLocalData());
 
     /* Corps de la methode */
-    emit AfficherMessageStatut(tr("Téléchargement du fichier d'informations ISS..."));
-    tel.TelechargementFichier(QUrl(QString("%1data/%2").arg(DOMAIN_NAME).arg(Configuration::instance()->nomFichierEvenementsStationSpatiale())));
-    emit AfficherMessageStatut(tr("Téléchargement terminé"), 5);
+    try {
 
-    Configuration::instance()->evenementsStation() = EvenementsStationSpatiale::LectureEvenementsStationSpatiale();
-    show();
+        emit AfficherMessageStatut(tr("Téléchargement du fichier d'informations ISS..."));
+        tel.TelechargementFichier(QUrl(QString("%1data/%2").arg(DOMAIN_NAME).arg(Configuration::instance()->nomFichierEvenementsStationSpatiale())));
+        emit AfficherMessageStatut(tr("Téléchargement terminé"), 5);
+
+        Configuration::instance()->evenementsStation() = EvenementsStationSpatiale::LectureEvenementsStationSpatiale();
+        show();
+
+    } catch (Exception const &e) {
+    }
 
     /* Retour */
     return;

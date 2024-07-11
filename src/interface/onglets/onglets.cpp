@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    27 decembre 2023
+ * >    10 juillet 2024
  *
  */
 
@@ -48,6 +48,7 @@
 #include "osculateurs/osculateurs.h"
 #include "donnees/informationsiss.h"
 #include "donnees/informationssatellite.h"
+#include "donnees/informationslancements.h"
 #include "donnees/recherchesatellite.h"
 #include "previsions/calculsevenementsorbitaux.h"
 #include "previsions/calculsflashs.h"
@@ -101,6 +102,7 @@ Onglets::Onglets(QWidget *parent) :
         _informationsSatellite = nullptr;
         _rechercheSatellite = nullptr;
         _informationsISS = nullptr;
+        _informationsLancements = nullptr;
 
         _previsions = nullptr;
         _flashs = nullptr;
@@ -132,6 +134,7 @@ Onglets::~Onglets()
     EFFACE_OBJET(_informationsSatellite);
     EFFACE_OBJET(_rechercheSatellite);
     EFFACE_OBJET(_informationsISS);
+    EFFACE_OBJET(_informationsLancements);
     EFFACE_OBJET(_previsions);
     EFFACE_OBJET(_flashs);
     EFFACE_OBJET(_transits);
@@ -179,6 +182,11 @@ InformationsISS *Onglets::informationsISS() const
 RechercheSatellite *Onglets::rechercheSatellite() const
 {
     return _rechercheSatellite;
+}
+
+InformationsLancements *Onglets::informationsLancements() const
+{
+    return _informationsLancements;
 }
 
 CalculsPrevisions *Onglets::previsions() const
@@ -291,6 +299,7 @@ void Onglets::show(const Date &date)
             _informationsSatellite->show(Configuration::instance()->listeSatellites().first());
             _rechercheSatellite->on_noradDonneesSat_valueChanged(Configuration::instance()->noradDefaut().toInt());
             _informationsISS->show();
+            _informationsLancements->show();
             _antenne->InitAffichageFrequences();
             _info = false;
         }
@@ -394,12 +403,9 @@ void Onglets::AffichageOngletInformations()
 
             setTabText(indexOf(_ui->informations), tr("Informations satellite"));
 
-            _ui->infoPrec->setToolTip(tr("Informations ISS"));
-            _ui->infoPrec->setVisible(true);
+            _ui->infoPrec->setToolTip(tr("Lancements"));
             _ui->infoSuiv->setToolTip(tr("Recherche données"));
-                _ui->infoSuiv->setVisible(true);
         }
-
     } else {
         setTabText(indexOf(_ui->informations), tr("Recherche données"));
     }
@@ -407,33 +413,22 @@ void Onglets::AffichageOngletInformations()
     if (_ui->rechercheSat->isVisible()) {
 
         setTabText(indexOf(_ui->informations), tr("Recherche données"));
+        _ui->infoPrec->setToolTip((isInfo) ? tr("Informations satellite") : tr("Lancements"));
         _ui->infoSuiv->setToolTip(tr("Informations ISS"));
-        _ui->infoSuiv->setVisible(true);
-
-        if (isInfo) {
-
-            _ui->infoPrec->setVisible(true);
-            _ui->infoPrec->setToolTip(tr("Informations satellite"));
-
-        } else {
-            _ui->infoPrec->setVisible(false);
-        }
     }
 
     if (_ui->informationsStationSpatiale->isVisible()) {
 
         setTabText(indexOf(_ui->informations), tr("Informations ISS"));
         _ui->infoPrec->setToolTip(tr("Recherche données"));
-        _ui->infoPrec->setVisible(true);
+        _ui->infoSuiv->setToolTip(tr("Lancements"));
+    }
 
-        if (isInfo) {
+    if (_ui->informationsLancements->isVisible()) {
 
-            _ui->infoSuiv->setVisible(true);
-            _ui->infoSuiv->setToolTip(tr("Informations satellite"));
-
-        } else {
-            _ui->infoSuiv->setVisible(false);
-        }
+        setTabText(indexOf(_ui->informations), tr("Lancements"));
+        _ui->infoPrec->setToolTip(tr("Informations ISS"));
+        _ui->infoSuiv->setToolTip((isInfo) ? tr("Informations satellite") : tr("Recherche données"));
     }
 
     /* Retour */
@@ -471,6 +466,9 @@ void Onglets::Initialisation()
 
     _informationsISS = new InformationsISS(_ui->informationsStationSpatiale);
     _informationsISS->show();
+
+    _informationsLancements = new InformationsLancements(_ui->informationsLancements);
+    _informationsLancements->show();
 
     // Calculs de previsions
     _previsions = new CalculsPrevisions(_ui->prevision);
