@@ -81,7 +81,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Icone
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set(app_icon "${CMAKE_CURRENT_SOURCE_DIR}/icone.rc")
-    set(win_flag WIN32)
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -242,7 +241,6 @@ else()
 
     qt_add_executable(${TARGET}
         MANUAL_FINALIZATION
-        ${win_flag}
         src/main.cpp
         ${INTERFACE_SOURCES}
         ${PREVISIONS_SOURCES}
@@ -261,6 +259,18 @@ else()
         Qt${QT_VERSION_MAJOR}::Sql
         Qt${QT_VERSION_MAJOR}::Widgets
         Qt${QT_VERSION_MAJOR}::Xml
+    )
+
+    if(${QT_VERSION} VERSION_LESS 6.1.0)
+      set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.astropedia.previsat)
+    endif()
+
+    set_target_properties(${TARGET} PROPERTIES
+        ${BUNDLE_ID_OPTION}
+        MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+        MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+        MACOSX_BUNDLE TRUE
+        WIN32_EXECUTABLE TRUE
     )
 
     qt_finalize_executable(${TARGET})
