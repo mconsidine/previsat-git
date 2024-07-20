@@ -35,7 +35,7 @@
    <enum>QTabWidget::Triangular</enum>
   </property>
   <property name="currentIndex">
-   <number>2</number>
+   <number>0</number>
   </property>
   <property name="documentMode">
    <bool>true</bool>
@@ -94,6 +94,7 @@
      </property>
     </widget>
     <widget class="QWidget" name="informationsLancements"/>
+    <widget class="QWidget" name="informationsRentrees"/>
    </widget>
    <widget class="QToolButton" name="infoSuiv">
     <property name="geometry">

@@ -106,7 +106,7 @@ void InformationsLancements::show()
     QTableWidgetItem * itemHeure;
     QTableWidgetItem * itemLancement;
     QTableWidgetItem * itemSite;
-    QTableWidgetItem * itemCommentaire;
+    QTableWidgetItem * itemDetails;
 
     /* Initialisations */
     int j = 0;
@@ -152,12 +152,12 @@ void InformationsLancements::show()
         itemSite->setFlags(itemSite->flags() & ~Qt::ItemIsEditable);
         _ui->lancements->setItem(j, 3, itemSite);
 
-        // Commentaire
-        itemCommentaire = new QTableWidgetItem(calendrier.commentaire);
-        itemCommentaire->setToolTip(calendrier.commentaire);
-        itemCommentaire->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-        itemCommentaire->setFlags(itemCommentaire->flags() & ~Qt::ItemIsEditable);
-        _ui->lancements->setItem(j, 4, itemCommentaire);
+        // Details
+        itemDetails = new QTableWidgetItem(calendrier.commentaire);
+        itemDetails->setToolTip(calendrier.commentaire);
+        itemDetails->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        itemDetails->setFlags(itemDetails->flags() & ~Qt::ItemIsEditable);
+        _ui->lancements->setItem(j, 4, itemDetails);
         _ui->lancements->resizeColumnsToContents();
 
         j++;

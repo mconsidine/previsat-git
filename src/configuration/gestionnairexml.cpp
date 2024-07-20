@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    2 novembre 2023
+ * >    18 juillet 2024
  *
  */
 
@@ -41,6 +41,7 @@
 #include "librairies/dates/date.h"
 #include "librairies/exceptions/exception.h"
 #include "librairies/systeme/fichierxml.h"
+#include "librairies/systeme/telechargement.h"
 
 
 QList<Observateur> GestionnaireXml::_observateurs;
@@ -573,6 +574,11 @@ QMap<QString, SatellitesStarlink> GestionnaireXml::LecturePreLaunchStarlink()
     QMap<QString, SatellitesStarlink> mapSatellitesStarlink;
 
     /* Initialisations */
+    if (!Configuration::instance()->mapVerrous().contains("starlink")) {
+        qWarning() << "Le fichier verrou ne contient pas de clause starlink";
+        throw Exception();
+    }
+
     const QString nomficXml = "pre-launch.xml";
     FichierXml fi(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
 
@@ -913,6 +919,60 @@ SatellitesFlashs GestionnaireXml::LectureStatutSatellitesFlashs(const QDomNode &
 
     /* Retour */
     return satelliteFlashs;
+}
+
+/*
+ * Lecture du fichier de verrous
+ */
+QMap<QString, QDate> GestionnaireXml::LectureVerrous()
+{
+    /* Declarations des variables locales */
+    QMap<QString, QDate> mapVerrous;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        FichierXml fi(Configuration::instance()->dirTmp() + QDir::separator() + "verrou.xml");
+
+        if (!fi.exists()) {
+
+            Telechargement tel(Configuration::instance()->dirTmp());
+            tel.TelechargementFichier(QUrl(QString("%1maj/verrou.xml").arg(DOMAIN_NAME)), false);
+        }
+
+        // Lecture du fichier
+        const QDomDocument document = fi.Ouverture(false);
+
+        const QDomElement root = document.firstChildElement();
+        if (root.nodeName() != "PreviSatVerrous") {
+            throw Exception();
+        }
+
+        const QDomNodeList elems = root.elementsByTagName("Verrou");
+
+        for(int i=0; i<elems.count(); i++) {
+
+            const QDomNode elem = elems.at(i);
+            if (!elem.isNull()) {
+
+                const QString fonction = elem.firstChildElement("Fonction").text();
+                const QDate dateExpiration = QDate::fromString(elem.firstChildElement("DateExpiration").text(), Qt::ISODate);
+                qInfo() << "Verrou" << fonction << dateExpiration.toString(Qt::ISODate);
+                mapVerrous.insert(fonction, dateExpiration);
+            }
+        }
+
+        if (fi.exists()) {
+            fi.remove();
+        }
+
+    } catch (Exception const &e) {
+    }
+
+    /* Retour */
+    return mapVerrous;
 }
 
 /*

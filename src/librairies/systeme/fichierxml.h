@@ -60,7 +60,7 @@ public:
      */
     /**
      * @brief FichierXml Constructeur par defaut
-     * @param fichierXml nom du fichier xml
+     * @param[in] fichierXml nom du fichier xml
      */
     explicit FichierXml(const QString &fichierXml);
 
@@ -70,7 +70,7 @@ public:
      */
     /**
      * @brief Ouverture Ouverture d'un fichier xml
-     * @param alarme affichage des messages d'erreur
+     * @param[in] alarme affichage des messages d'erreur
      * @return document xml
      * @throw Exception
      */

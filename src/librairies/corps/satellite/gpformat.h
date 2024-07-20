@@ -36,7 +36,7 @@
  * >    5 juin 2022
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    20 juillet 2024
  *
  */
 
@@ -138,7 +138,7 @@ private:
      */
     /**
      * @brief LectureElements Lecture des elements orbitaux
-     * @param sat noeud du fichier xml correspondant a un satellite
+     * @param[in] sat noeud du fichier xml correspondant a un satellite
      * @return elements orbitaux
      * @throw Exception
      */

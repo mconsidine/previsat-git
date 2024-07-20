@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 juillet 2024
+ * >    18 juillet 2024
  *
  */
 
@@ -68,6 +68,7 @@
 #include "onglets/antenne/antenne.h"
 #include "onglets/donnees/informationsiss.h"
 #include "onglets/donnees/informationslancements.h"
+#include "onglets/donnees/informationsrentrees.h"
 #include "onglets/donnees/informationssatellite.h"
 #include "onglets/donnees/recherchesatellite.h"
 #include "onglets/general/general.h"
@@ -155,6 +156,8 @@ PreviSat::~PreviSat()
     EFFACE_OBJET(_recherche);
     EFFACE_OBJET(_station);
     EFFACE_OBJET(_lancements);
+    EFFACE_OBJET(_rentrees);
+
     EFFACE_OBJET(_captureEcran);
     EFFACE_OBJET(_etapePrec);
     EFFACE_OBJET(_etapeSuiv);
@@ -764,6 +767,12 @@ void PreviSat::CreationRaccourcis()
     connect(_lancements, &QAction::triggered, this, &PreviSat::RaccourciLancements);
     this->addAction(_lancements);
 
+    // Raccourci Onglet Rentrees
+    _rentrees = new QAction(this);
+    _rentrees->setShortcut(Qt::ALT | Qt::Key_A);
+    connect(_rentrees, &QAction::triggered, this, &PreviSat::RaccourciRentrees);
+    this->addAction(_rentrees);
+
     // Raccourci Capture ecran
     _captureEcran = new QAction(this);
     _captureEcran->setShortcut(Qt::Key_F8);
@@ -1020,6 +1029,8 @@ void PreviSat::Initialisation()
     _recherche = nullptr;
     _station = nullptr;
     _lancements = nullptr;
+    _rentrees = nullptr;
+
     _captureEcran = nullptr;
     _etapePrec = nullptr;
     _etapeSuiv = nullptr;
@@ -2467,6 +2478,14 @@ void PreviSat::RaccourciLancements()
     _onglets->setIndexInformations(index);
 }
 
+void PreviSat::RaccourciRentrees()
+{
+    _onglets->setCurrentWidget(_onglets->ui()->informations);
+    _onglets->ui()->stackedWidget_informations->setCurrentWidget(_onglets->ui()->informationsRentrees);
+    const unsigned int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->informationsRentrees);
+    _onglets->setIndexInformations(index);
+}
+
 /*
  * Reinitialisation du calcul des evenements Soleil/Lune
  */
@@ -2483,6 +2502,7 @@ void PreviSat::TelechargementGroupesStarlink(const bool maj)
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const bool expiration = !Configuration::instance()->VerifieDateExpiration("starlink");
 
     /* Corps de la methode */
     try {
@@ -2493,23 +2513,19 @@ void PreviSat::TelechargementGroupesStarlink(const bool maj)
             throw Exception();
         }
 
-        // Telechargement du verrou Starlink
-        Telechargement tel1(Configuration::instance()->dirTmp());
-        tel1.TelechargementFichier(QString(DOMAIN_NAME) + "maj/verrouStarlink", false);
-
-        if (VerifieDateExpirationStarlink()) {
+        if (expiration) {
             throw Exception();
         }
 
         // Telechargement des informations generales des pre-launch Starlink
-        Telechargement tel2(Configuration::instance()->dirStarlink());
-        tel2.TelechargementFichier(QUrl(Configuration::instance()->adresseCelestrakSupplementalNorad() + "index.php"));
+        Telechargement tel1(Configuration::instance()->dirStarlink());
+        tel1.TelechargementFichier(QUrl(Configuration::instance()->adresseCelestrakSupplementalNorad() + "index.php"));
 
         // Telechargement du fichier d'elements orbitaux le plus a jour
-        tel2.TelechargementFichier(QUrl(Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg("starlink")));
+        tel1.TelechargementFichier(QUrl(Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg("starlink")));
 
         // Telechargement des trains Starlink connus
-        tel2.TelechargementFichier(QUrl(QString(DOMAIN_NAME) + "starlink/starlink.txt"));
+        tel1.TelechargementFichier(QUrl(QString(DOMAIN_NAME) + "starlink/starlink.txt"));
 
         // Lecture du fichier starlink.txt
         LectureGroupesStarlink();
@@ -2567,8 +2583,8 @@ void PreviSat::TelechargementGroupesStarlink(const bool maj)
 
                     // Telechargement du fichier d'elements orbitaux correspondant
                     const QUrl url(Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg(fichier));
-                    Telechargement tel3(Configuration::instance()->dirStarlink());
-                    tel3.TelechargementFichier(url);
+                    Telechargement tel2(Configuration::instance()->dirStarlink());
+                    tel2.TelechargementFichier(url);
                 }
 
                 // Ajout du groupe dans la liste
@@ -2605,7 +2621,7 @@ void PreviSat::TelechargementGroupesStarlink(const bool maj)
         if (Configuration::instance()->satellitesStarlink().isEmpty()) {
             _onglets->ui()->stackedWidget_previsions->removeWidget(_onglets->ui()->starlink);
 
-        } else if (!VerifieDateExpirationStarlink()) {
+        } else if (!expiration) {
             _onglets->starlink()->show();
         }
     }
@@ -2661,34 +2677,6 @@ void PreviSat::TempsReel()
     return;
 }
 
-/*
- * Verification de la date d'expiration Starlink
- */
-bool PreviSat::VerifieDateExpirationStarlink()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    bool res = false;
-
-    /* Corps de la methode */
-    QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + "verrouStarlink");
-    if (fi.exists() && (fi.size() != 0)) {
-
-        fi.open(QIODevice::ReadOnly | QIODevice::Text);
-        const QDate date = QDate::fromString(fi.readAll(), Qt::ISODate);
-        fi.close();
-
-        if (QDate::currentDate() >= date) {
-            Configuration::instance()->satellitesStarlink().clear();
-            res = true;
-        }
-    }
-
-    /* Retour */
-    return res;
-}
-
 void PreviSat::closeEvent(QCloseEvent *evt)
 {
     /* Declarations des variables locales */
@@ -2704,8 +2692,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
         const QDir di = QDir(Configuration::instance()->dirTmp());
         const QStringList listeFic = di.entryList(QDir::Files);
         foreach(const QString &fic, listeFic) {
-            if (!(_options->ui()->verifMAJ->isChecked() &&
-                  ((fic == "versionPreviSat") || (fic == "majFichiersInternes") || (fic == "verrouStarlink")))) {
+            if (!(_options->ui()->verifMAJ->isChecked() && ((fic == "versionPreviSat") || (fic == "majFichiersInternes")))) {
                 QFile fi(Configuration::instance()->dirTmp() + QDir::separator() + fic);
                 fi.remove();
             }

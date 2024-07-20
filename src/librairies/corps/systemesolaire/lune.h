@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 mai 2023
+ * >    20 juillet 2024
  *
  */
 
@@ -93,7 +93,7 @@ public:
 
     /**
      * @brief CalculPosVit Calcul de la position-vitesse du corps
-     * @param date date
+     * @param[in] date date
      */
     void CalculPosVit(const Date &date) override {
         CalculPositionSimp(date);

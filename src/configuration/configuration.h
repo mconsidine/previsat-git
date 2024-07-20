@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    10 juillet 2024
+ * >    18 juillet 2024
  *
  */
 
@@ -52,6 +52,7 @@
 #include "configurationconst.h"
 #include "evenementsstation.h"
 #include "frequencesradio.h"
+#include "rentreesatmospheriques.h"
 #include "satellitesflashs.h"
 #include "satellitesstarlink.h"
 #include "satellitetdrs.h"
@@ -120,6 +121,13 @@ public:
      * @brief InitListeFichiersElem Initialisation de la liste de fichiers d'elements orbitaux
      */
     void InitListeFichiersElem();
+
+    /**
+     * @brief VerifieDateExpiration Verification de la date d'expiration d'une fonctionnalite
+     * @param fonction nom de la fonctionnalite
+     * @return vrai si la fonctionnalite doit etre affichee dans l'interface
+     */
+    bool VerifieDateExpiration(const QString &fonction);
 
 
     /*
@@ -228,7 +236,9 @@ public:
     QMap<QString, ElementsOrbitaux> &mapElementsOrbitaux();
 
     EvenementsStation &evenementsStation();
+
     QList<CalendrierLancements> &calendrierLancements();
+    QList<RentreesAtmospheriques> &rentreesAtmospheriques();
 
     // Frequences radio des satellites
     const QMap<QString, QList<FrequenceRadio> > &mapFrequencesRadio() const;
@@ -254,6 +264,8 @@ public:
                                         const QString &fichier,
                                         const QString &lancement,
                                         const QString &deploiement);
+
+    QMap<QString, QDate> mapVerrous() const;
 
 
     /*
@@ -377,7 +389,9 @@ private:
     QString _nomFichierEvenementsStationSpatiale;
     QString _noradStationSpatiale;
     EvenementsStation _evenementsStation {};
+
     QList<CalendrierLancements> _calendrierLancements;
+    QList<RentreesAtmospheriques> _rentreesAtmospheriques;
 
     // Frequences radio des satellites
     QMap<QString, QList<FrequenceRadio> > _mapFrequencesRadio;
@@ -444,6 +458,8 @@ private:
     // Satellites Starlink
     QMap<QString, SatellitesStarlink> _satellitesStarlink;
     QMap<QString, QStringList> _groupesStarlink;
+
+    QMap<QString, QDate> _mapVerrous;
 
 
     /*

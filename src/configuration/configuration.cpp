@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    10 juillet 2024
+ * >    18 juillet 2024
  *
  */
 
@@ -40,6 +40,7 @@
 #include "evenementsstationspatiale.h"
 #include "gestionnairexml.h"
 #include "lancements.h"
+#include "rentrees.h"
 #include "librairies/exceptions/exception.h"
 #include "librairies/systeme/fichierxml.h"
 
@@ -104,8 +105,8 @@ void Configuration::Chargement()
         // Lecture du fichier NASA contenant les evenements de la Station Spatiale
         _evenementsStation = EvenementsStationSpatiale::LectureEvenementsStationSpatiale();
 
-        // Lecture du fichier contenant le calendrier des lancements
-        _calendrierLancements = Lancements::LectureCalendrierLancements();
+        // Lecture du fichier contenant les rentrees atmospheriques
+        _rentreesAtmospheriques = Rentrees::LectureFichierRentrees();
 
         // Ouverture de la base de donnees satellites
         OuvertureBaseDonneesSatellites();
@@ -134,6 +135,12 @@ void Configuration::Chargement()
         _mapAdressesTelechargement.insert(TypeTelechargement::COORDONNEES, httpDir + "coordinates/");
         _mapAdressesTelechargement.insert(TypeTelechargement::CARTES, httpDir + "map/");
         _mapAdressesTelechargement.insert(TypeTelechargement::NOTIFICATIONS, httpDir + "sound/");
+
+        // Lecture du fichier de verrous
+        _mapVerrous = GestionnaireXml::LectureVerrous();
+
+        // Lecture du fichier contenant le calendrier des lancements
+        _calendrierLancements = Lancements::LectureCalendrierLancements();
 
         // Lecture du fichier Pre-Launch Starlink
         _satellitesStarlink = GestionnaireXml::LecturePreLaunchStarlink();
@@ -344,6 +351,25 @@ void Configuration::InitListeFichiersElem()
 
     /* Retour */
     return;
+}
+
+/*
+ * Verification de la date d'expiration d'une fonctionnalite
+ */
+bool Configuration::VerifieDateExpiration(const QString &fonction)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    bool res = false;
+
+    /* Corps de la methode */
+    if (_mapVerrous.contains(fonction)) {
+        res = (QDate::currentDate() < _mapVerrous[fonction]);
+    }
+
+    /* Retour */
+    return res;
 }
 
 
@@ -685,6 +711,11 @@ QList<CalendrierLancements> &Configuration::calendrierLancements()
     return _calendrierLancements;
 }
 
+QList<RentreesAtmospheriques> &Configuration::rentreesAtmospheriques()
+{
+    return _rentreesAtmospheriques;
+}
+
 const QMap<QString, QList<FrequenceRadio> > &Configuration::mapFrequencesRadio() const
 {
     return _mapFrequencesRadio;
@@ -754,6 +785,11 @@ void Configuration::AjoutDonneesSatellitesStarlink(const QString &groupe,
     if (!_satellitesStarlink.keys().contains(groupe)) {
         _satellitesStarlink.insert(groupe, { fichier, lancement, deploiement });
     }
+}
+
+QMap<QString, QDate> Configuration::mapVerrous() const
+{
+    return _mapVerrous;
 }
 
 
@@ -1186,7 +1222,7 @@ void Configuration::VerificationArborescences()
         }
 
         const QStringList listeFics(QStringList ()
-                                    << _dirCommonData + QDir::separator() + "donnees.bin"
+                                    << _dirCommonData + QDir::separator() + "satellites.db"
                                     << _dirCommonData + QDir::separator() + _nomFichierEvenementsStationSpatiale
                                     << _dirCommonData + QDir::separator() + "radio.xml"
                                     << _dirCommonData + QDir::separator() + "taiutc.dat");
@@ -1263,7 +1299,7 @@ void Configuration::VerificationArborescences()
 
         // Fichiers du repertoire data local
         const QString repHtm = QString("html") + QDir::separator();
-        _listeFicLocalData << "donnees.bin" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html" << repHtm + "resultat.map"
+        _listeFicLocalData << "satellites.db" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html" << repHtm + "resultat.map"
                            << QString("preferences") + QDir::separator() + "defaut" << "taiutc.dat";
 
         VerifieFichiersData(_dirLocalData, _listeFicLocalData);

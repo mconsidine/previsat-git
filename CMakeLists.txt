@@ -40,8 +40,8 @@ cmake_minimum_required(VERSION 3.24)
 
 #----------------------------------
 set(VERSION 7.0.0.0)
-set(QT_PREFERRED_VERSION 6.7.2)
 set(ANNEES_DEV 2005-2024)
+set(QT_PREFERRED_VERSION 6.7.2)
 
 if(NOT DEFINED PORTABLE_BUILD)
     set(PORTABLE_BUILD false)

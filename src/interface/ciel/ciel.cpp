@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    26 decembre 2023
+ * >    20 juillet 2024
  *
  */
 
@@ -171,7 +171,11 @@ void Ciel::show(const Observateur &observateur,
 
     QWidget::show();
 
-    if (!_labelHeure) {
+    if (_labelHeure) {
+
+        setGeometry(20, 0, 580, 532);
+
+    } else {
         _ui->vueCiel->setGeometry(_ui->vueCiel->x(), _ui->vueCiel->y(), parentWidget()->height()-32, parentWidget()->height()-32);
         setGeometry((parentWidget()->width() - width() - _ui->est->width()) / 2, 0, _ui->vueCiel->width() + 2 * _ui->est->width(),
                     parentWidget()->height());
@@ -192,9 +196,9 @@ void Ciel::show(const Observateur &observateur,
     /* Corps de la methode */
     // Affichage de la carte du ciel
     if (_labelHeure) {
-        _lciel = 260;
-        _hciel = 260;
-        rectangle = QRect(2, 2, 516, 516);
+        _lciel = 248;
+        _hciel = 248;
+        rectangle = QRect(2, 2, 496, 496);
     } else {
         _lciel = _ui->vueCiel->width() / 2;
         _hciel = _ui->vueCiel->width() / 2;
@@ -231,8 +235,8 @@ void Ciel::show(const Observateur &observateur,
     AffichageSatellites(dateDeb, dateMax, dateFin, maxFlash);
 
     if (_labelHeure) {
-        scene->addEllipse(-20, -20, 560, 560, QPen(QBrush(palette().window().color()), 44));
-        scene->addEllipse(1, 1, 517, 517, QPen(QBrush(Qt::gray), 3));
+        scene->addEllipse(-20, -20, 540, 540, QPen(QBrush(palette().window().color()), 44));
+        scene->addEllipse(1, 1, 497, 497, QPen(QBrush(Qt::gray), 3));
     } else {
         scene->addEllipse(-30, -30, _ui->vueCiel->width() + 60, _ui->vueCiel->height() + 60, QPen(QBrush(palette().window().color()), 64));
         scene->addEllipse(1, 1, _ui->vueCiel->width() - 3, _ui->vueCiel->height() - 3, QPen(QBrush(Qt::gray), 3));

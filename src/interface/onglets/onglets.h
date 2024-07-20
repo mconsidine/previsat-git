@@ -36,7 +36,7 @@
  * >    25 fevrier 2023
  *
  * Date de revision
- * >    10 juillet 2024
+ * >    18 juillet 2024
  *
  */
 
@@ -57,6 +57,7 @@ class InformationsSatellite;
 class RechercheSatellite;
 class InformationsISS;
 class InformationsLancements;
+class InformationsRentrees;
 
 class CalculsPrevisions;
 class CalculsFlashs;
@@ -104,6 +105,7 @@ public:
     InformationsISS *informationsISS() const;
     RechercheSatellite *rechercheSatellite() const;
     InformationsLancements *informationsLancements() const;
+    InformationsRentrees *informationsRentrees() const;
 
     CalculsPrevisions *previsions() const;
     CalculsFlashs *flashs() const;
@@ -179,6 +181,7 @@ private:
     RechercheSatellite *_rechercheSatellite;
     InformationsISS *_informationsISS;
     InformationsLancements *_informationsLancements;
+    InformationsRentrees *_informationsRentrees;
 
     CalculsPrevisions *_previsions;
     CalculsFlashs *_flashs;
@@ -191,6 +194,9 @@ private:
 #endif
     Antenne *_antenne;
     bool _info;
+    bool _isLancements;
+    bool _isRentrees;
+    bool _isStarlink;
 
 
     /*

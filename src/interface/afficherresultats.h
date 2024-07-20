@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 juin 2023
+ * >    20 juillet 2024
  *
  */
 
@@ -83,9 +83,12 @@ public:
      * @param[in] zoom niveau de zoom pour les maps
      * @param[in] parent fenetre parent
      */
-    AfficherResultats(const TypeCalcul &typeCalcul, const ConditionsPrevisions &conditions, const DonneesPrevisions &donnees,
-             const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats, const int zoom = 9,
-             QWidget *parent = nullptr);
+    AfficherResultats(const TypeCalcul &typeCalcul,
+                      const ConditionsPrevisions &conditions,
+                      const DonneesPrevisions &donnees,
+                      const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats,
+                      const int zoom = 9,
+                      QWidget *parent = nullptr);
 
 
     /*

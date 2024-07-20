@@ -36,7 +36,7 @@
 
 #include <QString>
 #include "message.h"
-#include "Exception.h"
+#include "exception.h"
 
 
 /**********

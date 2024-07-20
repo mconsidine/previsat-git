@@ -36,7 +36,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    29 octobre 2023
+ * >    18 juillet 2024
  *
  */
 
@@ -52,6 +52,8 @@
 #include "satellitesstarlink.h"
 #include "satellitetdrs.h"
 
+
+class QDate;
 class QDomNode;
 class QString;
 class QXmlStreamWriter;
@@ -119,16 +121,16 @@ private:
      */
     /**
      * @brief EcritureCategoriesElementsOrbitaux Ecriture des categories d'elements orbitaux
-     * @param listeCategorie Liste des categories d'elements orbitaux
-     * @param cfg structure du fichier xml
+     * @param[in] listeCategorie Liste des categories d'elements orbitaux
+     * @param[in] cfg structure du fichier xml
      */
     static void EcritureCategoriesElementsOrbitaux(const QList<CategorieElementsOrbitaux> &listeCategorie,
                                                    QXmlStreamWriter &cfg);
 
     /**
      * @brief LectureCategoriesElementsOrbitaux Lecture des categories d'elements orbitaux
-     * @param serveur nom du serveur
-     * @param categorieMajElem categories d'elements orbitaux a mettre a jour
+     * @param[in] serveur nom du serveur
+     * @param[out] categorieMajElem categories d'elements orbitaux a mettre a jour
      * @return categories d'elements orbitaux
      */
     static QList<CategorieElementsOrbitaux> LectureCategoriesElementsOrbitaux(const QDomNode &serveur,
@@ -160,7 +162,7 @@ private:
 
     /**
      * @brief LectureLieuxObservation Lecture de la structure de lieux d'observations
-     * @param obs noeud du fichier xml correspondant a un observateur
+     * @param[in] obs noeud du fichier xml correspondant a un observateur
      * @return lieux d'observation
      */
     static QList<Observateur> LectureLieuxObservation(const QDomNode &obs);
@@ -188,7 +190,7 @@ private:
 
     /**
      * @brief LectureSatellitesFrequences Lecture des structures des frequences radio
-     * @param sat structure pour chaque satellite
+     * @param[in] sat structure pour chaque satellite
      * @return liste des frequences radio
      */
     static QList<FrequenceRadio> LectureSatellitesFrequences(const QDomNode &sat);
@@ -215,15 +217,21 @@ private:
 
     /**
      * @brief LectureStatutSatellitesFlashs Lecture des statuts des satellites produisant des flashs
-     * @param sat noeud du fichier xml correspondant a un satellite
+     * @param[in] sat noeud du fichier xml correspondant a un satellite
      * @return statut des satellites produisant des flashs
      */
     static SatellitesFlashs LectureStatutSatellitesFlashs(const QDomNode &sat);
 
     /**
+     * @brief LectureVerrous Lecture du fichier de verrous
+     * @return map contenant les dates d'expiration des fonctionnalites
+     */
+    static QMap<QString, QDate> LectureVerrous();
+
+    /**
      * @brief VerifieVersionXml Verification du numero de version du fichier xml
-     * @param nomfic nom du fichier
-     * @param msg message
+     * @param[in] nomfic nom du fichier
+     * @param[in] msg message
      */
     static void VerifieVersionXml(const QString &nomfic, const QString &msg = QString());
 

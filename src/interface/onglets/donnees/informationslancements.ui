@@ -99,7 +99,7 @@
    </column>
    <column>
     <property name="text">
-     <string>Commentaire</string>
+     <string>Détails</string>
     </property>
     <property name="font">
      <font>

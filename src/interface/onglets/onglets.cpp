@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    10 juillet 2024
+ * >    18 juillet 2024
  *
  */
 
@@ -49,6 +49,7 @@
 #include "donnees/informationsiss.h"
 #include "donnees/informationssatellite.h"
 #include "donnees/informationslancements.h"
+#include "donnees/informationsrentrees.h"
 #include "donnees/recherchesatellite.h"
 #include "previsions/calculsevenementsorbitaux.h"
 #include "previsions/calculsflashs.h"
@@ -66,6 +67,14 @@ static QSettings settings(QString("%1.ini").arg(APP_NAME), QSettings::IniFormat)
 #else
 static QSettings settings(ORG_NAME, APP_NAME);
 #endif
+
+static const char* _titresInformations[] = {
+    QT_TRANSLATE_NOOP("Onglets", "Informations satellite"),
+    QT_TRANSLATE_NOOP("Onglets", "Recherche données"),
+    QT_TRANSLATE_NOOP("Onglets", "Informations ISS"),
+    QT_TRANSLATE_NOOP("Onglets", "Lancements"),
+    QT_TRANSLATE_NOOP("Onglets", "Rentrées")
+};
 
 static const char* _titresPrevisions[] = {
     QT_TRANSLATE_NOOP("Onglets", "Prévisions"),
@@ -103,6 +112,7 @@ Onglets::Onglets(QWidget *parent) :
         _rechercheSatellite = nullptr;
         _informationsISS = nullptr;
         _informationsLancements = nullptr;
+        _informationsRentrees = nullptr;
 
         _previsions = nullptr;
         _flashs = nullptr;
@@ -135,6 +145,7 @@ Onglets::~Onglets()
     EFFACE_OBJET(_rechercheSatellite);
     EFFACE_OBJET(_informationsISS);
     EFFACE_OBJET(_informationsLancements);
+    EFFACE_OBJET(_informationsRentrees);
     EFFACE_OBJET(_previsions);
     EFFACE_OBJET(_flashs);
     EFFACE_OBJET(_transits);
@@ -187,6 +198,11 @@ RechercheSatellite *Onglets::rechercheSatellite() const
 InformationsLancements *Onglets::informationsLancements() const
 {
     return _informationsLancements;
+}
+
+InformationsRentrees *Onglets::informationsRentrees() const
+{
+    return _informationsRentrees;
 }
 
 CalculsPrevisions *Onglets::previsions() const
@@ -276,15 +292,13 @@ void Onglets::show(const Date &date)
 
     if (Configuration::instance()->listeSatellites().isEmpty()) {
 
-        removeTab(indexOf(_ui->elementsOsculateurs));
+        setTabVisible(indexOf(_ui->elementsOsculateurs), false);
         _ui->stackedWidget_informations->removeWidget(_ui->informationsSat);
 
     } else {
 
         // Affichage des donnees de l'onglet Elements osculateurs
-        if (indexOf(_ui->elementsOsculateurs) == -1) {
-            insertTab(1, _ui->elementsOsculateurs, tr("Éléments osculateurs"));
-        }
+        setTabVisible(indexOf(_ui->elementsOsculateurs), true);
 
         if (_ui->stackedWidget_informations->indexOf(_ui->informationsSat) == -1) {
             _ui->stackedWidget_informations->insertWidget(0, _ui->informationsSat);
@@ -299,7 +313,15 @@ void Onglets::show(const Date &date)
             _informationsSatellite->show(Configuration::instance()->listeSatellites().first());
             _rechercheSatellite->on_noradDonneesSat_valueChanged(Configuration::instance()->noradDefaut().toInt());
             _informationsISS->show();
-            _informationsLancements->show();
+
+            if (_isLancements) {
+                _informationsLancements->show();
+            }
+
+            if (_isRentrees) {
+                _informationsRentrees->show();
+            }
+
             _antenne->InitAffichageFrequences();
             _info = false;
         }
@@ -349,15 +371,23 @@ void Onglets::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
 
+        // Titre de l'onglet Informations
+        setTabText(indexOf(_ui->informations), QCoreApplication::translate("Onglets", _titresInformations[_indexInformations]));
+
+        const int idxInfoPrec = (_indexInformations + _ui->stackedWidget_informations->count() - 1) % _ui->stackedWidget_informations->count();
+        const int idxInfoSuiv = (_indexInformations + 1) % _ui->stackedWidget_informations->count();
+
+        _ui->infoPrec->setToolTip(QCoreApplication::translate("Onglets", _titresInformations[idxInfoPrec]));
+        _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresInformations[idxInfoSuiv]));
+
         // Titre de l'onglet Previsions
         setTabText(indexOf(_ui->previsions), QCoreApplication::translate("Onglets", _titresPrevisions[_indexPrevisions]));
 
-        _ui->previsionPrec->setToolTip(
-                    QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)
-                    % _ui->stackedWidget_previsions->count()]));
+        const int idxPrevPrec = (_indexPrevisions + _ui->stackedWidget_previsions->count() - 1) % _ui->stackedWidget_previsions->count();
+        const int idxPrevSuiv = (_indexPrevisions + 1) % _ui->stackedWidget_previsions->count();
 
-        _ui->previsionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + 1) %
-                                       _ui->stackedWidget_previsions->count()]));
+        _ui->previsionPrec->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[idxPrevPrec]));
+        _ui->previsionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[idxPrevSuiv]));
     }
 }
 
@@ -394,42 +424,15 @@ void Onglets::AffichageOngletInformations()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const bool isInfo = (_ui->stackedWidget_informations->indexOf(_ui->informationsSat) != -1);
+    _indexInformations = _ui->stackedWidget_informations->currentIndex();
 
     /* Corps de la methode */
-    if (isInfo) {
+    const int idxPrec = (_indexInformations + _ui->stackedWidget_informations->count() - 1) % _ui->stackedWidget_informations->count();
+    const int idxSuiv = (_indexInformations + 1) % _ui->stackedWidget_informations->count();
 
-        if (_ui->informations->isVisible()) {
-
-            setTabText(indexOf(_ui->informations), tr("Informations satellite"));
-
-            _ui->infoPrec->setToolTip(tr("Lancements"));
-            _ui->infoSuiv->setToolTip(tr("Recherche données"));
-        }
-    } else {
-        setTabText(indexOf(_ui->informations), tr("Recherche données"));
-    }
-
-    if (_ui->rechercheSat->isVisible()) {
-
-        setTabText(indexOf(_ui->informations), tr("Recherche données"));
-        _ui->infoPrec->setToolTip((isInfo) ? tr("Informations satellite") : tr("Lancements"));
-        _ui->infoSuiv->setToolTip(tr("Informations ISS"));
-    }
-
-    if (_ui->informationsStationSpatiale->isVisible()) {
-
-        setTabText(indexOf(_ui->informations), tr("Informations ISS"));
-        _ui->infoPrec->setToolTip(tr("Recherche données"));
-        _ui->infoSuiv->setToolTip(tr("Lancements"));
-    }
-
-    if (_ui->informationsLancements->isVisible()) {
-
-        setTabText(indexOf(_ui->informations), tr("Lancements"));
-        _ui->infoPrec->setToolTip(tr("Informations ISS"));
-        _ui->infoSuiv->setToolTip((isInfo) ? tr("Informations satellite") : tr("Recherche données"));
-    }
+    setTabText(indexOf(_ui->informations), QCoreApplication::translate("Onglets", _titresInformations[_indexInformations]));
+    _ui->infoPrec->setToolTip(QCoreApplication::translate("Onglets", _titresInformations[idxPrec]));
+    _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresInformations[idxSuiv]));
 
     /* Retour */
     return;
@@ -449,6 +452,13 @@ void Onglets::Initialisation()
 
     _indexInformations = settings.value("affichage/indexInformations", 0).toUInt();
     _indexPrevisions = settings.value("affichage/indexPrevisions", 0).toUInt();
+    _isLancements = Configuration::instance()->VerifieDateExpiration("lancements");
+    _isRentrees = Configuration::instance()->VerifieDateExpiration("rentrees");
+    _isStarlink = Configuration::instance()->VerifieDateExpiration("starlink");
+
+    for(int i=0; i<_ui->stackedWidget_informations->count(); i++) {
+        _ui->stackedWidget_informations->widget(i)->setWindowTitle(_titresInformations[i]);
+    }
 
     setCurrentIndex(0);
     setStyleSheet("QTabWidget::pane { border: 5px solid #eeeeee; }");
@@ -461,19 +471,37 @@ void Onglets::Initialisation()
     // Donnees satellite
     _informationsSatellite = new InformationsSatellite(_ui->informationsSat);
 
+    // Recherche satellite
     _rechercheSatellite = new RechercheSatellite(_ui->rechercheSat);
     _rechercheSatellite->show();
 
+    // Informations station spatiale
     _informationsISS = new InformationsISS(_ui->informationsStationSpatiale);
     _informationsISS->show();
 
-    _informationsLancements = new InformationsLancements(_ui->informationsLancements);
-    _informationsLancements->show();
+    // Informations sur les lancements
+    if (_isLancements) {
+        _informationsLancements = new InformationsLancements(_ui->informationsLancements);
+        _informationsLancements->show();
+    } else {
+        _ui->stackedWidget_informations->removeWidget(_ui->informationsLancements);
+    }
+
+    // Informations sur les rentrees atmospheriques
+    if (_isRentrees) {
+        _informationsRentrees = new InformationsRentrees(_ui->informationsRentrees);
+        _informationsRentrees->show();
+    } else {
+        _ui->stackedWidget_informations->removeWidget(_ui->informationsRentrees);
+    }
 
     // Calculs de previsions
     _previsions = new CalculsPrevisions(_ui->prevision);
     _transits = new CalculsTransits(_ui->transits);
-    _starlink = new CalculsStarlink(_ui->starlink);
+    if (_isStarlink) {
+        _starlink = new CalculsStarlink(_ui->starlink);
+    }
+
     _evenements = new CalculsEvenementsOrbitaux(_ui->evenementsOrbitaux);
 
 #if defined (Q_OS_WIN)
@@ -501,11 +529,17 @@ void Onglets::Initialisation()
     _ui->stackedWidget_informations->setCurrentIndex(_indexInformations);
     _ui->stackedWidget_previsions->setCurrentIndex(_indexPrevisions);
 
-    _ui->previsionPrec->setToolTip(
-                QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + _ui->stackedWidget_previsions->count() - 1)
-                % _ui->stackedWidget_previsions->count()]));
-    _ui->previsionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[(_indexPrevisions + 1) %
-                                   _ui->stackedWidget_previsions->count()]));
+    const int idxInfoPrec = (_indexInformations + _ui->stackedWidget_informations->count() - 1) % _ui->stackedWidget_informations->count();
+    const int idxInfoSuiv = (_indexInformations + 1) % _ui->stackedWidget_informations->count();
+
+    _ui->infoPrec->setToolTip(QCoreApplication::translate("Onglets", _titresInformations[idxInfoPrec]));
+    _ui->infoSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresInformations[idxInfoSuiv]));
+
+    const int idxPrevPrec = (_indexPrevisions + _ui->stackedWidget_previsions->count() - 1) % _ui->stackedWidget_previsions->count();
+    const int idxPrevSuiv = (_indexPrevisions + 1) % _ui->stackedWidget_previsions->count();
+
+    _ui->previsionPrec->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[idxPrevPrec]));
+    _ui->previsionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[idxPrevSuiv]));
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
 

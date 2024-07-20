@@ -36,7 +36,7 @@
  * >    20 novembre 2019
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    20 juillet 2024
  *
  */
 
@@ -179,8 +179,8 @@ private:
      */
     /**
      * @brief Requete Requete generique dans la base de donnees
-     * @param db base de donnees
-     * @param requete requete
+     * @param[in] db base de donnees
+     * @param[in] requete requete
      * @return Liste des donnees satellites
      */
     static QList<Donnees> Requete(const QSqlDatabase &db, const QString &requete);

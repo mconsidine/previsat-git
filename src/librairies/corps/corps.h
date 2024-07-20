@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 mars 2023
+ * >    20 juillet 2024
  *
  */
 
@@ -148,7 +148,7 @@ public:
 
     /**
      * @brief CalculPosVit Calcul de la position-vitesse du corps
-     * @param date date
+     * @param[in] date date
      */
     virtual void CalculPosVit(const Date &date) {
         Q_UNUSED(date)
@@ -179,7 +179,7 @@ public:
 
     /**
      * @brief Initialisation Initialisation des elements relatifs aux corps (satellites, systeme solaire, etc.)
-     * @param dirCommonData repertoire ou se trouve le fichier constellations.dat
+     * @param[in] dirCommonData repertoire ou se trouve le fichier constellations.dat
      * @throw Exception
      */
     static void Initialisation(const QString &dirCommonData);

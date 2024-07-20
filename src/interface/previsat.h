@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    10 juillet 2024
+ * >    18 juillet 2024
  *
  */
 
@@ -177,6 +177,7 @@ private:
     QAction *_informationsSatellite;
     QAction *_recherche;
     QAction *_lancements;
+    QAction *_rentrees;
     QAction *_station;
     QAction *_captureEcran;
     QAction *_etapePrec;
@@ -407,6 +408,7 @@ private slots:
     void RaccourciRecherche();
     void RaccourciStation();
     void RaccourciLancements();
+    void RaccourciRentrees();
 
     /**
      * @brief ReinitCalculEvenementsSoleilLune Reinitialisation du calcul des evenements Soleil/Lune
@@ -415,7 +417,7 @@ private slots:
 
     /**
      * @brief TelechargementGroupesStarlink Telechargement des groupes Starlink
-     * @param maj mise a jour
+     * @param[in] maj mise a jour
      */
     void TelechargementGroupesStarlink(const bool maj);
 
@@ -423,12 +425,6 @@ private slots:
      * @brief TempsReel Affichage en temps reel
      */
     void TempsReel();
-
-    /**
-     * @brief VerifieDateVerrouStarlink Verification de la date d'expiration Starlink
-     * @return vrai si la date est expiree
-     */
-    bool VerifieDateExpirationStarlink();
 
     void closeEvent(QCloseEvent *evt);
     bool eventFilter(QObject *watched, QEvent *event);

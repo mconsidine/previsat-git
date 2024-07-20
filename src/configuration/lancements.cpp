@@ -62,6 +62,11 @@ QList<CalendrierLancements> Lancements::LectureCalendrierLancements()
     QList<CalendrierLancements> calendrierLancements;
 
     /* Initialisations */
+    if (!Configuration::instance()->mapVerrous().contains("lancements")) {
+        qWarning() << "Le fichier verrou ne contient pas de clause lancements";
+        throw Exception();
+    }
+
     QFile fi(Configuration::instance()->dirLocalData() + QDir::separator() + "lancements.txt");
     const QFileInfo ff(fi.fileName());
 
@@ -69,12 +74,13 @@ QList<CalendrierLancements> Lancements::LectureCalendrierLancements()
 
         // Telechargement du fichier
         Telechargement tel(Configuration::instance()->dirLocalData());
-        tel.TelechargementFichier(QUrl(QString("%1data/lancements.txt").arg(DOMAIN_NAME)));
+        tel.TelechargementFichier(QUrl(QString("%1data/lancements.txt").arg(DOMAIN_NAME)), false);
     }
 
     /* Corps de la methode */
     if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 #if (!COVERAGE_TEST)
+        qWarning() << QString("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName());
         throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::WARNING);
 #endif
     }

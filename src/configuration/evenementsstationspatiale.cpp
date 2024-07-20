@@ -82,7 +82,6 @@ EvenementsStation EvenementsStationSpatiale::LectureEvenementsStationSpatiale()
         QString val;
         const QDomDocument document = fi.Ouverture(false);
 
-        /* Corps de la methode */
         const QDomElement root = document.firstChildElement();
         if (root.nodeName() != "ndm") {
             throw Exception();

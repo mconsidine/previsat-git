@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    25 novembre 2023
+ * >    20 juillet 2024
  *
  */
 
@@ -73,8 +73,12 @@ QList<Constellation> constellations;
 /*
  * Constructeurs
  */
-AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul, const ConditionsPrevisions &conditions, const DonneesPrevisions &donnees,
-                                     const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats, const int zoom, QWidget *parent) :
+AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul,
+                                     const ConditionsPrevisions &conditions,
+                                     const DonneesPrevisions &donnees,
+                                     const QMap<QString, QList<QList<ResultatPrevisions> > > &resultats,
+                                     const int zoom,
+                                     QWidget *parent) :
     QMainWindow(parent),
     _ui(new Ui::AfficherResultats),
     _resultats(resultats),
@@ -230,6 +234,7 @@ AfficherResultats::~AfficherResultats()
     EFFACE_OBJET(_tableDetail);
     EFFACE_OBJET(_afficherDetail);
     EFFACE_OBJET(scene);
+
     delete _ui;
 }
 
@@ -1179,11 +1184,7 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
         int m = 0;
         const QList<ResultatPrevisions> list = _ui->resultatsPrevisions->item(item->row(), 0)->data(Qt::UserRole).value<QList<ResultatPrevisions> > ();
 
-        if (_tableDetail != nullptr) {
-            delete _tableDetail;
-            _tableDetail = nullptr;
-        }
-
+        EFFACE_OBJET(_tableDetail);
         _tableDetail = new QTableWidget;
 
         switch (_typeCalcul) {
@@ -1361,11 +1362,7 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
         _tableDetail->setSelectionBehavior(QTableWidget::SelectRows);
         _tableDetail->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
-        if (_afficherDetail != nullptr) {
-            delete _afficherDetail;
-            _afficherDetail = nullptr;
-        }
-
+        EFFACE_OBJET(_afficherDetail)
         _afficherDetail = new QMainWindow;
         _afficherDetail->setStyleSheet("QHeaderView::section {" \
                                        "background-color:rgb(235, 235, 235);" \
@@ -1762,12 +1759,8 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
     satellites.append(sat);
 
     // Chargement du ciel
-    if (_ciel != nullptr) {
-        delete _ciel;
-        _ciel = nullptr;
-    }
+    EFFACE_OBJET(_ciel);
     _ciel = new Ciel(_ui->frameCiel);
-    _ciel->resize(_ui->frameCiel->width(), _ui->frameCiel->width() - 50);
 
     // Affichage de la carte du ciel
     _ciel->show(observateur,
