@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    20 juillet 2024
+ * >    22 juillet 2024
  *
  */
 
@@ -687,6 +687,7 @@ void Ciel::AffichageConstellations(const QList<LigneConstellation> &lignesCst, c
                         txtCst->setBrush(QBrush(Qt::darkYellow));
                         txtCst->setPos(xncst, yncst);
                         txtCst->setFont(QFont(font().family(), 8));
+                        txtCst->setToolTip(Configuration::instance()->mapNomsConstellations()[cst.nom()][Configuration::instance()->locale()]);
                         scene->addItem(txtCst);
                     }
                 }

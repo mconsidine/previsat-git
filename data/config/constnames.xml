@@ -1,0 +1,1249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreviSatConstellations version="1.0">
+    <Constellation>
+        <Acronyme>And</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Andromède</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Andromeda</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>アンドロメダ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Ant</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Machine Pneumatique</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Air Pump</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ポンプ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Aps</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Oiseau de Paradis</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Bird of Paradise</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ふうちょう座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Aqr</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Verseau</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Aquarius</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>みずがめ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Aql</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Aigle</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Eagle</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>わし座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Ara</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Autel</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Altar</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>さいだん座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Ari</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Bélier</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Ram</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>おひつじ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Aur</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Cocher</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Charioteer</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ぎょしゃ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Boo</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Bouvier</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Herdsman</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>うしかい座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Cae</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Burin</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Graving tool</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ちょうこくぐ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Cam</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Girafe</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Giraffe</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>きりん座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Cnc</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Cancer</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Crab</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>かに座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>CVn</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Chiens de Chasse</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Hunting Dogs</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>りょうけん座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>CMa</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Grand Chien</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Great Dog</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>おおいぬ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>CMi</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Petit Chien</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Little Dog</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>こいぬ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Cap</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Capricorne</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Capricorn</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>やぎ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Car</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Carène</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Keel</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>りゅうこつ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Cas</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Cassiopée</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Cassiopeia</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>カシオペヤ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Cen</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Centaure</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Centaur</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ケンタウルス座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Cep</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Céphée</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Cepheus</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ケフェウス座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Cet</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Baleine</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Whale</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>くじら座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Cha</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Caméléon</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Chamaeleon</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>カメレオン座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Cir</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Compas</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Compass</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>コンパス座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Col</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Colombe</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Dove</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>はと座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Com</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Chevelure de Bérénice</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Berenice's Hair</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>かみのけ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>CrA</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Couronne Australe</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Southern Crown</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>みなみのかんむり座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>CrB</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Couronne Boréale</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Northern Crown</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>かんむり座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Crv</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Corbeau</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Crow</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>からす座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Crt</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Coupe</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Cup</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>コップ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Cru</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Croix du Sud</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Cross</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>みなみじゅうじ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Cyg</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Cygne</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Swan</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>はくちょう座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Del</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Dauphin</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Dolphin</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>いるか座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Dor</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Dorade</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Goldfish</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>かじき座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Dra</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Dragon</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Dragon</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>りゅう座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Equ</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Petit Cheval</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Colt</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>こうま座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Eri</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Eridan</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Eridanus</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>エリダヌス座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>For</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Fourneau</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Furnace</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ろ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Gem</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Gémeaux</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Twins</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ふたご座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Gru</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Grue</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Crane</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>つる座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Her</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Hercule</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Hercules</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ヘルクレス座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Hor</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Horloge</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Clock</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>とけい座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Hya</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Hydre Femelle</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Sea Serpent</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>うみへび座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Hyi</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Hydre Mâle</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Hydrus</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>みずへび座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Ind</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Indien</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Indian</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>インディアン座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Lac</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Lézard</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Lizard</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>とかげ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Leo</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Lion</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Lion</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>しし座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>LMi</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Petit Lion</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Little Lion</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>こじし座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Lep</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Lièvre</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Hare</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>うさぎ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Lib</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Balance</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Balance</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>てんびん座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Lup</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Loup</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Wolf</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>おおかみ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Lyn</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Lynx</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Lynx</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>やまねこ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Lyr</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Lyre</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Lyre</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>こと座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Men</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Table</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Mensa</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>テーブルさん座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Mic</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Microscope</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Microscope</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>けんびきょう座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Mon</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Licorne</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Unicorn</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>いっかくじゅう座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Mus</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Mouche</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Fly</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>はえ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Nor</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Règle</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Level</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>じょうぎ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Oct</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Octant</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Octant</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>はちぶんぎ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Oph</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Ophiuchus</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Ophiuchus</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>へびつかい座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Ori</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Orion</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Orion</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>オリオン座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Pav</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Paon</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Peacock</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>くじゃく座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Peg</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Pégase</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Flying Horse</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ペガスス座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Per</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Persée</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Perseus</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ペルセウス座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Phe</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Phénix</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Phoenix</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ほうおう座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Pic</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Peintre</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Painter</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>がか座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Psc</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Poissons</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Fishes</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>うお座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>PsA</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Poisson Austral</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Southern Fish</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>みなみのうお座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Pup</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Poupe</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Poop Deck</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>とも座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Pyx</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Boussole</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Compass</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>らしんばん座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Ret</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Réticule</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Net</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>レチクル座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Sge</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Flèche</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Arrow</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>や座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Sgr</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Sagittaire</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Archer</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>いて座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Sco</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Scorpion</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Scorpion</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>さそり座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Scl</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Sculpteur</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Sculptor</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ちょうこくしつ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Sct</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Écu de Sobieski</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Shield</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>たて座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Ser</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Serpent</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Serpent</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>へび座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Ser</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Serpent</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Serpent</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>へび座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Sex</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Sextant</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Sextant</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ろくぶんぎ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Tau</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Taureau</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Bull</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>おうし座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Tel</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Télescope</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Telescope</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ぼうえんきょう座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Tri</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Triangle</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Triangle</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>さんかく座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>TrA</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Triangle Austral</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Southern Triangle</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>みなみのさんかく座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Tuc</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Toucan</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Toucan</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>きょしちょう座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>UMa</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Grande Ourse</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Great Bear</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>おおぐま座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>UMi</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Petite Ourse</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Little Bear</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>こぐま座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Vel</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Voiles</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Sails</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>ほ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Vir</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Vierge</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Virgin</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>おとめ座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Vol</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Poisson Volant</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Flying Fish</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>とびうお座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+    <Constellation>
+        <Acronyme>Vul</Acronyme>
+        <Denomination>
+            <Langue lang="fr">
+                <Nom>Petit Renard</Nom>
+            </Langue>
+            <Langue lang="en">
+                <Nom>Little Fox</Nom>
+            </Langue>
+            <Langue lang="ja">
+                <Nom>こぎつね座</Nom>
+            </Langue>
+        </Denomination>
+    </Constellation>
+</PreviSatConstellations>

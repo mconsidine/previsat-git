@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    18 juillet 2024
+ * >    22 juillet 2024
  *
  */
 
@@ -245,6 +245,7 @@ public:
 
     QList<Etoile> &etoiles();
     QList<Constellation> &constellations();
+    QMap<QString, QMap<QString, QString> > mapNomsConstellations() const;
     QList<LigneConstellation> &lignesCst();
 
     const QStringList &listeFicMap() const;
@@ -399,6 +400,7 @@ private:
     // Etoiles
     QList<Etoile> _etoiles;
     QList<Constellation> _constellations;
+    QMap<QString, QMap<QString, QString> > _mapNomsConstellations;
     QList<LigneConstellation> _lignesCst;
 
 

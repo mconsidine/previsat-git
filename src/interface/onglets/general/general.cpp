@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    27 decembre 2023
+ * >    22 juillet 2024
  *
  */
 
@@ -314,6 +314,7 @@ void General::AffichageDonneesSatellite(const Date &date)
     _ui->ascensionDroiteSat->setText(Maths::ToSexagesimal(satellite.ascensionDroite(), AngleFormatType::HEURE1, 2, 0, false, true).trimmed());
     _ui->declinaisonSat->setText(Maths::ToSexagesimal(satellite.declinaison(), AngleFormatType::DEGRE, 2, 0, true, true).trimmed());
     _ui->constellationSat->setText(satellite.constellation());
+    _ui->constellationSat->setToolTip(Configuration::instance()->mapNomsConstellations()[satellite.constellation()][Configuration::instance()->locale()]);
 
     // Direction/vitesse/range rate
     _ui->directionSat->setText((satellite.vitesse().z() >= 0.) ? tr("Ascendant") : tr("Descendant"));
@@ -590,6 +591,7 @@ void General::AffichageDonneesSoleilLune()
     _ui->ascensionDroiteSoleil->setText(Maths::ToSexagesimal(soleil.ascensionDroite(), AngleFormatType::HEURE1, 2, 0, false, true).trimmed());
     _ui->declinaisonSoleil->setText(Maths::ToSexagesimal(soleil.declinaison(), AngleFormatType::DEGRE, 2, 0, true, true).trimmed());
     _ui->constellationSoleil->setText(soleil.constellation());
+    _ui->constellationSoleil->setToolTip(Configuration::instance()->mapNomsConstellations()[soleil.constellation()][Configuration::instance()->locale()]);
 
     // Longitude/latitude/diametre apparent
     const QString ews = (soleil.longitude() >= 0.) ? tr("Ouest") : tr("Est");
@@ -628,6 +630,7 @@ void General::AffichageDonneesSoleilLune()
     _ui->ascensionDroiteLune->setText(Maths::ToSexagesimal(lune.ascensionDroite(), AngleFormatType::HEURE1, 2, 0, false, true).trimmed());
     _ui->declinaisonLune->setText(Maths::ToSexagesimal(lune.declinaison(), AngleFormatType::DEGRE, 2, 0, true, true).trimmed());
     _ui->constellationLune->setText(lune.constellation());
+    _ui->constellationLune->setToolTip(Configuration::instance()->mapNomsConstellations()[lune.constellation()][Configuration::instance()->locale()]);
 
     // Phase/illumination/magnitude
     _ui->phaseLune->setText(lune.phase());

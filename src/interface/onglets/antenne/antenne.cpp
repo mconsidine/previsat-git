@@ -30,7 +30,7 @@
  * >    9 octobre 2022
  *
  * Date de revision
- * >
+ * >    22 juillet 2024
  *
  */
 
@@ -143,11 +143,11 @@ void Antenne::InitAffichageFrequences()
             const FrequenceRadio frequences = it.next();
 
             for(const QString &freq : frequences.frequenceMontante) {
-                _ui->frequenceMontante->addItem(freq);
+                _ui->frequenceMontante->addItem(freq + " MHz");
             }
 
             for(const QString &freq : frequences.frequenceDescendante) {
-                _ui->frequenceDescendante->addItem(freq);
+                _ui->frequenceDescendante->addItem(freq + " MHz");
             }
         }
 

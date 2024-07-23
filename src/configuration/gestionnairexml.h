@@ -36,7 +36,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    18 juillet 2024
+ * >    22 juillet 2024
  *
  */
 
@@ -166,6 +166,12 @@ private:
      * @return lieux d'observation
      */
     static QList<Observateur> LectureLieuxObservation(const QDomNode &obs);
+    
+    /**
+     * @brief LectureNomsConstellations Lecture des noms des constellations
+     * @return noms des constellations
+     */
+    static QMap<QString, QMap<QString, QString> > LectureNomsConstellations();
 
     /**
      * @brief LecturePays Lecture du fichier listant les pays et organisations

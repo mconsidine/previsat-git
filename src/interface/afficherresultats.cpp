@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    20 juillet 2024
+ * >    22 juillet 2024
  *
  */
 
@@ -539,6 +539,10 @@ void AfficherResultats::ChargementResultats()
                     if (k == 0) {
                         item->setToolTip(elems.at(0));
                         item->setData(Qt::UserRole, QVariant::fromValue<QList<ResultatPrevisions> > (list));
+                    }
+
+                    if ((k == 2) && (_typeCalcul == TypeCalcul::TRANSITS)) {
+                        item->setToolTip(Configuration::instance()->mapNomsConstellations()[item->text().trimmed()][Configuration::instance()->locale()]);
                     }
 
                     _ui->resultatsPrevisions->setItem(j, k, item);
@@ -1345,6 +1349,10 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
                         itm->setToolTip(elems.at(0));
                     }
 
+                    if (k == 6) {
+                        itm->setToolTip(Configuration::instance()->mapNomsConstellations()[itm->text()][Configuration::instance()->locale()]);
+                    }
+
                     _tableDetail->setItem(m, k, itm);
                     _tableDetail->resizeColumnToContents(k);
                 }
@@ -1736,6 +1744,7 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
     // Calcul de la position du catalogue d'etoiles
     Etoile::CalculPositionEtoiles(observateur, etoiles);
     if (settings.value("affichage/affconst").toUInt() != Qt::Unchecked) {
+
         Constellation::CalculConstellations(observateur, constellations);
         LigneConstellation::CalculLignesCst(etoiles, lignesCst);
     }

@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    18 juillet 2024
+ * >    22 juillet 2024
  *
  */
 
@@ -101,6 +101,9 @@ void Configuration::Chargement()
 
         // Lecture des frequences radio des satellites
         _mapFrequencesRadio = GestionnaireXml::LectureFrequencesRadio();
+
+        // Lecture des noms des constellations
+        _mapNomsConstellations = GestionnaireXml::LectureNomsConstellations();
 
         // Lecture du fichier NASA contenant les evenements de la Station Spatiale
         _evenementsStation = EvenementsStationSpatiale::LectureEvenementsStationSpatiale();
@@ -729,6 +732,11 @@ QList<Etoile> &Configuration::etoiles()
 QList<Constellation> &Configuration::constellations()
 {
     return _constellations;
+}
+
+QMap<QString, QMap<QString, QString> > Configuration::mapNomsConstellations() const
+{
+    return _mapNomsConstellations;
 }
 
 QList<LigneConstellation> &Configuration::lignesCst()

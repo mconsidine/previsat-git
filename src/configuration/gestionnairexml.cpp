@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    18 juillet 2024
+ * >    22 juillet 2024
  *
  */
 
@@ -428,6 +428,9 @@ QMap<QString, QList<FrequenceRadio> > GestionnaireXml::LectureFrequencesRadio()
     return mapFrequencesRadio;
 }
 
+/*
+ * Lecture du fichier de gestionnaire d'elements orbitaux
+ */
 QMap<QString, QList<CategorieElementsOrbitaux> >
 GestionnaireXml::LectureGestionnaireElementsOrbitaux(QString &versionCategorieElem,
                                                      QMap<QString, QList<CategorieElementsOrbitaux> > &mapCategoriesMajElementsOrbitaux)
@@ -483,6 +486,9 @@ GestionnaireXml::LectureGestionnaireElementsOrbitaux(QString &versionCategorieEl
     return mapCategoriesElementsOrbitaux;
 }
 
+/*
+ * Lecture de la structure de lieux d'observations
+ */
 QList<Observateur> GestionnaireXml::LectureLieuxObservation(const QDomNode &obs)
 {
     /* Declarations des variables locales */
@@ -511,6 +517,67 @@ QList<Observateur> GestionnaireXml::LectureLieuxObservation(const QDomNode &obs)
 
     /* Retour */
     return obser;
+}
+
+/*
+ * Lecture des noms des constellations
+ */
+QMap<QString, QMap<QString, QString> > GestionnaireXml::LectureNomsConstellations()
+{
+    /* Declarations des variables locales */
+    QMap<QString, QMap<QString, QString> > mapNomsConstellations;
+
+    /* Initialisations */
+    const QString nomficXml = "constnames.xml";
+
+    try {
+
+        VerifieVersionXml(nomficXml);
+
+        FichierXml fi(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
+        const QDomDocument document = fi.Ouverture(false);
+
+        /* Corps de la methode */
+        const QDomElement root = document.firstChildElement();
+        if (root.nodeName() != "PreviSatConstellations") {
+            throw Exception();
+        }
+
+        QMap<QString, QString> mapNom;
+        const QDomNodeList listeConstellations = root.elementsByTagName("Constellation");
+
+        for(int i=0; i<listeConstellations.count(); i++) {
+
+            const QDomNode constellation = listeConstellations.at(i);
+            const QString acronyme = constellation.firstChildElement("Acronyme").text();
+
+            mapNom.clear();
+            const QDomNodeList listeLangues = constellation.toElement().elementsByTagName("Langue");
+
+            for(int j=0; j<listeLangues.count(); j++) {
+
+                const QDomNode langue = listeLangues.at(j);
+                const QString lang = langue.toElement().attribute("lang");
+                const QString nom = langue.firstChildElement("Nom").text();
+
+                if (!nom.isEmpty()) {
+                    mapNom.insert(lang, nom);
+                }
+            }
+
+            mapNomsConstellations.insert(acronyme, mapNom);
+        }
+
+        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+
+    } catch (Exception const &e) {
+        qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+                            .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+    }
+
+    /* Retour */
+    return mapNomsConstellations;
 }
 
 /*
