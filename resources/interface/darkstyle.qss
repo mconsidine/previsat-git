@@ -54,6 +54,7 @@ QGroupBox
 QMenu
 {
   border: 0px;
+  background-color: none;
 }
 
 QMessageBox

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 juillet 2024
+ * >    23 juillet 2024
  *
  */
 
@@ -3340,7 +3340,7 @@ void PreviSat::on_actionMode_sombre_triggered()
 
             // Pour l'affichage avec Qt6
             QFile fi(":/resources/interface/darkstyle.qss");
-            if ((fi.exists() && (fi.size() != 0)) || !fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            if (!(fi.exists() && (fi.size() != 0)) || !fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
                 throw Exception();
             }
 
@@ -3387,7 +3387,8 @@ void PreviSat::on_actionMode_sombre_triggered()
 
         // Palette par defaut
         qApp->setPalette(qApp->style()->standardPalette());
-        qApp->setStyleSheet("QTabBar { qproperty-drawBase: 0; }");
+        qApp->setStyleSheet("QTabBar { qproperty-drawBase: 0; }" \
+                            "QMenu { border: 0px; background-color: none; }");
     }
 
     on_zoomCarte_clicked();
