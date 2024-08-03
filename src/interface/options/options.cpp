@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    8 juin 2024
+ * >    3 aout 2024
  *
  */
 
@@ -192,6 +192,9 @@ void Options::Initialisation()
 
     const QString fmt = tr("L'altitude doit être comprise entre %1%2 et %3%2", "Observer altitude");
     _ui->nvAltitude->setToolTip(fmt.arg(valAlt->bottom()).arg(unite).arg(valAlt->top()));
+
+    _ui->filtreLieuxObs->clear();
+    _ui->filtreSelecLieux->clear();
 
     _ui->outilsLieuxObservation->setVisible(false);
     _ui->modeSombre->setVisible(false);

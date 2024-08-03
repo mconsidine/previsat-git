@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    22 juillet 2024
+ * >    3 aout 2024
  *
  */
 
@@ -641,44 +641,42 @@ QMap<QString, SatellitesStarlink> GestionnaireXml::LecturePreLaunchStarlink()
     QMap<QString, SatellitesStarlink> mapSatellitesStarlink;
 
     /* Initialisations */
-    if (!Configuration::instance()->mapVerrous().contains("starlink")) {
-        qWarning() << "Le fichier verrou ne contient pas de clause starlink";
-        throw Exception();
-    }
-
     const QString nomficXml = "pre-launch.xml";
     FichierXml fi(Configuration::instance()->dirCfg() + QDir::separator() + nomficXml);
 
+    /* Corps de la methode */
     try {
 
-        const QDomDocument document = fi.Ouverture(false);
+        if (Configuration::instance()->mapVerrous().contains("starlink")) {
 
-        /* Corps de la methode */
-        const QDomElement root = document.firstChildElement();
-        if (root.nodeName() != "PreviSatStarlink") {
-            throw Exception();
-        }
+            const QDomDocument document = fi.Ouverture(false);
+            const QDomElement root = document.firstChildElement();
 
-        const QDomNodeList listeStarlink = root.elementsByTagName("Starlink");
+            if (root.nodeName() != "PreviSatStarlink") {
+                throw Exception();
+            }
 
-        for(int i=0; i<listeStarlink.count(); i++) {
+            const QDomNodeList listeStarlink = root.elementsByTagName("Starlink");
 
-            const QDomNode starlink = listeStarlink.at(i);
-            if (!starlink.isNull()) {
+            for(int i=0; i<listeStarlink.count(); i++) {
 
-                const QString fichier = starlink.firstChildElement("Fichier").text();
-                const QString groupe = starlink.firstChildElement("Groupe").text();
-                const QString lancement = starlink.firstChildElement("Lancement").text();
-                const QString deploiement = starlink.firstChildElement("Deploiement").text();
+                const QDomNode starlink = listeStarlink.at(i);
+                if (!starlink.isNull()) {
 
-                // Recuperation des informations Starlink
-                if (!groupe.isEmpty()) {
-                    mapSatellitesStarlink.insert(groupe, { fichier, lancement, deploiement });
+                    const QString fichier = starlink.firstChildElement("Fichier").text();
+                    const QString groupe = starlink.firstChildElement("Groupe").text();
+                    const QString lancement = starlink.firstChildElement("Lancement").text();
+                    const QString deploiement = starlink.firstChildElement("Deploiement").text();
+
+                    // Recuperation des informations Starlink
+                    if (!groupe.isEmpty()) {
+                        mapSatellitesStarlink.insert(groupe, { fichier, lancement, deploiement });
+                    }
                 }
             }
-        }
 
-        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+            qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+        }
 
     } catch (Exception const &e) {
         if (fi.exists()) {

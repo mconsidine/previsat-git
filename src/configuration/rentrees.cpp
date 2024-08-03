@@ -81,10 +81,17 @@ QList<RentreesAtmospheriques> Rentrees::LectureFichierRentrees()
             throw Exception();
         }
 
+        QStringList norads;
         const QDomNodeList sats = root.elementsByTagName("item");
 
         for(int i=0; i<sats.count(); i++) {
-            rentreesAtmospheriques.append(LectureRentree(sats.at(i)));
+
+            const RentreesAtmospheriques rentree = LectureRentree(sats.at(i));
+
+            if (!norads.contains(rentree.norad)) {
+                norads.append(rentree.norad);
+                rentreesAtmospheriques.append(rentree);
+            }
         }
 
         qInfo() << QString("Lecture fichier %1 OK").arg(fi.nomfic());

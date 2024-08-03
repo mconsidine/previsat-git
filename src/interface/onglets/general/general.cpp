@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    22 juillet 2024
+ * >    3 aout 2024
  *
  */
 
@@ -741,6 +741,30 @@ void General::AffichageVitesses(const Date &date, const bool enable)
     return;
 }
 
+bool General::eventFilter(QObject *watched, QEvent *event)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (event->type() == QEvent::MouseMove) {
+
+        if (_ui->constellationSat->underMouse()) {
+            emit AfficherMessageStatut(_ui->constellationSat->toolTip(), 5);
+
+        } else if (_ui->constellationSoleil->underMouse()) {
+            emit AfficherMessageStatut(_ui->constellationSoleil->toolTip(), 5);
+
+        } else if (_ui->constellationLune->underMouse()) {
+            emit AfficherMessageStatut(_ui->constellationLune->toolTip(), 5);
+        }
+    }
+
+    /* Retour */
+    return QFrame::eventFilter(watched, event);
+}
+
 void General::mouseDoubleClickEvent(QMouseEvent *evt)
 {
     /* Declarations des variables locales */
@@ -975,6 +999,10 @@ void General::Initialisation()
 
     _ui->frameSimu->setVisible(false);
     _ui->pause->setEnabled(false);
+
+    _ui->constellationSat->installEventFilter(this);
+    _ui->constellationSoleil->installEventFilter(this);
+    _ui->constellationLune->installEventFilter(this);
 
     connect(_osculateurs, &Osculateurs::AffichageVitesses, this, &General::AffichageVitesses);
 

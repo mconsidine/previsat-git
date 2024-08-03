@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 juillet 2024
+ * >    3 aout 2024
  *
  */
 
@@ -46,17 +46,8 @@
 #include <QStandardPaths>
 #include <QTimer>
 #include <QVersionNumber>
-#include "options/ui_options.h"
-#include "ui_previsat.h"
 #include "listwidgetitem.h"
 #include "previsat.h"
-#include "carte/ui_carte.h"
-#include "carte/ui_coordiss.h"
-#include "onglets/general/ui_general.h"
-#include "informations/ui_informations.h"
-#include "onglets/donnees/ui_informationssatellite.h"
-#include "onglets/ui_onglets.h"
-#include "onglets/osculateurs/ui_osculateurs.h"
 #include "apropos/apropos.h"
 #include "carte/carte.h"
 #include "carte/coordiss.h"
@@ -83,6 +74,15 @@
 #include "options/options.h"
 #include "outils/outils.h"
 #include "radar/radar.h"
+#include "ui_previsat.h"
+#include "carte/ui_carte.h"
+#include "carte/ui_coordiss.h"
+#include "informations/ui_informations.h"
+#include "onglets/general/ui_general.h"
+#include "onglets/donnees/ui_informationssatellite.h"
+#include "onglets/ui_onglets.h"
+#include "onglets/osculateurs/ui_osculateurs.h"
+#include "options/ui_options.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/planete.h"
@@ -592,6 +592,8 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_onglets->starlink(), &CalculsStarlink::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_onglets->starlink(), &CalculsStarlink::MajElementsOrbitaux, this, &PreviSat::TelechargementGroupesStarlink);
     connect(_onglets->evenements(), &CalculsEvenementsOrbitaux::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+    connect(_onglets->general(), &General::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
+    connect(_onglets->general(), &General::EffacerMessageStatut, this, &PreviSat::EffacerMessageStatut);
     connect(_onglets->general(), &General::RecalculerPositions, _onglets, &Onglets::AffichageLieuObs);
     connect(_onglets->general(), &General::RecalculerPositions, _onglets, &Onglets::ReinitFlags);
     connect(_onglets->general(), &General::RecalculerPositions, this, &PreviSat::ReinitCalculEvenementsSoleilLune);
@@ -965,7 +967,6 @@ void PreviSat::EnchainementCalculs()
         }
 
     } catch (Exception const &e) {
-        throw Exception();
     }
 
     /* Retour */

@@ -185,6 +185,9 @@ void InformationsRentrees::show()
         j++;
     }
 
+    _ui->rentrees->resizeColumnToContents(0);
+    _ui->rentrees->resizeColumnToContents(3);
+
     /* Retour */
     return;
 }

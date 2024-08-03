@@ -62,63 +62,61 @@ QList<CalendrierLancements> Lancements::LectureCalendrierLancements()
     QList<CalendrierLancements> calendrierLancements;
 
     /* Initialisations */
-    if (!Configuration::instance()->mapVerrous().contains("lancements")) {
-        qWarning() << "Le fichier verrou ne contient pas de clause lancements";
-        throw Exception();
-    }
+    if (Configuration::instance()->mapVerrous().contains("lancements")) {
 
-    QFile fi(Configuration::instance()->dirLocalData() + QDir::separator() + "lancements.txt");
-    const QFileInfo ff(fi.fileName());
+        QFile fi(Configuration::instance()->dirLocalData() + QDir::separator() + "lancements.txt");
+        const QFileInfo ff(fi.fileName());
 
-    if (!fi.exists()) {
+        if (!fi.exists()) {
 
-        // Telechargement du fichier
-        Telechargement tel(Configuration::instance()->dirLocalData());
-        tel.TelechargementFichier(QUrl(QString("%1data/lancements.txt").arg(DOMAIN_NAME)), false);
-    }
+            // Telechargement du fichier
+            Telechargement tel(Configuration::instance()->dirLocalData());
+            tel.TelechargementFichier(QUrl(QString("%1data/lancements.txt").arg(DOMAIN_NAME)), false);
+        }
 
-    /* Corps de la methode */
-    if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        /* Corps de la methode */
+        if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 #if (!COVERAGE_TEST)
-        qWarning() << QString("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName());
-        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::WARNING);
+            qWarning() << QString("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName());
+            throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::WARNING);
 #endif
-    }
+        }
 
-    const QStringList contenu = QString(fi.readAll()).split("\n");
-    fi.close();
+        const QStringList contenu = QString(fi.readAll()).split("\n");
+        fi.close();
 
-    CalendrierLancements calendrier;
-    QStringList tab(6);
-    QStringListIterator it(contenu);
+        CalendrierLancements calendrier;
+        QStringList tab(6);
+        QStringListIterator it(contenu);
 
-    while (it.hasNext()) {
+        while (it.hasNext()) {
 
-        tab.fill("");
-        for(unsigned int i=0; i<tab.size(); i++) {
+            tab.fill("");
+            for(unsigned int i=0; i<tab.size(); i++) {
+                if (it.hasNext()) {
+                    tab[i] = it.next();
+                }
+            }
+
+            if (!tab.first().isEmpty() && !tab.last().isEmpty()) {
+
+                calendrier.date = tab.at(0);
+                calendrier.lancement = tab.at(1);
+                calendrier.heure = tab.at(2);
+                calendrier.site = tab.at(3);
+                calendrier.commentaire = tab.at(4);
+                calendrier.maj = tab.at(5).trimmed();
+
+                calendrierLancements.append(calendrier);
+            }
+
             if (it.hasNext()) {
-                tab[i] = it.next();
+                it.next();
             }
         }
 
-        if (!tab.first().isEmpty() && !tab.last().isEmpty()) {
-
-            calendrier.date = tab.at(0);
-            calendrier.lancement = tab.at(1);
-            calendrier.heure = tab.at(2);
-            calendrier.site = tab.at(3);
-            calendrier.commentaire = tab.at(4);
-            calendrier.maj = tab.at(5).trimmed();
-
-            calendrierLancements.append(calendrier);
-        }
-
-        if (it.hasNext()) {
-            it.next();
-        }
+        qInfo() << QString("Lecture fichier %1 OK").arg(ff.fileName());
     }
-
-    qInfo() << QString("Lecture fichier %1 OK").arg(ff.fileName());
 
     /* Retour */
     return calendrierLancements;

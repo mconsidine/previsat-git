@@ -36,7 +36,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    3 juin 2015
+ * >    3 aout 2024
  *
  */
 
@@ -57,7 +57,8 @@ public:
     /**
      * @brief Constellation Constructeur par defaut
      */
-    Constellation();
+    Constellation() {
+    }
 
     /**
      * @brief Constellation Definition a partir des composantes

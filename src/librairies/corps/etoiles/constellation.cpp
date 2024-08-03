@@ -30,7 +30,7 @@
  * >    24 mars 2012
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    3 aout 2024
  *
  */
 
@@ -46,21 +46,6 @@
 /*
  * Constructeurs
  */
-/*
- * Constructeur par defaut
- */
-Constellation::Constellation()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps du constructeur */
-
-    /* Retour */
-    return;
-}
-
 /*
  * Definition a partir des composantes
  */
