@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    8 juin 2024
+ * >    4 aout 2024
  *
  */
 
@@ -49,6 +49,7 @@
 #include "interface/ciel/ciel.h"
 #include "interface/options/options.h"
 #include "librairies/exceptions/exception.h"
+#include "librairies/maths/maths.h"
 
 #define DEG2PX(x) (_ui->carte->width() * (x) / MATHS::T360)
 #define ECHELLE_MAX (2.)
@@ -96,6 +97,8 @@ Carte::Carte(QWidget *parent) :
     _ui(new Ui::Carte)
 {
     _ui->setupUi(this);
+
+    etiquette = nullptr;
     scene = nullptr;
 
     try {
@@ -174,13 +177,23 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
         if ((dt <= 16) && (sat.altitude() > 0.)) {
 
             atrouve = true;
-            setToolTip(tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>")
-                       .arg(sat.elementsOrbitaux().nom).arg(sat.elementsOrbitaux().norad).arg(sat.elementsOrbitaux().cospar));
+            if (!settings.value("affichage/informationsSatelliteDefaut").toBool() ||
+                (sat.elementsOrbitaux().norad != Configuration::instance()->noradDefaut())) {
+
+                setToolTip(tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>")
+                               .arg(sat.elementsOrbitaux().nom)
+                               .arg(sat.elementsOrbitaux().norad)
+                               .arg(sat.elementsOrbitaux().cospar));
+            }
 
             emit AfficherMessageStatut(tr("<b>%1</b> (numéro NORAD : <b>%2</b>  -  COSPAR : <b>%3</b>)")
-                                       .arg(sat.elementsOrbitaux().nom).arg(sat.elementsOrbitaux().norad).arg(sat.elementsOrbitaux().cospar));
+                                           .arg(sat.elementsOrbitaux().nom)
+                                           .arg(sat.elementsOrbitaux().norad)
+                                           .arg(sat.elementsOrbitaux().cospar));
+
             setCursor(Qt::CrossCursor);
             _ui->carte->viewport()->setCursor(Qt::CrossCursor);
+
         } else {
 
             emit EffacerMessageStatut();
@@ -765,9 +778,12 @@ void Carte::AffichageSatelliteDefaut(const Satellite &satellite, const int lsat,
     if (settings.value("affichage/affnomsat").toUInt() != Qt::Unchecked) {
 
         const Qt::CheckState etat = static_cast<Qt::CheckState> (settings.value("affichage/affnomsat").toUInt());
-        if (((etat == Qt::PartiallyChecked) &&
+        const bool affichageEtiquette = ((satellite.elementsOrbitaux().norad == Configuration::instance()->noradDefaut()) &&
+                               settings.value("affichage/informationsSatelliteDefaut").toBool());
+
+        if ((((etat == Qt::PartiallyChecked) &&
              (satellite.elementsOrbitaux().norad == Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad)) ||
-                (etat == Qt::Checked)) {
+                (etat == Qt::Checked)) && !affichageEtiquette) {
 
             QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(satellite.elementsOrbitaux().nom);
             const int lng = static_cast<int> (txtSat->boundingRect().width());
@@ -882,6 +898,67 @@ void Carte::AffichageSatellites()
             } else {
                 AffichageSatelliteDefaut(sat, lsat, bsat);
             }
+        }
+    }
+
+    // Affichage du label pour le satellite par defaut
+    EFFACE_OBJET(etiquette);
+    if (!_mcc && settings.value("affichage/informationsSatelliteDefaut").toBool()) {
+
+        const Satellite sat = satellites.first();
+
+        if (sat.altitude() >= 0.) {
+
+            QString unite1;
+            QString unite2;
+            double altitude = sat.altitude();
+            double vitesse = sat.vitesse().Norme();
+
+            if (settings.value("affichage/unite").toBool()) {
+                unite1 = tr("km", "Kilometer");
+                unite2 = tr("km/s", "Kilometer per second");
+            } else {
+                unite1 = tr("nmi", "nautical mile");
+                unite2 = tr("nmi/s", "Nautical mile per second");
+                altitude *= TERRE::MILE_PAR_KM;
+                vitesse *= TERRE::MILE_PAR_KM;
+            }
+
+            // Coordonnees du satellite
+            const int lsat = qRound(DEG2PX(180. - sat.longitude() * MATHS::RAD2DEG))+1;
+            const int bsat = qRound(DEG2PX(90. - sat.latitude() * MATHS::RAD2DEG))+1;
+
+            // Texte a afficher dans l'etiquette
+            const QString txt = tr("<b>%1</b><br />" \
+                                   "Norad : <b>%2</b><br />" \
+                                   "COSPAR : <b>%3</b><br />" \
+                                   "Type orbite : %4<br />" \
+                                   "Altitude : %5 %6<br />" \
+                                   "Vitesse : %7 %8<br />" \
+                                   "Inclinaison : %9°<br />"
+                                   "Période : %10")
+                                    .arg(sat.elementsOrbitaux().nom)
+                                    .arg(sat.elementsOrbitaux().norad)
+                                    .arg(sat.elementsOrbitaux().cospar)
+                                    .arg(sat.elementsOrbitaux().donnees.orbite())
+                                    .arg(sat.altitude(), 0, 'f', 1).arg(unite1)
+                                    .arg(sat.vitesse().Norme(), 0, 'f', 3).arg(unite2)
+                                    .arg(sat.elementsOsculateurs().inclinaison() * MATHS::RAD2DEG, 0, 'f', 2)
+                                    .arg(Maths::ToSexagesimal(sat.elementsOsculateurs().periode() * MATHS::HEUR2RAD,
+                                                     AngleFormatType::HEURE1, 1, 0, false, true));
+
+            etiquette = new QLabel(txt, _ui->carte);
+            etiquette->setTextFormat(Qt::RichText);
+            etiquette->setStyleSheet("border: 1px solid black;" \
+                                     "border-radius: 7px;" \
+                                     "background-color: rgb(143, 143, 247);");
+            etiquette->adjustSize();
+
+            // Position de l'etiquette
+            const int xnsat = (lsat + 4 + etiquette->width() > _largeurCarte) ? lsat - etiquette->width() - 1 : lsat + 4;
+            const int ynsat = (bsat + 4 + etiquette->height() > _hauteurCarte) ? bsat - etiquette->height() : bsat;
+            etiquette->setGeometry(xnsat, ynsat, etiquette->width(), etiquette->height());
+            etiquette->show();
         }
     }
 

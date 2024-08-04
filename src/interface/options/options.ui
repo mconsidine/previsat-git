@@ -38,10 +38,10 @@
     </rect>
    </property>
    <property name="orientation">
-    <enum>Qt::Horizontal</enum>
+    <enum>Qt::Orientation::Horizontal</enum>
    </property>
    <property name="standardButtons">
-    <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+    <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
    </property>
   </widget>
   <widget class="QListWidget" name="listeOptions">
@@ -116,13 +116,13 @@
       <font/>
      </property>
      <property name="contextMenuPolicy">
-      <enum>Qt::CustomContextMenu</enum>
+      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
      </property>
      <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
+      <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
      </property>
      <property name="dragDropMode">
-      <enum>QAbstractItemView::DropOnly</enum>
+      <enum>QAbstractItemView::DragDropMode::DropOnly</enum>
      </property>
     </widget>
     <widget class="QToolButton" name="supprLieu">
@@ -202,10 +202,10 @@
        </property>
        <layout class="QFormLayout" name="formLayout_llaConf">
         <property name="sizeConstraint">
-         <enum>QLayout::SetFixedSize</enum>
+         <enum>QLayout::SizeConstraint::SetFixedSize</enum>
         </property>
         <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -320,7 +320,7 @@
        </property>
        <layout class="QFormLayout" name="formLayout_categorieConf">
         <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>2</number>
@@ -401,7 +401,7 @@
        </property>
        <layout class="QFormLayout" name="formLayout_nomlieuConf">
         <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -472,7 +472,7 @@
            <number>10</number>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
          </widget>
         </item>
@@ -491,7 +491,7 @@
            <number>9</number>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
          </widget>
         </item>
@@ -557,7 +557,7 @@
         <item>
          <layout class="QFormLayout" name="formLayout_coordConf2">
           <property name="labelAlignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
           <property name="horizontalSpacing">
            <number>3</number>
@@ -587,7 +587,7 @@
              <string notr="true">0000</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -596,10 +596,10 @@
         <item>
          <widget class="QFrame" name="frame_10">
           <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
+           <enum>QFrame::Shape::StyledPanel</enum>
           </property>
           <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
+           <enum>QFrame::Shadow::Raised</enum>
           </property>
           <widget class="QLabel" name="lbl_nvUnite">
            <property name="geometry">
@@ -632,7 +632,7 @@
        </property>
        <layout class="QFormLayout" name="formLayout_conf1">
         <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -696,13 +696,13 @@
       <bool>true</bool>
      </property>
      <property name="contextMenuPolicy">
-      <enum>Qt::CustomContextMenu</enum>
+      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
      </property>
      <property name="toolTip">
       <string>Cliquer droit pour afficher le menu contextuel</string>
      </property>
      <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
+      <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
      </property>
     </widget>
     <widget class="QLabel" name="lbl_selectionCategorie">
@@ -737,25 +737,25 @@
       <bool>true</bool>
      </property>
      <property name="contextMenuPolicy">
-      <enum>Qt::CustomContextMenu</enum>
+      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
      </property>
      <property name="toolTip">
       <string>Cliquer droit pour afficher le menu contextuel</string>
      </property>
      <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
+      <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
      </property>
      <property name="editTriggers">
-      <set>QAbstractItemView::CurrentChanged|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+      <set>QAbstractItemView::EditTrigger::CurrentChanged|QAbstractItemView::EditTrigger::DoubleClicked|QAbstractItemView::EditTrigger::EditKeyPressed|QAbstractItemView::EditTrigger::SelectedClicked</set>
      </property>
      <property name="dragEnabled">
       <bool>true</bool>
      </property>
      <property name="dragDropMode">
-      <enum>QAbstractItemView::DragOnly</enum>
+      <enum>QAbstractItemView::DragDropMode::DragOnly</enum>
      </property>
      <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectRows</enum>
+      <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
      </property>
     </widget>
     <widget class="QToolButton" name="ajoutLieu">
@@ -877,7 +877,7 @@
       </rect>
      </property>
      <property name="tabShape">
-      <enum>QTabWidget::Triangular</enum>
+      <enum>QTabWidget::TabShape::Triangular</enum>
      </property>
      <property name="currentIndex">
       <number>0</number>
@@ -903,7 +903,7 @@
        </property>
        <layout class="QFormLayout" name="formLayout_notif">
         <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -964,7 +964,7 @@
          <x>10</x>
          <y>82</y>
          <width>271</width>
-         <height>17</height>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -985,7 +985,7 @@
        </property>
        <layout class="QFormLayout" name="formLayout_traceSol">
         <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -1109,6 +1109,19 @@
         <bool>true</bool>
        </property>
       </widget>
+      <widget class="QCheckBox" name="informationsSatelliteDefaut">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>106</y>
+         <width>271</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Informations satellite par défaut</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="systemeSolaire">
       <property name="autoFillBackground">
@@ -1144,7 +1157,7 @@
        </property>
        <layout class="QFormLayout" name="formLayout_ombre1">
         <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -1192,7 +1205,7 @@
            <number>30</number>
           </property>
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
          </widget>
         </item>
@@ -1285,7 +1298,7 @@
        </property>
        <layout class="QFormLayout" name="formLayout_magnEtoiles">
         <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -1521,7 +1534,7 @@
        </property>
        <layout class="QFormLayout" name="formLayout_carte">
         <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -1680,7 +1693,7 @@
        </property>
        <layout class="QFormLayout" name="formLayout_zoomCartes">
         <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -1989,7 +2002,7 @@
        </property>
        <layout class="QFormLayout" name="formLayout_nbFichiersLog">
         <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -2038,7 +2051,7 @@
      </property>
      <layout class="QFormLayout" name="formLayout_langue">
       <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
       <property name="horizontalSpacing">
        <number>3</number>
@@ -2081,7 +2094,7 @@
       <item>
        <layout class="QFormLayout" name="formLayout_conf">
         <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="horizontalSpacing">
          <number>3</number>
@@ -2114,10 +2127,10 @@
       <item>
        <widget class="QFrame" name="frame_11">
         <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
+         <enum>QFrame::Shape::StyledPanel</enum>
         </property>
         <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
+         <enum>QFrame::Shadow::Raised</enum>
         </property>
         <widget class="QPushButton" name="enregistrerPref">
          <property name="geometry">
@@ -2263,7 +2276,7 @@
      </property>
      <layout class="QFormLayout" name="formLayout_police">
       <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
       <property name="horizontalSpacing">
        <number>3</number>
@@ -2297,10 +2310,10 @@
       </rect>
      </property>
      <property name="contextMenuPolicy">
-      <enum>Qt::CustomContextMenu</enum>
+      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
      </property>
      <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
+      <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
      </property>
     </widget>
     <widget class="QGroupBox" name="couleursWCC">
@@ -2326,7 +2339,7 @@
       </property>
       <layout class="QFormLayout" name="formLayout_couleursWcc">
        <property name="labelAlignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
        <property name="horizontalSpacing">
         <number>3</number>

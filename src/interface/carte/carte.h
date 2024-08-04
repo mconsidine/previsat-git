@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    19 mai 2023
+ * >    4 aout 2024
  *
  */
 
@@ -48,6 +48,7 @@
 
 
 class QGraphicsScene;
+class QLabel;
 class Date;
 class ItemGroup;
 class Observateur;
@@ -143,6 +144,7 @@ private:
      */
     Ui::Carte *_ui;
     QGraphicsScene *scene;
+    QLabel *etiquette;
 
     bool _mcc;
     int _largeurCarte;

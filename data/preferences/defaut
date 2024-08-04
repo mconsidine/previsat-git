@@ -25,6 +25,7 @@ affichage/eclipsesLune true
 affichage/effetEclipsesMagnitude true
 affichage/extinctionAtmospherique true
 affichage/hauteurTerminateur 0
+affichage/informationsSatelliteDefaut false
 affichage/intensiteOmbre 30
 affichage/modeSombre false
 affichage/magnitudeEtoiles 4

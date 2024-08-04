@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    3 aout 2024
+ * >    4 aout 2024
  *
  */
 
@@ -300,6 +300,7 @@ void Options::EcritureRegistre()
     settings.setValue("affichage/effetEclipsesMagnitude", _ui->effetEclipsesMagnitude->isChecked());
     settings.setValue("affichage/extinctionAtmospherique", _ui->extinctionAtmospherique->isChecked());
     settings.setValue("affichage/hauteurTerminateur", _ui->hauteurTerminateur->value());
+    settings.setValue("affichage/informationsSatelliteDefaut", _ui->informationsSatelliteDefaut->isChecked());
     settings.setValue("affichage/intensiteOmbre", _ui->intensiteOmbre->value());
     settings.setValue("affichage/langue", Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex()));
     settings.setValue("affichage/modeSombre", _ui->modeSombre->isChecked());
@@ -508,6 +509,7 @@ void Options::ChargementPref()
         _ui->refractionAtmospherique->setChecked(settings.value("affichage/refractionAtmospherique", true).toBool());
         _ui->effetEclipsesMagnitude->setChecked(settings.value("affichage/effetEclipsesMagnitude", true).toBool());
         _ui->eclipsesLune->setChecked(settings.value("affichage/eclipsesLune", true).toBool());
+        _ui->informationsSatelliteDefaut->setChecked(settings.value("affichage/informationsSatelliteDefaut", false).toBool());
         _ui->modeSombre->setChecked(settings.value("affichage/intensiteVision", false).toBool());
         _ui->langue->setCurrentIndex(static_cast<int> (Configuration::instance()->listeFicLang()
                                                        .indexOf(settings.value("affichage/langue", "en").toString())));
@@ -914,6 +916,7 @@ void Options::SauvePreferences(const QString &fichierPref)
              << "affichage/effetEclipsesMagnitude " << QVariant(_ui->effetEclipsesMagnitude->isChecked()).toString() << Qt::endl
              << "affichage/extinctionAtmospherique " << QVariant(_ui->extinctionAtmospherique->isChecked()).toString() << Qt::endl
              << "affichage/hauteurTerminateur " << _ui->hauteurTerminateur->value() << Qt::endl
+             << "affichage/informationsSatelliteDefaut " << QVariant(_ui->informationsSatelliteDefaut->isChecked()).toString() << Qt::endl
              << "affichage/intensiteOmbre " << _ui->intensiteOmbre->value() << Qt::endl
              << "affichage/modeSombre " << QVariant(_ui->modeSombre->isChecked()).toString() << Qt::endl
              << "affichage/magnitudeEtoiles " << _ui->magnitudeEtoiles->value() << Qt::endl
