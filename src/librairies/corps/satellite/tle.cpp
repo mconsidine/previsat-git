@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    12 aout 2024
  *
  */
 
@@ -196,8 +196,12 @@ QMap<QString, ElementsOrbitaux> TLE::Lecture(const QString &nomFichier,
 
             if (ajoutDonnees && db.isValid()) {
 
-                tle._elements.donnees = Donnees::RequeteNorad(db, tle._elements.norad).first();
-                lig0 = tle._elements.donnees.nom();
+                const QList<Donnees> listeDonnees = Donnees::RequeteNorad(db, tle._elements.norad);
+
+                if (!listeDonnees.isEmpty()) {
+                    tle._elements.donnees = Donnees::RequeteNorad(db, tle._elements.norad).first();
+                    lig0 = tle._elements.donnees.nom();
+                }
             }
         } else {
 
@@ -224,10 +228,16 @@ QMap<QString, ElementsOrbitaux> TLE::Lecture(const QString &nomFichier,
             if (ajoutDonnees && db.isValid()) {
 
                 // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
-                tle._elements.donnees = Donnees::RequeteNorad(db, tle._elements.norad).first();
+                const QList<Donnees> listeDonnees = Donnees::RequeteNorad(db, tle._elements.norad);
 
-                // Correction eventuelle du nombre d'orbites a l'epoque
-                tle._elements.nbOrbitesEpoque = GPFormat::CalculNombreOrbitesEpoque(tle._elements);
+                if (!listeDonnees.isEmpty()) {
+
+                    // Recuperation des donnees satellite
+                    tle._elements.donnees = Donnees::RequeteNorad(db, tle._elements.norad).first();
+
+                    // Correction eventuelle du nombre d'orbites a l'epoque
+                    tle._elements.nbOrbitesEpoque = GPFormat::CalculNombreOrbitesEpoque(tle._elements);
+                }
             }
 
             if (!mapElem.contains(tle._elements.norad)) {

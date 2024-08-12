@@ -30,7 +30,7 @@
  * >    5 juin 2022
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    12 aout 2024
  *
  */
 
@@ -116,10 +116,15 @@ QMap<QString, ElementsOrbitaux> GPFormat::Lecture(const QString &fichier,
                 // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
                 if (ajoutDonnees && db.isValid()) {
 
-                    elem.donnees = Donnees::RequeteNorad(db, elem.norad).first();
+                    const QList<Donnees> listeDonnees = Donnees::RequeteNorad(db, elem.norad);
+                    if (!listeDonnees.isEmpty()) {
 
-                    // Correction eventuelle du nombre d'orbites a l'epoque
-                    elem.nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
+                        // Recuperation des donnees satellite
+                        elem.donnees = listeDonnees.first();
+
+                        // Correction eventuelle du nombre d'orbites a l'epoque
+                        elem.nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
+                    }
                 }
 
                 mapElem.insert(elem.norad, elem);
@@ -162,10 +167,15 @@ QList<ElementsOrbitaux> GPFormat::LectureListeGP(const QString &fichier,
             if (!elem.norad.isEmpty() && db.isValid()) {
 
                 // Donnees relatives au satellite (pour des raisons pratiques elles sont stockees dans la map d'elements orbitaux)
-                elem.donnees = Donnees::RequeteNorad(db, elem.norad).first();
+                const QList<Donnees> listeDonnees = Donnees::RequeteNorad(db, elem.norad);
+                if (!listeDonnees.isEmpty()) {
 
-                // Correction eventuelle du nombre d'orbites a l'epoque
-                elem.nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
+                    // Recuperation des donnees satellite
+                    elem.donnees = Donnees::RequeteNorad(db, elem.norad).first();
+
+                    // Correction eventuelle du nombre d'orbites a l'epoque
+                    elem.nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
+                }
             }
 
             listeElem.append(elem);

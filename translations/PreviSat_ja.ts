@@ -5743,7 +5743,7 @@ ce qui représente environ %2 pages.</source>
         <location filename="../src/librairies/corps/etoiles/etoile.cpp" line="135"/>
         <location filename="../src/librairies/corps/etoiles/ligneconstellation.cpp" line="120"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="168"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="456"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="466"/>
         <location filename="../src/librairies/dates/date.cpp" line="411"/>
         <location filename="../src/librairies/systeme/fichierxml.cpp" line="102"/>
         <source>Erreur lors de l&apos;ouverture du fichier %1</source>
@@ -5766,26 +5766,26 @@ ce qui représente environ %2 pages.</source>
         <translation>星座線の表が初期化されていません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="504"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="514"/>
         <source>Le fichier %1 n&apos;est pas valide</source>
         <translation>ファイル「%1」が無効です</translation>
     </message>
     <message>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="160"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="445"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="455"/>
         <location filename="../src/librairies/systeme/fichierxml.cpp" line="89"/>
         <source>Le fichier %1 n&apos;existe pas ou est vide</source>
         <translation>ファイル「%1」が存在しないまたはファイルが空です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="366"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="376"/>
         <source>Le satellite %1 (numéro NORAD : %2) n&apos;existe pas dans le fichier à mettre à jour.
 Voulez-vous ajouter ce TLE dans le fichier à mettre à jour ?</source>
         <translation>衛星「%1」(NORAD番号 : %2)は更新するファイルに存在しません。
 このTLEを更新するファイルに追加しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="369"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="379"/>
         <source>Ajout du nouveau TLE</source>
         <translation>新しいTLEを追加する</translation>
     </message>
@@ -5798,84 +5798,84 @@ Souhaitez-vous tenter de récupérer les lieux d&apos;observation ?</source>
     </message>
     <message>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1071"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="339"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="372"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="349"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="382"/>
         <source>Oui</source>
         <translation>はい</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="340"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="373"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="350"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="383"/>
         <source>Oui à tout</source>
         <translation>すべてにはい</translation>
     </message>
     <message>
         <location filename="../src/configuration/gestionnairexml.cpp" line="1072"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="341"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="374"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="351"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="384"/>
         <source>Non</source>
         <translation>いいえ</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="342"/>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="375"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="352"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="385"/>
         <source>Non à tout</source>
         <translation>すべてにいいえ</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="333"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="343"/>
         <source>Le satellite %1 (numéro NORAD : %2) n&apos;existe pas dans le fichier de TLE récents.
 Voulez-vous supprimer ce TLE du fichier à mettre à jour ?</source>
         <translation>衛星「%1」(NORAD番号 : %2)は最近のTLEファイルに存在しません。
 更新するファイルからこのTLEを削除しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="268"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="278"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="288"/>
         <source>Le fichier %1 n&apos;est pas un TLE</source>
         <translation>ファイル「%1」はTLEファイルではありません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="336"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="346"/>
         <source>Suppression du TLE</source>
         <translation>TLEの削除</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="591"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="601"/>
         <source>Une des lignes du TLE est vide</source>
         <translation>TLEの1行が空です</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="596"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="606"/>
         <source>Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects</source>
         <translation>衛星「%1」(NORAD番号 : %2)のTLEは行番号が正しくありません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="603"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="613"/>
         <source>La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte</source>
         <translation>衛星「%1」(NORAD番号 : %2)のTLEは行の長さが正しくありません</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="613"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="623"/>
         <source>Erreur position des espaces du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>TLEの空白文字の位置によるエラー :
 衛星「%1」 - NORAD番号 : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="621"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="631"/>
         <source>Erreur Ponctuation du TLE :
 Satellite %1 - numéro NORAD : %2</source>
         <translation>TLEの約物によるエラー :
 衛星「%1」 - NORAD番号 : %2</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="628"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="638"/>
         <source>Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)</source>
         <translation>衛星「%1」のTLEの2行はNORAD番号が異なります (%2と%3)</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="634"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="644"/>
         <source>Erreur CheckSum ligne 1 :
 Satellite %1 - numéro NORAD : %2
 Valeur attendue : %3 - Valeur calculée : %4</source>
@@ -5884,7 +5884,7 @@ Valeur attendue : %3 - Valeur calculée : %4</source>
 TODO Expected value : %3 - Calculated value : %4</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/tle.cpp" line="639"/>
+        <location filename="../src/librairies/corps/satellite/tle.cpp" line="649"/>
         <source>Erreur CheckSum ligne 2 :
 Satellite %1 - numéro NORAD : %2
 Valeur attendue : %3 - Valeur calculée : %4</source>
