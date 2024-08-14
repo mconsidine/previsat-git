@@ -30,7 +30,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >    8 juillet 2024
+ * >    14 aout 2024
  *
  */
 
@@ -269,7 +269,7 @@ bool RechercheSatellite::eventFilter(QObject *watched, QEvent *event)
             const QString acronyme = _ui->siteLancementDonneesSat->text();
             const Observateur site = Configuration::instance()->mapSitesLancement()[acronyme];
 
-            emit AffichageSiteLancement(acronyme, site);
+            emit AffichageSiteLancement(acronyme, site, 10);
             emit AfficherMessageStatut(site.nomlieu(), 10);
             _ui->siteLancementDonneesSat->setToolTip(site.nomlieu());
 

@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    4 aout 2024
+ * >    14 aout 2024
  *
  */
 
@@ -118,6 +118,8 @@ Carte::Carte(QWidget *parent) :
 Carte::~Carte()
 {
     EFFACE_OBJET(scene);
+    EFFACE_OBJET(_timerCarte);
+
     delete _ui;
 }
 
@@ -434,32 +436,50 @@ void Carte::show()
 /*
  * Affichage de l'info bulle du site de lancement
  */
-void Carte::AffichageSiteLancement(const QString &acronyme, const Observateur &siteLancement)
+void Carte::AffichageSiteLancement(const QString &acronyme, const Observateur &siteLancement, const int secondes)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QPen crayon(Qt::white);
-    crayon.setCosmetic(true);
 
     /* Corps de la methode */
     show();
 
     if (!acronyme.isEmpty()) {
 
-        const int lobs = qRound(DEG2PX(180. - siteLancement.longitude() * MATHS::RAD2DEG))+1;
-        const int bobs = qRound(DEG2PX(90. - siteLancement.latitude() * MATHS::RAD2DEG))+1;
+        QPen crayon(Qt::white);
+        crayon.setCosmetic(true);
 
-        scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
-        scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
+        _messageSite = acronyme;
+
+        if ((_timerCarte != nullptr) && (_timerCarte->interval() > 0)) {
+
+            if (_timerCarte->isActive()) {
+                _timerCarte->stop();
+            }
+
+            _timerCarte->deleteLater();
+            _timerCarte = nullptr;
+        }
+
+        _timerCarte = new QTimer(this);
+        _timerCarte->setInterval(secondes * 1000);
+        connect(_timerCarte, &QTimer::timeout, this, &Carte::EffacerSiteLancement);
+        _timerCarte->start();
+
+        _lobs = qRound(DEG2PX(180. - siteLancement.longitude() * MATHS::RAD2DEG))+1;
+        _bobs = qRound(DEG2PX(90. - siteLancement.latitude() * MATHS::RAD2DEG))+1;
+
+        scene->addLine(_lobs-4, _bobs, _lobs+4, _bobs, crayon);
+        scene->addLine(_lobs, _bobs-4, _lobs, _bobs+4, crayon);
 
         QGraphicsSimpleTextItem * const txtObs = new QGraphicsSimpleTextItem(acronyme);
         const int lng = static_cast<int> (txtObs->boundingRect().width());
-        const int xnobs = ((lobs + 7 + lng) > _largeurCarte) ? lobs - lng - 1 : lobs + 4;
-        const int ynobs = ((bobs + 12) > _hauteurCarte) ? bobs - 12 : bobs;
+        _xnobs = ((_lobs + 7 + lng) > _largeurCarte) ? _lobs - lng - 1 : _lobs + 4;
+        _ynobs = ((_bobs + 12) > _hauteurCarte) ? _bobs - 12 : _bobs;
 
         txtObs->setBrush(Qt::white);
-        txtObs->setPos(xnobs, ynobs);
+        txtObs->setPos(_xnobs, _ynobs);
         scene->addItem(txtObs);
     }
 
@@ -961,6 +981,34 @@ void Carte::AffichageSatellites()
             etiquette->show();
         }
     }
+
+    if (!_messageSite.isEmpty()) {
+        AffichageSite();
+    }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Affichage de l'acronyme du site de lancement
+ */
+void Carte::AffichageSite()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QPen crayon(Qt::white);
+    crayon.setCosmetic(true);
+
+    /* Corps de la methode */
+    scene->addLine(_lobs-4, _bobs, _lobs+4, _bobs, crayon);
+    scene->addLine(_lobs, _bobs-4, _lobs, _bobs+4, crayon);
+
+    QGraphicsSimpleTextItem * const txtObs = new QGraphicsSimpleTextItem(_messageSite);
+    txtObs->setBrush(Qt::white);
+    txtObs->setPos(_xnobs, _ynobs);
+    scene->addItem(txtObs);
 
     /* Retour */
     return;
@@ -1753,6 +1801,15 @@ void Carte::AffichageZoneVisibilite()
 }
 
 /*
+ * Suppression de l'affichage du site de lancement
+ */
+void Carte::EffacerSiteLancement()
+{
+    _messageSite = "";
+    show();
+}
+
+/*
  * Determination de la couleur du point de la trace au sol
  */
 QColor Carte::CouleurTraceAuSol(const ElementsTraceSol &trace) const
@@ -1813,6 +1870,7 @@ void Carte::Initialisation()
     _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
 
     _resize = false;
+    _timerCarte = nullptr;
 
     // Chargement de la carte du monde
     scene = new QGraphicsScene;

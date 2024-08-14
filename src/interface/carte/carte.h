@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    4 aout 2024
+ * >    14 aout 2024
  *
  */
 
@@ -106,8 +106,9 @@ public slots:
      * @brief AffichageSiteLancement Affichage de l'info bulle du site de lancement
      * @param[in] acronyme acronyme
      * @param[in] siteLancement site de lancement
+     * @param[in] secondes temps d'affichage de l'info bulle
      */
-    void AffichageSiteLancement(const QString &acronyme, const Observateur &siteLancement);
+    void AffichageSiteLancement(const QString &acronyme, const Observateur &siteLancement, const int secondes);
 
     /**
      * @brief ChargementCarteDuMonde Chargement de la carte du monde
@@ -145,12 +146,18 @@ private:
     Ui::Carte *_ui;
     QGraphicsScene *scene;
     QLabel *etiquette;
+    QTimer *_timerCarte;
 
     bool _mcc;
     int _largeurCarte;
     int _hauteurCarte;
     QPixmap _pixMap;
     int _lsol;
+    QString _messageSite;
+    int _lobs;
+    int _bobs;
+    int _xnobs;
+    int _ynobs;
 
     double _largeurParalleles;
     double _hauteurMeridiens;
@@ -207,6 +214,11 @@ private:
     void AffichageSatellites();
 
     /**
+     * @brief AffichageSite Affichage de l'acronyme du site de lancement
+     */
+    void AffichageSite();
+
+    /**
      * @brief AffichageSoleil Affichage du Soleil
      */
     void AffichageSoleil();
@@ -230,6 +242,11 @@ private:
      * @brief AffichageZoneVisibilite Affichage de la zone de visibilite des satellites
      */
     void AffichageZoneVisibilite();
+
+    /**
+     * @brief EffacerSiteLancement Suppression de l'affichage du site de lancement
+     */
+    void EffacerSiteLancement();
 
     /**
      * @brief CouleurTraceAuSol Determination de la couleur du point de la trace au sol

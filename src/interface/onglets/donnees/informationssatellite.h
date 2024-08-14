@@ -36,7 +36,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >     27 aout 2022
+ * >     14 aout 2024
  *
  */
 
@@ -108,7 +108,7 @@ public slots:
 
 signals:
 
-    void AffichageSiteLancement(const QString &acronyme, const Observateur &site);
+    void AffichageSiteLancement(const QString &acronyme, const Observateur &site, const int secondes);
     void AfficherMessageStatut(const QString &message, const int secondes);
 
 
