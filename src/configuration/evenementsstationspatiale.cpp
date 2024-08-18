@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    10 juillet 2024
+ * >    18 aout 2024
  *
  */
 
@@ -134,8 +134,8 @@ EvenementsStation EvenementsStationSpatiale::LectureEvenementsStationSpatiale()
        qInfo() << QString("Lecture fichier %1 OK").arg(fi.nomfic());
 
     } catch (Exception const &e) {
-        qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic()).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic()).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
                             .arg(fi.nomfic()).arg(APP_NAME), MessageType::ERREUR);
     }
 

@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 avril 2023
+ * >    18 aout 2024
  *
  */
 
@@ -633,7 +633,7 @@ void Corps::Initialisation(const QString &dirCommonData)
     if (_tabConst.isEmpty()) {
 #if (!COVERAGE_TEST)
         const QFileInfo ff(fi.fileName());
-        throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
                                         .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
 #endif
     }

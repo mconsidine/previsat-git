@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    22 juillet 2024
+ * >    18 aout 2024
  *
  */
 
@@ -1102,16 +1102,16 @@ void Configuration::LectureConfiguration()
 
         if (_noradStationSpatiale.isEmpty() || _observateurs.isEmpty()) {
 
-            qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-            throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+            qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
                                 .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
         }
 
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
     } catch (Exception const &e) {
-        qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
                             .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
     }
 
@@ -1143,8 +1143,8 @@ void Configuration::LectureChainesNasa()
 
     if (_listeChainesNasa.isEmpty()) {
         const QFileInfo ff(fi.fileName());
-        qCritical() << QString("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de la lecture du fichier %1, veuillez réinstaller %2")
+        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
                             .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
     }
 
