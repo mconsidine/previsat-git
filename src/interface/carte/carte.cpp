@@ -769,7 +769,7 @@ void Carte::AffichageSatelliteDefaut(const Satellite &satellite, const int lsat,
     _sat.last()->setData(Qt::UserRole, satellite.elementsOrbitaux().norad);
 
     // Nom des satellites
-    if (settings.value("affichage/affnomsat").toUInt() != Qt::Unchecked) {
+    if ((settings.value("affichage/affnomsat").toUInt() != Qt::Unchecked) && !settings.value("affichage/afficone").toBool()) {
 
         const Qt::CheckState etat = static_cast<Qt::CheckState> (settings.value("affichage/affnomsat").toUInt());
         const bool affichageEtiquette = ((satellite.elementsOrbitaux().norad == Configuration::instance()->noradDefaut()) &&
