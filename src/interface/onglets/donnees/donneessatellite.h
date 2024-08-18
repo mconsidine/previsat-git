@@ -114,6 +114,7 @@ private:
     /*
      * Methodes privees
      */
+    bool eventFilter(QObject *watched, QEvent *event);
 
 
 };

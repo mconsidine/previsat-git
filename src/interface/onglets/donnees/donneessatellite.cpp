@@ -34,6 +34,7 @@
  *
  */
 
+#include "configuration/configuration.h"
 #include "donneessatellite.h"
 #include "librairies/corps/satellite/donnees.h"
 #include "librairies/corps/satellite/satellite.h"
@@ -64,6 +65,9 @@ DonneesSatellite::DonneesSatellite(QWidget *parent)
     , _ui(new Ui::DonneesSatellite)
 {
     _ui->setupUi(this);
+    _ui->siteLancement->installEventFilter(this);
+    _ui->pays->installEventFilter(this);
+    _ui->categorieOrbite->installEventFilter(this);
 }
 
 
@@ -252,4 +256,33 @@ void DonneesSatellite::show(const Donnees &donnees)
 /*
  * Methodes privees
  */
+bool DonneesSatellite::eventFilter(QObject *watched, QEvent *event)
+{
+    /* Declarations des variables locales */
 
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (event->type() == QEvent::MouseMove) {
+
+        if (_ui->siteLancement->underMouse()) {
+
+            const QString acronyme = _ui->siteLancement->text();
+            const Observateur site = Configuration::instance()->mapSitesLancement()[acronyme];
+            _ui->siteLancement->setToolTip(site.nomlieu());
+
+        } else if (_ui->pays->underMouse()) {
+
+            const QString pays = Configuration::instance()->mapPays()[_ui->pays->text()];
+            _ui->pays->setToolTip(pays);
+
+        } else if (_ui->categorieOrbite->underMouse()) {
+
+            const QString categorie = Configuration::instance()->mapCategoriesOrbite()[_ui->categorieOrbite->text()];
+            _ui->categorieOrbite->setToolTip(categorie);
+        }
+    }
+
+    /* Retour */
+    return QMainWindow::eventFilter(watched, event);
+}
