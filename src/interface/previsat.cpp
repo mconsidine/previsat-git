@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 aout 2024
+ * >    18 aout 2024
  *
  */
 
@@ -287,7 +287,7 @@ void PreviSat::MajGP()
 
             // Mise a jour des elements orbitaux anciens
             if ((fabs(_dateCourante->jourJulienUTC() - lastUpdate) > ageMax) ||
-                    ((_dateCourante->jourJulienUTC() - Configuration::instance()->mapElementsOrbitaux()[noradDefaut].epoque.jourJulienUTC()) > ageMax)) {
+                ((_dateCourante->jourJulienUTC() - Configuration::instance()->mapElementsOrbitaux()[noradDefaut].epoque.jourJulienUTC()) > ageMax)) {
 
                 MajWebGP();
                 ChargementGP();
@@ -430,8 +430,10 @@ void PreviSat::DemarrageApplication()
     }
 
     // Reinitialisation de la date courante
-    EFFACE_OBJET(_dateCourante);
-    InitDate();
+    if (_ui->tempsReel->isChecked()) {
+        EFFACE_OBJET(_dateCourante);
+        InitDate();
+    }
 
     // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
     EnchainementCalculs();
@@ -1398,7 +1400,7 @@ void PreviSat::VerifAgeGP()
 
         // Verification de l'age des elements orbitaux
         if ((fabs(_dateCourante->jourJulienUTC() - Configuration::instance()->mapElementsOrbitaux()[noradDefaut].epoque.jourJulienUTC()) > ageMax) &&
-                _ui->tempsReel->isChecked()) {
+            _ui->tempsReel->isChecked()) {
 
             const QString msg = tr("Les éléments orbitaux sont plus vieux que %1 jour(s). Souhaitez-vous les mettre à jour?");
 
@@ -1704,7 +1706,7 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
         const QString norad = it.key();
         const bool check = listeSatellites.contains(norad);
         const QString tooltip = tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>")
-                .arg(nomsat).arg(norad).arg(it.value().donnees.cospar());
+                                    .arg(nomsat).arg(norad).arg(it.value().donnees.cospar());
 
         // Affichage du numero NORAD
         switch (static_cast<Qt::CheckState> (settings.value("affichage/affNoradListes", Qt::Unchecked).toUInt())) {
@@ -2097,9 +2099,12 @@ void PreviSat::GestionTempsReel()
                 // Notification sonore pour l'AOS
                 if (_options->ui()->listeSons->currentIndex() < _options->ui()->listeSons->count()) {
 
-                    const QString nomSonAOS = (_options->ui()->listeSons->currentIndex() == 0) ?
-                                Configuration::instance()->dirCommonData() + QDir::separator() + "sound" + QDir::separator() + "aos-default.wav" :
-                                Configuration::instance()->dirSon() + QDir::separator() + "aos-" + _options->ui()->listeSons->currentText() + ".wav";
+                    const QString aosDefaut = Configuration::instance()->dirCommonData() + QDir::separator() + "sound" +
+                                              QDir::separator() + "aos-default.wav";
+                    const QString aosCourant = Configuration::instance()->dirSon() + QDir::separator() +
+                                               "aos-" + _options->ui()->listeSons->currentText() + ".wav";
+
+                    const QString nomSonAOS = (_options->ui()->listeSons->currentIndex() == 0) ? aosDefaut : aosCourant;
 
                     const QFileInfo ff(nomSonAOS);
                     if (ff.exists()) {
@@ -2117,9 +2122,12 @@ void PreviSat::GestionTempsReel()
                 // Notification sonore pour le LOS
                 if (_options->ui()->listeSons->currentIndex() < _options->ui()->listeSons->count()) {
 
-                    const QString nomSonLOS = (_options->ui()->listeSons->currentIndex() == 0) ?
-                                Configuration::instance()->dirCommonData() + QDir::separator() + "sound" + QDir::separator() + "los-default.wav" :
-                                Configuration::instance()->dirSon() + QDir::separator() + "los-" + _options->ui()->listeSons->currentText() + ".wav";
+                    const QString losDefaut = Configuration::instance()->dirCommonData() + QDir::separator() + "sound" +
+                                              QDir::separator() + "los-default.wav";
+                    const QString losCourant = Configuration::instance()->dirSon() + QDir::separator() +
+                                               "los-" + _options->ui()->listeSons->currentText() + ".wav";
+
+                    const QString nomSonLOS = (_options->ui()->listeSons->currentIndex() == 0) ? losDefaut : losCourant;
 
                     const QFileInfo ff(nomSonLOS);
                     if (ff.exists()) {
@@ -2301,7 +2309,8 @@ void PreviSat::MajFichierGP()
         _messageStatut->setText(tr("Mise à jour du fichier GP %1 en cours...").arg(ff.fileName()));
 
         const QString ficMaj = (ff.fileName().contains("spctrk")) ?
-                    QString("%1elem/%2").arg(DOMAIN_NAME).arg(ff.fileName()) : Configuration::instance()->adresseCelestrakNorad().arg(ff.baseName());
+                                   QString("%1elem/%2").arg(DOMAIN_NAME).arg(ff.fileName()) :
+                                   Configuration::instance()->adresseCelestrakNorad().arg(ff.baseName());
 
         tel.TelechargementFichier(QUrl(ficMaj));
         AfficherMessageStatut(tr("Téléchargement terminé"), 10);
@@ -2669,7 +2678,7 @@ void PreviSat::TempsReel()
         const QDateTime d = _dateCourante->ToQDateTime(DateFormatSec::FORMAT_SEC);
         _stsDate->setText(d.toString(tr("dd/MM/yyyy", "date format")));
         _stsHeure->setText(QLocale(Configuration::instance()->locale()).toString(d, QString("HH:mm:ss") +
-                                                                                 ((_options->ui()->syst12h->isChecked()) ? "a" : "")));
+                                                                                        ((_options->ui()->syst12h->isChecked()) ? "a" : "")));
         _stsDate->setToolTip(tr("Date"));
         _stsHeure->setToolTip(tr("Heure"));
     }
@@ -3136,7 +3145,7 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
 
                 // Cas d'un fichier GP
                 const QMap<QString, ElementsOrbitaux> mapElements =
-                        GPFormat::Lecture(fichier, Configuration::instance()->dbSatellites(), QStringList(), true, true);
+                    GPFormat::Lecture(fichier, Configuration::instance()->dbSatellites(), QStringList(), true, true);
 
                 if (mapElements.isEmpty()) {
 
@@ -3226,7 +3235,7 @@ void PreviSat::on_actionEnregistrer_triggered()
                                     << tr("onglet_elements", "file name (without accent)") << tr("onglet_informations", "file name (without accent)"));
 
         const QString nomFicDefaut = settings.value("fichier/sauvegarde", Configuration::instance()->dirOut()).toString() + QDir::separator() +
-                listeNoms.at(_onglets->currentIndex()) + ".txt";
+                                     listeNoms.at(_onglets->currentIndex()) + ".txt";
 
         const QString fichier = QFileDialog::getSaveFileName(this, tr("Enregistrer sous..."), nomFicDefaut,
                                                              tr("Fichiers texte (*.txt);;Tous les fichiers (*.*)"));
@@ -3440,17 +3449,21 @@ void PreviSat::on_actionMettre_a_jour_les_fichiers_de_donnees_triggered()
 
         if (!fic.contains("preferences", Qt::CaseInsensitive)) {
 
-            const QString fichier = QString("%1data/%2").arg(DOMAIN_NAME).arg(fic).replace(QDir::separator(), "/");
-            const QUrl url(fichier);
-            tel.TelechargementFichier(url, false, false);
+            try {
 
-            fi.setFileName(Configuration::instance()->dirTmp() + QDir::separator() + QFileInfo(fic).fileName());
+                const QString fichier = QString("%1data/%2").arg(DOMAIN_NAME).arg(fic).replace(QDir::separator(), "/");
+                const QUrl url(fichier);
+                tel.TelechargementFichier(url, false, false);
 
-            if (fi.exists() && (fi.size() > 0)) {
+                fi.setFileName(Configuration::instance()->dirTmp() + QDir::separator() + QFileInfo(fic).fileName());
 
-                fi2.setFileName(Configuration::instance()->dirLocalData() + QDir::separator() + fic);
-                fi2.remove();
-                fi.rename(fi2.fileName());
+                if (fi.exists() && (fi.size() > 0)) {
+
+                    fi2.setFileName(Configuration::instance()->dirLocalData() + QDir::separator() + fic);
+                    fi2.remove();
+                    fi.rename(fi2.fileName());
+                }
+            } catch (Exception const &e) {
             }
         }
     }
@@ -3689,7 +3702,7 @@ void PreviSat::on_listeSatellites_itemClicked(QListWidgetItem *item)
 
             QList<Satellite> &listeSatellites = Configuration::instance()->listeSatellites();
             const auto sat = std::find_if(listeSatellites.begin(), listeSatellites.end(), [norad](Satellite const &s) {
-                    return (s.elementsOrbitaux().norad == norad);
+                return (s.elementsOrbitaux().norad == norad);
             });
 
             if (sat != listeSatellites.end()) {
@@ -3796,7 +3809,7 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
         // Le satellite fait partie de la liste de satellites, on intervertit
         QList<Satellite> &listeSatellites = Configuration::instance()->listeSatellites();
         const auto sat = std::find_if(listeSatellites.begin(), listeSatellites.end(), [norad](Satellite const &s) {
-                return (s.elementsOrbitaux().norad == norad);
+            return (s.elementsOrbitaux().norad == norad);
         });
 
         if (sat != listeSatellites.end()) {
