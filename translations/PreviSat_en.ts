@@ -2006,12 +2006,12 @@ PreviSat is free !</translation>
         <translation>Propagation model :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.ui" line="572"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.ui" line="586"/>
         <source>Forme/Dimensions :</source>
         <translation>Shape/Dimensions :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.ui" line="592"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.ui" line="566"/>
         <source>Classe/Categorie/Discipline :</source>
         <translation>Class/Category/Discipline :</translation>
     </message>
@@ -2078,72 +2078,72 @@ PreviSat is free !</translation>
     <message>
         <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="117"/>
         <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="120"/>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="218"/>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="227"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="223"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="232"/>
         <source>Inconnue</source>
         <translation>Unknown</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="123"/>
         <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="126"/>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="205"/>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="211"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="210"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="216"/>
         <source>Inconnu</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="165"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="168"/>
         <source>SGP4 (DS)</source>
         <comment>Orbital model SGP4 (deep space)</comment>
         <translation>SGP4 (DS)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="165"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="168"/>
         <source>SGP4 (NE)</source>
         <comment>Orbital model SGP4 (near Earth)</comment>
         <translation>SGP4 (NE)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="166"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="169"/>
         <source>Non applicable</source>
         <translation>Not applicable</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="169"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="172"/>
         <source>Modèle haute orbite</source>
         <translation>High orbit model</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="169"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="172"/>
         <source>Modèle basse orbite</source>
         <translation>Low orbit model</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="177"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="180"/>
         <source>m</source>
         <comment>meter</comment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="178"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="181"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="191"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="194"/>
         <source>ft</source>
         <comment>foot</comment>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="192"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="195"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="197"/>
+        <location filename="../src/interface/onglets/donnees/donneessatellite.cpp" line="200"/>
         <source>Inconnues</source>
         <translation>Unknown</translation>
     </message>

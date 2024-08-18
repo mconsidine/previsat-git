@@ -135,7 +135,10 @@ void DonneesSatellite::show(const Donnees &donnees)
 
 
     // Classe, categorie et discipline
-    _ui->classeCategDiscip->setText(QString("%1 / %2 / %3").arg(donnees.classe()).arg(donnees.categorie()).arg(donnees.discipline()));
+    const QString classe = (donnees.classe().isEmpty()) ? "?" : donnees.classe();
+    const QString categorie = (donnees.categorie().isEmpty()) ? "?" : donnees.categorie();
+    const QString discipline = (donnees.discipline().isEmpty()) ? "?" : donnees.discipline();
+    _ui->classeCategDiscip->setText(QString("%1 / %2 / %3").arg(classe).arg(categorie).arg(discipline));
 
 
     double perigee = donnees.perigee();
@@ -198,6 +201,8 @@ void DonneesSatellite::show(const Donnees &donnees)
     } else {
         dimensions = QString("%1. %2 x %3 x %4 %5").arg(donnees.forme()).arg(t1, 0, 'f', 1).arg(t2, 0, 'f', 1).arg(t3, 0, 'f', 1).arg(unite1);
     }
+
+    _ui->dimensions->setText(dimensions);
 
     // Apogee/perigee/periode orbitale
     const QString fmt = "%1 %2 (%3 %2)";
