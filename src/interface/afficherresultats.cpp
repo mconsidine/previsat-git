@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    22 juillet 2024
+ * >    18 aout 2024
  *
  */
 
@@ -323,9 +323,9 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
         const QPointF centre = rect.center();
         const double angle = angleParallactique + ((settings.value("affichage/rotationLune").toBool() && (observateur.latitude() < 0.)) ? 180. : 0.);
 
-        const QTransform transform1 = QTransform().translate(centre.x() - pixlun.width() / 2, centre.y() - pixlun.height() / 2)
-                .rotate(angle).translate(-centre.x(), -centre.y());
-        lun->setTransform(transform1);
+        QTransform transform;
+        transform.translate(centre.x() - pixlun.width() / 2, centre.y() - pixlun.height() / 2).rotate(angle).translate(-centre.x(), -centre.y());
+        lun->setTransform(transform);
 
         // Dessin de la phase
         if (settings.value("affichage/affphaselune").toBool()) {
@@ -337,8 +337,9 @@ void AfficherResultats::AffichageDetailTransit(const Observateur &observateur, c
 
             QGraphicsPolygonItem * const omb = scene->addPolygon(poly, stylo, alpha);
 
-            const QTransform transform2 = QTransform().translate(-49, -8);
-            omb->setTransform(transform2);
+            transform.reset();
+            transform.translate(-49, -8);
+            omb->setTransform(transform);
             omb->setTransformOriginPoint(49, 8);
             omb->setRotation(angle);
         }
