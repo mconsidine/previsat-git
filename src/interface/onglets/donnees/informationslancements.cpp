@@ -154,7 +154,7 @@ void InformationsLancements::show()
 
         // Details
         itemDetails = new QTableWidgetItem(calendrier.commentaire);
-        itemDetails->setToolTip(calendrier.commentaire);
+        itemDetails->setToolTip("<html><div style=\"width: 500px;\">" + calendrier.commentaire + "</div></html>");
         itemDetails->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         itemDetails->setFlags(itemDetails->flags() & ~Qt::ItemIsEditable);
         _ui->lancements->setItem(j, 4, itemDetails);
