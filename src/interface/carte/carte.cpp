@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    14 aout 2024
+ * >    18 aout 2024
  *
  */
 
@@ -164,67 +164,43 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
     }
 
     // Survol d'un satellite avec le curseur
-    QListIterator it(Configuration::instance()->listeSatellites());
-    bool atrouve = false;
-    while (it.hasNext() && !atrouve) {
+    static bool asatellite = false;
 
-        const Satellite sat = it.next();
-        const int lsat = qRound(DEG2PX(180. - sat.longitude() * MATHS::RAD2DEG)) + 2;
-        const int bsat = qRound(DEG2PX(90. - sat.latitude() * MATHS::RAD2DEG)) + 2;
+    QListIterator it(_sat);
+    while (it.hasNext()) {
 
-        // Distance au carre du curseur au satellite
-        const int dt = (xCur - lsat) * (xCur - lsat) + (yCur - bsat) * (yCur - bsat);
+        const QGraphicsEllipseItem *p = it.next();
+        if (p != nullptr) {
+            if (p->isUnderMouse()) {
 
-        // Le curseur est au(dessus d'un satellite
-        if ((dt <= 16) && (sat.altitude() > 0.)) {
+                emit AfficherMessageStatut(p->data(Qt::ToolTipRole).toString());
+                setCursor(Qt::CrossCursor);
+                _ui->carte->viewport()->setCursor(Qt::CrossCursor);
+                asatellite = true;
+                it.toBack();
 
-            atrouve = true;
-            if (!settings.value("affichage/informationsSatelliteDefaut").toBool() ||
-                (sat.elementsOrbitaux().norad != Configuration::instance()->noradDefaut())) {
-
-                setToolTip(tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>")
-                               .arg(sat.elementsOrbitaux().nom)
-                               .arg(sat.elementsOrbitaux().norad)
-                               .arg(sat.elementsOrbitaux().cospar));
+            } else if (asatellite) {
+                emit EffacerMessageStatut();
+                setCursor(Qt::ArrowCursor);
+                _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
+                asatellite = false;
             }
-
-            emit AfficherMessageStatut(tr("<b>%1</b> (numéro NORAD : <b>%2</b>  -  COSPAR : <b>%3</b>)")
-                                           .arg(sat.elementsOrbitaux().nom)
-                                           .arg(sat.elementsOrbitaux().norad)
-                                           .arg(sat.elementsOrbitaux().cospar));
-
-            setCursor(Qt::CrossCursor);
-            _ui->carte->viewport()->setCursor(Qt::CrossCursor);
-
-        } else {
-
-            emit EffacerMessageStatut();
-            setToolTip("");
-            setCursor(Qt::ArrowCursor);
-            _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
         }
     }
 
     // Survol du Soleil avec le curseur
-    if (settings.value("affichage/affsoleil").toBool()) {
+    if (settings.value("affichage/affsoleil").toBool() && (_sol != nullptr)) {
 
         static bool asoleil = false;
-        const int lsol = qRound(DEG2PX(180. - Configuration::instance()->soleil().longitude() * MATHS::RAD2DEG)) + 2;
-        const int bsol = qRound(DEG2PX(90. - Configuration::instance()->soleil().latitude() * MATHS::RAD2DEG)) + 2;
 
-        // Distance au carre du curseur au Soleil
-        const int dt = (xCur - lsol) * (xCur - lsol) + (yCur - bsol) * (yCur - bsol);
-
-        // Le curseur est au-dessus du Soleil
-        if (dt <= 81) {
+        if (_sol->isUnderMouse() || ((_sol2 != nullptr) && _sol2->isUnderMouse())) {
             emit AfficherMessageStatut(tr("Soleil"));
-            setToolTip(tr("Soleil"));
             setCursor(Qt::CrossCursor);
             _ui->carte->viewport()->setCursor(Qt::CrossCursor);
             asoleil = true;
+
         } else if (asoleil) {
             emit EffacerMessageStatut();
-            setToolTip("");
             setCursor(Qt::ArrowCursor);
             _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
             asoleil = false;
@@ -232,26 +208,18 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
     }
 
     // Survol de la Lune avec le curseur
-    if (settings.value("affichage/afflune").toBool()) {
+    if (settings.value("affichage/afflune").toBool() && (_lun != nullptr)) {
 
         static bool alune = false;
-        const int llun = qRound(DEG2PX(180. - Configuration::instance()->lune().longitude() * MATHS::RAD2DEG)) + 2;
-        const int blun = qRound(DEG2PX(90. - Configuration::instance()->lune().latitude() * MATHS::RAD2DEG)) + 2;
 
-        // Distance au carre du curseur a la Lune
-        const int dt = (xCur - llun) * (xCur - llun) + (yCur - blun) * (yCur - blun);
-
-        // Le curseur est au-dessus de la Lune
-        if (dt <= 81) {
+        if (_lun->isUnderMouse() || ((_lun2 != nullptr) && _lun2->isUnderMouse())) {
             emit AfficherMessageStatut(tr("Lune"));
-            setToolTip(tr("Lune"));
             setCursor(Qt::CrossCursor);
             _ui->carte->viewport()->setCursor(Qt::CrossCursor);
             alune = true;
 
         } else if (alune) {
             emit EffacerMessageStatut();
-            setToolTip("");
             setCursor(Qt::ArrowCursor);
             _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
             alune = false;
@@ -271,44 +239,33 @@ void Carte::mousePressEvent(QMouseEvent *evt)
     /* Corps de la methode */
     if (evt->button() == Qt::LeftButton) {
 
-        const int xCur = static_cast<int> (evt->position().x() + 1);
-        const int yCur = static_cast<int> (evt->position().y() + 1);
-
         // Clic sur un satellite
-        QListIterator it(Configuration::instance()->listeSatellites());
-        bool atrouve = false;
-        int idx = 1;
-        while (it.hasNext() && !atrouve) {
+        QListIterator it(_sat);
+        it.toBack();
+        while (it.hasPrevious()) {
 
-            const Satellite sat = it.next();
-            const int lsat = qRound(DEG2PX(180. - sat.longitude() * MATHS::RAD2DEG)) + 2;
-            const int bsat = qRound(DEG2PX(90. - sat.latitude() * MATHS::RAD2DEG)) + 2;
+            const QGraphicsEllipseItem *p = it.previous();
 
-            // Distance au carre du curseur au satellite
-            const int dt = (xCur - lsat) * (xCur - lsat) + (yCur - bsat) * (yCur - bsat);
+            if ((p != nullptr) && p->isUnderMouse()) {
 
-            // Le curseur est au-dessus d'un satellite
-            if ((dt <= 16) && (sat.altitude() > 0.)) {
-
-                atrouve = true;
-
-                Configuration::instance()->listeSatellites().move(--idx, 0);
+                const QString norad = p->data(Qt::UserRole).toString();
                 QStringList &listeNorad = Configuration::instance()->mapSatellitesFichierElem()[Configuration::instance()->nomfic()];
-                listeNorad.move(idx, 0);
+
+                const int index = static_cast<int> (listeNorad.indexOf(norad));
+                Configuration::instance()->listeSatellites().move(index, 0);
+                listeNorad.move(index, 0);
 
                 // On definit le satellite choisi comme satellite par defaut
-                Configuration::instance()->noradDefaut() = sat.elementsOrbitaux().norad;
+                Configuration::instance()->noradDefaut() = Configuration::instance()->listeSatellites().at(index).elementsOrbitaux().norad;
                 emit ReinitFlags();
 
                 Configuration::instance()->notifAOS() = NotificationSonore::ATTENTE_LOS;
                 Configuration::instance()->notifFlashs() = NotificationSonore::ATTENTE_LOS;
 
                 emit RecalculerPositions();
-
                 Configuration::instance()->EcritureConfiguration();
+                it.toFront();
             }
-
-            idx++;
         }
     }
 
@@ -712,39 +669,41 @@ void Carte::AffichageLune()
         const int llun = qRound(DEG2PX(180. - Configuration::instance()->lune().longitude() * MATHS::RAD2DEG));
         const int blun = qRound(DEG2PX(90. - Configuration::instance()->lune().latitude() * MATHS::RAD2DEG));
 
-        QGraphicsPixmapItem * const lun = scene->addPixmap(pixlun);
-        lun->setTransformationMode(Qt::SmoothTransformation);
+        _lun = scene->addPixmap(pixlun);
+        _lun->setTransformationMode(Qt::SmoothTransformation);
 
         QTransform transform;
-        QTransform transform2;
         transform.translate(llun, blun);
         if (settings.value("affichage/rotationLune").toBool() && (Configuration::instance()->observateur().latitude() < 0.)) {
             transform.rotate(180.);
         }
 
         transform.translate(-8, -8);
-        lun->setTransform(transform);
+        _lun->setTransform(transform);
+        _lun->setToolTip(tr("Lune"));
 
         // Lune au niveau du meridien 180 degres, on duplique le dessin
         if (((llun + 7) > _largeurCarte) || ((llun - 7) < 0)) {
 
-            QGraphicsPixmapItem * const lun2 = scene->addPixmap(pixlun);
-            lun2->setTransformationMode(Qt::SmoothTransformation);
+            _lun2 = scene->addPixmap(pixlun);
+            _lun2->setTransformationMode(Qt::SmoothTransformation);
+            transform.reset();
 
             if ((llun + 7) > _largeurCarte) {
-                transform2.translate(llun - _largeurCarte, blun);
+                transform.translate(llun - _largeurCarte, blun);
             }
 
             if ((llun - 7) < 0) {
-                transform2.translate(llun + _largeurCarte, blun);
+                transform.translate(llun + _largeurCarte, blun);
             }
 
             if (settings.value("affichage/rotationLune").toBool() && (Configuration::instance()->observateur().latitude() < 0.)) {
-                transform2.rotate(180.);
+                transform.rotate(180.);
             }
 
-            transform2.translate(-7, -7);
-            lun2->setTransform(transform2);
+            transform.translate(-7, -7);
+            _lun2->setTransform(transform);
+            _lun2->setToolTip(tr("Lune"));
         }
 
         if (settings.value("affichage/affphaselune").toBool()) {
@@ -757,9 +716,9 @@ void Carte::AffichageLune()
             QGraphicsPolygonItem * const omb = scene->addPolygon(poly, stylo, alpha);
             omb->setTransform(transform);
 
-            if (!transform2.isIdentity()) {
+            if (!transform.isIdentity()) {
                 QGraphicsPolygonItem * const omb2 = scene->addPolygon(poly, stylo, alpha);
-                omb2->setTransform(transform2);
+                omb2->setTransform(transform);
             }
         }
     }
@@ -771,7 +730,7 @@ void Carte::AffichageLune()
 /*
  * Affichage par defaut d'un satellite (sans icone)
  */
-void Carte::AffichageSatelliteDefaut(const Satellite &satellite, const int lsat, const int bsat) const
+void Carte::AffichageSatelliteDefaut(const Satellite &satellite, const int lsat, const int bsat)
 {
     /* Declarations des variables locales */
     QColor couleur;
@@ -792,7 +751,22 @@ void Carte::AffichageSatelliteDefaut(const Satellite &satellite, const int lsat,
         couleur = Qt::yellow;
     }
 
-    scene->addEllipse(rectangle, noir, QBrush(couleur, Qt::SolidPattern));
+    _sat.append(scene->addEllipse(rectangle, noir, QBrush(couleur, Qt::SolidPattern)));
+    if (!settings.value("affichage/informationsSatelliteDefaut").toBool() ||
+        (satellite.elementsOrbitaux().norad != Configuration::instance()->noradDefaut())) {
+
+        _sat.last()->setToolTip(tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>")
+                                    .arg(satellite.elementsOrbitaux().nom)
+                                    .arg(satellite.elementsOrbitaux().norad)
+                                    .arg(satellite.elementsOrbitaux().cospar));
+    }
+
+    _sat.last()->setData(Qt::ToolTipRole, tr("<b>%1</b> (numéro NORAD : <b>%2</b>  -  COSPAR : <b>%3</b>)")
+                                           .arg(satellite.elementsOrbitaux().nom)
+                                           .arg(satellite.elementsOrbitaux().norad)
+                                           .arg(satellite.elementsOrbitaux().cospar));
+
+    _sat.last()->setData(Qt::UserRole, satellite.elementsOrbitaux().norad);
 
     // Nom des satellites
     if (settings.value("affichage/affnomsat").toUInt() != Qt::Unchecked) {
@@ -834,6 +808,7 @@ void Carte::AffichageSatellites()
     QGraphicsPixmapItem * pm2;
 
     /* Initialisations */
+    _sat.clear();
     const QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
 
     /* Corps de la methode */
@@ -847,6 +822,9 @@ void Carte::AffichageSatellites()
 
             const int lsat = qRound(DEG2PX(180. - sat.longitude() * MATHS::RAD2DEG))+1;
             const int bsat = qRound(DEG2PX(90. - sat.latitude() * MATHS::RAD2DEG))+1;
+
+            // Affichage par defaut
+            AffichageSatelliteDefaut(sat, lsat, bsat);
 
             if (_mcc || settings.value("affichage/afficone").toBool()) {
 
@@ -866,12 +844,7 @@ void Carte::AffichageSatellites()
                     listeIcones.replaceInStrings(QRegularExpression("^"), di.path() + QDir::separator());
                 }
 
-                if (listeIcones.isEmpty()) {
-
-                    // L'icone du satellite n'a pas ete trouvee, affichage par defaut
-                    AffichageSatelliteDefaut(sat, lsat, bsat);
-
-                } else {
+                if (!listeIcones.isEmpty()) {
 
                     // Affichage de l'icone satellite
                     img = QPixmap(listeIcones.first());
@@ -915,8 +888,6 @@ void Carte::AffichageSatellites()
                     transform.translate(-img.width() / 2, -img.height() / 2);
                     pm2->setTransform(transform);
                 }
-            } else {
-                AffichageSatelliteDefaut(sat, lsat, bsat);
             }
         }
     }
@@ -1045,15 +1016,16 @@ void Carte::AffichageSoleil()
             transform.translate(-8, -8);
         }
 
-        QGraphicsPixmapItem * const sol = scene->addPixmap(pixsol);
-        sol->setTransformationMode(Qt::SmoothTransformation);
-        sol->setTransform(transform);
+        _sol = scene->addPixmap(pixsol);
+        _sol->setTransformationMode(Qt::SmoothTransformation);
+        _sol->setTransform(transform);
+        _sol->setToolTip(tr("Soleil"));
 
         // Soleil au niveau du meridien 180 degres, on duplique le dessin
         if (((_lsol + 7) > _largeurCarte) || ((_lsol - 7) < 0)) {
 
-            QGraphicsPixmapItem * const sol2 = scene->addPixmap(pixsol);
-            sol2->setTransformationMode(Qt::SmoothTransformation);
+            _sol2 = scene->addPixmap(pixsol);
+            _sol2->setTransformationMode(Qt::SmoothTransformation);
             transform.reset();
 
             if ((_lsol + 7) > _largeurCarte) {
@@ -1065,7 +1037,8 @@ void Carte::AffichageSoleil()
             }
 
             transform.translate(-8, -8);
-            sol2->setTransform(transform);
+            _sol2->setTransform(transform);
+            _sol2->setToolTip(tr("Soleil"));
         }
     }
 
@@ -1871,6 +1844,10 @@ void Carte::Initialisation()
 
     _resize = false;
     _timerCarte = nullptr;
+    _sol = nullptr;
+    _sol2 = nullptr;
+    _lun = nullptr;
+    _lun2 = nullptr;
 
     // Chargement de la carte du monde
     scene = new QGraphicsScene;

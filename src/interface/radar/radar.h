@@ -36,7 +36,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    26 juillet 2022
+ * >    18 aout 2024
  *
  */
 
@@ -50,6 +50,8 @@ namespace Ui {
 class Radar;
 }
 
+class QGraphicsEllipseItem;
+class QGraphicsPixmapItem;
 class QGraphicsScene;
 
 class Radar : public QFrame
@@ -123,6 +125,9 @@ private:
      */
     Ui::Radar *_ui;
     QGraphicsScene *scene;
+    QGraphicsPixmapItem *_sol;
+    QGraphicsPixmapItem *_lun;
+    QList<QGraphicsEllipseItem *> _sat;
 
 
     /*

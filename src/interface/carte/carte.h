@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    14 aout 2024
+ * >    18 aout 2024
  *
  */
 
@@ -47,6 +47,8 @@
 #include "librairies/corps/satellite/satellite.h"
 
 
+class QGraphicsEllipseItem;
+class QGraphicsPixmapItem;
 class QGraphicsScene;
 class QLabel;
 class Date;
@@ -147,6 +149,11 @@ private:
     QGraphicsScene *scene;
     QLabel *etiquette;
     QTimer *_timerCarte;
+    QGraphicsPixmapItem *_sol;
+    QGraphicsPixmapItem *_sol2;
+    QGraphicsPixmapItem *_lun;
+    QGraphicsPixmapItem *_lun2;
+    QList<QGraphicsEllipseItem *> _sat;
 
     bool _mcc;
     int _largeurCarte;
@@ -201,7 +208,7 @@ private:
      * @param[in] lsat longitude du satellite, en pixels
      * @param[in] bsat latitude du satellite, en pixels
      */
-    void AffichageSatelliteDefaut(const Satellite &satellite, const int lsat, const int bsat) const;
+    void AffichageSatelliteDefaut(const Satellite &satellite, const int lsat, const int bsat);
 
     /**
      * @brief AffichageSAA_ZOE Affichage de la ZOE et de la SAA pour le Wall Command Center

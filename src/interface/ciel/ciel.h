@@ -36,7 +36,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    20 mars 2023
+ * >    18 aout 2024
  *
  */
 
@@ -56,6 +56,8 @@
 
 
 class QPolygonF;
+class QGraphicsEllipseItem;
+class QGraphicsPixmapItem;
 class QGraphicsScene;
 class Constellation;
 class Etoile;
@@ -178,6 +180,10 @@ private:
      */
     Ui::Ciel *_ui;
     QGraphicsScene *scene;
+    QGraphicsPixmapItem *_sol;
+    QGraphicsPixmapItem *_lun;
+    QHash<IndicePlanete, QGraphicsEllipseItem *> _pla;
+    QList<QGraphicsEllipseItem *> _sat;
 
     Observateur _observateur;
     QList<Satellite> _satellites;
