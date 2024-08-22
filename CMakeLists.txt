@@ -34,6 +34,7 @@
 #
 # Date de revision
 # >
+#
 
 cmake_minimum_required(VERSION 3.24)
 
@@ -275,15 +276,8 @@ else()
 
     qt_finalize_executable(${TARGET})
 
-    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS LinguistTools)
-    qt_add_translations(${TARGET}
-        TS_FILES translations/PreviSat_en.ts translations/PreviSat_ja.ts
-    )
-
-    add_dependencies(${TARGET} ${TARGET}_lupdate)
-    add_dependencies(${TARGET} update_translations)
-
     if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+
         set(RELEASE_FLAGS
             -Os
             -fbounds-check
@@ -301,7 +295,20 @@ else()
             -malign-double
             -s
         )
+
+        set(LANGUAGE_OPTIONS
+            -no-obsolete
+        )
     endif()
+
+    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS LinguistTools)
+    qt_add_translations(${TARGET}
+        TS_FILES translations/PreviSat_en.ts translations/PreviSat_ja.ts
+        LUPDATE_OPTIONS ${LANGUAGE_OPTIONS}
+    )
+
+    add_dependencies(${TARGET} ${TARGET}_lupdate)
+    add_dependencies(${TARGET} update_translations)
 endif()
 
 target_compile_options(${TARGET}

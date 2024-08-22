@@ -30,7 +30,7 @@
  * >    29 octobre 2019
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    22 aout 2024
  *
  */
 
@@ -38,6 +38,7 @@
 
 #include "generaltest.h"
 #include "configuration/configuration.h"
+#include "configuration/gestionnairexml.h"
 #include "interface/onglets/general/general.h"
 #include "interface/onglets/osculateurs/osculateurs.h"
 #include "librairies/corps/satellite/tle.h"
@@ -73,6 +74,7 @@ void GeneralTest::testSauveOngletGeneral()
     Date::Initialisation(dirLocalData);
 
     Configuration::instance()->OuvertureBaseDonneesSatellites();
+    Configuration::instance()->_mapNomsConstellations = GestionnaireXml::LectureNomsConstellations();
 
     const Date date(2020, 8, 15, 10, 0, 0., 2. / 24.);
 

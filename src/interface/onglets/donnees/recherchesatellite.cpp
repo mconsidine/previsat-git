@@ -30,7 +30,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >    14 aout 2024
+ * >    22 aout 2024
  *
  */
 
@@ -499,10 +499,9 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
 
         } else {
 
-            const QString dateRentree = donnees.dateRentree() + " " +
-                                        (((donnees.stsDateRentree() == '?') || (donnees.stsHeureRentree() == '?')) ? "?" : "");
+            QString dateRentree = donnees.dateRentree() + " " + (((donnees.stsDateRentree() == '?') || (donnees.stsHeureRentree() == '?')) ? "?" : "");
 
-            _ui->dateRentree->setText(dateRentree);
+            _ui->dateRentree->setText(dateRentree.replace("T", " "));
             _ui->lbl_dateRentree->setVisible(true);
             _ui->dateRentree->setVisible(true);
 

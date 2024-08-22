@@ -36,7 +36,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    22 juillet 2024
+ * >    22 aout 2024
  *
  */
 
@@ -64,6 +64,7 @@ class GestionnaireXml
     friend class FichierObs;
 #if (BUILD_TEST)
     friend class FlashsTest;
+    friend class GeneralTest;
 #endif
 public:
 

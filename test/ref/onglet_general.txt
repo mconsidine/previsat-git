@@ -9,7 +9,7 @@ Nom du satellite : ISS
 
 Longitude : 093° 11' 15" Ouest  	Hauteur    : -58° 31' 33"	Ascension droite :  23h 03m 51s
 Latitude  :  35° 34' 14" Sud		Azimut (N) : 248° 32' 47"	Déclinaison      : -50° 09' 53"
-Altitude  :  430.4 km     		Distance   : 11355.5 km   	Constellation    : Gru
+Altitude  :  430.4 km     		Distance   : 11355.5 km   	Constellation    : Grue
 
 Direction          : Ascendant  	Orbite n°124119
 Vitesse orbitale   :  7.653 km/s	Prochain N>J : 2020-08-15 12:05:06  (dans 05min 06s).   Beta : -037° 48'
@@ -17,20 +17,20 @@ Variation distance : -3.601 km/s  	Prochain AOS : 2020-08-15 12:26:25  (dans 26m
 
 
 Coordonnées du Soleil :
-Hauteur    : +47° 45' 52"		Ascension droite  :  09h 41m 28s 	Longitude                : 031° 06' 00" Est
-Azimut (N) : 136° 00' 03"		Déclinaison       : +13° 50' 59" 	Latitude                 : 13° 50' 15" Nord
-Distance   : 1.013 UA   		Constellation     : Leo			Diamètre apparent        : 31' 36"
+Hauteur    : +47° 45' 52"		Ascension droite  :  09h 41m 28s 		Longitude                : 031° 06' 00" Est
+Azimut (N) : 136° 00' 03"		Déclinaison       : +13° 50' 59" 		Latitude                 : 13° 50' 15" Nord
+Distance   : 1.013 UA   		Constellation     : Lion                     	Diamètre apparent        : 31' 36"
 
 Évènements Soleil :
-Lever    : 06h45			Aube astronomique : 04h34		Crépuscule civil         : 21h40
-Méridien : 13h55			Aube nautique     : 05h25		Crépuscule nautique      : 22h24
-Coucher  : 21h04			Aube civile       : 06h09		Crépuscule astronomique  : 23h14
+Lever    : 06h45			Aube astronomique : 04h34			Crépuscule civil         : 21h40
+Méridien : 13h55			Aube nautique     : 05h25			Crépuscule nautique      : 22h24
+Coucher  : 21h04			Aube civile       : 06h09			Crépuscule astronomique  : 23h14
 
 
 Coordonnées de la Lune :
-Hauteur    : +59° 56' 36"		Ascension droite :  06h 23m 38s 	Phase                    : Dernier croissant
-Azimut (N) : 220° 19' 19"		Déclinaison      : +23° 36' 36" 	Magnitude (Illumination) : -6.89 (16%)
-Distance   : 379864 km  		Constellation    : Gem 			Diamètre apparent        : 31' 27"
+Hauteur    : +59° 56' 36"		Ascension droite :  06h 23m 38s 		Phase                    : Dernier croissant
+Azimut (N) : 220° 19' 19"		Déclinaison      : +23° 36' 36" 		Magnitude (Illumination) : -6.89 (16%)
+Distance   : 379864 km  		Constellation    : Gémeaux                  	Diamètre apparent        : 31' 27"
 
 Évènements Lune :
 Lever    : 02h19

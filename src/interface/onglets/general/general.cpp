@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    3 aout 2024
+ * >    22 aout 2024
  *
  */
 
@@ -313,8 +313,8 @@ void General::AffichageDonneesSatellite(const Date &date)
     // Ascension droite/declinaison/constellation
     _ui->ascensionDroiteSat->setText(Maths::ToSexagesimal(satellite.ascensionDroite(), AngleFormatType::HEURE1, 2, 0, false, true).trimmed());
     _ui->declinaisonSat->setText(Maths::ToSexagesimal(satellite.declinaison(), AngleFormatType::DEGRE, 2, 0, true, true).trimmed());
-    _ui->constellationSat->setText(satellite.constellation());
-    _ui->constellationSat->setToolTip(Configuration::instance()->mapNomsConstellations()[satellite.constellation()][Configuration::instance()->locale()]);
+    _ui->constellationSat->setText(Configuration::instance()->mapNomsConstellations()[satellite.constellation()][Configuration::instance()->locale()]);
+    _ui->constellationSat->setToolTip(satellite.constellation());
 
     // Direction/vitesse/range rate
     _ui->directionSat->setText((satellite.vitesse().z() >= 0.) ? tr("Ascendant") : tr("Descendant"));
@@ -366,6 +366,7 @@ void General::AffichageDonneesSatellite(const Date &date)
                     } else if (_flashs->ui()->hauteurSoleilMetOp->currentIndex() == 5) {
                         crep = _flashs->ui()->valHauteurSoleilMetOp->text().toInt();
                     }
+
                     crep *= MATHS::DEG2RAD;
 
                     NotificationSonore notif = Configuration::instance()->notifFlashs();
@@ -420,6 +421,7 @@ void General::AffichageDonneesSatellite(const Date &date)
             EcritureInformationsEclipse(corpsOccultant, fractionIlluminee);
         }
     }
+
     _ui->magnitudeSat2->setText(_ui->magnitudeSat->text() + ".");
 
     // Prochaine transition jour/nuit
@@ -576,6 +578,7 @@ void General::AffichageDonneesSoleilLune()
     } else {
         cond = tr("Nuit");
     }
+
     _ui->conditionsObservation->setText(cond);
 
     /*
@@ -590,8 +593,8 @@ void General::AffichageDonneesSoleilLune()
     // Ascension droite/declinaison/constellation du Soleil
     _ui->ascensionDroiteSoleil->setText(Maths::ToSexagesimal(soleil.ascensionDroite(), AngleFormatType::HEURE1, 2, 0, false, true).trimmed());
     _ui->declinaisonSoleil->setText(Maths::ToSexagesimal(soleil.declinaison(), AngleFormatType::DEGRE, 2, 0, true, true).trimmed());
-    _ui->constellationSoleil->setText(soleil.constellation());
-    _ui->constellationSoleil->setToolTip(Configuration::instance()->mapNomsConstellations()[soleil.constellation()][Configuration::instance()->locale()]);
+    _ui->constellationSoleil->setText(Configuration::instance()->mapNomsConstellations()[soleil.constellation()][Configuration::instance()->locale()]);
+    _ui->constellationSoleil->setToolTip(soleil.constellation());
 
     // Longitude/latitude/diametre apparent
     const QString ews = (soleil.longitude() >= 0.) ? tr("Ouest") : tr("Est");
@@ -629,8 +632,8 @@ void General::AffichageDonneesSoleilLune()
     // Ascension droite/declinaison/constellation de la Lune
     _ui->ascensionDroiteLune->setText(Maths::ToSexagesimal(lune.ascensionDroite(), AngleFormatType::HEURE1, 2, 0, false, true).trimmed());
     _ui->declinaisonLune->setText(Maths::ToSexagesimal(lune.declinaison(), AngleFormatType::DEGRE, 2, 0, true, true).trimmed());
-    _ui->constellationLune->setText(lune.constellation());
-    _ui->constellationLune->setToolTip(Configuration::instance()->mapNomsConstellations()[lune.constellation()][Configuration::instance()->locale()]);
+    _ui->constellationLune->setText(Configuration::instance()->mapNomsConstellations()[lune.constellation()][Configuration::instance()->locale()]);
+    _ui->constellationLune->setToolTip(lune.constellation());
 
     // Phase/illumination/magnitude
     _ui->phaseLune->setText(lune.phase());
@@ -739,30 +742,6 @@ void General::AffichageVitesses(const Date &date, const bool enable)
 
     /* Retour */
     return;
-}
-
-bool General::eventFilter(QObject *watched, QEvent *event)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    if (event->type() == QEvent::MouseMove) {
-
-        if (_ui->constellationSat->underMouse()) {
-            emit AfficherMessageStatut(_ui->constellationSat->toolTip(), 5);
-
-        } else if (_ui->constellationSoleil->underMouse()) {
-            emit AfficherMessageStatut(_ui->constellationSoleil->toolTip(), 5);
-
-        } else if (_ui->constellationLune->underMouse()) {
-            emit AfficherMessageStatut(_ui->constellationLune->toolTip(), 5);
-        }
-    }
-
-    /* Retour */
-    return QFrame::eventFilter(watched, event);
 }
 
 void General::mouseDoubleClickEvent(QMouseEvent *evt)
@@ -918,42 +897,42 @@ void General::SauveOngletGeneral(const QString &fichier)
 
         // Donnees sur le Soleil
         flux << tr("Coordonnées du Soleil :") << Qt::endl;
-        chaine = tr("Hauteur    : %1\t\tAscension droite  :  %2 \tLongitude                : %3");
+        chaine = tr("Hauteur    : %1\t\tAscension droite  :  %2 \t\tLongitude                : %3");
         flux << chaine.arg(_ui->hauteurSoleil->text().trimmed()).arg(_ui->ascensionDroiteSoleil->text()).arg(_ui->longitudeSol->text().trimmed())
              << Qt::endl;
 
-        chaine = tr("Azimut (N) : %1\t\tDéclinaison       : %2 \tLatitude                 : %3", "Azimuth from the North");
+        chaine = tr("Azimut (N) : %1\t\tDéclinaison       : %2 \t\tLatitude                 : %3", "Azimuth from the North");
         flux << chaine.arg(_ui->azimutSoleil->text().trimmed()).arg(_ui->declinaisonSoleil->text()).arg(_ui->latitudeSol->text().trimmed())
              << Qt::endl;
 
-        chaine = tr("Distance   : %1   \t\tConstellation     : %2\t\t\tDiamètre apparent        : %3");
-        flux << chaine.arg(_ui->distanceSoleil->text()).arg(_ui->constellationSoleil->text()).arg(_ui->diametreApparentSol->text().trimmed())
-             << Qt::endl << Qt::endl;
+        chaine = tr("Distance   : %1   \t\tConstellation     : %2\tDiamètre apparent        : %3");
+        flux << chaine.arg(_ui->distanceSoleil->text()).arg(_ui->constellationSoleil->text().trimmed().leftJustified(25, ' '))
+                    .arg(_ui->diametreApparentSol->text().trimmed()) << Qt::endl << Qt::endl;
 
         flux << tr("Évènements Soleil :") << Qt::endl;
-        chaine = tr("Lever    : %1\t\t\tAube astronomique : %2\t\tCrépuscule civil         : %3", "Sunrise");
+        chaine = tr("Lever    : %1\t\t\tAube astronomique : %2\t\t\tCrépuscule civil         : %3", "Sunrise");
         flux << chaine.arg(_ui->leverSoleil->text().trimmed().leftJustified(5, ' ')).arg(_ui->aubeAstro->text().trimmed().leftJustified(5, ' '))
                     .arg(_ui->crepusculeCivil->text().trimmed().leftJustified(5, ' ')) << Qt::endl;
-        chaine = tr("Méridien : %1\t\t\tAube nautique     : %2\t\tCrépuscule nautique      : %3", "Meridian pass for the Sun");
+        chaine = tr("Méridien : %1\t\t\tAube nautique     : %2\t\t\tCrépuscule nautique      : %3", "Meridian pass for the Sun");
         flux << chaine.arg(_ui->meridienSoleil->text().trimmed().leftJustified(5, ' '))
                     .arg(_ui->aubeNautique->text().trimmed().leftJustified(5, ' '))
                     .arg(_ui->crepusculeNautique->text().trimmed().leftJustified(5, ' ')) << Qt::endl;
-        chaine = tr("Coucher  : %1\t\t\tAube civile       : %2\t\tCrépuscule astronomique  : %3", "Sunset");
+        chaine = tr("Coucher  : %1\t\t\tAube civile       : %2\t\t\tCrépuscule astronomique  : %3", "Sunset");
         flux << chaine.arg(_ui->coucherSoleil->text().trimmed().leftJustified(5, ' ')).arg(_ui->aubeCivile->text().trimmed().leftJustified(5, ' '))
                     .arg(_ui->crepusculeAstro->text().trimmed().leftJustified(5, ' ')) << Qt::endl << Qt::endl << Qt::endl;
 
 
         // Donnees sur la Lune
         flux << tr("Coordonnées de la Lune :") << Qt::endl;
-        chaine = tr("Hauteur    : %1\t\tAscension droite :  %2 \tPhase                    : %3", "Moon phase");
+        chaine = tr("Hauteur    : %1\t\tAscension droite :  %2 \t\tPhase                    : %3", "Moon phase");
         flux << chaine.arg(_ui->hauteurLune->text().trimmed()).arg(_ui->ascensionDroiteLune->text()).arg(_ui->phaseLune->text()) << Qt::endl;
 
-        chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2 \tMagnitude (Illumination) : %3", "Azimuth from the North");
+        chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2 \t\tMagnitude (Illumination) : %3", "Azimuth from the North");
         flux << chaine.arg(_ui->azimutLune->text().trimmed()).arg(_ui->declinaisonLune->text()).arg(_ui->magnitudeIllumLune->text()) << Qt::endl;
 
-        chaine = tr("Distance   : %1  \t\tConstellation    : %2 \t\t\tDiamètre apparent        : %3");
-        flux << chaine.arg(_ui->distanceLune->text()).arg(_ui->constellationLune->text()).arg(_ui->diametreApparentLune->text().trimmed())
-             << Qt::endl << Qt::endl;
+        chaine = tr("Distance   : %1  \t\tConstellation    : %2\tDiamètre apparent        : %3");
+        flux << chaine.arg(_ui->distanceLune->text()).arg(_ui->constellationLune->text().trimmed().leftJustified(25, ' '))
+                    .arg(_ui->diametreApparentLune->text().trimmed()) << Qt::endl << Qt::endl;
 
         flux << tr("Évènements Lune :") << Qt::endl;
         flux << tr("Lever    : %1", "Moonrise").arg(_ui->leverLune->text()) << Qt::endl;
@@ -999,10 +978,6 @@ void General::Initialisation()
 
     _ui->frameSimu->setVisible(false);
     _ui->pause->setEnabled(false);
-
-    _ui->constellationSat->installEventFilter(this);
-    _ui->constellationSoleil->installEventFilter(this);
-    _ui->constellationLune->installEventFilter(this);
 
     connect(_osculateurs, &Osculateurs::AffichageVitesses, this, &General::AffichageVitesses);
 

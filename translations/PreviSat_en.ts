@@ -2164,7 +2164,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="189"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="869"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="848"/>
         <source>Lieu d&apos;observation :</source>
         <translation>Name of location :</translation>
     </message>
@@ -2201,7 +2201,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="495"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="920"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="899"/>
         <source>Coordonnées du Soleil :</source>
         <translation>Sun coordinates :</translation>
     </message>
@@ -2250,7 +2250,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="743"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="947"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="926"/>
         <source>Coordonnées de la Lune :</source>
         <translation>Moon coordinates :</translation>
     </message>
@@ -2283,7 +2283,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1303"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="933"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="912"/>
         <source>Évènements Soleil :</source>
         <translation>Solar events :</translation>
     </message>
@@ -2345,7 +2345,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.ui" line="1437"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="958"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="937"/>
         <source>Évènements Lune :</source>
         <translation>Lunar events :</translation>
     </message>
@@ -2464,14 +2464,14 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="267"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="627"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="630"/>
         <source>km</source>
         <comment>Kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="267"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="627"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="630"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
@@ -2483,29 +2483,29 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="294"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="597"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="819"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="600"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="798"/>
         <source>Ouest</source>
         <translation>West</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="294"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="597"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="819"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="600"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="798"/>
         <source>Est</source>
         <translation>East</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="296"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="599"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="820"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="602"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="799"/>
         <source>Nord</source>
         <translation>North</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="296"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="599"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="820"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="602"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="799"/>
         <source>Sud</source>
         <translation>South</translation>
     </message>
@@ -2531,7 +2531,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="344"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="665"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="668"/>
         <source>Satellite en éclipse totale%1</source>
         <translation>Satellite in%1 total eclipse</translation>
     </message>
@@ -2541,344 +2541,344 @@ PreviSat is free !</translation>
         <translation>Magnitude (Illumination) : %1 (%2%)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="407"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="408"/>
         <source>S</source>
         <comment>Sun</comment>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="407"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="408"/>
         <source>L</source>
         <comment>Moon</comment>
         <translation>M</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="410"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="411"/>
         <source>P</source>
         <comment>partial eclipse</comment>
         <translation>P</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="414"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="415"/>
         <source>A</source>
         <comment>annular eclipse</comment>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="441"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="491"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="443"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="493"/>
         <source>Prochain %1 :</source>
         <translation>Next %1 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="443"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="445"/>
         <source>N&gt;J</source>
         <comment>Night to day</comment>
         <translation>N&gt;D</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="443"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="445"/>
         <source>J&gt;N</source>
         <comment>Day to night</comment>
         <translation>D&gt;N</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="444"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="446"/>
         <source>Nuit &gt; Jour</source>
         <translation>Night &gt; Day</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="444"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="446"/>
         <source>Jour &gt; Nuit</source>
         <translation>Day &gt; Night</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="459"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="513"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="461"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="515"/>
         <source>h</source>
         <comment>hour</comment>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="459"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="463"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="513"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="517"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="461"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="465"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="515"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="519"/>
         <source>min</source>
         <comment>minute</comment>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="463"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="517"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="465"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="519"/>
         <source>s</source>
         <comment>second</comment>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="494"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="496"/>
         <source>AOS</source>
         <translation>AOS</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="494"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="496"/>
         <source>Acquisition du signal</source>
         <translation>Acquisition of signal</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="494"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="496"/>
         <source>Perte du signal</source>
         <translation>Loss of signal</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="447"/>
-        <location filename="../src/interface/onglets/general/general.cpp" line="498"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="449"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="500"/>
         <source>%1  (dans %2).</source>
         <comment>Delay in hours, minutes or seconds</comment>
         <translation>%1  (in %2).</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="527"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="529"/>
         <source>Azimut : %1</source>
         <translation>Azimuth : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="543"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="545"/>
         <source>Beta : %1</source>
         <comment>Beta angle (angle between orbit plane and direction of Sun)</comment>
         <translation>Beta : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="577"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="579"/>
         <source>Nuit</source>
         <translation>Night</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="588"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="591"/>
         <source>%1 UA</source>
         <translation>%1 AU</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="668"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="671"/>
         <source>Satellite non éclipsé</source>
         <translation>Satellite not eclipsed</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="670"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="673"/>
         <source>Satellite en éclipse partielle%1</source>
         <translation>Satellite in%1 partial eclipse</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="673"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="676"/>
         <source>Satellite en éclipse annulaire%1</source>
         <translation>Satellite in%1 annular eclipse</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="709"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="712"/>
         <source>km/h</source>
         <comment>Kilometer per hour</comment>
         <translation>km/h</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="709"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="712"/>
         <source>km/s</source>
         <comment>Kilometer per second</comment>
         <translation>km/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="711"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="714"/>
         <source>kn</source>
         <comment>Knot</comment>
         <translation>kn</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="711"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="714"/>
         <source>nmi/s</source>
         <comment>Nautical mile per second</comment>
         <translation>nmi/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="828"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="807"/>
         <source>m</source>
         <comment>meter</comment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="828"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="807"/>
         <source>ft</source>
         <comment>foot</comment>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="855"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="834"/>
         <source>Problème de droits d&apos;écriture du fichier %1</source>
         <translation>Unable to write file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="867"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="846"/>
         <source>Date :</source>
         <comment>Date and hour</comment>
         <translation>Date :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="870"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="849"/>
         <source>Longitude  : %1	Latitude : %2	Altitude : %3</source>
         <comment>Observer coordinates</comment>
         <translation>Longitude  : %1	Latitude : %2	Altitude : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="872"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="851"/>
         <source>Conditions : %1</source>
         <comment>Conditions of observation</comment>
         <translation>Conditions : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="880"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="859"/>
         <source>Nom du satellite :</source>
         <translation>Name of satellite :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="898"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="877"/>
         <source>Vitesse orbitale   : %1	%2  %3</source>
         <translation>Orbital velocity : %1  	%2   %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="886"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="865"/>
         <source>Latitude  :  %1		Azimut (N) : %2	Déclinaison      : %3</source>
         <translation>Latitude  :  %1  	Azimuth (N) : %2		Declination      : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="894"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="873"/>
         <source>Direction          : %1  	%2      		%3</source>
         <translation>Direction        : %1    	%2      		%3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="908"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="887"/>
         <source>Variation distance : %1  	%2</source>
         <comment>Range rate</comment>
         <translation>Range rate       : %1  	%2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="959"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="900"/>
+        <source>Hauteur    : %1		Ascension droite  :  %2 		Longitude                : %3</source>
+        <translation>Elevation   : %1		Right ascension   :  %2 		Longitude                : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="904"/>
+        <source>Azimut (N) : %1		Déclinaison       : %2 		Latitude                 : %3</source>
+        <comment>Azimuth from the North</comment>
+        <translation>Azimuth (N) : %1 		Declination       : %2 		Latitude                 : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="908"/>
+        <source>Distance   : %1   		Constellation     : %2	Diamètre apparent        : %3</source>
+        <translation>Range       : %1   		Constellation     : %2	Apparent diameter        : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="913"/>
+        <source>Lever    : %1			Aube astronomique : %2			Crépuscule civil         : %3</source>
+        <comment>Sunrise</comment>
+        <translation>Sunrise  : %1			Astronomical dawn : %2			Civil twilight           : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="916"/>
+        <source>Méridien : %1			Aube nautique     : %2			Crépuscule nautique      : %3</source>
+        <comment>Meridian pass for the Sun</comment>
+        <translation>Meridian : %1			Nautical dawn     : %2			Nautical twilight        : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="920"/>
+        <source>Coucher  : %1			Aube civile       : %2			Crépuscule astronomique  : %3</source>
+        <comment>Sunset</comment>
+        <translation>Sunset   : %1			Civil dawn        : %2			Astronomical twilight    : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="927"/>
+        <source>Hauteur    : %1		Ascension droite :  %2 		Phase                    : %3</source>
+        <comment>Moon phase</comment>
+        <translation>Elevation   : %1		Right ascension   :  %2 		Phase                    : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="930"/>
+        <source>Azimut (N) : %1		Déclinaison      : %2 		Magnitude (Illumination) : %3</source>
+        <comment>Azimuth from the North</comment>
+        <translation>Azimuth (N) : %1		Declination       : %2 		Magnitude (Illumination) : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="933"/>
+        <source>Distance   : %1  		Constellation    : %2	Diamètre apparent        : %3</source>
+        <translation>Range       : %1   		Constellation     : %2	Apparent diameter        : %3</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="938"/>
         <source>Lever    : %1</source>
         <comment>Moonrise</comment>
         <translation>Moonrise : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="960"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="939"/>
         <source>Méridien : %1</source>
         <comment>Meridian pass for the Moon</comment>
         <translation>Meridian : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="961"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="940"/>
         <source>Coucher  : %1</source>
         <comment>Moonset</comment>
         <translation>Moonset  : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="569"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="571"/>
         <source>Jour</source>
         <comment>Sun is above horizon</comment>
         <translation>Day</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="571"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="573"/>
         <source>Crépuscule civil</source>
         <comment>Sun is 6 degrees below horizon</comment>
         <translation>Civil twilight</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="573"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="575"/>
         <source>Crépuscule nautique</source>
         <comment>Sun is 12 degrees below horizon</comment>
         <translation>Nautical twilight</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="575"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="577"/>
         <source>Crépuscule astronomique</source>
         <comment>Sun is 18 degrees below horizon</comment>
         <translation>Astronomical twilight</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="882"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="861"/>
         <source>Longitude : %1  	Hauteur    : %2	Ascension droite :  %3</source>
         <translation>Longitude : %1   	Elevation   : %2		Right ascension  :  %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="890"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="869"/>
         <source>Altitude  :  %1		Distance   : %2	Constellation    : %3</source>
         <comment>Altitude of satellite</comment>
         <translation>Altitude  :  %1		Range       : %2		Constellation    : %3</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="921"/>
-        <source>Hauteur    : %1		Ascension droite  :  %2 	Longitude                : %3</source>
-        <translation>Elevation   : %1		Right ascension   :  %2 	Longitude                : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="925"/>
-        <source>Azimut (N) : %1		Déclinaison       : %2 	Latitude                 : %3</source>
-        <comment>Azimuth from the North</comment>
-        <translation>Azimuth (N) : %1 		Declination       : %2 	Latitude                 : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="929"/>
-        <source>Distance   : %1   		Constellation     : %2			Diamètre apparent        : %3</source>
-        <translation>Range       : %1   		Constellation     : %2			Apparent diameter        : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="934"/>
-        <source>Lever    : %1			Aube astronomique : %2		Crépuscule civil         : %3</source>
-        <comment>Sunrise</comment>
-        <translation>Sunrise  : %1			Astronomical dawn : %2		Civil twilight           : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="937"/>
-        <source>Méridien : %1			Aube nautique     : %2		Crépuscule nautique      : %3</source>
-        <comment>Meridian pass for the Sun</comment>
-        <translation>Meridian : %1			Nautical dawn     : %2		Nautical twilight        : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="941"/>
-        <source>Coucher  : %1			Aube civile       : %2		Crépuscule astronomique  : %3</source>
-        <comment>Sunset</comment>
-        <translation>Sunset   : %1			Civil dawn        : %2		Astronomical twilight    : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="948"/>
-        <source>Hauteur    : %1		Ascension droite :  %2 	Phase                    : %3</source>
-        <comment>Moon phase</comment>
-        <translation>Elevation   : %1		Right ascension   :  %2 	Phase                    : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="951"/>
-        <source>Azimut (N) : %1		Déclinaison      : %2 	Magnitude (Illumination) : %3</source>
-        <comment>Azimuth from the North</comment>
-        <translation>Azimuth (N) : %1		Declination       : %2 	Magnitude (Illumination) : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="954"/>
-        <source>Distance   : %1  		Constellation    : %2 			Diamètre apparent        : %3</source>
-        <translation>Range       : %1   		Constellation     : %2			Apparent diameter        : %3</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="963"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="942"/>
         <source>Nouvelle Lune    : %1</source>
         <translation>New Moon      : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="964"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="943"/>
         <source>Premier quartier : %1</source>
         <translation>First quarter : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="965"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="944"/>
         <source>Pleine Lune      : %1</source>
         <translation>Full Moon     : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/general/general.cpp" line="966"/>
+        <location filename="../src/interface/onglets/general/general.cpp" line="945"/>
         <source>Dernier quartier : %1</source>
         <translation>Last quarter  : %1</translation>
     </message>
@@ -6279,6 +6279,7 @@ Expected value : %3 - Calculated value : %4</translation>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="504"/>
         <source>Date de rentrée :</source>
+        <translatorcomment>Date and hour</translatorcomment>
         <translation>Reentry date :</translation>
     </message>
     <message>
@@ -6426,8 +6427,8 @@ Expected value : %3 - Calculated value : %4</translation>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="381"/>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="467"/>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="473"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="524"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="527"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="523"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="526"/>
         <source>Inconnu</source>
         <translation>Unknown</translation>
     </message>
@@ -6436,7 +6437,7 @@ Expected value : %3 - Calculated value : %4</translation>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="480"/>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="489"/>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="492"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="521"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="520"/>
         <source>Inconnue</source>
         <translation>Unknown</translation>
     </message>
@@ -6492,12 +6493,12 @@ Expected value : %3 - Calculated value : %4</translation>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="510"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="509"/>
         <source>Date de rentrée incertaine</source>
         <translation>Uncertain decay date</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="513"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="512"/>
         <source>Heure de rentrée incertaine</source>
         <translation>Uncertain decay hour</translation>
     </message>

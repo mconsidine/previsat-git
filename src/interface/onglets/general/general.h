@@ -36,7 +36,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    3 aout 2024
+ * >    22 aout 2024
  *
  */
 
@@ -211,7 +211,6 @@ private slots:
      */
     void AffichageVitesses(const Date &date, const bool enable = false);
 
-    bool eventFilter(QObject *watched, QEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *evt);
 
     void on_dateHeure2_dateTimeChanged(const QDateTime &dateTime);
