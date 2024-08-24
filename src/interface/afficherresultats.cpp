@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    18 aout 2024
+ * >    23 aout 2024
  *
  */
 
@@ -1342,7 +1342,8 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
                 for(int k=0; k<kmax; k++) {
 
                     // Remplissage des elements d'une ligne
-                    itm = new QTableWidgetItem(elems.at(k).trimmed());
+                    const QString element = (k < elems.count()) ? elems.at(k).trimmed() : "";
+                    itm = new QTableWidgetItem(element);
                     itm->setTextAlignment(Qt::AlignCenter);
                     itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
 

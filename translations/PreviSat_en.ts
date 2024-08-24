@@ -382,72 +382,72 @@
         <translation>Range to the maximum</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1388"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1389"/>
         <source>Détail du passage</source>
         <translation>Pass details</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1392"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1393"/>
         <source>Détail du flash</source>
         <translation>Flare details</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1396"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1397"/>
         <source>Détail du transit ou conjonction</source>
         <translation>Transit or conjunction details</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1440"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1441"/>
         <source>Enregistrer sous</source>
         <translation>Save as</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1441"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1442"/>
         <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;Tous les fichiers (*.*)</source>
         <translation>PNG files (*.png);;JPEG files (*.jpg *.jpeg);;BMP files (*.bmp);;All files (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1471"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1472"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*.*)</source>
         <translation>Text files (*.txt);;All files (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1537"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1538"/>
         <source>   Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang  Type Corps Ill Durée  Altitude  Distance  Az Soleil  Haut Soleil   Long Max    Lat Max     Distance</source>
         <comment>Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, Angle, Type, Body, Illumination, Duration, Altitude of satellite, Range, Solar azimuth, Solar elevation, Longitude of the maximum, Latitude of the maximum, Range from the maximum</comment>
         <translation>   Date        Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang  Type Body  Ill  Dur  Altitude     Range   Sun Azim   Sun Elev     Max Long    Max Lat       Range</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1470"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1471"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1508"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1509"/>
         <source>(numéro NORAD : %1)</source>
         <translation>(NORAD number : %1)</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1516"/>
-        <location filename="../src/interface/afficherresultats.cpp" line="1547"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1517"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1548"/>
         <source>   Date      Heure    Azimut Sat Hauteur Sat  AD Sat    Decl Sat  Const Magn  Altitude  Distance  Az Soleil  Haut Soleil</source>
         <comment>Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation</comment>
         <translation>   Date      Hour    Sat Azimuth  Sat Elev    RA Sat    Decl Sat  Const Magn  Altitude     Range   Sun Azim   Sun Elev</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1525"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1526"/>
         <source>Satellite     Date      Heure      Azimut Sat Hauteur Sat  AD Sat    Decl Sat   Cst  Ang   Mir Magn       Alt      Dist  Az Soleil  Haut Soleil   Long Max    Lat Max    Magn Max  Distance</source>
         <comment>Satellite, Date, Hour, Satellite azimuth, Satellite elevation, Satellite right ascension, Satellite declination, Constellation, Angle, Mirror, Magnitude, Altitude of satellite, Range, Solar azimuth, Solar elevation, Longitude of the maximum, Latitude of the maximum, Magnitude at the maximum, Range from the maximum</comment>
         <translation>Satellite     Date       Hour     Sat Azimuth  Sat Elev    RA Sat    Decl Sat   Cst  Ang   Mir Magn       Alt     Range  Sun Azim   Sun Elev     Max Long    Max Lat     Max Magn  Range</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1556"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1557"/>
         <source>   Date      Heure     PSO    Longitude  Latitude  Évènements</source>
         <comment>Date, Hour, In orbit position, Longitude, Latitude, Events</comment>
         <translation>   Date      Hour    Position Longitude  Latitude  Events</translation>
     </message>
     <message>
-        <location filename="../src/interface/afficherresultats.cpp" line="1688"/>
+        <location filename="../src/interface/afficherresultats.cpp" line="1689"/>
         <source>Temps écoulé : %1s</source>
         <translation>Elapsed time : %1s</translation>
     </message>
@@ -3196,6 +3196,7 @@ click on &apos;Update ISS information&apos;</translation>
     <message>
         <location filename="../src/interface/onglets/donnees/informationssatellite.ui" line="487"/>
         <source>Date de lancement :</source>
+        <translatorcomment>Date and hour</translatorcomment>
         <translation>Launch date :</translation>
     </message>
     <message>
@@ -6274,6 +6275,7 @@ Expected value : %3 - Calculated value : %4</translation>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="494"/>
         <source>Date de lancement :</source>
+        <translatorcomment>Date and hour</translatorcomment>
         <translation>Launch date :</translation>
     </message>
     <message>
@@ -6366,11 +6368,13 @@ Expected value : %3 - Calculated value : %4</translation>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="139"/>
         <source>Date de lancement  : %1</source>
+        <translatorcomment>Date and hour</translatorcomment>
         <translation>Launch date : %1</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="142"/>
         <source>Date de rentrée    : %1</source>
+        <translatorcomment>Date and hour</translatorcomment>
         <translation>Decay date    : %1</translation>
     </message>
     <message>
