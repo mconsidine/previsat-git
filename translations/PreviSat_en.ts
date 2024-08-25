@@ -5604,13 +5604,13 @@ which represents approximately %2 pages.</translation>
         <location filename="../src/configuration/gestionnairexml.cpp" line="374"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="423"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="481"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="575"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="627"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="684"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="735"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="834"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="888"/>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="943"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="577"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="629"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="686"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="737"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="836"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="890"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="945"/>
         <location filename="../src/librairies/corps/corps.cpp" line="636"/>
         <source>Erreur lors de l&apos;ouverture du fichier %1, veuillez réinstaller %2</source>
         <translation>Error while opening file %1, please re-install %2</translation>
@@ -5805,7 +5805,7 @@ Souhaitez-vous tenter de récupérer les lieux d&apos;observation ?</source>
 Do you want to try to recover the places of location ?</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1070"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1072"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="349"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="382"/>
         <source>Oui</source>
@@ -5818,7 +5818,7 @@ Do you want to try to recover the places of location ?</translation>
         <translation>Yes to all</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1071"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1073"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="351"/>
         <location filename="../src/librairies/corps/satellite/tle.cpp" line="384"/>
         <source>Non</source>
@@ -5985,7 +5985,7 @@ Expected value : %3 - Calculated value : %4</translation>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../src/configuration/gestionnairexml.cpp" line="1069"/>
+        <location filename="../src/configuration/gestionnairexml.cpp" line="1071"/>
         <location filename="../src/librairies/exceptions/message.cpp" line="77"/>
         <source>Avertissement</source>
         <translation>Warning</translation>

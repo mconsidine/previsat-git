@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    18 aout 2024
+ * >    25 aout 2024
  *
  */
 
@@ -568,7 +568,9 @@ QMap<QString, QMap<QString, QString> > GestionnaireXml::LectureNomsConstellation
             mapNomsConstellations.insert(acronyme, mapNom);
         }
 
+#if (!BUILD_TEST)
         qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+#endif
 
     } catch (Exception const &e) {
         qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
