@@ -3102,43 +3102,43 @@ click on &apos;Update ISS information&apos;</translation>
         <translation>Downloading finished</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="62"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="65"/>
         <source>Nom</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="72"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="75"/>
         <source>Norad</source>
         <translation>Norad</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="82"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="85"/>
         <source>COSPAR</source>
         <translation>COSPAR</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="92"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="95"/>
         <source>Date de rentrée</source>
         <extracomment>Date and hour</extracomment>
         <translation>Decay date</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="102"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="105"/>
         <source>Taille</source>
         <translation>Size</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="112"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="115"/>
         <source>Pays</source>
         <translation>Country</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="122"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="125"/>
         <source>Type de message</source>
         <translation>Type of message</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="141"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="144"/>
         <source>Mettre à jour les informations de rentrées...</source>
         <translation>Update decay information...</translation>
     </message>
