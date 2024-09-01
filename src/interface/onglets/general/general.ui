@@ -26,10 +26,10 @@
    <bool>true</bool>
   </property>
   <property name="frameShape">
-   <enum>QFrame::NoFrame</enum>
+   <enum>QFrame::Shape::NoFrame</enum>
   </property>
   <property name="frameShadow">
-   <enum>QFrame::Plain</enum>
+   <enum>QFrame::Shadow::Plain</enum>
   </property>
   <widget class="QStackedWidget" name="dateHeure">
    <property name="geometry">
@@ -41,10 +41,10 @@
     </rect>
    </property>
    <property name="frameShape">
-    <enum>QFrame::NoFrame</enum>
+    <enum>QFrame::Shape::NoFrame</enum>
    </property>
    <property name="frameShadow">
-    <enum>QFrame::Plain</enum>
+    <enum>QFrame::Shadow::Plain</enum>
    </property>
    <property name="currentIndex">
     <number>0</number>
@@ -64,7 +64,7 @@
      </property>
      <layout class="QFormLayout" name="formLayout_dateHeure1">
       <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
+       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
       </property>
       <property name="horizontalSpacing">
        <number>3</number>
@@ -143,10 +143,10 @@
       <item row="0" column="1">
        <widget class="QDateTimeEdit" name="dateHeure2">
         <property name="buttonSymbols">
-         <enum>QAbstractSpinBox::NoButtons</enum>
+         <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
         </property>
         <property name="currentSection">
-         <enum>QDateTimeEdit::NoSection</enum>
+         <enum>QDateTimeEdit::Section::DaySection</enum>
         </property>
         <property name="displayFormat">
          <string>dddd dd MMMM yyyy HH:mm:ss</string>
@@ -348,10 +348,10 @@
     </rect>
    </property>
    <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
+    <enum>QFrame::Shape::StyledPanel</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QWidget" name="formLayoutWidget_7">
@@ -359,16 +359,16 @@
       <rect>
        <x>3</x>
        <y>72</y>
-       <width>182</width>
+       <width>201</width>
        <height>52</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout_equatSol">
       <property name="sizeConstraint">
-       <enum>QLayout::SetFixedSize</enum>
+       <enum>QLayout::SizeConstraint::SetFixedSize</enum>
       </property>
       <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
       <property name="horizontalSpacing">
        <number>3</number>
@@ -427,10 +427,10 @@
          <string notr="true">00h 00m 00s</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="indent">
-         <number>2</number>
+         <number>7</number>
         </property>
        </widget>
       </item>
@@ -446,10 +446,10 @@
          <string notr="true">+00° 00' 00&quot;</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="indent">
-         <number>8</number>
+         <number>0</number>
         </property>
        </widget>
       </item>
@@ -465,7 +465,7 @@
          <string notr="true">And</string>
         </property>
         <property name="indent">
-         <number>8</number>
+         <number>0</number>
         </property>
        </widget>
       </item>
@@ -506,10 +506,10 @@
      </property>
      <layout class="QFormLayout" name="formLayout_lontlatSol">
       <property name="sizeConstraint">
-       <enum>QLayout::SetFixedSize</enum>
+       <enum>QLayout::SizeConstraint::SetFixedSize</enum>
       </property>
       <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
       <property name="horizontalSpacing">
        <number>3</number>
@@ -617,10 +617,10 @@
      </property>
      <layout class="QFormLayout" name="formLayout_topoSoleil">
       <property name="sizeConstraint">
-       <enum>QLayout::SetFixedSize</enum>
+       <enum>QLayout::SizeConstraint::SetFixedSize</enum>
       </property>
       <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
       <property name="horizontalSpacing">
        <number>3</number>
@@ -679,7 +679,7 @@
          <string notr="true">+00° 00' 00&quot;</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -695,7 +695,7 @@
          <string notr="true">000° 00' 00&quot;</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -748,16 +748,16 @@
       <rect>
        <x>3</x>
        <y>72</y>
-       <width>180</width>
+       <width>201</width>
        <height>52</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout_equatLune">
       <property name="sizeConstraint">
-       <enum>QLayout::SetFixedSize</enum>
+       <enum>QLayout::SizeConstraint::SetFixedSize</enum>
       </property>
       <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
       <property name="horizontalSpacing">
        <number>3</number>
@@ -816,7 +816,7 @@
          <string notr="true">00h 00m 00s</string>
         </property>
         <property name="indent">
-         <number>6</number>
+         <number>7</number>
         </property>
        </widget>
       </item>
@@ -830,6 +830,9 @@
         </property>
         <property name="text">
          <string notr="true">+00° 00' 00&quot;</string>
+        </property>
+        <property name="indent">
+         <number>0</number>
         </property>
        </widget>
       </item>
@@ -845,7 +848,7 @@
          <string notr="true">And</string>
         </property>
         <property name="indent">
-         <number>8</number>
+         <number>0</number>
         </property>
        </widget>
       </item>
@@ -862,10 +865,10 @@
      </property>
      <layout class="QFormLayout" name="formLayout_topoLune">
       <property name="sizeConstraint">
-       <enum>QLayout::SetFixedSize</enum>
+       <enum>QLayout::SizeConstraint::SetFixedSize</enum>
       </property>
       <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
       <property name="horizontalSpacing">
        <number>3</number>
@@ -924,7 +927,7 @@
          <string notr="true">+00° 00' 00&quot;</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -940,7 +943,7 @@
          <string notr="true">000° 00' 00&quot;</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -973,10 +976,10 @@
      </property>
      <layout class="QFormLayout" name="formLayout_phaseLune">
       <property name="sizeConstraint">
-       <enum>QLayout::SetFixedSize</enum>
+       <enum>QLayout::SizeConstraint::SetFixedSize</enum>
       </property>
       <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
       <property name="horizontalSpacing">
        <number>3</number>
@@ -1083,7 +1086,7 @@
      </property>
      <layout class="QFormLayout" name="formLayout_aubes">
       <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
       <property name="horizontalSpacing">
        <number>3</number>
@@ -1148,7 +1151,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1170,7 +1173,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1186,7 +1189,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1215,7 +1218,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1244,7 +1247,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1273,7 +1276,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1314,10 +1317,10 @@
      </property>
      <layout class="QFormLayout" name="formLayout_leverCoucherSoleil">
       <property name="sizeConstraint">
-       <enum>QLayout::SetFixedSize</enum>
+       <enum>QLayout::SizeConstraint::SetFixedSize</enum>
       </property>
       <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
       <property name="horizontalSpacing">
        <number>3</number>
@@ -1376,7 +1379,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1392,7 +1395,7 @@
          <string notr="true">12:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1448,10 +1451,10 @@
      </property>
      <layout class="QFormLayout" name="formLayout_leverCoucherLune">
       <property name="sizeConstraint">
-       <enum>QLayout::SetFixedSize</enum>
+       <enum>QLayout::SizeConstraint::SetFixedSize</enum>
       </property>
       <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
       <property name="horizontalSpacing">
        <number>3</number>
@@ -1510,7 +1513,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1526,7 +1529,7 @@
          <string notr="true">06:00</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1642,7 +1645,7 @@
     <bool>true</bool>
    </property>
    <property name="arrowType">
-    <enum>Qt::LeftArrow</enum>
+    <enum>Qt::ArrowType::LeftArrow</enum>
    </property>
   </widget>
   <widget class="QToolButton" name="soleilLuneSuiv">
@@ -1661,7 +1664,7 @@
     <bool>true</bool>
    </property>
    <property name="arrowType">
-    <enum>Qt::RightArrow</enum>
+    <enum>Qt::ArrowType::RightArrow</enum>
    </property>
   </widget>
   <widget class="QFrame" name="frame_satellite">
@@ -1674,10 +1677,10 @@
     </rect>
    </property>
    <property name="frameShape">
-    <enum>QFrame::NoFrame</enum>
+    <enum>QFrame::Shape::NoFrame</enum>
    </property>
    <property name="frameShadow">
-    <enum>QFrame::Plain</enum>
+    <enum>QFrame::Shadow::Plain</enum>
    </property>
    <widget class="QWidget" name="formLayoutWidget_20">
     <property name="geometry">
@@ -1690,10 +1693,10 @@
     </property>
     <layout class="QFormLayout" name="formLayout_topoSat">
      <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
+      <enum>QLayout::SizeConstraint::SetFixedSize</enum>
      </property>
      <property name="labelAlignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="horizontalSpacing">
       <number>3</number>
@@ -1752,7 +1755,7 @@
         <string notr="true">+00° 00' 00&quot;</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -1768,7 +1771,7 @@
         <string notr="true">000° 00' 00&quot;</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -1801,10 +1804,10 @@
     </property>
     <layout class="QFormLayout" name="formLayout_lla">
      <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
+      <enum>QLayout::SizeConstraint::SetFixedSize</enum>
      </property>
      <property name="labelAlignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="horizontalSpacing">
       <number>3</number>
@@ -1903,16 +1906,16 @@
      <rect>
       <x>330</x>
       <y>30</y>
-      <width>170</width>
+      <width>241</width>
       <height>52</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout_equatSat">
      <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
+      <enum>QLayout::SizeConstraint::SetFixedSize</enum>
      </property>
      <property name="labelAlignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="horizontalSpacing">
       <number>3</number>
@@ -1971,10 +1974,10 @@
         <string notr="true">00h 00m 00s</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
        <property name="indent">
-        <number>2</number>
+        <number>7</number>
        </property>
       </widget>
      </item>
@@ -1990,10 +1993,7 @@
         <string notr="true">+00° 00' 00&quot;</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="indent">
-        <number>8</number>
+        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -2006,10 +2006,10 @@
         <bool>true</bool>
        </property>
        <property name="text">
-        <string notr="true">And</string>
+        <string notr="true">Chevelure de Bérénice</string>
        </property>
        <property name="indent">
-        <number>8</number>
+        <number>0</number>
        </property>
       </widget>
      </item>
@@ -2026,10 +2026,10 @@
     </property>
     <layout class="QFormLayout" name="formLayout_deplacementSat">
      <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
+      <enum>QLayout::SizeConstraint::SetFixedSize</enum>
      </property>
      <property name="labelAlignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="horizontalSpacing">
       <number>3</number>
@@ -2088,7 +2088,7 @@
         <string notr="true">Descendant</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
        <property name="indent">
         <number>2</number>
@@ -2110,7 +2110,7 @@
         <string notr="true">7.777 km/s</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
        <property name="indent">
         <number>2</number>
@@ -2132,7 +2132,7 @@
         <string notr="true">+28000 km/h</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
        <property name="indent">
         <number>2</number>
@@ -2252,7 +2252,7 @@
           <string notr="true">Azimut : 000° 00'</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
         </widget>
        </item>
@@ -2262,7 +2262,7 @@
           <string notr="true">Beta : 000° 00'</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
         </widget>
        </item>
@@ -2341,7 +2341,7 @@
           <string notr="true">Beta : 000° 00'</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
          <property name="indent">
           <number>6</number>
@@ -2395,7 +2395,7 @@
           <string notr="true">Azimut : 000° 00'</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
         </widget>
        </item>
@@ -2523,10 +2523,10 @@
     <bool>true</bool>
    </property>
    <property name="frameShape">
-    <enum>QFrame::NoFrame</enum>
+    <enum>QFrame::Shape::NoFrame</enum>
    </property>
    <property name="frameShadow">
-    <enum>QFrame::Plain</enum>
+    <enum>QFrame::Shadow::Plain</enum>
    </property>
    <widget class="QPushButton" name="backward">
     <property name="geometry">

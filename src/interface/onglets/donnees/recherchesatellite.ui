@@ -14,10 +14,10 @@
    <string notr="true"/>
   </property>
   <property name="frameShape">
-   <enum>QFrame::NoFrame</enum>
+   <enum>QFrame::Shape::NoFrame</enum>
   </property>
   <property name="frameShadow">
-   <enum>QFrame::Plain</enum>
+   <enum>QFrame::Shadow::Plain</enum>
   </property>
   <widget class="QListWidget" name="satellitesTrouves">
    <property name="geometry">
@@ -35,10 +35,10 @@
     <bool>true</bool>
    </property>
    <property name="contextMenuPolicy">
-    <enum>Qt::CustomContextMenu</enum>
+    <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
    </property>
    <property name="horizontalScrollBarPolicy">
-    <enum>Qt::ScrollBarAlwaysOff</enum>
+    <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
    </property>
   </widget>
   <widget class="QLabel" name="lbl_satellitesTrouves">
@@ -65,7 +65,7 @@
    </property>
    <layout class="QFormLayout" name="formLayout_nomRechercheSat">
     <property name="labelAlignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
     <property name="horizontalSpacing">
      <number>3</number>
@@ -108,10 +108,10 @@
     </rect>
    </property>
    <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
+    <enum>QFrame::Shape::StyledPanel</enum>
    </property>
    <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
+    <enum>QFrame::Shadow::Raised</enum>
    </property>
    <widget class="QWidget" name="formLayoutWidget_59">
     <property name="geometry">
@@ -124,7 +124,7 @@
     </property>
     <layout class="QFormLayout" name="formLayout_rechercheSat4">
      <property name="labelAlignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <property name="horizontalSpacing">
       <number>3</number>
@@ -169,7 +169,7 @@
    </property>
    <layout class="QFormLayout" name="formLayout_cosparRechercheSat">
     <property name="labelAlignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
     <property name="horizontalSpacing">
      <number>3</number>
@@ -210,7 +210,7 @@
    </property>
    <layout class="QFormLayout" name="formLayout_noradRechercheSat">
     <property name="labelAlignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
     <property name="horizontalSpacing">
      <number>3</number>
@@ -254,10 +254,10 @@
    </property>
    <layout class="QFormLayout" name="formLayout_rechercheSat3">
     <property name="sizeConstraint">
-     <enum>QLayout::SetFixedSize</enum>
+     <enum>QLayout::SizeConstraint::SetFixedSize</enum>
     </property>
     <property name="labelAlignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
     <property name="horizontalSpacing">
      <number>3</number>
@@ -317,7 +317,7 @@
        <string notr="true">036000.0 km (036000.0 km)</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -330,7 +330,7 @@
        <string notr="true">36000.0 km (36000.0 km)</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -343,7 +343,7 @@
        <string notr="true">24h 50m 53s</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -395,13 +395,13 @@
     <rect>
      <x>190</x>
      <y>51</y>
-     <width>181</width>
+     <width>231</width>
      <height>36</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout_rechercheNorad_2">
     <property name="labelAlignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
     <property name="horizontalSpacing">
      <number>3</number>
@@ -474,10 +474,10 @@
    </property>
    <layout class="QFormLayout" name="formLayout_rechercheSat2">
     <property name="sizeConstraint">
-     <enum>QLayout::SetFixedSize</enum>
+     <enum>QLayout::SizeConstraint::SetFixedSize</enum>
     </property>
     <property name="labelAlignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
     <property name="horizontalSpacing">
      <number>3</number>
@@ -607,10 +607,10 @@
    </property>
    <layout class="QFormLayout" name="formLayout_rechercheSat1">
     <property name="sizeConstraint">
-     <enum>QLayout::SetFixedSize</enum>
+     <enum>QLayout::SizeConstraint::SetFixedSize</enum>
     </property>
     <property name="labelAlignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
     <property name="horizontalSpacing">
      <number>3</number>
@@ -703,13 +703,13 @@
     <rect>
      <x>190</x>
      <y>35</y>
-     <width>221</width>
+     <width>231</width>
      <height>18</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout_RechercheNomsat">
     <property name="labelAlignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
     <property name="horizontalSpacing">
      <number>3</number>
