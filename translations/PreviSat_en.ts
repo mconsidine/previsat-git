@@ -3069,7 +3069,7 @@ click on &apos;Update ISS information&apos;</translation>
         <translation>Update launch information...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="115"/>
+        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="105"/>
         <source>Survolez les éléments du tableau pour afficher plus d&apos;informations</source>
         <translation>Hover over table items to view more information</translation>
     </message>

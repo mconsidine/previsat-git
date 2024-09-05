@@ -3071,7 +3071,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>打ち上げの情報を更新する...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="115"/>
+        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="105"/>
         <source>Survolez les éléments du tableau pour afficher plus d&apos;informations</source>
         <translation>表の要素にマウスオーバーすると詳細情報が表示されます</translation>
     </message>

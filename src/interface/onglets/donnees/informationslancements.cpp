@@ -27,7 +27,7 @@
  * >    Astropedia
  *
  * Date de creation
- * >    10 juillet 2024
+ * >    5 septembre 2024
  *
  * Date de revision
  * >
@@ -57,16 +57,6 @@ InformationsLancements::InformationsLancements(QWidget *parent)
     , _ui(new Ui::InformationsLancements)
 {
     _ui->setupUi(this);
-
-    _ui->lancements->setStyleSheet("QHeaderView::section {" \
-                                   "background-color:rgb(235, 235, 235);" \
-                                   "border-top: 0px solid grey;" \
-                                   "border-bottom: 1px solid grey;" \
-                                   "border-right: 1px solid grey;" \
-                                   "font-size: 12px;" \
-                                   "font-weight: 600 }");
-
-    _ui->lancements->horizontalHeader()->setStretchLastSection(true);
 }
 
 
@@ -113,6 +103,16 @@ void InformationsLancements::show()
     const QList<CalendrierLancements> &lancements = Configuration::instance()->calendrierLancements();
     _ui->lancements->model()->removeRows(0, _ui->lancements->rowCount());
     _ui->lancements->horizontalHeader()->setToolTip(tr("Survolez les éléments du tableau pour afficher plus d'informations"));
+
+    _ui->lancements->setStyleSheet("QHeaderView::section {" \
+                                   "background-color:rgb(235, 235, 235);" \
+                                   "border-top: 0px solid grey;" \
+                                   "border-bottom: 1px solid grey;" \
+                                   "border-right: 1px solid grey;" \
+                                   "font-size: 12px;" \
+                                   "font-weight: 600 }");
+
+    _ui->lancements->horizontalHeader()->setStretchLastSection(true);
 
     /* Corps de la methode */
     QListIterator it(lancements);
