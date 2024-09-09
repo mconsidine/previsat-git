@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    18 aout 2024
+ * >    8 septembre 2024
  *
  */
 
@@ -769,7 +769,7 @@ void Carte::AffichageSatelliteDefaut(const Satellite &satellite, const int lsat,
     _sat.last()->setData(Qt::UserRole, satellite.elementsOrbitaux().norad);
 
     // Nom des satellites
-    if ((settings.value("affichage/affnomsat").toUInt() != Qt::Unchecked) && !settings.value("affichage/afficone").toBool()) {
+    if ((settings.value("affichage/affnomsat").toUInt() != Qt::Unchecked)) {
 
         const Qt::CheckState etat = static_cast<Qt::CheckState> (settings.value("affichage/affnomsat").toUInt());
         const bool affichageEtiquette = ((satellite.elementsOrbitaux().norad == Configuration::instance()->noradDefaut()) &&
@@ -823,9 +823,6 @@ void Carte::AffichageSatellites()
             const int lsat = qRound(DEG2PX(180. - sat.longitude() * MATHS::RAD2DEG))+1;
             const int bsat = qRound(DEG2PX(90. - sat.latitude() * MATHS::RAD2DEG))+1;
 
-            // Affichage par defaut
-            AffichageSatelliteDefaut(sat, lsat, bsat);
-
             if (_mcc || settings.value("affichage/afficone").toBool()) {
 
                 // Affichage de l'icone du satellite a partir du numero NORAD ou du nom
@@ -844,7 +841,12 @@ void Carte::AffichageSatellites()
                     listeIcones.replaceInStrings(QRegularExpression("^"), di.path() + QDir::separator());
                 }
 
-                if (!listeIcones.isEmpty()) {
+                if (listeIcones.isEmpty()) {
+
+                    // L'icone du satellite n'a pas ete trouvee, affichage par defaut
+                    AffichageSatelliteDefaut(sat, lsat, bsat);
+
+                } else {
 
                     // Affichage de l'icone satellite
                     img = QPixmap(listeIcones.first());
@@ -888,6 +890,8 @@ void Carte::AffichageSatellites()
                     transform.translate(-img.width() / 2, -img.height() / 2);
                     pm2->setTransform(transform);
                 }
+            } else {
+                AffichageSatelliteDefaut(sat, lsat, bsat);
             }
         }
     }

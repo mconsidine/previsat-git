@@ -1851,31 +1851,31 @@ PreviSatは、完全無料です!</translation>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="909"/>
+        <location filename="../src/interface/carte/carte.cpp" line="913"/>
         <source>km</source>
         <comment>Kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="910"/>
+        <location filename="../src/interface/carte/carte.cpp" line="914"/>
         <source>km/s</source>
         <comment>Kilometer per second</comment>
         <translation>km/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="912"/>
+        <location filename="../src/interface/carte/carte.cpp" line="916"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="913"/>
+        <location filename="../src/interface/carte/carte.cpp" line="917"/>
         <source>nmi/s</source>
         <comment>Nautical mile per second</comment>
         <translation>nmi/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="923"/>
+        <location filename="../src/interface/carte/carte.cpp" line="927"/>
         <source>&lt;b&gt;%1&lt;/b&gt;&lt;br /&gt;Norad : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;&lt;br /&gt;Type orbite : %4&lt;br /&gt;Altitude : %5 %6&lt;br /&gt;Vitesse : %7 %8&lt;br /&gt;Inclinaison : %9°&lt;br /&gt;Période : %10</source>
         <translatorcomment>Type orbite = Catégorie d&apos;orbite; Altitude = Altitude de satellite; Vitesse/inclinaison/période = Orbitale. Voir QR 93.</translatorcomment>
         <translation>&lt;b&gt;%1&lt;/b&gt;&lt;br /&gt;Norad : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;&lt;br /&gt;軌道種類 : %4&lt;br /&gt;高度 : %5 %6&lt;br /&gt;軌道速度 : %7 %8&lt;br /&gt;軌道傾斜角 : %9°&lt;br /&gt;軌道周期 : %10</translation>
@@ -1887,8 +1887,8 @@ PreviSatは、完全無料です!</translation>
     </message>
     <message>
         <location filename="../src/interface/carte/carte.cpp" line="197"/>
-        <location filename="../src/interface/carte/carte.cpp" line="1022"/>
-        <location filename="../src/interface/carte/carte.cpp" line="1041"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1026"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1045"/>
         <source>Soleil</source>
         <translation>太陽</translation>
     </message>
@@ -1900,31 +1900,31 @@ PreviSatは、完全無料です!</translation>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1557"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1561"/>
         <source>W</source>
         <comment>Symbol for West</comment>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1563"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1567"/>
         <source>E</source>
         <comment>Symbol for East</comment>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1591"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1595"/>
         <source>N</source>
         <comment>Symbol for North</comment>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1597"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1601"/>
         <source>S</source>
         <comment>Symbol for South</comment>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1907"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1911"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
