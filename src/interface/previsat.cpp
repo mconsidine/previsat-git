@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 aout 2024
+ * >    12 se^tembre 2024
  *
  */
 
@@ -348,7 +348,6 @@ void PreviSat::ChargementGP()
 
                 // Cas d'un fichier au format TLE
                 qInfo() << "Vérification du fichier TLE" << ff.fileName();
-                AfficherMessageStatut(tr("Vérification du fichier TLE %1 ...").arg(ff.fileName()));
 
                 if (TLE::VerifieFichier(nomfic, true) > 0) {
 

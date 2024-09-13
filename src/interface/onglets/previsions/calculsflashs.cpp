@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    12 septembre 2024
  *
  */
 
@@ -225,14 +225,18 @@ void CalculsFlashs::CalculAgeElementsOrbitaux()
             it.next();
 
             const ElementsOrbitaux elem = it.value();
-            const double epok = elem.epoque.jourJulienUTC();
 
-            if (epok > elemMin) {
-                elemMin = epok;
-            }
+            if (!elem.norad.isEmpty()) {
 
-            if (epok < elemMax) {
-                elemMax = epok;
+                const double epok = elem.epoque.jourJulienUTC();
+
+                if (epok > elemMin) {
+                    elemMin = epok;
+                }
+
+                if (epok < elemMax) {
+                    elemMax = epok;
+                }
             }
         }
 
@@ -256,8 +260,15 @@ void CalculsFlashs::CalculAgeElementsOrbitaux()
             palette[i].setBrush(QPalette::WindowText, couleur);
         }
 
-        _ui->ageElementsOrbitaux1->setPalette(palette[0]);
-        _ui->ageElementsOrbitaux1->setText(QString("%1").arg(age[0], 0, 'f', 2));
+        if (fabs(age[0] - age[1]) < MATHS::EPSDBL100) {
+
+            _ui->ageElementsOrbitaux1->setText("");
+
+        } else {
+
+            _ui->ageElementsOrbitaux1->setPalette(palette[0]);
+            _ui->ageElementsOrbitaux1->setText(QString("%1").arg(age[0], 0, 'f', 2));
+        }
 
         _ui->ageElementsOrbitaux2->setPalette(palette[1]);
         _ui->ageElementsOrbitaux2->setText(QString("%1").arg(age[1], 0, 'f', 2));
