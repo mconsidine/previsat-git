@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 se^tembre 2024
+ * >    26 octobre 2024
  *
  */
 
@@ -2003,7 +2003,7 @@ void PreviSat::EtapePrecedente()
 
     const double offset = _dateCourante->offsetUTC();
     EFFACE_OBJET(_dateCourante);
-    _dateCourante = new Date(jd, offset);
+    _dateCourante = new Date(jd + DATE::EPS_DATES, offset);
 
     // Enchainement de l'ensemble des calculs
     EnchainementCalculs();
@@ -2042,7 +2042,7 @@ void PreviSat::EtapeSuivante()
 
     const double offset = _dateCourante->offsetUTC();
     EFFACE_OBJET(_dateCourante);
-    _dateCourante = new Date(jd, offset);
+    _dateCourante = new Date(jd + DATE::EPS_DATES, offset);
 
     // Enchainement de l'ensemble des calculs
     EnchainementCalculs();
@@ -2179,9 +2179,9 @@ void PreviSat::GestionTempsReel()
                 // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
                 EnchainementCalculs();
             }
+        } else {
+            ChangementDate(_dateCourante->ToQDateTime(DateFormatSec::FORMAT_SEC));
         }
-
-        ChangementDate(_dateCourante->ToQDateTime(DateFormatSec::FORMAT_SEC));
 
         _onglets->show(*_dateCourante);
         AffichageCartesRadar();
@@ -2868,6 +2868,7 @@ void PreviSat::on_tempsReel_toggled(bool checked)
 
     /* Corps de la methode */
     if (checked && (_chronometre != nullptr)) {
+        _onglets->ReinitFlags();
         _chronometre->setInterval(_ui->pasReel->currentText().toInt() * 1000);
         TempsReel();
         GestionTempsReel();
@@ -2911,7 +2912,11 @@ void PreviSat::on_modeManuel_toggled(bool checked)
         } else if (!_onglets->general()->ui()->backward->isEnabled() || !_onglets->general()->ui()->forward->isEnabled()) {
             _chronometre->setInterval(1000);
         }
+
+        on_pasManuel_currentIndexChanged(_ui->pasManuel->currentIndex());
     }
+
+    _onglets->ReinitFlags();
 
     _ui->pasReel->setVisible(!checked);
     _ui->secondes->setVisible(!checked);

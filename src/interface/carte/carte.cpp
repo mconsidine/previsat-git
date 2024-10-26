@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    8 septembre 2024
+ * >    26 octobre 2024
  *
  */
 
@@ -208,7 +208,7 @@ void Carte::mouseMoveEvent(QMouseEvent *evt)
     }
 
     // Survol de la Lune avec le curseur
-    if (settings.value("affichage/afflune").toBool() && (_lun != nullptr)) {
+    if (!_mcc && settings.value("affichage/afflune").toBool() && (_lun != nullptr)) {
 
         static bool alune = false;
 
@@ -769,7 +769,7 @@ void Carte::AffichageSatelliteDefaut(const Satellite &satellite, const int lsat,
     _sat.last()->setData(Qt::UserRole, satellite.elementsOrbitaux().norad);
 
     // Nom des satellites
-    if ((settings.value("affichage/affnomsat").toUInt() != Qt::Unchecked)) {
+    if ((settings.value("affichage/affnomsat").toUInt() != Qt::Unchecked) && _listeIcones.isEmpty()) {
 
         const Qt::CheckState etat = static_cast<Qt::CheckState> (settings.value("affichage/affnomsat").toUInt());
         const bool affichageEtiquette = ((satellite.elementsOrbitaux().norad == Configuration::instance()->noradDefaut()) &&
@@ -801,13 +801,13 @@ void Carte::AffichageSatellites()
 {
     /* Declarations des variables locales */
     double angle;
-    QStringList listeIcones;
     QPixmap img;
     QTransform transform;
     QGraphicsPixmapItem * pm;
     QGraphicsPixmapItem * pm2;
 
     /* Initialisations */
+    _listeIcones.clear();
     _sat.clear();
     const QList<Satellite> &satellites = Configuration::instance()->listeSatellites();
 
@@ -834,62 +834,56 @@ void Carte::AffichageSatellites()
                 const QStringList filtre(QStringList () << norad + ".png" << nomsat + ".png");
 
                 // L'icone de l'utilisateur est prioritaire sur l'icone par defaut
-                listeIcones = di.entryList(filtre, QDir::Files);
-                if (listeIcones.isEmpty()) {
-                    listeIcones = di2.entryList(filtre, QDir::Files).replaceInStrings(QRegularExpression("^"), di2.path() + "/");
+                _listeIcones = di.entryList(filtre, QDir::Files);
+                if (_listeIcones.isEmpty()) {
+                    _listeIcones = di2.entryList(filtre, QDir::Files).replaceInStrings(QRegularExpression("^"), di2.path() + "/");
                 } else {
-                    listeIcones.replaceInStrings(QRegularExpression("^"), di.path() + QDir::separator());
+                    _listeIcones.replaceInStrings(QRegularExpression("^"), di.path() + QDir::separator());
                 }
 
-                if (listeIcones.isEmpty()) {
+                // Affichage par defaut du satellite
+                AffichageSatelliteDefaut(sat, lsat, bsat);
 
-                    // L'icone du satellite n'a pas ete trouvee, affichage par defaut
-                    AffichageSatelliteDefaut(sat, lsat, bsat);
+                // Affichage de l'icone satellite
+                img = QPixmap(_listeIcones.first());
+                img = img.scaled(qMin(_largeurCarte / 12, img.width()), qMin(_hauteurCarte / 6, img.height()), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-                } else {
+                pm = scene->addPixmap(img);
+                pm->setTransformationMode(Qt::SmoothTransformation);
 
-                    // Affichage de l'icone satellite
-                    img = QPixmap(listeIcones.first());
-                    img = img.scaled(qMin(_largeurCarte / 12, img.width()), qMin(_hauteurCarte / 6, img.height()), Qt::KeepAspectRatio,
-                                     Qt::SmoothTransformation);
+                transform.reset();
+                transform.translate(lsat, bsat);
 
-                    pm = scene->addPixmap(img);
-                    pm->setTransformationMode(Qt::SmoothTransformation);
+                // Rotation de l'icone de l'ISS
+                angle = 0.;
+                if (settings.value("affichage/rotationIconeISS").toBool() &&
+                    (sat.elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale())) {
 
-                    transform.reset();
-                    transform.translate(lsat, bsat);
+                    const double vxsat = sat.vitesse().x();
+                    const double vysat = sat.vitesse().y();
+                    const double vzsat = sat.vitesse().z();
 
-                    // Rotation de l'icone de l'ISS
-                    angle = 0.;
-                    if (settings.value("affichage/rotationIconeISS").toBool() &&
-                            (sat.elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale())) {
-
-                        const double vxsat = sat.vitesse().x();
-                        const double vysat = sat.vitesse().y();
-                        const double vzsat = sat.vitesse().z();
-
-                        angle = MATHS::RAD2DEG * (-atan(vzsat / sqrt(vxsat * vxsat + vysat * vysat)));
-                        transform.rotate(angle);
-                    }
-
-                    transform.translate(-img.width() / 2, -img.height() / 2);
-                    pm->setTransform(transform);
-
-                    // Icone sur le bord de la carte du monde
-                    pm2 = scene->addPixmap(img);
-                    pm2->setTransformationMode(Qt::SmoothTransformation);
-                    transform.reset();
-
-                    if (lsat > _largeurCarte / 2) {
-                        transform.translate(lsat - _largeurCarte, bsat);
-                    } else {
-                        transform.translate(lsat + _largeurCarte, bsat);
-                    }
-
+                    angle = MATHS::RAD2DEG * (-atan(vzsat / sqrt(vxsat * vxsat + vysat * vysat)));
                     transform.rotate(angle);
-                    transform.translate(-img.width() / 2, -img.height() / 2);
-                    pm2->setTransform(transform);
                 }
+
+                transform.translate(-img.width() / 2, -img.height() / 2);
+                pm->setTransform(transform);
+
+                // Icone sur le bord de la carte du monde
+                pm2 = scene->addPixmap(img);
+                pm2->setTransformationMode(Qt::SmoothTransformation);
+                transform.reset();
+
+                if (lsat > _largeurCarte / 2) {
+                    transform.translate(lsat - _largeurCarte, bsat);
+                } else {
+                    transform.translate(lsat + _largeurCarte, bsat);
+                }
+
+                transform.rotate(angle);
+                transform.translate(-img.width() / 2, -img.height() / 2);
+                pm2->setTransform(transform);
             } else {
                 AffichageSatelliteDefaut(sat, lsat, bsat);
             }

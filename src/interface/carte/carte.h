@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    18 aout 2024
+ * >    26 octobre 2024
  *
  */
 
@@ -175,6 +175,7 @@ private:
     double _stepParalleles;
 
     bool _resize;
+    QStringList _listeIcones;
     QList<ItemGroup *> _groupes;
 
 
