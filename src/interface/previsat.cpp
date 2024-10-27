@@ -652,7 +652,9 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_radar, &Radar::AfficherMessageStatut, this, &PreviSat::AfficherMessageStatut);
     connect(_radar, &Radar::AfficherMessageStatut2, this, &PreviSat::AfficherMessageStatut2);
     connect(_radar, &Radar::AfficherMessageStatut3, this, &PreviSat::AfficherMessageStatut3);
+    connect(_radar, &Radar::EffacerMessageStatut, this, &PreviSat::EffacerMessageStatut);
     connect(_radar, &Radar::RecalculerPositions, this, &PreviSat::GestionTempsReel);
+    connect(_radar, &Radar::ReinitFlags, _onglets, &Onglets::ReinitFlags);
 
     // Connexions avec la fenetre Options
     connect(_options, &Options::ChangementFuseauHoraire, this, &PreviSat::ChangementFuseauHoraire);

@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    18 aout 2024
+ * >    26 octobre 2024
  *
  */
 
@@ -729,6 +729,7 @@ void Ciel::AffichageLune()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    _lun = nullptr;
 
     /* Corps de la methode */
     if (settings.value("affichage/afflune").toBool() && _lune.visible()) {
@@ -755,6 +756,7 @@ void Ciel::AffichageLune()
 
         transform.translate(-8, -8);
         _lun->setTransform(transform);
+        _lun->setToolTip(tr("Lune"));
 
         // Dessin de la phase
         if (settings.value("affichage/affphaselune").toBool()) {
@@ -789,7 +791,8 @@ void Ciel::AffichagePlanetes1()
         QGraphicsSimpleTextItem * txtPla;
         QList<Planete> planetes;
         planetes.reserve(_planetes.size());
-        std::copy(_planetes.begin(), _planetes.end(), std::back_inserter(planetes));        
+        std::copy(_planetes.begin(), _planetes.end(), std::back_inserter(planetes));
+        _pla.clear();
         QListIterator it(planetes);
 
         while (it.hasNext()) {
@@ -1110,6 +1113,7 @@ void Ciel::AffichageSoleil()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    _sol = nullptr;
 
     /* Corps de la methode */
     if (settings.value("affichage/affsoleil").toBool()) {

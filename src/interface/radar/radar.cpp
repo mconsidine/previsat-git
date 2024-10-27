@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    18 aout 2024
+ * >    26 octobre 2024
  *
  */
 
@@ -259,6 +259,9 @@ void Radar::show()
 
     /* Initialisations */
     _sat.clear();
+    _sol = nullptr;
+    _lun = nullptr;
+
     const QColor crimson(220, 20, 60);
     const QPen noir(Qt::black);
 

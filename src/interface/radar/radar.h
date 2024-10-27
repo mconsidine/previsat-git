@@ -36,7 +36,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    18 aout 2024
+ * >    26 octobre 2024
  *
  */
 
@@ -101,7 +101,6 @@ signals:
     void AfficherMessageStatut(const QString &message, const int secondes = -1);
     void AfficherMessageStatut2(const QString &message);
     void AfficherMessageStatut3(const QString &message);
-    void EcritureTleDefautRegistre();
     void EffacerMessageStatut();
     void RecalculerPositions();
     void ReinitFlags();
