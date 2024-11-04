@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    26 octobre 2024
+ * >    4 novembre 2024
  *
  */
 
@@ -98,9 +98,6 @@ Carte::Carte(QWidget *parent) :
 {
     _ui->setupUi(this);
 
-    etiquette = nullptr;
-    scene = nullptr;
-
     try {
 
         Initialisation();
@@ -118,7 +115,12 @@ Carte::Carte(QWidget *parent) :
 Carte::~Carte()
 {
     EFFACE_OBJET(scene);
+    EFFACE_OBJET(etiquette);
     EFFACE_OBJET(_timerCarte);
+    EFFACE_OBJET(_sol);
+    EFFACE_OBJET(_sol2);
+    EFFACE_OBJET(_lun);
+    EFFACE_OBJET(_lun2);
 
     delete _ui;
 }
@@ -683,6 +685,7 @@ void Carte::AffichageLune()
         _lun->setToolTip(tr("Lune"));
 
         // Lune au niveau du meridien 180 degres, on duplique le dessin
+        _lun2 = nullptr;
         if (((llun + 7) > _largeurCarte) || ((llun - 7) < 0)) {
 
             _lun2 = scene->addPixmap(pixlun);
@@ -1020,6 +1023,7 @@ void Carte::AffichageSoleil()
         _sol->setToolTip(tr("Soleil"));
 
         // Soleil au niveau du meridien 180 degres, on duplique le dessin
+        _sol2 = nullptr;
         if (((_lsol + 7) > _largeurCarte) || ((_lsol - 7) < 0)) {
 
             _sol2 = scene->addPixmap(pixsol);
@@ -1840,6 +1844,8 @@ void Carte::Initialisation()
     _ui->carte->setCursor(Qt::ArrowCursor);
     _ui->carte->viewport()->setCursor(Qt::ArrowCursor);
 
+    etiquette = nullptr;
+    scene = nullptr;
     _resize = false;
     _timerCarte = nullptr;
     _sol = nullptr;
