@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    4 novembre 2024
+ * >    16 novembre 2024
  *
  */
 
@@ -117,10 +117,6 @@ Carte::~Carte()
     EFFACE_OBJET(scene);
     EFFACE_OBJET(etiquette);
     EFFACE_OBJET(_timerCarte);
-    EFFACE_OBJET(_sol);
-    EFFACE_OBJET(_sol2);
-    EFFACE_OBJET(_lun);
-    EFFACE_OBJET(_lun2);
 
     delete _ui;
 }
@@ -848,8 +844,10 @@ void Carte::AffichageSatellites()
                 AffichageSatelliteDefaut(sat, lsat, bsat);
 
                 // Affichage de l'icone satellite
-                img = QPixmap(_listeIcones.first());
-                img = img.scaled(qMin(_largeurCarte / 12, img.width()), qMin(_hauteurCarte / 6, img.height()), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                if (!_listeIcones.isEmpty()) {
+                    img = QPixmap(_listeIcones.first());
+                    img = img.scaled(qMin(_largeurCarte / 12, img.width()), qMin(_hauteurCarte / 6, img.height()), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                }
 
                 pm = scene->addPixmap(img);
                 pm->setTransformationMode(Qt::SmoothTransformation);

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 octobre 2024
+ * >    16 novembre 2024
  *
  */
 
@@ -435,9 +435,11 @@ void PreviSat::DemarrageApplication()
     }
 
     // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
+    qInfo() << "Enchainement des calculs";
     EnchainementCalculs();
 
     // Affichage des donnees numeriques dans la barre d'onglets
+    qInfo() << "Affichage des donnees numeriques dans la barre d'onglets";
     _onglets->show(*_dateCourante);
 #if defined (Q_OS_WIN)
     _onglets->suiviTelescope()->CalculAosSatSuivi(*_dateCourante);
@@ -446,22 +448,28 @@ void PreviSat::DemarrageApplication()
     _ui->issLive->setChecked(settings.value("affichage/issLive", false).toBool());
 
     // Affichage des elements sur les cartes et le radar
+    qInfo() << "Affichage des elements sur les cartes et le radar";
     AffichageCartesRadar();
 
     // Lancement du chronometre
     if (_chronometre == nullptr) {
+
+        qInfo() << "Lancement du chronometre";
         _chronometre = new QTimer(this);
         _chronometre->setInterval(_ui->pasReel->currentText().toInt() * 1000);
         _chronometre->setTimerType(Qt::PreciseTimer);
         connect(_chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
 
         // Mode sombre
+        qInfo() << "Lancement du mode sombre";
         _ui->actionMode_sombre->setChecked(settings.value("affichage/modeSombre", false).toBool());
         on_actionMode_sombre_triggered();
     }
 
     // Lancement du chronometreMs
     if (_chronometreMs == nullptr) {
+
+        qInfo() << "Lancement du chronometreMs";
         _chronometreMs = new QTimer(this);
         _chronometreMs->setInterval(200);
         _chronometreMs->setTimerType(Qt::PreciseTimer);
@@ -473,6 +481,9 @@ void PreviSat::DemarrageApplication()
     const QUrl urlLastNews(QString("%1informations/").arg(DOMAIN_NAME) + "last_news_" + Configuration::instance()->locale() + ".html");
 
     if (!_chronometre->isActive() && settings.value("affichage/informationsDemarrage", true).toBool() && Telechargement::UrlExiste(urlLastNews)) {
+
+        qInfo() << "Affichage de la fenetre d'informations";
+
         on_actionInformations_triggered();
         const QRect tailleEcran = QGuiApplication::primaryScreen()->availableGeometry();
         _informations->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, _informations->size(), tailleEcran));
