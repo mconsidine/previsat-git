@@ -90,6 +90,7 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul,
     QStringList titres;
 
     /* Initialisations */
+    _afficherEvt = false;
     _ciel = nullptr;
     _tableDetail = nullptr;
     _afficherDetail = nullptr;

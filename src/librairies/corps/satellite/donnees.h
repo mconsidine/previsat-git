@@ -64,7 +64,7 @@ public:
      * @brief Donnees Definition a partir des informations
      * @param[in] req requete
      */
-    Donnees(const QSqlQuery &req);
+    explicit Donnees(const QSqlQuery &req);
 
 
     /*
