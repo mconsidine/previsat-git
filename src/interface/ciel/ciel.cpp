@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    26 octobre 2024
+ * >    2 decembre 2024
  *
  */
 
@@ -122,10 +122,16 @@ Ciel::~Ciel()
 /*
  * Accesseurs
  */
+Ui::Ciel *Ciel::ui() const
+{
+    return _ui;
+}
+
 bool Ciel::fenetreMax() const
 {
     return _fenetreMax;
 }
+
 
 /*
  * Modificateurs

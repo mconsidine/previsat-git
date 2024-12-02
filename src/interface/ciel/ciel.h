@@ -36,7 +36,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    18 aout 2024
+ * >    2 decembre 2024
  *
  */
 
@@ -94,6 +94,7 @@ public:
     /*
      * Accesseurs
      */
+    Ui::Ciel *ui() const;
     bool fenetreMax() const;
 
 

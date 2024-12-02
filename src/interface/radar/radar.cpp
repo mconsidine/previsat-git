@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    26 octobre 2024
+ * >    2 decembre 2024
  *
  */
 
@@ -100,6 +100,11 @@ Radar::~Radar()
 /*
  * Accesseurs
  */
+Ui::Radar *Radar::ui() const
+{
+    return _ui;
+}
+
 
 /*
  * Methodes publiques

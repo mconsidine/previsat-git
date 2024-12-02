@@ -36,7 +36,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    26 octobre 2024
+ * >    2 decembre 2024
  *
  */
 
@@ -80,6 +80,8 @@ public:
     /*
      * Accesseurs
      */
+    Ui::Radar *ui() const;
+
 
     /*
      * Methodes publiques

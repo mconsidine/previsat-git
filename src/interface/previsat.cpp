@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er decembre 2024
+ * >    2 decembre 2024
  *
  */
 
@@ -77,12 +77,14 @@
 #include "ui_previsat.h"
 #include "carte/ui_carte.h"
 #include "carte/ui_coordiss.h"
+#include "ciel/ui_ciel.h"
 #include "informations/ui_informations.h"
 #include "onglets/general/ui_general.h"
 #include "onglets/donnees/ui_informationssatellite.h"
 #include "onglets/ui_onglets.h"
 #include "onglets/osculateurs/ui_osculateurs.h"
 #include "options/ui_options.h"
+#include "radar/ui_radar.h"
 #include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/tle.h"
 #include "librairies/corps/systemesolaire/planete.h"
@@ -1958,6 +1960,11 @@ void PreviSat::ChargementTraduction(const QString &langue)
     }
 
     if ((_carte != nullptr) && (_ciel != nullptr) && (_radar != nullptr)) {
+
+        _carte->ui()->retranslateUi(_carte);
+        _ciel->ui()->retranslateUi(_ciel);
+        _radar->ui()->retranslateUi(_radar);
+
         AffichageCartesRadar();
     }
 
