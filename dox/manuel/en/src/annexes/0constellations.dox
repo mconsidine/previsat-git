@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *     Copyright (C) 2005-2024  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -30,96 +30,97 @@
 \page Constellations List of constellations
 
 <center>
-| Designation | Latin | English |
-|-------------|-------|---------|
-| And | Andromeda | Chained Maiden |
-| Ant | Antlia | Air Pump |
-| Aps | Apus | Bird of Paradise |
-| Aql | Aquila | Eagle |
-| Aqr | Aquarius | Water Bearer |
-| Ara | Ara | Altar |
-| Ari | Aries | Ram |
-| Aur | Auriga | Charioteer |
-| Boo | Bootes | Herdsman |
-| Cae | Caelum | Engraving Tool |
-| Cam | Camelopardalis | Giraffe |
-| Cap | Capricornus | Sea Goat |
-| Car | Carina | Keel |
-| Cas | Cassiopeia | Seated Queen |
-| Cen | Centaurus | Centaur |
-| Cep | Cepheus | King |
-| Cet | Cetus | Sea Monster |
-| Cha | Chamaeleon | Chameleon |
-| Cir | Circinus | Compass |
-| CMa | Canis Major | Great Dog |
-| CMi | Canis Minor | Lesser Dog |
-| Cnc | Cancer | Crab |
-| Col | Columba | Dove |
-| Com | Coma Berenices | Berenice's Hair |
-| CrA | Corona Australis | Southern Crown |
-| CrB | Corona Borealis | Northern Crown |
-| Crt | Crater | Cup |
-| Cru | Crux | Southern Cross |
-| Crv | Corvus | Crow |
-| CVn | Canes Venatici | Hunting Dogs |
-| Cyg | Cygnus | Swan |
-| Del | Delphinus | Dolphin |
-| Dor | Dorado | Swordfish |
-| Dra | Draco | Dragon |
-| Equ | Equuleus | Little Horse |
-| Eri | Eridanus | River |
-| For | Fornax | Furnace |
-| Gem | Gemini | Twins |
-| Gru | Grus | Crane |
-| Her | Hercules | Hercules |
-| Hor | Horlogium | Clock |
-| Hya | Hydra | Female Water Snake |
-| Hyi | Hydrus | Male Water Snake |
-| Ind | Indus | Indian |
-| Lac | Lacerta | Lizard |
-| Leo | Leo | Lion |
-| Lep | Lepus | Hare |
-| Lib | Libra | Scales |
-| LMi | Leo Minor | Lesser Lion |
-| Lup | Lupus | Wolf |
-| Lyn | Lynx | Lynx |
-| Lyr | Lyra | Lyre |
-| Men | Mensa | Table Mountain |
-| Mic | Microscopium | Microscope |
-| Mon | Monoceros | Unicorn |
-| Mus | Musca | Fly |
-| Nor | Norma | Carpenter's Square |
-| Oct | Octans | Octant |
-| Oph | Ophiuchus | Serpent Bearer |
-| Ori | Orion | Hunter |
-| Pav | Pavo | Peacock |
-| Peg | Pegasus | Winged Horse |
-| Per | Perseus | Hero |
-| Phe | Phoenix | Phoenix |
-| Pic | Pictor | Painter's Easel |
-| PsA | Piscis Austrinus | Southern Fish |
-| Psc | Pisces | Fishes |
-| Pup | Puppis | Stern |
-| Pyx | Pyxis Nauticus | Compass |
-| Ret | Reticulum | Reticle |
-| Scl | Sculptor | Sculptor |
-| Sco | Scorpius | Scorpion |
-| Sct | Scutum | Shield |
-| Ser | Serpens | Serpent |
-| Sex | Sextans | Sextant |
-| Sge | Sagitta | Arrow |
-| Sgr | Sagittarius | Archer |
-| Tau | Taurus | Bull |
-| Tel | Telescopium | Telescope |
-| TrA | Triangulum Australe | Southern Triangle |
-| Tri | Triangulum | Triangle |
-| Tuc | Tucana | Toucan |
-| UMa | Ursa Major | Great Bear |
-| UMi | Ursa Minor | Little Bear |
-| Vel | Vela | Sails |
-| Vir | Virgo | Maiden |
-| Vol | Volans | Flying Fish |
-| Vul | Vulpecula | Fox |
+| Designation | Latin | French | English | Japanese |
+|-------------|-------|--------|---------|----------|
+| And | Andromeda | Andromède | Andromeda | アンドロメダ座 |
+| Ant | Antlia | Machine Pneumatique | Air Pump | ポンプ座 |
+| Aps | Apus | Oiseau de Paradis | Bird of Paradise | ふうちょう座 |
+| Aql | Aquila | Aigle | Eagle | わし座 |
+| Aqr | Aquarius | Verseau | Aquarius | みずがめ座 |
+| Ara | Ara | Autel | Altar | さいだん座 |
+| Ari | Aries | Bélier | Ram | おひつじ座 |
+| Aur | Auriga | Cocher | Charioteer | ぎょしゃ座 |
+| Boo | Bootes | Bouvier | Herdsman | うしかい座 |
+| Cae | Caelum | Burin | Graving tool | ちょうこくぐ座 |
+| Cam | Camelopardalis | Girafe | Giraffe | きりん座 |
+| Cap | Capricornus | Capricorne | Capricorn | やぎ座 |
+| Car | Carina | Carène | Keel | りゅうこつ座 |
+| Cas | Cassiopeia | Cassiopée | Cassiopeia | カシオペヤ座 |
+| Cen | Centaurus | Centaure | Centaur | ケンタウルス座 |
+| Cep | Cepheus | Céphée | Cepheus | ケフェウス座 |
+| Cet | Cetus | Baleine | Whale | くじら座 |
+| Cha | Chamaeleon | Caméléon | Chamaeleon | カメレオン座 |
+| Cir | Circinus | Compas | Compass (draftsman's) | コンパス座 |
+| CMa | Canis Major | Grand chien | Great Dog | おおいぬ座 |
+| CMi | Canis Minor | Petit Chien | Little Dog | こいぬ座 |
+| Cnc | Cancer | Cancer | Crab | かに座 |
+| Col | Columba | Colombe | Dove | はと座 |
+| Com | Coma Berenices | Chevelure de Bérénice | Berenice's Hair | かみのけ座 |
+| CrA | Corona Australis | Couronne Australe | Southern Crown | みなみのかんむり座 |
+| CrB | Corona Borealis | Couronne Boréale | Northern Crown | かんむり座 |
+| Crt | Crater | Coupe | Cup | コップ座 |
+| Cru | Crux | Croix du Sud | Cross | みなみじゅうじ座 |
+| Crv | Corvus | Corbeau | Crow | からす座 |
+| CVn | Canes Venatici | Chiens de Chasse | Hunting Dogs | りょうけん座 |
+| Cyg | Cygnus | Cygne | Swan | はくちょう座 |
+| Del | Delphinus | Dauphin | Dolphin | いるか座 |
+| Dor | Dorado | Dorade | Goldfish | かじき座 |
+| Dra | Draco | Dragon | Dragon | りゅう座 |
+| Equ | Equuleus | Petit Cheval | Colt | こうま座 |
+| Eri | Eridanus | Éridan | Eridanus | エリダヌス座 |
+| For | Fornax | Fourneau | Furnace | ろ座 |
+| Gem | Gemini | Gémeaux | Twins | ふたご座 |
+| Gru | Grus | Grue | Crane | つる座 |
+| Her | Hercules | Hercule | Hercules | ヘルクレス座 |
+| Hor | Horlogium | Horloge | Clock | とけい座 |
+| Hya | Hydra | Hydre Femelle | Sea Serpent | うみへび座 |
+| Hyi | Hydrus | Hydre Mâle | Hydrus | みずへび座 |
+| Ind | Indus | Indien | Indian | インディアン座 |
+| Lac | Lacerta | Lézard | Lizard | とかげ座 |
+| Leo | Leo | Lion | Lion | しし座 |
+| Lep | Lepus | Lièvre | Hare | うさぎ座 |
+| Lib | Libra | Balance | Balance | てんびん座 |
+| LMi | Leo Minor | Petit Lion | Little Lion | こじし座 |
+| Lup | Lupus | Loup | Wolf | おおかみ座 |
+| Lyn | Lynx | Lynx | Lynx | やまねこ座 |
+| Lyr | Lyra | Lyre | Lyre | こと座 |
+| Men | Mensa | Table | Mensa | テーブルさん座 |
+| Mic | Microscopium | Microscope | Microscope | けんびきょう座 |
+| Mon | Monoceros | Licorne | Unicorn | いっかくじゅう座 |
+| Mus | Musca | Mouche | Fly | はえ座 |
+| Nor | Norma | Équerre | Level | じょうぎ座 |
+| Oct | Octans | Octant | Octant | はちぶんぎ座 |
+| Oph | Ophiuchus | Ophiucus | Ophiuchus | へびつかい座 |
+| Ori | Orion | Orion | Orion | オリオン座 |
+| Pav | Pavo | Paon | Peacock | くじゃく座 |
+| Peg | Pegasus | Pégase | Flying Horse | ペガスス座 |
+| Per | Perseus | Persée | Perseus | ペルセウス座 |
+| Phe | Phoenix | Phénix | Phoenix | ほうおう座 |
+| Pic | Pictor | Peintre | Painter | がか座 |
+| PsA | Piscis Austrinus | Poisson Austral | Southern Fish | みなみのうお座 |
+| Psc | Pisces | Poissons | Fishes | うお座 |
+| Pup | Puppis | Poupe | Poop Deck | とも座 |
+| Pyx | Pyxis Nauticus | Boussole | Compass (mariner's) | らしんばん座 |
+| Ret | Reticulum | Réticule | Net | レチクル座 |
+| Scl | Sculptor | Sculpteur | Sculptor | ちょうこくしつ座 |
+| Sco | Scorpius | Scorpion | Scorpion | さそり座 |
+| Sct | Scutum | Écu de Sobieski | Shield | たて座 |
+| Ser | Serpens | Serpent | Serpent | へび座 |
+| Sex | Sextans | Sextant | Sextant | ろくぶんぎ座 |
+| Sge | Sagitta | Flèche | Arrow | や座 |
+| Sgr | Sagittarius | Sagittaire | Archer | いて座 |
+| Tau | Taurus | Taureau | Bull | おうし座 |
+| Tel | Telescopium | Télescope | Telescope | ぼうえんきょう座 |
+| TrA | Triangulum Australe | Triangle Austral | Southern Triangle | みなみのさんかく座 |
+| Tri | Triangulum | Triangle | Triangle | さんかく座 |
+| Tuc | Tucana | Toucan | Toucan | きょしちょう座 |
+| UMa | Ursa Major | Grande Ourse | Big Dipper, Great Bear, Plough | おおぐま座 |
+| UMi | Ursa Minor | Petite Ourse | Little Bear, Little Dipper | こぐま座 |
+| Vel | Vela | Voiles | Sails | ほ座 |
+| Vir | Virgo | Vierge | Virgin | おとめ座 |
+| Vol | Volans | Poisson Volant | Flying Fish | とびうお座 |
+| Vul | Vulpecula | Petit Renard | Little Fox | こぎつね座 |
+
 </center>
 
 */

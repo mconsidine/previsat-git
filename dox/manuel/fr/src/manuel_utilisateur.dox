@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *     Copyright (C) 2005-2024  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -21,14 +21,14 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    26 avril 2023
+ * >    28 septembre 2024
  *
  */
 
 
 /** \mainpage Présentation
 
-PreviSat est un logiciel libre permettant de suivre les satellites artificiels sur une carte du monde. Il est développé en C++/Qt et fonctionne sous les systèmes d'exploitation Windows, GNU/Linux et macOS. Son interface simple et intuitive est conçue pour répondre aussi bien aux attentes du néophyte qu'à celles de l'observateur averti. PreviSat permet de connaître la position des satellites dans plusieurs systèmes de coordonnées (cartésiennes, équatoriales, horizontales). Pour cela, il utilise le modèle orbital SGP4 - révisé en 2006 par David Vallado - et les éléments orbitaux appelés GP (format xml) fournis par Celestrak ou par le Space-Track. Auparavant, les éléments orbitaux étaient au format TLE, mais voués à disparaître en raison du nombre croissant de satellites.
+PreviSat est un logiciel libre permettant de suivre les satellites artificiels sur une carte du monde. Il est développé en C++/Qt et fonctionne sous les systèmes d'exploitation Windows, GNU/Linux et macOS. Son interface simple et intuitive est conçue pour répondre aussi bien aux attentes du néophyte qu'à celles de l'observateur averti. PreviSat permet de connaître la position des satellites dans plusieurs systèmes de coordonnées (cartésiennes, équatoriales, horizontales). Pour cela, il utilise le modèle orbital SGP4 - révisé en 2006 par David Vallado - et les éléments orbitaux appelés GP (format xml) fournis par Celestrak ou par le Space-Track. Auparavant, les éléments orbitaux étaient au format TLE, mais sont voués à disparaître en raison du nombre croissant de satellites.
 
 Le modèle SGP4 ne prend en compte que les principales perturbations naturelles agissant sur le satellite (premiers termes des irrégularités du potentiel terrestre, modèle simplifié du frottement atmosphérique, perturbations luni-solaires ou phénomènes de résonance), il est donc nécessaire de réactualiser régulièrement les éléments orbitaux afin de garantir une précision optimale sur la position et la vitesse des satellites, notamment après une manœuvre de correction orbitale. Les éléments orbitaux mis à disposition sur le site <a href="https://celestrak.org">celestrak.org</a> ou encore sur <a href="https://www.space-track.org/auth/login">www.space-track.org</a> se présentent sous forme de fichiers texte (voir l'Onglet \ref Infos "Informations satellite" pour connaître le format de ces éléments orbitaux).
 

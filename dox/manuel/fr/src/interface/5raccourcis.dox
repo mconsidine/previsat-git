@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *     Copyright (C) 2005-2024  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    28 septembre 2024
  *
  */
 
@@ -49,6 +49,8 @@
 | <b><center>Alt + S</center></b> | Aller à l'onglet Informations satellite |
 | <b><center>Alt + R</center></b> | Aller à l'onglet Recherche satellite |
 | <b><center>Alt + I</center></b> | Aller à l'onglet Informations ISS |
+| <b><center>Alt + L</center></b> | Aller à l'onglet Lancements |
+| <b><center>Alt + A</center></b> | Aller à l'onglet Rentrées |
 | <b><center>Alt + P</center></b> | Aller à l'onglet Prévisions |
 | <b><center>Alt + F</center></b> | Aller à l'onglet Flashs |
 | <b><center>Alt + T</center></b> | Aller à l'onglet Transits |

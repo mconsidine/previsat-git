@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *     Copyright (C) 2005-2024  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    29 janvier 2024
+ * >    2 decembre 2024
  *
  */
 
@@ -31,8 +31,26 @@
 \page Historique Historique des versions
 
 
-<b><span style="color:red;">Version 6.1 (révision 4) :</span><br />
-Septembre 2023 - Décembre 2024 :</b>
+<b><span style="color:red;">Version 7.0 (révision 0) :</span><br />
+Juin 2023 - Décembre 2024 :</b>
+<ul>
+<li>Ajout de l'onglet Lancements.
+<li>Ajout de l'onglet Rentrées.
+<li>Ajout de nouvelles informations concernant les satellites.
+<li>Ajout de la base de données satellites.
+<li>Ajout de la version portable pour Windows et Linux (pas d'installation requise).
+<li>Ajout de l'étiquette pour le satellite par défaut sur la carte du monde.
+<li>Ajout de la personnalisation du terminateur.
+<li>Ajout des noms de constellation dans les différentes langues dans l'onglet Général.
+<li>Ajout du système de désactivation des fonctionnalités dépendantes de ressources externes (Starlink, lancements, rentrées).
+<li>Correction de l'affichage du nom du site de lancement ur la carte du monde.
+</ul>
+
+<hr />
+
+
+<b><span style="color:red;">Version 6.1 (révision 5) :</span><br />
+Septembre 2023 - Avril 2024 :</b>
 <ul>
 <li>Ajout des prévisions Starlink.
 <li>Ajout des cases à cocher pour filtrer les satellites choisis dans les listes.

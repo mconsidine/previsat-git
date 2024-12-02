@@ -1,6 +1,6 @@
 /*
  *     PreviSat, Satellite tracking software
- *     Copyright (C) 2005-2023  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *     Copyright (C) 2005-2024  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -21,14 +21,14 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    13 mai 2023
+ * >    28 septembre 2024
  *
  */
 
 
 /** \mainpage Overview
 
-PreviSat is free software for tracking artificial satellites on a world map. It is developed in C++/Qt and works under Windows, GNU/Linux and macOS operating systems. Its simple and intuitive interface is designed to meet the expectations of the neophyte as well as those of the informed observer. PreviSat makes it possible to know the position of the satellites in several coordinate systems (Cartesian, equatorial, horizontal). For this, it uses the SGP4 orbital model - revised in 2006 by David Vallado - and the orbital elements called GP (xml format) provided by Celestrak or by the Space-Track. Previously, orbital elements were in TLE format, but destined to disappear due to the increasing number of satellites.
+PreviSat is free software for tracking artificial satellites on a world map. It is developed in C++/Qt and works under Windows, GNU/Linux and macOS operating systems. Its simple and intuitive interface is designed to meet the expectations of the neophyte as well as those of the informed observer. PreviSat makes it possible to know the position of the satellites in several coordinate systems (Cartesian, equatorial, horizontal). For this, it uses the SGP4 orbital model - revised in 2006 by David Vallado - and the orbital elements called GP (xml format) provided by Celestrak or by the Space-Track. Previously, orbital elements were in TLE format, but they destined to disappear due to the increasing number of satellites.
 
 The SGP4 model takes into account the main natural disturbances acting on the satellite (first terms of the irregularities of the terrestrial potential, simplified model of atmospheric drag, lunisolar disturbances or resonance phenomena), it is therefore necessary to regularly update the orbital elements in order to guarantee optimum precision on the position and speed of the satellites, in particular after an orbital correction maneuver. The orbital elements made available on the site <a href="https://celestrak.org">celestrak.org</a> or on <a href = "https://www.space-track.org/auth/login ">www.space-track.org</a> are presented in the form of text files (see the \ref Infos "Satellite informations" tab to know the format of these orbital elements).
 
