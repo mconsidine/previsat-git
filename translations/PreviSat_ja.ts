@@ -4776,63 +4776,63 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>選択したグループを更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="607"/>
+        <location filename="../src/interface/outils/outils.ui" line="613"/>
         <source>Mise à jour TLE auto</source>
         <translation>TLEの自動更新</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="723"/>
+        <location filename="../src/interface/outils/outils.ui" line="729"/>
         <source>Mettre à jour maintenant</source>
         <translation>今すぐ更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="752"/>
+        <location filename="../src/interface/outils/outils.ui" line="758"/>
         <source>Affichage des messages informatifs</source>
         <translation>情報メッセージを表示する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="757"/>
+        <location filename="../src/interface/outils/outils.ui" line="763"/>
         <source>Accepter ajout/suppression de TLE</source>
         <translation>TLEの追加・削除を受け入れる</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="762"/>
+        <location filename="../src/interface/outils/outils.ui" line="768"/>
         <source>Refuser ajout/suppression de TLE</source>
         <translation>TLEの追加・削除を断る</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="772"/>
+        <location filename="../src/interface/outils/outils.ui" line="778"/>
         <source>Mise à jour TLE manuelle</source>
         <translation>TLEの手動更新</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="802"/>
-        <location filename="../src/interface/outils/outils.ui" line="832"/>
+        <location filename="../src/interface/outils/outils.ui" line="808"/>
+        <location filename="../src/interface/outils/outils.ui" line="838"/>
         <source>Parcourir...</source>
         <translation>ブラウズ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="812"/>
+        <location filename="../src/interface/outils/outils.ui" line="818"/>
         <source>Fichier à mettre à jour :</source>
         <translation>更新するファイル :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="852"/>
+        <location filename="../src/interface/outils/outils.ui" line="858"/>
         <source>Fichier TLE à lire :</source>
         <translation>読むTLEファイル :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="868"/>
+        <location filename="../src/interface/outils/outils.ui" line="874"/>
         <source>Mettre à jour</source>
         <translation>更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="936"/>
+        <location filename="../src/interface/outils/outils.ui" line="942"/>
         <source>Liste de fichiers TLE :</source>
         <translation>TLEファイルのリスト :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="949"/>
+        <location filename="../src/interface/outils/outils.ui" line="955"/>
         <location filename="../src/interface/outils/outils.cpp" line="1069"/>
         <source>Importer TLE...</source>
         <translation>TLEをインポートする...</translation>
@@ -4863,7 +4863,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>グループを作成する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="923"/>
+        <location filename="../src/interface/outils/outils.ui" line="929"/>
         <location filename="../src/interface/outils/outils.cpp" line="226"/>
         <location filename="../src/interface/outils/outils.cpp" line="234"/>
         <source>Supprimer</source>

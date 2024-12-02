@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 novembre 2024
+ * >    1er decembre 2024
  *
  */
 
@@ -2575,7 +2575,7 @@ void PreviSat::TelechargementGroupesStarlink(const bool maj)
 
                 const unsigned int indf = static_cast<unsigned int> (contenu.indexOf("sup-gp.php?FILE=starlink-", debf)) + 16;
                 const unsigned int finf = static_cast<unsigned int> (contenu.indexOf("&FORMAT", indf));
-                const unsigned int indg = static_cast<unsigned int> (contenu.lastIndexOf(">", indf) + 1);
+                const unsigned int indg = static_cast<unsigned int> (contenu.indexOf(">Starlink G", debf) + 1);
                 const unsigned int fing = static_cast<unsigned int> (contenu.indexOf("<", indg));
                 const unsigned int indl = static_cast<unsigned int> (contenu.indexOf("Launch: ", debl));
 
