@@ -40,7 +40,7 @@ cmake_minimum_required(VERSION 3.24)
 
 
 #----------------------------------
-set(VERSION 7.0.0.0)
+set(VERSION 7.0.0.10)
 set(ANNEES_DEV 2005-2024)
 set(QT_PREFERRED_VERSION 6.7.2)
 
@@ -301,14 +301,18 @@ else()
         )
     endif()
 
-    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS LinguistTools)
-    qt_add_translations(${TARGET}
-        TS_FILES translations/PreviSat_en.ts translations/PreviSat_ja.ts
-        LUPDATE_OPTIONS ${LANGUAGE_OPTIONS}
-    )
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
-    add_dependencies(${TARGET} ${TARGET}_lupdate)
-    add_dependencies(${TARGET} update_translations)
+        find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS LinguistTools)
+        qt_add_translations(${TARGET}
+            TS_FILES translations/PreviSat_en.ts translations/PreviSat_ja.ts
+            LUPDATE_OPTIONS ${LANGUAGE_OPTIONS}
+        )
+
+        add_dependencies(${TARGET} ${TARGET}_lupdate)
+        add_dependencies(${TARGET} update_translations)
+    endif()
+
 endif()
 
 target_compile_options(${TARGET}
