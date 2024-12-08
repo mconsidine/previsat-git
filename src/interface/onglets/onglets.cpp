@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    18 juillet 2024
+ * >    7 decembre 2024
  *
  */
 
@@ -450,6 +450,9 @@ void Onglets::Initialisation()
     /* Corps de la methode */
     qInfo() << "Début Initialisation" << metaObject()->className();
 
+    const bool etat1 = _ui->stackedWidget_informations->blockSignals(true);
+    const bool etat2 = _ui->stackedWidget_previsions->blockSignals(true);
+
     _indexInformations = settings.value("affichage/indexInformations", 0).toUInt();
     _indexPrevisions = settings.value("affichage/indexPrevisions", 0).toUInt();
     _isLancements = Configuration::instance()->VerifieDateExpiration("lancements");
@@ -498,11 +501,13 @@ void Onglets::Initialisation()
     // Calculs de previsions
     _previsions = new CalculsPrevisions(_ui->prevision);
     _transits = new CalculsTransits(_ui->transits);
+    _evenements = new CalculsEvenementsOrbitaux(_ui->evenementsOrbitaux);
+
     if (_isStarlink) {
         _starlink = new CalculsStarlink(_ui->starlink);
+    } else {
+        _ui->stackedWidget_previsions->removeWidget(_ui->starlink);
     }
-
-    _evenements = new CalculsEvenementsOrbitaux(_ui->evenementsOrbitaux);
 
 #if defined (Q_OS_WIN)
     // Suivi avec un telescope
@@ -540,6 +545,9 @@ void Onglets::Initialisation()
 
     _ui->previsionPrec->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[idxPrevPrec]));
     _ui->previsionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[idxPrevSuiv]));
+
+    _ui->stackedWidget_informations->blockSignals(etat1);
+    _ui->stackedWidget_previsions->blockSignals(etat2);
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
 
