@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    4 aout 2024
+ * >    10 decembre 2024
  *
  */
 
@@ -1506,12 +1506,12 @@ void Options::on_validerObs_clicked()
             throw Exception(tr("Le nom du lieu d'observation n'est pas spécifié"), MessageType::WARNING);
         }
 
-        const QString fic = _ui->ajdfic->currentData(Qt::UserRole).toString();
+        const QString fic = (_ui->ajdfic->isVisible()) ? _ui->ajdfic->currentData(Qt::UserRole).toString() : _ui->categoriesObs->currentItem()->data(Qt::UserRole).toString();
         Configuration::instance()->mapObs() = FichierObs::Lecture(fic, false);
 
         nomlieu[0] = nomlieu.at(0).toUpper();
 
-        if (Configuration::instance()->mapObs().contains(nomlieu)) {
+        if (Configuration::instance()->mapObs().contains(nomlieu) && (_ui->ajdfic->isVisible())) {
             throw Exception(tr("Le lieu existe déjà dans la catégorie <b>%1</b>").arg(_ui->ajdfic->currentText()), MessageType::WARNING);
         }
 

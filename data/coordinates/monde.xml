@@ -6026,7 +6026,7 @@
     </Observateur>
     <Observateur>
         <Nom>Moskva</Nom>
-        <Longitude>037.630000000</Longitude>
+        <Longitude>-037.630000000</Longitude>
         <Latitude>+55.752500000</Latitude>
         <Altitude>0015</Altitude>
     </Observateur>
