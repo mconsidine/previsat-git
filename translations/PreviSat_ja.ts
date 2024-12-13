@@ -710,7 +710,7 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="530"/>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="456"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="451"/>
         <source>Connecter</source>
         <translation>接続する</translation>
     </message>
@@ -721,7 +721,7 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/antenne/antenne.ui" line="565"/>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="491"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="486"/>
         <source>Ouvrir CatRotator</source>
         <translation>CatRotatorを開く</translation>
     </message>
@@ -731,57 +731,57 @@ Age de l&apos;élément le plus ancien : %3 jours</source>
         <translation>名称 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="277"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="272"/>
         <source>h</source>
         <comment>hour</comment>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="277"/>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="281"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="272"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="276"/>
         <source>min</source>
         <comment>minute</comment>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="281"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="276"/>
         <source>s</source>
         <comment>second</comment>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="284"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="279"/>
         <source>Prochain %1 dans %2</source>
         <comment>Next AOS or LOS, and delay</comment>
         <translation>次の%1まであと%2です</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="286"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="281"/>
         <source>AOS</source>
         <translation>AOS</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="286"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="281"/>
         <source>Acquisition du signal</source>
         <translation>信号受信開始</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="286"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="281"/>
         <source>Perte du signal</source>
         <translation>信号受信終了</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="412"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="407"/>
         <source>Déconnecter</source>
         <translation>切断する</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="442"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="437"/>
         <source>Connexion en cours...</source>
         <translation>接続中です...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="491"/>
+        <location filename="../src/interface/onglets/antenne/antenne.cpp" line="486"/>
         <source>Fichiers exécutables (*.exe)</source>
         <translation>実行ファイル (*.exe)</translation>
     </message>
@@ -5459,24 +5459,24 @@ ce qui représente environ %2 pages.</source>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3548"/>
-        <location filename="../src/interface/previsat.cpp" line="3551"/>
+        <location filename="../src/interface/previsat.cpp" line="3553"/>
+        <location filename="../src/interface/previsat.cpp" line="3556"/>
         <source>Devise</source>
         <translation>通貨</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3549"/>
-        <location filename="../src/interface/previsat.cpp" line="3551"/>
+        <location filename="../src/interface/previsat.cpp" line="3554"/>
+        <location filename="../src/interface/previsat.cpp" line="3556"/>
         <source>Choisissez la devise :</source>
         <translation>通貨を選んでください ：</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3565"/>
+        <location filename="../src/interface/previsat.cpp" line="3570"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires</source>
         <translation>ご注意 : Tipeeeでペイパルのご寄付をすることは可能ですが、これには追加料金がかかります</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3632"/>
+        <location filename="../src/interface/previsat.cpp" line="3637"/>
         <source>Ouverture du fichier d&apos;éléments orbitaux %1 ...</source>
         <translation>軌道要素ファイル「%1」を読み込んでいます ...</translation>
     </message>
@@ -5568,12 +5568,12 @@ ce qui représente environ %2 pages.</source>
         <translation>表示する情報がありません</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3634"/>
+        <location filename="../src/interface/previsat.cpp" line="3639"/>
         <source>Fichier d&apos;éléments orbitaux de %1 satellites</source>
         <translation>%1基衛星の軌道要素が含まれているファイル</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3802"/>
+        <location filename="../src/interface/previsat.cpp" line="3807"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>
