@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 decembre 2024
+ * >    12 decembre 2024
  *
  */
 
@@ -3491,6 +3491,11 @@ void PreviSat::on_actionMettre_a_jour_les_fichiers_de_donnees_triggered()
                 if (fi.exists() && (fi.size() > 0)) {
 
                     fi2.setFileName(Configuration::instance()->dirLocalData() + QDir::separator() + fic);
+
+                    if (fic == "satellites.db") {
+                        Configuration::instance()->FermetureBaseDonneesSatellites();
+                    }
+
                     fi2.remove();
                     fi.rename(fi2.fileName());
                 }
