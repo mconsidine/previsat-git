@@ -6239,11 +6239,6 @@ Expected value : %3 - Calculated value : %4</translation>
         <translation>Dry/total mass :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="380"/>
-        <source>Classe/Categorie/Discipline :</source>
-        <translation>Class/Category/Discipline :</translation>
-    </message>
-    <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="421"/>
         <source>Numéro NORAD :</source>
         <translation>NORAD number :</translation>
@@ -6273,6 +6268,11 @@ Expected value : %3 - Calculated value : %4</translation>
         <source>Date de lancement :</source>
         <translatorcomment>Date and hour</translatorcomment>
         <translation>Launch date :</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="380"/>
+        <source>Classe/Catégorie/Discipline :</source>
+        <translation>Class/Category/Discipline :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="504"/>

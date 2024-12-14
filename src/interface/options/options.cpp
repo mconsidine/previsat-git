@@ -1166,7 +1166,7 @@ void Options::RenommerLieu()
             const Observateur obs = mapObs.value(_ui->lieuxObs->currentItem()->text());
             const QString nomlieu = obs.nomlieu();
 
-            const Observateur nvObs(nvNomLieu, obs.longitude(), obs.latitude(), obs.altitude());
+            const Observateur nvObs(nvNomLieu, obs.longitude() * MATHS::RAD2DEG, obs.latitude() * MATHS::RAD2DEG, obs.altitude() * 1.e3);
             mapObs.remove(nomlieu);
             mapObs.insert(nvNomLieu, nvObs);
             FichierObs::Ecriture(fic);
