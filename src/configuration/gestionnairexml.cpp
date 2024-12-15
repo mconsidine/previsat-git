@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    25 aout 2024
+ * >    12 decembre 2024
  *
  */
 
@@ -755,12 +755,12 @@ QList<FrequenceRadio> GestionnaireXml::LectureSatellitesFrequences(const QDomNod
     /* Corps de la methode */
     if (!sat.isNull()) {
 
-        QStringList nom;
-        QStringList balise;
-        QStringList mode;
-        QStringList signalAppel;
-        QStringList frequencesDescendantes;
-        QStringList frequencesMontantes;
+        QString nom;
+        QString balise;
+        QString mode;
+        QString signalAppel;
+        QString frequencesDescendantes;
+        QString frequencesMontantes;
 
         const QDomNodeList listeFrequences = sat.toElement().elementsByTagName("Frequences");
 
@@ -768,17 +768,17 @@ QList<FrequenceRadio> GestionnaireXml::LectureSatellitesFrequences(const QDomNod
 
             const QDomNode frequence = listeFrequences.at(i);
 
-            nom.append(frequence.firstChildElement("Nom").text());
-            balise.append(frequence.firstChildElement("Balise").text());
-            mode.append(frequence.firstChildElement("Mode").text());
-            signalAppel.append(frequence.firstChildElement("SignalAppel").text());
+            nom = frequence.firstChildElement("Nom").text();
+            balise = frequence.firstChildElement("Balise").text();
+            mode = frequence.firstChildElement("Mode").text();
+            signalAppel = frequence.firstChildElement("SignalAppel").text();
 
-            frequencesDescendantes.append(frequence.firstChildElement("FrequenceDescendante").text().remove("*"));
-            frequencesMontantes.append(frequence.firstChildElement("FrequenceMontante").text().remove("*"));
-        }
+            frequencesDescendantes = frequence.firstChildElement("FrequenceDescendante").text().remove("*");
+            frequencesMontantes = frequence.firstChildElement("FrequenceMontante").text().remove("*");
 
-        if (!nom.isEmpty()) {
-            frequences.append({ nom, frequencesMontantes, frequencesDescendantes, balise, mode, signalAppel });
+            if (!nom.isEmpty()) {
+                frequences.append({ nom, frequencesMontantes, frequencesDescendantes, balise, mode, signalAppel });
+            }
         }
     }
 

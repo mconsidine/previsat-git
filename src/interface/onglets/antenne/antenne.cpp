@@ -30,7 +30,7 @@
  * >    9 octobre 2022
  *
  * Date de revision
- * >    22 juillet 2024
+ * >    12 decembre 2024
  *
  */
 
@@ -142,13 +142,8 @@ void Antenne::InitAffichageFrequences()
 
             const FrequenceRadio frequences = it.next();
 
-            for(const QString &freq : frequences.frequenceMontante) {
-                _ui->frequenceMontante->addItem(freq + " MHz");
-            }
-
-            for(const QString &freq : frequences.frequenceDescendante) {
-                _ui->frequenceDescendante->addItem(freq + " MHz");
-            }
+            _ui->frequenceMontante->addItem(frequences.frequenceMontante + " MHz");
+            _ui->frequenceDescendante->addItem(frequences.frequenceDescendante + " MHz");
         }
 
         if (_ui->frequenceMontante->count() == 0) {
@@ -237,9 +232,9 @@ void Antenne::show(const Date &date)
         _ui->frequenceMontanteReelle->setStyleSheet(QString("font-weight: ") + ((sat.visible() && aff1) ? "bold" : "normal"));
         _ui->attenuationMontant->setText((aff1) ? QString("%1 dB").arg(signal.attenuation(), 0, 'f', 2) : "-");
         _ui->delaiMontant->setText((aff1) ? QString("%1 ms").arg(signal.delai(), 0, 'f', 2) : "-");
-        _ui->baliseMontant->setText((frequencesMontant.balise.first().isEmpty()) ? "-" : frequencesMontant.balise.first());
-        _ui->modeMontant->setText((frequencesMontant.mode.first().isEmpty()) ? "-" : frequencesMontant.mode.first());
-        _ui->signalAppelMontant->setText((frequencesMontant.signalAppel.first().isEmpty()) ? "-" : frequencesMontant.signalAppel.first());
+        _ui->baliseMontant->setText((frequencesMontant.balise.isEmpty()) ? "-" : frequencesMontant.balise);
+        _ui->modeMontant->setText((frequencesMontant.mode.isEmpty()) ? "-" : frequencesMontant.mode);
+        _ui->signalAppelMontant->setText((frequencesMontant.signalAppel.isEmpty()) ? "-" : frequencesMontant.signalAppel);
 
         // Donnees sur le signal descendant
         signal.Calcul(rangeRate, distance, frequenceDescendante);
@@ -249,9 +244,9 @@ void Antenne::show(const Date &date)
         _ui->frequenceDescendanteReelle->setStyleSheet(QString("font-weight: ") + ((sat.visible() && aff2) ? "bold" : "normal"));
         _ui->attenuationDescendant->setText((aff2) ? QString("%1 dB").arg(signal.attenuation(), 0, 'f', 2) : "-");
         _ui->delaiDescendant->setText((aff2) ? QString("%1 ms").arg(signal.delai(), 0, 'f', 2) : "-");
-        _ui->baliseDescendant->setText((frequencesDescendant.balise.first().isEmpty()) ? "-" : frequencesDescendant.balise.first());
-        _ui->modeDescendant->setText((frequencesDescendant.mode.first().isEmpty()) ? "-" : frequencesDescendant.mode.first());
-        _ui->signalAppelDescendant->setText((frequencesDescendant.signalAppel.first().isEmpty()) ? "-" : frequencesDescendant.signalAppel.first());
+        _ui->baliseDescendant->setText((frequencesDescendant.balise.isEmpty()) ? "-" : frequencesDescendant.balise);
+        _ui->modeDescendant->setText((frequencesDescendant.mode.isEmpty()) ? "-" : frequencesDescendant.mode);
+        _ui->signalAppelDescendant->setText((frequencesDescendant.signalAppel.isEmpty()) ? "-" : frequencesDescendant.signalAppel);
     }
 
     // Nom du satellite

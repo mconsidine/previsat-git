@@ -36,7 +36,7 @@
  * >    9 octobre 2022
  *
  * Date de revision
- * >
+ * >    12 decembre 2024
  *
  */
 
@@ -50,12 +50,12 @@
  * Definitions des structures
  */
 struct FrequenceRadio {
-    QStringList nom;
-    QStringList frequenceMontante;
-    QStringList frequenceDescendante;
-    QStringList balise;
-    QStringList mode;
-    QStringList signalAppel;
+    QString nom;
+    QString frequenceMontante;
+    QString frequenceDescendante;
+    QString balise;
+    QString mode;
+    QString signalAppel;
 };
 
 #endif // FREQUENCESRADIO_H
