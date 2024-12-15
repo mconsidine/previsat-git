@@ -40,7 +40,7 @@ cmake_minimum_required(VERSION 3.24)
 
 
 #----------------------------------
-set(VERSION 7.0.1.2)
+set(VERSION 7.0.2.3)
 set(ANNEES_DEV 2005-2024)
 set(QT_PREFERRED_VERSION 6.7.2)
 
