@@ -377,7 +377,7 @@
     <item row="0" column="0">
      <widget class="QLabel" name="lbl_classeCategDiscip">
       <property name="text">
-       <string>Classe/Categorie/Discipline :</string>
+       <string>Classe/Catégorie/Discipline :</string>
       </property>
      </widget>
     </item>

@@ -6245,12 +6245,6 @@ Valeur attendue : %3 - Valeur calculée : %4</source>
         <translation>乾燥/総重量 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="380"/>
-        <source>Classe/Categorie/Discipline :</source>
-        <translatorcomment>クラス/しゅるい/がくもん (pas de traduction des données issues de la BDD satellite)</translatorcomment>
-        <translation>クラス/種類/学問 :</translation>
-    </message>
-    <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="421"/>
         <source>Numéro NORAD :</source>
         <translation>NORAD番号 :</translation>
@@ -6281,6 +6275,11 @@ Valeur attendue : %3 - Valeur calculée : %4</source>
         <source>Date de lancement :</source>
         <translatorcomment>Date and hour</translatorcomment>
         <translation>打ち上げ日時 :</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="380"/>
+        <source>Classe/Catégorie/Discipline :</source>
+        <translation>クラス/種類/学問 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="504"/>
