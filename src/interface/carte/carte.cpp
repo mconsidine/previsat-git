@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    16 novembre 2024
+ * >    6 decembre 2024
  *
  */
 
@@ -844,6 +844,7 @@ void Carte::AffichageSatellites()
                 AffichageSatelliteDefaut(sat, lsat, bsat);
 
                 // Affichage de l'icone satellite
+                img = QPixmap();
                 if (!_listeIcones.isEmpty()) {
                     img = QPixmap(_listeIcones.first());
                     img = img.scaled(qMin(_largeurCarte / 12, img.width()), qMin(_hauteurCarte / 6, img.height()), Qt::KeepAspectRatio, Qt::SmoothTransformation);
