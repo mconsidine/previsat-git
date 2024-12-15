@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 decembre 2024
+ * >    7 decembre 2024
  *
  */
 
@@ -2567,11 +2567,12 @@ void PreviSat::TelechargementGroupesStarlink(const bool maj)
             QString groupe;
             QString nomGroupe;
             QStringList grp;
-            unsigned int debf = 0;
-            unsigned int debl = 0;
+            qsizetype debf = 0;
+            qsizetype debl = 0;
+            qsizetype indg = 0;
 
             const QString contenu = fi.readAll();
-            const unsigned int nb = static_cast<unsigned int> (contenu.count("sup-gp.php?FILE=starlink-"));
+            const qsizetype nb = contenu.count("sup-gp.php?FILE=starlink-");
             const QMap<QString, SatellitesStarlink> satellitesStarlink = Configuration::instance()->satellitesStarlink();
 
             if (nb > 0) {
@@ -2580,19 +2581,25 @@ void PreviSat::TelechargementGroupesStarlink(const bool maj)
 
             for(unsigned int i=0; i<nb; i++) {
 
-                const unsigned int indf = static_cast<unsigned int> (contenu.indexOf("sup-gp.php?FILE=starlink-", debf)) + 16;
-                const unsigned int finf = static_cast<unsigned int> (contenu.indexOf("&FORMAT", indf));
-                const unsigned int indg = static_cast<unsigned int> (contenu.indexOf(">Starlink G", debf) + 1);
-                const unsigned int fing = static_cast<unsigned int> (contenu.indexOf("<", indg));
-                const unsigned int indl = static_cast<unsigned int> (contenu.indexOf("Launch: ", debl));
+                const qsizetype indf = contenu.indexOf("sup-gp.php?FILE=starlink-", debf) + 16;
+                const qsizetype finf = contenu.indexOf("&FORMAT", indf);
+                indg = contenu.indexOf(">Starlink G", debf) + 1;
+
+                if (indg == 0) {
+                    indg = contenu.indexOf("Backup Launch Opportunity ", debf);
+                }
+
+                const qsizetype fing = contenu.indexOf("<", indg);
+                const qsizetype indl = contenu.indexOf("Launch: ", debl);
 
                 // Informations Starlink
                 fichier = contenu.mid(indf, finf - indf).trimmed();
                 groupe = contenu.mid(indg, fing - indg).trimmed();
+
                 const QString lancement = contenu.mid(contenu.indexOf("Launch: ", indl) + 8, 19);
                 const QString deploiement = contenu.mid(contenu.indexOf("Deploy: ", indl) + 8, 23);
 
-                if (groupe.contains("Backup")) {
+                if (groupe.contains("Backup") || (indg <= 0)) {
 
                     grp = fichier.split("-", Qt::SkipEmptyParts);
                     nomGroupe = grp.first() + " " + grp.at(1).toUpper() + "-" + grp.at(2).toUpper();
