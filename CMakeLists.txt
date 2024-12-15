@@ -33,14 +33,14 @@
 # >    21 juin 2023
 #
 # Date de revision
-# >
+# >    7 decembre 2024
 #
 
 cmake_minimum_required(VERSION 3.24)
 
 
 #----------------------------------
-set(VERSION 7.0.0.10)
+set(VERSION 7.0.1.2)
 set(ANNEES_DEV 2005-2024)
 set(QT_PREFERRED_VERSION 6.7.2)
 
