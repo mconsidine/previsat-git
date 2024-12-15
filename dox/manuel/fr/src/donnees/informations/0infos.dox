@@ -65,7 +65,11 @@ Nous donnons tout d'abord le nom du satellite puis successivement :
 
 - Le <b>modèle orbital</b> utilisé (SGP4). Pour les satellites dont la période est inférieure à 225 minutes, on précise "NE" (Near Earth); dans le cas contraire, on indique "DS" (Deep Space).
 
-- Les <b>dimensions de l'objet</b> et la <b>section équivalente radar</b> issues d'un fichier interne.
+- La <b>masse à sec</b> et la <b>masse totale</b> de l'objet.
+
+- La <b>forme</b> et les <b>dimensions</b> de l'objet.
+
+- La <b>classe</b>, la <b>catégorie</b> et la <b>discipline</b> de l'objet (cf. tableaux 4, 5, 6 ci-dessous).
 
 - La <b>date de lancement</b> de l'objet.
 
@@ -234,6 +238,79 @@ XSC | Xichang Space Center, République populaire de Chine
 YAVNE | Yavne Launch Facility, Israel
 YUN | Yunsong, Corée du Nord
 Tableau 3 : Sites de lancement
+<br /><br />
+
+| Classe | Signification |
+|--------|---------------|
+A | Amateur/academic/non-profit
+B | Business (commercial)
+C | Civil (government but not military)
+D | Defense (govt. military, intelligence)
+Tableau 4 : Classes
+<br /><br />
+
+| Catégorie | Signification |
+|-----------|---------------|
+AST | Astronomy
+BIO | Biology and life sciences
+CAL | Calibration (for atmospheric density, space surveillance radars, etc). Usually passive.
+COM | Communications
+EDU | Educational purposes.
+EOSCI | Earth observing science, except imaging
+EW | Missile early warning, including ballistic missile defence tracking
+GEOD | Geodesy
+IMG | Imaging (optical), except meteorology
+IMG-R | Imaging (radar)
+INF | Infrastructure (support structures, deployers etc)
+MET | Meteorology (imaging)
+MET-RO | Meteorology (radio occultation)
+MGRAV | Microgravity experiments
+MISC | Miscellaneous (e.g. burial services)
+NAV | Navigation, positioning and timing
+PLAN | Deep space related mission
+RB | Rocket body (rocket upper stage)
+RV | Reentry vehicle
+SCI | Scientific studies, except astronomy and Earth observing
+SIG | Signals intelligence
+SS | Spaceship, i..e human spaceflight related (including cargo ships)
+TARG | Target for missile defense or antisatellite tests
+TECH | Technology and training
+WEAPON | Weapon, including antisatellite experiment and FOBS
+Tableau 5 : Catégories
+<br /><br />
+
+| Discipline | Signification |
+|------------|---------------|
+AIS | Automatic ID system (ship tracking)
+ALT | Radar altimeter
+ATM | Atmospheric science
+AUR | Auroral research
+BIO | Biology and life sciences
+ENV | Space enviromental exposure
+ESCI | Earth sciences
+F | Electromagnetic fields
+GEOD | Geodesy
+GRA | Gamma ray astronomy
+IMG | Imaging
+ION | Ionospheric research
+IRA | Infrared astronomy
+M | Humans in microgravity and related research
+MG | Microgravity experiments
+MM | Micrometeorite studies
+OA | Optical astronomy
+P | Particles
+PHY | Basic physics
+PL | Planetary science
+RFA | Radio-frequency astronomy
+SMA | Submillimeter astronomy
+SOL | Solar physics
+SX | Solar X-ray astronomy
+TECH | Technology experiments
+UVA | Ultraviolet astronomy
+XNAV | X-ray navigation
+XRA | X-ray astronomy
+Tableau 6 : Disciplines
+
 </center>
 
 */
