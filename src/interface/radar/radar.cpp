@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    2 decembre 2024
+ * >    23 decembre 2024
  *
  */
 
@@ -285,16 +285,18 @@ void Radar::show()
     scene->addEllipse(rectangle, coulCiel, couleurCiel);
 
     // Dessin des cercles concentriques
-    scene->addEllipse(33, 33, 133, 133, QPen(Qt::gray));
-    scene->addEllipse(67, 67, 67, 67, QPen(Qt::gray));
+    QPen pen(Qt::gray);
+    pen.setCosmetic(true);
+    scene->addEllipse(33, 33, 133, 133, pen);
+    scene->addEllipse(67, 67, 67, 67, pen);
 
     // Dessin des segments
-    scene->addLine(0, 100, 200, 100, QPen(Qt::gray));
-    scene->addLine(100, 0, 100, 200, QPen(Qt::gray));
-    scene->addLine(13, 50, 187, 150, QPen(Qt::gray));
-    scene->addLine(13, 150, 187, 50, QPen(Qt::gray));
-    scene->addLine(50, 13, 150, 187, QPen(Qt::gray));
-    scene->addLine(50, 187, 150, 13, QPen(Qt::gray));
+    scene->addLine(0, 100, 200, 100, pen);
+    scene->addLine(100, 0, 100, 200, pen);
+    scene->addLine(13, 50, 187, 150, pen);
+    scene->addLine(13, 150, 187, 50, pen);
+    scene->addLine(50, 13, 150, 187, pen);
+    scene->addLine(50, 187, 150, 13, pen);
 
     // Inversion des coordonnees du Soleil et du satellite
     int xf, yf;
@@ -382,7 +384,6 @@ void Radar::show()
     QVector<QPolygonF> traces;
     QVector<QColor> couleurs;
 
-    QPen pen;
     pen.setWidthF(1.2);
 
     QListIterator it1(Configuration::instance()->listeSatellites());
@@ -439,7 +440,6 @@ void Radar::show()
                 QGraphicsPathItem * const path = new QGraphicsPathItem(res);
 
                 pen.setColor(couleurs[i]);
-                pen.setCosmetic(true);
                 path->setPen(pen);
                 scene->addItem(path);
             }

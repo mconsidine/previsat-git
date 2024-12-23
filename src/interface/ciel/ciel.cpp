@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    2 decembre 2024
+ * >    23 decembre 2024
  *
  */
 
@@ -240,12 +240,16 @@ void Ciel::show(const Observateur &observateur,
     // Affichage des satellites
     AffichageSatellites(dateDeb, dateMax, dateFin, maxFlash);
 
+    QPen pen2(Qt::gray);
+    pen2.setWidth(3);
+    pen2.setCosmetic(true);
+
     if (_labelHeure) {
         scene->addEllipse(-20, -20, 540, 540, QPen(QBrush(palette().window().color()), 44));
-        scene->addEllipse(1, 1, 497, 497, QPen(QBrush(Qt::gray), 3));
+        scene->addEllipse(1, 1, 497, 497, pen2);
     } else {
         scene->addEllipse(-30, -30, _ui->vueCiel->width() + 60, _ui->vueCiel->height() + 60, QPen(QBrush(palette().window().color()), 64));
-        scene->addEllipse(1, 1, _ui->vueCiel->width() - 3, _ui->vueCiel->height() - 3, QPen(QBrush(Qt::gray), 3));
+        scene->addEllipse(1, 1, _ui->vueCiel->width() - 3, _ui->vueCiel->height() - 3, pen2);
     }
 
     _ui->vueCiel->setScene(scene);

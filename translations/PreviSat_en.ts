@@ -1951,39 +1951,39 @@ PreviSat is free !</translation>
         <translation>South</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="1044"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="1048"/>
         <source>Flash %1</source>
         <translation>Flare %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="398"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="402"/>
         <source>Ascension droite : %1</source>
         <translation>Right ascension : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="400"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="404"/>
         <source>Déclinaison : %1</source>
         <translation>Declination : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="1098"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="1102"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="1101"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="1105"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD number : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="456"/>
-        <location filename="../src/interface/ciel/ciel.cpp" line="1190"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="460"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="1194"/>
         <source>Soleil</source>
         <translation>Sun</translation>
     </message>
     <message>
-        <location filename="../src/interface/ciel/ciel.cpp" line="473"/>
-        <location filename="../src/interface/ciel/ciel.cpp" line="765"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="477"/>
+        <location filename="../src/interface/ciel/ciel.cpp" line="769"/>
         <source>Lune</source>
         <translation>Moon</translation>
     </message>
@@ -6165,29 +6165,29 @@ Expected value : %3 - Calculated value : %4</translation>
     <name>Radar</name>
     <message>
         <location filename="../src/interface/radar/radar.ui" line="58"/>
-        <location filename="../src/interface/radar/radar.cpp" line="303"/>
-        <location filename="../src/interface/radar/radar.cpp" line="306"/>
+        <location filename="../src/interface/radar/radar.cpp" line="305"/>
+        <location filename="../src/interface/radar/radar.cpp" line="308"/>
         <source>Nord</source>
         <translation>North</translation>
     </message>
     <message>
         <location filename="../src/interface/radar/radar.ui" line="73"/>
-        <location filename="../src/interface/radar/radar.cpp" line="313"/>
-        <location filename="../src/interface/radar/radar.cpp" line="316"/>
+        <location filename="../src/interface/radar/radar.cpp" line="315"/>
+        <location filename="../src/interface/radar/radar.cpp" line="318"/>
         <source>Ouest</source>
         <translation>West</translation>
     </message>
     <message>
         <location filename="../src/interface/radar/radar.ui" line="114"/>
-        <location filename="../src/interface/radar/radar.cpp" line="312"/>
-        <location filename="../src/interface/radar/radar.cpp" line="317"/>
+        <location filename="../src/interface/radar/radar.cpp" line="314"/>
+        <location filename="../src/interface/radar/radar.cpp" line="319"/>
         <source>Est</source>
         <translation>East</translation>
     </message>
     <message>
         <location filename="../src/interface/radar/radar.ui" line="126"/>
-        <location filename="../src/interface/radar/radar.cpp" line="302"/>
-        <location filename="../src/interface/radar/radar.cpp" line="307"/>
+        <location filename="../src/interface/radar/radar.cpp" line="304"/>
+        <location filename="../src/interface/radar/radar.cpp" line="309"/>
         <source>Sud</source>
         <translation>South</translation>
     </message>
@@ -6213,13 +6213,13 @@ Expected value : %3 - Calculated value : %4</translation>
     </message>
     <message>
         <location filename="../src/interface/radar/radar.cpp" line="174"/>
-        <location filename="../src/interface/radar/radar.cpp" line="338"/>
+        <location filename="../src/interface/radar/radar.cpp" line="340"/>
         <source>Soleil</source>
         <translation>Sun</translation>
     </message>
     <message>
         <location filename="../src/interface/radar/radar.cpp" line="191"/>
-        <location filename="../src/interface/radar/radar.cpp" line="366"/>
+        <location filename="../src/interface/radar/radar.cpp" line="368"/>
         <source>Lune</source>
         <translation>Moon</translation>
     </message>
