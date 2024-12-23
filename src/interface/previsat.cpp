@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 decembre 2024
+ * >    23 decembre 2024
  *
  */
 
@@ -304,9 +304,6 @@ void PreviSat::MajGP()
         }
     }
 
-    // Telechargement des groupes Starlink
-    TelechargementGroupesStarlink(false);
-
     qInfo() << "Fin   Fonction" << __FUNCTION__;
 
     /* Retour */
@@ -494,6 +491,150 @@ void PreviSat::DemarrageApplication()
     _chronometre->start();
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
+
+    /* Retour */
+    return;
+}
+
+
+/*
+ * Telechargement des groupes Starlink
+ */
+void PreviSat::TelechargementGroupesStarlink(const bool maj)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const bool expiration = !Configuration::instance()->VerifieDateExpiration("starlink");
+
+    /* Corps de la methode */
+    try {
+
+        qInfo() << "Telechargement des groupes Starlink";
+
+        if (!settings.value("affichage/verifMajStarlink", true).toBool() && !maj) {
+            throw Exception();
+        }
+
+        if (expiration) {
+            throw Exception();
+        }
+
+        // Telechargement des informations generales des pre-launch Starlink
+        Telechargement tel1(Configuration::instance()->dirStarlink());
+        tel1.TelechargementFichier(QUrl(Configuration::instance()->adresseCelestrakSupplementalNorad() + "index.php"));
+
+        // Telechargement du fichier d'elements orbitaux le plus a jour
+        tel1.TelechargementFichier(QUrl(Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg("starlink")));
+
+        // Telechargement des trains Starlink connus
+        tel1.TelechargementFichier(QUrl(QString(DOMAIN_NAME) + "starlink/starlink.txt"));
+
+        // Lecture du fichier starlink.txt
+        LectureGroupesStarlink();
+
+        // Recuperation des nouveaux groupes de lancement
+        QFile fi(Configuration::instance()->dirStarlink() + QDir::separator() + "index.php");
+        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+            QString fichier;
+            QString groupe;
+            QString nomGroupe;
+            QStringList grp;
+            qsizetype debf = 0;
+            qsizetype debl = 0;
+            qsizetype indg = 0;
+
+            const QString contenu = fi.readAll();
+            const qsizetype nb = contenu.count("sup-gp.php?FILE=starlink-");
+            const QMap<QString, SatellitesStarlink> satellitesStarlink = Configuration::instance()->satellitesStarlink();
+
+            if (nb > 0) {
+                Configuration::instance()->satellitesStarlink().clear();
+            }
+
+            for(unsigned int i=0; i<nb; i++) {
+
+                const qsizetype indf = contenu.indexOf("sup-gp.php?FILE=starlink-", debf) + 16;
+                const qsizetype finf = contenu.indexOf("&FORMAT", indf);
+                indg = contenu.indexOf(">Starlink G", debf) + 1;
+
+                if (indg == 0) {
+                    indg = contenu.indexOf("Backup Launch Opportunity ", debf);
+                }
+
+                const qsizetype fing = contenu.indexOf("<", indg);
+                const qsizetype indl = contenu.indexOf("Launch: ", debl);
+
+                // Informations Starlink
+                fichier = contenu.mid(indf, finf - indf).trimmed();
+                groupe = contenu.mid(indg, fing - indg).trimmed();
+
+                const QString lancement = contenu.mid(contenu.indexOf("Launch: ", indl) + 8, 19);
+                const QString deploiement = contenu.mid(contenu.indexOf("Deploy: ", indl) + 8, 23);
+
+                if (groupe.contains("Backup") || (indg <= 0)) {
+
+                    grp = fichier.split("-", Qt::SkipEmptyParts);
+                    nomGroupe = grp.first() + " " + grp.at(1).toUpper() + "-" + grp.at(2).toUpper();
+                    nomGroupe[0] = nomGroupe[0].toUpper();
+                    groupe = nomGroupe + " Pre-Launch";
+
+                } else {
+                    nomGroupe = groupe.split(" ", Qt::SkipEmptyParts).at(1);
+                }
+
+                if (Configuration::instance()->groupesStarlink().keys().contains(nomGroupe)) {
+
+                    groupe = groupe.split(" ", Qt::SkipEmptyParts).first() + " " + nomGroupe;
+                    fichier = "starlink";
+
+                } else {
+
+                    // Telechargement du fichier d'elements orbitaux correspondant
+                    const QUrl url(Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg(fichier));
+                    Telechargement tel2(Configuration::instance()->dirStarlink());
+                    tel2.TelechargementFichier(url);
+                }
+
+                // Ajout du groupe dans la liste
+                Configuration::instance()->AjoutDonneesSatellitesStarlink(groupe, fichier, lancement, deploiement);
+
+                debf = finf + 1;
+                debl = indl + 1;
+            }
+
+            fi.close();
+
+            if (nb > 0) {
+
+                QMapIterator it(satellitesStarlink);
+                while (it.hasNext()) {
+                    it.next();
+
+                    const SatellitesStarlink starlink = it.value();
+                    if (!starlink.fichier.split("-").last().contains("b")) {
+                        Configuration::instance()->AjoutDonneesSatellitesStarlink(it.key(), starlink.fichier, starlink.lancement, starlink.deploiement);
+                    }
+                }
+
+                if (Configuration::instance()->satellitesStarlink().isEmpty()) {
+                    throw Exception();
+                }
+            }
+
+            _onglets->starlink()->show();
+        }
+
+    } catch (Exception const &e) {
+
+        if (Configuration::instance()->satellitesStarlink().isEmpty()) {
+            _onglets->ui()->stackedWidget_previsions->removeWidget(_onglets->ui()->starlink);
+
+        } else if (!expiration) {
+            _onglets->starlink()->show();
+        }
+    }
 
     /* Retour */
     return;
@@ -2521,149 +2662,6 @@ void PreviSat::RaccourciRentrees()
 void PreviSat::ReinitCalculEvenementsSoleilLune()
 {
     _reinitJour = true;
-}
-
-/*
- * Telechargement des groupes Starlink
- */
-void PreviSat::TelechargementGroupesStarlink(const bool maj)
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const bool expiration = !Configuration::instance()->VerifieDateExpiration("starlink");
-
-    /* Corps de la methode */
-    try {
-
-        qInfo() << "Telechargement des groupes Starlink";
-
-        if (!settings.value("affichage/verifMAJ").toBool() && !maj) {
-            throw Exception();
-        }
-
-        if (expiration) {
-            throw Exception();
-        }
-
-        // Telechargement des informations generales des pre-launch Starlink
-        Telechargement tel1(Configuration::instance()->dirStarlink());
-        tel1.TelechargementFichier(QUrl(Configuration::instance()->adresseCelestrakSupplementalNorad() + "index.php"));
-
-        // Telechargement du fichier d'elements orbitaux le plus a jour
-        tel1.TelechargementFichier(QUrl(Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg("starlink")));
-
-        // Telechargement des trains Starlink connus
-        tel1.TelechargementFichier(QUrl(QString(DOMAIN_NAME) + "starlink/starlink.txt"));
-
-        // Lecture du fichier starlink.txt
-        LectureGroupesStarlink();
-
-        // Recuperation des nouveaux groupes de lancement
-        QFile fi(Configuration::instance()->dirStarlink() + QDir::separator() + "index.php");
-        if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-
-            QString fichier;
-            QString groupe;
-            QString nomGroupe;
-            QStringList grp;
-            qsizetype debf = 0;
-            qsizetype debl = 0;
-            qsizetype indg = 0;
-
-            const QString contenu = fi.readAll();
-            const qsizetype nb = contenu.count("sup-gp.php?FILE=starlink-");
-            const QMap<QString, SatellitesStarlink> satellitesStarlink = Configuration::instance()->satellitesStarlink();
-
-            if (nb > 0) {
-                Configuration::instance()->satellitesStarlink().clear();
-            }
-
-            for(unsigned int i=0; i<nb; i++) {
-
-                const qsizetype indf = contenu.indexOf("sup-gp.php?FILE=starlink-", debf) + 16;
-                const qsizetype finf = contenu.indexOf("&FORMAT", indf);
-                indg = contenu.indexOf(">Starlink G", debf) + 1;
-
-                if (indg == 0) {
-                    indg = contenu.indexOf("Backup Launch Opportunity ", debf);
-                }
-
-                const qsizetype fing = contenu.indexOf("<", indg);
-                const qsizetype indl = contenu.indexOf("Launch: ", debl);
-
-                // Informations Starlink
-                fichier = contenu.mid(indf, finf - indf).trimmed();
-                groupe = contenu.mid(indg, fing - indg).trimmed();
-
-                const QString lancement = contenu.mid(contenu.indexOf("Launch: ", indl) + 8, 19);
-                const QString deploiement = contenu.mid(contenu.indexOf("Deploy: ", indl) + 8, 23);
-
-                if (groupe.contains("Backup") || (indg <= 0)) {
-
-                    grp = fichier.split("-", Qt::SkipEmptyParts);
-                    nomGroupe = grp.first() + " " + grp.at(1).toUpper() + "-" + grp.at(2).toUpper();
-                    nomGroupe[0] = nomGroupe[0].toUpper();
-                    groupe = nomGroupe + " Pre-Launch";
-
-                } else {
-                    nomGroupe = groupe.split(" ", Qt::SkipEmptyParts).at(1);
-                }
-
-                if (Configuration::instance()->groupesStarlink().keys().contains(nomGroupe)) {
-
-                    groupe = groupe.split(" ", Qt::SkipEmptyParts).first() + " " + nomGroupe;
-                    fichier = "starlink";
-
-                } else {
-
-                    // Telechargement du fichier d'elements orbitaux correspondant
-                    const QUrl url(Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg(fichier));
-                    Telechargement tel2(Configuration::instance()->dirStarlink());
-                    tel2.TelechargementFichier(url);
-                }
-
-                // Ajout du groupe dans la liste
-                Configuration::instance()->AjoutDonneesSatellitesStarlink(groupe, fichier, lancement, deploiement);
-
-                debf = finf + 1;
-                debl = indl + 1;
-            }
-
-            fi.close();
-
-            if (nb > 0) {
-
-                QMapIterator it(satellitesStarlink);
-                while (it.hasNext()) {
-                    it.next();
-
-                    const SatellitesStarlink starlink = it.value();
-                    if (!starlink.fichier.split("-").last().contains("b")) {
-                        Configuration::instance()->AjoutDonneesSatellitesStarlink(it.key(), starlink.fichier, starlink.lancement, starlink.deploiement);
-                    }
-                }
-
-                if (Configuration::instance()->satellitesStarlink().isEmpty()) {
-                    throw Exception();
-                }
-            }
-
-            _onglets->starlink()->show();
-        }
-
-    } catch (Exception const &e) {
-
-        if (Configuration::instance()->satellitesStarlink().isEmpty()) {
-            _onglets->ui()->stackedWidget_previsions->removeWidget(_onglets->ui()->starlink);
-
-        } else if (!expiration) {
-            _onglets->starlink()->show();
-        }
-    }
-
-    /* Retour */
-    return;
 }
 
 /*

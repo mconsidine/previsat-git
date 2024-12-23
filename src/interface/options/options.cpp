@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    10 decembre 2024
+ * >    23 decembre 2024
  *
  */
 
@@ -319,6 +319,7 @@ void Options::EcritureRegistre()
     settings.setValue("affichage/utcAuto", _ui->utcAuto->isChecked());
     settings.setValue("affichage/valeurZoomMap", _ui->valeurZoomMap->value());
     settings.setValue("affichage/verifMAJ", _ui->verifMAJ->isChecked());
+    settings.setValue("affichage/verifMajStarlink", _ui->verifMajStarlink->isChecked());
 
     settings.setValue("affichage/affBetaWCC", _ui->affBetaWCC->isChecked());
     settings.setValue("affichage/affCerclesAcq", _ui->affCerclesAcq->isChecked());
@@ -357,6 +358,7 @@ void Options::EcritureRegistre()
 void Options::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
+        CreerMenus();
         _ui->retranslateUi(this);
     }
 }
@@ -522,6 +524,7 @@ void Options::ChargementPref()
         _ui->utc->setChecked(settings.value("affichage/utc", false).toBool());
         _ui->utcAuto->setChecked(settings.value("affichage/utcAuto", true).toBool());
         _ui->verifMAJ->setChecked(settings.value("affichage/verifMAJ", false).toBool());
+        _ui->verifMajStarlink->setChecked(settings.value("affichage/verifMajStarlink", true).toBool());
 
         _ui->rotationIconeISS->setEnabled(_ui->afficone->isChecked());
         _ui->nombreTrajectoires->setEnabled(_ui->afftraj->isChecked());
@@ -547,6 +550,16 @@ void Options::CreerMenus()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    EFFACE_OBJET(_creerCategorie);
+    EFFACE_OBJET(_renommerCategorie);
+    EFFACE_OBJET(_supprimerCategorie);
+    EFFACE_OBJET(_telechargerCategorie);
+
+    EFFACE_OBJET(_creerLieu);
+    EFFACE_OBJET(_ajouterLieuMesPreferes);
+    EFFACE_OBJET(_renommerLieu);
+    EFFACE_OBJET(_modifierLieu);
+    EFFACE_OBJET(_supprimerLieu);
 
     /* Corps de la methode */
     _creerCategorie = new QAction(tr("Créer une catégorie"), this);
@@ -931,6 +944,7 @@ void Options::SauvePreferences(const QString &fichierPref)
              << "affichage/utcAuto " << QVariant(_ui->utcAuto->isChecked()).toString() << Qt::endl
              << "affichage/valeurZoomMap " << _ui->valeurZoomMap->value() << Qt::endl
              << "affichage/verifMAJ " << QVariant(_ui->verifMAJ->isChecked()).toString() << Qt::endl
+             << "affichage/verifMajStarlink " << QVariant(_ui->verifMajStarlink->isChecked()).toString() << Qt::endl
 
              << "affichage/affBetaWCC " << QVariant(_ui->affBetaWCC->isChecked()).toString() << Qt::endl
              << "affichage/affCerclesAcq " << QVariant(_ui->affCerclesAcq->isChecked()).toString() << Qt::endl

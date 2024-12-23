@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    9 juillet 2024
+ * >    23 decembre 2024
  *
  */
 
@@ -171,6 +171,12 @@ int main(int argc, char *argv[])
         message->setText(QObject::tr("Mise à jour des éléments orbitaux..."));
         a.processEvents();
         w.MajGP();
+
+        // Telechargement des groupes Starlink
+        qInfo() << "Mise a jour des Starlink";
+        message->setText(QObject::tr("Mise à jour des Starlink..."));
+        a.processEvents();
+        w.TelechargementGroupesStarlink(false);
 
         // Demarrage de l'application en mode temps reel
         qInfo() << "Demarrage de l'application";

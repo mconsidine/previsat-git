@@ -40,6 +40,7 @@ affichage/utc false
 affichage/utcAuto true
 affichage/valeurZoomMap 9
 affichage/verifMAJ true
+affichage/verifMajStarlink true
 affichage/affBetaWCC false
 affichage/affCerclesAcq true
 affichage/affNbOrbWCC true

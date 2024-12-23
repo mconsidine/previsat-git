@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 juillet 2024
+ * >    23 decembre 2024
  *
  */
 
@@ -121,6 +121,12 @@ public slots:
      * @brief DemarrageApplication Demarrage de l'application apres le chargement de la configuration
      */
     void DemarrageApplication();
+
+    /**
+     * @brief TelechargementGroupesStarlink Telechargement des groupes Starlink
+     * @param[in] maj mise a jour
+     */
+    void TelechargementGroupesStarlink(const bool maj);
 
 
 signals:
@@ -414,12 +420,6 @@ private slots:
      * @brief ReinitCalculEvenementsSoleilLune Reinitialisation du calcul des evenements Soleil/Lune
      */
     void ReinitCalculEvenementsSoleilLune();
-
-    /**
-     * @brief TelechargementGroupesStarlink Telechargement des groupes Starlink
-     * @param[in] maj mise a jour
-     */
-    void TelechargementGroupesStarlink(const bool maj);
 
     /**
      * @brief TempsReel Affichage en temps reel

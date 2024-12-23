@@ -962,7 +962,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>82</y>
+         <y>90</y>
          <width>271</width>
          <height>20</height>
         </rect>
@@ -1059,7 +1059,7 @@
        <property name="geometry">
         <rect>
          <x>290</x>
-         <y>82</y>
+         <y>90</y>
          <width>231</width>
          <height>20</height>
         </rect>
@@ -1113,13 +1113,26 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>106</y>
+         <y>114</y>
          <width>271</width>
          <height>20</height>
         </rect>
        </property>
        <property name="text">
         <string>Informations satellite par défaut</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="verifMajStarlink">
+       <property name="geometry">
+        <rect>
+         <x>290</x>
+         <y>114</y>
+         <width>271</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Mise à jour des données Starlink</string>
        </property>
       </widget>
      </widget>
