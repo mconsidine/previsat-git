@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    23 aout 2024
+ * >    23 decembre 2024
  *
  */
 
@@ -121,6 +121,7 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul,
         setMinimumSize(1226, 630);
         _afficherEvt = false;
     }
+
     resize(minimumSize());
 
     _ui->resultatsPrevisions->clear();
@@ -180,6 +181,7 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul,
             _ui->fichierTexte->setReadOnly(true);
             _ui->fichierTexte->setText(syst(contenuFic));
         }
+
         fi.close();
 
     } else {
@@ -483,6 +485,8 @@ void AfficherResultats::ChargementResultats()
     bool alternance = true;
     int j = 0;
     int imax = 1;
+    double ecartAzimut = 0.;
+    const double seuilAzimut = settings.value("previsions/seuilMaximalFlashsStarlink", 10).toInt() * MATHS::DEG2RAD;
     const bool etat = _ui->resultatsPrevisions->blockSignals(true);
 
     /* Corps de la methode */
@@ -501,7 +505,7 @@ void AfficherResultats::ChargementResultats()
 
             case TypeCalcul::PREVISIONS:
             case TypeCalcul::STARLINK:
-                elems = ElementsPrevisions(list);
+                elems = ElementsPrevisions(list, ecartAzimut);
                 break;
 
             case TypeCalcul::FLASHS:
@@ -538,6 +542,10 @@ void AfficherResultats::ChargementResultats()
                     item->setTextAlignment(((_typeCalcul == TypeCalcul::EVENEMENTS) && (k == (elems.count() - 1))) ? Qt::AlignLeft : Qt::AlignCenter);
                     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
 
+                    if ((_typeCalcul == TypeCalcul::STARLINK) && (ecartAzimut <= seuilAzimut)) {
+                        item->setBackground(QBrush(QColor::fromRgb(150, 200, 255)));
+                    }
+
                     if (k == 0) {
                         item->setToolTip(elems.at(0));
                         item->setData(Qt::UserRole, QVariant::fromValue<QList<ResultatPrevisions> > (list));
@@ -559,12 +567,13 @@ void AfficherResultats::ChargementResultats()
     }
 
     _ui->resultatsPrevisions->setStyleSheet("QHeaderView::section {" \
-                                            "background-color:rgb(235, 235, 235);" \
+                                            "background-color: rgb(235, 235, 235);" \
                                             "border-top: 0px solid grey;" \
                                             "border-bottom: 1px solid grey;" \
                                             "border-right: 1px solid grey;" \
                                             "font-size: 12px;" \
-                                            "font-weight: 600 }");
+                                            "font-weight: 600 }" \
+                                            "QTableWidget::item { selection-background-color: rgb(0, 120, 215) }");
 
     if ((_typeCalcul == TypeCalcul::TRANSITS) || (_typeCalcul == TypeCalcul::STARLINK)) {
         _ui->resultatsPrevisions->setColumnWidth(0, 120);
@@ -595,6 +604,7 @@ void AfficherResultats::ChargementResultats()
 
         QString nom;
         _ui->resultatsPrevisions->sortItems(1);
+        alternance = false;
 
         for(j=0; j<_ui->resultatsPrevisions->rowCount(); j++) {
 
@@ -716,6 +726,7 @@ void AfficherResultats::EcrireEntete() const
                  << Qt::endl << Qt::endl << Qt::endl;
         }
     }
+
     fichier.close();
 
     /* Retour */
@@ -921,7 +932,7 @@ QStringList AfficherResultats::ElementsDetailsFlashs(const ResultatPrevisions &r
 /*
  * Elements des previsions de passage a afficher dans la fenetre de resultats
  */
-QStringList AfficherResultats::ElementsPrevisions(const QList<ResultatPrevisions> &liste) const
+QStringList AfficherResultats::ElementsPrevisions(const QList<ResultatPrevisions> &liste, double &ecartAzimut) const
 {
     /* Declarations des variables locales */
     QStringList elems;
@@ -942,6 +953,7 @@ QStringList AfficherResultats::ElementsPrevisions(const QList<ResultatPrevisions
     const Date dateFin(liste.last().date, offset2);
     elems.append(dateFin.ToShortDateAMJ(DateFormat::FORMAT_COURT, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
+    double azMax = MATHS::DEUX_PI;
     double htMax = -1.;
     double magnMax = 99.;
     double magnStd = 99.;
@@ -965,6 +977,12 @@ QStringList AfficherResultats::ElementsPrevisions(const QList<ResultatPrevisions
             magnStd = res.magnitudeStd;
             penombre = res.penombre;
         }
+
+        // Ecart en azimut entre le satellite et le Soleil
+        const double ecart = modulo(res.azimut - res.azimutSoleil, MATHS::DEUX_PI);
+        if (ecart < azMax) {
+            azMax = ecart;
+        }
     }
 
     // Hauteur maximale du satellite
@@ -983,6 +1001,8 @@ QStringList AfficherResultats::ElementsPrevisions(const QList<ResultatPrevisions
     // Hauteur maximale du Soleil
     elems.append(Maths::ToSexagesimal(htSolMax, AngleFormatType::DEGRE, 2, 0, true, false));
 
+    ecartAzimut = azMax;
+
     /* Retour */
     return elems;
 }
@@ -990,7 +1010,7 @@ QStringList AfficherResultats::ElementsPrevisions(const QList<ResultatPrevisions
 /*
  * Elements des previsions de passage pour la sauvegarde dans un fichier texte ou pour afficher des details
  */
-QStringList AfficherResultats::ElementsDetailsPrevisions(const ResultatPrevisions &res) const
+QStringList AfficherResultats::ElementsDetailsPrevisions(const ResultatPrevisions &res, double &ecartAzimut) const
 {
     /* Declarations des variables locales */
     QStringList elems;
@@ -1039,6 +1059,9 @@ QStringList AfficherResultats::ElementsDetailsPrevisions(const ResultatPrevision
     // Azimut et hauteur Soleil
     elems.append(Maths::ToSexagesimal(res.azimutSoleil, AngleFormatType::DEGRE, 3, 0, false, false));
     elems.append(Maths::ToSexagesimal(res.hauteurSoleil, AngleFormatType::DEGRE, 2, 0, true, false));
+
+    // Ecart en azimut entre le satellite et le Soleil
+    ecartAzimut = modulo(res.azimut - res.azimutSoleil, MATHS::DEUX_PI);
 
     /* Retour */
     return elems;
@@ -1290,6 +1313,9 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
 
         int kmax;
         int nmax = 0;
+        double ecartAzimut = MATHS::DEUX_PI;
+        const double seuilAzimut = settings.value("previsions/seuilMaximalFlashsStarlink", 10).toInt() * MATHS::DEG2RAD;
+
         QStringList elems;
         QTableWidgetItem * itm;
         QListIterator it(list);
@@ -1301,7 +1327,7 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
             switch (_typeCalcul) {
             case TypeCalcul::PREVISIONS:
             case TypeCalcul::STARLINK:
-                elems = ElementsDetailsPrevisions(res);
+                elems = ElementsDetailsPrevisions(res, ecartAzimut);
                 break;
 
             case TypeCalcul::FLASHS:
@@ -1347,6 +1373,10 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
                     itm = new QTableWidgetItem(element);
                     itm->setTextAlignment(Qt::AlignCenter);
                     itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
+
+                    if ((_typeCalcul == TypeCalcul::STARLINK) && (ecartAzimut <= seuilAzimut)) {
+                        itm->setBackground(QBrush(QColor::fromRgb(150, 200, 255)));
+                    }
 
                     if ((k == 0) && (_typeCalcul != TypeCalcul::TRANSITS)) {
                         itm->setToolTip(elems.at(0));
@@ -1494,6 +1524,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
             int i;
             int kmin;
             int kmax;
+            double ecart = MATHS::DEUX_PI;
             QString ligne;
             QString nomsat;
             QStringList evts;
@@ -1579,7 +1610,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
                         switch (_typeCalcul) {
                         case TypeCalcul::PREVISIONS:
                         case TypeCalcul::STARLINK:
-                            elems = ElementsDetailsPrevisions(res);
+                            elems = ElementsDetailsPrevisions(res, ecart);
                             break;
 
                         case TypeCalcul::FLASHS:
@@ -1690,6 +1721,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
             flux << Qt::endl << tr("Temps écoulé : %1s").arg(1.e-3 * static_cast<double> (_donnees.tempsEcoule), 0, 'f', 2) << Qt::endl;
 #endif
         }
+
         fichier.close();
 
 #if (!BUILD_TEST)
@@ -1697,6 +1729,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
         if (fi2.exists() && (fic != _conditions.ficRes)) {
             fi2.remove();
         }
+
         fichier.copy(fi2.fileName());
 #endif
     }

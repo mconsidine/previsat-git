@@ -30,7 +30,7 @@
  * >    25 septembre 2023
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    23 decembre 2024
  *
  */
 
@@ -101,6 +101,7 @@ CalculsStarlink::~CalculsStarlink()
     settings.setValue("previsions/valHauteurSatPrev", _ui->valHauteurSat->text());
     settings.setValue("previsions/hauteurSoleilStarlink", _ui->hauteurSoleil->currentIndex());
     settings.setValue("previsions/valHauteurSoleilStarlink", _ui->valHauteurSoleil->text());
+    settings.setValue("previsions/seuilMaximalFlashsStarlink", _ui->seuilMaximalFlashsStarlink->value());
 
     EFFACE_OBJET(_afficherResultats);
 
@@ -287,6 +288,7 @@ void CalculsStarlink::Initialisation()
     _ui->hauteurSat->setCurrentIndex(settings.value("previsions/hauteurSatStarlink", 0).toInt());
     _ui->valHauteurSoleil->setVisible(false);
     _ui->hauteurSoleil->setCurrentIndex(settings.value("previsions/hauteurSoleilStarlink", 1).toInt());
+    _ui->seuilMaximalFlashsStarlink->setValue(settings.value("previsions/seuilMaximalFlashsStarlink", 10).toInt());
     _ui->ouvrirRocketLaunchLive->setVisible(!Configuration::instance()->adresseRocketLaunchLive().isEmpty());
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
@@ -323,6 +325,7 @@ void CalculsStarlink::on_parametrageDefaut_clicked()
     _ui->hauteurSoleil->setCurrentIndex(1);
     _ui->valHauteurSat->setVisible(false);
     _ui->valHauteurSoleil->setVisible(false);
+    _ui->seuilMaximalFlashsStarlink->setValue(10);
     if (!_ui->calculs->isEnabled()) {
         _ui->calculs->setEnabled(true);
     }
@@ -383,6 +386,7 @@ void CalculsStarlink::on_calculs_clicked()
 
         /* Initialisations */
         vecSat.append(0);
+        settings.setValue("previsions/seuilMaximalFlashsStarlink", _ui->seuilMaximalFlashsStarlink->value());
 
         /* Corps de la methode */
         qInfo() << "Lancement des calculs de prévisions des trains de Starlink";

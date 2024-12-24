@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 juillet 2024
+ * >    23 decembre 2024
  *
  */
 
@@ -151,14 +151,18 @@ private:
      * @param[in] lune lune
      * @param[in] list informations sur le transit
      */
-    void AffichageDetailTransit(const Observateur &observateur, const Soleil &soleil, const Lune &lune, const QList<ResultatPrevisions> &list);
+    void AffichageDetailTransit(const Observateur &observateur,
+                                const Soleil &soleil,
+                                const Lune &lune,
+                                const QList<ResultatPrevisions> &list);
 
     /**
      * @brief ChargementCarte Chargement de la carte representant la trace du maximum
      * @param[in] observateur observateur
      * @param[in] list informations sur le maximum
      */
-    void ChargementCarte(const Observateur &observateur, const QList<ResultatPrevisions> &list);
+    void ChargementCarte(const Observateur &observateur,
+                         const QList<ResultatPrevisions> &list);
 
     /**
      * @brief ChargementResultats Chargement des resultats
@@ -176,7 +180,8 @@ private:
      * @param[in] liste liste d'evenements
      * @return elements des evenements
      */
-    QStringList ElementsEvenements(const int index, const QList<ResultatPrevisions> &liste) const;
+    QStringList ElementsEvenements(const int index,
+                                   const QList<ResultatPrevisions> &liste) const;
 
     /**
      * @brief ElementsDetailsEvenements Elements des evenements pour la sauvegarde dans un fichier texte
@@ -202,16 +207,20 @@ private:
     /**
      * @brief ElementsPrevisions Elements des previsions de passage a afficher dans la fenetre de resultats
      * @param[in] liste liste des previsions
+     * @param[out] ecartAzimut valeur de l'ecart en azimut entre le satellite et le Soleil
      * @return elements des previsions
      */
-    QStringList ElementsPrevisions(const QList<ResultatPrevisions> &liste) const;
+    QStringList ElementsPrevisions(const QList<ResultatPrevisions> &liste,
+                                   double &ecartAzimut) const;
 
     /**
      * @brief ElementsDetailsPrevisions Elements des previsions de passage pour la sauvegarde dans un fichier texte ou pour afficher des details
      * @param[in] res previsions
+     * @param[out] ecartAzimut valeur de l'ecart en azimut entre le satellite et le Soleil
      * @return detail des previsions
      */
-    QStringList ElementsDetailsPrevisions(const ResultatPrevisions &res) const;
+    QStringList ElementsDetailsPrevisions(const ResultatPrevisions &res,
+                                          double &ecartAzimut) const;
 
     /**
      * @brief ElementsTransits Elements des transits a afficher dans la fenetre de resultats
