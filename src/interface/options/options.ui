@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>960</width>
+    <width>1022</width>
     <height>360</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>960</width>
+    <width>1022</width>
     <height>360</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>960</width>
+    <width>1022</width>
     <height>360</height>
    </size>
   </property>
@@ -31,7 +31,7 @@
   <widget class="QDialogButtonBox" name="listeBoutonsOptions">
    <property name="geometry">
     <rect>
-     <x>610</x>
+     <x>670</x>
      <y>320</y>
      <width>341</width>
      <height>32</height>
@@ -95,12 +95,12 @@
     <rect>
      <x>200</x>
      <y>10</y>
-     <width>751</width>
+     <width>821</width>
      <height>301</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="lieuObservation">
     <widget class="QListWidget" name="selecLieux">
@@ -167,12 +167,12 @@
       <rect>
        <x>552</x>
        <y>20</y>
-       <width>201</width>
-       <height>151</height>
+       <width>271</width>
+       <height>231</height>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="coordonnees">
       <widget class="QLabel" name="nLieu">
@@ -361,9 +361,9 @@
       <widget class="QPushButton" name="annulerObs">
        <property name="geometry">
         <rect>
-         <x>101</x>
-         <y>128</y>
-         <width>91</width>
+         <x>140</x>
+         <y>198</y>
+         <width>121</width>
          <height>23</height>
         </rect>
        </property>
@@ -374,259 +374,12 @@
         <string>Annuler</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="validerObs">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>128</y>
-         <width>91</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font/>
-       </property>
-       <property name="text">
-        <string>Valider</string>
-       </property>
-      </widget>
-      <widget class="QWidget" name="formLayoutWidget_62">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>191</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <layout class="QFormLayout" name="formLayout_nomlieuConf">
-        <property name="labelAlignment">
-         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-        </property>
-        <property name="horizontalSpacing">
-         <number>3</number>
-        </property>
-        <property name="verticalSpacing">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="lbl_nvLieu">
-          <property name="font">
-           <font/>
-          </property>
-          <property name="text">
-           <string>Nom :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="nvLieu">
-          <property name="font">
-           <font/>
-          </property>
-          <property name="text">
-           <string notr="true"/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="gridLayoutWidget_5">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>22</y>
-         <width>191</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_coordConf1">
-        <property name="horizontalSpacing">
-         <number>3</number>
-        </property>
-        <property name="verticalSpacing">
-         <number>1</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="lbl_nvLongitude">
-          <property name="font">
-           <font/>
-          </property>
-          <property name="text">
-           <string>Longitude :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="nvLongitude">
-          <property name="font">
-           <font/>
-          </property>
-          <property name="inputMask">
-           <string notr="true">999°99'99&quot;</string>
-          </property>
-          <property name="text">
-           <string notr="true">000°00'00&quot;</string>
-          </property>
-          <property name="cursorPosition">
-           <number>10</number>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="nvLatitude">
-          <property name="font">
-           <font/>
-          </property>
-          <property name="inputMask">
-           <string notr="true">99°99'99&quot;</string>
-          </property>
-          <property name="text">
-           <string notr="true">00°00'00&quot;</string>
-          </property>
-          <property name="cursorPosition">
-           <number>9</number>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="lbl_nvLatitude">
-          <property name="font">
-           <font/>
-          </property>
-          <property name="text">
-           <string>Latitude :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QComboBox" name="nvNs">
-          <property name="font">
-           <font/>
-          </property>
-          <item>
-           <property name="text">
-            <string>Nord</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Sud</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QComboBox" name="nvEw">
-          <property name="font">
-           <font/>
-          </property>
-          <item>
-           <property name="text">
-            <string>Est</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Ouest</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="horizontalLayoutWidget_11">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>70</y>
-         <width>130</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_coordConf2">
-        <property name="spacing">
-         <number>3</number>
-        </property>
-        <item>
-         <layout class="QFormLayout" name="formLayout_coordConf2">
-          <property name="labelAlignment">
-           <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-          </property>
-          <property name="horizontalSpacing">
-           <number>3</number>
-          </property>
-          <property name="verticalSpacing">
-           <number>1</number>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="lbl_nvAltitude">
-            <property name="font">
-             <font/>
-            </property>
-            <property name="text">
-             <string comment="Altitude of observer">Altitude :</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="nvAltitude">
-            <property name="font">
-             <font/>
-            </property>
-            <property name="inputMask">
-             <string notr="true">####</string>
-            </property>
-            <property name="text">
-             <string notr="true">0000</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QFrame" name="frame_10">
-          <property name="frameShape">
-           <enum>QFrame::Shape::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Raised</enum>
-          </property>
-          <widget class="QLabel" name="lbl_nvUnite">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>3</y>
-             <width>21</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font/>
-           </property>
-           <property name="text">
-            <string extracomment="Meter">m</string>
-           </property>
-          </widget>
-         </widget>
-        </item>
-       </layout>
-      </widget>
       <widget class="QWidget" name="formLayoutWidget_63">
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>100</y>
-         <width>191</width>
+         <y>170</y>
+         <width>261</width>
          <height>24</height>
         </rect>
        </property>
@@ -661,6 +414,168 @@
          </widget>
         </item>
        </layout>
+      </widget>
+      <widget class="QPushButton" name="ouvrirMaps">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>201</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Ouvrir Google Maps...</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="gridLayoutWidget_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>30</y>
+         <width>261</width>
+         <height>134</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="longitude">
+          <property name="inputMask">
+           <string notr="true">999°99'99&quot;</string>
+          </property>
+          <property name="text">
+           <string notr="true">000°00'00&quot;</string>
+          </property>
+          <property name="cursorPosition">
+           <number>10</number>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="latitude">
+          <property name="inputMask">
+           <string notr="true">99°99'99&quot;</string>
+          </property>
+          <property name="text">
+           <string notr="true">00°00'00&quot;</string>
+          </property>
+          <property name="cursorPosition">
+           <number>9</number>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="lbl_altitude">
+          <property name="text">
+           <string extracomment="altitude of observer">Altitude :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="lbl_latitude">
+          <property name="text">
+           <string>Latitude :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_nomlieu">
+          <property name="text">
+           <string>Nom :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="sexagesimal">
+          <property name="text">
+           <string>Sexagésimal</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_longitude">
+          <property name="text">
+           <string>Longitude :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="nomlieu"/>
+        </item>
+        <item row="0" column="1">
+         <widget class="QRadioButton" name="decimal">
+          <property name="text">
+           <string>Décimal</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QComboBox" name="choixLongitude">
+          <item>
+           <property name="text">
+            <string>Est</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Ouest</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QComboBox" name="choixLatitude">
+          <item>
+           <property name="text">
+            <string>Nord</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Sud</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLineEdit" name="altitude">
+          <property name="inputMask">
+           <string notr="true">9999 m</string>
+          </property>
+          <property name="text">
+           <string notr="true">0000 m</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QPushButton" name="validerObs">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>200</y>
+         <width>121</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string>Valider</string>
+       </property>
       </widget>
      </widget>
     </widget>

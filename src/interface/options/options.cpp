@@ -30,13 +30,16 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    23 decembre 2024
+ * >    26 decembre 2024
  *
  */
 
+#include <QClipboard>
+#include <QDesktopServices>
 #include <QDir>
 #include <QFileInfo>
 #include <QInputDialog>
+#include <QIntValidator>
 #include <QMenu>
 #include <QMessageBox>
 #include <QRegularExpressionValidator>
@@ -104,6 +107,7 @@ Options::Options(QWidget *parent) :
         CreerMenus();
 
         connect(_ui->listeBoutonsOptions->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &Options::AppliquerPreferences);
+        connect(_clipBoard, &QClipboard::changed, this, &Options::RecupereCoordonneesMaps);
 
     } catch (Exception const &e) {
         qCritical() << "Erreur Initialisation" << metaObject()->className();
@@ -127,6 +131,13 @@ Options::~Options()
     EFFACE_OBJET(_renommerLieu);
     EFFACE_OBJET(_modifierLieu);
     EFFACE_OBJET(_supprimerLieu);
+
+    EFFACE_OBJET(_validateurLongitudeDegre);
+    EFFACE_OBJET(_validateurLongitudeDecimal);
+    EFFACE_OBJET(_validateurLatitudeDegre);
+    EFFACE_OBJET(_validateurLatitudeDecimal);
+    EFFACE_OBJET(_validateurAltitudeMetres);
+    EFFACE_OBJET(_validateurAltitudePieds);
 
     delete _ui;
 }
@@ -170,28 +181,30 @@ void Options::Initialisation()
     _ui->creationCategorie->setToolTip(tr("Créer une catégorie"));
     _ui->creationLieu->setIcon(ajout);
     _ui->creationLieu->setToolTip(tr("Créer un nouveau lieu"));
+    _ui->ouvrirMaps->setToolTip("<html><div style=\"width: 500px;\">" +
+                                tr("Cliquer droit sur l'endroit et sélectionner les coordonnées géographiques dans le menu contextuel") +
+                                "</div></html>");
 
-    const QRegularExpressionValidator *valLon =
-            new QRegularExpressionValidator(QRegularExpression("((0\\d\\d|1[0-7]\\d)°[0-5]\\d'[0-5]\\d\"|180°0?0'0?0\")"));
-    _ui->nvLongitude->setValidator(valLon);
+    // Validateurs des coordonnees geographiques
+    _validateurLongitudeDegre = new QRegularExpressionValidator(QRegularExpression("^((0\\d\\d|1[0-7]\\d)°[0-5]\\d'[0-5]\\d\"|180°0?0'0?0\")$"));
+    _validateurLongitudeDecimal = new QRegularExpressionValidator(QRegularExpression("^((0\\d\\d|1[0-7]\\d)\\.?\\d{1,6}+|180\\.?0{1,6}+)$"));
 
-    const QRegularExpressionValidator *valLat =
-            new QRegularExpressionValidator(QRegularExpression("((0\\d|[0-8]\\d)°[0-5]\\d'[0-5]\\d\"|90°0?0'0?0\")"));
-    _ui->nvLatitude->setValidator(valLat);
+    _validateurLatitudeDegre = new QRegularExpressionValidator(QRegularExpression("^((0\\d|[0-8]\\d)°[0-5]\\d'[0-5]\\d\"|90°0?0'0?0\")$"));
+    _validateurLatitudeDecimal = new QRegularExpressionValidator(QRegularExpression("^((0\\d|[0-8]\\d)\\.?\\d{1,6}+|90\\.?0{1,6}+)$"));
+
+    _validateurAltitudeMetres = new QIntValidator(-500, 8900);
+    _validateurAltitudePieds = new QIntValidator(-1640, 29200);
 
     const QString unite = (_ui->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot");
-    QIntValidator *valAlt;
 
-    if (_ui->unitesKm->isChecked()) {
-        valAlt = new QIntValidator(-500, 8900);
-        _ui->nvAltitude->setValidator(valAlt);
-    } else {
-        valAlt = new QIntValidator(-1640, 29200);
-        _ui->nvAltitude->setValidator(valAlt);
-    }
+    _ui->altitude->setValidator((_ui->unitesKm->isChecked()) ? _validateurAltitudeMetres : _validateurAltitudePieds);
 
     const QString fmt = tr("L'altitude doit être comprise entre %1%2 et %3%2", "Observer altitude");
-    _ui->nvAltitude->setToolTip(fmt.arg(valAlt->bottom()).arg(unite).arg(valAlt->top()));
+    _ui->altitude->setToolTip(fmt.arg(_ui->altitude->validator()->property("bottom").toInt()).arg(unite).arg(_ui->altitude->validator()->property("top").toInt()));
+
+    // Initialisation du presse-papier
+    _clipBoard = QGuiApplication::clipboard();
+    _clipBoard->setText("");
 
     _ui->filtreLieuxObs->clear();
     _ui->filtreSelecLieux->clear();
@@ -537,6 +550,64 @@ void Options::ChargementPref()
         _ui->affinvew->setEnabled(_ui->affradar->checkState() != Qt::Unchecked);
         _ui->affinvns->setEnabled(_ui->affradar->checkState() != Qt::Unchecked);
     }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Conversion des coordonnees geographiques en decimal
+ */
+void Options::ConversionVersDecimal()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Conversion de la longitude
+    const QStringList lon = _ui->longitude->text().split(QRegularExpression("[°'\"]"), Qt::SkipEmptyParts);
+    const int lo1 = lon.at(0).toInt();
+    const int lo2 = lon.at(1).toInt();
+    const int lo3 = lon.at(2).toInt();
+
+    _ui->longitude->setInputMask("999.999999");
+    _ui->longitude->setText(QString("%1").arg(lo1 + lo2 * MATHS::DEG_PAR_ARCMIN + lo3 * MATHS::DEG_PAR_ARCSEC, 10, 'f', 6, QChar('0')));
+
+    // Conversion de la latitude
+    const QStringList lat = _ui->latitude->text().split(QRegularExpression("[°'\"]"), Qt::SkipEmptyParts);
+    const int la1 = lat.at(0).toInt();
+    const int la2 = lat.at(1).toInt();
+    const int la3 = lat.at(2).toInt();
+
+    _ui->latitude->setInputMask("99.999999");
+    _ui->latitude->setText(QString("%1").arg(la1 + la2 * MATHS::DEG_PAR_ARCMIN + la3 * MATHS::DEG_PAR_ARCSEC, 9, 'f', 6, QChar('0')));
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Conversion des coordonnees geographiques en degres
+ */
+void Options::ConversionVersDegres()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Conversion de la longitude
+    const double longitude = _ui->longitude->text().toDouble();
+
+    _ui->longitude->setInputMask("999°99'99\"");
+    _ui->longitude->setText(Maths::ToSexagesimal(longitude, AngleFormatType::NO_TYPE, 3, 0, false, false).trimmed());
+
+    // Conversion de la latitude
+    const double latitude = _ui->latitude->text().toDouble();
+
+    _ui->latitude->setInputMask("99°99'99\"");
+    _ui->latitude->setText(Maths::ToSexagesimal(latitude, AngleFormatType::NO_TYPE, 2, 0, false, false).trimmed());
 
     /* Retour */
     return;
@@ -1087,25 +1158,19 @@ void Options::CreerLieu()
     _ui->outilsLieuxObservation->setCurrentWidget(_ui->nouveauLieu);
     _ui->outilsLieuxObservation->setVisible(true);
 
-    _ui->nvLieu->setText("");
-    _ui->nvLieu->setReadOnly(false);
-    _ui->nvLongitude->setText("000°00'00\"");
-    _ui->nvLatitude->setText("000°00'00\"");
+    _ui->nomlieu->setText("");
+    _ui->nomlieu->setReadOnly(false);
+    _ui->longitude->setText("000°00'00\"");
+    _ui->latitude->setText("000°00'00\"");
 
-    if (_ui->unitesKm->isChecked()) {
-        _ui->nvAltitude->setText("0000");
-        _ui->nvAltitude->setInputMask("####");
-    } else {
-        _ui->nvAltitude->setText("00000");
-        _ui->nvAltitude->setInputMask("#####");
-    }
+    _ui->altitude->setInputMask((_ui->unitesKm->isChecked()) ? "#### " + tr("m", "meter") : "##### " + tr("ft", "foot"));
+    _ui->altitude->setText((_ui->unitesKm->isChecked()) ? "0000" : "00000");
 
-    _ui->lbl_nvUnite->setText((_ui->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot"));
     _ui->lbl_ajouterDans->setVisible(true);
     _ui->ajdfic->setVisible(true);
     _ui->ajdfic->setCurrentIndex(_ui->categoriesObs->currentRow());
     _ui->validerObs->setDefault(true);
-    _ui->nvLieu->setFocus();
+    _ui->nomlieu->setFocus();
 
     /* Retour */
     return;
@@ -1205,42 +1270,74 @@ void Options::ModifierLieu()
     _ui->lbl_ajouterDans->setVisible(false);
     _ui->ajdfic->setVisible(false);
 
-    if (_ui->unitesKm->isChecked()) {
-        _ui->nvAltitude->setInputMask("####");
-    } else {
-        _ui->nvAltitude->setInputMask("#####");
-    }
+    _ui->altitude->setInputMask((_ui->unitesKm->isChecked()) ? "#### " + tr("m", "meter") : "##### " + tr("ft", "foot"));
 
     try {
 
         Configuration::instance()->mapObs() = FichierObs::Lecture(_ui->categoriesObs->currentItem()->data(Qt::UserRole).toString(), false);
         const Observateur obs = Configuration::instance()->mapObs().value(_ui->lieuxObs->currentItem()->text());
 
-        _ui->nvLieu->setText(obs.nomlieu().trimmed());
-        _ui->nvLieu->setReadOnly(true);
+        _ui->nomlieu->setText(obs.nomlieu().trimmed());
+        _ui->nomlieu->setReadOnly(true);
 
-        _ui->nvLongitude->setText(Maths::ToSexagesimal(fabs(obs.longitude()), AngleFormatType::DEGRE, 3, 0, false, true));
-        _ui->nvLongitude->setPalette(QPalette());
-        _ui->nvEw->setCurrentIndex((obs.longitude() <= 0.) ? 0 : 1);
+        _ui->longitude->setText(Maths::ToSexagesimal(fabs(obs.longitude()), AngleFormatType::DEGRE, 3, 0, false, true));
+        _ui->longitude->setPalette(QPalette());
+        _ui->choixLongitude->setCurrentIndex((obs.longitude() <= 0.) ? 0 : 1);
 
-        _ui->nvLatitude->setText(Maths::ToSexagesimal(fabs(obs.latitude()), AngleFormatType::DEGRE, 2, 0,false, true));
-        _ui->nvLatitude->setPalette(QPalette());
-        _ui->nvNs->setCurrentIndex((obs.latitude() >= 0.) ? 0 : 1);
+        _ui->latitude->setText(Maths::ToSexagesimal(fabs(obs.latitude()), AngleFormatType::DEGRE, 2, 0,false, true));
+        _ui->latitude->setPalette(QPalette());
+        _ui->choixLatitude->setCurrentIndex((obs.latitude() >= 0.) ? 0 : 1);
 
         const QString alt = "%1";
         const int atd = static_cast<int> (qRound(obs.altitude() * 1.e3));
         if (_ui->unitesKm->isChecked()) {
-            _ui->nvAltitude->setText(alt.arg(atd, 4, 10, QChar('0')));
+            _ui->altitude->setText(alt.arg(atd, 4, 10, QChar('0')));
         } else {
-            _ui->nvAltitude->setText(alt.arg(qRound(atd * TERRE::PIED_PAR_METRE + 0.5 * sgn(atd)), 5, 10, QChar('0')));
+            _ui->altitude->setText(alt.arg(qRound(atd * TERRE::PIED_PAR_METRE + 0.5 * sgn(atd)), 5, 10, QChar('0')));
         }
 
-        _ui->nvAltitude->setPalette(QPalette());
-        _ui->lbl_nvUnite->setText((_ui->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot"));
-
-        _ui->nvLieu->setFocus();
+        _ui->altitude->setPalette(QPalette());
+        _ui->nomlieu->setFocus();
 
     } catch (Exception const &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void Options::RecupereCoordonneesMaps()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const QString coord = _clipBoard->text();
+    const QRegularExpression reg("^[-+]?\\d*\\.?\\d*,[ ]?[-+]?\\d*\\.?\\d*$");
+
+    /* Corps de la methode */
+    if (reg.match(coord).hasMatch()) {
+
+        const QStringList coordonnees = coord.split(",", Qt::SkipEmptyParts);
+        const double latitude = coordonnees.first().toDouble();
+        const double longitude = coordonnees.last().toDouble();
+
+        _ui->choixLongitude->setCurrentIndex((longitude < 0.) ? 1 : 0);
+        _ui->choixLatitude->setCurrentIndex((latitude < 0.) ? 1 : 0);
+
+        if (_ui->decimal->isChecked()) {
+
+            _ui->longitude->setText(QString("%1").arg(fabs(longitude), 10, 'f', 6, QChar('0')));
+            _ui->latitude->setText(QString("%1").arg(fabs(latitude), 9, 'f', 6, QChar('0')));
+        }
+
+        if (_ui->sexagesimal->isChecked()) {
+
+            _ui->longitude->setText(Maths::ToSexagesimal(longitude, AngleFormatType::NO_TYPE, 3, 0, false, false).trimmed());
+            _ui->latitude->setText(Maths::ToSexagesimal(latitude, AngleFormatType::NO_TYPE, 2, 0, false, false).trimmed());
+        }
+
+        activateWindow();
+        _ui->nomlieu->setFocus();
     }
 
     /* Retour */
@@ -1309,6 +1406,7 @@ void Options::closeEvent(QCloseEvent *evt)
 
 void Options::on_listeOptions_currentRowChanged(int currentRow)
 {
+    _ui->outilsLieuxObservation->setVisible(false);
     _ui->stackedWidget_options->setCurrentIndex(currentRow);
 }
 
@@ -1504,6 +1602,55 @@ void Options::on_creationLieu_clicked()
     CreerLieu();
 }
 
+void Options::on_ouvrirMaps_clicked()
+{
+    QDesktopServices::openUrl(QUrl("https://www.google.com/maps/"));
+}
+
+void Options::on_decimal_toggled(bool checked)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (checked) {
+
+        _ui->longitude->setValidator(nullptr);
+        _ui->latitude->setValidator(nullptr);
+
+        ConversionVersDecimal();
+
+        _ui->longitude->setValidator(_validateurLongitudeDecimal);
+        _ui->latitude->setValidator(_validateurLatitudeDecimal);
+    }
+
+    /* Retour */
+    return;
+}
+
+void Options::on_sexagesimal_toggled(bool checked)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (checked) {
+
+        _ui->longitude->setValidator(nullptr);
+        _ui->latitude->setValidator(nullptr);
+
+        ConversionVersDegres();
+
+        _ui->longitude->setValidator(_validateurLongitudeDegre);
+        _ui->latitude->setValidator(_validateurLatitudeDegre);
+    }
+
+    /* Retour */
+    return;
+}
+
 void Options::on_validerObs_clicked()
 {
     /* Declarations des variables locales */
@@ -1514,13 +1661,14 @@ void Options::on_validerObs_clicked()
     try {
 
         // Nom du lieu d'observation
-        QString nomlieu = _ui->nvLieu->text().trimmed();
+        QString nomlieu = _ui->nomlieu->text().trimmed();
 
         if (nomlieu.isEmpty()) {
             throw Exception(tr("Le nom du lieu d'observation n'est pas spécifié"), MessageType::WARNING);
         }
 
-        const QString fic = (_ui->ajdfic->isVisible()) ? _ui->ajdfic->currentData(Qt::UserRole).toString() : _ui->categoriesObs->currentItem()->data(Qt::UserRole).toString();
+        const QString fic = (_ui->ajdfic->isVisible()) ? _ui->ajdfic->currentData(Qt::UserRole).toString() :
+                                _ui->categoriesObs->currentItem()->data(Qt::UserRole).toString();
         Configuration::instance()->mapObs() = FichierObs::Lecture(fic, false);
 
         nomlieu[0] = nomlieu.at(0).toUpper();
@@ -1530,27 +1678,25 @@ void Options::on_validerObs_clicked()
         }
 
         // Recuperation de la longitude
-        const QStringList lon = _ui->nvLongitude->text().split(QRegularExpression("[°'\"]"), Qt::SkipEmptyParts);
+        const QStringList lon = _ui->longitude->text().split(QRegularExpression("[°'\"]"), Qt::SkipEmptyParts);
         const int lo1 = lon.at(0).toInt();
         const int lo2 = lon.at(1).toInt();
         const int lo3 = lon.at(2).toInt();
 
         // Recuperation de la latitude
-        const QStringList lat = _ui->nvLatitude->text().split(QRegularExpression("[°'\"]"), Qt::SkipEmptyParts);
+        const QStringList lat = _ui->latitude->text().split(QRegularExpression("[°'\"]"), Qt::SkipEmptyParts);
         const int la1 = lat.at(0).toInt();
         const int la2 = lat.at(1).toInt();
         const int la3 = lat.at(2).toInt();
 
         // Recuperation de l'altitude
-        int atd = _ui->nvAltitude->text().toInt();
+        int atd = _ui->altitude->text().toInt();
         if (_ui->unitesMi->isChecked()) {
             atd = qRound(atd / TERRE::PIED_PAR_METRE);
         }
 
-        const double longitude = ((_ui->nvEw->currentText() == tr("Est")) ? -1. : 1.) *
-                (lo1 + lo2 * MATHS::DEG_PAR_ARCMIN + lo3 * MATHS::DEG_PAR_ARCSEC);
-        const double latitude = ((_ui->nvNs->currentText() == tr("Sud")) ? -1. : 1.) *
-                (la1 + la2 * MATHS::DEG_PAR_ARCMIN + la3 * MATHS::DEG_PAR_ARCSEC);
+        const double longitude = ((_ui->choixLongitude->currentIndex() == 0) ? -1. : 1.) * (lo1 + lo2 * MATHS::DEG_PAR_ARCMIN + lo3 * MATHS::DEG_PAR_ARCSEC);
+        const double latitude = ((_ui->choixLatitude->currentIndex() == 1) ? -1. : 1.) * (la1 + la2 * MATHS::DEG_PAR_ARCMIN + la3 * MATHS::DEG_PAR_ARCSEC);
 
         const Observateur obs(nomlieu, longitude, latitude, atd);
         Configuration::instance()->mapObs().insert(nomlieu, obs);

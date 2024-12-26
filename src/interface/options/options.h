@@ -36,7 +36,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    8 juin 2024
+ * >    26 decembre 2024
  *
  */
 
@@ -50,7 +50,10 @@ namespace Ui {
 class Options;
 }
 
+class QIntValidator;
+class QRegularExpressionValidator;
 class Observateur;
+
 
 class Options : public QDialog
 {
@@ -148,6 +151,19 @@ private:
     QAction *_modifierLieu;
     QAction *_supprimerLieu;
 
+    // Validateurs des coordonnees geographiques
+    QRegularExpressionValidator *_validateurLongitudeDegre;
+    QRegularExpressionValidator *_validateurLongitudeDecimal;
+
+    QRegularExpressionValidator *_validateurLatitudeDegre;
+    QRegularExpressionValidator *_validateurLatitudeDecimal;
+
+    QIntValidator *_validateurAltitudeMetres;
+    QIntValidator *_validateurAltitudePieds;
+
+    // Presse-papier
+    QClipboard *_clipBoard;
+
 
     /*
      * Methodes privees
@@ -172,6 +188,16 @@ private:
      * @brief ChargementPref Chargement du fichier de preferences
      */
     void ChargementPref();
+
+    /**
+     * @brief ConversionVersDecimal Conversion des coordonnees geographiques en decimal
+     */
+    void ConversionVersDecimal();
+
+    /**
+     * @brief ConversionVersDegres Conversion des coordonnees geographiques en degres
+     */
+    void ConversionVersDegres();
 
     /**
      * @brief CreerMenus Creation des menus contextuels
@@ -238,6 +264,7 @@ private slots:
     void AjouterLieuMesPreferes();
     void RenommerLieu();
     void ModifierLieu();
+    void RecupereCoordonneesMaps();
     void SupprimerLieu();
 
     void closeEvent(QCloseEvent *evt);
@@ -257,6 +284,9 @@ private slots:
     void on_filtreSelecLieux_textChanged(const QString &arg1);
     void on_selecLieux_currentRowChanged(int currentRow);
     void on_creationLieu_clicked();
+    void on_ouvrirMaps_clicked();
+    void on_decimal_toggled(bool checked);
+    void on_sexagesimal_toggled(bool checked);
     void on_validerObs_clicked();
     void on_annulerObs_clicked();
     void on_ajoutLieu_clicked();
