@@ -36,7 +36,7 @@
  * >    14 aout 2022
  *
  * Date de revision
- * >    27 decembre 2023
+ * >    26 decembre 2024
  *
  */
 
@@ -102,6 +102,7 @@ public slots:
 
 signals:
 
+    void AffichageCartesRadar();
     void ChargementGP();
     void InitFicGP();
 
@@ -155,7 +156,13 @@ private:
     void InitListeDomaines();
 
     /**
-     * @brief InitGestionnaireTLE Initialisation du gestionnaire de suppression de TLE
+     * @brief InitGestionnaireIcones Initialisation du gestionnaire des icones satellites
+     * @param[in] listeFicPng liste des fichiers png
+     */
+    void InitGestionnaireIcones(const QStringList &listeFicPng);
+
+    /**
+     * @brief InitGestionnaireTLE Initialisation du gestionnaire de TLE
      * @param[in] listeFicTLE liste des fichiers TLE
      */
     void InitGestionnaireTLE(const QStringList &listeFicTLE);
@@ -227,6 +234,9 @@ private slots:
     void on_listeTLE_itemClicked(QListWidgetItem *item);
     void on_importerTLE_clicked();
     void on_supprimerTLE_clicked();
+
+    void on_importerIcone_clicked();
+    void on_supprimerIcone_clicked();
 
 };
 

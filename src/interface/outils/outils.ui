@@ -38,10 +38,10 @@
     </rect>
    </property>
    <property name="orientation">
-    <enum>Qt::Horizontal</enum>
+    <enum>Qt::Orientation::Horizontal</enum>
    </property>
    <property name="standardButtons">
-    <set>QDialogButtonBox::Close</set>
+    <set>QDialogButtonBox::StandardButton::Close</set>
    </property>
   </widget>
   <widget class="QListWidget" name="listeOutils">
@@ -60,12 +60,17 @@
    </item>
    <item>
     <property name="text">
-     <string>Mise à jour TLE</string>
+     <string>Gestionnaire icônes satellites</string>
     </property>
    </item>
    <item>
     <property name="text">
      <string>Gestionnaire TLE</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Mise à jour TLE</string>
     </property>
    </item>
   </widget>
@@ -79,7 +84,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="gestionnaireElementsOrbitaux">
     <widget class="QWidget" name="gridLayoutWidget_11">
@@ -139,10 +144,10 @@
       <font/>
      </property>
      <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+      <enum>QFrame::Shape::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+      <enum>QFrame::Shadow::Raised</enum>
      </property>
      <property name="currentIndex">
       <number>1</number>
@@ -353,10 +358,10 @@
       <font/>
      </property>
      <property name="contextMenuPolicy">
-      <enum>Qt::CustomContextMenu</enum>
+      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
      </property>
      <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
+      <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
      </property>
     </widget>
     <widget class="QLabel" name="lbl_fichiersElem">
@@ -407,13 +412,13 @@
       <bool>true</bool>
      </property>
      <property name="contextMenuPolicy">
-      <enum>Qt::CustomContextMenu</enum>
+      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
      </property>
      <property name="toolTip">
       <string>Cocher un groupe pour activer sa mise à jour automatique</string>
      </property>
      <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
+      <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
      </property>
     </widget>
     <widget class="QWidget" name="formLayoutWidget_13">
@@ -519,10 +524,10 @@
       <font/>
      </property>
      <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
+      <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+      <enum>QFrame::Shadow::Plain</enum>
      </property>
      <widget class="QProgressBar" name="barreProgressionElem">
       <property name="geometry">
@@ -537,7 +542,7 @@
        <font/>
       </property>
       <property name="alignment">
-       <set>Qt::AlignCenter</set>
+       <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
       <property name="textVisible">
        <bool>false</bool>
@@ -562,7 +567,7 @@
        <string notr="true"/>
       </property>
       <property name="alignment">
-       <set>Qt::AlignCenter</set>
+       <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
      <widget class="QLabel" name="vitesseTelechargementElem">
@@ -578,9 +583,117 @@
        <string notr="true"/>
       </property>
       <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
      </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="gestionnaireIcones">
+    <widget class="QListWidget" name="listeIcones">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>18</y>
+       <width>221</width>
+       <height>281</height>
+      </rect>
+     </property>
+     <property name="mouseTracking">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="importerIcone">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>20</y>
+       <width>141</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Importer icône...</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_listeIcones">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>221</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Liste des icônes personnelles :</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="supprimerIcone">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>50</y>
+       <width>141</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Supprimer</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="gestionnaireTLE">
+    <widget class="QListWidget" name="listeTLE">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>18</y>
+       <width>221</width>
+       <height>281</height>
+      </rect>
+     </property>
+     <property name="mouseTracking">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="supprimerTLE">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>50</y>
+       <width>141</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Supprimer</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_listeTLE">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>221</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Liste de fichiers TLE :</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="importerTLE">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>20</y>
+       <width>141</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Importer TLE...</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="miseAJourTLE">
@@ -594,7 +707,7 @@
       </rect>
      </property>
      <property name="tabShape">
-      <enum>QTabWidget::Triangular</enum>
+      <enum>QTabWidget::TabShape::Triangular</enum>
      </property>
      <property name="currentIndex">
       <number>0</number>
@@ -619,10 +732,10 @@
         <font/>
        </property>
        <property name="contextMenuPolicy">
-        <enum>Qt::CustomContextMenu</enum>
+        <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
        </property>
        <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
+        <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -641,10 +754,10 @@
         <font/>
        </property>
        <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
+        <enum>QFrame::Shape::NoFrame</enum>
        </property>
        <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
+        <enum>QFrame::Shadow::Plain</enum>
        </property>
        <widget class="QProgressBar" name="barreProgressionTLE">
         <property name="geometry">
@@ -662,7 +775,7 @@
          <number>0</number>
         </property>
         <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <set>Qt::AlignmentFlag::AlignCenter</set>
         </property>
         <property name="textVisible">
          <bool>false</bool>
@@ -687,7 +800,7 @@
          <string notr="true"/>
         </property>
         <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <set>Qt::AlignmentFlag::AlignCenter</set>
         </property>
        </widget>
        <widget class="QLabel" name="vitesseTelechargementTLE">
@@ -703,7 +816,7 @@
          <string notr="true"/>
         </property>
         <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <set>Qt::AlignmentFlag::AlignCenter</set>
         </property>
        </widget>
       </widget>
@@ -884,70 +997,16 @@
         <font/>
        </property>
        <property name="contextMenuPolicy">
-        <enum>Qt::CustomContextMenu</enum>
+        <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
        </property>
        <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
+        <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
        </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
       </widget>
      </widget>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="gestionnaireTLE">
-    <widget class="QListWidget" name="listeTLE">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>18</y>
-       <width>221</width>
-       <height>281</height>
-      </rect>
-     </property>
-     <property name="mouseTracking">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="supprimerTLE">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>50</y>
-       <width>141</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Supprimer</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="lbl_listeTLE">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>0</y>
-       <width>221</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Liste de fichiers TLE :</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="importerTLE">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>20</y>
-       <width>141</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Importer TLE...</string>
-     </property>
     </widget>
    </widget>
   </widget>
@@ -961,10 +1020,10 @@
     </rect>
    </property>
    <property name="frameShape">
-    <enum>QFrame::NoFrame</enum>
+    <enum>QFrame::Shape::NoFrame</enum>
    </property>
    <property name="frameShadow">
-    <enum>QFrame::Plain</enum>
+    <enum>QFrame::Shadow::Plain</enum>
    </property>
   </widget>
   <zorder>listeOutils</zorder>

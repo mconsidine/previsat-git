@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 decembre 2024
+ * >    26 decembre 2024
  *
  */
 
@@ -820,6 +820,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(this, &PreviSat::EcritureRegistre, _options, &Options::EcritureRegistre);
 
     // Connexions avec la fenetre Outils
+    connect(_outils, &Outils::AffichageCartesRadar, this, &PreviSat::AffichageCartesRadar);
     connect(_outils, &Outils::ChargementGP, this, &PreviSat::ChargementGP);
     connect(_outils, &Outils::InitFicGP, this, &PreviSat::InitFicGP);
 

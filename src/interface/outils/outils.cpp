@@ -30,7 +30,7 @@
  * >    14 aout 2022
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    26 decembre 2024
  *
  */
 
@@ -38,6 +38,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QInputDialog>
 #include <QMenu>
 #include <QMessageBox>
 #include <QPlainTextEdit>
@@ -157,6 +158,12 @@ void Outils::Initialisation()
     const QStringList listeFicTLE = di.entryList(filtres, QDir::Files);
 
     InitGestionnaireTLE(listeFicTLE);
+
+    const QDir di2(Configuration::instance()->dirRsc());
+    const QStringList filtrePng(QStringList() << "*.png");
+    const QStringList listeFicPng = di2.entryList(filtrePng, QDir::Files);
+
+    InitGestionnaireIcones(listeFicPng);
 
     _ui->majMaintenant->setEnabled(!listeFicTLE.isEmpty());
     _ui->majMaintenant->setDefault(_ui->majMaintenant->isEnabled());
@@ -334,7 +341,35 @@ void Outils::InitListeDomaines()
 }
 
 /*
- * Initialisation du gestionnaire de suppression de TLE
+ * Initialisation du gestionnaire des icones satellites
+ */
+void Outils::InitGestionnaireIcones(const QStringList &listeFicPng)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    _ui->listeIcones->clear();
+    QListWidgetItem *elem;
+
+    /* Corps de la methode */
+    QStringListIterator it(listeFicPng);
+    while (it.hasNext()) {
+
+        const QString nom = it.next();
+
+        elem = new QListWidgetItem(nom, _ui->listeIcones);
+        elem->setData(Qt::CheckStateRole, Qt::Unchecked);
+        elem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
+    }
+
+    _ui->supprimerTLE->setEnabled(false);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Initialisation du gestionnaire de TLE
  */
 void Outils::InitGestionnaireTLE(const QStringList &listeFicTLE)
 {
@@ -1152,6 +1187,122 @@ void Outils::on_supprimerTLE_clicked()
         const QDir di(Configuration::instance()->dirElem());
         const QStringList filtres(QStringList () << "*.txt" << "*.tle");
         InitGestionnaireTLE(di.entryList(filtres, QDir::Files));
+    }
+
+    /* Retour */
+    return;
+}
+
+void Outils::on_importerIcone_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        // Ouverture d'un fichier png
+        const QString fichier = QFileDialog::getOpenFileName(this, tr("Importer icône..."),
+                                                             QStandardPaths::writableLocation(QStandardPaths::PicturesLocation),
+                                                             tr("Fichiers PNG (*.png)"));
+
+        if (!fichier.isEmpty()) {
+
+            qInfo() << "Ouverture du fichier png" << fichier;
+
+            const QString nomfic = QFileInfo(fichier).fileName();
+
+            // Renommage de l'icone
+            QInputDialog input(this, Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+            input.setWindowTitle(tr("Renommer l'icône"));
+            input.setLabelText(tr("Nom de l'icône (nom de l'objet ou numéro NORAD) :"));
+            input.setTextValue(nomfic);
+            input.setTextEchoMode(QLineEdit::Normal);
+            input.setOkButtonText(tr("OK"));
+            input.setCancelButtonText(tr("Annuler"));
+
+            const int ret = input.exec();
+
+            if (ret != 0) {
+
+                const QString res = input.textValue();
+
+                if (!res.isEmpty()) {
+
+                    // Verification du nom de l'icone
+                    const QRegularExpression reg("\\d*");
+                    QString nomFichierPng = (reg.match(res).hasMatch()) ? QString("%1").arg(res, 6, QChar('0')) : res;
+
+                    if (!nomFichierPng.endsWith(".png")) {
+                        nomFichierPng += ".png";
+                    }
+
+                    QFile fi(fichier);
+                    QFile fi2(Configuration::instance()->dirRsc() + QDir::separator() + nomFichierPng);
+
+                    if (fi2.exists()) {
+                        fi2.remove();
+                    }
+
+                    // Sauvegarde de l'icone
+                    if (fi.copy(fi2.fileName())) {
+
+                        qInfo() << "Import du fichier PNG" << nomFichierPng << "OK";
+
+                        const QDir di(Configuration::instance()->dirRsc());
+                        const QStringList filtres(QStringList () << "*.png");
+                        InitGestionnaireIcones(di.entryList(filtres, QDir::Files));
+
+                        emit AffichageCartesRadar();
+
+                    } else {
+                        qWarning() << "Import du fichier PNG" << nomFichierPng << "KO";
+                    }
+                }
+            }
+        }
+    } catch (Exception const &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void Outils::on_supprimerIcone_clicked()
+{
+    /* Declarations des variables locales */
+    QStringList listeFicPng;
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    for(int i=0; i<_ui->listeIcones->count(); i++) {
+        if (_ui->listeIcones->item(i)->checkState() == Qt::Checked) {
+            listeFicPng.append(_ui->listeIcones->item(i)->text());
+        }
+    }
+
+    QMessageBox msgbox(QMessageBox::Question, tr("Avertissement"), tr("Voulez-vous vraiment supprimer les icônes sélectionnées ?"));
+    const QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
+    QPushButton * const non = msgbox.addButton(tr("Non"), QMessageBox::NoRole);
+    msgbox.setDefaultButton(non);
+    msgbox.exec();
+
+    if (msgbox.clickedButton() == oui) {
+
+        QFile fi;
+        QStringListIterator it(listeFicPng);
+        while (it.hasNext()) {
+
+            const QString fic = it.next();
+            fi.setFileName(Configuration::instance()->dirRsc() + QDir::separator() + fic);
+            fi.remove();
+        }
+
+        const QDir di(Configuration::instance()->dirRsc());
+        const QStringList filtres(QStringList () << "*.png");
+        InitGestionnaireIcones(di.entryList(filtres, QDir::Files));
     }
 
     /* Retour */
