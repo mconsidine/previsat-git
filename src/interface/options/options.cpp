@@ -316,8 +316,9 @@ void Options::EcritureRegistre()
     settings.setValue("affichage/informationsSatelliteDefaut", _ui->informationsSatelliteDefaut->isChecked());
     settings.setValue("affichage/intensiteOmbre", _ui->intensiteOmbre->value());
     settings.setValue("affichage/langue", Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex()));
-    settings.setValue("affichage/modeSombre", _ui->modeSombre->isChecked());
     settings.setValue("affichage/magnitudeEtoiles", _ui->magnitudeEtoiles->value());
+    settings.setValue("affichage/marqueur", _ui->marqueur->isChecked());
+    settings.setValue("affichage/modeSombre", _ui->modeSombre->isChecked());
     settings.setValue("affichage/nombreTrajectoires", _ui->nombreTrajectoires->value());
     settings.setValue("affichage/notificationSonore", _ui->listeSons->currentIndex());
     settings.setValue("affichage/affichageFrontieres", _ui->affichageFrontieres->isChecked());
@@ -338,6 +339,7 @@ void Options::EcritureRegistre()
     settings.setValue("affichage/affCerclesAcq", _ui->affCerclesAcq->isChecked());
     settings.setValue("affichage/affNbOrbWCC", _ui->affNbOrbWCC->isChecked());
     settings.setValue("affichage/affSAA_ZOE", _ui->affSAA_ZOE->isChecked());
+    settings.setValue("affichage/iconesStations", _ui->iconesStations->isChecked());
     settings.setValue("affichage/styleWCC", _ui->styleWCC->isChecked());
     settings.setValue("affichage/coulGMT", _ui->coulGMT->currentIndex());
     settings.setValue("affichage/coulZOE", _ui->coulZOE->currentIndex());
@@ -525,6 +527,8 @@ void Options::ChargementPref()
         _ui->effetEclipsesMagnitude->setChecked(settings.value("affichage/effetEclipsesMagnitude", true).toBool());
         _ui->eclipsesLune->setChecked(settings.value("affichage/eclipsesLune", true).toBool());
         _ui->informationsSatelliteDefaut->setChecked(settings.value("affichage/informationsSatelliteDefaut", false).toBool());
+        _ui->marqueur->setChecked(settings.value("affichage/marqueur", false).toBool());
+        _ui->marqueur->setVisible(_ui->affnomlieu->checkState() != Qt::Unchecked);
         _ui->modeSombre->setChecked(settings.value("affichage/intensiteVision", false).toBool());
         _ui->langue->setCurrentIndex(static_cast<int> (Configuration::instance()->listeFicLang()
                                                        .indexOf(settings.value("affichage/langue", "en").toString())));
@@ -940,6 +944,7 @@ void Options::InitWallCommandCenter()
     _ui->affCerclesAcq->setChecked(settings.value("affichage/affCerclesAcq", true).toBool());
     _ui->affNbOrbWCC->setChecked(settings.value("affichage/affNbOrbWCC", true).toBool());
     _ui->affSAA_ZOE->setChecked(settings.value("affichage/affSAA_ZOE", true).toBool());
+    _ui->iconesStations->setChecked(settings.value("affichage/iconesStations", false).toBool());
     _ui->styleWCC->setChecked(settings.value("affichage/styleWCC", true).toBool());
     _ui->coulGMT->setCurrentIndex(settings.value("affichage/coulGMT", 0).toInt());
     _ui->coulZOE->setCurrentIndex(settings.value("affichage/coulZOE", 0).toInt());
@@ -1002,6 +1007,7 @@ void Options::SauvePreferences(const QString &fichierPref)
              << "affichage/hauteurTerminateur " << _ui->hauteurTerminateur->value() << Qt::endl
              << "affichage/informationsSatelliteDefaut " << QVariant(_ui->informationsSatelliteDefaut->isChecked()).toString() << Qt::endl
              << "affichage/intensiteOmbre " << _ui->intensiteOmbre->value() << Qt::endl
+             << "affichage/marqueur " << QVariant(_ui->marqueur->isChecked()).toString() << Qt::endl
              << "affichage/modeSombre " << QVariant(_ui->modeSombre->isChecked()).toString() << Qt::endl
              << "affichage/magnitudeEtoiles " << _ui->magnitudeEtoiles->value() << Qt::endl
              << "affichage/nombreTrajectoires " << _ui->nombreTrajectoires->value() << Qt::endl
@@ -1021,6 +1027,7 @@ void Options::SauvePreferences(const QString &fichierPref)
              << "affichage/affCerclesAcq " << QVariant(_ui->affCerclesAcq->isChecked()).toString() << Qt::endl
              << "affichage/affNbOrbWCC " << QVariant(_ui->affNbOrbWCC->isChecked()).toString() << Qt::endl
              << "affichage/aff_ZOE " << QVariant(_ui->affSAA_ZOE->isChecked()).toString() << Qt::endl
+             << "affichage/iconesStations " << QVariant(_ui->iconesStations->isChecked()).toString() << Qt::endl
              << "affichage/styleWCC " << QVariant(_ui->styleWCC->isChecked()).toString() << Qt::endl
              << "affichage/coulGMT " << _ui->coulGMT->currentIndex() << Qt::endl
              << "affichage/coulZOE " << _ui->coulZOE->currentIndex() << Qt::endl
@@ -1775,6 +1782,11 @@ void Options::on_supprLieu_clicked()
 void Options::on_afficone_toggled(bool checked)
 {
     _ui->rotationIconeISS->setEnabled(checked);
+}
+
+void Options::on_affnomlieu_checkStateChanged(const Qt::CheckState &arg1)
+{
+    _ui->marqueur->setVisible(arg1 != Qt::Unchecked);
 }
 
 void Options::on_afftraj_toggled(bool checked)

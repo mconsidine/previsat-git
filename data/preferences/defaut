@@ -27,6 +27,7 @@ affichage/extinctionAtmospherique true
 affichage/hauteurTerminateur 0
 affichage/informationsSatelliteDefaut false
 affichage/intensiteOmbre 30
+affichage/marqueur false
 affichage/modeSombre false
 affichage/magnitudeEtoiles 4
 affichage/nombreTrajectoires 2
@@ -45,6 +46,7 @@ affichage/affBetaWCC false
 affichage/affCerclesAcq true
 affichage/affNbOrbWCC true
 affichage/aff_ZOE true
+affichage/iconesStations false
 affichage/styleWCC true
 affichage/coulGMT 0
 affichage/coulZOE 0

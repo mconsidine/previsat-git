@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    26 octobre 2024
+ * >    26 decembre 2024
  *
  */
 
@@ -149,10 +149,12 @@ private:
     QGraphicsScene *scene;
     QLabel *etiquette;
     QTimer *_timerCarte;
+    QGraphicsPixmapItem *_obs;
     QGraphicsPixmapItem *_sol;
     QGraphicsPixmapItem *_sol2;
     QGraphicsPixmapItem *_lun;
     QGraphicsPixmapItem *_lun2;
+    QGraphicsPixmapItem *_sta;
     QList<QGraphicsEllipseItem *> _sat;
 
     bool _mcc;

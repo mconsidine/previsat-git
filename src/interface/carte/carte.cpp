@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    6 decembre 2024
+ * >    26 decembre 2024
  *
  */
 
@@ -612,6 +612,7 @@ void Carte::AffichageGrille()
 void Carte::AffichageLieuxObservation()
 {
     /* Declarations des variables locales */
+    QPixmap pixlieu;
 
     /* Initialisations */
     QPen crayon(Qt::white);
@@ -628,8 +629,22 @@ void Carte::AffichageLieuxObservation()
         const int lobs = qRound(DEG2PX(180. - observateurs.at(j).longitude() * MATHS::RAD2DEG))+1;
         const int bobs = qRound(DEG2PX(90. - observateurs.at(j).latitude() * MATHS::RAD2DEG))+1;
 
-        scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
-        scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
+        if (settings.value("affichage/marqueur").toBool()) {
+
+            pixlieu.load(":/resources/interface/marqueur.png");
+            pixlieu = pixlieu.scaled(17, 17, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+            _obs = scene->addPixmap(pixlieu);
+            _obs->setTransformationMode(Qt::SmoothTransformation);
+
+            QTransform transform;
+            transform.translate(lobs-8, bobs-17);
+            _obs->setTransform(transform);
+
+        } else {
+            scene->addLine(lobs-4, bobs, lobs+4, bobs, crayon);
+            scene->addLine(lobs, bobs-4, lobs, bobs+4, crayon);
+        }
 
         if ((j == 0) || (settings.value("affichage/affnomlieu").toUInt() == Qt::Checked)) {
 
@@ -1060,6 +1075,7 @@ void Carte::AffichageStations()
     if (Configuration::instance()->issLive()) {
 
         QPainterPath res;
+        QPixmap pixsta;
         QPen crayon(Qt::yellow);
         crayon.setWidthF(1.2);
         crayon.setCosmetic(true);
@@ -1080,8 +1096,22 @@ void Carte::AffichageStations()
                 const int lsta = qRound(DEG2PX(180. - station.longitude() * MATHS::RAD2DEG));
                 const int bsta = qRound(DEG2PX(90. - station.latitude() * MATHS::RAD2DEG));
 
-                scene->addLine(lsta-4, bsta, lsta+4, bsta, crayon);
-                scene->addLine(lsta, bsta-4, lsta, bsta+4, crayon);
+                if (settings.value("affichage/iconesStations", false).toBool()) {
+
+                    pixsta.load(":/resources/interface/station.png");
+                    pixsta = pixsta.scaled(17, 17, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+                    _sta = scene->addPixmap(pixsta);
+                    _sta->setTransformationMode(Qt::SmoothTransformation);
+
+                    QTransform transform;
+                    transform.translate(lsta-7, bsta-16);
+                    _sta->setTransform(transform);
+
+                } else {
+                    scene->addLine(lsta-4, bsta, lsta+4, bsta, crayon);
+                    scene->addLine(lsta, bsta-4, lsta, bsta+4, crayon);
+                }
 
                 QGraphicsSimpleTextItem * const txtSta = new QGraphicsSimpleTextItem(acronyme);
                 const QFont policeSta(settings.value("affichage/policeWCC").toString(), 10);
@@ -1089,7 +1119,7 @@ void Carte::AffichageStations()
 
                 const int lng = (int) txtSta->boundingRect().width();
                 const int xnsta = lsta - lng / 2 + 1;
-                const int ynsta = (bsta > 16) ? bsta - 16 : bsta + 3;
+                const int ynsta = bsta + 4;
 
                 txtSta->setBrush(Qt::yellow);
                 txtSta->setPos(xnsta, ynsta);

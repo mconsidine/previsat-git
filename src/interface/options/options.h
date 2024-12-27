@@ -293,6 +293,7 @@ private slots:
     void on_supprLieu_clicked();
 
     void on_afficone_toggled(bool checked);
+    void on_affnomlieu_checkStateChanged(const Qt::CheckState &arg1);
     void on_afftraj_toggled(bool checked);
     void on_affnotif_toggled(bool checked);
     void on_affnuit_stateChanged(int arg1);
