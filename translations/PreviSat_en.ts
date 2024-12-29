@@ -4770,7 +4770,7 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="201"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1223"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1246"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
@@ -4817,7 +4817,7 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="615"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1206"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1229"/>
         <source>Importer icône...</source>
         <translation>Import icon...</translation>
     </message>
@@ -4976,7 +4976,7 @@ click on &apos;Update ISS information&apos;</translation>
         <location filename="../src/interface/outils/outils.cpp" line="437"/>
         <location filename="../src/interface/outils/outils.cpp" line="467"/>
         <location filename="../src/interface/outils/outils.cpp" line="1169"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1287"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1310"/>
         <source>Oui</source>
         <translation>Yes</translation>
     </message>
@@ -4984,7 +4984,7 @@ click on &apos;Update ISS information&apos;</translation>
         <location filename="../src/interface/outils/outils.cpp" line="438"/>
         <location filename="../src/interface/outils/outils.cpp" line="468"/>
         <location filename="../src/interface/outils/outils.cpp" line="1170"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1288"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1311"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
@@ -5043,7 +5043,7 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="1168"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1286"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1309"/>
         <source>Avertissement</source>
         <translation>Warning</translation>
     </message>
@@ -5053,27 +5053,27 @@ click on &apos;Update ISS information&apos;</translation>
         <translation>Do you really want to remove the selected TLE files ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1208"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1231"/>
         <source>Fichiers PNG (*.png)</source>
         <translation>PNG files (*.png)</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1218"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1241"/>
         <source>Renommer l&apos;icône</source>
         <translation>Rename the icon</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1219"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1242"/>
         <source>Nom de l&apos;icône (nom de l&apos;objet ou numéro NORAD) :</source>
         <translation>Name of icon (name of object or NORAD number) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1222"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1245"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1286"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1309"/>
         <source>Voulez-vous vraiment supprimer les icônes sélectionnées ?</source>
         <translation>Do you really want to remove the selected icons ?</translation>
     </message>

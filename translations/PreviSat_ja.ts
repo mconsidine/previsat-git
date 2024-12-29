@@ -4778,7 +4778,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="201"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1223"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1246"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
@@ -4825,7 +4825,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="615"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1206"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1229"/>
         <source>Importer icône...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4984,7 +4984,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <location filename="../src/interface/outils/outils.cpp" line="437"/>
         <location filename="../src/interface/outils/outils.cpp" line="467"/>
         <location filename="../src/interface/outils/outils.cpp" line="1169"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1287"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1310"/>
         <source>Oui</source>
         <translation>はい</translation>
     </message>
@@ -4992,7 +4992,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <location filename="../src/interface/outils/outils.cpp" line="438"/>
         <location filename="../src/interface/outils/outils.cpp" line="468"/>
         <location filename="../src/interface/outils/outils.cpp" line="1170"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1288"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1311"/>
         <source>Non</source>
         <translation>いいえ</translation>
     </message>
@@ -5051,7 +5051,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="1168"/>
-        <location filename="../src/interface/outils/outils.cpp" line="1286"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1309"/>
         <source>Avertissement</source>
         <translation>警告</translation>
     </message>
@@ -5061,27 +5061,27 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>選択したTLEファイルを本当に削除しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1208"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1231"/>
         <source>Fichiers PNG (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1218"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1241"/>
         <source>Renommer l&apos;icône</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1219"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1242"/>
         <source>Nom de l&apos;icône (nom de l&apos;objet ou numéro NORAD) :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1222"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1245"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.cpp" line="1286"/>
+        <location filename="../src/interface/outils/outils.cpp" line="1309"/>
         <source>Voulez-vous vraiment supprimer les icônes sélectionnées ?</source>
         <translation type="unfinished"></translation>
     </message>

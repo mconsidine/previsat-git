@@ -30,7 +30,7 @@
  * >    14 aout 2022
  *
  * Date de revision
- * >    26 decembre 2024
+ * >    29 decembre 2024
  *
  */
 
@@ -362,7 +362,7 @@ void Outils::InitGestionnaireIcones(const QStringList &listeFicPng)
         elem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
     }
 
-    _ui->supprimerTLE->setEnabled(false);
+    _ui->supprimerIcone->setEnabled(false);
 
     /* Retour */
     return;
@@ -1187,6 +1187,29 @@ void Outils::on_supprimerTLE_clicked()
         const QDir di(Configuration::instance()->dirElem());
         const QStringList filtres(QStringList () << "*.txt" << "*.tle");
         InitGestionnaireTLE(di.entryList(filtres, QDir::Files));
+    }
+
+    /* Retour */
+    return;
+}
+
+void Outils::on_listeIcones_itemClicked(QListWidgetItem *item)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->listeIcones->hasFocus() && (_ui->listeIcones->currentRow() >= 0)) {
+
+        item->setData(Qt::CheckStateRole, (item->checkState() == Qt::Checked) ? Qt::Unchecked : Qt::Checked);
+    }
+
+    _ui->supprimerIcone->setEnabled(false);
+    for(int i=0; i<_ui->listeIcones->count(); i++) {
+        if (_ui->listeIcones->item(i)->checkState() == Qt::Checked) {
+            _ui->supprimerIcone->setEnabled(true);
+        }
     }
 
     /* Retour */
