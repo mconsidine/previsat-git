@@ -36,7 +36,7 @@
  * >    25 septembre 2023
  *
  * Date de revision
- * >    1er mars 2024
+ * >    1er janvier 2025
  *
  */
 
@@ -146,6 +146,7 @@ private slots:
     void on_parametrageDefaut_clicked();
     void on_hauteurSoleil_currentIndexChanged(int index);
     void on_hauteurSat_currentIndexChanged(int index);
+    void on_choixSeuilMaximalFlashsStarlink_checkStateChanged(const Qt::CheckState &arg1);
     void on_calculs_clicked();
     void on_ouvrirRocketLaunchLive_clicked();
     void on_verifGpDisponibles_clicked();

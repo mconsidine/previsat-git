@@ -530,7 +530,7 @@
      <rect>
       <x>440</x>
       <y>28</y>
-      <width>271</width>
+      <width>311</width>
       <height>42</height>
      </rect>
     </property>
@@ -599,18 +599,11 @@
      <rect>
       <x>440</x>
       <y>0</y>
-      <width>271</width>
+      <width>311</width>
       <height>24</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="lbl_seuilMaximalFlashsStarlink">
-       <property name="text">
-        <string>Seuil maximal flashs :</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QSpinBox" name="seuilMaximalFlashsStarlink">
        <property name="maximumSize">
@@ -633,6 +626,13 @@
        </property>
        <property name="value">
         <number>10</number>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="choixSeuilMaximalFlashsStarlink">
+       <property name="text">
+        <string>Seuil maximal flashs :</string>
        </property>
       </widget>
      </item>

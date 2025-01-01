@@ -512,6 +512,13 @@ void PreviSat::TelechargementGroupesStarlink(const bool maj)
 
         qInfo() << "Telechargement des groupes Starlink";
 
+        // Telechargement des trains Starlink connus
+        Telechargement tel1(Configuration::instance()->dirStarlink());
+        tel1.TelechargementFichier(QUrl(QString(DOMAIN_NAME) + "starlink/starlink.txt"));
+
+        // Lecture du fichier starlink.txt
+        LectureGroupesStarlink();
+
         if (!settings.value("affichage/verifMajStarlink", true).toBool() && !maj) {
             throw Exception();
         }
@@ -521,17 +528,10 @@ void PreviSat::TelechargementGroupesStarlink(const bool maj)
         }
 
         // Telechargement des informations generales des pre-launch Starlink
-        Telechargement tel1(Configuration::instance()->dirStarlink());
         tel1.TelechargementFichier(QUrl(Configuration::instance()->adresseCelestrakSupplementalNorad() + "index.php"));
 
         // Telechargement du fichier d'elements orbitaux le plus a jour
         tel1.TelechargementFichier(QUrl(Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg("starlink")));
-
-        // Telechargement des trains Starlink connus
-        tel1.TelechargementFichier(QUrl(QString(DOMAIN_NAME) + "starlink/starlink.txt"));
-
-        // Lecture du fichier starlink.txt
-        LectureGroupesStarlink();
 
         // Recuperation des nouveaux groupes de lancement
         QFile fi(Configuration::instance()->dirStarlink() + QDir::separator() + "index.php");

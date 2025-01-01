@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    23 decembre 2024
+ * >    1er janvier 2025
  *
  */
 
@@ -486,6 +486,7 @@ void AfficherResultats::ChargementResultats()
     int j = 0;
     int imax = 1;
     double ecartAzimut = 0.;
+    const bool choixSeuilAzimut = settings.value("previsions/choixSeuilMaximalFlashsStarlink", true).toBool();
     const double seuilAzimut = settings.value("previsions/seuilMaximalFlashsStarlink", 10).toInt() * MATHS::DEG2RAD;
     const bool etat = _ui->resultatsPrevisions->blockSignals(true);
 
@@ -542,7 +543,7 @@ void AfficherResultats::ChargementResultats()
                     item->setTextAlignment(((_typeCalcul == TypeCalcul::EVENEMENTS) && (k == (elems.count() - 1))) ? Qt::AlignLeft : Qt::AlignCenter);
                     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
 
-                    if ((_typeCalcul == TypeCalcul::STARLINK) && (ecartAzimut <= seuilAzimut)) {
+                    if ((_typeCalcul == TypeCalcul::STARLINK) && choixSeuilAzimut && (ecartAzimut <= seuilAzimut)) {
                         item->setBackground(QBrush(QColor::fromRgb(150, 200, 255)));
                     }
 
@@ -1314,6 +1315,7 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
         int kmax;
         int nmax = 0;
         double ecartAzimut = MATHS::DEUX_PI;
+        const bool choixSeuilAzimut = settings.value("previsions/choixSeuilMaximalFlashsStarlink", true).toBool();
         const double seuilAzimut = settings.value("previsions/seuilMaximalFlashsStarlink", 10).toInt() * MATHS::DEG2RAD;
 
         QStringList elems;
@@ -1374,7 +1376,7 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
                     itm->setTextAlignment(Qt::AlignCenter);
                     itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
 
-                    if ((_typeCalcul == TypeCalcul::STARLINK) && (ecartAzimut <= seuilAzimut)) {
+                    if ((_typeCalcul == TypeCalcul::STARLINK) && choixSeuilAzimut && (ecartAzimut <= seuilAzimut)) {
                         itm->setBackground(QBrush(QColor::fromRgb(150, 200, 255)));
                     }
 
