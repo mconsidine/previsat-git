@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    20 novembre 2023
+ * >    1er janvier 2025
  *
  */
 
@@ -280,6 +280,7 @@ void SuiviTelescope::CalculAos()
     try {
 
         Date date1;
+        _ui->ajusterDates->setToolTip("");
         const double hauteurMin = MATHS::DEG2RAD * ((_ui->hauteurSatSuivi->currentIndex() == 5) ?
                                                         abs(_ui->valHauteurSatSuivi->text().toInt()) : 5 * _ui->hauteurSatSuivi->currentIndex());
 
@@ -462,6 +463,10 @@ void SuiviTelescope::CalculAos()
                                                                .trimmed()));
 
             _ui->ajusterDates->setEnabled(minmax.y() >= hauteurMin);
+            if (!_ui->ajusterDates->isEnabled()) {
+                _ui->ajusterDates->setToolTip(tr("Le prochain passage du satellite est en-dessous de la hauteur minimum spécifiée"));
+            }
+
             _ui->lbl_hauteurMaxSatSuivi->setVisible(true);
             _ui->lbl_coucherSatSuivi->setVisible(true);
             _ui->hauteurMaxSatSuivi->setVisible(true);
@@ -486,6 +491,10 @@ void SuiviTelescope::CalculAos()
                 _ui->leverSatSuivi->setFont(bld);
 
                 _ui->ajusterDates->setEnabled(satSuivi.hauteur() >= hauteurMin);
+                if (!_ui->ajusterDates->isEnabled()) {
+                    _ui->ajusterDates->setToolTip(tr("Le prochain passage du satellite est en-dessous de la hauteur minimum spécifiée"));
+                }
+
                 _ui->lbl_leverSatSuivi->setVisible(false);
                 _ui->lbl_hauteurMaxSatSuivi->setVisible(false);
                 _ui->lbl_coucherSatSuivi->setVisible(false);

@@ -30,11 +30,12 @@
  * >    5 mars 2023
  *
  * Date de revision
- * >
+ * >    1er janvier 2025
  *
  */
 
 #include "ajustementdates.h"
+#include "interface/radar/radar.h"
 #include "librairies/corps/satellite/evenements.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/exceptions/exception.h"
@@ -52,8 +53,13 @@
 /*
  * Constructeur par defaut
  */
-AjustementDates::AjustementDates(const QDateTime &dateInitiale, const QDateTime &dateFinale, const Observateur &observateur,
-                                 const ElementsOrbitaux &elements, const double offset, const double hauteur, QWidget *parent) :
+AjustementDates::AjustementDates(const QDateTime &dateInitiale,
+                                 const QDateTime &dateFinale,
+                                 const Observateur &observateur,
+                                 const ElementsOrbitaux &elements,
+                                 const double offset,
+                                 const double hauteur,
+                                 QWidget *parent) :
     QDialog(parent),
     _ui(new Ui::AjustementDates),
     _date1(dateInitiale),
@@ -98,8 +104,16 @@ AjustementDates::~AjustementDates()
  */
 void AjustementDates::show()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     MajCoordHorizDebut();
     MajCoordHorizFin();
+
+    /* Retour */
+    return;
 }
 
 void AjustementDates::changeEvent(QEvent *evt)
@@ -128,6 +142,11 @@ void AjustementDates::changeEvent(QEvent *evt)
  */
 void AjustementDates::on_ajustementDateInitiale_valueChanged(int value)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     if (value < _ui->ajustementDateFinale->value()) {
 
         _ui->dateInitiale->setDateTime(_date1.addSecs(value));
@@ -136,10 +155,18 @@ void AjustementDates::on_ajustementDateInitiale_valueChanged(int value)
     } else {
         _ui->ajustementDateInitiale->setValue(_ui->ajustementDateFinale->value());
     }
+
+    /* Retour */
+    return;
 }
 
 void AjustementDates::on_ajustementDateFinale_valueChanged(int value)
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
     if (value > _ui->ajustementDateInitiale->value()) {
 
         _ui->dateFinale->setDateTime(_date1.addSecs(value));
@@ -148,6 +175,9 @@ void AjustementDates::on_ajustementDateFinale_valueChanged(int value)
     } else {
         _ui->ajustementDateFinale->setValue(_ui->ajustementDateInitiale->value());
     }
+
+    /* Retour */
+    return;
 }
 
 void AjustementDates::on_buttonBox_accepted()
@@ -172,6 +202,8 @@ void AjustementDates::Initialisation()
 
     /* Corps de la methode */
     qInfo() << "Début Initialisation" << metaObject()->className();
+
+    _radar = new Radar(_ui->frameRadar, false);
 
     const Date dateInit(_date1.addSecs(-10), _offset);
     Satellite sat(_elements);
@@ -227,17 +259,39 @@ void AjustementDates::MajCoordHorizDebut()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double jj = Date(_ui->dateInitiale->dateTime(), 0.).jourJulienUTC();
+    const double jj0 = Date(_ui->dateInitiale->dateTime(), 0.).jourJulienUTC();
+    const double jj1 = Date(_ui->dateFinale->dateTime(), 0.).jourJulienUTC();
     const double offset = Date::CalculOffsetUTC(_ui->dateInitiale->dateTime());
-    const Date date(jj - offset, 0.);
+    const Date date0(jj0 - offset, 0.);
+    const Date date1(jj1 - offset, 0.);
 
     /* Corps de la methode */
-    _observateur.CalculPosVit(date);
+    // Position de l'observateur
+    _observateur.CalculPosVit(date0);
 
+    // Position Soleil et Lune
+    Soleil soleil;
+    soleil.CalculPositionSimp(date0);
+    soleil.CalculCoordHoriz(_observateur, true);
+
+    Lune lune;
+    lune.CalculPositionSimp(date0);
+    lune.CalculCoordHoriz(_observateur, true);
+
+    // Position du satellite
     Satellite sat(_elements);
-    sat.CalculPosVit(date);
+    sat.CalculPosVit(date0);
     sat.CalculCoordHoriz(_observateur, true);
 
+    ConditionEclipse condEcl;
+    condEcl.CalculSatelliteEclipse(sat.position(), soleil);
+    sat.setConditionEclipse(condEcl);
+    sat.CalculTraceCiel(date0, true, true, _observateur, 0, date1.jourJulienUTC());
+
+    // Mise a jour de l'interface
+    _radar->show(_observateur, soleil, lune, QList<Satellite> () << sat);
+
+    // Mise a jour de l'interface
     _ui->hauteurDebut->setText(Maths::ToSexagesimal(sat.hauteur(), AngleFormatType::DEGRE, 2, 0, true, true));
     _ui->azimutDebut->setText(Maths::ToSexagesimal(sat.azimut(), AngleFormatType::DEGRE, 3, 0, false, true));
 
@@ -246,24 +300,52 @@ void AjustementDates::MajCoordHorizDebut()
 }
 
 /*
- * Mise a jour des coordonnees horizontales pour la date de debut
+ * Mise a jour des coordonnees horizontales pour la date de fin
  */
 void AjustementDates::MajCoordHorizFin()
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double jj = Date(_ui->dateFinale->dateTime(), 0.).jourJulienUTC();
-    const double offset = Date::CalculOffsetUTC(_ui->dateFinale->dateTime());
-    const Date date(jj - offset, 0.);
+    const double jj0 = Date(_ui->dateInitiale->dateTime(), 0.).jourJulienUTC();
+    const double jj1 = Date(_ui->dateFinale->dateTime(), 0.).jourJulienUTC();
+    const double offset = Date::CalculOffsetUTC(_ui->dateInitiale->dateTime());
+    const Date date0(jj0 - offset, 0.);
+    const Date date1(jj1 - offset, 0.);
 
     /* Corps de la methode */
-    _observateur.CalculPosVit(date);
+    // Position de l'observateur
+    _observateur.CalculPosVit(date0);
 
+    // Position Soleil et Lune
+    Soleil soleil;
+    soleil.CalculPositionSimp(date0);
+    soleil.CalculCoordHoriz(_observateur, true);
+
+    Lune lune;
+    lune.CalculPositionSimp(date0);
+    lune.CalculCoordHoriz(_observateur, true);
+
+    // Position du satellite
     Satellite sat(_elements);
-    sat.CalculPosVit(date);
+    sat.CalculPosVit(date0);
     sat.CalculCoordHoriz(_observateur, true);
 
+    ConditionEclipse condEcl;
+    condEcl.CalculSatelliteEclipse(sat.position(), soleil);
+    sat.setConditionEclipse(condEcl);
+    sat.CalculTraceCiel(date0, true, true, _observateur, 0, date1.jourJulienUTC());
+
+    _radar->show(_observateur, soleil, lune, QList<Satellite> () << sat);
+
+    // Position de l'observateur
+    _observateur.CalculPosVit(date1);
+
+    // Position du satellite a la date de fin
+    sat.CalculPosVit(date1);
+    sat.CalculCoordHoriz(_observateur, true);
+
+    // Mise a jour de l'interface
     _ui->hauteurFin->setText(Maths::ToSexagesimal(sat.hauteur(), AngleFormatType::DEGRE, 2, 0, true, true));
     _ui->azimutFin->setText(Maths::ToSexagesimal(sat.azimut(), AngleFormatType::DEGRE, 3, 0, false, true));
 

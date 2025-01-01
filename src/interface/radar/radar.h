@@ -36,7 +36,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    2 decembre 2024
+ * >    1er janvier 2025
  *
  */
 
@@ -53,6 +53,11 @@ class Radar;
 class QGraphicsEllipseItem;
 class QGraphicsPixmapItem;
 class QGraphicsScene;
+class Lune;
+class Observateur;
+class Satellite;
+class Soleil;
+
 
 class Radar : public QFrame
 {
@@ -66,9 +71,11 @@ public:
     /**
      * @brief Radar Constructeur par defaut
      * @param[in] parent parent
+     * @param[in] isEvent application de la gestion d'evenements sur le radar
      * @throw Exception
      */
-    explicit Radar(QWidget *parent = nullptr);
+    explicit Radar(QWidget *parent = nullptr,
+                   const bool isEvent = true);
 
 
     /*
@@ -87,6 +94,7 @@ public:
      * Methodes publiques
      */
 
+
 public slots:
 
     void mouseMoveEvent(QMouseEvent *evt);
@@ -94,8 +102,15 @@ public slots:
 
     /**
      * @brief show Affichage du radar
+     * @param observateur observateur
+     * @param soleil Soleil
+     * @param lune Lune
+     * @param satellites liste de satellites
      */
-    void show();
+    void show(const Observateur &observateur,
+              const Soleil &soleil,
+              const Lune &lune,
+              const QList<Satellite> &satellites);
 
 
 signals:
@@ -125,6 +140,8 @@ private:
      * Variables privees
      */
     Ui::Radar *_ui;
+
+    bool _isEvent;
     QGraphicsScene *scene;
     QGraphicsPixmapItem *_sol;
     QGraphicsPixmapItem *_lun;

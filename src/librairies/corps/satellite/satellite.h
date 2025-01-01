@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    19 juin 2022
+ * >    1er janvier 2025
  *
  */
 
@@ -152,17 +152,19 @@ public:
 
     /**
      * @brief CalculTraceCiel Calcul de la trace dans le ciel
-     * @param[in] date date
+     * @param[in] date0 date initiale
      * @param[in] acalcEclipseLune calcul des eclipses produites par la Lune
      * @param[in] refraction prise en compte de la refraction atmospherique
      * @param[in] observateur observateur
      * @param[in] sec pas en secondes
+     * @param[in] jj1 jour julien maximal
      */
-    void CalculTraceCiel(const Date &date,
-                         const bool acalcEclipseLune,
-                         const bool refraction,
-                         const Observateur &observateur,
-                         const int sec = 0);
+    void CalculTraceCiel(const Date &date0,
+        const bool acalcEclipseLune,
+        const bool refraction,
+        const Observateur &observateur,
+        const int sec = 0,
+        const double jj1 = DATE::DATE_INFINIE);
 
     /**
      * @brief CalculTracesAuSol Calcul des traces au sol
@@ -208,6 +210,12 @@ public:
     Signal signal() const;
     QList<ElementsTraceSol> traceAuSol() const;
     QList<ElementsTraceCiel> traceCiel() const;
+
+
+    /*
+     * Modificateurs
+     */
+    void setConditionEclipse(const ConditionEclipse &condEcl);
 
 
 protected:

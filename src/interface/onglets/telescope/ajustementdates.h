@@ -36,7 +36,7 @@
  * >    5 mars 2023
  *
  * Date de revision
- * >
+ * >    1er janvier 2025
  *
  */
 
@@ -53,6 +53,9 @@ namespace Ui {
 class AjustementDates;
 }
 
+class Radar;
+
+
 class AjustementDates : public QDialog
 {
     Q_OBJECT
@@ -68,11 +71,18 @@ public:
      * @param[in] dateFinale date finale
      * @param[in] observateur observateur
      * @param[in] elements elements orbitaux
+     * @param[in] offset offset
+     * @param[in] hauteur hauteur
      * @param[in] parent fenetre parent
      * @throw Exception
      */
-    explicit AjustementDates(const QDateTime &dateInitiale, const QDateTime &dateFinale, const Observateur &observateur,
-                             const ElementsOrbitaux &elements, const double offset, const double hauteur, QWidget *parent = nullptr);
+    explicit AjustementDates(const QDateTime &dateInitiale,
+                             const QDateTime &dateFinale,
+                             const Observateur &observateur,
+                             const ElementsOrbitaux &elements,
+                             const double offset,
+                             const double hauteur,
+                             QWidget *parent = nullptr);
 
 
     /*
@@ -130,6 +140,7 @@ private:
      * Variables privees
      */
     Ui::AjustementDates *_ui;
+    Radar *_radar;
 
     QDateTime _date1;
     QDateTime _date2;

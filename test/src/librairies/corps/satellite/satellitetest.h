@@ -36,7 +36,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    1er janvier 2025
  *
  */
 
@@ -60,7 +60,8 @@ private:
     static void testCalculPosVit3();
     static void testCalculPosVitECEF();
     static void testCalculElementsOsculateurs();
-    static void testCalculTraceCiel();
+    static void testCalculTraceCiel1();
+    static void testCalculTraceCiel2();
     static void testCalculPosVitListeSatellites();
     static void testHasAos1();
     static void testHasAos2();

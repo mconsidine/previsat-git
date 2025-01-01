@@ -30,7 +30,7 @@
  * >    3 avril 2020
  *
  * Date de revision
- * >    23 decembre 2024
+ * >    1er janvier 2025
  *
  */
 
@@ -65,9 +65,11 @@ static QSettings settings(ORG_NAME, APP_NAME);
 /*
  * Constructeur par defaut
  */
-Radar::Radar(QWidget *parent) :
+Radar::Radar(QWidget *parent,
+             const bool isEvent) :
     QFrame(parent),
-    _ui(new Ui::Radar)
+    _ui(new Ui::Radar),
+    _isEvent(isEvent)
 {
     _ui->setupUi(this);
 
@@ -116,7 +118,7 @@ void Radar::mouseMoveEvent(QMouseEvent *evt)
     /* Initialisations */
 
     /* Corps de la methode */
-    if (_ui->vueRadar->underMouse()) {
+    if (_isEvent && _ui->vueRadar->underMouse()) {
 
         const int lciel = qRound(0.5 * _ui->vueRadar->width());
         const int hciel = qRound(0.5 * _ui->vueRadar->height());
@@ -218,7 +220,7 @@ void Radar::mousePressEvent(QMouseEvent *evt)
     /* Initialisations */
 
     /* Corps de la methode */
-    if (_ui->vueRadar->underMouse() && (evt->button() == Qt::LeftButton)) {
+    if (_isEvent && _ui->vueRadar->underMouse() && (evt->button() == Qt::LeftButton)) {
 
         // Clic sur un satellite
         QListIterator it(_sat);
@@ -257,7 +259,10 @@ void Radar::mousePressEvent(QMouseEvent *evt)
 /*
  * Affichage du radar
  */
-void Radar::show()
+void Radar::show(const Observateur &observateur,
+                 const Soleil &soleil,
+                 const Lune &lune,
+                 const QList<Satellite> &satellites)
 {
     /* Declarations des variables locales */
     QColor couleur;
@@ -271,7 +276,7 @@ void Radar::show()
     const QPen noir(Qt::black);
 
     // Determination de la couleur du ciel
-    const double hts = Configuration::instance()->soleil().hauteur() * MATHS::RAD2DEG;
+    const double hts = soleil.hauteur() * MATHS::RAD2DEG;
     const QBrush couleurCiel = Ciel::CalculCouleurCiel(hts);
 
     scene->clear();
@@ -321,7 +326,6 @@ void Radar::show()
     }
 
     // Affichage du Soleil
-    const Soleil &soleil = Configuration::instance()->soleil();
     if (settings.value("affichage/affsoleil").toBool() && soleil.visible()) {
 
         // Calcul des coordonnees radar du Soleil
@@ -341,7 +345,6 @@ void Radar::show()
     }
 
     // Affichage de la Lune
-    const Lune &lune = Configuration::instance()->lune();
     if (settings.value("affichage/afflune").toBool() && lune.visible()) {
 
         // Calcul des coordonnees radar de la Lune
@@ -349,7 +352,7 @@ void Radar::show()
         const int blun = TOPO2Y(100., lune.hauteur(), lune.azimut(), yf);
 
         const int lpol = 100;
-        const int bpol = qRound(100 - 100 * (1. - Configuration::instance()->observateurs().first().latitude() * MATHS::DEUX_SUR_PI));
+        const int bpol = qRound(100 - 100 * (1. - observateur.latitude() * MATHS::DEUX_SUR_PI));
 
         QPixmap pixlun;
         pixlun.load(":/resources/interface/lune.png");
@@ -359,7 +362,7 @@ void Radar::show()
         QTransform transform;
         transform.translate(llun, blun);
         transform.rotate(180. - QLineF(llun, blun, lpol, bpol).normalVector().angle());
-        if (settings.value("affichage/rotationLune").toBool() && (Configuration::instance()->observateurs().first().latitude() < 0.)) {
+        if (settings.value("affichage/rotationLune").toBool() && (observateur.latitude() < 0.)) {
             transform.rotate(180.);
         }
 
@@ -386,7 +389,7 @@ void Radar::show()
 
     pen.setWidthF(1.2);
 
-    QListIterator it1(Configuration::instance()->listeSatellites());
+    QListIterator it1(satellites);
     it1.toBack();
 
     while (it1.hasPrevious()) {

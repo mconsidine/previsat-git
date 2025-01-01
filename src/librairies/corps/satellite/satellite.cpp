@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 mai 2023
+ * >    1er janvier 2025
  *
  */
 
@@ -300,7 +300,8 @@ void Satellite::CalculTraceCiel(const Date &date,
                                 const bool acalcEclipseLune,
                                 const bool refraction,
                                 const Observateur &observateur,
-                                const int sec)
+                                const int sec,
+                                const double jj1)
 {
     /* Declarations des variables locales */
     Soleil soleil;
@@ -336,7 +337,7 @@ void Satellite::CalculTraceCiel(const Date &date,
             // Coordonnees horizontales
             sat.CalculCoordHoriz(obs, true);
 
-            if ((sat._hauteur >= 0.) && (i < 86400)) {
+            if ((sat._hauteur >= 0.) && (i < static_cast<int> (DATE::NB_SEC_PAR_JOUR))) {
 
                 // Position du Soleil
                 soleil.CalculPositionSimp(j0);
@@ -359,6 +360,11 @@ void Satellite::CalculTraceCiel(const Date &date,
             } else if (i > 0) {
                 afin = true;
             }
+
+            if (j0.jourJulienUTC() > jj1) {
+                afin = true;
+            }
+
             i++;
         }
     }
@@ -522,6 +528,15 @@ QList<ElementsTraceSol> Satellite::traceAuSol() const
 QList<ElementsTraceCiel> Satellite::traceCiel() const
 {
     return _traceCiel;
+}
+
+
+/*
+ * Modificateurs
+ */
+void Satellite::setConditionEclipse(const ConditionEclipse &condEcl)
+{
+    _conditionEclipse = condEcl;
 }
 
 

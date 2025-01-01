@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 decembre 2024
+ * >    1er janvier 2025
  *
  */
 
@@ -694,8 +694,12 @@ void PreviSat::AffichageCartesRadar()
     const Qt::CheckState affradar = static_cast<Qt::CheckState> (settings.value("affichage/affradar", Qt::Checked).toUInt());
     const bool radarVisible = ((affradar == Qt::Checked) ||
                                ((affradar == Qt::PartiallyChecked) && Configuration::instance()->listeSatellites().first().visible()));
+
     if (radarVisible) {
-        _radar->show();
+        _radar->show(Configuration::instance()->observateur(),
+                     Configuration::instance()->soleil(),
+                     Configuration::instance()->lune(),
+                     Configuration::instance()->listeSatellites());
     }
 
     _radar->setVisible(!_ui->issLive->isChecked() && radarVisible);

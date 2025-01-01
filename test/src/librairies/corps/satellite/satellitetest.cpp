@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    1er janvier 2025
  *
  */
 
@@ -68,7 +68,8 @@ void SatelliteTest::testAll()
     testCalculPosVit3();
     testCalculPosVitECEF();
     testCalculElementsOsculateurs();
-    testCalculTraceCiel();
+    testCalculTraceCiel1();
+    testCalculTraceCiel2();
     testCalculPosVitListeSatellites();
     testHasAos1();
     testHasAos2();
@@ -291,7 +292,7 @@ void SatelliteTest::testCalculElementsOsculateurs()
     QCOMPARE(sat.elementsOsculateurs().demiGrandAxe(), 6800.37693729);
 }
 
-void SatelliteTest::testCalculTraceCiel()
+void SatelliteTest::testCalculTraceCiel1()
 {
     qInfo(Q_FUNC_INFO);
 
@@ -306,6 +307,33 @@ void SatelliteTest::testCalculTraceCiel()
     Satellite sat(tle.elements());
     sat.CalculPosVit(date);
     sat.CalculTraceCiel(date, true, true, obs);
+
+    QCOMPARE_GT(sat.traceCiel().size(), 0);
+}
+
+void SatelliteTest::testCalculTraceCiel2()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const QString ligne0 = "ISS (ZARYA)";
+    const QString ligne1 = "1 25544U 98067A   19365.62109818 -.00000196  00000-0  46169-5 0  9997";
+    const QString ligne2 = "2 25544  51.6443 102.5677 0005157  88.3081  52.3104 15.49523379205885";
+    const TLE tle(ligne0, ligne1, ligne2);
+
+    const Date date(2020, 1, 1, 6, 11, 0., 0.);
+    const Observateur obs("Paris", -2.348640000, +48.853390000, 30);
+
+    Soleil soleil;
+    soleil.CalculPositionSimp(date);
+    soleil.CalculCoordHoriz(obs, true);
+
+    Satellite sat(tle.elements());
+    sat.CalculPosVit(date);
+    sat.CalculTraceCiel(date, true, true, obs, 0, date.jourJulienUTC() + 5. * DATE::NB_JOUR_PAR_MIN);
+
+    ConditionEclipse condEcl;
+    condEcl.CalculSatelliteEclipse(sat.position(), soleil);
+    sat.setConditionEclipse(condEcl);
 
     QCOMPARE_GT(sat.traceCiel().size(), 0);
 }
