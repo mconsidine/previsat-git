@@ -3,7 +3,7 @@
  <class>Apropos</class>
  <widget class="QMainWindow" name="Apropos">
   <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
+   <enum>Qt::WindowModality::ApplicationModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -58,19 +58,19 @@
      <bool>true</bool>
     </property>
     <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
+     <enum>QFrame::Shape::NoFrame</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
+     <enum>QFrame::Shadow::Plain</enum>
     </property>
     <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
+     <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
     </property>
     <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
+     <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
     </property>
     <property name="cacheMode">
-     <set>QGraphicsView::CacheBackground</set>
+     <set>QGraphicsView::CacheModeFlag::CacheBackground</set>
     </property>
    </widget>
    <widget class="QLabel" name="nomLogiciel">
@@ -114,7 +114,7 @@
      </rect>
     </property>
     <property name="text">
-     <string notr="true">Copyright © Astropedia 2005-2024</string>
+     <string notr="true">Copyright © Astropedia 2005-2025</string>
     </property>
    </widget>
    <widget class="QLabel" name="siteInternet">
@@ -166,10 +166,10 @@ Il permet d'afficher la position des satellites en temps réel ou en mode manuel
 PreviSat est entièrement gratuit!</string>
     </property>
     <property name="textFormat">
-     <enum>Qt::PlainText</enum>
+     <enum>Qt::TextFormat::PlainText</enum>
     </property>
     <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
     </property>
     <property name="wordWrap">
      <bool>true</bool>
@@ -188,10 +188,10 @@ PreviSat est entièrement gratuit!</string>
      <string>Un immense merci à Michel Casabonne pour ses nombreuses suggestions pour PreviSat.</string>
     </property>
     <property name="textFormat">
-     <enum>Qt::PlainText</enum>
+     <enum>Qt::TextFormat::PlainText</enum>
     </property>
     <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
     </property>
     <property name="wordWrap">
      <bool>true</bool>
