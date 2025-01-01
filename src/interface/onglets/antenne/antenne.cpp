@@ -30,7 +30,7 @@
  * >    9 octobre 2022
  *
  * Date de revision
- * >    12 decembre 2024
+ * >    1er janvier 2025
  *
  */
 
@@ -142,8 +142,13 @@ void Antenne::InitAffichageFrequences()
 
             const FrequenceRadio frequences = it.next();
 
-            _ui->frequenceMontante->addItem(frequences.frequenceMontante + " MHz");
-            _ui->frequenceDescendante->addItem(frequences.frequenceDescendante + " MHz");
+            if (!frequences.frequenceMontante.trimmed().isEmpty()) {
+                _ui->frequenceMontante->addItem(frequences.frequenceMontante + " MHz");
+            }
+
+            if (!frequences.frequenceDescendante.trimmed().isEmpty()) {
+                _ui->frequenceDescendante->addItem(frequences.frequenceDescendante + " MHz");
+            }
         }
 
         if (_ui->frequenceMontante->count() == 0) {
