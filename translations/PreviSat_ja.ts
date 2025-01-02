@@ -4762,136 +4762,136 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="112"/>
+        <location filename="../src/interface/outils/outils.ui" line="115"/>
         <source>Age maximal des éléments orbitaux (en jours) :</source>
         <translation>軌道要素の最大年齢 (日数) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="169"/>
+        <location filename="../src/interface/outils/outils.ui" line="172"/>
         <source>Liste des fichiers d&apos;éléments orbitaux :</source>
         <translation>軌道要素ファイルのリスト :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="185"/>
+        <location filename="../src/interface/outils/outils.ui" line="188"/>
         <source>Valider</source>
         <translation>確定する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="201"/>
+        <location filename="../src/interface/outils/outils.ui" line="204"/>
         <location filename="../src/interface/outils/outils.cpp" line="1246"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="239"/>
-        <location filename="../src/interface/outils/outils.ui" line="446"/>
+        <location filename="../src/interface/outils/outils.ui" line="242"/>
+        <location filename="../src/interface/outils/outils.ui" line="449"/>
         <source>Domaine :</source>
         <translation>ドメイン :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="280"/>
+        <location filename="../src/interface/outils/outils.ui" line="283"/>
         <source>Nom du groupe :</source>
         <translation>グループ名 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="321"/>
+        <location filename="../src/interface/outils/outils.ui" line="324"/>
         <source>Liste des satellites :</source>
         <translation>衛星リスト :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="340"/>
+        <location filename="../src/interface/outils/outils.ui" line="343"/>
         <source>Filtre</source>
         <translation>フィルター</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="380"/>
+        <location filename="../src/interface/outils/outils.ui" line="383"/>
         <source>Fichiers d&apos;éléments orbitaux :</source>
         <translation>軌道要素ファイル :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="396"/>
+        <location filename="../src/interface/outils/outils.ui" line="399"/>
         <source>Groupe d&apos;éléments orbitaux :</source>
         <translation>軌道要素グループ :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="418"/>
+        <location filename="../src/interface/outils/outils.ui" line="421"/>
         <source>Cocher un groupe pour activer sa mise à jour automatique</source>
         <translation>グループをチェックして、自動更新を有効にします</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="469"/>
+        <location filename="../src/interface/outils/outils.ui" line="472"/>
         <source>Mettre à jour le groupe sélectionné</source>
         <translation>選択したグループを更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="615"/>
+        <location filename="../src/interface/outils/outils.ui" line="618"/>
         <location filename="../src/interface/outils/outils.cpp" line="1229"/>
         <source>Importer icône...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="628"/>
+        <location filename="../src/interface/outils/outils.ui" line="631"/>
         <source>Liste des icônes personnelles :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="720"/>
+        <location filename="../src/interface/outils/outils.ui" line="732"/>
         <source>Mise à jour TLE auto</source>
         <translation>TLEの自動更新</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="836"/>
+        <location filename="../src/interface/outils/outils.ui" line="848"/>
         <source>Mettre à jour maintenant</source>
         <translation>今すぐ更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="865"/>
+        <location filename="../src/interface/outils/outils.ui" line="877"/>
         <source>Affichage des messages informatifs</source>
         <translation>情報メッセージを表示する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="870"/>
+        <location filename="../src/interface/outils/outils.ui" line="882"/>
         <source>Accepter ajout/suppression de TLE</source>
         <translation>TLEの追加・削除を受け入れる</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="875"/>
+        <location filename="../src/interface/outils/outils.ui" line="887"/>
         <source>Refuser ajout/suppression de TLE</source>
         <translation>TLEの追加・削除を断る</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="885"/>
+        <location filename="../src/interface/outils/outils.ui" line="897"/>
         <source>Mise à jour TLE manuelle</source>
         <translation>TLEの手動更新</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="915"/>
-        <location filename="../src/interface/outils/outils.ui" line="945"/>
+        <location filename="../src/interface/outils/outils.ui" line="927"/>
+        <location filename="../src/interface/outils/outils.ui" line="957"/>
         <source>Parcourir...</source>
         <translation>ブラウズ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="925"/>
+        <location filename="../src/interface/outils/outils.ui" line="937"/>
         <source>Fichier à mettre à jour :</source>
         <translation>更新するファイル :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="965"/>
+        <location filename="../src/interface/outils/outils.ui" line="977"/>
         <source>Fichier TLE à lire :</source>
         <translation>読むTLEファイル :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="981"/>
+        <location filename="../src/interface/outils/outils.ui" line="993"/>
         <source>Mettre à jour</source>
         <translation>更新する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="682"/>
+        <location filename="../src/interface/outils/outils.ui" line="685"/>
         <source>Liste de fichiers TLE :</source>
         <translation>TLEファイルのリスト :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="695"/>
+        <location filename="../src/interface/outils/outils.ui" line="698"/>
         <location filename="../src/interface/outils/outils.cpp" line="1104"/>
         <source>Importer TLE...</source>
         <translation>TLEをインポートする...</translation>
@@ -4922,8 +4922,8 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>グループを作成する</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="641"/>
-        <location filename="../src/interface/outils/outils.ui" line="669"/>
+        <location filename="../src/interface/outils/outils.ui" line="644"/>
+        <location filename="../src/interface/outils/outils.ui" line="672"/>
         <location filename="../src/interface/outils/outils.cpp" line="233"/>
         <location filename="../src/interface/outils/outils.cpp" line="241"/>
         <source>Supprimer</source>

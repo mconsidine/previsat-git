@@ -4754,136 +4754,136 @@ click on &apos;Update ISS information&apos;</translation>
         <translation>Management of satellite icons</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="112"/>
+        <location filename="../src/interface/outils/outils.ui" line="115"/>
         <source>Age maximal des éléments orbitaux (en jours) :</source>
         <translation>Orbital elements expiry date (in days) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="169"/>
+        <location filename="../src/interface/outils/outils.ui" line="172"/>
         <source>Liste des fichiers d&apos;éléments orbitaux :</source>
         <translation>List of orbital ements files :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="185"/>
+        <location filename="../src/interface/outils/outils.ui" line="188"/>
         <source>Valider</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="201"/>
+        <location filename="../src/interface/outils/outils.ui" line="204"/>
         <location filename="../src/interface/outils/outils.cpp" line="1246"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="239"/>
-        <location filename="../src/interface/outils/outils.ui" line="446"/>
+        <location filename="../src/interface/outils/outils.ui" line="242"/>
+        <location filename="../src/interface/outils/outils.ui" line="449"/>
         <source>Domaine :</source>
         <translation>Domain :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="280"/>
+        <location filename="../src/interface/outils/outils.ui" line="283"/>
         <source>Nom du groupe :</source>
         <translation>Name of group :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="321"/>
+        <location filename="../src/interface/outils/outils.ui" line="324"/>
         <source>Liste des satellites :</source>
         <translation>List of satellites :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="340"/>
+        <location filename="../src/interface/outils/outils.ui" line="343"/>
         <source>Filtre</source>
         <translation>Filter</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="380"/>
+        <location filename="../src/interface/outils/outils.ui" line="383"/>
         <source>Fichiers d&apos;éléments orbitaux :</source>
         <translation>Orbital elements files :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="396"/>
+        <location filename="../src/interface/outils/outils.ui" line="399"/>
         <source>Groupe d&apos;éléments orbitaux :</source>
         <translation>Orbital elements groups :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="418"/>
+        <location filename="../src/interface/outils/outils.ui" line="421"/>
         <source>Cocher un groupe pour activer sa mise à jour automatique</source>
         <translation>Check a group to activate its automatic update</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="469"/>
+        <location filename="../src/interface/outils/outils.ui" line="472"/>
         <source>Mettre à jour le groupe sélectionné</source>
         <translation>Update the selected group</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="615"/>
+        <location filename="../src/interface/outils/outils.ui" line="618"/>
         <location filename="../src/interface/outils/outils.cpp" line="1229"/>
         <source>Importer icône...</source>
         <translation>Import icon...</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="628"/>
+        <location filename="../src/interface/outils/outils.ui" line="631"/>
         <source>Liste des icônes personnelles :</source>
         <translation>List of personal icons :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="720"/>
+        <location filename="../src/interface/outils/outils.ui" line="732"/>
         <source>Mise à jour TLE auto</source>
         <translation>Auto TLE update</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="836"/>
+        <location filename="../src/interface/outils/outils.ui" line="848"/>
         <source>Mettre à jour maintenant</source>
         <translation>Update now</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="865"/>
+        <location filename="../src/interface/outils/outils.ui" line="877"/>
         <source>Affichage des messages informatifs</source>
         <translation>Display of informative messages</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="870"/>
+        <location filename="../src/interface/outils/outils.ui" line="882"/>
         <source>Accepter ajout/suppression de TLE</source>
         <translation>Allow TLE add/remove</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="875"/>
+        <location filename="../src/interface/outils/outils.ui" line="887"/>
         <source>Refuser ajout/suppression de TLE</source>
         <translation>Disallow TLE add/remove</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="885"/>
+        <location filename="../src/interface/outils/outils.ui" line="897"/>
         <source>Mise à jour TLE manuelle</source>
         <translation>Manual TLE update</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="915"/>
-        <location filename="../src/interface/outils/outils.ui" line="945"/>
+        <location filename="../src/interface/outils/outils.ui" line="927"/>
+        <location filename="../src/interface/outils/outils.ui" line="957"/>
         <source>Parcourir...</source>
         <translation>Browse...</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="925"/>
+        <location filename="../src/interface/outils/outils.ui" line="937"/>
         <source>Fichier à mettre à jour :</source>
         <translation>TLE File to update :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="965"/>
+        <location filename="../src/interface/outils/outils.ui" line="977"/>
         <source>Fichier TLE à lire :</source>
         <translation>TLE File to read :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="981"/>
+        <location filename="../src/interface/outils/outils.ui" line="993"/>
         <source>Mettre à jour</source>
         <translation>Update</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="682"/>
+        <location filename="../src/interface/outils/outils.ui" line="685"/>
         <source>Liste de fichiers TLE :</source>
         <translation>List of TLE files :</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="695"/>
+        <location filename="../src/interface/outils/outils.ui" line="698"/>
         <location filename="../src/interface/outils/outils.cpp" line="1104"/>
         <source>Importer TLE...</source>
         <translation>Import TLE...</translation>
@@ -4914,8 +4914,8 @@ click on &apos;Update ISS information&apos;</translation>
         <translation>Create a group</translation>
     </message>
     <message>
-        <location filename="../src/interface/outils/outils.ui" line="641"/>
-        <location filename="../src/interface/outils/outils.ui" line="669"/>
+        <location filename="../src/interface/outils/outils.ui" line="644"/>
+        <location filename="../src/interface/outils/outils.ui" line="672"/>
         <location filename="../src/interface/outils/outils.cpp" line="233"/>
         <location filename="../src/interface/outils/outils.cpp" line="241"/>
         <source>Supprimer</source>
