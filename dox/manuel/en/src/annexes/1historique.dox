@@ -31,6 +31,19 @@
 \page Historique Version history
 
 
+<b><span style="color:red;">Version 7.1 (revision 0) :</span><br />
+December 2024 - January 2025 :</b>
+<ul>
+<li>Add indication of Starlink flares.
+<li>Add management of custom satellite icons.
+<li>Add markers for locations and icons for stations.
+<li>Add radar in adjustment date window for Telescope tracking.
+<li>Modification for adding new locations (copy coordinates from Google Maps).
+</ul>
+
+<hr />
+
+
 <b><span style="color:red;">Version 7.0 (revision 2) :</span><br />
 June 2023 - December 2024 :</b>
 <ul>

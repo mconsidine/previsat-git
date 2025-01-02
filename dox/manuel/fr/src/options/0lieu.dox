@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    26 avril 2023
+ * >    2 janvier 2025
  *
  */
 
@@ -42,7 +42,15 @@ La liste <b>Sélection de la catégorie</b> contient les différentes catégorie
 
 En cliquant sur un élément de cette première liste, on fait apparaître dans la seconde liste les noms des lieux d'observation de la catégorie. Lorsqu'on sélectionne un lieu d'observation, ses coordonnées s'affichent à la droite de l'onglet. En cliquant sur les petites flèches, on peut sélectionner les lieux d'observation pour l'application.
 
-En cliquant droit sur un élément de la liste <b>Lieux d'observation</b>, on peut choisir de le supprimer ou de l'ajouter à la catégorie <b>Mes Préférés</b>. Pour l'ajout manuel d'un lieu dans une catégorie, il faut saisir le nom du lieu d'observation, ainsi que sa longitude et sa latitude (donnés par exemple par un GPS). L'altitude peut être négligée si elle n'est pas connue, en effet, sa valeur n'a que peu d'influence dans les calculs.
+Pour ajouter un lieu d'observation dans une catégorie, on peut cliquer sur le <b>+</b> au-dessus de la liste <b>Lieux d'observation</b>, ou cliquer droit dans cette liste et sélectionner 'Créer un nouveau lieu'. Cela fait apparaître la zone de saisie des coordonnées du nouveau lieu à ajouter. Il est ainsi possible de saisir les coordonnées géographiques par l'une des méthodes suivantes :
+<ul>
+<li>Saisir manuellement la longitude, la latitude soit au format sexagésimal, soit au format décimal, ainsi que l'altitude.
+<li>Cliquer sur le bouton <b>Ouvrir Google Maps</b>, cliquer droit sur l'endroit voulu et sélectionner les coordonnées géographiques dans le menu contextuel.
+</ul>
+
+L'altitude peut être prise égale à zéro si elle n'est pas connue, en effet, sa valeur n'a que peu d'influence dans les calculs.
+
+En cliquant droit sur un élément de la liste <b>Lieux d'observation</b>, on peut choisir de le supprimer ou de l'ajouter à la catégorie <b>Mes Préférés</b>.
 
 Il est possible de créer, de supprimer une catégorie (sauf la catégorie <b>Mes Préférés</b>), ou de télécharger de nouvelles catégories en cliquant droit sur la liste <b>Sélection de la catégorie</b>.
 

@@ -31,6 +31,19 @@
 \page Historique Historique des versions
 
 
+<b><span style="color:red;">Version 7.1 (révision 0) :</span><br />
+Décembre 2024 - Janvier 2025 :</b>
+<ul>
+<li>Ajout de l'indication des flashs Starlink.
+<li>Ajout du gestionnaire d'icônes satellites.
+<li>Ajout des marqueurs pour les lieux d'observation et des icônes pour les stations.
+<li>Ajout du radar dans la fenêtre d'ajustement des dates pour le suivi avec un télescope.
+<li>Modification dans l'ajout de nouveaux lieux d'observation (copie des coordonnées à partir de Google Maps).
+</ul>
+
+<hr />
+
+
 <b><span style="color:red;">Version 7.0 (révision 2) :</span><br />
 Juin 2023 - Décembre 2024 :</b>
 <ul>

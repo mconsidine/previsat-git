@@ -53,7 +53,7 @@ Once calculations are finished, an explicit message appears in the task bar and 
 
 \image html resultats-starlink.png
 
-The table summarizes each pass of a Starlink train with the most important informations. By clicking on a row of the table, we display the corresponding pass on the sky map. By double-clicking on a row, a small window displays more informations of the pass. Based on the orbital elements prior to launch, it is possible that the passes have a difference of several minutes in the days following launch (the satellites migrate to their final orbit, the orbital elements being given for a fictitious satellite in the middle of the launch of all satellites).
+The table summarizes each pass of a Starlink train with the most important informations. By clicking on a row of the table, we display the corresponding pass on the sky map. By double-clicking on a row, a small window displays more informations of the pass. Based on the orbital elements prior to launch, it is possible that the passes have a difference of several minutes in the days following launch (the satellites migrate to their final orbit, the orbital elements being given for a fictitious satellite in the middle of the launch of all satellites). Passes highlighted with light blue indicate a possible flare of the Starlink train.
 
 It is possible to save the selected pass as an image, or save all passes as a text file under the following form.
 

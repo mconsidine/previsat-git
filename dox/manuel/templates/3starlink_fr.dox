@@ -53,7 +53,7 @@ Une fois les calculs terminés, un message explicite apparaît dans la barre des
 
 \image html resultats-starlink.png
 
-Le tableau à gauche résume chaque passage du train Starlink avec les informations les plus importantes. En cliquant sur une ligne du tableau, on affiche le passage correspondant sur la carte du ciel. En double cliquant sur une ligne du tableau, une petite fenêtre avec davantage d'informations apparaît. En se basant sur les éléments orbitaux préalables au lancement, il est possible que les passages aient un décalage de plusieurs minutes les jours suivant le lancement (les satellites migrent vers leur orbite définitive, les éléments orbitaux étant donnés pour un satellite fictif au milieu de l'ensemble des satellites).
+Le tableau à gauche résume chaque passage du train Starlink avec les informations les plus importantes. En cliquant sur une ligne du tableau, on affiche le passage correspondant sur la carte du ciel. En double cliquant sur une ligne du tableau, une petite fenêtre avec davantage d'informations apparaît. En se basant sur les éléments orbitaux préalables au lancement, il est possible que les passages aient un décalage de plusieurs minutes les jours suivant le lancement (les satellites migrent vers leur orbite définitive, les éléments orbitaux étant donnés pour un satellite fictif au milieu de l'ensemble des satellites). Les passages surlignés en bleu clair indiquent un flash possible du train Starlink.
 
 Il est possible de sauvegarder un passage sous forme d'image (passage sélectionné avec la carte du ciel associée), ou bien de sauvegarder tous les passages calculés sous forme de fichier texte, présenté de la manière suivante.
 

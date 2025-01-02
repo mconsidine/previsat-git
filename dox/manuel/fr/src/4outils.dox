@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    26 avril 2023
+ * >    2 janvier 2025
  *
  */
 
@@ -29,7 +29,8 @@
 /** \page Outils Outils
 
 - \subpage GestionnaireGP
-- \subpage MajTLE
+- \subpage GestionnaireIcones
 - \subpage GestionnaireTLE
+- \subpage MajTLE
 
 */

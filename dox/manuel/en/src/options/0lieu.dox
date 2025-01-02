@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    13 mai 2023
+ * >    2 janvier 2025
  *
  */
 
@@ -42,7 +42,15 @@ The list <b>Category selection</b> contains the different categories of places o
 
 While clicking on an element of this first list, one reveals in the second list the names of the places of the category. When a place of observation is selected, its coordinates are displayed on the right-hand side of the tab. While clicking on the small arrows, one can select the locations for the application.
 
-By right-clicking on an element in the Location in the category list, one can choose to remove it or to add it in the My Favorites category. For the manual addition of a place in a category, it is necessary to seize the name of the place of observation, its longitude and its latitutde. (given for example by a GPS device). The altitude can be neglected if it is not known because its value has small effect on calculations.
+To add a location in a category, one can click on <b>+</b> above the <b>Locations</b> list, or right click in this list and select 'Create a new location'. This brings up the coordinate entry box for the new location to add. It is therefore possible to enter geographic coordinates using one of the following methods:
+<ul>
+<li>Manually enter the longitude, latitude either in sexagesimal format or in decimal format, as well as the altitude.
+<li>Click on the <b>Open Google Maps</b> button, right-click on the desired location and select the geographic coordinates from the context menu.
+</ul>
+
+The altitude can be taken to zero if it is not known because its value has small effect on calculations.
+
+By right-clicking on an item in the <b>Locations</b> list, you can choose to delete it or add it into the <b>My Favorites</b> category.
 
 It is possible to create or remove a category (except the category My Favorites), or to download new categories by right-clicking on the list Selection of the category.
 
