@@ -5719,12 +5719,12 @@ ce qui représente environ %2 pages.</source>
         <translation>フォルダ「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1345"/>
+        <location filename="../src/configuration/configuration.cpp" line="1361"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1352"/>
+        <location filename="../src/configuration/configuration.cpp" line="1368"/>
         <source>Le fichier %1 est vide, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が空なので、「%2」を再インストールしてください</translation>
     </message>

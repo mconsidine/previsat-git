@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    18 aout 2024
+ * >    2 janvier 2025
  *
  */
 
@@ -1297,23 +1297,39 @@ void Configuration::VerificationArborescences()
 
         // Verification de la presence des fichiers du repertoire data
         // Fichiers du repertoire data commun
+        const QString repPref = QString("preferences") + QDir::separator();
         const QString repSon = QString("sound") + QDir::separator();
         const QString repStr = QString("stars") + QDir::separator();
-        const QStringList ficCommonData(QStringList () << repSon + "aos-default.wav" << repSon + "los-default.wav"
+        const QStringList ficCommonData(QStringList () << repPref + "defaut" << repSon + "aos-default.wav" << repSon + "los-default.wav"
                                                       << repStr + "constellations.dat" << repStr + "constlabel.dat"
                                                       << repStr + "constlines.dat" << repStr + "etoiles.dat");
 
         VerifieFichiersData(_dirCommonData, ficCommonData);
 
+        // Copie des fichiers du repertoire commun vers le repertoire local
+        const QStringList listeFics(QStringList () << _dirCommonData + QDir::separator() + repPref + "defaut");
+
+        foreach(QString fic, listeFics) {
+
+            const QString file(fic);
+            const QString dest = fic.replace(_dirCommonData, _dirLocalData);
+
+            QFileInfo ff(dest);
+            if (!ff.exists()) {
+                QFile fi(file);
+                fi.copy(dest);
+            }
+        }
+
         // Fichiers du repertoire data local
         const QString repHtm = QString("html") + QDir::separator();
         _listeFicLocalData << "satellites.db" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html" << repHtm + "resultat.map"
-                           << QString("preferences") + QDir::separator() + "defaut" << "taiutc.dat";
+                           << "taiutc.dat";
 
         VerifieFichiersData(_dirLocalData, _listeFicLocalData);
 
         // Fichiers non obligatoires pour le fonctionnement de PreviSat
-        _listeFicLocalData << "ISS.OEM_J2K_EPH.xml" << "radio.xml";
+        _listeFicLocalData << _nomFichierEvenementsStationSpatiale << "radio.xml";
 
     } catch (Exception const &e) {
         throw Exception();
