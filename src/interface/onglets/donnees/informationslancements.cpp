@@ -30,10 +30,11 @@
  * >    5 septembre 2024
  *
  * Date de revision
- * >
+ * >    3 janvier 2025
  *
  */
 
+#include <QMessageBox>
 #include "configuration/configuration.h"
 #include "configuration/lancements.h"
 #include "informationslancements.h"
@@ -140,6 +141,7 @@ void InformationsLancements::show()
 
         // Lancement
         itemLancement = new QTableWidgetItem(calendrier.lancement);
+        itemLancement->setToolTip(calendrier.lancement);
         itemLancement->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         itemLancement->setFlags(itemLancement->flags() & ~Qt::ItemIsEditable);
         _ui->lancements->setItem(j, 2, itemLancement);
@@ -158,7 +160,6 @@ void InformationsLancements::show()
         itemDetails->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         itemDetails->setFlags(itemDetails->flags() & ~Qt::ItemIsEditable);
         _ui->lancements->setItem(j, 4, itemDetails);
-        _ui->lancements->resizeColumnsToContents();
 
         j++;
     }
@@ -208,3 +209,22 @@ void InformationsLancements::on_majLancements_clicked()
     return;
 }
 
+void InformationsLancements::on_lancements_cellDoubleClicked(int row, int column)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (column > 1) {
+
+        QMessageBox msg;
+        msg.setText(_ui->lancements->item(row, column)->toolTip());
+        msg.setWindowTitle(_ui->lancements->horizontalHeaderItem(column)->text());
+        msg.setStandardButtons(QMessageBox::Ok);
+        msg.exec();
+    }
+
+    /* Retour */
+    return;
+}

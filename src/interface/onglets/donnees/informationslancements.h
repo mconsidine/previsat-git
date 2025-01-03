@@ -121,6 +121,7 @@ private:
 private slots:
 
     void on_majLancements_clicked();
+    void on_lancements_cellDoubleClicked(int row, int column);
 
 };
 

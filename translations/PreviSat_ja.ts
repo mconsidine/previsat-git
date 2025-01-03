@@ -3082,18 +3082,18 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>打ち上げの情報を更新する...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="105"/>
+        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="106"/>
         <source>Survolez les éléments du tableau pour afficher plus d&apos;informations</source>
         <translation>表の要素にマウスオーバーすると詳細情報が表示されます</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="197"/>
+        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="198"/>
         <source>Téléchargement du fichier de lancements...</source>
         <translatorcomment>Changer pour une forme en desu ou laisser tel quel ?</translatorcomment>
         <translation>打ち上げファイルのダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="199"/>
+        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="200"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
     </message>

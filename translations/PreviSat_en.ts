@@ -3080,17 +3080,17 @@ click on &apos;Update ISS information&apos;</translation>
         <translation>Update launch information...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="105"/>
+        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="106"/>
         <source>Survolez les éléments du tableau pour afficher plus d&apos;informations</source>
         <translation>Hover over table items to view more information</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="197"/>
+        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="198"/>
         <source>Téléchargement du fichier de lancements...</source>
         <translation>Downloading launch information file...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="199"/>
+        <location filename="../src/interface/onglets/donnees/informationslancements.cpp" line="200"/>
         <source>Téléchargement terminé</source>
         <translation>Downloading finished</translation>
     </message>
