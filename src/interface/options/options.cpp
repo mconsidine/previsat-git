@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    26 decembre 2024
+ * >    2 janvier 2025
  *
  */
 
@@ -1085,14 +1085,14 @@ void Options::RenommerCategorie()
 
     if (ret != 0) {
 
-        const QString nvNomCategorie = input.textValue();
+        const QString nvNomCategorie = input.textValue().trimmed().toLower();
 
-        if (!nvNomCategorie.trimmed().isEmpty()) {
+        if (!nvNomCategorie.isEmpty()) {
 
             bool ok = true;
-            QFile fi(Configuration::instance()->dirCoord() + QDir::separator() + _ui->categoriesObs->currentItem()->text().toLower());
 
-            if (fi.exists()) {
+            QFile fi1(Configuration::instance()->dirCoord() + QDir::separator() + nvNomCategorie + ".xml");
+            if (fi1.exists()) {
 
                 QMessageBox msgbox(QMessageBox::Question, tr("Information"), tr("La catégorie existe déjà. Voulez-vous l'écraser ?"));
                 const QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
@@ -1107,7 +1107,14 @@ void Options::RenommerCategorie()
             }
 
             if (ok) {
-                fi.rename(Configuration::instance()->dirCoord() + QDir::separator() + nvNomCategorie.trimmed().toLower());
+
+                QFile fi2(Configuration::instance()->dirCoord() + QDir::separator() + _ui->categoriesObs->currentItem()->text().toLower() + ".xml");
+                if (fi2.exists()) {
+                    fi2.remove();
+                }
+
+                fi2.rename(fi1.fileName());
+                Configuration::instance()->InitListeFichiersObs();
                 InitFicObs();
             }
         }
@@ -1123,7 +1130,7 @@ void Options::SupprimerCategorie()
 
     /* Initialisations */
     const QString categorie = _ui->categoriesObs->currentItem()->text();
-    const QString fic = categorie.toLower();
+    const QString fic = categorie.toLower() + ".xml";
 
     /* Corps de la methode */
     QMessageBox msgbox(QMessageBox::Question, tr("Information"), tr("Voulez-vous vraiment supprimer la catégorie <b>%1</b> ?").arg(categorie));
@@ -1138,6 +1145,8 @@ void Options::SupprimerCategorie()
         fi.remove();
 
         _ui->lieuxObs->clear();
+
+        Configuration::instance()->InitListeFichiersObs();
         InitFicObs();
 
         _ui->categoriesObs->setCurrentRow(0);
@@ -1488,19 +1497,27 @@ void Options::on_validerCategorie_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    QString categorie = _ui->nvCategorie->text().trimmed();
 
     /* Corps de la methode */
-    if (_ui->nvCategorie->text().trimmed().isEmpty()) {
+    if (categorie.isEmpty()) {
         Message::Afficher(tr("Le nom de la catégorie n'est pas spécifié"), MessageType::WARNING);
     } else {
 
-        if (_ui->categoriesObs->findItems(_ui->nvCategorie->text(), Qt::MatchContains).isEmpty()) {
+        if (!categorie.endsWith(".xml")) {
+            categorie += ".xml";
+        }
 
-            QFile fi(Configuration::instance()->dirCoord() + QDir::separator() + _ui->nvCategorie->text().toLower());
+        if (_ui->categoriesObs->findItems(categorie, Qt::MatchContains).isEmpty()) {
+
+            QFile fi(Configuration::instance()->dirCoord() + QDir::separator() + categorie.toLower());
             if (fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
                 fi.write("");
             }
+
             fi.close();
+
+            Configuration::instance()->InitListeFichiersObs();
 
             InitFicObs();
 

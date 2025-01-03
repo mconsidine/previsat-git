@@ -357,6 +357,24 @@ void Configuration::InitListeFichiersElem()
 }
 
 /*
+ * Initialisation de la liste de fichiers de lieux d'observation
+ */
+void Configuration::InitListeFichiersObs()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    const QDir di(_dirCoord);
+    const QStringList filtres(QStringList () << "*.xml");
+    _listeFicObs = di.entryList(filtres, QDir::Files);
+
+    /* Retour */
+    return;
+}
+
+/*
  * Verification de la date d'expiration d'une fonctionnalite
  */
 bool Configuration::VerifieDateExpiration(const QString &fonction)
@@ -948,24 +966,6 @@ void Configuration::InitListeFichiersMap()
     const QDir di(_dirMap);
     const QStringList filtres(QStringList () << "*.bmp" << "*.jpg" << "*.jpeg" << "*.png");
     _listeFicMap = di.entryList(filtres, QDir::Files);
-
-    /* Retour */
-    return;
-}
-
-/*
- * Initialisation de la liste de fichiers de lieux d'observation
- */
-void Configuration::InitListeFichiersObs()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    const QDir di(_dirCoord);
-    const QStringList filtres(QStringList () << "*.xml");
-    _listeFicObs = di.entryList(filtres, QDir::Files);
 
     /* Retour */
     return;

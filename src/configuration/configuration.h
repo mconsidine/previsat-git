@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    22 juillet 2024
+ * >    2 janvier 2025
  *
  */
 
@@ -121,6 +121,11 @@ public:
      * @brief InitListeFichiersElem Initialisation de la liste de fichiers d'elements orbitaux
      */
     void InitListeFichiersElem();
+
+    /**
+     * @brief InitListeFichiersObs Initialisation de la liste de fichiers de lieux d'observation
+     */
+    void InitListeFichiersObs();
 
     /**
      * @brief VerifieDateExpiration Verification de la date d'expiration d'une fonctionnalite
@@ -481,11 +486,6 @@ private:
      * @brief InitListeFichiersMap Initialisation de la liste de fichiers de cartes du monde
      */
     void InitListeFichiersMap();
-
-    /**
-     * @brief InitListeFichiersObs Initialisation de la liste de fichiers de lieux d'observation
-     */
-    void InitListeFichiersObs();
 
     /**
      * @brief InitListeFichiersPref Initialisation de la liste de fichiers de preferences
