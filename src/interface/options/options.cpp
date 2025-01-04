@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    2 janvier 2025
+ * >    4 janvier 2025
  *
  */
 
@@ -1405,6 +1405,7 @@ void Options::closeEvent(QCloseEvent *evt)
 
     /* Initialisations */
     Q_UNUSED(evt)
+    hide();
 
     /* Corps de la methode */
     AppliquerPreferences();
