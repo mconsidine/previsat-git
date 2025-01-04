@@ -121,9 +121,6 @@
      <property name="horizontalScrollBarPolicy">
       <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
      </property>
-     <property name="dragDropMode">
-      <enum>QAbstractItemView::DragDropMode::DropOnly</enum>
-     </property>
     </widget>
     <widget class="QToolButton" name="supprLieu">
      <property name="geometry">
@@ -141,6 +138,9 @@
      </property>
      <property name="mouseTracking">
       <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>Enlever le lieu de la sélection</string>
      </property>
      <property name="autoRaise">
       <bool>true</bool>
@@ -666,9 +666,6 @@
      <property name="dragEnabled">
       <bool>true</bool>
      </property>
-     <property name="dragDropMode">
-      <enum>QAbstractItemView::DragDropMode::DragOnly</enum>
-     </property>
      <property name="selectionBehavior">
       <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
      </property>
@@ -689,6 +686,9 @@
      </property>
      <property name="mouseTracking">
       <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>Ajouter le lieu dans la sélection</string>
      </property>
      <property name="autoRaise">
       <bool>true</bool>

@@ -36,7 +36,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    26 decembre 2024
+ * >    4 janvier 2025
  *
  */
 
@@ -145,11 +145,18 @@ private:
     QAction *_telechargerCategorie;
 
     // Elements du menu contextuel des lieux d'observations
+    QAction *_ajouterLieu;
     QAction *_creerLieu;
     QAction *_ajouterLieuMesPreferes;
     QAction *_renommerLieu;
     QAction *_modifierLieu;
     QAction *_supprimerLieu;
+
+    // Elements du menu contextuel des lieux selectionnes
+    QAction *_deselectionnerObs;
+    QAction *_renommerObs;
+    QAction *_modifierObs;
+    bool _isObs;
 
     // Validateurs des coordonnees geographiques
     QRegularExpressionValidator *_validateurLongitudeDegre;
@@ -267,6 +274,10 @@ private slots:
     void RecupereCoordonneesMaps();
     void SupprimerLieu();
 
+    // Gestion des lieux selectionnes
+    void RenommerObs();
+    void ModifierObs();
+
     void closeEvent(QCloseEvent *evt);
     void on_listeOptions_currentRowChanged(int currentRow);
     void on_listeBoutonsOptions_accepted();
@@ -281,8 +292,11 @@ private slots:
     void on_filtreLieuxObs_textChanged(const QString &arg1);
     void on_lieuxObs_currentRowChanged(int currentRow);
     void on_lieuxObs_customContextMenuRequested(const QPoint &pos);
+    void on_lieuxObs_itemDoubleClicked(QListWidgetItem *item);
     void on_filtreSelecLieux_textChanged(const QString &arg1);
     void on_selecLieux_currentRowChanged(int currentRow);
+    void on_selecLieux_customContextMenuRequested(const QPoint &pos);
+    void on_selecLieux_itemDoubleClicked(QListWidgetItem *item);
     void on_creationLieu_clicked();
     void on_ouvrirMaps_clicked();
     void on_decimal_toggled(bool checked);

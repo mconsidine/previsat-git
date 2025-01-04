@@ -89,11 +89,16 @@ Options::Options(QWidget *parent) :
         _supprimerCategorie = nullptr;
         _telechargerCategorie = nullptr;
 
+        _ajouterLieu = nullptr;
         _creerLieu = nullptr;
         _ajouterLieuMesPreferes = nullptr;
         _renommerLieu = nullptr;
         _modifierLieu = nullptr;
         _supprimerLieu = nullptr;
+
+        _deselectionnerObs = nullptr;
+        _renommerObs = nullptr;
+        _modifierObs = nullptr;
 
         _ui->configuration->setCurrentIndex(0);
         _ui->listeOptions->setCurrentRow(0);
@@ -126,11 +131,16 @@ Options::~Options()
     EFFACE_OBJET(_supprimerCategorie);
     EFFACE_OBJET(_telechargerCategorie);
 
+    EFFACE_OBJET(_ajouterLieu);
     EFFACE_OBJET(_creerLieu);
     EFFACE_OBJET(_ajouterLieuMesPreferes);
     EFFACE_OBJET(_renommerLieu);
     EFFACE_OBJET(_modifierLieu);
     EFFACE_OBJET(_supprimerLieu);
+
+    EFFACE_OBJET(_deselectionnerObs);
+    EFFACE_OBJET(_renommerObs);
+    EFFACE_OBJET(_modifierObs);
 
     EFFACE_OBJET(_validateurLongitudeDegre);
     EFFACE_OBJET(_validateurLongitudeDecimal);
@@ -630,13 +640,19 @@ void Options::CreerMenus()
     EFFACE_OBJET(_supprimerCategorie);
     EFFACE_OBJET(_telechargerCategorie);
 
+    EFFACE_OBJET(_ajouterLieu);
     EFFACE_OBJET(_creerLieu);
     EFFACE_OBJET(_ajouterLieuMesPreferes);
     EFFACE_OBJET(_renommerLieu);
     EFFACE_OBJET(_modifierLieu);
     EFFACE_OBJET(_supprimerLieu);
 
+    EFFACE_OBJET(_deselectionnerObs);
+    EFFACE_OBJET(_renommerObs);
+    EFFACE_OBJET(_modifierObs);
+
     /* Corps de la methode */
+    // Categories
     _creerCategorie = new QAction(tr("Créer une catégorie"), this);
     _creerCategorie->setIcon(QIcon(":/resources/interface/ajout.png"));
     connect(_creerCategorie, &QAction::triggered, this, &Options::CreerCategorie);
@@ -651,6 +667,13 @@ void Options::CreerMenus()
     _telechargerCategorie = new QAction(tr("Télécharger..."), this);
     connect(_telechargerCategorie, &QAction::triggered, this, &Options::TelechargerCategorie);
 
+
+    // Lieux d'observation
+    QFont font;
+    font.setBold(true);
+    _ajouterLieu = new QAction(tr("Ajouter le lieu dans la sélection"), this);
+    _ajouterLieu->setFont(font);
+    connect(_ajouterLieu, &QAction::triggered, this, &Options::on_ajoutLieu_clicked);
 
     _creerLieu = new QAction(tr("Créer un nouveau lieu"), this);
     _creerLieu->setIcon(QIcon(":/resources/interface/ajout.png"));
@@ -670,6 +693,19 @@ void Options::CreerMenus()
     _supprimerLieu = new QAction(tr("Supprimer"), this);
     _supprimerLieu->setIcon(QIcon(":/resources/interface/suppr.png"));
     connect(_supprimerLieu, &QAction::triggered, this, &Options::SupprimerLieu);
+
+
+    // Lieux selectionnes
+    _deselectionnerObs = new QAction(tr("Enlever le lieu de la sélection"), this);
+    _deselectionnerObs->setFont(font);
+    connect(_deselectionnerObs, &QAction::triggered, this, &Options::on_supprLieu_clicked);
+
+    _renommerObs = new QAction(tr("Renommer"), this);
+    connect(_renommerObs, &QAction::triggered, this, &Options::RenommerObs);
+
+    _modifierObs = new QAction(tr("Modifier"), this);
+    _modifierObs->setIcon(QIcon(":/resources/interface/editer.png"));
+    connect(_modifierObs, &QAction::triggered, this, &Options::ModifierObs);
 
     /* Retour */
     return;
@@ -1173,6 +1209,7 @@ void Options::CreerLieu()
     /* Corps de la methode */
     _ui->outilsLieuxObservation->setCurrentWidget(_ui->nouveauLieu);
     _ui->outilsLieuxObservation->setVisible(true);
+    _ui->ouvrirMaps->setVisible(true);
 
     _ui->nomlieu->setText("");
     _ui->nomlieu->setReadOnly(false);
@@ -1283,6 +1320,7 @@ void Options::ModifierLieu()
     /* Corps de la methode */
     _ui->outilsLieuxObservation->setCurrentWidget(_ui->nouveauLieu);
     _ui->outilsLieuxObservation->setVisible(true);
+    _ui->ouvrirMaps->setVisible(false);
     _ui->lbl_ajouterDans->setVisible(false);
     _ui->ajdfic->setVisible(false);
 
@@ -1290,6 +1328,7 @@ void Options::ModifierLieu()
 
     try {
 
+        _isObs = false;
         Configuration::instance()->mapObs() = FichierObs::Lecture(_ui->categoriesObs->currentItem()->data(Qt::UserRole).toString(), false);
         const Observateur obs = Configuration::instance()->mapObs().value(_ui->lieuxObs->currentItem()->text());
 
@@ -1300,7 +1339,7 @@ void Options::ModifierLieu()
         _ui->longitude->setPalette(QPalette());
         _ui->choixLongitude->setCurrentIndex((obs.longitude() <= 0.) ? 0 : 1);
 
-        _ui->latitude->setText(Maths::ToSexagesimal(fabs(obs.latitude()), AngleFormatType::DEGRE, 2, 0,false, true));
+        _ui->latitude->setText(Maths::ToSexagesimal(fabs(obs.latitude()), AngleFormatType::DEGRE, 2, 0, false, true));
         _ui->latitude->setPalette(QPalette());
         _ui->choixLatitude->setCurrentIndex((obs.latitude() >= 0.) ? 0 : 1);
 
@@ -1391,6 +1430,114 @@ void Options::SupprimerLieu()
 
             on_categoriesObs_currentRowChanged(_ui->categoriesObs->currentRow());
         }
+
+    } catch (Exception const &e) {
+    }
+
+    /* Retour */
+    return;
+}
+
+void Options::RenommerObs()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    QInputDialog input(this, Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+    input.setWindowTitle(tr("Lieu d'observation"));
+    input.setLabelText(tr("Nouveau nom du lieu d'observation :"));
+    input.setTextValue(_ui->selecLieux->currentItem()->text());
+    input.setTextEchoMode(QLineEdit::Normal);
+    input.setOkButtonText(tr("OK"));
+    input.setCancelButtonText(tr("Annuler"));
+
+    const int ret = input.exec();
+
+    if (ret != 0) {
+
+        const QString nvNomLieu = input.textValue().trimmed();
+
+        if (!nvNomLieu.isEmpty()) {
+
+            unsigned int i = 0;
+            QListIterator it(Configuration::instance()->observateurs());
+            while (it.hasNext()) {
+
+                if (it.next().nomlieu() == _ui->selecLieux->currentItem()->text()) {
+                    it.toBack();
+                }
+
+                i++;
+            }
+
+            Observateur &obs = Configuration::instance()->observateurs()[--i];
+            obs = Observateur(nvNomLieu, obs.longitude() * MATHS::RAD2DEG, obs.latitude() * MATHS::RAD2DEG, 1.e3 * obs.altitude());
+
+            Configuration::instance()->EcritureConfiguration();
+
+            AffichageLieuObs();
+            _ui->lieuxObs->setFocus();
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
+void Options::ModifierObs()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    _ui->outilsLieuxObservation->setCurrentWidget(_ui->nouveauLieu);
+    _ui->outilsLieuxObservation->setVisible(true);
+    _ui->ouvrirMaps->setVisible(false);
+    _ui->lbl_ajouterDans->setVisible(false);
+    _ui->ajdfic->setVisible(false);
+
+    _ui->altitude->setInputMask((_ui->unitesKm->isChecked()) ? "#### " + tr("m", "meter") : "##### " + tr("ft", "foot"));
+
+    try {
+
+        unsigned int i = 0;
+        QListIterator it(Configuration::instance()->observateurs());
+        while (it.hasNext()) {
+
+            if (it.next().nomlieu() == _ui->selecLieux->currentItem()->text()) {
+                it.toBack();
+            }
+
+            i++;
+        }
+
+        _isObs = true;
+        Observateur &obs = Configuration::instance()->observateurs()[--i];
+
+        _ui->nomlieu->setText(obs.nomlieu().trimmed());
+        _ui->nomlieu->setReadOnly(true);
+
+        _ui->longitude->setText(Maths::ToSexagesimal(fabs(obs.longitude()), AngleFormatType::DEGRE, 3, 0, false, true));
+        _ui->longitude->setPalette(QPalette());
+        _ui->choixLongitude->setCurrentIndex((obs.longitude() <= 0.) ? 0 : 1);
+
+        _ui->latitude->setText(Maths::ToSexagesimal(fabs(obs.latitude()), AngleFormatType::DEGRE, 2, 0, false, true));
+        _ui->latitude->setPalette(QPalette());
+        _ui->choixLatitude->setCurrentIndex((obs.latitude() >= 0.) ? 0 : 1);
+
+        const QString alt = "%1";
+        const int atd = static_cast<int> (qRound(obs.altitude() * 1.e3));
+        if (_ui->unitesKm->isChecked()) {
+            _ui->altitude->setText(alt.arg(atd, 4, 10, QChar('0')));
+        } else {
+            _ui->altitude->setText(alt.arg(qRound(atd * TERRE::PIED_PAR_METRE + 0.5 * sgn(atd)), 5, 10, QChar('0')));
+        }
+
+        _ui->altitude->setPalette(QPalette());
+        _ui->nomlieu->setFocus();
 
     } catch (Exception const &e) {
     }
@@ -1578,6 +1725,10 @@ void Options::on_lieuxObs_customContextMenuRequested(const QPoint &pos)
 
     /* Corps de la methode */
     QMenu menu(this);
+    if (item != nullptr) {
+        menu.addAction(_ajouterLieu);
+    }
+
     menu.addAction(_creerLieu);
 
     if (_ui->categoriesObs->currentItem()->data(Qt::UserRole).toString() != "preferes.xml") {
@@ -1594,6 +1745,13 @@ void Options::on_lieuxObs_customContextMenuRequested(const QPoint &pos)
 
     /* Retour */
     return;
+}
+
+void Options::on_lieuxObs_itemDoubleClicked(QListWidgetItem *item)
+{
+    if (!item->text().isEmpty()) {
+        on_ajoutLieu_clicked();
+    }
 }
 
 void Options::on_filtreSelecLieux_textChanged(const QString &arg1)
@@ -1620,6 +1778,34 @@ void Options::on_selecLieux_currentRowChanged(int currentRow)
 
     /* Retour */
     return;
+}
+
+void Options::on_selecLieux_customContextMenuRequested(const QPoint &pos)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QListWidgetItem const *item = _ui->selecLieux->itemAt(pos);
+
+    /* Corps de la methode */
+    QMenu menu(this);
+    if (item != nullptr) {
+        menu.addAction(_deselectionnerObs);
+        menu.addAction(_renommerObs);
+        menu.addAction(_modifierObs);
+    }
+
+    menu.exec(QCursor::pos());
+
+    /* Retour */
+    return;
+}
+
+void Options::on_selecLieux_itemDoubleClicked(QListWidgetItem *item)
+{
+    if (!item->text().isEmpty()) {
+        on_supprLieu_clicked();
+    }
 }
 
 void Options::on_creationLieu_clicked()
@@ -1698,7 +1884,7 @@ void Options::on_validerObs_clicked()
 
         nomlieu[0] = nomlieu.at(0).toUpper();
 
-        if (Configuration::instance()->mapObs().contains(nomlieu) && (_ui->ajdfic->isVisible())) {
+        if (!_isObs && Configuration::instance()->mapObs().contains(nomlieu) && (_ui->ajdfic->isVisible())) {
             throw Exception(tr("Le lieu existe déjà dans la catégorie <b>%1</b>").arg(_ui->ajdfic->currentText()), MessageType::WARNING);
         }
 
@@ -1723,11 +1909,35 @@ void Options::on_validerObs_clicked()
         const double longitude = ((_ui->choixLongitude->currentIndex() == 0) ? -1. : 1.) * (lo1 + lo2 * MATHS::DEG_PAR_ARCMIN + lo3 * MATHS::DEG_PAR_ARCSEC);
         const double latitude = ((_ui->choixLatitude->currentIndex() == 1) ? -1. : 1.) * (la1 + la2 * MATHS::DEG_PAR_ARCMIN + la3 * MATHS::DEG_PAR_ARCSEC);
 
-        const Observateur obs(nomlieu, longitude, latitude, atd);
-        Configuration::instance()->mapObs().insert(nomlieu, obs);
+        if (_isObs) {
 
-        FichierObs::Ecriture(fic);
-        InitFicObs();
+            unsigned int i = 0;
+            QListIterator it(Configuration::instance()->observateurs());
+            while (it.hasNext()) {
+
+                if (it.next().nomlieu() == _ui->selecLieux->currentItem()->text()) {
+                    it.toBack();
+                }
+
+                i++;
+            }
+
+            Observateur &obs = Configuration::instance()->observateurs()[--i];
+            obs = Observateur(nomlieu, longitude, latitude, atd);
+
+            Configuration::instance()->EcritureConfiguration();
+
+            AffichageLieuObs();
+            _ui->lieuxObs->setFocus();
+
+        } else {
+
+            const Observateur obs(nomlieu, longitude, latitude, atd);
+            Configuration::instance()->mapObs().insert(nomlieu, obs);
+
+            FichierObs::Ecriture(fic);
+            InitFicObs();
+        }
 
         on_categoriesObs_currentRowChanged(_ui->categoriesObs->currentRow());
         _ui->outilsLieuxObservation->setVisible(false);

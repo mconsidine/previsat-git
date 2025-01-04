@@ -3541,7 +3541,8 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="58"/>
-        <location filename="../src/interface/options/options.cpp" line="1242"/>
+        <location filename="../src/interface/options/options.cpp" line="1279"/>
+        <location filename="../src/interface/options/options.cpp" line="1449"/>
         <source>Lieu d&apos;observation</source>
         <translation>観測地</translation>
     </message>
@@ -3607,8 +3608,9 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="309"/>
         <location filename="../src/interface/options/options.ui" line="374"/>
-        <location filename="../src/interface/options/options.cpp" line="1082"/>
-        <location filename="../src/interface/options/options.cpp" line="1247"/>
+        <location filename="../src/interface/options/options.cpp" line="1118"/>
+        <location filename="../src/interface/options/options.cpp" line="1284"/>
+        <location filename="../src/interface/options/options.cpp" line="1454"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
@@ -3620,25 +3622,25 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="539"/>
-        <location filename="../src/interface/options/options.cpp" line="442"/>
+        <location filename="../src/interface/options/options.cpp" line="452"/>
         <source>Nord</source>
         <translation>北</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="544"/>
-        <location filename="../src/interface/options/options.cpp" line="442"/>
+        <location filename="../src/interface/options/options.cpp" line="452"/>
         <source>Sud</source>
         <translation>南</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="525"/>
-        <location filename="../src/interface/options/options.cpp" line="441"/>
+        <location filename="../src/interface/options/options.cpp" line="451"/>
         <source>Est</source>
         <translation>東</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="530"/>
-        <location filename="../src/interface/options/options.cpp" line="441"/>
+        <location filename="../src/interface/options/options.cpp" line="451"/>
         <source>Ouest</source>
         <translation>西</translation>
     </message>
@@ -3648,7 +3650,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>追加先 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="185"/>
+        <location filename="../src/interface/options/options.cpp" line="195"/>
         <source>Cliquer droit sur l&apos;endroit et sélectionner les coordonnées géographiques dans le menu contextuel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4109,201 +4111,219 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>ステーション :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="181"/>
-        <location filename="../src/interface/options/options.cpp" line="640"/>
+        <location filename="../src/interface/options/options.cpp" line="191"/>
+        <location filename="../src/interface/options/options.cpp" line="656"/>
         <source>Créer une catégorie</source>
         <translation>カテゴリーを作成する</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="183"/>
-        <location filename="../src/interface/options/options.cpp" line="655"/>
+        <location filename="../src/interface/options/options.cpp" line="193"/>
+        <location filename="../src/interface/options/options.cpp" line="678"/>
         <source>Créer un nouveau lieu</source>
         <translation>新しい観測地を作成する</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="198"/>
-        <location filename="../src/interface/options/options.cpp" line="449"/>
-        <location filename="../src/interface/options/options.cpp" line="1182"/>
-        <location filename="../src/interface/options/options.cpp" line="1289"/>
+        <location filename="../src/interface/options/options.cpp" line="208"/>
+        <location filename="../src/interface/options/options.cpp" line="459"/>
+        <location filename="../src/interface/options/options.cpp" line="1219"/>
+        <location filename="../src/interface/options/options.cpp" line="1327"/>
+        <location filename="../src/interface/options/options.cpp" line="1502"/>
         <source>m</source>
         <comment>meter</comment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="198"/>
-        <location filename="../src/interface/options/options.cpp" line="449"/>
-        <location filename="../src/interface/options/options.cpp" line="1182"/>
-        <location filename="../src/interface/options/options.cpp" line="1289"/>
+        <location filename="../src/interface/options/options.cpp" line="208"/>
+        <location filename="../src/interface/options/options.cpp" line="459"/>
+        <location filename="../src/interface/options/options.cpp" line="1219"/>
+        <location filename="../src/interface/options/options.cpp" line="1327"/>
+        <location filename="../src/interface/options/options.cpp" line="1502"/>
         <source>ft</source>
         <comment>foot</comment>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="202"/>
+        <location filename="../src/interface/options/options.cpp" line="212"/>
         <source>L&apos;altitude doit être comprise entre %1%2 et %3%2</source>
         <comment>Observer altitude</comment>
         <translation>高さは%1%2から%3%2の間でなければなりません</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="435"/>
+        <location filename="../src/interface/options/options.cpp" line="445"/>
         <source>Lieu : %1</source>
         <translation>場所 : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="644"/>
-        <location filename="../src/interface/options/options.cpp" line="663"/>
+        <location filename="../src/interface/options/options.cpp" line="660"/>
+        <location filename="../src/interface/options/options.cpp" line="686"/>
+        <location filename="../src/interface/options/options.cpp" line="703"/>
         <source>Renommer</source>
         <translation>名称変更</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="647"/>
-        <location filename="../src/interface/options/options.cpp" line="670"/>
+        <location filename="../src/interface/options/options.cpp" line="663"/>
+        <location filename="../src/interface/options/options.cpp" line="693"/>
         <source>Supprimer</source>
         <translation>削除する</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="651"/>
-        <location filename="../src/interface/options/options.cpp" line="771"/>
-        <location filename="../src/interface/options/options.cpp" line="878"/>
+        <location filename="../src/interface/options/options.cpp" line="667"/>
+        <location filename="../src/interface/options/options.cpp" line="807"/>
+        <location filename="../src/interface/options/options.cpp" line="914"/>
         <source>Télécharger...</source>
         <translation>ダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="659"/>
+        <location filename="../src/interface/options/options.ui" line="691"/>
+        <location filename="../src/interface/options/options.cpp" line="674"/>
+        <source>Ajouter le lieu dans la sélection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/options/options.cpp" line="682"/>
         <source>Ajouter à Mes Préférés</source>
         <translation>お気に入りに追加</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="666"/>
+        <location filename="../src/interface/options/options.cpp" line="689"/>
+        <location filename="../src/interface/options/options.cpp" line="706"/>
         <source>Modifier</source>
         <translation>編集する</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="733"/>
+        <location filename="../src/interface/options/options.ui" line="143"/>
+        <location filename="../src/interface/options/options.cpp" line="699"/>
+        <source>Enlever le lieu de la sélection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/interface/options/options.cpp" line="769"/>
         <source>Langue</source>
         <comment>Translate by the name of language, for example : English, Français, Español</comment>
         <translation>日本語</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="760"/>
-        <location filename="../src/interface/options/options.cpp" line="841"/>
-        <location filename="../src/interface/options/options.cpp" line="872"/>
+        <location filename="../src/interface/options/options.cpp" line="796"/>
+        <location filename="../src/interface/options/options.cpp" line="877"/>
+        <location filename="../src/interface/options/options.cpp" line="908"/>
         <source>* Défaut</source>
         <translation>* デフォルト</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="801"/>
+        <location filename="../src/interface/options/options.cpp" line="837"/>
         <source>Mes Préférés</source>
         <translation>お気に入り</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="847"/>
+        <location filename="../src/interface/options/options.cpp" line="883"/>
         <source>Enregistrer sous...</source>
         <translation>名前を付けて保存...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="848"/>
+        <location filename="../src/interface/options/options.cpp" line="884"/>
         <source>Supprimer...</source>
         <translation>削除する...</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="975"/>
+        <location filename="../src/interface/options/options.cpp" line="1011"/>
         <source>Problème de droits d&apos;écriture du fichier %1</source>
         <translation>ファイル「%1」の書き込み権限に問題があります</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1077"/>
+        <location filename="../src/interface/options/options.cpp" line="1113"/>
         <source>Catégorie</source>
         <translation>カテゴリー</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1078"/>
+        <location filename="../src/interface/options/options.cpp" line="1114"/>
         <source>Nouveau nom de la catégorie :</source>
         <translation>新しいカテゴリー名 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1081"/>
-        <location filename="../src/interface/options/options.cpp" line="1246"/>
+        <location filename="../src/interface/options/options.cpp" line="1117"/>
+        <location filename="../src/interface/options/options.cpp" line="1283"/>
+        <location filename="../src/interface/options/options.cpp" line="1453"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1097"/>
-        <location filename="../src/interface/options/options.cpp" line="1136"/>
+        <location filename="../src/interface/options/options.cpp" line="1133"/>
+        <location filename="../src/interface/options/options.cpp" line="1172"/>
         <source>Information</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1097"/>
+        <location filename="../src/interface/options/options.cpp" line="1133"/>
         <source>La catégorie existe déjà. Voulez-vous l&apos;écraser ?</source>
         <translation>このカテゴリーは既に存在します。置き換えますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1098"/>
-        <location filename="../src/interface/options/options.cpp" line="1137"/>
-        <location filename="../src/interface/options/options.cpp" line="1376"/>
+        <location filename="../src/interface/options/options.cpp" line="1134"/>
+        <location filename="../src/interface/options/options.cpp" line="1173"/>
+        <location filename="../src/interface/options/options.cpp" line="1415"/>
         <source>Oui</source>
         <translation>はい</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1099"/>
-        <location filename="../src/interface/options/options.cpp" line="1138"/>
-        <location filename="../src/interface/options/options.cpp" line="1377"/>
+        <location filename="../src/interface/options/options.cpp" line="1135"/>
+        <location filename="../src/interface/options/options.cpp" line="1174"/>
+        <location filename="../src/interface/options/options.cpp" line="1416"/>
         <source>Non</source>
         <translation>いいえ</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1136"/>
+        <location filename="../src/interface/options/options.cpp" line="1172"/>
         <source>Voulez-vous vraiment supprimer la catégorie &lt;b&gt;%1&lt;/b&gt; ?</source>
         <translation>カテゴリー&lt;b&gt;%1&lt;/b&gt;を本当に削除しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1214"/>
+        <location filename="../src/interface/options/options.cpp" line="1251"/>
         <source>Le lieu d&apos;observation &lt;b&gt;%1&lt;/b&gt; fait déjà partie de &lt;b&gt;Mes Préférés&lt;/b&gt;</source>
         <translation>観測地&lt;b&gt;%1&lt;/b&gt;は既に&lt;b&gt;お気に入り&lt;/b&gt;に存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1243"/>
+        <location filename="../src/interface/options/options.cpp" line="1280"/>
+        <location filename="../src/interface/options/options.cpp" line="1450"/>
         <source>Nouveau nom du lieu d&apos;observation :</source>
         <translation>新しい観測地の名前 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1373"/>
+        <location filename="../src/interface/options/options.cpp" line="1412"/>
         <source>Voulez-vous vraiment supprimer &lt;b&gt;%1&lt;/b&gt; de la catégorie &lt;b&gt;%2&lt;/b&gt; ?</source>
         <translation>&lt;b&gt;%1&lt;/b&gt;をカテゴリー&lt;b&gt;%2&lt;/b&gt;から本当に削除しますか ?</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1375"/>
+        <location filename="../src/interface/options/options.cpp" line="1414"/>
         <source>Avertissement</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1505"/>
+        <location filename="../src/interface/options/options.cpp" line="1652"/>
         <source>Le nom de la catégorie n&apos;est pas spécifié</source>
         <translation>カテゴリー名が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1532"/>
+        <location filename="../src/interface/options/options.cpp" line="1679"/>
         <source>La catégorie spécifiée existe déjà</source>
         <translation>指定されたカテゴリーは既に存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1692"/>
+        <location filename="../src/interface/options/options.cpp" line="1878"/>
         <source>Le nom du lieu d&apos;observation n&apos;est pas spécifié</source>
         <translation>観測地の名前が指定されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1702"/>
+        <location filename="../src/interface/options/options.cpp" line="1888"/>
         <source>Le lieu existe déjà dans la catégorie &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>この観測地は既にカテゴリー&lt;b&gt;%1&lt;/b&gt;に存在します</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1761"/>
+        <location filename="../src/interface/options/options.cpp" line="1971"/>
         <source>Lieu d&apos;observation déjà sélectionné</source>
         <translation>観測地はすでに選択されています</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.cpp" line="1875"/>
+        <location filename="../src/interface/options/options.cpp" line="2085"/>
         <source>UTC</source>
         <comment>Universal Time Coordinated</comment>
         <translation>UTC</translation>
