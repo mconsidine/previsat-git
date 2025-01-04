@@ -30,7 +30,7 @@
  * >    11 juillet 2024
  *
  * Date de revision
- * >
+ * >    4 janvier 2025
  *
  */
 
@@ -41,6 +41,14 @@
 #include "ui_informationsrentrees.h"
 #include "librairies/exceptions/exception.h"
 #include "librairies/systeme/telechargement.h"
+
+
+// Registre
+#if (PORTABLE_BUILD)
+static QSettings settings(QString("%1.ini").arg(APP_NAME), QSettings::IniFormat);
+#else
+static QSettings settings(ORG_NAME, APP_NAME);
+#endif
 
 
 /**********
@@ -59,15 +67,6 @@ InformationsRentrees::InformationsRentrees(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    _ui->rentrees->setStyleSheet("QHeaderView::section {" \
-                                 "background-color:rgb(235, 235, 235);" \
-                                 "border-top: 0px solid grey;" \
-                                 "border-bottom: 1px solid grey;" \
-                                 "border-right: 1px solid grey;" \
-                                 "font-size: 12px;" \
-                                 "font-weight: 600 }");
-
-    _ui->rentrees->horizontalHeader()->setStretchLastSection(true);
     _ui->rentrees->setToolTip(tr("Double-cliquez sur une ligne pour afficher les informations satellite"));
 
     _donneesSatellite = nullptr;
@@ -117,9 +116,20 @@ void InformationsRentrees::show()
     QTableWidgetItem * itemTypeMessage;
 
     /* Initialisations */
+    _ui->rentrees->setStyleSheet("QHeaderView::section {" \
+                                 "background-color:rgb(235, 235, 235);" \
+                                 "border-top: 0px solid grey;" \
+                                 "border-bottom: 1px solid grey;" \
+                                 "border-right: 1px solid grey;" \
+                                 "font-size: 12px;" \
+                                 "font-weight: 600 }");
+
+    _ui->rentrees->horizontalHeader()->setStretchLastSection(true);
+    _ui->rentrees->model()->removeRows(0, _ui->rentrees->rowCount());
+
     int j = 0;
     const QList<RentreesAtmospheriques> &rentrees = Configuration::instance()->rentreesAtmospheriques();
-    _ui->rentrees->model()->removeRows(0, _ui->rentrees->rowCount());
+    const QColor fond = (settings.value("affichage/modeSombre").toBool()) ? QColor::fromRgb(66, 66, 66) : QColor::fromRgb(240, 240, 240);
 
     /* Corps de la methode */
     QListIterator it(rentrees);
@@ -131,7 +141,7 @@ void InformationsRentrees::show()
         _ui->rentrees->insertRow(j);
         _ui->rentrees->setRowHeight(j, 16);
 
-        const QBrush couleur((rentree.dateRentree < QDateTime::currentDateTimeUtc()) ? QColor::fromRgb(240, 240, 240) : Qt::transparent);
+        const QBrush couleur((rentree.dateRentree < QDateTime::currentDateTimeUtc()) ? fond : Qt::transparent);
 
         // Nom
         itemNom = new QTableWidgetItem(rentree.nom);

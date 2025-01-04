@@ -3098,17 +3098,17 @@ click on &apos;Update ISS information&apos;</translation>
 <context>
     <name>InformationsRentrees</name>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="71"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="70"/>
         <source>Double-cliquez sur une ligne pour afficher les informations satellite</source>
         <translation>Double clic on a line to show satellite information</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="222"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="232"/>
         <source>Téléchargement du fichier de rentrées atmosphériques...</source>
         <translation>Downloading decay information file...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="224"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="234"/>
         <source>Téléchargement terminé</source>
         <translation>Downloading finished</translation>
     </message>
@@ -5598,46 +5598,46 @@ which represents approximately %2 pages.</translation>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3453"/>
+        <location filename="../src/interface/previsat.cpp" line="3454"/>
         <source>Commun</source>
         <comment>common orbital elements groups</comment>
         <translation>Common</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3458"/>
+        <location filename="../src/interface/previsat.cpp" line="3459"/>
         <source>Tous</source>
         <comment>all orbital elements groups</comment>
         <translation>All</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3556"/>
-        <location filename="../src/interface/previsat.cpp" line="3559"/>
+        <location filename="../src/interface/previsat.cpp" line="3557"/>
+        <location filename="../src/interface/previsat.cpp" line="3560"/>
         <source>Devise</source>
         <translation>Currency</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3557"/>
-        <location filename="../src/interface/previsat.cpp" line="3559"/>
+        <location filename="../src/interface/previsat.cpp" line="3558"/>
+        <location filename="../src/interface/previsat.cpp" line="3560"/>
         <source>Choisissez la devise :</source>
         <translation>Choose currency :</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3573"/>
+        <location filename="../src/interface/previsat.cpp" line="3574"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires</source>
         <translation>Be careful : it is possible to make a PayPal donation by means of Tipeee, but this will incur additional costs</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3640"/>
+        <location filename="../src/interface/previsat.cpp" line="3641"/>
         <source>Ouverture du fichier d&apos;éléments orbitaux %1 ...</source>
         <translation>Opening orbiral elements file %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3642"/>
+        <location filename="../src/interface/previsat.cpp" line="3643"/>
         <source>Fichier d&apos;éléments orbitaux de %1 satellites</source>
         <translation>Orbital elements file of %1 satellites</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3810"/>
+        <location filename="../src/interface/previsat.cpp" line="3811"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD number : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>

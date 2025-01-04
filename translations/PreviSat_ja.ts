@@ -3101,17 +3101,17 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
 <context>
     <name>InformationsRentrees</name>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="71"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="70"/>
         <source>Double-cliquez sur une ligne pour afficher les informations satellite</source>
         <translation>行をダブルクリックすると衛星情報が表示されます</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="222"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="232"/>
         <source>Téléchargement du fichier de rentrées atmosphériques...</source>
         <translation>大気圏再突入ファイルのダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="224"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="234"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
     </message>
@@ -5535,36 +5535,36 @@ ce qui représente environ %2 pages.</source>
         <translation>テキストファイル (*.txt);;すべてのファイル (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3453"/>
+        <location filename="../src/interface/previsat.cpp" line="3454"/>
         <source>Commun</source>
         <comment>common orbital elements groups</comment>
         <translation>一般的</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3458"/>
+        <location filename="../src/interface/previsat.cpp" line="3459"/>
         <source>Tous</source>
         <comment>all orbital elements groups</comment>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3556"/>
-        <location filename="../src/interface/previsat.cpp" line="3559"/>
+        <location filename="../src/interface/previsat.cpp" line="3557"/>
+        <location filename="../src/interface/previsat.cpp" line="3560"/>
         <source>Devise</source>
         <translation>通貨</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3557"/>
-        <location filename="../src/interface/previsat.cpp" line="3559"/>
+        <location filename="../src/interface/previsat.cpp" line="3558"/>
+        <location filename="../src/interface/previsat.cpp" line="3560"/>
         <source>Choisissez la devise :</source>
         <translation>通貨を選んでください ：</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3573"/>
+        <location filename="../src/interface/previsat.cpp" line="3574"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires</source>
         <translation>ご注意 : Tipeeeでペイパルのご寄付をすることは可能ですが、これには追加料金がかかります</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3640"/>
+        <location filename="../src/interface/previsat.cpp" line="3641"/>
         <source>Ouverture du fichier d&apos;éléments orbitaux %1 ...</source>
         <translation>軌道要素ファイル「%1」を読み込んでいます ...</translation>
     </message>
@@ -5656,12 +5656,12 @@ ce qui représente environ %2 pages.</source>
         <translation>表示する情報がありません</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3642"/>
+        <location filename="../src/interface/previsat.cpp" line="3643"/>
         <source>Fichier d&apos;éléments orbitaux de %1 satellites</source>
         <translation>%1基衛星の軌道要素が含まれているファイル</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3810"/>
+        <location filename="../src/interface/previsat.cpp" line="3811"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>

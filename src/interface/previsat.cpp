@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er janvier 2025
+ * >    4 janvier 2025
  *
  */
 
@@ -3366,6 +3366,7 @@ void PreviSat::on_actionMode_sombre_triggered()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    _onglets->ReinitFlags();
     settings.setValue("affichage/modeSombre", _ui->actionMode_sombre->isChecked());
     _options->ui()->modeSombre->setChecked(_ui->actionMode_sombre->isChecked());
 

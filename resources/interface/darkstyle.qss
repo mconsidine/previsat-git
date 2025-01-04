@@ -30,7 +30,7 @@
  * >    11 mars 2023
  *
  * Date de revision
- * >
+ * >    4 janvier 2025
  *
  */
  
@@ -54,7 +54,7 @@ QGroupBox
 QMenu
 {
   border: 0px;
-  background-color: none;
+  background-color: palette(window);
 }
 
 QMessageBox
