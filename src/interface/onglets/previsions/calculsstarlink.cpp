@@ -30,7 +30,7 @@
  * >    25 septembre 2023
  *
  * Date de revision
- * >    1er janvier 2025
+ * >    18 janvier 2025
  *
  */
 
@@ -510,16 +510,16 @@ void CalculsStarlink::on_calculs_clicked()
         qInfo() << "--";
         qInfo() << "Calcul des prévisions de passage des trains Starlink :";
 
-        qInfo() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo().noquote() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
         qInfo() << "Ecart UTC date1 =" << conditions.offset;
         qInfo() << "Pas de génération =" << conditions.pas;
 
-        qInfo() << QString("Lieu d'observation : %1 %2 %3")
-                       .arg(conditions.observateur.longitude() * MATHS::RAD2DEG, 0, 'f', 9)
-                       .arg(conditions.observateur.latitude() * MATHS::RAD2DEG, 0, 'f', 9)
-                       .arg(conditions.observateur.altitude() * 1.e3);
+        qInfo().noquote() << QString("Lieu d'observation : %1 %2 %3")
+                                 .arg(conditions.observateur.longitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                                 .arg(conditions.observateur.latitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                                 .arg(conditions.observateur.altitude() * 1.e3);
 
-        qInfo() << "Unité de longueur =" << conditions.unite;
+        qInfo().noquote() << "Unité de longueur =" << conditions.unite;
         qInfo() << "Conditions d'eclairement du satellite =" << conditions.eclipse;
         qInfo() << "Hauteur minimale du satellite =" << conditions.hauteur;
         qInfo() << "Hauteur maximale du Soleil = " << conditions.crepuscule;
@@ -527,7 +527,7 @@ void CalculsStarlink::on_calculs_clicked()
         qInfo() << "Prise en compte de la refraction atmospherique =" << conditions.refraction;
         qInfo() << "Prise en compte de l'effet des eclipses partielles sur la magnitude =" << conditions.effetEclipsePartielle;
         qInfo() << "Prise en compte des eclipses de Lune =" << conditions.calcEclipseLune;
-        qInfo() << "Groupe Starlink =" << _ui->groupe->currentText();
+        qInfo().noquote() << "Groupe Starlink =" << _ui->groupe->currentText();
 
         qInfo() << "--";
 
@@ -597,7 +597,7 @@ void CalculsStarlink::on_verifGpDisponibles_clicked()
     /* Initialisations */
 
     /* Corps de la methode */
-    emit AfficherMessageStatut(tr("Mise à jour des éléments orbitaux..."), 10);
+    emit AfficherMessageStatut(tr("Mise à jour des éléments orbitaux..."), -1);
     _ui->groupe->setEnabled(false);
     _ui->verifGpDisponibles->setEnabled(false);
     _ui->calculs->setEnabled(false);
