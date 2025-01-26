@@ -4,5 +4,5 @@ DEBUG   : logmessagetest.cpp                            : testLogMessage        
 DEBUG   : logmessagetest.cpp                            : testLogMessage                                : Message de debug 2
 WARNING : logmessagetest.cpp                            : testLogMessage                                : Message d'avertissement 1
 WARNING : logmessagetest.cpp                            : testLogMessage                                : Message d'avertissement 2
-ERREUR  : logmessagetest.cpp                            : testLogMessage                                : Message d'erreurs 1
+ERREUR  : logmessagetest.cpp                            : testLogMessage                                : "Message d'erreurs 1"
 ERREUR  : logmessagetest.cpp                            : testLogMessage                                : Message d'erreurs 2
