@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreviSatGestionElem version="1.0">
+<PreviSatGestionElem version="1.1">
     <Categories site="previsat.free.fr">
         <Categorie maj="0">
             <Langue lang="en">
@@ -12,9 +12,6 @@
                 <Nom>Common</Nom>
             </Langue>
             <Fichiers>
-                <Fichier>visible-spctrk.xml</Fichier>
-                <Fichier>human-spaceflight-spctrk.xml</Fichier>
-                <Fichier>special-interest-spctrk.xml</Fichier>
                 <Fichier>flares-spctrk.xml</Fichier>
             </Fichiers>
         </Categorie>
@@ -29,20 +26,13 @@
                 <Nom>All</Nom>
             </Langue>
             <Fichiers>
-                <Fichier>amateur-spctrk.xml</Fichier>
-                <Fichier>bright-geo-spctrk.xml</Fichier>
                 <Fichier>geo-spctrk.xml</Fichier>
                 <Fichier>heo-spctrk.xml</Fichier>
-                <Fichier>human-spaceflight-spctrk.xml</Fichier>
                 <Fichier>inmarsat-spctrk.xml</Fichier>
                 <Fichier>intelsat-spctrk.xml</Fichier>
                 <Fichier>leo-spctrk.xml</Fichier>
                 <Fichier>meo-spctrk.xml</Fichier>
                 <Fichier>flares-spctrk.xml</Fichier>
-                <Fichier>navigation-spctrk.xml</Fichier>
-                <Fichier>special-interest-spctrk.xml</Fichier>
-                <Fichier>visible-spctrk.xml</Fichier>
-                <Fichier>weather-spctrk.xml</Fichier>
             </Fichiers>
         </Categorie>
         <Categorie maj="0">
@@ -56,7 +46,6 @@
                 <Nom>Geo</Nom>
             </Langue>
             <Fichiers>
-                <Fichier>bright-geo-spctrk.xml</Fichier>
                 <Fichier>geo-spctrk.xml</Fichier>
             </Fichiers>
         </Categorie>
@@ -73,20 +62,6 @@
             <Fichiers>
                 <Fichier>inmarsat-spctrk.xml</Fichier>
                 <Fichier>intelsat-spctrk.xml</Fichier>
-            </Fichiers>
-        </Categorie>
-        <Categorie maj="0">
-            <Langue lang="en">
-                <Nom>Navigation</Nom>
-            </Langue>
-            <Langue lang="fr">
-                <Nom>Navigation</Nom>
-            </Langue>
-            <Langue lang="ja">
-                <Nom>Navigation</Nom>
-            </Langue>
-            <Fichiers>
-                <Fichier>navigation-spctrk.xml</Fichier>
             </Fichiers>
         </Categorie>
     </Categories>
