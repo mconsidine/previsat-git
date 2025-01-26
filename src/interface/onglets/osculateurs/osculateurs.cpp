@@ -198,7 +198,7 @@ void Osculateurs::SauveOngletElementsOsculateurs(const QString &fichier)
         QFile sw(fichier);
         if (!sw.open(QIODevice::WriteOnly | QIODevice::Text) || !sw.isWritable()) {
 
-            qWarning() << "Problème de droits d'écriture du fichier" << sw.fileName();
+            qWarning().noquote() << "Problème de droits d'écriture du fichier" << sw.fileName();
             throw Exception(tr("Problème de droits d'écriture du fichier %1").arg(sw.fileName()), MessageType::WARNING);
         }
 

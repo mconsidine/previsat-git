@@ -83,7 +83,7 @@ QDomDocument FichierXml::Ouverture(const bool alarme)
     if (!fi.exists() || (fi.size() == 0)) {
 
 #if (!BUILD_TEST)
-        qWarning() << QString("Le fichier %1 n'existe pas ou est vide").arg(_nomfic);
+        qWarning().noquote() << QString("Le fichier %1 n'existe pas ou est vide").arg(_nomfic);
 #endif
         if (alarme) {
             throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(_nomfic), MessageType::WARNING);
@@ -95,7 +95,7 @@ QDomDocument FichierXml::Ouverture(const bool alarme)
     if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
 #if (!BUILD_TEST)
-        qWarning() << QString("Erreur lors de l'ouverture du fichier %1").arg(_nomfic);
+        qWarning().noquote() << QString("Erreur lors de l'ouverture du fichier %1").arg(_nomfic);
 #endif
 #if (!COVERAGE_TEST)
         if (alarme) {
@@ -111,7 +111,7 @@ QDomDocument FichierXml::Ouverture(const bool alarme)
         fi.close();
 
 #if (!BUILD_TEST)
-        qWarning() << QString("Erreur lors du chargement du fichier %1").arg(_nomfic);
+        qWarning().noquote() << QString("Erreur lors du chargement du fichier %1").arg(_nomfic);
 #endif
         if (alarme) {
             throw Exception(QObject::tr("Erreur lors du chargement du fichier %1").arg(_nomfic), MessageType::WARNING);

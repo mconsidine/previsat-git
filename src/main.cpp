@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
                 }
 
             } else if (mem.error() != QSharedMemory::NoError) {
-                qWarning() << "Erreur lors de la verification d'instance unique :" << mem.errorString();
+                qWarning().noquote() << "Erreur lors de la verification d'instance unique :" << mem.errorString();
                 throw Exception(mem.errorString(), MessageType::WARNING);
             }
         }

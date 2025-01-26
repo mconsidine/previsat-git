@@ -67,7 +67,7 @@ void FichierObs::Ecriture(const QString &ficObsXml)
 
     if (!fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
         const QFileInfo ff(fi.fileName());
-        qWarning() << QString("Erreur lors de l'écriture du fichier %1").arg(ff.fileName());
+        qWarning().noquote() << QString("Erreur lors de l'écriture du fichier %1").arg(ff.fileName());
         throw Exception(QObject::tr("Erreur lors de l'écriture du fichier %1").arg(ff.fileName()), MessageType::WARNING);
     }
 
@@ -132,13 +132,12 @@ QMap<QString, Observateur> FichierObs::Lecture(const QString &ficObsXml,
             mapObs.insert(nom, obs);
         }
 
-        qInfo() << QString("Lecture fichier %1 OK").arg(fi.nomfic());
+        qInfo().noquote() << QString("Lecture fichier %1 OK").arg(fi.nomfic());
 
     } catch (Exception const &e) {
-        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic()).arg(APP_NAME);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic()).arg(APP_NAME);
         if (alarme) {
-            throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                                .arg(fi.nomfic()).arg(APP_NAME), MessageType::ERREUR);
+            throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic()).arg(APP_NAME), MessageType::ERREUR);
         }
     }
 

@@ -340,24 +340,24 @@ void PreviSat::ChargementGP()
                 // Cas d'un fichier au format GP
                 Configuration::instance()->mapElementsOrbitaux() = GPFormat::Lecture(nomfic, Configuration::instance()->dbSatellites());
 
-                qInfo() << QString("Lecture du fichier GP %1 OK (%2 satellites)").arg(ff.fileName())
-                               .arg(Configuration::instance()->mapElementsOrbitaux().size());
+                qInfo().noquote() << QString("Lecture du fichier GP %1 OK (%2 satellites)").arg(ff.fileName())
+                                         .arg(Configuration::instance()->mapElementsOrbitaux().size());
 
             } else {
 
                 // Cas d'un fichier au format TLE
-                qInfo() << "Vérification du fichier TLE" << ff.fileName();
+                qInfo().noquote() << "Vérification du fichier TLE" << ff.fileName();
 
                 if (TLE::VerifieFichier(nomfic, true) > 0) {
 
                     // Lecture du fichier TLE en entier
                     Configuration::instance()->mapElementsOrbitaux() = TLE::Lecture(nomfic, Configuration::instance()->dbSatellites());
 
-                    qInfo() << QString("Lecture du fichier TLE %1 OK (%2 satellites)").arg(ff.fileName())
-                                   .arg(Configuration::instance()->mapElementsOrbitaux().size());
+                    qInfo().noquote() << QString("Lecture du fichier TLE %1 OK (%2 satellites)").arg(ff.fileName())
+                                             .arg(Configuration::instance()->mapElementsOrbitaux().size());
 
                 } else {
-                    qWarning() << QString("Fichier TLE %1 KO").arg(ff.fileName());
+                    qWarning().noquote() << QString("Fichier TLE %1 KO").arg(ff.fileName());
                 }
             }
 
@@ -460,7 +460,6 @@ void PreviSat::DemarrageApplication()
         connect(_chronometre, SIGNAL(timeout()), this, SLOT(GestionTempsReel()));
 
         // Mode sombre
-        qInfo() << "Lancement du mode sombre";
         _ui->actionMode_sombre->setChecked(settings.value("affichage/modeSombre", false).toBool());
         on_actionMode_sombre_triggered();
     }
@@ -1216,8 +1215,8 @@ void PreviSat::Initialisation()
     try {
 
         // Affichage des informations generales dans le fichier de log
-        qInfo() << QString("%1 %2").arg(APP_NAME).arg(QString(VERSION));
-        qInfo() << QString("%1 %2 %3").arg(QSysInfo::productType()).arg(QSysInfo::productVersion()).arg(QSysInfo::currentCpuArchitecture());
+        qInfo().noquote() << QString("%1 %2").arg(APP_NAME).arg(QString(VERSION));
+        qInfo().noquote() << QString("%1 %2 %3").arg(QSysInfo::productType()).arg(QSysInfo::productVersion()).arg(QSysInfo::currentCpuArchitecture());
 
         setWindowTitle(QString("%1 %2").arg(APP_NAME).arg(VER_MAJ));
         restoreGeometry(settings.value("affichage/geometrie").toByteArray());
@@ -1427,7 +1426,7 @@ void PreviSat::InstallationTraduction(const QString &langue, QTranslator &traduc
     if (traduction.load(langue, Configuration::instance()->dirLang())) {
         qApp->installTranslator(&traduction);
     } else if (!langue.endsWith("_fr")) {
-        qWarning() << "Impossible de charger le fichier de traduction" << langue;
+        qWarning().noquote() << "Impossible de charger le fichier de traduction" << langue;
     }
 
     /* Retour */
@@ -2085,7 +2084,7 @@ void PreviSat::ChargementTraduction(const QString &langue)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    qInfo() << "Locale :" << langue;
+    qInfo().noquote() << "Locale :" << langue;
 
     /* Corps de la methode */
     InstallationTraduction(QString("%1_%2").arg(APP_NAME).arg(langue), _appTraduction);
@@ -3183,7 +3182,7 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
 
                 if (mapElements.isEmpty()) {
 
-                    qWarning() << QString("Le fichier GP %1 ne contient pas d'éléments orbitaux").arg(ff.fileName());
+                    qWarning().noquote() << QString("Le fichier GP %1 ne contient pas d'éléments orbitaux").arg(ff.fileName());
                     throw Exception(tr("Le fichier %1 ne contient pas d'éléments orbitaux").arg(ff.fileName()), MessageType::WARNING);
 
                 } else {
@@ -3200,13 +3199,13 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
                         // Le fichier contient des elements orbitaux, on le copie dans le repertoire d'elements orbitaux
                         if (fi.copy(Configuration::instance()->instance()->dirElem() + QDir::separator() + ff.fileName())) {
 
-                            qInfo() << "Import du fichier GP" << ff.fileName() << "OK";
+                            qInfo().noquote() << "Import du fichier GP" << ff.fileName() << "OK";
 
                             Configuration::instance()->InitListeFichiersElem();
                             InitFicGP();
 
                         } else {
-                            qWarning() << "Import du fichier GP" << ff.fileName() << "KO";
+                            qWarning().noquote() << "Import du fichier GP" << ff.fileName() << "KO";
                         }
                     }
                 }
@@ -3232,13 +3231,13 @@ void PreviSat::on_actionImporter_fichier_TLE_GP_triggered()
                         // Le fichier contient des elements orbitaux, on le copie dans le repertoire d'elements orbitaux
                         if (fi.copy(fo.fileName())) {
 
-                            qInfo() << "Import du fichier TLE" << ff.fileName() << "OK";
+                            qInfo().noquote() << "Import du fichier TLE" << ff.fileName() << "OK";
 
                             Configuration::instance()->InitListeFichiersElem();
                             InitFicGP();
 
                         } else {
-                            qWarning() << "Import du fichier TLE" << ff.fileName() << "KO";
+                            qWarning().noquote() << "Import du fichier TLE" << ff.fileName() << "KO";
                         }
                     }
                 }
@@ -3425,6 +3424,8 @@ void PreviSat::on_actionMode_sombre_triggered()
 
             fi.close();
 
+            qInfo() << "Mode sombre activé";
+
         } catch (Exception const &e) {
         }
 
@@ -3434,6 +3435,7 @@ void PreviSat::on_actionMode_sombre_triggered()
         qApp->setPalette(qApp->style()->standardPalette());
         qApp->setStyleSheet("QTabBar { qproperty-drawBase: 0; }" \
                             "QMenu { border: 0px; background-color: none; }");
+        qInfo() << "Mode sombre désactivé";
     }
 
     on_zoomCarte_clicked();
@@ -3864,7 +3866,7 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
         Configuration::instance()->AjoutSatelliteFichierElem(norad);
     }
 
-    qInfo() << "Numéro NORAD par défaut :" << norad;
+    qInfo().noquote() << "Numéro NORAD par défaut :" << norad;
 
     // On definit le satellite choisi comme satellite par defaut
     _ui->listeSatellites->currentItem()->setData(Qt::CheckStateRole, Qt::Checked);

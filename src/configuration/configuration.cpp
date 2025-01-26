@@ -164,18 +164,18 @@ void Configuration::Chargement()
         InitListeFichiersSon();
 
         // Ecriture d'informations dans le fichier de log
-        qInfo() << QString("Lieu d'observation : %1 %2 %3")
-                       .arg(_observateurs.first().longitude() * MATHS::RAD2DEG, 0, 'f', 9)
-                       .arg(_observateurs.first().latitude() * MATHS::RAD2DEG, 0, 'f', 9)
-                       .arg(_observateurs.first().altitude() * 1.e3);
+        qInfo().noquote() << QString("Lieu d'observation : %1 %2 %3")
+                                 .arg(_observateurs.first().longitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                                 .arg(_observateurs.first().latitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                                 .arg(_observateurs.first().altitude() * 1.e3);
 
-        qInfo() << "Nom du fichier d'éléments orbitaux :" << _nomfic;
-        qInfo() << "Numéro NORAD par défaut :" << _noradDefaut;
+        qInfo().noquote() << "Nom du fichier d'éléments orbitaux :" << _nomfic;
+        qInfo().noquote() << "Numéro NORAD par défaut :" << _noradDefaut;
 
         QListIterator it(_mapSatellitesFichierElem[_nomfic]);
         qInfo() << "Liste des numéros NORAD :";
         while (it.hasNext()) {
-            qInfo() << "     " << it.next();
+            qInfo().noquote() << "     " << it.next();
         }
 
         qInfo() << "Fin   Chargement Configuration";
@@ -204,7 +204,7 @@ void Configuration::EcritureConfiguration()
 
     if (!fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
         const QFileInfo ff(fi.fileName());
-        qWarning() << QString("Erreur lors de l'écriture du fichier %1").arg(ff.fileName());
+        qWarning().noquote() << QString("Erreur lors de l'écriture du fichier %1").arg(ff.fileName());
         throw Exception(QObject::tr("Erreur lors de l'écriture du fichier %1").arg(ff.fileName()), MessageType::WARNING);
     }
 
@@ -1102,15 +1102,15 @@ void Configuration::LectureConfiguration()
 
         if (_noradStationSpatiale.isEmpty() || _observateurs.isEmpty()) {
 
-            qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
             throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
                                 .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
         }
 
-        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+        qInfo().noquote() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
     } catch (Exception const &e) {
-        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
         throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
                             .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
     }
@@ -1132,7 +1132,7 @@ void Configuration::LectureChainesNasa()
 
     /* Corps de la methode */
     if (!fi.exists() || (fi.size() == 0)) {
-        qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME);
+        qCritical().noquote() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME);
         throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME), MessageType::ERREUR);
     }
 
@@ -1143,7 +1143,7 @@ void Configuration::LectureChainesNasa()
 
     if (_listeChainesNasa.isEmpty()) {
         const QFileInfo ff(fi.fileName());
-        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
         throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
                             .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
     }
@@ -1170,7 +1170,7 @@ void Configuration::OuvertureBaseDonneesSatellites()
     const QFileInfo ff(fi.fileName());
 
     if (!fi.exists() || (fi.size() == 0)) {
-        qCritical() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
+        qCritical().noquote() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
         throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME),
                         MessageType::ERREUR);
     }
@@ -1180,7 +1180,7 @@ void Configuration::OuvertureBaseDonneesSatellites()
     _dbSatellites.setDatabaseName(fichierDb);
 
     if (!_dbSatellites.open()) {
-        qCritical() << "Erreur lors de l'ouverture de la base de données satellites : " + _dbSatellites.lastError().text();
+        qCritical().noquote() << "Erreur lors de l'ouverture de la base de données satellites : " + _dbSatellites.lastError().text();
         throw Exception(QObject::tr("Erreur lors de l'ouverture de la base de données satellites, veuillez réinstaller %1").arg(APP_NAME),
                         MessageType::ERREUR);
     }
@@ -1274,11 +1274,9 @@ void Configuration::VerificationArborescences()
         foreach(const QString &dirDat, listeDirDat) {
             const QDir dir(dirDat);
             if (!dir.exists()) {
-                qCritical() << QString("Le répertoire %1 n'existe pas, veuillez réinstaller %2").arg(QDir::toNativeSeparators(dirDat))
-                                   .arg(APP_NAME);
+                qCritical().noquote() << QString("Le répertoire %1 n'existe pas, veuillez réinstaller %2").arg(QDir::toNativeSeparators(dirDat)).arg(APP_NAME);
                 throw Exception(
-                    QObject::tr("Le répertoire %1 n'existe pas, veuillez réinstaller %2").arg(QDir::toNativeSeparators(dirDat))
-                        .arg(APP_NAME), MessageType::ERREUR);
+                    QObject::tr("Le répertoire %1 n'existe pas, veuillez réinstaller %2").arg(QDir::toNativeSeparators(dirDat)).arg(APP_NAME), MessageType::ERREUR);
             }
         }
 
@@ -1357,16 +1355,14 @@ void Configuration::VerifieFichiersData(const QString &dirData, const QStringLis
 
         // Le fichier n'existe pas
         if (!fi.exists()) {
-            qCritical() << QString("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
-            throw Exception(QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2")
-                                .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            qCritical().noquote() << QString("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
+            throw Exception(QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
 
         // Le fichier est vide
         if (fi.size() == 0) {
-            qCritical() << QString("Le fichier %1 est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
-            throw Exception(QObject::tr("Le fichier %1 est vide, veuillez réinstaller %2")
-                                .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            qCritical().noquote() << QString("Le fichier %1 est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
+            throw Exception(QObject::tr("Le fichier %1 est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
         }
     }
 

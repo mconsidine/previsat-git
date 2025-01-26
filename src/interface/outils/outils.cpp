@@ -1108,7 +1108,7 @@ void Outils::on_importerTLE_clicked()
         // Ouverture du fichier d'elements orbitaux
         if (!fichier.isEmpty()) {
 
-            qInfo() << "Ouverture du fichier" << fichier;
+            qInfo().noquote() << "Ouverture du fichier" << fichier;
 
             QFileInfo ff(fichier);
             const int nbElem = TLE::VerifieFichier(fichier, true);
@@ -1129,14 +1129,14 @@ void Outils::on_importerTLE_clicked()
                     // Le fichier contient des elements orbitaux, on le copie dans le repertoire d'elements orbitaux
                     if (fi.copy(fo.fileName())) {
 
-                        qInfo() << "Import du fichier TLE" << ff.fileName() << "OK";
+                        qInfo().noquote() << "Import du fichier TLE" << ff.fileName() << "OK";
 
                         const QDir di(Configuration::instance()->dirElem());
                         const QStringList filtres(QStringList () << "*.txt" << "*.tle");
                         InitGestionnaireTLE(di.entryList(filtres, QDir::Files));
 
                     } else {
-                        qWarning() << "Import du fichier TLE" << ff.fileName() << "KO";
+                        qWarning().noquote() << "Import du fichier TLE" << ff.fileName() << "KO";
                     }
                 }
             }
@@ -1232,7 +1232,7 @@ void Outils::on_importerIcone_clicked()
 
         if (!fichier.isEmpty()) {
 
-            qInfo() << "Ouverture du fichier png" << fichier;
+            qInfo().noquote() << "Ouverture du fichier png" << fichier;
 
             const QString nomfic = QFileInfo(fichier).fileName();
 
@@ -1271,7 +1271,7 @@ void Outils::on_importerIcone_clicked()
                     // Sauvegarde de l'icone
                     if (fi.copy(fi2.fileName())) {
 
-                        qInfo() << "Import du fichier PNG" << nomFichierPng << "OK";
+                        qInfo().noquote() << "Import du fichier PNG" << nomFichierPng << "OK";
 
                         const QDir di(Configuration::instance()->dirRsc());
                         const QStringList filtres(QStringList () << "*.png");
@@ -1280,7 +1280,7 @@ void Outils::on_importerIcone_clicked()
                         emit AffichageCartesRadar();
 
                     } else {
-                        qWarning() << "Import du fichier PNG" << nomFichierPng << "KO";
+                        qWarning().noquote() << "Import du fichier PNG" << nomFichierPng << "KO";
                     }
                 }
             }

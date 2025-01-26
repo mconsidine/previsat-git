@@ -410,7 +410,7 @@ void CalculsPrevisions::on_calculsPrev_clicked()
         }
 
         if (conditions.listeSatellites.isEmpty()) {
-            qWarning() << "Aucun satellite n'est sélectionné dans la liste";
+            qWarning().noquote() << "Aucun satellite n'est sélectionné dans la liste";
             throw Exception(tr("Aucun satellite n'est sélectionné dans la liste"), MessageType::WARNING);
         }
 
@@ -497,19 +497,19 @@ void CalculsPrevisions::on_calculsPrev_clicked()
         // Ecriture des informations de prévisions dans le fichier de log
         qInfo() << "--";
         qInfo() << "Calcul des prévisions de passage :";
-        qInfo() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo().noquote() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
         qInfo() << "Ecart UTC date1 =" << offset1;
 
-        qInfo() << "Date de fin =" << date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo().noquote() << "Date de fin =" << date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
         qInfo() << "Ecart UTC date2 =" << offset2;
         qInfo() << "Pas de génération =" << conditions.pas;
 
-        qInfo() << QString("Lieu d'observation : %1 %2 %3")
-                   .arg(conditions.observateur.longitude() * MATHS::RAD2DEG, 0, 'f', 9)
-                   .arg(conditions.observateur.latitude() * MATHS::RAD2DEG, 0, 'f', 9)
-                   .arg(conditions.observateur.altitude() * 1.e3);
+        qInfo().noquote() << QString("Lieu d'observation : %1 %2 %3")
+                                 .arg(conditions.observateur.longitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                                 .arg(conditions.observateur.latitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                                 .arg(conditions.observateur.altitude() * 1.e3);
 
-        qInfo() << "Unité de longueur =" << conditions.unite;
+        qInfo().noquote() << "Unité de longueur =" << conditions.unite;
         qInfo() << "Conditions d'eclairement du satellite =" << conditions.eclipse;
         qInfo() << "Magnitude limite =" << conditions.magnitudeLimite;
         qInfo() << "Hauteur minimale du satellite =" << conditions.hauteur;
@@ -518,7 +518,7 @@ void CalculsPrevisions::on_calculsPrev_clicked()
         qInfo() << "Prise en compte de la refraction atmospherique =" << conditions.refraction;
         qInfo() << "Prise en compte de l'effet des eclipses partielles sur la magnitude =" << conditions.effetEclipsePartielle;
         qInfo() << "Prise en compte des eclipses de Lune =" << conditions.calcEclipseLune;
-        qInfo() << "Liste de numéros NORAD =" << conditions.tabElem.keys();
+        qInfo().noquote() << "Liste de numéros NORAD =" << conditions.tabElem.keys();
 
         qInfo() << "--";
 

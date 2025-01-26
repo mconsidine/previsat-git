@@ -184,10 +184,6 @@ void messageHandler(QtMsgType type,
         out << QString("%1 : %2 : ").arg(fic, -45).arg(nomFonction, -45);
     }
 
-    if (message.startsWith(R"(")") && message.endsWith(R"(")")) {
-        message.remove(0, 1).chop(1);
-    }
-
     out << message << Qt::endl;
     out.flush();
 

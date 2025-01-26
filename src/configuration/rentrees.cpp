@@ -94,10 +94,10 @@ QList<RentreesAtmospheriques> Rentrees::LectureFichierRentrees()
             }
         }
 
-        qInfo() << QString("Lecture fichier %1 OK").arg(fi.nomfic());
+        qInfo().noquote() << QString("Lecture fichier %1 OK").arg(fi.nomfic());
 
     } catch (Exception const &e) {
-        qWarning() << QString("Erreur lors de l'ouverture du fichier %1").arg(fi.nomfic());
+        qWarning().noquote() << QString("Erreur lors de l'ouverture du fichier %1").arg(fi.nomfic());
         throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(fi.nomfic()), MessageType::WARNING);
     }
 

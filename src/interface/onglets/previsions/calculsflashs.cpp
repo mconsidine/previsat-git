@@ -416,18 +416,18 @@ void CalculsFlashs::on_calculsFlashs_clicked()
         // Ecriture des informations de prévisions dans le fichier de log
         qInfo() << "--";
         qInfo() << "Calcul des flashs :";
-        qInfo() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo().noquote() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
         qInfo() << "Ecart UTC date1 =" << offset1;
 
-        qInfo() << "Date de fin =" << date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo().noquote() << "Date de fin =" << date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
         qInfo() << "Ecart UTC date2 =" << offset2;
 
-        qInfo() << QString("Lieu d'observation : %1 %2 %3")
-                   .arg(conditions.observateur.longitude() * MATHS::RAD2DEG, 0, 'f', 9)
-                   .arg(conditions.observateur.latitude() * MATHS::RAD2DEG, 0, 'f', 9)
-                   .arg(conditions.observateur.altitude() * 1.e3);
+        qInfo().noquote() << QString("Lieu d'observation : %1 %2 %3")
+                                 .arg(conditions.observateur.longitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                                 .arg(conditions.observateur.latitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                                 .arg(conditions.observateur.altitude() * 1.e3);
 
-        qInfo() << "Unité de longueur =" << conditions.unite;
+        qInfo().noquote() << "Unité de longueur =" << conditions.unite;
         qInfo() << "Magnitude limite =" << conditions.magnitudeLimite;
         qInfo() << "Angle limite =" << conditions.angleLimite;
         qInfo() << "Hauteur minimale du satellite =" << conditions.hauteur;
@@ -436,7 +436,7 @@ void CalculsFlashs::on_calculsFlashs_clicked()
         qInfo() << "Prise en compte de la refraction atmospherique =" << conditions.refraction;
         qInfo() << "Prise en compte de l'effet des eclipses partielles sur la magnitude =" << conditions.effetEclipsePartielle;
         qInfo() << "Prise en compte des eclipses de Lune =" << conditions.calcEclipseLune;
-        qInfo() << "Liste de numéros NORAD =" << conditions.listeSatellites;
+        qInfo().noquote() << "Liste de numéros NORAD =" << conditions.listeSatellites;
 
         qInfo() << "--";
 

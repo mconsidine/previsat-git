@@ -36,6 +36,7 @@
 
 #include <QMessageBox>
 #include <QPushButton>
+#include <QVersionNumber>
 #include "configuration.h"
 #include "gestionnairexml.h"
 #include "librairies/dates/date.h"
@@ -72,7 +73,7 @@ void GestionnaireXml::EcritureGestionnaireElementsOrbitaux()
 
     if (!fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
         const QFileInfo ff(fi.fileName());
-        qWarning() << QString("Erreur lors de l'écriture du fichier %1").arg(ff.fileName());
+        qWarning().noquote() << QString("Erreur lors de l'écriture du fichier %1").arg(ff.fileName());
         throw Exception(QObject::tr("Erreur lors de l'écriture du fichier %1").arg(ff.fileName()), MessageType::WARNING);
     }
 
@@ -135,7 +136,7 @@ void GestionnaireXml::EcriturePreLaunchStarlink()
 
     if (!fi1.open(QIODevice::WriteOnly | QIODevice::Text)) {
         const QFileInfo ff(fi1.fileName());
-        qWarning() << QString("Erreur lors de l'écriture du fichier %1").arg(ff.fileName());
+        qWarning().noquote() << QString("Erreur lors de l'écriture du fichier %1").arg(ff.fileName());
         throw Exception(QObject::tr("Erreur lors de l'écriture du fichier %1").arg(ff.fileName()), MessageType::WARNING);
     }
 
@@ -367,12 +368,11 @@ QMap<QString, QString> GestionnaireXml::LectureCategoriesOrbite()
             }
         }
 
-        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+        qInfo().noquote() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
     } catch (Exception const &e) {
-        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                            .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
     }
 
     /* Retour */
@@ -416,12 +416,11 @@ QMap<QString, QList<FrequenceRadio> > GestionnaireXml::LectureFrequencesRadio()
             }
         }
 
-        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+        qInfo().noquote() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
     } catch (Exception const &e) {
-        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                            .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
     }
 
     /* Retour */
@@ -474,12 +473,11 @@ GestionnaireXml::LectureGestionnaireElementsOrbitaux(QString &versionCategorieEl
             }
         }
 
-        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+        qInfo().noquote() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
     } catch (Exception const &e) {
-        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                            .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
     }
 
     /* Retour */
@@ -569,13 +567,12 @@ QMap<QString, QMap<QString, QString> > GestionnaireXml::LectureNomsConstellation
         }
 
 #if (!BUILD_TEST)
-        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+        qInfo().noquote() << QString("Lecture fichier %1 OK").arg(nomficXml);
 #endif
 
     } catch (Exception const &e) {
-        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                            .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
     }
 
     /* Retour */
@@ -622,12 +619,11 @@ QMap<QString, QString> GestionnaireXml::LecturePays()
             }
         }
 
-        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+        qInfo().noquote() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
     } catch (Exception const &e) {
-        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                            .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
     }
 
     /* Retour */
@@ -677,14 +673,13 @@ QMap<QString, SatellitesStarlink> GestionnaireXml::LecturePreLaunchStarlink()
                 }
             }
 
-            qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+            qInfo().noquote() << QString("Lecture fichier %1 OK").arg(nomficXml);
         }
 
     } catch (Exception const &e) {
         if (fi.exists()) {
-            qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-            throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                                .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+            qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+            throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
         }
     }
 
@@ -729,13 +724,12 @@ QMap<QString, SatellitesFlashs> GestionnaireXml::LectureSatellitesFlashs()
         }
 
 #if (!BUILD_TEST)
-        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+        qInfo().noquote() << QString("Lecture fichier %1 OK").arg(nomficXml);
 #endif
 
     } catch (Exception const &e) {
-        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                            .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
     }
 
     /* Retour */
@@ -829,12 +823,11 @@ QMap<int, SatelliteTDRS> GestionnaireXml::LectureSatellitesTDRS()
             }
         }
 
-        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+        qInfo().noquote() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
     } catch (Exception const &e) {
-        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                            .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
     }
 
     /* Retour */
@@ -883,12 +876,11 @@ QMap<QString, Observateur> GestionnaireXml::LectureSitesLancement()
             }
         }
 
-        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+        qInfo().noquote() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
     } catch (Exception const &e) {
-        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                            .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
     }
 
     /* Retour */
@@ -938,12 +930,11 @@ QMap<QString, Observateur> GestionnaireXml::LectureStations()
             }
         }
 
-        qInfo() << QString("Lecture fichier %1 OK").arg(nomficXml);
+        qInfo().noquote() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
     } catch (Exception const &e) {
-        qCritical() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                            .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
     }
 
     /* Retour */
@@ -1026,7 +1017,7 @@ QMap<QString, QDate> GestionnaireXml::LectureVerrous()
 
                 const QString fonction = elem.firstChildElement("Fonction").text();
                 const QDate dateExpiration = QDate::fromString(elem.firstChildElement("DateExpiration").text(), Qt::ISODate);
-                qInfo() << "Verrou" << fonction << dateExpiration.toString(Qt::ISODate);
+                qInfo().noquote() << "Verrou" << fonction << dateExpiration.toString(Qt::ISODate);
                 mapVerrous.insert(fonction, dateExpiration);
             }
         }
@@ -1083,7 +1074,7 @@ void GestionnaireXml::VerifieVersionXml(const QString &nomfic, const QString &ms
                     _observateurs = LectureLieuxObservation(obs);
 
                     if (!_observateurs.isEmpty()) {
-                        qInfo() << "Recuperation de" << _observateurs.size() << "lieux d'observation";
+                        qInfo().noquote() << "Recuperation de" << _observateurs.size() << "lieux d'observation";
                     }
                 }
 

@@ -77,7 +77,7 @@ QList<CalendrierLancements> Lancements::LectureCalendrierLancements()
         /* Corps de la methode */
         if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 #if (!COVERAGE_TEST)
-            qWarning() << QString("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName());
+            qWarning().noquote() << QString("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName());
             throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::WARNING);
 #endif
         }
@@ -115,7 +115,7 @@ QList<CalendrierLancements> Lancements::LectureCalendrierLancements()
             }
         }
 
-        qInfo() << QString("Lecture fichier %1 OK").arg(ff.fileName());
+        qInfo().noquote() << QString("Lecture fichier %1 OK").arg(ff.fileName());
     }
 
     /* Retour */

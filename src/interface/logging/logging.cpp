@@ -273,9 +273,9 @@ void Logging::on_listeBoutonsExporterLog_clicked(QAbstractButton *button)
 
                 // Sauvegarde du fichier log
                 if (fi.copy(ficlog)) {
-                    qInfo() << "Export du fichier" << fi.fileName() << "OK";
+                    qInfo().noquote() << "Export du fichier" << fi.fileName() << "OK";
                 } else {
-                    qWarning() << "Export du fichier" << fi.fileName() << "KO";
+                    qWarning().noquote() << "Export du fichier" << fi.fileName() << "KO";
                 }
             }
         }

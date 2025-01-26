@@ -685,16 +685,16 @@ void SuiviTelescope::on_genererPositions_clicked()
             // Ecriture des informations de prévisions dans le fichier de log
             qInfo() << "--";
             qInfo() << "Génération des positions pour le suivi avec in télescope :";
-            qInfo() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+            qInfo().noquote() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
             qInfo() << "Pas de génération =" << conditions.pas;
             qInfo() << "Nombre d'itérations =" << conditions.nbIter;
 
-            qInfo() << QString("Lieu d'observation : %1 %2 %3")
-                       .arg(conditions.observateur.longitude() * MATHS::RAD2DEG, 0, 'f', 9)
-                       .arg(conditions.observateur.latitude() * MATHS::RAD2DEG, 0, 'f', 9)
-                       .arg(conditions.observateur.altitude() * 1.e3);
+            qInfo().noquote() << QString("Lieu d'observation : %1 %2 %3")
+                                     .arg(conditions.observateur.longitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                                     .arg(conditions.observateur.latitude() * MATHS::RAD2DEG, 0, 'f', 9)
+                                     .arg(conditions.observateur.altitude() * 1.e3);
 
-            qInfo() << "Satellite sélectionné =" << conditions.tabElem.first().norad;
+            qInfo().noquote() << "Satellite sélectionné =" << conditions.tabElem.first().norad;
 
             qInfo() << "--";
 

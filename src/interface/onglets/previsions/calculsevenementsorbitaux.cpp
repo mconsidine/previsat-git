@@ -428,15 +428,15 @@ void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
 
         qInfo() << "--";
         qInfo() << "Calcul des évènements orbitaux :";
-        qInfo() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo().noquote() << "Date de début =" << date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
         qInfo() << "Ecart UTC date1 =" << offset1;
 
-        qInfo() << "Date de fin =" << date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
+        qInfo().noquote() << "Date de fin =" << date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).trimmed();
         qInfo() << "Ecart UTC date2 =" << offset2;
 
-        qInfo() << "Unité de longueur =" << conditions.unite;
+        qInfo().noquote() << "Unité de longueur =" << conditions.unite;
         qInfo() << "Prise en compte des eclipses de Lune =" << conditions.calcEclipseLune;
-        qInfo() << "Liste de numéros NORAD =" << conditions.tabElem.keys();
+        qInfo().noquote() << "Liste de numéros NORAD =" << conditions.tabElem.keys();
         qInfo() << "--";
 
         // Nom du fichier resultat

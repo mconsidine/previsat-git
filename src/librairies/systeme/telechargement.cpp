@@ -87,7 +87,7 @@ void Telechargement::TelechargementFichier(const QUrl &url,
     if (reponse->error()) {
 #if (!BUILD_TEST)
         if (logAlarme) {
-            qWarning() << "Erreur lors du téléchargement du fichier" << fic;
+            qWarning().noquote() << "Erreur lors du téléchargement du fichier" << fic;
         }
 #endif
         if (alarme) {
@@ -106,14 +106,14 @@ void Telechargement::TelechargementFichier(const QUrl &url,
             fi.close();
 
 #if (!BUILD_TEST)
-            qInfo () << "Téléchargement du fichier" << fic << "OK";
+            qInfo().noquote() << "Téléchargement du fichier" << fic << "OK";
 #endif
 
         } else {
 
 #if (!BUILD_TEST)
             if (logAlarme) {
-                qWarning() << QString("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn);
+                qWarning().noquote() << QString("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn);
             }
 
             if (alarme) {

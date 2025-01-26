@@ -155,7 +155,7 @@ QMap<QString, ElementsOrbitaux> TLE::Lecture(const QString &nomFichier,
 
         const QFileInfo ff(fi.fileName());
 #if (!BUILD_TEST)
-        qWarning() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
+        qWarning().noquote() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
 #endif
         throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
     }
@@ -163,7 +163,7 @@ QMap<QString, ElementsOrbitaux> TLE::Lecture(const QString &nomFichier,
     if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
         const QFileInfo ff(fi.fileName());
 #if (!BUILD_TEST)
-        qWarning() << QString("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName());
+        qWarning().noquote() << QString("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName());
 #endif
         throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::ERREUR);
     }
@@ -449,7 +449,7 @@ int TLE::VerifieFichier(const QString &nomFichier,
 
         const QFileInfo ff(fi.fileName());
 #if (!BUILD_TEST)
-        qWarning() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
+        qWarning().noquote() << QString("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName());
 #endif
         if (alarme) {
             throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(ff.fileName()), MessageType::WARNING);
@@ -460,7 +460,7 @@ int TLE::VerifieFichier(const QString &nomFichier,
 #if (!COVERAGE_TEST)
         const QFileInfo ff(fi.fileName());
 #if (!BUILD_TEST)
-        qWarning() << QString("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName());
+        qWarning().noquote() << QString("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName());
 #endif
         if (alarme) {
             throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(ff.fileName()), MessageType::ERREUR);

@@ -1936,7 +1936,7 @@ void Carte::LectureFichierKml(const QString &fichier, const bool visible, const 
 
         QFileInfo ff(fichier);
         if (!ff.exists()) {
-            qWarning() << "Le fichier de frontières" << ff.fileName() << "n'existe pas";
+            qWarning().noquote() << "Le fichier de frontières" << ff.fileName() << "n'existe pas";
             throw Exception(tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME), MessageType::WARNING);
         }
 

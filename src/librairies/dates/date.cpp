@@ -307,7 +307,7 @@ Date Date::ConversionDateIso(const QString &dateFormatIso)
 
     if (!dateTime.isValid()) {
 #if (!BUILD_TEST)
-        qWarning() << QString("Date au format ISO invalide (%1)").arg(dateFormatIso);
+        qWarning().noquote() << QString("Date au format ISO invalide (%1)").arg(dateFormatIso);
 #endif
         throw Exception(QObject::tr("Date au format ISO invalide"), MessageType::WARNING);
     }
@@ -348,7 +348,7 @@ Date Date::ConversionDateNasa(const QString &dateFormatNasa)
 
     if (dateNasa.size() != 2) {
 #if (!BUILD_TEST)
-        qWarning() << QString("Date au format NASA invalide (%1)").arg(dateFormatNasa);
+        qWarning().noquote() << QString("Date au format NASA invalide (%1)").arg(dateFormatNasa);
 #endif
         throw Exception(QObject::tr("Date au format NASA invalide"), MessageType::WARNING);
     }
@@ -357,7 +357,7 @@ Date Date::ConversionDateNasa(const QString &dateFormatNasa)
 
     if (anneeNbJours.size() != 2) {
 #if (!BUILD_TEST)
-        qWarning() << QString("Date au format NASA invalide (%1)").arg(dateFormatNasa);
+        qWarning().noquote() << QString("Date au format NASA invalide (%1)").arg(dateFormatNasa);
 #endif
         throw Exception(QObject::tr("Date au format NASA invalide"), MessageType::WARNING);
     }
@@ -371,7 +371,7 @@ Date Date::ConversionDateNasa(const QString &dateFormatNasa)
 
     if (!hrs.isValid()) {
 #if (!BUILD_TEST)
-        qWarning() << QString("Date au format NASA invalide (%1)").arg(dateFormatNasa);
+        qWarning().noquote() << QString("Date au format NASA invalide (%1)").arg(dateFormatNasa);
 #endif
         throw Exception(QObject::tr("Date au format NASA invalide"), MessageType::WARNING);
     }

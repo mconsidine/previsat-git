@@ -45,6 +45,7 @@
 
 #include <QFile>
 #include <QtXml/QtXml>
+#include <QVersionNumber>
 
 
 class QString;
