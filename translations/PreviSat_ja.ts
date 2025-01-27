@@ -1513,12 +1513,12 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.ui" line="635"/>
         <source>Seuil maximal flashs :</source>
-        <translation type="unfinished"></translation>
+        <translation>フレア最大閾値 :</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.ui" line="616"/>
         <source>Angle maximal en azimut entre le train Starlink et le Soleil</source>
-        <translation type="unfinished"></translation>
+        <translation>Starlink列車と太陽がなす最大方位角差です</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsstarlink.ui" line="208"/>
@@ -3652,28 +3652,29 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.cpp" line="195"/>
         <source>Cliquer droit sur l&apos;endroit et sélectionner les coordonnées géographiques dans le menu contextuel</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>The japanese translation means &quot;Right-click the desired location on the map, then click the displayed latitude and latitude to copy it to the clipboard&quot;</translatorcomment>
+        <translation>地図上で目的の場所を右クリックしてから表示された緯度と軽度をクリックするとクリップボードにコピーされます</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="428"/>
         <source>Ouvrir Google Maps...</source>
-        <translation type="unfinished"></translation>
+        <translation>Googleマップを開く...</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="476"/>
         <source>Altitude :</source>
         <extracomment>altitude of observer</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>高さ :</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="497"/>
         <source>Sexagésimal</source>
-        <translation type="unfinished"></translation>
+        <translation>60進法</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="517"/>
         <source>Décimal</source>
-        <translation type="unfinished"></translation>
+        <translation>10進法</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="595"/>
@@ -3751,7 +3752,8 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="1050"/>
         <source>Mise à jour des données Starlink</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Cocher l&apos;option pour lancer la mise à jour</translatorcomment>
+        <translation>Starlinkデータを更新する</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="1059"/>
@@ -3897,7 +3899,8 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="1686"/>
         <source>Marqueur</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Peut se dire aussi &quot;ピン&quot;</translatorcomment>
+        <translation>マーカー</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="1695"/>
@@ -4021,7 +4024,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="2218"/>
         <source>Icônes stations</source>
-        <translation type="unfinished"></translation>
+        <translation>地上局のアイコン</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="2244"/>
@@ -4108,7 +4111,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/options/options.ui" line="2433"/>
         <source>Stations :</source>
-        <translation>ステーション :</translation>
+        <translation>地上局 :</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.cpp" line="191"/>
@@ -4177,7 +4180,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <location filename="../src/interface/options/options.ui" line="691"/>
         <location filename="../src/interface/options/options.cpp" line="674"/>
         <source>Ajouter le lieu dans la sélection</source>
-        <translation type="unfinished"></translation>
+        <translation>観測地を選択に追加する</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.cpp" line="682"/>
@@ -4194,7 +4197,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <location filename="../src/interface/options/options.ui" line="143"/>
         <location filename="../src/interface/options/options.cpp" line="699"/>
         <source>Enlever le lieu de la sélection</source>
-        <translation type="unfinished"></translation>
+        <translation>観測地を選択から削除する</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.cpp" line="769"/>
@@ -4779,7 +4782,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="63"/>
         <source>Gestionnaire icônes satellites</source>
-        <translation type="unfinished"></translation>
+        <translation>衛星アイコンマネージャー</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="115"/>
@@ -4847,12 +4850,14 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <location filename="../src/interface/outils/outils.ui" line="618"/>
         <location filename="../src/interface/outils/outils.cpp" line="1229"/>
         <source>Importer icône...</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>La taille du bouton n&apos;est pas suffisante au regard de la traduction en Japonais</translatorcomment>
+        <translation>アイコンをインポートする...</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="631"/>
         <source>Liste des icônes personnelles :</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Se traduit comme &quot;Liste des icônes personnalisées&quot;</translatorcomment>
+        <translation>カスタムアイコンの一覧 :</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.ui" line="732"/>
@@ -5083,17 +5088,18 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="1231"/>
         <source>Fichiers PNG (*.png)</source>
-        <translation type="unfinished"></translation>
+        <translation>PNGファイル (*.png)</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="1241"/>
         <source>Renommer l&apos;icône</source>
-        <translation type="unfinished"></translation>
+        <translation>アイコン名称を変更する</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="1242"/>
         <source>Nom de l&apos;icône (nom de l&apos;objet ou numéro NORAD) :</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Objet = satellite, étage de fusée, débris...</translatorcomment>
+        <translation>アイコンの名称 (オブジェクトの名称又はNORAD番号) :</translation>
     </message>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="1245"/>
@@ -5103,7 +5109,7 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
     <message>
         <location filename="../src/interface/outils/outils.cpp" line="1309"/>
         <source>Voulez-vous vraiment supprimer les icônes sélectionnées ?</source>
-        <translation type="unfinished"></translation>
+        <translation>選択したアイコンを本当に削除しますか ?</translation>
     </message>
 </context>
 <context>
@@ -6147,7 +6153,8 @@ Valeur attendue : %3 - Valeur calculée : %4</source>
     <message>
         <location filename="../src/main.cpp" line="177"/>
         <source>Mise à jour des Starlink...</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Se traduit comme &quot;Mise à jour des éléments orbitaux des Starlink...&quot;</translatorcomment>
+        <translation>Starlinkの軌道要素を更新しています...</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="183"/>
@@ -6815,7 +6822,7 @@ Valeur attendue : %3 - Valeur calculée : %4</source>
         <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="467"/>
         <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="495"/>
         <source>Le prochain passage du satellite est en-dessous de la hauteur minimum spécifiée</source>
-        <translation type="unfinished"></translation>
+        <translation>次の衛星通過は仰角が指定された最小仰角より低くなります</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="627"/>
