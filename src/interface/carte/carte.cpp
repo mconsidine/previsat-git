@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    26 decembre 2024
+ * >    28 janvier 2025
  *
  */
 
@@ -947,8 +947,8 @@ void Carte::AffichageSatellites()
                                     .arg(sat.elementsOrbitaux().norad)
                                     .arg(sat.elementsOrbitaux().cospar)
                                     .arg(sat.elementsOrbitaux().donnees.orbite())
-                                    .arg(sat.altitude(), 0, 'f', 1).arg(unite1)
-                                    .arg(sat.vitesse().Norme(), 0, 'f', 3).arg(unite2)
+                                    .arg(altitude, 0, 'f', 1).arg(unite1)
+                                    .arg(vitesse, 0, 'f', 3).arg(unite2)
                                     .arg(sat.elementsOsculateurs().inclinaison() * MATHS::RAD2DEG, 0, 'f', 2)
                                     .arg(Maths::ToSexagesimal(sat.elementsOsculateurs().periode() * MATHS::HEUR2RAD,
                                                      AngleFormatType::HEURE1, 1, 0, false, true));
