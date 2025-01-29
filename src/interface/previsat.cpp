@@ -2342,6 +2342,8 @@ void PreviSat::GestionTempsReel()
                 _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
                 _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
 
+                ChangementDate(_dateCourante->ToQDateTime(DateFormatSec::FORMAT_SEC));
+
                 // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
                 EnchainementCalculs();
             }
