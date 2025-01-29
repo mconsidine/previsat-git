@@ -95,9 +95,6 @@ public:
 public slots:
 
     /**
-     * @brief show
-     */
-    /**
      * @brief show Affichage des coordonnees ISS
      * @param[in] dateCourante date courante
      * @param[in] dateEcl date d'eclipse

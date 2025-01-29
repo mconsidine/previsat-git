@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    4 janvier 2025
+ * >    29 janvier 2025
  *
  */
 
@@ -274,6 +274,8 @@ void Options::AppliquerPreferences()
 
     const QString langue = Configuration::instance()->listeFicLang().at(_ui->langue->currentIndex());
     Configuration::instance()->locale() = langue;
+
+    InitPoliceWCC();
 
     emit ChargementTraduction(langue);
     emit ChargementCarteDuMonde();
@@ -936,8 +938,8 @@ void Options::InitPoliceWCC()
     _ui->policeWCC->addItem("Lucida Console");
     _ui->policeWCC->addItem("MS Shell Dlg 2");
 
-    const int taille = 10;
-    QFont policeWcc(_ui->policeWCC->itemText(index), taille, ((index == 0) ? QFont::Normal : QFont::Bold));
+    const int taille = (index == 0) ? 10 : 8;
+    QFont policeWcc(_ui->policeWCC->itemText(index), taille);
 
 #elif defined (Q_OS_LINUX)
     _ui->policeWCC->addItem("FreeSans");
@@ -951,7 +953,7 @@ void Options::InitPoliceWCC()
     _ui->policeWCC->addItem("Marion");
 
     const int taille = 13;
-    QFont policeWcc(_ui->policeWCC->itemText(index), taille, ((index == 0) ? QFont::Normal : QFont::Bold));
+    QFont policeWcc(_ui->policeWCC->itemText(index), taille);
 
 #else
     const int taille = 11;

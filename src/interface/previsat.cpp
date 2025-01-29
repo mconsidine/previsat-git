@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    4 janvier 2025
+ * >    29 janvier 2025
  *
  */
 
@@ -1797,8 +1797,9 @@ void PreviSat::AfficherCoordIssGmt()
         // Coordonnees ISS
         _coordISS->ui()->betaISS->setVisible(settings.value("affichage/affBetaWCC", false).toBool());
         _coordISS->ui()->orbiteISS->setVisible(settings.value("affichage/affNbOrbWCC", true).toBool());
+        _coordISS->setPolice();
 
-        const int vt = (settings.value("affichage/affBetaWCC", false).toBool()) ? 56 : 43;
+        const int vt = (settings.value("affichage/affBetaWCC", false).toBool()) ? 58 : 45;
         _coordISS->resize(223, vt);
 
         _coordISS->show(*_dateCourante, General::dateEclipse());

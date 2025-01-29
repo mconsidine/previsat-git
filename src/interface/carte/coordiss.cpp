@@ -30,7 +30,7 @@
  * >    13 mars 2022
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    29 janvier 2025
  *
  */
 
@@ -142,7 +142,7 @@ int CoordISS::CalculNumeroOrbiteISS(const Date &date)
 }
 
 /*
- * Affichage des courbes sur la carte du monde
+ * Affichage des coordonnees ISS
  */
 void CoordISS::show(const Date &dateCourante, const Date &dateEcl)
 {
@@ -184,15 +184,16 @@ void CoordISS::setPolice()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const QFont &police = Configuration::instance()->policeWcc();
 
     /* Corps de la methode */
-    _ui->altitudeISS->setFont(Configuration::instance()->policeWcc());
-    _ui->betaISS->setFont(Configuration::instance()->policeWcc());
-    _ui->inclinaisonISS->setFont(Configuration::instance()->policeWcc());
-    _ui->latitudeISS->setFont(Configuration::instance()->policeWcc());
-    _ui->longitudeISS->setFont(Configuration::instance()->policeWcc());
-    _ui->nextTransitionISS->setFont(Configuration::instance()->policeWcc());
-    _ui->orbiteISS->setFont(Configuration::instance()->policeWcc());
+    _ui->altitudeISS->setFont(police);
+    _ui->betaISS->setFont(police);
+    _ui->inclinaisonISS->setFont(police);
+    _ui->latitudeISS->setFont(police);
+    _ui->longitudeISS->setFont(police);
+    _ui->nextTransitionISS->setFont(police);
+    _ui->orbiteISS->setFont(police);
 
     /* Retour */
     return;
