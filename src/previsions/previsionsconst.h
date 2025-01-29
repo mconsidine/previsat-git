@@ -36,7 +36,7 @@
  * >    15 aout 2020
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    27 janvier 2025
  *
  */
 
@@ -144,6 +144,7 @@ struct ResultatPrevisions
     double magnitudeMax = 0.;
     double magnitudeStd = 0.;
     double pso = 0.;
+    double rangeRate = 0.;
 
     QString cap;
     QString constellation;

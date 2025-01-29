@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    1er janvier 2025
+ * >    27 janvier 2025
  *
  */
 
@@ -485,7 +485,8 @@ void AfficherResultats::ChargementResultats()
     bool alternance = true;
     int j = 0;
     int imax = 1;
-    double ecartAzimut = 0.;
+    double ecartAzimut = MATHS::PI;
+    double rangeRate = 0.;
     const bool choixSeuilAzimut = settings.value("previsions/choixSeuilMaximalFlashsStarlink", true).toBool();
     const double seuilAzimut = settings.value("previsions/seuilMaximalFlashsStarlink", 10).toInt() * MATHS::DEG2RAD;
     const bool etat = _ui->resultatsPrevisions->blockSignals(true);
@@ -506,7 +507,7 @@ void AfficherResultats::ChargementResultats()
 
             case TypeCalcul::PREVISIONS:
             case TypeCalcul::STARLINK:
-                elems = ElementsPrevisions(list, ecartAzimut);
+                elems = ElementsPrevisions(list, ecartAzimut, rangeRate);
                 break;
 
             case TypeCalcul::FLASHS:
@@ -543,7 +544,7 @@ void AfficherResultats::ChargementResultats()
                     item->setTextAlignment(((_typeCalcul == TypeCalcul::EVENEMENTS) && (k == (elems.count() - 1))) ? Qt::AlignLeft : Qt::AlignCenter);
                     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
 
-                    if ((_typeCalcul == TypeCalcul::STARLINK) && choixSeuilAzimut && (ecartAzimut <= seuilAzimut)) {
+                    if ((_typeCalcul == TypeCalcul::STARLINK) && choixSeuilAzimut && (ecartAzimut <= seuilAzimut) && (rangeRate < 0.)) {
                         item->setBackground(QBrush(QColor::fromRgb(150, 200, 255)));
                     }
 
@@ -933,7 +934,9 @@ QStringList AfficherResultats::ElementsDetailsFlashs(const ResultatPrevisions &r
 /*
  * Elements des previsions de passage a afficher dans la fenetre de resultats
  */
-QStringList AfficherResultats::ElementsPrevisions(const QList<ResultatPrevisions> &liste, double &ecartAzimut) const
+QStringList AfficherResultats::ElementsPrevisions(const QList<ResultatPrevisions> &liste,
+                                                  double &ecartAzimut,
+                                                  double &rangeRate) const
 {
     /* Declarations des variables locales */
     QStringList elems;
@@ -983,6 +986,7 @@ QStringList AfficherResultats::ElementsPrevisions(const QList<ResultatPrevisions
         const double ecart = modulo(res.azimut - res.azimutSoleil, MATHS::DEUX_PI);
         if (ecart < azMax) {
             azMax = ecart;
+            rangeRate = res.rangeRate;
         }
     }
 
@@ -1011,7 +1015,9 @@ QStringList AfficherResultats::ElementsPrevisions(const QList<ResultatPrevisions
 /*
  * Elements des previsions de passage pour la sauvegarde dans un fichier texte ou pour afficher des details
  */
-QStringList AfficherResultats::ElementsDetailsPrevisions(const ResultatPrevisions &res, double &ecartAzimut) const
+QStringList AfficherResultats::ElementsDetailsPrevisions(const ResultatPrevisions &res,
+                                                         double &ecartAzimut,
+                                                         double &rangeRate) const
 {
     /* Declarations des variables locales */
     QStringList elems;
@@ -1063,6 +1069,9 @@ QStringList AfficherResultats::ElementsDetailsPrevisions(const ResultatPrevision
 
     // Ecart en azimut entre le satellite et le Soleil
     ecartAzimut = modulo(res.azimut - res.azimutSoleil, MATHS::DEUX_PI);
+
+    // Range rate
+    rangeRate = res.rangeRate;
 
     /* Retour */
     return elems;
@@ -1314,7 +1323,8 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
 
         int kmax;
         int nmax = 0;
-        double ecartAzimut = MATHS::DEUX_PI;
+        double ecartAzimut = MATHS::PI;
+        double rangeRate = 0.;
         const bool choixSeuilAzimut = settings.value("previsions/choixSeuilMaximalFlashsStarlink", true).toBool();
         const double seuilAzimut = settings.value("previsions/seuilMaximalFlashsStarlink", 10).toInt() * MATHS::DEG2RAD;
 
@@ -1329,7 +1339,7 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
             switch (_typeCalcul) {
             case TypeCalcul::PREVISIONS:
             case TypeCalcul::STARLINK:
-                elems = ElementsDetailsPrevisions(res, ecartAzimut);
+                elems = ElementsDetailsPrevisions(res, ecartAzimut, rangeRate);
                 break;
 
             case TypeCalcul::FLASHS:
@@ -1376,7 +1386,7 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
                     itm->setTextAlignment(Qt::AlignCenter);
                     itm->setFlags(itm->flags() & ~Qt::ItemIsEditable);
 
-                    if ((_typeCalcul == TypeCalcul::STARLINK) && choixSeuilAzimut && (ecartAzimut <= seuilAzimut)) {
+                    if ((_typeCalcul == TypeCalcul::STARLINK) && choixSeuilAzimut && (ecartAzimut <= seuilAzimut) && (rangeRate < 0.)) {
                         itm->setBackground(QBrush(QColor::fromRgb(150, 200, 255)));
                     }
 
@@ -1391,6 +1401,7 @@ void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetIte
                     _tableDetail->setItem(m, k, itm);
                     _tableDetail->resizeColumnToContents(k);
                 }
+
                 m++;
             }
 
@@ -1526,7 +1537,8 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
             int i;
             int kmin;
             int kmax;
-            double ecart = MATHS::DEUX_PI;
+            double ecart = MATHS::PI;
+            double rangeRate = 0.;
             QString ligne;
             QString nomsat;
             QStringList evts;
@@ -1612,7 +1624,7 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
                         switch (_typeCalcul) {
                         case TypeCalcul::PREVISIONS:
                         case TypeCalcul::STARLINK:
-                            elems = ElementsDetailsPrevisions(res, ecart);
+                            elems = ElementsDetailsPrevisions(res, ecart, rangeRate);
                             break;
 
                         case TypeCalcul::FLASHS:

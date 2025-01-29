@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 avril 2023
+ * >    27 janvier 2025
  *
  */
 
@@ -256,6 +256,9 @@ int Prevision::CalculPrevisions(const int &nombre)
                                 // Coordonnees topocentriques du Soleil
                                 res.azimutSoleil = soleil.azimut();
                                 res.hauteurSoleil = soleil.hauteur();
+
+                                // Range rate
+                                res.rangeRate = sat.rangeRate();
 
                                 result.append(res);
                             }
