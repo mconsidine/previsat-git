@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    1er octobre 2023
+ * >    1er fevrier 2025
  *
  */
 
@@ -79,7 +79,74 @@ public:
     ~PreviSatTest();
 
 private slots:
-    void testAll();
+
+    // Mathematiques
+    void testAllMaths() {
+        MathsTest::testAll();
+        Vecteur3DTest::testAll();
+        Matrice3DTest::testAll();
+    }
+
+    // Dates
+    void testAllDates() {
+        DateTest::testAll();
+    }
+
+    // Systeme solaire
+    void testAllSystemeSolaire() {
+        SoleilTest::testAll();
+        PlaneteTest::testAll();
+        LuneTest::testAll();
+    }
+
+    // Observateur
+    void testAllObservateur() {
+        ObservateurTest::testAll();
+    }
+
+    // Systeme
+    void testAllSysteme() {
+        TelechargementTest::testAll();
+        FichierXmlTest::testAll();
+    }
+
+    // Satellite
+    void testAllSatellite() {
+        DonneesTest::testAll();
+        TLETest::testAll();
+        GPFormatTest::testAll();
+        SignalTest::testAll();
+        PhasageTest::testAll();
+        SGP4Test::testAll();
+        ElementsOsculateursTest::testAll();
+        ConditionEclipseTest::testAll();
+        MagnitudeTest::testAll();
+        SatelliteTest::testAll();
+        EvenementsTest::testAll();
+    }
+
+    // Previsions
+    void testAllPrevisions() {
+        PrevisionTest::testAll();
+        FlashsTest::testAll();
+        TransitsTest::testAll();
+        EvenementsOrbitauxTest::testAll();
+        StarlinkTest::testAll();
+        TelescopeTest::testAll();
+    }
+
+    // Onglets
+    void testAllInformations() {
+        GeneralTest::testAll();
+        OsculateursTest::testAll();
+        InformationsTest::testAll();
+    }
+
+    // Log
+    void testAllLog() {
+        LogMessageTest::testAll();
+    }
+
     void cleanupTestCase();
 
 };
@@ -92,51 +159,6 @@ PreviSatTest::PreviSatTest()
 PreviSatTest::~PreviSatTest()
 {
 
-}
-
-void PreviSatTest::testAll()
-{
-    // Librairies
-    MathsTest::testAll();
-    Vecteur3DTest::testAll();
-    Matrice3DTest::testAll();
-    DateTest::testAll();
-
-    SoleilTest::testAll();
-    PlaneteTest::testAll();
-    LuneTest::testAll();
-    ObservateurTest::testAll();
-
-    TelechargementTest::testAll();
-    FichierXmlTest::testAll();
-
-    DonneesTest::testAll();
-    TLETest::testAll();
-    GPFormatTest::testAll();
-    SignalTest::testAll();
-    PhasageTest::testAll();
-    SGP4Test::testAll();
-    ElementsOsculateursTest::testAll();
-    ConditionEclipseTest::testAll();
-    MagnitudeTest::testAll();
-    SatelliteTest::testAll();
-    EvenementsTest::testAll();
-
-    // Previsions
-    PrevisionTest::testAll();
-    FlashsTest::testAll();
-    TransitsTest::testAll();
-    EvenementsOrbitauxTest::testAll();
-    StarlinkTest::testAll();
-    TelescopeTest::testAll();
-
-    // Informations sur le satellite
-    GeneralTest::testAll();
-    OsculateursTest::testAll();
-    InformationsTest::testAll();
-
-    // Tester en dernier
-    LogMessageTest::testAll();
 }
 
 void PreviSatTest::cleanupTestCase()
