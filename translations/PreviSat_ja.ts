@@ -5697,7 +5697,7 @@ ce qui représente environ %2 pages.</source>
     <message>
         <location filename="../src/configuration/configuration.cpp" line="1136"/>
         <location filename="../src/configuration/configuration.cpp" line="1174"/>
-        <location filename="../src/librairies/corps/corps.cpp" line="601"/>
+        <location filename="../src/librairies/corps/corps.cpp" line="598"/>
         <location filename="../src/librairies/corps/etoiles/constellation.cpp" line="111"/>
         <location filename="../src/librairies/corps/etoiles/etoile.cpp" line="129"/>
         <location filename="../src/librairies/corps/etoiles/ligneconstellation.cpp" line="114"/>
@@ -5729,7 +5729,7 @@ ce qui représente environ %2 pages.</source>
         <location filename="../src/configuration/gestionnairexml.cpp" line="830"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="883"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="937"/>
-        <location filename="../src/librairies/corps/corps.cpp" line="636"/>
+        <location filename="../src/librairies/corps/corps.cpp" line="633"/>
         <source>Erreur lors de l&apos;ouverture du fichier %1, veuillez réinstaller %2</source>
         <translation>ファイル「%1」の読み込み中にエラーが発生しましたので、「%2」を再インストールしてください</translation>
     </message>
@@ -5860,7 +5860,7 @@ ce qui représente environ %2 pages.</source>
     <message>
         <location filename="../src/configuration/lancements.cpp" line="81"/>
         <location filename="../src/configuration/rentrees.cpp" line="101"/>
-        <location filename="../src/librairies/corps/corps.cpp" line="608"/>
+        <location filename="../src/librairies/corps/corps.cpp" line="605"/>
         <location filename="../src/librairies/corps/etoiles/constellation.cpp" line="117"/>
         <location filename="../src/librairies/corps/etoiles/etoile.cpp" line="135"/>
         <location filename="../src/librairies/corps/etoiles/ligneconstellation.cpp" line="120"/>

@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    1er fevrier 2025
  *
  */
 
@@ -135,35 +135,35 @@ void LuneTest::testCalculLeverMeridienCoucher()
     // Toutes les heures sont definies
     Date date(2022, 5, 1, 5, 6, 7., 2. / 24.);
     Observateur obs("Paris", -2.348640000, +48.853390000, 30);
-    lune.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs);
+    lune.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs, false);
 
     QCOMPARE(lune.dateLever(), "06h52");
     QCOMPARE(lune.dateMeridien(), "14h18");
     QCOMPARE(lune.dateCoucher(), "21h59");
 
     // L'heure de coucher n'existe pas
-    date = Date(2022, 5, 5, 5, 6, 7., 2. / 24.);
-    lune.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs);
+    date = Date(2022, 5, 3, 5, 6, 7., 2. / 24.);
+    lune.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs, false);
 
-    QCOMPARE(lune.dateLever(), "08h56");
-    QCOMPARE(lune.dateMeridien(), "17h33");
+    QCOMPARE(lune.dateLever(), "07h40");
+    QCOMPARE(lune.dateMeridien(), "15h52");
     QCOMPARE(lune.dateCoucher(), "-");
 
     // L'heure de passage au meridien n'existe pas
-    date = Date(2022, 5, 16, 5, 6, 7., 2. / 24.);
-    lune.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs);
+    date = Date(2022, 5, 14, 5, 6, 7., 2. / 24.);
+    lune.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs, false);
 
-    QCOMPARE(lune.dateLever(), "22h20");
+    QCOMPARE(lune.dateLever(), "19h26");
     QCOMPARE(lune.dateMeridien(), "-");
-    QCOMPARE(lune.dateCoucher(), "06h09");
+    QCOMPARE(lune.dateCoucher(), "05h24");
 
     // L'heure de lever n'existe pas
-    date = Date(2022, 5, 20, 5, 6, 7., 2. / 24.);
-    lune.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs);
+    date = Date(2022, 5, 18, 5, 6, 7., 2. / 24.);
+    lune.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs, false);
 
     QCOMPARE(lune.dateLever(), "-");
-    QCOMPARE(lune.dateMeridien(), "05h49");
-    QCOMPARE(lune.dateCoucher(), "09h43");
+    QCOMPARE(lune.dateMeridien(), "03h39");
+    QCOMPARE(lune.dateCoucher(), "07h28");
 }
 
 void LuneTest::testCalculDatesPhases()

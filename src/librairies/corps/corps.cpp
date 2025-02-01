@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 aout 2024
+ * >    30 janvier 2025
  *
  */
 
@@ -472,10 +472,7 @@ void Corps::CalculLeverMeridienCoucher(const Date &date,
             if (iter < MATHS::ITERATIONS_MAX) {
 
                 // Date arrondie a la minute
-                const Date dateCalc = Date(floor(dateEvt * DATE::NB_MIN_PAR_JOUR + 0.5) * DATE::NB_JOUR_PAR_MIN, date.offsetUTC());
-                if (date.jour() == dateCalc.jour()) {
-                    datesEvt[i] = dateCalc;
-                }
+                datesEvt[i] = Date(floor(dateEvt * DATE::NB_MIN_PAR_JOUR + 0.5) * DATE::NB_JOUR_PAR_MIN, date.offsetUTC());
             }
         }
     }

@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    30 janvier 2025
  *
  */
 
@@ -112,15 +112,15 @@ void SoleilTest::testCalculLeverMeridienCoucher()
 
 
     // Cas des nuits blanches
-    date = Date(2022, 6, 12, 5, 6, 7., 2. / 24.);
+    date = Date(2022, 6, 13, 5, 6, 7., 2. / 24.);
     soleil.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, obs1);
 
     QCOMPARE(soleil.dateLever(), "05h49");
-    QCOMPARE(soleil.dateMeridien(), "13h50");
-    QCOMPARE(soleil.dateCoucher(), "21h52");
+    QCOMPARE(soleil.dateMeridien(), "13h51");
+    QCOMPARE(soleil.dateCoucher(), "21h53");
 
-    QCOMPARE(soleil.datesCrepuscules().at(0), "05h05");
-    QCOMPARE(soleil.datesCrepuscules().at(1), "04h05");
+    QCOMPARE(soleil.datesCrepuscules().at(0), "05h04");
+    QCOMPARE(soleil.datesCrepuscules().at(1), "04h04");
     QCOMPARE(soleil.datesCrepuscules().at(2), "-");
     QCOMPARE(soleil.datesCrepuscules().at(3), "22h37");
     QCOMPARE(soleil.datesCrepuscules().at(4), "23h37");
