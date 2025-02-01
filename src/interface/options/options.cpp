@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    29 janvier 2025
+ * >    1er fevrier 2025
  *
  */
 
@@ -207,6 +207,7 @@ void Options::Initialisation()
 
     const QString unite = (_ui->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot");
 
+    _ui->uniteAltitude->setText(unite);
     _ui->altitude->setValidator((_ui->unitesKm->isChecked()) ? _validateurAltitudeMetres : _validateurAltitudePieds);
 
     const QString fmt = tr("L'altitude doit être comprise entre %1%2 et %3%2", "Observer altitude");
@@ -1218,8 +1219,9 @@ void Options::CreerLieu()
     _ui->longitude->setText("000°00'00\"");
     _ui->latitude->setText("000°00'00\"");
 
-    _ui->altitude->setInputMask((_ui->unitesKm->isChecked()) ? "#### " + tr("m", "meter") : "##### " + tr("ft", "foot"));
+    _ui->altitude->setInputMask((_ui->unitesKm->isChecked()) ? "####" : "#####");
     _ui->altitude->setText((_ui->unitesKm->isChecked()) ? "0000" : "00000");
+    _ui->uniteAltitude->setText((_ui->unitesKm->isChecked()) ? tr("m", "meter") : tr("ft", "foot"));
 
     _ui->lbl_ajouterDans->setVisible(true);
     _ui->ajdfic->setVisible(true);
@@ -1326,7 +1328,7 @@ void Options::ModifierLieu()
     _ui->lbl_ajouterDans->setVisible(false);
     _ui->ajdfic->setVisible(false);
 
-    _ui->altitude->setInputMask((_ui->unitesKm->isChecked()) ? "#### " + tr("m", "meter") : "##### " + tr("ft", "foot"));
+    _ui->altitude->setInputMask((_ui->unitesKm->isChecked()) ? "####" : "#####");
 
     try {
 
@@ -1368,6 +1370,7 @@ void Options::RecupereCoordonneesMaps()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    _isObs = false;
     const QString coord = _clipBoard->text();
     const QRegularExpression reg("^[-+]?\\d*\\.?\\d*,[ ]?[-+]?\\d*\\.?\\d*$");
 
@@ -1395,6 +1398,7 @@ void Options::RecupereCoordonneesMaps()
 
         activateWindow();
         _ui->nomlieu->setFocus();
+        _clipBoard->clear();
     }
 
     /* Retour */
@@ -1501,7 +1505,7 @@ void Options::ModifierObs()
     _ui->lbl_ajouterDans->setVisible(false);
     _ui->ajdfic->setVisible(false);
 
-    _ui->altitude->setInputMask((_ui->unitesKm->isChecked()) ? "#### " + tr("m", "meter") : "##### " + tr("ft", "foot"));
+    _ui->altitude->setInputMask((_ui->unitesKm->isChecked()) ? "####" : "#####");
 
     try {
 
