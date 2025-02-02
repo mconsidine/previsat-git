@@ -36,7 +36,7 @@
  * >    14 aout 2022
  *
  * Date de revision
- * >    1er fevrier 2025
+ * >    2 fevrier 2025
  *
  */
 
@@ -99,6 +99,7 @@ public:
 
 public slots:
 
+    void on_importerIcone_clicked();
     void changeEvent(QEvent *evt);
 
 
@@ -238,7 +239,6 @@ private slots:
     void on_supprimerTLE_clicked();
 
     void on_listeIcones_itemClicked(QListWidgetItem *item);
-    void on_importerIcone_clicked();
     void on_supprimerIcone_clicked();
 
 };

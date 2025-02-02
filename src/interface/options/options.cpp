@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    1er fevrier 2025
+ * >    2 fevrier 2025
  *
  */
 
@@ -1120,9 +1120,7 @@ void Options::RenommerCategorie()
     input.setOkButtonText(tr("OK"));
     input.setCancelButtonText(tr("Annuler"));
 
-    const int ret = input.exec();
-
-    if (ret != 0) {
+    if (input.exec() == QDialog::Accepted) {
 
         const QString nvNomCategorie = input.textValue().trimmed().toLower();
 
@@ -1287,9 +1285,7 @@ void Options::RenommerLieu()
     input.setOkButtonText(tr("OK"));
     input.setCancelButtonText(tr("Annuler"));
 
-    const int ret = input.exec();
-
-    if (ret != 0) {
+    if (input.exec() == QDialog::Accepted) {
 
         const QString nvNomLieu = input.textValue();
 
@@ -1459,9 +1455,7 @@ void Options::RenommerObs()
     input.setOkButtonText(tr("OK"));
     input.setCancelButtonText(tr("Annuler"));
 
-    const int ret = input.exec();
-
-    if (ret != 0) {
+    if (input.exec() == QDialog::Accepted) {
 
         const QString nvNomLieu = input.textValue().trimmed();
 

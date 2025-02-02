@@ -3831,10 +3831,10 @@ void PreviSat::on_listeSatellites_customContextMenuRequested(const QPoint &pos)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    Q_UNUSED(pos)
 
     /* Corps de la methode */
-    if (_ui->listeSatellites->currentRow() >= 0) {
+    QListWidgetItem const *item = _ui->listeSatellites->itemAt(pos);
+    if (item != nullptr) {
         _ui->menuListeSatellites->exec(QCursor::pos());
     }
 
@@ -3931,6 +3931,7 @@ void PreviSat::on_actionImporter_icone_triggered()
     _outils->Initialisation();
     _outils->ui()->listeOutils->setCurrentRow(1);
     _outils->show();
+    _outils->on_importerIcone_clicked();
 
     /* Retour */
     return;

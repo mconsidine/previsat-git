@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    1er janvier 2025
+ * >    2 fevrier 2025
  *
  */
 
@@ -363,12 +363,12 @@ void SuiviTelescope::CalculAos()
 
                 } else if (delai >= (DATE::NB_JOUR_PAR_HEUR - DATE::EPS_DATES)) {
 
-                    cDelaiAOS = delaiAOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).mid(11, 5)
+                    cDelaiAOS = delaiAOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).section(" ", 1).mid(0, 5)
                             .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
 
                 } else {
 
-                    cDelaiAOS = delaiAOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).mid(14, 5)
+                    cDelaiAOS = delaiAOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).section(" ", 1).mid(3, 5)
                             .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
                 }
 
@@ -423,11 +423,11 @@ void SuiviTelescope::CalculAos()
 
             } else if (delai >= (DATE::NB_JOUR_PAR_HEUR - DATE::EPS_DATES)) {
 
-                cDelaiLOS = delaiLOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).mid(11, 5)
+                cDelaiLOS = delaiLOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).section(" ", 1).mid(0, 5)
                         .replace(":", tr("h", "hour").append(" ")).append(tr("min", "minute"));
 
             } else {
-                cDelaiLOS = delaiLOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).mid(14, 5)
+                cDelaiLOS = delaiLOS.ToShortDate(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).section(" ", 1).mid(3, 5)
                         .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
             }
 

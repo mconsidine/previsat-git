@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    22 aout 2024
+ * >    2 fevrier 2025
  *
  */
 
@@ -249,6 +249,7 @@ void General::AffichageDate(const Date &date)
 
     _ui->dateHeure1->setText(chaine);
     _osculateurs->ui()->dateHeure1->setText(chaine);
+    _osculateurs->ui()->utcDateHeure->setText(chaineUTC);
 
     /* Retour */
     return;

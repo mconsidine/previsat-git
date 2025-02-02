@@ -30,7 +30,7 @@
  * >    14 aout 2022
  *
  * Date de revision
- * >    1er fevrier 2025
+ * >    2 fevrier 2025
  *
  */
 
@@ -185,6 +185,86 @@ void Outils::Initialisation()
     InitListeDomaines();
 
     qInfo() << "Fin   Initialisation" << metaObject()->className();
+
+    /* Retour */
+    return;
+}
+
+void Outils::on_importerIcone_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        // Ouverture d'un fichier png
+        const QString fichier = QFileDialog::getOpenFileName(this, tr("Importer icône..."),
+                                                             QStandardPaths::writableLocation(QStandardPaths::PicturesLocation),
+                                                             tr("Fichiers PNG (*.png)"));
+
+        if (!fichier.isEmpty()) {
+
+            qInfo().noquote() << "Ouverture du fichier png" << fichier;
+
+            const QString nomfic = QFileInfo(fichier).fileName();
+
+            // Renommage de l'icone
+            QInputDialog input(this, Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+            input.setWindowTitle(tr("Renommer l'icône"));
+            input.setLabelText(tr("Nom de l'icône (nom de l'objet ou numéro NORAD) :"));
+            input.setTextValue(nomfic);
+            input.setTextEchoMode(QLineEdit::Normal);
+            input.setOkButtonText(tr("OK"));
+            input.setCancelButtonText(tr("Annuler"));
+            input.show();
+
+            auto txt = input.findChild<QLineEdit *> ();
+            auto validateur = new QRegularExpressionValidator(txt);
+            validateur->setRegularExpression(QRegularExpression("\\w+"));
+            txt->setValidator(validateur);
+
+            if (input.exec() == QDialog::Accepted) {
+
+                const QString res = input.textValue();
+
+                if (!res.isEmpty()) {
+
+                    // Verification du nom de l'icone
+                    const QRegularExpression reg("^\\d{1,6}$");
+                    QString nomFichierPng = (reg.match(res).hasMatch()) ? QString("%1").arg(res, 6, QChar('0')) : res;
+
+                    if (!nomFichierPng.endsWith(".png")) {
+                        nomFichierPng += ".png";
+                    }
+
+                    QFile fi(fichier);
+                    QFile fi2(Configuration::instance()->dirRsc() + QDir::separator() + nomFichierPng);
+
+                    if (fi2.exists()) {
+                        fi2.remove();
+                    }
+
+                    // Sauvegarde de l'icone
+                    if (fi.copy(fi2.fileName())) {
+
+                        qInfo().noquote() << "Import du fichier PNG" << nomFichierPng << "OK";
+
+                        const QDir di(Configuration::instance()->dirRsc());
+                        const QStringList filtres(QStringList () << "*.png");
+                        InitGestionnaireIcones(di.entryList(filtres, QDir::Files));
+
+                        emit AffichageCartesRadar();
+
+                    } else {
+                        qWarning().noquote() << "Import du fichier PNG" << nomFichierPng << "KO";
+                    }
+                }
+            }
+        }
+    } catch (Exception const &e) {
+    }
 
     /* Retour */
     return;
@@ -1215,82 +1295,6 @@ void Outils::on_listeIcones_itemClicked(QListWidgetItem *item)
         if (_ui->listeIcones->item(i)->checkState() == Qt::Checked) {
             _ui->supprimerIcone->setEnabled(true);
         }
-    }
-
-    /* Retour */
-    return;
-}
-
-void Outils::on_importerIcone_clicked()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-
-    /* Corps de la methode */
-    try {
-
-        // Ouverture d'un fichier png
-        const QString fichier = QFileDialog::getOpenFileName(this, tr("Importer icône..."),
-                                                             QStandardPaths::writableLocation(QStandardPaths::PicturesLocation),
-                                                             tr("Fichiers PNG (*.png)"));
-
-        if (!fichier.isEmpty()) {
-
-            qInfo().noquote() << "Ouverture du fichier png" << fichier;
-
-            const QString nomfic = QFileInfo(fichier).fileName();
-
-            // Renommage de l'icone
-            QInputDialog input(this, Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
-            input.setWindowTitle(tr("Renommer l'icône"));
-            input.setLabelText(tr("Nom de l'icône (nom de l'objet ou numéro NORAD) :"));
-            input.setTextValue(nomfic);
-            input.setTextEchoMode(QLineEdit::Normal);
-            input.setOkButtonText(tr("OK"));
-            input.setCancelButtonText(tr("Annuler"));
-
-            const int ret = input.exec();
-
-            if (ret != 0) {
-
-                const QString res = input.textValue();
-
-                if (!res.isEmpty()) {
-
-                    // Verification du nom de l'icone
-                    const QRegularExpression reg("^\\d{1,6}$");
-                    QString nomFichierPng = (reg.match(res).hasMatch()) ? QString("%1").arg(res, 6, QChar('0')) : res;
-
-                    if (!nomFichierPng.endsWith(".png")) {
-                        nomFichierPng += ".png";
-                    }
-
-                    QFile fi(fichier);
-                    QFile fi2(Configuration::instance()->dirRsc() + QDir::separator() + nomFichierPng);
-
-                    if (fi2.exists()) {
-                        fi2.remove();
-                    }
-
-                    // Sauvegarde de l'icone
-                    if (fi.copy(fi2.fileName())) {
-
-                        qInfo().noquote() << "Import du fichier PNG" << nomFichierPng << "OK";
-
-                        const QDir di(Configuration::instance()->dirRsc());
-                        const QStringList filtres(QStringList () << "*.png");
-                        InitGestionnaireIcones(di.entryList(filtres, QDir::Files));
-
-                        emit AffichageCartesRadar();
-
-                    } else {
-                        qWarning().noquote() << "Import du fichier PNG" << nomFichierPng << "KO";
-                    }
-                }
-            }
-        }
-    } catch (Exception const &e) {
     }
 
     /* Retour */

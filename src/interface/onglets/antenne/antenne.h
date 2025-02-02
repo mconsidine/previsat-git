@@ -36,7 +36,7 @@
  * >    9 octobre 2022
  *
  * Date de revision
- * >
+ * >    2 fevrier 2025
  *
  */
 
@@ -161,6 +161,7 @@ private slots:
     void on_ouvrirCatRotator_clicked();
     void on_frequenceMontante_currentIndexChanged(int index);
     void on_frequenceDescendante_currentIndexChanged(int index);
+    void on_parametrageDefautRadio_clicked();
 
 };
 

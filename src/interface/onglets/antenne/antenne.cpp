@@ -30,7 +30,7 @@
  * >    9 octobre 2022
  *
  * Date de revision
- * >    1er janvier 2025
+ * >    2 fevrier 2025
  *
  */
 
@@ -521,3 +521,13 @@ void Antenne::on_frequenceDescendante_currentIndexChanged(int index)
     Q_UNUSED(index)
     show(*_date);
 }
+
+void Antenne::on_parametrageDefautRadio_clicked()
+{
+    if (!_ui->adresse->isReadOnly()) {
+        const QHostAddress adresse(QHostAddress::LocalHost);
+        _ui->adresse->setText(adresse.toString());
+        _ui->port->setValue(12000);
+    }
+}
+
