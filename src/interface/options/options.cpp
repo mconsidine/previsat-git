@@ -1877,6 +1877,9 @@ void Options::on_validerObs_clicked()
     /* Corps de la methode */
     try {
 
+        double longitude;
+        double latitude;
+
         // Nom du lieu d'observation
         QString nomlieu = _ui->nomlieu->text().trimmed();
 
@@ -1894,26 +1897,34 @@ void Options::on_validerObs_clicked()
             throw Exception(tr("Le lieu existe déjà dans la catégorie <b>%1</b>").arg(_ui->ajdfic->currentText()), MessageType::WARNING);
         }
 
-        // Recuperation de la longitude
-        const QStringList lon = _ui->longitude->text().split(QRegularExpression("[°'\"]"), Qt::SkipEmptyParts);
-        const int lo1 = lon.at(0).toInt();
-        const int lo2 = lon.at(1).toInt();
-        const int lo3 = lon.at(2).toInt();
+        if (_ui->sexagesimal->isChecked()) {
 
-        // Recuperation de la latitude
-        const QStringList lat = _ui->latitude->text().split(QRegularExpression("[°'\"]"), Qt::SkipEmptyParts);
-        const int la1 = lat.at(0).toInt();
-        const int la2 = lat.at(1).toInt();
-        const int la3 = lat.at(2).toInt();
+            // Recuperation de la longitude
+            const QStringList lon = _ui->longitude->text().split(QRegularExpression("[°'\"]"), Qt::SkipEmptyParts);
+            const int lo1 = lon.at(0).toInt();
+            const int lo2 = lon.at(1).toInt();
+            const int lo3 = lon.at(2).toInt();
+
+            longitude = ((_ui->choixLongitude->currentIndex() == 0) ? -1. : 1.) * (lo1 + lo2 * MATHS::DEG_PAR_ARCMIN + lo3 * MATHS::DEG_PAR_ARCSEC);
+
+            // Recuperation de la latitude
+            const QStringList lat = _ui->latitude->text().split(QRegularExpression("[°'\"]"), Qt::SkipEmptyParts);
+            const int la1 = lat.at(0).toInt();
+            const int la2 = lat.at(1).toInt();
+            const int la3 = lat.at(2).toInt();
+
+            latitude = ((_ui->choixLatitude->currentIndex() == 1) ? -1. : 1.) * (la1 + la2 * MATHS::DEG_PAR_ARCMIN + la3 * MATHS::DEG_PAR_ARCSEC);
+
+        } else {
+            longitude = ((_ui->choixLongitude->currentIndex() == 0) ? -1. : 1.) * _ui->longitude->text().toDouble();
+            latitude = ((_ui->choixLatitude->currentIndex() == 1) ? -1. : 1.) * _ui->latitude->text().toDouble();
+        }
 
         // Recuperation de l'altitude
         int atd = _ui->altitude->text().toInt();
         if (_ui->unitesMi->isChecked()) {
             atd = qRound(atd / TERRE::PIED_PAR_METRE);
         }
-
-        const double longitude = ((_ui->choixLongitude->currentIndex() == 0) ? -1. : 1.) * (lo1 + lo2 * MATHS::DEG_PAR_ARCMIN + lo3 * MATHS::DEG_PAR_ARCSEC);
-        const double latitude = ((_ui->choixLatitude->currentIndex() == 1) ? -1. : 1.) * (la1 + la2 * MATHS::DEG_PAR_ARCMIN + la3 * MATHS::DEG_PAR_ARCSEC);
 
         if (_isObs) {
 
