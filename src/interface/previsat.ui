@@ -39,10 +39,10 @@
     <item>
      <widget class="QScrollArea" name="scrollArea">
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
+       <enum>QFrame::Shadow::Plain</enum>
       </property>
       <property name="lineWidth">
        <number>0</number>
@@ -78,10 +78,10 @@
         <item>
          <widget class="QFrame" name="frameCarteListe">
           <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
+           <enum>QFrame::Shape::StyledPanel</enum>
           </property>
           <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
+           <enum>QFrame::Shadow::Raised</enum>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <property name="spacing">
@@ -102,10 +102,10 @@
            <item>
             <widget class="QFrame" name="frameCarte">
              <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
+              <enum>QFrame::Shape::StyledPanel</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
+              <enum>QFrame::Shadow::Raised</enum>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_3">
               <property name="spacing">
@@ -141,10 +141,10 @@
                  </size>
                 </property>
                 <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
+                 <enum>QFrame::Shape::StyledPanel</enum>
                 </property>
                 <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
+                 <enum>QFrame::Shadow::Raised</enum>
                 </property>
                 <widget class="QToolButton" name="zoomCarte">
                  <property name="geometry">
@@ -221,10 +221,10 @@
               </size>
              </property>
              <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
+              <enum>QFrame::Shape::StyledPanel</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
+              <enum>QFrame::Shadow::Raised</enum>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout">
               <property name="spacing">
@@ -257,10 +257,10 @@
                  </size>
                 </property>
                 <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
+                 <enum>QFrame::Shape::StyledPanel</enum>
                 </property>
                 <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
+                 <enum>QFrame::Shadow::Raised</enum>
                 </property>
                 <widget class="QToolButton" name="aide">
                  <property name="geometry">
@@ -359,7 +359,7 @@
                   </size>
                  </property>
                  <property name="popupMode">
-                  <enum>QToolButton::InstantPopup</enum>
+                  <enum>QToolButton::ToolButtonPopupMode::InstantPopup</enum>
                  </property>
                  <property name="autoRaise">
                   <bool>true</bool>
@@ -451,7 +451,7 @@
                   </size>
                  </property>
                  <property name="toolButtonStyle">
-                  <enum>Qt::ToolButtonTextBesideIcon</enum>
+                  <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
                  </property>
                  <property name="autoRaise">
                   <bool>true</bool>
@@ -707,10 +707,10 @@
               <item>
                <widget class="QFrame" name="frameListe">
                 <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
+                 <enum>QFrame::Shape::StyledPanel</enum>
                 </property>
                 <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
+                 <enum>QFrame::Shadow::Raised</enum>
                 </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_4">
                  <property name="spacing">
@@ -734,7 +734,7 @@
                     <bool>true</bool>
                    </property>
                    <property name="contextMenuPolicy">
-                    <enum>Qt::CustomContextMenu</enum>
+                    <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
                    </property>
                   </widget>
                  </item>
@@ -762,10 +762,10 @@
            </size>
           </property>
           <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
+           <enum>QFrame::Shape::StyledPanel</enum>
           </property>
           <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
+           <enum>QFrame::Shadow::Raised</enum>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_5">
            <property name="spacing">
@@ -786,10 +786,10 @@
            <item>
             <widget class="QFrame" name="frameOnglets">
              <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
+              <enum>QFrame::Shape::StyledPanel</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
+              <enum>QFrame::Shadow::Raised</enum>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_2">
               <property name="spacing">
@@ -828,10 +828,10 @@
               </size>
              </property>
              <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
+              <enum>QFrame::Shape::StyledPanel</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
+              <enum>QFrame::Shadow::Raised</enum>
              </property>
              <widget class="QWidget" name="layoutWidget">
               <property name="geometry">
@@ -849,10 +849,10 @@
                <item>
                 <widget class="QFrame" name="frameVideo">
                  <property name="frameShape">
-                  <enum>QFrame::StyledPanel</enum>
+                  <enum>QFrame::Shape::StyledPanel</enum>
                  </property>
                  <property name="frameShadow">
-                  <enum>QFrame::Raised</enum>
+                  <enum>QFrame::Shadow::Raised</enum>
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_6">
                   <property name="spacing">
@@ -890,7 +890,7 @@ le flux vidéo</string>
                      </size>
                     </property>
                     <property name="toolButtonStyle">
-                     <enum>Qt::ToolButtonTextUnderIcon</enum>
+                     <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
                     </property>
                    </widget>
                   </item>
@@ -994,6 +994,8 @@ le flux vidéo</string>
      <string notr="true">MenuListeSatellites</string>
     </property>
     <addaction name="actionDefinir_par_defaut"/>
+    <addaction name="actionInformations_2"/>
+    <addaction name="actionImporter_icone"/>
    </widget>
    <addaction name="menuPrincipal"/>
    <addaction name="menuDons"/>
@@ -1181,6 +1183,16 @@ le flux vidéo</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionInformations_2">
+   <property name="text">
+    <string>Informations satellite</string>
+   </property>
+  </action>
+  <action name="actionImporter_icone">
+   <property name="text">
+    <string>Importer icône...</string>
    </property>
   </action>
  </widget>

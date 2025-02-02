@@ -36,7 +36,7 @@
  * >    14 aout 2022
  *
  * Date de revision
- * >    29 decembre 2024
+ * >    1er fevrier 2025
  *
  */
 
@@ -81,6 +81,8 @@ public:
     /*
      * Accesseurs
      */
+    Ui::Outils *ui() const;
+
 
     /*
      * Modificateurs

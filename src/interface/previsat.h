@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    23 decembre 2024
+ * >    1er fevrier 2025
  *
  */
 
@@ -59,6 +59,7 @@ class Carte;
 class Ciel;
 class CoordISS;
 class Date;
+class DonneesSatellite;
 class Informations;
 class Onglets;
 class Options;
@@ -200,6 +201,8 @@ private:
     QTimer *_chronometre;
     QTimer *_chronometreMs;
     QTimer *_timerStatut;
+
+    DonneesSatellite *_donneesSatellite;
 
     Date *_dateCourante;
 
@@ -490,7 +493,10 @@ private slots:
     void on_listeSatellites_itemClicked(QListWidgetItem *item);
     void on_listeSatellites_itemEntered(QListWidgetItem *item);
     void on_listeSatellites_customContextMenuRequested(const QPoint &pos);
+
     void on_actionDefinir_par_defaut_triggered();
+    void on_actionInformations_2_triggered();
+    void on_actionImporter_icone_triggered();
 
     void on_lancementVideoNasa_clicked();
 

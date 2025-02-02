@@ -119,6 +119,11 @@ Outils::~Outils()
 /*
  * Accesseurs
  */
+Ui::Outils *Outils::ui() const
+{
+    return _ui;
+}
+
 
 /*
  * Modificateurs

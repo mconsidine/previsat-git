@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    29 janvier 2025
+ * >    1er fevrier 2025
  *
  */
 
@@ -57,6 +57,7 @@
 #include "informations/informations.h"
 #include "logging/logging.h"
 #include "onglets/antenne/antenne.h"
+#include "onglets/donnees/donneessatellite.h"
 #include "onglets/donnees/informationsiss.h"
 #include "onglets/donnees/informationslancements.h"
 #include "onglets/donnees/informationsrentrees.h"
@@ -73,6 +74,7 @@
 #include "onglets/telescope/suivitelescope.h"
 #include "options/options.h"
 #include "outils/outils.h"
+#include "outils/ui_outils.h"
 #include "radar/radar.h"
 #include "ui_previsat.h"
 #include "carte/ui_carte.h"
@@ -175,6 +177,8 @@ PreviSat::~PreviSat()
     EFFACE_OBJET(_chronometre);
     EFFACE_OBJET(_chronometreMs);
     EFFACE_OBJET(_timerStatut);
+
+    EFFACE_OBJET(_donneesSatellite);
 
     delete _ui;
 }
@@ -1204,6 +1208,8 @@ void PreviSat::Initialisation()
     _stsDate = nullptr;
     _stsHeure = nullptr;
     _timerStatut = nullptr;
+
+    _donneesSatellite = nullptr;
 
     _dateCourante = nullptr;
     _chronometre = nullptr;
@@ -3887,6 +3893,44 @@ void PreviSat::on_actionDefinir_par_defaut_triggered()
     Configuration::instance()->EcritureConfiguration();
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionInformations_2_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QEvent evt(QEvent::LanguageChange);
+    const QString norad = _ui->listeSatellites->currentItem()->data(Qt::UserRole).toString();
+
+    /* Corps de la methode */
+    const QList<Donnees> donnees = Donnees::RequeteNorad(Configuration::instance()->dbSatellites(), norad);
+
+    EFFACE_OBJET(_donneesSatellite);
+    _donneesSatellite = new DonneesSatellite;
+    _donneesSatellite->changeEvent(&evt);
+    _donneesSatellite->setWindowModality(Qt::ApplicationModal);
+    _donneesSatellite->show(donnees.first());
+    _donneesSatellite->setVisible(true);
+
+    /* Retour */
+    return;
+}
+
+void PreviSat::on_actionImporter_icone_triggered()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    qInfo() << "Ouverture de la fenêtre d'outils";
+    _outils->Initialisation();
+    _outils->ui()->listeOutils->setCurrentRow(1);
+    _outils->show();
 
     /* Retour */
     return;
