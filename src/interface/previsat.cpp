@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er fevrier 2025
+ * >    2 fevrier 2025
  *
  */
 
@@ -824,6 +824,8 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_options, &Options::ChargementCarteDuMonde, _carte, &Carte::ChargementCarteDuMonde);
     connect(_options, &Options::ChargementTraduction, this, &PreviSat::ChargementTraduction);
     connect(_options, &Options::AfficherLieuObs, _onglets, &Onglets::AffichageLieuObs);
+    connect(_options, &Options::RecalculerPositions, this, &PreviSat::GestionTempsReel);
+    connect(_options, &Options::ReinitCalculEvenementsSoleilLune, this, &PreviSat::ReinitCalculEvenementsSoleilLune);
     connect(this, &PreviSat::EcritureRegistre, _options, &Options::EcritureRegistre);
 
     // Connexions avec la fenetre Outils
@@ -978,13 +980,8 @@ void PreviSat::CreationRaccourcis()
 void PreviSat::EnchainementCalculs()
 {
     /* Declarations des variables locales */
-    static int jour;
 
     /* Initialisations */
-    if (_reinitJour) {
-        jour = 0;
-        _reinitJour = false;
-    }
 
     /* Corps de la methode */
     try {
@@ -1039,7 +1036,7 @@ void PreviSat::EnchainementCalculs()
         }
 
         // Evenements Soleil et Lune
-        if (_dateCourante->jour() != jour) {
+        if (_reinitJour) {
 
             // Heures de lever/passage au meridien/coucher/crepuscules
             const DateSysteme syst = (settings.value("affichage/systemeHoraire", true).toBool()) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H;
@@ -1051,7 +1048,7 @@ void PreviSat::EnchainementCalculs()
             // Calcul des phases de la Lune
             lune.CalculDatesPhases(*_dateCourante);
 
-            jour = _dateCourante->jour();
+            _reinitJour = false;
         }
 
 
@@ -1215,7 +1212,7 @@ void PreviSat::Initialisation()
     _chronometre = nullptr;
     _chronometreMs = nullptr;
 
-    _reinitJour = false;
+    _reinitJour = true;
 
     /* Corps de la methode */
     try {
@@ -2053,6 +2050,7 @@ void PreviSat::ChangementDate(const QDateTime &dt)
 
     _onglets->general()->ui()->dateHeure2->setDateTime(dt);
     _onglets->osculateurs()->ui()->dateHeure2->setDateTime(dt);
+    _reinitJour = true;
 
     _onglets->general()->ui()->dateHeure2->blockSignals(etat1);
     _onglets->osculateurs()->ui()->dateHeure2->blockSignals(etat2);
@@ -2078,6 +2076,7 @@ void PreviSat::ChangementFuseauHoraire(const int offset)
     /* Corps de la methode */
     EFFACE_OBJET(_dateCourante);
     _dateCourante = new Date(jjutc, offset * DATE::NB_JOUR_PAR_SEC);
+    _reinitJour = true;
 
     /* Retour */
     return;
@@ -2176,6 +2175,7 @@ void PreviSat::EtapePrecedente()
     const double offset = _dateCourante->offsetUTC();
     EFFACE_OBJET(_dateCourante);
     _dateCourante = new Date(jd + DATE::EPS_DATES, offset);
+    _reinitJour = true;
 
     // Enchainement de l'ensemble des calculs
     EnchainementCalculs();
@@ -2215,6 +2215,7 @@ void PreviSat::EtapeSuivante()
     const double offset = _dateCourante->offsetUTC();
     EFFACE_OBJET(_dateCourante);
     _dateCourante = new Date(jd + DATE::EPS_DATES, offset);
+    _reinitJour = true;
 
     // Enchainement de l'ensemble des calculs
     EnchainementCalculs();
@@ -2831,6 +2832,7 @@ void PreviSat::keyPressEvent(QKeyEvent *evt)
         // Bascule Temps reel/Mode manuel
         if (_ui->tempsReel->isChecked()) {
             _ui->modeManuel->setChecked(true);
+            _reinitJour = true;
 
         } else if (_ui->modeManuel->isChecked()) {
             _ui->tempsReel->setChecked(true);
@@ -2955,6 +2957,7 @@ void PreviSat::on_modeManuel_toggled(bool checked)
     }
 
     _onglets->ReinitFlags();
+    _reinitJour = true;
 
     _ui->pasReel->setVisible(!checked);
     _ui->secondes->setVisible(!checked);

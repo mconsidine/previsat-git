@@ -36,7 +36,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    4 janvier 2025
+ * >    2 fevrier 2025
  *
  */
 
@@ -116,6 +116,8 @@ signals:
     void ChangementFuseauHoraire(const int offset);
     void ChargementCarteDuMonde();
     void ChargementTraduction(const QString &langue);
+    void RecalculerPositions();
+    void ReinitCalculEvenementsSoleilLune();
 
 
 protected:

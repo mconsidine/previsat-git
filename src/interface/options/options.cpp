@@ -281,10 +281,12 @@ void Options::AppliquerPreferences()
     emit ChargementTraduction(langue);
     emit ChargementCarteDuMonde();
 
+    emit ReinitCalculEvenementsSoleilLune();
     emit ChangementFuseauHoraire((_ui->utc->isChecked()) ? 0 : _ui->updown->value());
     emit AfficherListeSatellites(Configuration::instance()->nomfic());
     emit AffichageLieuObs();
     emit AfficherLieuObs();
+    emit RecalculerPositions();
 
     /* Retour */
     return;
