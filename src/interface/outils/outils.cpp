@@ -30,7 +30,7 @@
  * >    14 aout 2022
  *
  * Date de revision
- * >    29 decembre 2024
+ * >    1er fevrier 2025
  *
  */
 
@@ -1254,7 +1254,7 @@ void Outils::on_importerIcone_clicked()
                 if (!res.isEmpty()) {
 
                     // Verification du nom de l'icone
-                    const QRegularExpression reg("\\d*");
+                    const QRegularExpression reg("^\\d{1,6}$");
                     QString nomFichierPng = (reg.match(res).hasMatch()) ? QString("%1").arg(res, 6, QChar('0')) : res;
 
                     if (!nomFichierPng.endsWith(".png")) {

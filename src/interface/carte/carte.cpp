@@ -841,11 +841,12 @@ void Carte::AffichageSatellites()
 
                 // Affichage de l'icone du satellite a partir du numero NORAD ou du nom
                 const QString norad = sat.elementsOrbitaux().norad;
-                const QString nomsat = sat.elementsOrbitaux().nom.section(" ", 0, 0);
+                const qsizetype nbs = sat.elementsOrbitaux().nom.count(" ");
+                const QString nomsat = sat.elementsOrbitaux().nom.section(" ", 0, nbs - 1);
 
                 const QDir di(Configuration::instance()->dirRsc());
                 const QDir di2(":/resources/icones");
-                const QStringList filtre(QStringList () << norad + ".png" << nomsat + ".png");
+                const QStringList filtre(QStringList () << norad + ".png" << nomsat + "*.png");
 
                 // L'icone de l'utilisateur est prioritaire sur l'icone par defaut
                 _listeIcones = di.entryList(filtre, QDir::Files);

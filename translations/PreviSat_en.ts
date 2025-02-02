@@ -1861,31 +1861,31 @@ PreviSat is free !</translation>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="924"/>
+        <location filename="../src/interface/carte/carte.cpp" line="925"/>
         <source>km</source>
         <comment>Kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="925"/>
+        <location filename="../src/interface/carte/carte.cpp" line="926"/>
         <source>km/s</source>
         <comment>Kilometer per second</comment>
         <translation>km/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="927"/>
+        <location filename="../src/interface/carte/carte.cpp" line="928"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="928"/>
+        <location filename="../src/interface/carte/carte.cpp" line="929"/>
         <source>nmi/s</source>
         <comment>Nautical mile per second</comment>
         <translation>nmi/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="938"/>
+        <location filename="../src/interface/carte/carte.cpp" line="939"/>
         <source>&lt;b&gt;%1&lt;/b&gt;&lt;br /&gt;Norad : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;&lt;br /&gt;Type orbite : %4&lt;br /&gt;Altitude : %5 %6&lt;br /&gt;Vitesse : %7 %8&lt;br /&gt;Inclinaison : %9°&lt;br /&gt;Période : %10</source>
         <translation>&lt;b&gt;%1&lt;/b&gt;&lt;br /&gt;Norad : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;&lt;br /&gt;Orbit type : %4&lt;br /&gt;Altitude : %5 %6&lt;br /&gt;Velocity : %7 %8&lt;br /&gt;Inclination : %9°&lt;br /&gt;Period : %10</translation>
     </message>
@@ -1896,8 +1896,8 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/carte/carte.cpp" line="195"/>
-        <location filename="../src/interface/carte/carte.cpp" line="1037"/>
-        <location filename="../src/interface/carte/carte.cpp" line="1057"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1038"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1058"/>
         <source>Soleil</source>
         <translation>Sun</translation>
     </message>
@@ -1909,31 +1909,31 @@ PreviSat is free !</translation>
         <translation>Moon</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1588"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1589"/>
         <source>W</source>
         <comment>Symbol for West</comment>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1594"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1595"/>
         <source>E</source>
         <comment>Symbol for East</comment>
         <translation>E</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1622"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1623"/>
         <source>N</source>
         <comment>Symbol for North</comment>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1628"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1629"/>
         <source>S</source>
         <comment>Symbol for South</comment>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1940"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1941"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>The file %1 does not exist, please re-install %2</translation>
     </message>
