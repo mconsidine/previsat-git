@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 juin 2024
+ * >    6 fevrier 2025
  *
  */
 
@@ -387,7 +387,7 @@ void Lune::CalculEphemLeverMeridienCoucher(const Date &date,
 
     /* Initialisations */
     Observateur obs = observateur;
-    Date dateCalcul(date.annee(), date.mois(), date.jour() - date.offsetUTC(), date.offsetUTC());
+    Date dateCalcul(floor(date.jourJulien() + 0.5) - 0.5 - date.offsetUTC(), date.offsetUTC());
     const Date dateFin(dateCalcul.jourJulienUTC() + 1., date.offsetUTC(), false);
     _ephem.clear();
 
