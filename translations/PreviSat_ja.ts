@@ -5472,13 +5472,6 @@ ce qui représente environ %2 pages.</source>
 これは約%2ページです。</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2183"/>
-        <location filename="../src/interface/previsat.cpp" line="2223"/>
-        <location filename="../src/interface/previsat.cpp" line="2347"/>
-        <source>dddd dd MMMM yyyy  HH:mm:ss</source>
-        <translation>yyyy年MM月dd日 (dddd)  HH:mm:ss</translation>
-    </message>
-    <message>
         <location filename="../src/interface/previsat.cpp" line="2483"/>
         <source>Mise à jour du fichier GP %1 en cours...</source>
         <translation>GPファイル「%1」を更新しています...</translation>
@@ -5622,6 +5615,13 @@ ce qui représente environ %2 pages.</source>
         <location filename="../src/interface/previsat.cpp" line="2022"/>
         <source>Fichiers PNG (*.png);;Fichiers JPEG (*.jpg *.jpeg);;Fichiers BMP (*.bmp);;Tous les fichiers (*.*)</source>
         <translation>PNGファイル (*.png);;JPEGファイル (*.jpg *.jpeg);;BMPファイル (*.bmp);;すべてのファイル (*.*)</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/previsat.cpp" line="2183"/>
+        <location filename="../src/interface/previsat.cpp" line="2223"/>
+        <location filename="../src/interface/previsat.cpp" line="2347"/>
+        <source>dddd dd MMMM yyyy HH:mm:ss</source>
+        <translation>yyyy年MM月dd日 (dddd) HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2992"/>

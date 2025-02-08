@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 fevrier 2025
+ * >    7 fevrier 2025
  *
  */
 
@@ -2180,7 +2180,7 @@ void PreviSat::EtapePrecedente()
     // Enchainement de l'ensemble des calculs
     EnchainementCalculs();
 
-    const QString fmt = tr("dddd dd MMMM yyyy  HH:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
+    const QString fmt = tr("dddd dd MMMM yyyy HH:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
 
     _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
     _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
@@ -2220,7 +2220,7 @@ void PreviSat::EtapeSuivante()
     // Enchainement de l'ensemble des calculs
     EnchainementCalculs();
 
-    const QString fmt = tr("dddd dd MMMM yyyy  HH:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
+    const QString fmt = tr("dddd dd MMMM yyyy HH:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
 
     _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
     _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);
@@ -2344,7 +2344,7 @@ void PreviSat::GestionTempsReel()
                 EFFACE_OBJET(_dateCourante);
                 _dateCourante = new Date(jd, offset);
 
-                const QString fmt = tr("dddd dd MMMM yyyy  HH:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
+                const QString fmt = tr("dddd dd MMMM yyyy HH:mm:ss") + ((_options->ui()->syst12h->isChecked()) ? "a" : "");
 
                 _onglets->osculateurs()->ui()->dateHeure2->setDisplayFormat(fmt);
                 _onglets->general()->ui()->dateHeure2->setDisplayFormat(fmt);

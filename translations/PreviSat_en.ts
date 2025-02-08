@@ -5444,6 +5444,13 @@ the video stream</translation>
         <translation>PNG files (*.png);;JPEG files (*.jpg *.jpeg);;BMP files (*.bmp);;All files (*.*)</translation>
     </message>
     <message>
+        <location filename="../src/interface/previsat.cpp" line="2183"/>
+        <location filename="../src/interface/previsat.cpp" line="2223"/>
+        <location filename="../src/interface/previsat.cpp" line="2347"/>
+        <source>dddd dd MMMM yyyy HH:mm:ss</source>
+        <translation>dddd, MMMM dd yyyy HH:mm:ss</translation>
+    </message>
+    <message>
         <location filename="../src/interface/previsat.cpp" line="2717"/>
         <source>dd/MM/yyyy</source>
         <comment>date format</comment>
@@ -5538,13 +5545,6 @@ the video stream</translation>
 ce qui représente environ %2 pages.</source>
         <translation>This version has %1 lines of code,
 which represents approximately %2 pages.</translation>
-    </message>
-    <message>
-        <location filename="../src/interface/previsat.cpp" line="2183"/>
-        <location filename="../src/interface/previsat.cpp" line="2223"/>
-        <location filename="../src/interface/previsat.cpp" line="2347"/>
-        <source>dddd dd MMMM yyyy  HH:mm:ss</source>
-        <translation>dddd, MMMM dd yyyy  HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2483"/>
