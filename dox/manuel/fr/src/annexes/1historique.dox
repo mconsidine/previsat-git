@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    15 decembre 2024
+ * >    9 fevrier 2025
  *
  */
 
@@ -32,13 +32,14 @@
 
 
 <b><span style="color:red;">Version 7.1 (révision 0) :</span><br />
-Décembre 2024 - Janvier 2025 :</b>
+Décembre 2024 - Février 2025 :</b>
 <ul>
 <li>Ajout de l'indication des flashs Starlink.
 <li>Ajout du gestionnaire d'icônes satellites.
 <li>Ajout des marqueurs pour les lieux d'observation et des icônes pour les stations.
 <li>Ajout du radar dans la fenêtre d'ajustement des dates pour le suivi avec un télescope.
 <li>Modification dans l'ajout de nouveaux lieux d'observation (copie des coordonnées à partir de Google Maps).
+<li>Correction de plusieurs bugs.
 </ul>
 
 <hr />
