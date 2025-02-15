@@ -106,16 +106,15 @@ public:
      * @param[in] aos gestion de la refraction dans le cas du calcul de lever/coucher
      */
     void CalculCoordHoriz(const Observateur &observateur,
-                          const bool acalc/* = true*/,
+                          const bool acalc,
                           const bool arefr = true,
                           const bool aos = false);
 
-    // TODO
     /**
      * @brief CalculCoordHoriz Calcul des coordonnees horizontales (avec condition de visibilite)
      * @param[in] observateur observateur
      */
-    void CalculCoordHoriz3(const Observateur &observateur);
+    void CalculCoordHoriz(const Observateur &observateur);
 
     /**
      * @brief CalculCoordTerrestres Calcul des coordonnees terrestres du corps a la date courante

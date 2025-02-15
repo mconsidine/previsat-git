@@ -104,7 +104,7 @@ void Etoile::CalculPositionEtoiles(const Observateur &observateur,
 
     /* Corps de la methode */
     for (int i=0; i<etoiles.size(); i++) {
-        etoiles[i].CalculCoordHoriz3(observateur);
+        etoiles[i].CalculCoordHoriz(observateur);
     }
 
     /* Retour */

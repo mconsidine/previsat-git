@@ -192,7 +192,7 @@ void Corps::CalculCoordHoriz(const Observateur &observateur,
 /*
  * Calcul des coordonnees horizontales (avec condition de visibilite)
  */
-void Corps::CalculCoordHoriz3(const Observateur &observateur)
+void Corps::CalculCoordHoriz(const Observateur &observateur)
 {
     /* Declarations des variables locales */
 

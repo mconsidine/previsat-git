@@ -137,7 +137,7 @@ void SatelliteTest::testCalculCoordHoriz2()
     sat.CalculPosVit(date);
     sat.CalculCoordHoriz(obs, true, false);
     sat.CalculCoordEquat(obs, false);
-    sat.CalculCoordHoriz3(obs);
+    sat.CalculCoordHoriz(obs);
 
     QCOMPARE(sat.hauteur(), 0.010451579960469935);
     QCOMPARE(sat.azimut(), 3.179561204007342);
@@ -148,7 +148,7 @@ void SatelliteTest::testCalculCoordHoriz2()
     sat.CalculPosVit(date);
     sat.CalculCoordHoriz(obs, true, false);
     sat.CalculCoordEquat(obs, false);
-    sat.CalculCoordHoriz3(obs);
+    sat.CalculCoordHoriz(obs);
 
     QCOMPARE(sat.hauteur(), -0.013773459271988258);
     QCOMPARE(sat.visible(), false);

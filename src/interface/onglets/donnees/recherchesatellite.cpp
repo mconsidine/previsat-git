@@ -182,18 +182,19 @@ void RechercheSatellite::on_noradDonneesSat_valueChanged(int arg1)
         const QString norad = QString::number(arg1);
         _resultatsSatellitesTrouves = Donnees::RequeteNorad(Configuration::instance()->dbSatellites(), norad);
 
-        const Donnees donnees = _resultatsSatellitesTrouves.first();
-        QString nomsat = donnees.nom();
-        if (nomsat.contains("iss (zarya)", Qt::CaseInsensitive)) {
-            nomsat = "ISS";
-        }
-
-        _ui->nom->setText(nomsat.toUpper());
-        _ui->cosparDonneesSat->setText(donnees.cospar());
-
         if (_resultatsSatellitesTrouves.isEmpty()) {
             _ui->nom->setText("");
             _ui->cosparDonneesSat->setText("");
+        } else {
+
+            const Donnees donnees = _resultatsSatellitesTrouves.first();
+            QString nomsat = donnees.nom();
+            if (nomsat.contains("iss (zarya)", Qt::CaseInsensitive)) {
+                nomsat = "ISS";
+            }
+
+            _ui->nom->setText(nomsat.toUpper());
+            _ui->cosparDonneesSat->setText(donnees.cospar());
         }
 
         show();

@@ -86,7 +86,7 @@ void Constellation::CalculConstellations(const Observateur &observateur,
     }
 
     for (int i=0; i<constellations.size(); i++) {
-        constellations[i].CalculCoordHoriz3(observateur);
+        constellations[i].CalculCoordHoriz(observateur);
     }
 
     /* Retour */

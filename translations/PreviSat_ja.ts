@@ -6354,7 +6354,7 @@ Valeur attendue : %3 - Valeur calculée : %4</source>
     <name>RechercheSatellite</name>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="54"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="218"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="219"/>
         <source>Objets trouvés :</source>
         <translation>見つかったオブジェクト :</translation>
     </message>
@@ -6490,7 +6490,7 @@ Valeur attendue : %3 - Valeur calculée : %4</source>
         <translation>国際衛星識別符号 : %1		軌道モデル      : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="447"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="448"/>
         <source>Inconnues</source>
         <translation>不明</translation>
     </message>
@@ -6557,87 +6557,87 @@ Valeur attendue : %3 - Valeur calculée : %4</source>
         <translation>軌道傾斜角    : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="221"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="222"/>
         <source>Objets trouvés (%1) :</source>
         <translation>見つかったオブジェクト (%1) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="381"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="467"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="473"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="523"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="526"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="382"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="468"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="474"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="524"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="527"/>
         <source>Inconnu</source>
         <translation>不明</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="387"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="480"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="489"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="492"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="520"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="388"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="481"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="490"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="493"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="521"/>
         <source>Inconnue</source>
         <translation>不明</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="413"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="414"/>
         <source>SGP4 (DS)</source>
         <comment>Orbital model SGP4 (deep space)</comment>
         <translation>SGP4 (深宇宙)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="413"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="414"/>
         <source>SGP4 (NE)</source>
         <comment>Orbital model SGP4 (near Earth)</comment>
         <translation>SGP4 (近地球域)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="414"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="415"/>
         <source>Non applicable</source>
         <translation>該当なし</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="419"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="420"/>
         <source>Modèle haute orbite</source>
         <translation>高軌道モデル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="419"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="420"/>
         <source>Modèle basse orbite</source>
         <translation>低軌道モデル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="427"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="428"/>
         <source>m</source>
         <comment>meter</comment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="428"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="429"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="441"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="442"/>
         <source>ft</source>
         <comment>foot</comment>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="442"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="443"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="509"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="510"/>
         <source>Date de rentrée incertaine</source>
         <translatorcomment>J&apos;ai opté pour 不確か au lieu de 不明</translatorcomment>
         <translation>再突入の日付は不確かです</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="512"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="513"/>
         <source>Heure de rentrée incertaine</source>
         <translatorcomment>J&apos;ai opté pour 不確か au lieu de 不明</translatorcomment>
         <translation>再突入の時刻は不確かです</translation>
