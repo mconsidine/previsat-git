@@ -33,16 +33,16 @@
 # >    21 juin 2023
 #
 # Date de revision
-# >    7 decembre 2024
+# >    15 fevrier 2025
 #
 
 cmake_minimum_required(VERSION 3.24)
 
 
 #----------------------------------
-set(VERSION 7.0.2.3)
-set(ANNEES_DEV 2005-2024)
-set(QT_PREFERRED_VERSION 6.7.2)
+set(VERSION 7.1.0.6)
+set(ANNEES_DEV 2005-2025)
+set(QT_PREFERRED_VERSION 6.8.2)
 
 if(NOT DEFINED PORTABLE_BUILD)
     set(PORTABLE_BUILD false)
@@ -76,7 +76,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Icone
@@ -93,8 +93,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     )
 endif()
 
-find_package(QT NAMES Qt6 REQUIRED COMPONENTS Concurrent Multimedia Network PrintSupport Sql Widgets Xml)
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Concurrent Core Multimedia Network PrintSupport Sql Widgets Xml)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Concurrent Core Multimedia Network PrintSupport Sql Widgets Xml)
+
 
 # Verification de la version de Qt
 string(SUBSTRING ${QT_PREFERRED_VERSION} 0 1 QT_PREFERRED_VERSION_MAJOR)
