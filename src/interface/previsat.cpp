@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 fevrier 2025
+ * >    26 fevrier 2025
  *
  */
 
@@ -517,7 +517,7 @@ void PreviSat::TelechargementGroupesStarlink(const bool maj)
 
         // Telechargement des trains Starlink connus
         Telechargement tel1(Configuration::instance()->dirStarlink());
-        tel1.TelechargementFichier(QUrl(QString(DOMAIN_NAME) + "starlink/starlink.txt"));
+        tel1.TelechargementFichier(QUrl(QString(DOMAIN_NAME) + "starlink/starlink.txt"), maj);
 
         // Lecture du fichier starlink.txt
         LectureGroupesStarlink();
