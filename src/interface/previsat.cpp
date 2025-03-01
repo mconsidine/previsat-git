@@ -1866,6 +1866,7 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
     ListWidgetItem *elem;
 
     /* Initialisations */
+    const bool checked = _ui->satellitesChoisis->isChecked();
     _ui->satellitesChoisis->setChecked(false);
     _ui->listeSatellites->clear();
     _ui->listeSatellites->scrollToTop();
@@ -1920,6 +1921,7 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
     }
 
     _ui->listeSatellites->sortItems();
+    _ui->satellitesChoisis->setChecked(checked);
     _ui->listeSatellites->scrollToItem(_ui->listeSatellites->currentItem(), QAbstractItemView::PositionAtTop);
 
     emit TriAffichageListeSatellites();
