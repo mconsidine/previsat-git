@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 juillet 2024
+ * >    3 mars 2025
  *
  */
 
@@ -66,6 +66,12 @@ public:
     /*
      * Methodes publiques
      */
+    /**
+     * @brief CalculDatesEclipses Calcul des dates des prochaines eclipses de Lune et de Soleil
+     * @param[in] date date
+     */
+    void CalculDatesEclipses(const Date &date);
+
     /**
      * @brief CalculDatesPhases Calcul des dates des phases lunaires
      * @param[in] date date
@@ -110,6 +116,13 @@ public:
     QString phase() const;
     std::array<QString, LUNE::NB_PHASES> datesPhases() const;
 
+    QString dateEclipseSoleil() const;
+    QString typeEclipseSoleil() const;
+    QString tooltipEclipseSoleil() const;
+    QString dateEclipseLune() const;
+    QString typeEclipseLune() const;
+    QString tooltipEclipseLune() const;
+
 
 protected:
 
@@ -131,6 +144,19 @@ private:
     double _anglePhase;
     double _fractionIlluminee;
     double _magnitude;
+
+    double _dj;
+    double _p;
+    double _q;
+    double _gamma;
+    double _u;
+    QString _dateEclipseSoleil;
+    QString _typeEclipseSoleil;
+    QString _tooltipEclipseSoleil;
+    QString _dateEclipseLune;
+    QString _typeEclipseLune;
+    QString _tooltipEclipseLune;
+
     QString _phase;
     std::array<QString, LUNE::NB_PHASES> _datesPhases;
 
@@ -139,12 +165,42 @@ private:
      * Methodes privees
      */
     /**
+     * @brief CalculCaracteristiquesEclipses Calcul des caracteristiques des eclipses de Soleil et de Lune
+     * @param[in] phase phase (0 = Nouvelle Lune; 2 = Pleine Lune)
+     * @param[in] dateEclipse date de l'eclipse
+     * @param[in/out] k indice de la Nouvelle Lune
+     * @return
+     */
+    bool CalculCaracteristiquesEclipses(const unsigned int phase,
+                                        const QString &dateEclipse,
+                                        double &k);
+
+    /**
+     * @brief CalculElementsEclipses Calcul des elements communs aux 2 types d'eclipse (Soleil et Lune)
+     * @param[in] k indice de la Nouvelle Lune
+     * @param[in] f argument de latitude de la Lune
+     * @param[in] phase phase (0 = Nouvelle Lune; 2 = Pleine Lune)
+     */
+    void CalculElementsEclipses(const double k,
+                                const double f,
+                                unsigned int phase);
+
+    /**
      * @brief CalculEphemLeverMeridienCoucher Calcul des ephemerides de la Lune pour determiner les heures de lever/meriden/coucher
      * @param[in] date date
      * @param[in] observateur observateur
      */
     void CalculEphemLeverMeridienCoucher(const Date &date,
                                          const Observateur &observateur) override;
+
+    /**
+     * @brief CalculIndicePhase Calcul de l'indice de la Nouvelle Lune (0 pour la premiere Nouvelle Lune de 2000)
+     * @param[in] annee annee
+     * @param[in] phase phase (0 = Nouvelle Lune; 2 = Pleine Lune)
+     * @return indice de la Nouvelle Lune
+     */
+    double CalculIndicePhase(const double annee,
+                             const unsigned int phase);
 
     /**
      * @brief CalculJourJulienPhase Calcul du jour julien approximatif d'une phase lunaire

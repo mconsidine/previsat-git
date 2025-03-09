@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    2 fevrier 2025
+ * >    2 mars 2025
  *
  */
 
@@ -652,6 +652,13 @@ void General::AffichageDonneesSoleilLune()
     _ui->premierQuartier->setText(lune.datesPhases()[1]);
     _ui->pleineLune->setText(lune.datesPhases()[2]);
     _ui->dernierQuartier->setText(lune.datesPhases()[3]);
+
+    // Prochaines eclipses
+    const QString fmt2 = "%1 (%2)";
+    _ui->eclipseSoleil->setText(fmt2.arg(lune.dateEclipseSoleil()).arg(lune.typeEclipseSoleil()));
+    _ui->eclipseSoleil->setToolTip(lune.tooltipEclipseSoleil());
+    _ui->eclipseLune->setText(fmt2.arg(lune.dateEclipseLune()).arg(lune.typeEclipseLune()));
+    _ui->eclipseLune->setToolTip(lune.tooltipEclipseLune());
 
     /* Retour */
     return;
