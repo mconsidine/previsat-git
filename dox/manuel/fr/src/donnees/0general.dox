@@ -24,7 +24,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    26 avril 2023
+ * >    6 mars 2025
  *
  */
 
@@ -78,7 +78,8 @@ Nous donnons ensuite les évènements concernant le Soleil :
 
 Et enfin les évènements concernant la Lune :
 - Lever, passage au méridien, coucher,
-- Les dates et heures des prochaines phases de la Lune (les heures sont arrondies à la minute)
+- Les dates et heures des prochaines phases de la Lune (les heures sont arrondies à la minute),
+- Les dates et heures des prochaines éclipses de Lune et de Soleil
 
 
 Il est possible d'enregistrer dans un fichier texte les valeurs fournies dans cet onglet en cliquant sur le bouton <b>Enregistrer</b> dans le menu principal ou avec le raccourci Ctrl + S.

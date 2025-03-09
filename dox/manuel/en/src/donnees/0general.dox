@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    13 mai 2023
+ * >    6 mars 2025
  *
  */
 
@@ -75,7 +75,8 @@ We give the events about the Sun :
 
 And then the events about the Moon :
 - Moonrise, pass to the meridian, moonset,
-- Dates and hours of the next Moon phases (hours rounded to the minute).
+- Dates and hours of the next Moon phases (hours rounded to the minute),
+- Dates and hours of the next lunar and solar eclipses.
 
 It is possible to save in a text file the values provided in ths tab by clicking on the Save item in the main menu or with the shortcut Ctrl + S.
 
