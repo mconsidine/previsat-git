@@ -30,7 +30,7 @@
  * >    28 decembre 2019
  *
  * Date de revision
- * >    7 decembre 2024
+ * >    10 mars 2025
  *
  */
 
@@ -39,6 +39,7 @@
 #include "telescope/ui_suivitelescope.h"
 #endif
 #include "onglets.h"
+#include "donnees/ui_recherchesatellite.h"
 #include "general/ui_general.h"
 #include "ui_onglets.h"
 #include "antenne/antenne.h"
@@ -295,6 +296,11 @@ void Onglets::show(const Date &date)
         setTabVisible(indexOf(_ui->elementsOsculateurs), false);
         _ui->stackedWidget_informations->removeWidget(_ui->informationsSat);
 
+        if (!_rechercheSatellite->isVisible()) {
+            _rechercheSatellite->on_noradDonneesSat_valueChanged(999999);
+            _rechercheSatellite->ui()->noradDonneesSat->clear();
+        }
+
     } else {
 
         // Affichage des donnees de l'onglet Elements osculateurs
@@ -424,10 +430,11 @@ void Onglets::AffichageOngletInformations()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    _indexInformations = _ui->stackedWidget_informations->currentIndex();
+    const unsigned int dt = (Configuration::instance()->listeSatellites().isEmpty()) ? 1 : 0;
+    _indexInformations = _ui->stackedWidget_informations->currentIndex() + dt;
 
     /* Corps de la methode */
-    const int idxPrec = (_indexInformations + _ui->stackedWidget_informations->count() - 1) % _ui->stackedWidget_informations->count();
+    const int idxPrec = (_indexInformations + _ui->stackedWidget_informations->count() - 1) % (_ui->stackedWidget_informations->count() + dt);
     const int idxSuiv = (_indexInformations + 1) % _ui->stackedWidget_informations->count();
 
     setTabText(indexOf(_ui->informations), QCoreApplication::translate("Onglets", _titresInformations[_indexInformations]));
