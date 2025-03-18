@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 mars 2025
+ * >    18 mars 2025
  *
  */
 
@@ -95,6 +95,7 @@ void Lune::CalculDatesEclipses(const Date &date)
         atrouve = false;
         while (!atrouve) {
 
+            jj = CalculJourJulienPhase(k);
             const double t = k / 1236.85;
             const double t2 = t * t;
 
