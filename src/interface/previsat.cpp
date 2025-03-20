@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    2 mars 2025
+ * >    20 mars 2025
  *
  */
 
@@ -2186,14 +2186,14 @@ void PreviSat::EtapePrecedente()
     }
 
     /* Corps de la methode */
-    const double jd = (_ui->valManuel->currentIndex() < 3) ?
-                          _dateCourante->jourJulienUTC() - _ui->pasManuel->currentText().toDouble() *
-                                                               qPow(DATE::NB_SEC_PAR_MIN, _ui->valManuel->currentIndex()) * DATE::NB_JOUR_PAR_SEC :
-                          _dateCourante->jourJulienUTC() - _ui->pasManuel->currentText().toDouble();
+    const QDateTime dt = (_ui->valManuel->currentIndex() < 3) ?
+                             _onglets->general()->ui()->dateHeure2->dateTime().addSecs(qRound(-_ui->pasManuel->currentText().toDouble() *
+                                                                                       qPow(DATE::NB_SEC_PAR_MIN, _ui->valManuel->currentIndex()))) :
+                             _onglets->general()->ui()->dateHeure2->dateTime().addDays(-_ui->pasManuel->currentText().toInt());
 
     const double offset = _dateCourante->offsetUTC();
     EFFACE_OBJET(_dateCourante);
-    _dateCourante = new Date(jd + DATE::EPS_DATES, offset);
+    _dateCourante = new Date(dt, offset);
     _reinitJour = true;
 
     // Enchainement de l'ensemble des calculs
@@ -2226,14 +2226,14 @@ void PreviSat::EtapeSuivante()
     }
 
     /* Corps de la methode */
-    const double jd = (_ui->valManuel->currentIndex() < 3) ?
-                          _dateCourante->jourJulienUTC() + _ui->pasManuel->currentText().toDouble() *
-                                                               qPow(DATE::NB_SEC_PAR_MIN, _ui->valManuel->currentIndex()) * DATE::NB_JOUR_PAR_SEC :
-                          _dateCourante->jourJulienUTC() + _ui->pasManuel->currentText().toDouble();
+    const QDateTime dt = (_ui->valManuel->currentIndex() < 3) ?
+                             _onglets->general()->ui()->dateHeure2->dateTime().addSecs(qRound(_ui->pasManuel->currentText().toDouble() *
+                                                                                              qPow(DATE::NB_SEC_PAR_MIN, _ui->valManuel->currentIndex()))) :
+                             _onglets->general()->ui()->dateHeure2->dateTime().addDays(_ui->pasManuel->currentText().toInt());
 
     const double offset = _dateCourante->offsetUTC();
     EFFACE_OBJET(_dateCourante);
-    _dateCourante = new Date(jd + DATE::EPS_DATES, offset);
+    _dateCourante = new Date(dt, offset);
     _reinitJour = true;
 
     // Enchainement de l'ensemble des calculs
