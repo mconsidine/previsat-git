@@ -5160,8 +5160,8 @@ click on &apos;Update ISS information&apos;</translation>
     <message>
         <location filename="../src/interface/previsat.ui" line="573"/>
         <location filename="../src/interface/previsat.ui" line="647"/>
-        <location filename="../src/interface/previsat.cpp" line="3012"/>
-        <location filename="../src/interface/previsat.cpp" line="3029"/>
+        <location filename="../src/interface/previsat.cpp" line="3011"/>
+        <location filename="../src/interface/previsat.cpp" line="3028"/>
         <source>secondes</source>
         <translation>seconds</translation>
     </message>
@@ -5204,13 +5204,13 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="583"/>
-        <location filename="../src/interface/previsat.cpp" line="2717"/>
+        <location filename="../src/interface/previsat.cpp" line="2716"/>
         <source>Temps réel</source>
         <translation>Real time</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="593"/>
-        <location filename="../src/interface/previsat.cpp" line="2720"/>
+        <location filename="../src/interface/previsat.cpp" line="2719"/>
         <source>Mode manuel</source>
         <translation>Manual mode</translation>
     </message>
@@ -5226,19 +5226,19 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="652"/>
-        <location filename="../src/interface/previsat.cpp" line="3030"/>
+        <location filename="../src/interface/previsat.cpp" line="3029"/>
         <source>minutes</source>
         <translation>minutes</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="657"/>
-        <location filename="../src/interface/previsat.cpp" line="3031"/>
+        <location filename="../src/interface/previsat.cpp" line="3030"/>
         <source>heures</source>
         <translation>hours</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="662"/>
-        <location filename="../src/interface/previsat.cpp" line="3032"/>
+        <location filename="../src/interface/previsat.cpp" line="3031"/>
         <source>jours</source>
         <translation>days</translation>
     </message>
@@ -5431,13 +5431,13 @@ the video stream</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1307"/>
-        <location filename="../src/interface/previsat.cpp" line="2739"/>
+        <location filename="../src/interface/previsat.cpp" line="2738"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="1313"/>
-        <location filename="../src/interface/previsat.cpp" line="2740"/>
+        <location filename="../src/interface/previsat.cpp" line="2739"/>
         <source>Heure</source>
         <translation>Hour</translation>
     </message>
@@ -5461,72 +5461,72 @@ the video stream</translation>
         <translation>dddd, MMMM dd yyyy HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2736"/>
+        <location filename="../src/interface/previsat.cpp" line="2735"/>
         <source>dd/MM/yyyy</source>
         <comment>date format</comment>
         <translation>MM/dd/yyyy</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3012"/>
-        <location filename="../src/interface/previsat.cpp" line="3029"/>
+        <location filename="../src/interface/previsat.cpp" line="3011"/>
+        <location filename="../src/interface/previsat.cpp" line="3028"/>
         <source>seconde</source>
         <translation>second</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3030"/>
+        <location filename="../src/interface/previsat.cpp" line="3029"/>
         <source>minute</source>
         <translation>minute</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3031"/>
+        <location filename="../src/interface/previsat.cpp" line="3030"/>
         <source>heure</source>
         <translation>hour</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3032"/>
+        <location filename="../src/interface/previsat.cpp" line="3031"/>
         <source>jour</source>
         <translation>day</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3049"/>
+        <location filename="../src/interface/previsat.cpp" line="3048"/>
         <source>Agrandir</source>
         <translation>Maximize</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3058"/>
+        <location filename="../src/interface/previsat.cpp" line="3057"/>
         <source>Réduire</source>
         <translation>Minimize</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3084"/>
+        <location filename="../src/interface/previsat.cpp" line="3083"/>
         <source>Carte du monde</source>
         <translation>World map</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3092"/>
+        <location filename="../src/interface/previsat.cpp" line="3091"/>
         <source>Carte du ciel</source>
         <translation>Sky map</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3299"/>
+        <location filename="../src/interface/previsat.cpp" line="3298"/>
         <source>onglet_general</source>
         <comment>file name (without accent)</comment>
         <translation>main_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3300"/>
+        <location filename="../src/interface/previsat.cpp" line="3299"/>
         <source>onglet_elements</source>
         <comment>file name (without accent)</comment>
         <translation>elements_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3300"/>
+        <location filename="../src/interface/previsat.cpp" line="3299"/>
         <source>onglet_informations</source>
         <comment>file name (without accent)</comment>
         <translation>information_tab</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2729"/>
+        <location filename="../src/interface/previsat.cpp" line="2728"/>
         <source>Jour julien</source>
         <translation>Julian day</translation>
     </message>
@@ -5557,12 +5557,12 @@ ce qui représente environ %2 pages.</source>
 which represents approximately %2 pages.</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2502"/>
+        <location filename="../src/interface/previsat.cpp" line="2500"/>
         <source>Mise à jour du fichier GP %1 en cours...</source>
         <translation>Updating GP file %1...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2509"/>
+        <location filename="../src/interface/previsat.cpp" line="2507"/>
         <source>Téléchargement terminé</source>
         <translation>Downloading finished</translation>
     </message>
@@ -5592,99 +5592,99 @@ which represents approximately %2 pages.</translation>
         <translation>The orbital elements are older than %1 day(s). Do you want to update them?</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2730"/>
+        <location filename="../src/interface/previsat.cpp" line="2729"/>
         <source>Jour</source>
         <translation>Day</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2534"/>
+        <location filename="../src/interface/previsat.cpp" line="2532"/>
         <source>Mise à jour du groupe d&apos;éléments orbitaux &quot;%1&quot;...</source>
         <translation>Updating &quot;%1&quot; group of orbital elements...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2569"/>
+        <location filename="../src/interface/previsat.cpp" line="2567"/>
         <source>Mise à jour du groupe d&apos;éléments orbitaux &quot;%1&quot; terminée</source>
         <translation>Update of orbital elements group &quot;%1&quot; done</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="2915"/>
+        <location filename="../src/interface/previsat.cpp" line="2914"/>
         <source>Impossible d&apos;afficher l&apos;aide en ligne</source>
         <translation>Impossible to display online help</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.ui" line="1008"/>
-        <location filename="../src/interface/previsat.cpp" line="3199"/>
+        <location filename="../src/interface/previsat.cpp" line="3198"/>
         <source>Importer fichier GP / TLE...</source>
         <translation>Import GP / TLE file...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3201"/>
+        <location filename="../src/interface/previsat.cpp" line="3200"/>
         <source>Fichiers GP (*.xml);;Fichiers TLE (*.txt *.tle);;Tous les fichiers (*.*)</source>
         <translation>GP files (*.xml);;TLE files (*.txt *.tle);;All files (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3218"/>
+        <location filename="../src/interface/previsat.cpp" line="3217"/>
         <source>Le fichier %1 ne contient pas d&apos;éléments orbitaux</source>
         <translation>The file %1 does not contain orbital elements</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3227"/>
-        <location filename="../src/interface/previsat.cpp" line="3257"/>
+        <location filename="../src/interface/previsat.cpp" line="3226"/>
+        <location filename="../src/interface/previsat.cpp" line="3256"/>
         <source>Le fichier %1 existe déjà</source>
         <translation>The file %1 already exists</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3306"/>
+        <location filename="../src/interface/previsat.cpp" line="3305"/>
         <source>Fichiers texte (*.txt);;Tous les fichiers (*.*)</source>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3488"/>
+        <location filename="../src/interface/previsat.cpp" line="3487"/>
         <source>Commun</source>
         <comment>common orbital elements groups</comment>
         <translation>Common</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3493"/>
+        <location filename="../src/interface/previsat.cpp" line="3492"/>
         <source>Tous</source>
         <comment>all orbital elements groups</comment>
         <translation>All</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3591"/>
-        <location filename="../src/interface/previsat.cpp" line="3594"/>
+        <location filename="../src/interface/previsat.cpp" line="3590"/>
+        <location filename="../src/interface/previsat.cpp" line="3593"/>
         <source>Devise</source>
         <translation>Currency</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3592"/>
-        <location filename="../src/interface/previsat.cpp" line="3594"/>
+        <location filename="../src/interface/previsat.cpp" line="3591"/>
+        <location filename="../src/interface/previsat.cpp" line="3593"/>
         <source>Choisissez la devise :</source>
         <translation>Choose currency :</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3608"/>
+        <location filename="../src/interface/previsat.cpp" line="3607"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires</source>
         <translation>Be careful : it is possible to make a PayPal donation by means of Tipeee, but this will incur additional costs</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3675"/>
+        <location filename="../src/interface/previsat.cpp" line="3674"/>
         <source>Ouverture du fichier d&apos;éléments orbitaux %1 ...</source>
         <translation>Opening orbiral elements file %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3677"/>
+        <location filename="../src/interface/previsat.cpp" line="3676"/>
         <source>Fichier d&apos;éléments orbitaux de %1 satellites</source>
         <translation>Orbital elements file of %1 satellites</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3845"/>
+        <location filename="../src/interface/previsat.cpp" line="3844"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD number : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="2040"/>
-        <location filename="../src/interface/previsat.cpp" line="3305"/>
+        <location filename="../src/interface/previsat.cpp" line="3304"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
@@ -5694,7 +5694,7 @@ which represents approximately %2 pages.</translation>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3376"/>
+        <location filename="../src/interface/previsat.cpp" line="3375"/>
         <source>Pas d&apos;informations à afficher</source>
         <translation>No available information</translation>
     </message>
@@ -6026,140 +6026,140 @@ Satellite %1 - NORAD number : %2
 Expected value : %3 - Calculated value : %4</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="495"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="494"/>
         <source>A/T</source>
         <comment>Annular or Total Solar eclipse</comment>
         <translation>A/T</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="491"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="490"/>
         <source>P</source>
         <comment>Partial Solar eclipse</comment>
         <translation>P</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="503"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="502"/>
         <source>T</source>
         <comment>Total Solar eclipse</comment>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="507"/>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="517"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="506"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="516"/>
         <source>A</source>
         <comment>Annular Solar eclipse</comment>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="514"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="513"/>
         <source>A-T</source>
         <comment>Annular-total Solar eclipse</comment>
         <translation>A-T</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="548"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="547"/>
         <source>T</source>
         <comment>Lunar eclipse by the shadow (total)</comment>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="544"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="543"/>
         <source>P</source>
         <comment>Lunar eclipse by the shadow (partial)</comment>
         <translation>P</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="492"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="491"/>
         <source>Partielle</source>
         <comment>Partial Solar eclipse</comment>
         <translation>Partial</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="496"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="495"/>
         <source>Annulaire ou totale</source>
         <comment>Annular or Total Solar eclipse</comment>
         <translation>Annular or Total</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="504"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="503"/>
         <source>Total</source>
         <comment>Total Solar eclipse</comment>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="508"/>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="518"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="507"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="517"/>
         <source>Annulaire</source>
         <comment>Annular Solar eclipse</comment>
         <translation>Annular</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="515"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="514"/>
         <source>Annulaire-totale</source>
         <comment>Annular-total Solar eclipse</comment>
         <translation>Annular-total</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="537"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="536"/>
         <source>Pen</source>
         <comment>Lunar eclipse by the penumbra</comment>
         <translation>Pen</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="538"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="537"/>
         <source>Pénombre</source>
         <comment>Lunar eclipse by the penumbra</comment>
         <translation>Penumbra</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="545"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="544"/>
         <source>Partielle</source>
         <comment>Lunar eclipse by the shadow (partial)</comment>
         <translation>Partial</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="549"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="548"/>
         <source>Totale</source>
         <comment>Lunar eclipse by the shadow (total)</comment>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="282"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="281"/>
         <source>Nouvelle Lune</source>
         <translation>New Moon</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="286"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="285"/>
         <source>Premier croissant</source>
         <translation>Waxing crescent</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="286"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="285"/>
         <source>Dernier croissant</source>
         <translation>Waning crescent</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="290"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="289"/>
         <source>Premier quartier</source>
         <translation>First quarter</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="290"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="289"/>
         <source>Dernier quartier</source>
         <translation>Last quarter</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="294"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="293"/>
         <source>Gibbeuse croissante</source>
         <translation>Waxing gibbous</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="294"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="293"/>
         <source>Gibbeuse décroissante</source>
         <translation>Waning gibbous</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="298"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="297"/>
         <source>Pleine Lune</source>
         <translation>Full Moon</translation>
     </message>

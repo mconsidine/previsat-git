@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 mars 2025
+ * >    22 mars 2025
  *
  */
 
@@ -76,6 +76,8 @@ void Lune::CalculDatesEclipses(const Date &date)
 {
     /* Declarations des variables locales */
     bool atrouve;
+    double jj;
+    double k;
 
     /* Initialisations */
     const double annee = date.annee() + (date.mois() - 1) / 12. + date.jour() / 365.;
@@ -83,14 +85,7 @@ void Lune::CalculDatesEclipses(const Date &date)
     /* Corps de la methode */
     for(unsigned int phase=0; phase<=2; phase+=2) {
 
-        double k = CalculIndicePhase(annee, phase) - 1;
-        double jj = CalculJourJulienPhase(k);
-
-        while (jj < date.jourJulienTT()) {
-
-            k += 1.;
-            jj = CalculJourJulienPhase(k);
-        }
+        k = CalculIndicePhase(annee, phase) - 1;
 
         atrouve = false;
         while (!atrouve) {
@@ -108,12 +103,17 @@ void Lune::CalculDatesEclipses(const Date &date)
                 CalculElementsEclipses(k, f, phase);
                 jj += _dj;
 
-                const QString dateEclipse = Date(jj, date.offsetUTC()).ToQDateTime(DateFormatSec::FORMAT_SEC).toString(Qt::ISODate).remove(16, 3).replace(":", "h")
-                                                .replace("T", " ").trimmed();
+                if (jj >= date.jourJulienTT()) {
 
-                // Calcul de l'eclipse
-                atrouve = CalculCaracteristiquesEclipses(phase, dateEclipse, k);
+                    const QString dateEclipse = Date(jj, date.offsetUTC()).ToQDateTime(DateFormatSec::FORMAT_SEC).toString(Qt::ISODate).remove(16, 3)
+                                                    .replace(":", "h").replace("T", " ").trimmed();
 
+                    // Calcul des caracteristiques de l'eclipse
+                    atrouve = CalculCaracteristiquesEclipses(phase, dateEclipse, k);
+
+                } else {
+                    k += 1.;
+                }
             } else {
                 k += 1.;
             }
