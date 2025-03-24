@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 mars 2025
+ * >    24 mars 2025
  *
  */
 
@@ -105,11 +105,8 @@ void Lune::CalculDatesEclipses(const Date &date)
 
                 if (jj >= date.jourJulienTT()) {
 
-                    const QString dateEclipse = Date(jj, date.offsetUTC()).ToQDateTime(DateFormatSec::FORMAT_SEC).toString(Qt::ISODate).remove(16, 3)
-                                                    .replace(":", "h").replace("T", " ").trimmed();
-
                     // Calcul des caracteristiques de l'eclipse
-                    atrouve = CalculCaracteristiquesEclipses(phase, dateEclipse, k);
+                    atrouve = CalculCaracteristiquesEclipses(phase, jj, k);
 
                 } else {
                     k += 1.;
@@ -464,13 +461,19 @@ QString Lune::tooltipEclipseLune() const
  * Calcul des caracteristiques des eclipses de Soleil et de Lune
  */
 bool Lune::CalculCaracteristiquesEclipses(const unsigned int phase,
-                                          const QString &dateEclipse,
+                                          const double jj,
                                           double &k)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
     bool atrouve = false;
+
+    const QDateTime dt = Date(jj, 0.).ToQDateTime(DateFormatSec::FORMAT_SEC);
+    const double offset = Date::CalculOffsetUTC(dt);
+
+    const QString dateEclipse = Date(jj, offset).ToQDateTime(DateFormatSec::FORMAT_SEC).toString(Qt::ISODate).remove(16, 3).replace(":", "h").replace("T", " ")
+                                    .trimmed();
 
     /* Corps de la methode */
     const double g = fabs(_gamma);
@@ -485,25 +488,31 @@ bool Lune::CalculCaracteristiquesEclipses(const unsigned int phase,
             atrouve = true;
             _dateEclipseSoleil = dateEclipse;
 
+            // Eclipse non centrale
             if (g > 0.9972) {
 
-                // Eclipse non centrale
+                // Eclipse partielle
                 _typeEclipseSoleil = QObject::tr("P", "Partial Solar eclipse");
                 _tooltipEclipseSoleil = QObject::tr("Partielle", "Partial Solar eclipse");
 
                 if (g <= 0.9972 + fabs(_u)) {
+
+                    // Eclipse annulaire ou totale
                     _typeEclipseSoleil = QObject::tr("A/T", "Annular or Total Solar eclipse");
                     _tooltipEclipseSoleil = QObject::tr("Annulaire ou totale", "Annular or Total Solar eclipse");
                 }
-
             } else {
 
                 // Eclipse centrale
-                if (_u < 0) {
+                if (_u < 0.) {
+
+                    // Eclipse totale
                     _typeEclipseSoleil = QObject::tr("T", "Total Solar eclipse");
-                    _tooltipEclipseSoleil = QObject::tr("Total", "Total Solar eclipse");
+                    _tooltipEclipseSoleil = QObject::tr("Totale", "Total Solar eclipse");
 
                 } else if (_u > 0.0047) {
+
+                    // Eclipse annulaire
                     _typeEclipseSoleil = QObject::tr("A", "Annular Solar eclipse");
                     _tooltipEclipseSoleil = QObject::tr("Annulaire", "Annular Solar eclipse");
 
@@ -511,9 +520,13 @@ bool Lune::CalculCaracteristiquesEclipses(const unsigned int phase,
 
                     const double ww = 0.00464 * sqrt(1. - _gamma * _gamma);
                     if (_u < ww) {
+
+                        // Eclipse annulaire-totale
                         _typeEclipseSoleil = QObject::tr("A-T", "Annular-total Solar eclipse");
                         _tooltipEclipseSoleil = QObject::tr("Annulaire-totale", "Annular-total Solar eclipse");
                     } else {
+
+                        // Eclipse annulaire
                         _typeEclipseSoleil = QObject::tr("A", "Annular Solar eclipse");
                         _tooltipEclipseSoleil = QObject::tr("Annulaire", "Annular Solar eclipse");
                     }
@@ -534,20 +547,24 @@ bool Lune::CalculCaracteristiquesEclipses(const unsigned int phase,
             atrouve = true;
             _dateEclipseLune = dateEclipse;
 
+            // Eclipse par la penombre
             _typeEclipseLune = QObject::tr("Pen", "Lunar eclipse by the penumbra");
             _tooltipEclipseLune = QObject::tr("Pénombre", "Lunar eclipse by the penumbra");
 
             // Magnitude de l'ombre
             const double magOmb = (1.0128 - _u - g) / 0.5450;
-            if (magOmb > 0.) {
 
+            if (magOmb > 1.) {
+
+                // Eclipse totale
+                _typeEclipseLune = QObject::tr("T", "Lunar eclipse by the shadow (total)");
+                _tooltipEclipseLune = QObject::tr("Totale", "Lunar eclipse by the shadow (total)");
+
+            } else if (magOmb > 0.) {
+
+                // Eclipse partielle
                 _typeEclipseLune = QObject::tr("P", "Lunar eclipse by the shadow (partial)");
                 _tooltipEclipseLune = QObject::tr("Partielle", "Lunar eclipse by the shadow (partial)");
-
-                if (magOmb > 1.) {
-                    _typeEclipseLune = QObject::tr("T", "Lunar eclipse by the shadow (total)");
-                    _tooltipEclipseLune = QObject::tr("Totale", "Lunar eclipse by the shadow (total)");
-                }
             }
         } else {
             k += 1.;
