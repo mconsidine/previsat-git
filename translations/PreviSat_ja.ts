@@ -2653,6 +2653,16 @@ PreviSatは、完全無料です!</translation>
         <translation>信号受信終了</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="955"/>
+        <source>Éclipse Soleil   : %1</source>
+        <translation>日食 : %1</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="956"/>
+        <source>Éclipse Lune     : %1</source>
+        <translation>月食 : %1</translation>
+    </message>
+    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="450"/>
         <location filename="../src/interface/onglets/general/general.cpp" line="501"/>
         <source>%1  (dans %2).</source>

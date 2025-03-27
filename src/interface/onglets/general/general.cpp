@@ -950,7 +950,10 @@ void General::SauveOngletGeneral(const QString &fichier)
         flux << tr("Nouvelle Lune    : %1").arg(_ui->nouvelleLune->text()) << Qt::endl;
         flux << tr("Premier quartier : %1").arg(_ui->premierQuartier->text()) << Qt::endl;
         flux << tr("Pleine Lune      : %1").arg(_ui->pleineLune->text()) << Qt::endl;
-        flux << tr("Dernier quartier : %1").arg(_ui->dernierQuartier->text()) << Qt::endl;
+        flux << tr("Dernier quartier : %1").arg(_ui->dernierQuartier->text()) << Qt::endl << Qt::endl;
+
+        flux << tr("Éclipse Soleil   : %1").arg(_ui->eclipseSoleil->text()) << Qt::endl;
+        flux << tr("Éclipse Lune     : %1").arg(_ui->eclipseLune->text()) << Qt::endl;
 
         sw.close();
 
