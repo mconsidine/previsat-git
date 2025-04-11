@@ -41,3 +41,6 @@ Nouvelle Lune    : 2020-08-19 04h41
 Premier quartier : 2020-08-25 19h57
 Pleine Lune      : 2020-09-02 07h22
 Dernier quartier : 2020-09-10 11h26
+
+Éclipse Soleil   : 2020-12-14 17h15 (T)
+Éclipse Lune     : 2020-11-30 10h44 (Pen)
