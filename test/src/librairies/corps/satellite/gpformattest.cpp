@@ -30,7 +30,7 @@
  * >    5 juin 2022
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    27 avril 2025
  *
  */
 
@@ -88,9 +88,7 @@ void GPFormatTest::testLectureFichier2()
     qInfo(Q_FUNC_INFO);
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual2.xml";
-    QMap<QString, ElementsOrbitaux> mapElem;
-
-    QVERIFY_THROWS_EXCEPTION(Exception, mapElem = GPFormat::Lecture(fic));
+    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::Lecture(fic);
     QCOMPARE(mapElem.size(), 0);
 }
 
@@ -99,9 +97,7 @@ void GPFormatTest::testLectureFichier3()
     qInfo(Q_FUNC_INFO);
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual-nok.xml";
-    QMap<QString, ElementsOrbitaux> mapElem;
-
-    QVERIFY_THROWS_EXCEPTION(Exception, mapElem = GPFormat::Lecture(fic));
+    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::Lecture(fic);
     QCOMPARE(mapElem.size(), 0);
 }
 
@@ -110,9 +106,7 @@ void GPFormatTest::testLectureFichier4()
     qInfo(Q_FUNC_INFO);
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "data" + QDir::separator() + "taiutc.dat";
-    QMap<QString, ElementsOrbitaux> mapElem;
-
-    QVERIFY_THROWS_EXCEPTION(Exception, mapElem = GPFormat::Lecture(fic));
+    const QMap<QString, ElementsOrbitaux> mapElem = GPFormat::Lecture(fic);
     QCOMPARE(mapElem.size(), 0);
 }
 
@@ -122,7 +116,6 @@ void GPFormatTest::testLectureFichierListeGP1()
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "iss.gp";
     const QList<ElementsOrbitaux> listeElem = GPFormat::LectureListeGP(fic);
-
     QCOMPARE(listeElem.size(), 60);
 }
 
@@ -131,9 +124,7 @@ void GPFormatTest::testLectureFichierListeGP2()
     qInfo(Q_FUNC_INFO);
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "iss2.gp";
-    QList<ElementsOrbitaux> listeElem;
-
-    QVERIFY_THROWS_EXCEPTION(Exception, listeElem = GPFormat::LectureListeGP(fic, QSqlDatabase(), true));
+    const QList<ElementsOrbitaux> listeElem = GPFormat::LectureListeGP(fic, QSqlDatabase(), true);
     QCOMPARE(listeElem.size(), 0);
 }
 
@@ -142,9 +133,7 @@ void GPFormatTest::testLectureFichierListeGP3()
     qInfo(Q_FUNC_INFO);
 
     const QString fic = dir.path() + QDir::separator() + "test" + QDir::separator() + "data" + QDir::separator() + "taiutc.dat";
-    QList<ElementsOrbitaux> listeElem;
-
-    QVERIFY_THROWS_EXCEPTION(Exception, listeElem = GPFormat::LectureListeGP(fic, QSqlDatabase(), true));
+    const QList<ElementsOrbitaux> listeElem = GPFormat::LectureListeGP(fic, QSqlDatabase(), true);
     QCOMPARE(listeElem.size(), 0);
 }
 

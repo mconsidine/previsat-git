@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    27 avril 2025
  *
  */
 
@@ -76,6 +76,7 @@ void DateTest::testDates1()
     QVERIFY_THROWS_EXCEPTION(Exception, Date());
     QVERIFY_THROWS_EXCEPTION(Exception, Date(2006, 1, 15, 21, 24, 37.5, 1. / 24.));
     QVERIFY_THROWS_EXCEPTION(Exception, Date(2206.3921006944444, 1. / 24.));
+    QVERIFY_THROWS_EXCEPTION(Exception, Date(-1506000.3921006944444, 1. / 24.));
     QVERIFY_THROWS_EXCEPTION(Exception, Date(2006, 1, 15.8921006944444, 1. / 24.));
     QVERIFY_THROWS_EXCEPTION(Exception, Date::Initialisation("empty"));
 }
