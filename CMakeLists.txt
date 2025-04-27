@@ -24,7 +24,7 @@
 # >
 #
 # Description
-# >    Fichier de configuration du projet, en remplacement de PreviSat.pro
+# >    Fichier de configuration du projet
 #
 # Auteur
 # >    Astropedia
@@ -33,14 +33,14 @@
 # >    21 juin 2023
 #
 # Date de revision
-# >    15 fevrier 2025
+# >    27 avril 2025
 #
 
 cmake_minimum_required(VERSION 3.24)
 
 
 #----------------------------------
-set(VERSION 7.1.0.6)
+set(VERSION 7.1.1.3)
 set(ANNEES_DEV 2005-2025)
 set(QT_PREFERRED_VERSION 6.8.2)
 
