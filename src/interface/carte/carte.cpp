@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    28 janvier 2025
+ * >    27 avril 2025
  *
  */
 
@@ -1148,12 +1148,12 @@ void Carte::AffichageStations()
                         // Gestion du meridien 180 degres
                         if (fabs(ptActuel.x() - ptPrec.x()) > (_largeurCarte / 2)) {
 
-                            const int sgn = (ptActuel.x() < ptPrec.x()) ? 1 : -1;
-                            poly.append(QPointF(ptActuel.x() + sgn * _largeurCarte, ptActuel.y()));
+                            const int signe = (ptActuel.x() < ptPrec.x()) ? 1 : -1;
+                            poly.append(QPointF(ptActuel.x() + signe * _largeurCarte, ptActuel.y()));
                             zones.append(poly);
 
                             poly.clear();
-                            poly.append(QPointF(ptActuel.x() - sgn * _largeurCarte, ptActuel.y()));
+                            poly.append(QPointF(ptActuel.x() - signe * _largeurCarte, ptActuel.y()));
                         }
 
                         poly.append(ptActuel);
@@ -1228,13 +1228,13 @@ void Carte::AffichageTraceAuSol()
                     // Gestion du meridien 180 degres
                     if (fabs(ptActuel.x() - ptPrec.x()) > (_largeurCarte / 2)) {
 
-                        const int sgn = (ptActuel.x() < ptPrec.x()) ? 1 : -1;
-                        poly.append(QPointF(ptActuel.x() + sgn * _largeurCarte, ptActuel.y()));
+                        const int signe = (ptActuel.x() < ptPrec.x()) ? 1 : -1;
+                        poly.append(QPointF(ptActuel.x() + signe * _largeurCarte, ptActuel.y()));
                         traces.append(poly);
                         couleurs.append(couleurActuel);
 
                         poly.clear();
-                        poly.append(QPointF(ptActuel.x() - sgn * _largeurCarte, ptActuel.y()));
+                        poly.append(QPointF(ptActuel.x() - signe * _largeurCarte, ptActuel.y()));
                     }
 
                     // Gestion de la couleur de la trace au sol
@@ -1727,12 +1727,12 @@ void Carte::AffichageZoneVisibilite()
                     // Gestion du meridien 180 degres
                     if (fabs(ptActuel.x() - ptPrec.x()) > (_largeurCarte / 2)) {
 
-                        const int sgn = (ptActuel.x() < ptPrec.x()) ? 1 : -1;
-                        poly.append(QPointF(ptActuel.x() + sgn * _largeurCarte, ptActuel.y()));
+                        const int signe = (ptActuel.x() < ptPrec.x()) ? 1 : -1;
+                        poly.append(QPointF(ptActuel.x() + signe * _largeurCarte, ptActuel.y()));
                         zones.append(poly);
 
                         poly.clear();
-                        poly.append(QPointF(ptActuel.x() - sgn * _largeurCarte, ptActuel.y()));
+                        poly.append(QPointF(ptActuel.x() - signe * _largeurCarte, ptActuel.y()));
                     }
 
                     poly.append(ptActuel);
