@@ -30,7 +30,7 @@
  * >    5 juin 2022
  *
  * Date de revision
- * >    12 aout 2024
+ * >    27 avril 2025
  *
  */
 
@@ -131,7 +131,6 @@ QMap<QString, ElementsOrbitaux> GPFormat::Lecture(const QString &fichier,
             }
         }
     } catch (Exception const &e) {
-        throw Exception();
     }
 
     /* Retour */
@@ -182,7 +181,6 @@ QList<ElementsOrbitaux> GPFormat::LectureListeGP(const QString &fichier,
         }
 
     } catch (Exception const &e) {
-        throw Exception();
     }
 
     /* Retour */

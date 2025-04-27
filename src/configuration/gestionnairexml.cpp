@@ -30,7 +30,7 @@
  * >    19 juin 2022
  *
  * Date de revision
- * >    12 decembre 2024
+ * >    27 avril 2025
  *
  */
 
@@ -1057,24 +1057,27 @@ void GestionnaireXml::VerifieVersionXml(const QString &nomfic, const QString &ms
             const QString versionNew = ficCommon.version();
             const QString version = ficLocal.version();
 
-            if ((versionNew != version) && !msg.isEmpty()) {
+            if (!versionNew.isEmpty() && (versionNew != version)) {
 
-                QMessageBox msgbox(QMessageBox::Question, QObject::tr("Avertissement"), msg);
-                QPushButton * const oui = msgbox.addButton(QObject::tr("Oui"), QMessageBox::YesRole);
-                msgbox.addButton(QObject::tr("Non"), QMessageBox::NoRole);
-                msgbox.setDefaultButton(oui);
-                msgbox.exec();
+                if (!msg.isEmpty()) {
 
-                if (msgbox.clickedButton() == oui) {
+                    QMessageBox msgbox(QMessageBox::Question, QObject::tr("Avertissement"), msg);
+                    QPushButton * const oui = msgbox.addButton(QObject::tr("Oui"), QMessageBox::YesRole);
+                    msgbox.addButton(QObject::tr("Non"), QMessageBox::NoRole);
+                    msgbox.setDefaultButton(oui);
+                    msgbox.exec();
 
-                    // Tentative de recuperation des lieux d'observation
-                    qInfo() << "Tentative de recuperation des lieux d'observation";
+                    if (msgbox.clickedButton() == oui) {
 
-                    const QDomNode obs = document.elementsByTagName("Observateurs").at(0);
-                    _observateurs = LectureLieuxObservation(obs);
+                        // Tentative de recuperation des lieux d'observation
+                        qInfo() << "Tentative de recuperation des lieux d'observation";
 
-                    if (!_observateurs.isEmpty()) {
-                        qInfo().noquote() << "Recuperation de" << _observateurs.size() << "lieux d'observation";
+                        const QDomNode obs = document.elementsByTagName("Observateurs").at(0);
+                        _observateurs = LectureLieuxObservation(obs);
+
+                        if (!_observateurs.isEmpty()) {
+                            qInfo().noquote() << "Recuperation de" << _observateurs.size() << "lieux d'observation";
+                        }
                     }
                 }
 

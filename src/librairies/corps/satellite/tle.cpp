@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    12 aout 2024
+ * >    27 avril 2025
  *
  */
 
@@ -194,15 +194,6 @@ QMap<QString, ElementsOrbitaux> TLE::Lecture(const QString &nomFichier,
             numeroNorad = lig1.mid(2, 5);
             lig0 = numeroNorad;
 
-            if (ajoutDonnees && db.isValid()) {
-
-                const QList<Donnees> listeDonnees = Donnees::RequeteNorad(db, tle._elements.norad);
-
-                if (!listeDonnees.isEmpty()) {
-                    tle._elements.donnees = Donnees::RequeteNorad(db, tle._elements.norad).first();
-                    lig0 = tle._elements.donnees.nom();
-                }
-            }
         } else {
 
             // Cas des TLE a 3 lignes
