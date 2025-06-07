@@ -30,7 +30,7 @@
  * >    11 juillet 2024
  *
  * Date de revision
- * >    4 janvier 2025
+ * >    3 mai 2025
  *
  */
 
@@ -126,6 +126,7 @@ void InformationsRentrees::show()
 
     _ui->rentrees->horizontalHeader()->setStretchLastSection(true);
     _ui->rentrees->model()->removeRows(0, _ui->rentrees->rowCount());
+    _ui->rentrees->setSortingEnabled(false);
 
     int j = 0;
     const QList<RentreesAtmospheriques> &rentrees = Configuration::instance()->rentreesAtmospheriques();
@@ -197,6 +198,7 @@ void InformationsRentrees::show()
 
     _ui->rentrees->resizeColumnToContents(0);
     _ui->rentrees->resizeColumnToContents(3);
+    _ui->rentrees->setSortingEnabled(true);
 
     /* Retour */
     return;
