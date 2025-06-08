@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    1 mars 2025
+ * >    7 juin 2025
  *
  */
 
@@ -225,11 +225,24 @@ void CalculsEvenementsOrbitaux::CalculAgeElementsOrbitaux()
 
     } else {
 
+        double offset1;
         double elemMin = -DATE::DATE_INFINIE;
         double elemMax = DATE::DATE_INFINIE;
 
         // Ecart heure locale - UTC
-        const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialeEvt->dateTime());
+        if (settings.value("affichage/utc").toBool()) {
+
+            offset1 = 0.;
+        } else {
+
+            if (settings.value("affichage/utcAuto").toBool()) {
+
+                offset1 = Date::CalculOffsetUTC(_ui->dateInitialeEvt->dateTime());
+            } else {
+
+                offset1 = settings.value("temps/dtu").toDouble();
+            }
+        }
 
         // Date et heure initiales
         const Date date1(_ui->dateInitialeEvt->dateTime(), 0.);
@@ -362,6 +375,8 @@ void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
             throw Exception();
         }
 
+        double offset1;
+        double offset2;
         QVector<int> vecSat;
         vecSat.append(0);
         int j = 0;
@@ -379,8 +394,22 @@ void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
         }
 
         // Ecart heure locale - UTC
-        const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialeEvt->dateTime());
-        const double offset2 = Date::CalculOffsetUTC(_ui->dateFinaleEvt->dateTime());
+        if (settings.value("affichage/utc").toBool()) {
+
+            offset1 = 0.;
+            offset2 = 0.;
+        } else {
+
+            if (settings.value("affichage/utcAuto").toBool()) {
+
+                offset1 = Date::CalculOffsetUTC(_ui->dateInitialeEvt->dateTime());
+                offset2 = Date::CalculOffsetUTC(_ui->dateFinaleEvt->dateTime());
+            } else {
+
+                offset1 = settings.value("temps/dtu").toDouble();
+                offset2 = offset1;
+            }
+        }
 
         // Date et heure initiales
         const Date date1(_ui->dateInitialeEvt->dateTime(), 0.);

@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    1 mars 2025
+ * >    7 juin 2025
  *
  */
 
@@ -250,14 +250,30 @@ void CalculsTransits::CalculAgeElementsOrbitaux()
 
     } else {
 
+        double offset1;
+        double offset2;
         QPalette pal = _paletteBouton;
         _ui->majElementsOrbitauxIss->setToolTip("");
         double elemMin = -DATE::DATE_INFINIE;
         double elemMax = DATE::DATE_INFINIE;
 
         // Ecart heure locale - UTC
-        const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialeTransit->dateTime());
-        const double offset2 = Date::CalculOffsetUTC(_ui->dateFinaleTransit->dateTime());
+        if (settings.value("affichage/utc").toBool()) {
+
+            offset1 = 0.;
+            offset2 = 0.;
+        } else {
+
+            if (settings.value("affichage/utcAuto").toBool()) {
+
+                offset1 = Date::CalculOffsetUTC(_ui->dateInitialeTransit->dateTime());
+                offset2 = Date::CalculOffsetUTC(_ui->dateFinaleTransit->dateTime());
+            } else {
+
+                offset1 = settings.value("temps/dtu").toDouble();
+                offset2 = offset1;
+            }
+        }
 
         // Date et heure initiales
         const Date date1(_ui->dateInitialeTransit->dateTime(), 0.);
@@ -435,9 +451,26 @@ void CalculsTransits::on_calculsTransit_clicked()
     /* Corps de la methode */
     try {
 
+        double offset1;
+        double offset2;
+
         // Ecart heure locale - UTC
-        const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialeTransit->dateTime());
-        const double offset2 = Date::CalculOffsetUTC(_ui->dateFinaleTransit->dateTime());
+        if (settings.value("affichage/utc").toBool()) {
+
+            offset1 = 0.;
+            offset2 = 0.;
+        } else {
+
+            if (settings.value("affichage/utcAuto").toBool()) {
+
+                offset1 = Date::CalculOffsetUTC(_ui->dateInitialeTransit->dateTime());
+                offset2 = Date::CalculOffsetUTC(_ui->dateFinaleTransit->dateTime());
+            } else {
+
+                offset1 = settings.value("temps/dtu").toDouble();
+                offset2 = offset1;
+            }
+        }
 
         // Date et heure initiales
         const Date date1(_ui->dateInitialeTransit->dateTime(), 0.);

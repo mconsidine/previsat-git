@@ -30,7 +30,7 @@
  * >    25 septembre 2023
  *
  * Date de revision
- * >    18 janvier 2025
+ * >    7 juin 2025
  *
  */
 
@@ -423,6 +423,8 @@ void CalculsStarlink::on_calculs_clicked()
             date1 = Date(floor(date1.jourJulienUTC() * DATE::NB_MIN_PAR_JOUR + 0.5) * DATE::NB_JOUR_PAR_MIN + DATE::EPS_DATES, 0.);
 
             // Ecart heure locale - UTC
+            conditions.offset = (settings.value("affichage/utcAuto").toBool()) ? Date::CalculOffsetUTC(date1.ToQDateTime(DateFormatSec::FORMAT_SEC))
+                                                                               : settings.value("temps/dtu").toDouble();
             conditions.offset = Date::CalculOffsetUTC(date1.ToQDateTime(DateFormatSec::FORMAT_SEC));
 
         } else {
@@ -436,7 +438,8 @@ void CalculsStarlink::on_calculs_clicked()
                                  DATE::EPS_DATES, 0.);
 
             // Ecart heure locale - UTC
-            conditions.offset = Date::CalculOffsetUTC(dateLancement.ToQDateTime(DateFormatSec::FORMAT_SEC));
+            conditions.offset = (settings.value("affichage/utcAuto").toBool()) ? Date::CalculOffsetUTC(dateLancement.ToQDateTime(DateFormatSec::FORMAT_SEC))
+                                                                               : settings.value("temps/dtu").toDouble();
         }
 
         // Jour julien initial
