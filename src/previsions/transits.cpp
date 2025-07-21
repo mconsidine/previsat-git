@@ -80,7 +80,7 @@ QMap<QString, QList<QList<ResultatPrevisions> > > &Transits::resultats()
     return _resultats;
 }
 
-DonneesPrevisions Transits::donnees()
+DonneesPrevisions &Transits::donnees()
 {
     return _donnees;
 }

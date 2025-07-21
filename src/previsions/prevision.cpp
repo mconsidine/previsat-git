@@ -72,7 +72,7 @@ QMap<QString, QList<QList<ResultatPrevisions> > > &Prevision::resultats()
     return _resultats;
 }
 
-DonneesPrevisions Prevision::donnees()
+DonneesPrevisions &Prevision::donnees()
 {
     return _donnees;
 }

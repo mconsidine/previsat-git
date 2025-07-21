@@ -79,8 +79,8 @@ public:
      * Accesseurs
      */
     char method() const;
-    Vecteur3D position() const;
-    Vecteur3D vitesse() const;
+    Vecteur3D &position();
+    Vecteur3D &vitesse();
 
 
     /*

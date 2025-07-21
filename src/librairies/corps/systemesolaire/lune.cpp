@@ -61,6 +61,12 @@ Lune::Lune()
     _fractionIlluminee = 0.;
     _magnitude = CORPS::MAGNITUDE_INDEFINIE;
 
+    _dj = 0.;
+    _gamma = 0.;
+    _p = 0.;
+    _q = 0.;
+    _u = 0.;
+
     /* Retour */
     return;
 }

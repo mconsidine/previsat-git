@@ -97,7 +97,7 @@ QMap<QString, QList<QList<ResultatPrevisions> > > &Flashs::resultats()
     return _resultats;
 }
 
-DonneesPrevisions Flashs::donnees()
+DonneesPrevisions &Flashs::donnees()
 {
     return _donnees;
 }
