@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    27 avril 2025
+ * >    10 juin 2025
  *
  */
 
@@ -31,8 +31,8 @@
 \page Historique Version history
 
 
-<b><span style="color:red;">Version 7.1 (revision 1) :</span><br />
-December 2024 - April 2025 :</b>
+<b><span style="color:red;">Version 7.1 (revision 2) :</span><br />
+December 2024 - June 2025 :</b>
 <ul>
 <li>Add indication of Starlink flares.
 <li>Add management of custom satellite icons.
