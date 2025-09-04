@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    20 mars 2025
+ * >    22 mars 2025
  *
  */
 
@@ -2373,8 +2373,6 @@ void PreviSat::GestionTempsReel()
                 // Enchainement des calculs (satellites, Soleil, Lune, planetes, etoiles)
                 EnchainementCalculs();
             }
-        } else {
-            ChangementDate(_dateCourante->ToQDateTime(DateFormatSec::FORMAT_SEC));
         }
 
         _onglets->show(*_dateCourante);
@@ -2592,6 +2590,7 @@ void PreviSat::ModificationDate(const QDateTime &dt)
     const double offset = _dateCourante->offsetUTC();
     EFFACE_OBJET(_dateCourante);
     _dateCourante = new Date(dt, offset);
+    _reinitJour = true;
 
     // Enchainement de l'ensemble des calculs
     EnchainementCalculs();
