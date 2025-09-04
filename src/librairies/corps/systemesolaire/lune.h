@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    3 mars 2025
+ * >    24 mars 2025
  *
  */
 
@@ -167,12 +167,12 @@ private:
     /**
      * @brief CalculCaracteristiquesEclipses Calcul des caracteristiques des eclipses de Soleil et de Lune
      * @param[in] phase phase (0 = Nouvelle Lune; 2 = Pleine Lune)
-     * @param[in] dateEclipse date de l'eclipse
+     * @param[in] jj jour julien de l'eclipse
      * @param[in/out] k indice de la Nouvelle Lune
      * @return
      */
     bool CalculCaracteristiquesEclipses(const unsigned int phase,
-                                        const QString &dateEclipse,
+                                        const double jj,
                                         double &k);
 
     /**
