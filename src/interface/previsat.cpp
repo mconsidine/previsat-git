@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    22 mars 2025
+ * >    7 aout 2025
  *
  */
 
@@ -3931,12 +3931,19 @@ void PreviSat::on_actionInformations_2_triggered()
     /* Corps de la methode */
     const QList<Donnees> donnees = Donnees::RequeteNorad(Configuration::instance()->dbSatellites(), norad);
 
-    EFFACE_OBJET(_donneesSatellite);
-    _donneesSatellite = new DonneesSatellite;
-    _donneesSatellite->changeEvent(&evt);
-    _donneesSatellite->setWindowModality(Qt::ApplicationModal);
-    _donneesSatellite->show(donnees.first());
-    _donneesSatellite->setVisible(true);
+    if (donnees.isEmpty()) {
+
+        Message::Afficher(tr("Pas d'informations à afficher"), MessageType::WARNING);
+
+    } else {
+
+        EFFACE_OBJET(_donneesSatellite);
+        _donneesSatellite = new DonneesSatellite;
+        _donneesSatellite->changeEvent(&evt);
+        _donneesSatellite->setWindowModality(Qt::ApplicationModal);
+        _donneesSatellite->show(donnees.first());
+        _donneesSatellite->setVisible(true);
+    }
 
     /* Retour */
     return;

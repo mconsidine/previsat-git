@@ -3118,19 +3118,24 @@ click on &apos;Update ISS information&apos;</translation>
 <context>
     <name>InformationsRentrees</name>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="70"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="71"/>
         <source>Double-cliquez sur une ligne pour afficher les informations satellite</source>
         <translation>Double clic on a line to show satellite information</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="234"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="235"/>
         <source>Téléchargement du fichier de rentrées atmosphériques...</source>
         <translation>Downloading decay information file...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="236"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="237"/>
         <source>Téléchargement terminé</source>
         <translation>Downloading finished</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="262"/>
+        <source>Pas d&apos;informations à afficher</source>
+        <translation type="unfinished">No available information</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="65"/>
@@ -5705,6 +5710,7 @@ which represents approximately %2 pages.</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="3375"/>
+        <location filename="../src/interface/previsat.cpp" line="3936"/>
         <source>Pas d&apos;informations à afficher</source>
         <translation>No available information</translation>
     </message>

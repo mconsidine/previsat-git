@@ -30,7 +30,7 @@
  * >    11 juillet 2024
  *
  * Date de revision
- * >    3 mai 2025
+ * >    7 aout 2025
  *
  */
 
@@ -40,6 +40,7 @@
 #include "informationsrentrees.h"
 #include "ui_informationsrentrees.h"
 #include "librairies/exceptions/exception.h"
+#include "librairies/exceptions/message.h"
 #include "librairies/systeme/telechargement.h"
 
 
@@ -256,12 +257,19 @@ void InformationsRentrees::on_rentrees_itemDoubleClicked(QTableWidgetItem *item)
     /* Corps de la methode */
     const QList<Donnees> donnees = Donnees::RequeteNorad(Configuration::instance()->dbSatellites(), norad);
 
-    EFFACE_OBJET(_donneesSatellite);
-    _donneesSatellite = new DonneesSatellite;
-    _donneesSatellite->changeEvent(&evt);
-    _donneesSatellite->setWindowModality(Qt::ApplicationModal);
-    _donneesSatellite->show(donnees.first());
-    _donneesSatellite->setVisible(true);
+    if (donnees.isEmpty()) {
+
+        Message::Afficher(tr("Pas d'informations à afficher"), MessageType::WARNING);
+
+    } else {
+
+        EFFACE_OBJET(_donneesSatellite);
+        _donneesSatellite = new DonneesSatellite;
+        _donneesSatellite->changeEvent(&evt);
+        _donneesSatellite->setWindowModality(Qt::ApplicationModal);
+        _donneesSatellite->show(donnees.first());
+        _donneesSatellite->setVisible(true);
+    }
 
     /* Retour */
     return;

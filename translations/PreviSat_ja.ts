@@ -3121,19 +3121,24 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
 <context>
     <name>InformationsRentrees</name>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="70"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="71"/>
         <source>Double-cliquez sur une ligne pour afficher les informations satellite</source>
         <translation>行をダブルクリックすると衛星情報が表示されます</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="234"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="235"/>
         <source>Téléchargement du fichier de rentrées atmosphériques...</source>
         <translation>大気圏再突入ファイルのダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="236"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="237"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="262"/>
+        <source>Pas d&apos;informations à afficher</source>
+        <translation type="unfinished">表示する情報がありません</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/donnees/informationsrentrees.ui" line="65"/>
@@ -5709,6 +5714,7 @@ ce qui représente environ %2 pages.</source>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="3375"/>
+        <location filename="../src/interface/previsat.cpp" line="3936"/>
         <source>Pas d&apos;informations à afficher</source>
         <translation>表示する情報がありません</translation>
     </message>
