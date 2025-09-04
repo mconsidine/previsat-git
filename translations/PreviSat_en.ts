@@ -6036,140 +6036,140 @@ Satellite %1 - NORAD number : %2
 Expected value : %3 - Calculated value : %4</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="501"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="507"/>
         <source>A/T</source>
         <comment>Annular or Total Solar eclipse</comment>
         <translation>A/T</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="495"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="501"/>
         <source>P</source>
         <comment>Partial Solar eclipse</comment>
         <translation>P</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="510"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="516"/>
         <source>T</source>
         <comment>Total Solar eclipse</comment>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="516"/>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="530"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="522"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="536"/>
         <source>A</source>
         <comment>Annular Solar eclipse</comment>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="525"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="531"/>
         <source>A-T</source>
         <comment>Annular-total Solar eclipse</comment>
         <translation>A-T</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="560"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="566"/>
         <source>T</source>
         <comment>Lunar eclipse by the shadow (total)</comment>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="566"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="572"/>
         <source>P</source>
         <comment>Lunar eclipse by the shadow (partial)</comment>
         <translation>P</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="496"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="502"/>
         <source>Partielle</source>
         <comment>Partial Solar eclipse</comment>
         <translation>Partial</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="502"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="508"/>
         <source>Annulaire ou totale</source>
         <comment>Annular or Total Solar eclipse</comment>
         <translation>Annular or Total</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="517"/>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="531"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="523"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="537"/>
         <source>Annulaire</source>
         <comment>Annular Solar eclipse</comment>
         <translation>Annular</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="511"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="517"/>
         <source>Totale</source>
         <comment>Total Solar eclipse</comment>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="526"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="532"/>
         <source>Annulaire-totale</source>
         <comment>Annular-total Solar eclipse</comment>
         <translation>Annular-total</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="551"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="557"/>
         <source>Pen</source>
         <comment>Lunar eclipse by the penumbra</comment>
         <translation>Pen</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="552"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="558"/>
         <source>Pénombre</source>
         <comment>Lunar eclipse by the penumbra</comment>
         <translation>Penumbra</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="567"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="573"/>
         <source>Partielle</source>
         <comment>Lunar eclipse by the shadow (partial)</comment>
         <translation>Partial</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="561"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="567"/>
         <source>Totale</source>
         <comment>Lunar eclipse by the shadow (total)</comment>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="279"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="285"/>
         <source>Nouvelle Lune</source>
         <translation>New Moon</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="283"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="289"/>
         <source>Premier croissant</source>
         <translation>Waxing crescent</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="283"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="289"/>
         <source>Dernier croissant</source>
         <translation>Waning crescent</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="287"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="293"/>
         <source>Premier quartier</source>
         <translation>First quarter</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="287"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="293"/>
         <source>Dernier quartier</source>
         <translation>Last quarter</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="291"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="297"/>
         <source>Gibbeuse croissante</source>
         <translation>Waxing gibbous</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="291"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="297"/>
         <source>Gibbeuse décroissante</source>
         <translation>Waning gibbous</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="295"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="301"/>
         <source>Pleine Lune</source>
         <translation>Full Moon</translation>
     </message>

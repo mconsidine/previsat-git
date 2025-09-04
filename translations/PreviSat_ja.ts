@@ -6049,140 +6049,140 @@ Valeur attendue : %3 - Valeur calculée : %4</source>
 期待値 : %3 - 計算値 : %4</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="501"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="507"/>
         <source>A/T</source>
         <comment>Annular or Total Solar eclipse</comment>
         <translation>金環/皆既</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="495"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="501"/>
         <source>P</source>
         <comment>Partial Solar eclipse</comment>
         <translation>部分</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="510"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="516"/>
         <source>T</source>
         <comment>Total Solar eclipse</comment>
         <translation>皆既</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="516"/>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="530"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="522"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="536"/>
         <source>A</source>
         <comment>Annular Solar eclipse</comment>
         <translation>金環</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="525"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="531"/>
         <source>A-T</source>
         <comment>Annular-total Solar eclipse</comment>
         <translation>金環-皆既</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="560"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="566"/>
         <source>T</source>
         <comment>Lunar eclipse by the shadow (total)</comment>
         <translation>皆既</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="566"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="572"/>
         <source>P</source>
         <comment>Lunar eclipse by the shadow (partial)</comment>
         <translation>部分</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="496"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="502"/>
         <source>Partielle</source>
         <comment>Partial Solar eclipse</comment>
         <translation>部分日食</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="502"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="508"/>
         <source>Annulaire ou totale</source>
         <comment>Annular or Total Solar eclipse</comment>
         <translation>金環日食又は皆既日食</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="517"/>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="531"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="523"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="537"/>
         <source>Annulaire</source>
         <comment>Annular Solar eclipse</comment>
         <translation>金環日食</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="511"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="517"/>
         <source>Totale</source>
         <comment>Total Solar eclipse</comment>
         <translation>本影による皆既月食</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="526"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="532"/>
         <source>Annulaire-totale</source>
         <comment>Annular-total Solar eclipse</comment>
         <translation>金環日食及び皆既日食</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="551"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="557"/>
         <source>Pen</source>
         <comment>Lunar eclipse by the penumbra</comment>
         <translation>半影</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="552"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="558"/>
         <source>Pénombre</source>
         <comment>Lunar eclipse by the penumbra</comment>
         <translation>半影による月食</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="567"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="573"/>
         <source>Partielle</source>
         <comment>Lunar eclipse by the shadow (partial)</comment>
         <translation>本影による部分月食</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="561"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="567"/>
         <source>Totale</source>
         <comment>Lunar eclipse by the shadow (total)</comment>
         <translation>本影による皆既月食</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="279"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="285"/>
         <source>Nouvelle Lune</source>
         <translation>ニュームーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="283"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="289"/>
         <source>Premier croissant</source>
         <translation>クレセントムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="283"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="289"/>
         <source>Dernier croissant</source>
         <translation>バルサミックムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="287"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="293"/>
         <source>Premier quartier</source>
         <translation>ファーストクォーター</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="287"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="293"/>
         <source>Dernier quartier</source>
         <translation>サードクォーター</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="291"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="297"/>
         <source>Gibbeuse croissante</source>
         <translation>ギバウスムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="291"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="297"/>
         <source>Gibbeuse décroissante</source>
         <translation>ディセミネイティングムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="295"/>
+        <location filename="../src/librairies/corps/systemesolaire/lune.cpp" line="301"/>
         <source>Pleine Lune</source>
         <translation>フルムーン</translation>
     </message>

@@ -57,7 +57,7 @@ public:
      * Accesseurs
      */
     static QMap<QString, QList<QList<ResultatPrevisions> > > &resultats();
-    static DonneesPrevisions donnees();
+    static DonneesPrevisions &donnees();
 
 
     /*

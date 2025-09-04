@@ -270,12 +270,12 @@ char SGP4::method() const
     return _data.method;
 }
 
-Vecteur3D SGP4::position() const
+Vecteur3D &SGP4::position()
 {
     return _position;
 }
 
-Vecteur3D SGP4::vitesse() const
+Vecteur3D &SGP4::vitesse()
 {
     return _vitesse;
 }

@@ -93,7 +93,7 @@ QMap<QString, QList<QList<ResultatPrevisions> > > &EvenementsOrbitaux::resultats
     return _resultats;
 }
 
-DonneesPrevisions EvenementsOrbitaux::donnees()
+DonneesPrevisions &EvenementsOrbitaux::donnees()
 {
     return _donnees;
 }
