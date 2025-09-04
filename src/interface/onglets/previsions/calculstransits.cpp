@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    12 septembre 2024
+ * >    1 mars 2025
  *
  */
 
@@ -712,6 +712,7 @@ void CalculsTransits::on_majElementsOrbitauxIss_clicked()
         if (fi2.exists()) {
             fi2.remove();
         }
+
         fi.rename(ficGp);
 
         // Mise a jour de l'age des elements orbitaux
@@ -745,6 +746,16 @@ void CalculsTransits::on_listeTransits_customContextMenuRequested(const QPoint &
 
 void CalculsTransits::on_majElementsOrbitaux_clicked()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const bool checked = _ui->satellitesChoisis->isChecked();
+
+    /* Corps de la methode */
     emit MajFichierGP();
     CalculAgeElementsOrbitaux();
+    _ui->satellitesChoisis->setChecked(checked);
+
+    /* Retour */
+    return;
 }

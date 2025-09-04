@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    12 septembre 2024
+ * >    1 mars 2025
  *
  */
 
@@ -727,6 +727,16 @@ void CalculsPrevisions::on_listePrevisions_customContextMenuRequested(const QPoi
 
 void CalculsPrevisions::on_majElementsOrbitaux_clicked()
 {
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const bool checked = _ui->satellitesChoisis->isChecked();
+
+    /* Corps de la methode */
     emit MajFichierGP();
     CalculAgeElementsOrbitaux();
+    _ui->satellitesChoisis->setChecked(checked);
+
+    /* Retour */
+    return;
 }
