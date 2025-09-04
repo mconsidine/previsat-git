@@ -1886,8 +1886,11 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
         const QString nomsat = it.value().nom.trimmed();
         const QString norad = it.key();
         const bool check = listeSatellites.contains(norad);
+
+        const QString cospar = Configuration::instance()->mapElementsOrbitaux()[norad].cospar;
+
         const QString tooltip = tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>")
-                                    .arg(nomsat).arg(norad).arg(it.value().donnees.cospar());
+                                    .arg(nomsat).arg(norad).arg(cospar);
 
         // Affichage du numero NORAD
         switch (static_cast<Qt::CheckState> (settings.value("affichage/affNoradListes", Qt::Unchecked).toUInt())) {
@@ -3837,7 +3840,7 @@ void PreviSat::on_listeSatellites_itemEntered(QListWidgetItem *item)
     /* Initialisations */
     const QString nomsat = item->text();
     const QString norad = item->data(Qt::UserRole).toString();
-    const QString cospar = item->toolTip().split(":").last().trimmed();
+    const QString cospar = Configuration::instance()->mapElementsOrbitaux()[norad].cospar;
 
     /* Corps de la methode */
     if (nomsat != norad) {

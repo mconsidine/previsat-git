@@ -113,7 +113,8 @@ void InformationsSatellite::show(const Satellite &satellite)
 
     /* Corps de la methode */
     // Nom du satellite
-    _ui->nomsat->setText(donnee.nom());
+    const QString nom = (donnee.nom().isEmpty()) ? elem.nom : donnee.nom();
+    _ui->nomsat->setText(nom);
 
     // Numero NORAD
     _ui->norad->setText(elem.norad);
@@ -170,7 +171,7 @@ void InformationsSatellite::show(const Satellite &satellite)
     _ui->anomalieMoy->setText(fmt2.arg(elem.mo, 0, 'f', 4));
 
     // Masse sec, totale
-    if ((donnee.masseSec() == "0") && (donnee.masseTot() == "0")) {
+    if (((donnee.masseSec() == "0") && (donnee.masseTot() == "0")) || (donnee.masseSec().isEmpty() && donnee.masseTot().isEmpty())) {
         _ui->masseSecTot->setText("?/?");
     } else {
         _ui->masseSecTot->setText(QString("%1/%2 kg").arg(donnee.masseSec()).arg(donnee.masseTot()));
@@ -218,7 +219,11 @@ void InformationsSatellite::show(const Satellite &satellite)
     _ui->dimensions->setText(dimensions);
 
     // Classe, categorie et discipline
-    _ui->classeCategDiscip->setText(QString("%1 / %2 / %3").arg(donnee.classe()).arg(donnee.categorie()).arg(donnee.discipline()));
+    if (donnee.classe().isEmpty() && donnee.categorie().isEmpty() && donnee.discipline().isEmpty()) {
+        _ui->classeCategDiscip->setText(tr("N/A"));
+    } else {
+        _ui->classeCategDiscip->setText(QString("%1 / %2 / %3").arg(donnee.classe()).arg(donnee.categorie()).arg(donnee.discipline()));
+    }
 
     /* Retour */
     return;
@@ -336,21 +341,29 @@ bool InformationsSatellite::eventFilter(QObject *watched, QEvent *event)
             const QString acronyme = _ui->siteLancement->text();
             const Observateur site = Configuration::instance()->mapSitesLancement()[acronyme];
 
-            emit AffichageSiteLancement(acronyme, site, 10);
-            emit AfficherMessageStatut(site.nomlieu(), 10);
-            _ui->siteLancement->setToolTip(site.nomlieu());
+            if (!site.nomlieu().isEmpty()) {
+                emit AffichageSiteLancement(acronyme, site, 10);
+                emit AfficherMessageStatut(site.nomlieu(), 10);
+                _ui->siteLancement->setToolTip(site.nomlieu());
+            }
 
         } else if (_ui->pays->underMouse()) {
 
             const QString pays = Configuration::instance()->mapPays()[_ui->pays->text()];
-            _ui->pays->setToolTip(pays);
-            emit AfficherMessageStatut(pays, 10);
+
+            if (!pays.isEmpty()) {
+                _ui->pays->setToolTip(pays);
+                emit AfficherMessageStatut(pays, 10);
+            }
 
         } else if (_ui->categorieOrbite->underMouse()) {
 
             const QString categorie = Configuration::instance()->mapCategoriesOrbite()[_ui->categorieOrbite->text()];
-            _ui->categorieOrbite->setToolTip(categorie);
-            emit AfficherMessageStatut(categorie, 10);
+
+            if (!categorie.isEmpty()) {
+                _ui->categorieOrbite->setToolTip(categorie);
+                emit AfficherMessageStatut(categorie, 10);
+            }
         }
     }
 
