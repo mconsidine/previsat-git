@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    1 mars 2025
+ * >    7 juin 2025
  *
  */
 
@@ -254,11 +254,24 @@ void CalculsPrevisions::CalculAgeElementsOrbitaux()
 
     } else {
 
+        double offset1;
         double elemMin = -DATE::DATE_INFINIE;
         double elemMax = DATE::DATE_INFINIE;
 
         // Ecart heure locale - UTC
-        const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialePrev->dateTime());
+        if (settings.value("affichage/utc").toBool()) {
+
+            offset1 = 0.;
+        } else {
+
+            if (settings.value("affichage/utcAuto").toBool()) {
+
+                offset1 = Date::CalculOffsetUTC(_ui->dateInitialePrev->dateTime());
+            } else {
+
+                offset1 = settings.value("temps/dtu").toDouble();
+            }
+        }
 
         // Date et heure initiales
         const Date date1(_ui->dateInitialePrev->dateTime(), 0.);
@@ -396,6 +409,8 @@ void CalculsPrevisions::on_calculsPrev_clicked()
         qInfo() << "Lancement des calculs de prévisions";
 
         int j = 0;
+        double offset1;
+        double offset2;
 
         if (_ui->listePrevisions->count() == 0) {
             qCritical() << "Aucun satellite n'est affiché dans la liste";
@@ -415,8 +430,22 @@ void CalculsPrevisions::on_calculsPrev_clicked()
         }
 
         // Ecart heure locale - UTC
-        const double offset1 = Date::CalculOffsetUTC(_ui->dateInitialePrev->dateTime());
-        const double offset2 = Date::CalculOffsetUTC(_ui->dateFinalePrev->dateTime());
+        if (settings.value("affichage/utc").toBool()) {
+
+            offset1 = 0.;
+            offset2 = 0.;
+        } else {
+
+            if (settings.value("affichage/utcAuto").toBool()) {
+
+                offset1 = Date::CalculOffsetUTC(_ui->dateInitialePrev->dateTime());
+                offset2 = Date::CalculOffsetUTC(_ui->dateFinalePrev->dateTime());
+            } else {
+
+                offset1 = settings.value("temps/dtu").toDouble();
+                offset2 = offset1;
+            }
+        }
 
         // Date et heure initiales
         const Date date1(_ui->dateInitialePrev->dateTime(), 0.);

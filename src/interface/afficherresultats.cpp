@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    27 janvier 2025
+ * >    7 juin 2025
  *
  */
 
@@ -767,7 +767,8 @@ QStringList AfficherResultats::ElementsDetailsEvenements(const ResultatPrevision
     elems.append(res.nom);
 
     // Date
-    const double offset = Date::CalculOffsetUTC(res.date.ToQDateTime(DateFormatSec::FORMAT_SEC));
+    const double offset = (settings.value("affichage/utcAuto").toBool()) ? Date::CalculOffsetUTC(res.date.ToQDateTime(DateFormatSec::FORMAT_SEC))
+                                                                         : _conditions.offset;
     const Date date(res.date, offset);
     elems.append(date.ToShortDateAMJ(DateFormat::FORMAT_COURT, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -802,12 +803,14 @@ QStringList AfficherResultats::ElementsFlashs(const QList<ResultatPrevisions> &l
     elems.append(liste.first().nom);
 
     // Date de debut
-    const double offset1 = Date::CalculOffsetUTC(liste.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC));
+    const double offset1 = (settings.value("affichage/utcAuto").toBool()) ? Date::CalculOffsetUTC(liste.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC))
+                                                                          : _conditions.offset;
     const Date dateDeb(liste.first().date, offset1);
     elems.append(dateDeb.ToShortDateAMJ(DateFormat::FORMAT_LONG, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
     // Date de fin
-    const double offset2 = Date::CalculOffsetUTC(liste.last().date.ToQDateTime(DateFormatSec::FORMAT_SEC));
+    const double offset2 = (settings.value("affichage/utcAuto").toBool()) ? Date::CalculOffsetUTC(liste.last().date.ToQDateTime(DateFormatSec::FORMAT_SEC))
+                                                                          : _conditions.offset;
     const Date dateFin(liste.last().date, offset2);
     elems.append(dateFin.ToShortDateAMJ(DateFormat::FORMAT_LONG, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -870,7 +873,8 @@ QStringList AfficherResultats::ElementsDetailsFlashs(const ResultatPrevisions &r
     elems.append(QString("%1").arg(res.nom, -10));
 
     // Date
-    const double offset = Date::CalculOffsetUTC(res.date.ToQDateTime(DateFormatSec::FORMAT_SEC));
+    const double offset = (settings.value("affichage/utcAuto").toBool()) ? Date::CalculOffsetUTC(res.date.ToQDateTime(DateFormatSec::FORMAT_SEC))
+                                                                         : _conditions.offset;
     const Date date(res.date, offset);
     elems.append(date.ToShortDateAMJ(DateFormat::FORMAT_LONG, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -948,12 +952,14 @@ QStringList AfficherResultats::ElementsPrevisions(const QList<ResultatPrevisions
     elems.append(liste.first().nom);
 
     // Date de debut
-    const double offset1 = Date::CalculOffsetUTC(liste.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC));
+    const double offset1 = (settings.value("affichage/utcAuto").toBool()) ? Date::CalculOffsetUTC(liste.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC))
+                                                                          : _conditions.offset;
     const Date dateDeb(liste.first().date, offset1);
     elems.append(dateDeb.ToShortDateAMJ(DateFormat::FORMAT_COURT, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
     // Date de fin
-    const double offset2 = Date::CalculOffsetUTC(liste.last().date.ToQDateTime(DateFormatSec::FORMAT_SEC));
+    const double offset2 = (settings.value("affichage/utcAuto").toBool()) ? Date::CalculOffsetUTC(liste.last().date.ToQDateTime(DateFormatSec::FORMAT_SEC))
+                                                                          : _conditions.offset;
     const Date dateFin(liste.last().date, offset2);
     elems.append(dateFin.ToShortDateAMJ(DateFormat::FORMAT_COURT, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -1029,7 +1035,8 @@ QStringList AfficherResultats::ElementsDetailsPrevisions(const ResultatPrevision
     elems.append(res.nom);
 
     // Date
-    const double offset = Date::CalculOffsetUTC(res.date.ToQDateTime(DateFormatSec::FORMAT_SEC));
+    const double offset = (settings.value("affichage/utcAuto").toBool()) ?
+                              Date::CalculOffsetUTC(res.date.ToQDateTime(DateFormatSec::FORMAT_SEC)) : _conditions.offset;
     const Date date(res.date, offset);
     elems.append(date.ToShortDateAMJ(DateFormat::FORMAT_COURT, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -1093,7 +1100,8 @@ QStringList AfficherResultats::ElementsTransits(const QList<ResultatPrevisions> 
     elems.append(elem.nom);
 
     // Date du maximum
-    const double offset1 = Date::CalculOffsetUTC(liste.at(2).date.ToQDateTime(DateFormatSec::FORMAT_SEC));
+    const double offset1 = (settings.value("affichage/utcAuto").toBool()) ? Date::CalculOffsetUTC(liste.at(2).date.ToQDateTime(DateFormatSec::FORMAT_SEC))
+                                                                          : _conditions.offset;
     const Date dateMax(elem.date, offset1);
     elems.append(dateMax.ToShortDateAMJ(DateFormat::FORMAT_LONG, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -1144,7 +1152,8 @@ QStringList AfficherResultats::ElementsDetailsTransits(const ResultatPrevisions 
     elems.append(res.nom);
 
     // Date
-    const double offset = Date::CalculOffsetUTC(res.date.ToQDateTime(DateFormatSec::FORMAT_SEC));
+    const double offset = (settings.value("affichage/utcAuto").toBool()) ? Date::CalculOffsetUTC(res.date.ToQDateTime(DateFormatSec::FORMAT_SEC))
+                                                                         : _conditions.offset;
     const Date date(res.date, offset);
     elems.append(date.ToShortDateAMJ(DateFormat::FORMAT_LONG, (_conditions.systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H));
 
@@ -1765,13 +1774,15 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
     /* Initialisations */
     const QList<ResultatPrevisions> list = _ui->resultatsPrevisions->item(_ui->resultatsPrevisions->currentRow(), 0)->data(Qt::UserRole)
             .value<QList<ResultatPrevisions> > ();
-    const Date dateDeb = Date(list.first().date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC)));
-    const Date dateFin = Date(list.last().date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC)));
+    const double offset = (settings.value("affichage/utcAuto").toBool()) ? Date::CalculOffsetUTC(list.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC))
+                                                                         : _conditions.offset;
+    const Date dateDeb = Date(list.first().date, offset);
+    const Date dateFin = Date(list.last().date, offset);
 
     if (_typeCalcul == TypeCalcul::FLASHS) {
-        dateMax = Date(list.at(1).date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC)));
+        dateMax = Date(list.at(1).date, offset);
     } else if (_typeCalcul == TypeCalcul::TRANSITS) {
-        dateMax = Date(list.at(2).date, Date::CalculOffsetUTC(list.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC)));
+        dateMax = Date(list.at(2).date, offset);
     } else {
         dateMax = dateDeb;
     }
