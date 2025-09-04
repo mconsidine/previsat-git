@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er fevrier 2025
+ * >    27 fevrier 2025
  *
  */
 
@@ -238,6 +238,11 @@ private:
      * @throw Exception
      */
     void EnchainementCalculs();
+
+    /**
+     * @brief FermetureElementsInterface Fermeture des elements de l'interface graphique
+     */
+    void FermetureElementsInterface();
 
     /**
      * @brief GestionPolice Gestion de la police

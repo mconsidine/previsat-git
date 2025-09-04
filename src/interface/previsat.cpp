@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 fevrier 2025
+ * >    27 fevrier 2025
  *
  */
 
@@ -141,45 +141,6 @@ PreviSat::PreviSat(QWidget *parent) :
  */
 PreviSat::~PreviSat()
 {
-    EFFACE_OBJET(_informations);
-    EFFACE_OBJET(_coordISS);
-    EFFACE_OBJET(_gmt);
-    EFFACE_OBJET(_carte);
-    EFFACE_OBJET(_ciel);
-    EFFACE_OBJET(_onglets);
-    EFFACE_OBJET(_options);
-    EFFACE_OBJET(_outils);
-    EFFACE_OBJET(_radar);
-
-    EFFACE_OBJET(_previsions);
-    EFFACE_OBJET(_flashs);
-    EFFACE_OBJET(_transits);
-    EFFACE_OBJET(_evenements);
-    EFFACE_OBJET(_starlink);
-    EFFACE_OBJET(_informationsSatellite);
-    EFFACE_OBJET(_recherche);
-    EFFACE_OBJET(_station);
-    EFFACE_OBJET(_lancements);
-    EFFACE_OBJET(_rentrees);
-
-    EFFACE_OBJET(_captureEcran);
-    EFFACE_OBJET(_etapePrec);
-    EFFACE_OBJET(_etapeSuiv);
-
-    EFFACE_OBJET(_messageStatut);
-    EFFACE_OBJET(_messageStatut2);
-    EFFACE_OBJET(_messageStatut3);
-    EFFACE_OBJET(_modeFonctionnement);
-    EFFACE_OBJET(_stsDate);
-    EFFACE_OBJET(_stsHeure);
-
-    EFFACE_OBJET(_dateCourante);
-    EFFACE_OBJET(_chronometre);
-    EFFACE_OBJET(_chronometreMs);
-    EFFACE_OBJET(_timerStatut);
-
-    EFFACE_OBJET(_donneesSatellite);
-
     delete _ui;
 }
 
@@ -1130,6 +1091,59 @@ void PreviSat::EnchainementCalculs()
 
     } catch (Exception const &e) {
     }
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Fermeture des elements de l'interface graphique
+ */
+void PreviSat::FermetureElementsInterface()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    EFFACE_OBJET(_informations);
+    EFFACE_OBJET(_coordISS);
+    EFFACE_OBJET(_gmt);
+    EFFACE_OBJET(_carte);
+    EFFACE_OBJET(_ciel);
+    EFFACE_OBJET(_onglets);
+    EFFACE_OBJET(_options);
+    EFFACE_OBJET(_outils);
+    EFFACE_OBJET(_radar);
+
+    EFFACE_OBJET(_previsions);
+    EFFACE_OBJET(_flashs);
+    EFFACE_OBJET(_transits);
+    EFFACE_OBJET(_evenements);
+    EFFACE_OBJET(_starlink);
+    EFFACE_OBJET(_informationsSatellite);
+    EFFACE_OBJET(_recherche);
+    EFFACE_OBJET(_station);
+    EFFACE_OBJET(_lancements);
+    EFFACE_OBJET(_rentrees);
+
+    EFFACE_OBJET(_captureEcran);
+    EFFACE_OBJET(_etapePrec);
+    EFFACE_OBJET(_etapeSuiv);
+
+    EFFACE_OBJET(_messageStatut);
+    EFFACE_OBJET(_messageStatut2);
+    EFFACE_OBJET(_messageStatut3);
+    EFFACE_OBJET(_modeFonctionnement);
+    EFFACE_OBJET(_stsDate);
+    EFFACE_OBJET(_stsHeure);
+
+    EFFACE_OBJET(_dateCourante);
+    EFFACE_OBJET(_chronometre);
+    EFFACE_OBJET(_chronometreMs);
+    EFFACE_OBJET(_timerStatut);
+
+    EFFACE_OBJET(_donneesSatellite);
 
     /* Retour */
     return;
@@ -2763,6 +2777,7 @@ void PreviSat::closeEvent(QCloseEvent *evt)
 
         qInfo() << "Fin   Fonction" << __FUNCTION__;
         LogMessage::Fermeture();
+        FermetureElementsInterface();
 
     } catch (Exception const &e) {
     }
