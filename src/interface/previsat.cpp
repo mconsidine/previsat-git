@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 fevrier 2025
+ * >    2 mars 2025
  *
  */
 
@@ -1008,6 +1008,9 @@ void PreviSat::EnchainementCalculs()
 
             // Calcul des phases de la Lune
             lune.CalculDatesPhases(*_dateCourante);
+
+            // Calcul des dates des prochaines eclipses
+            lune.CalculDatesEclipses(*_dateCourante);
 
             _reinitJour = false;
         }

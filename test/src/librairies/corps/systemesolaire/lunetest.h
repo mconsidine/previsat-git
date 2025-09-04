@@ -36,7 +36,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    4 mars 2025
  *
  */
 
@@ -56,6 +56,7 @@ private:
     static void testCalculMagnitudePhase();
     static void testCalculLeverMeridienCoucher();
     static void testCalculDatesPhases();
+    static void testCalculDatesEclipses();
 
 };
 

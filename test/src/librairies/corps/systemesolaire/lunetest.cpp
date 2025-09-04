@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    1er fevrier 2025
+ * >    4 mars 2025
  *
  */
 
@@ -51,6 +51,7 @@ void LuneTest::testAll()
     testCalculMagnitudePhase();
     testCalculLeverMeridienCoucher();
     testCalculDatesPhases();
+    testCalculDatesEclipses();
 }
 
 void LuneTest::testCalculPositionSimp()
@@ -187,4 +188,53 @@ void LuneTest::testCalculDatesPhases()
     QCOMPARE(lune.datesPhases()[1], "2022-05-09 02h20");
     QCOMPARE(lune.datesPhases()[2], "2022-05-16 06h13");
     QCOMPARE(lune.datesPhases()[3], "2022-05-22 20h42");
+}
+
+void LuneTest::testCalculDatesEclipses()
+{
+    qInfo(Q_FUNC_INFO);
+
+    Date date(2025, 3, 1, 0, 0, 0., 1. / 24.);
+    Lune lune;
+    lune.CalculDatesEclipses(date);
+
+    QCOMPARE(lune.dateEclipseSoleil(), "2025-03-29 11h49");
+    QCOMPARE(lune.typeEclipseSoleil(), "P");
+    QCOMPARE(lune.dateEclipseLune(), "2025-03-14 08h00");
+    QCOMPARE(lune.typeEclipseLune(), "T");
+
+    // Eclipse solaire non centrale
+    date = Date(1950, 3, 1, 0, 0, 0., 1. / 24.);
+    lune.CalculDatesEclipses(date);
+
+    QCOMPARE(lune.dateEclipseSoleil(), "1950-03-18 16h32");
+    QCOMPARE(lune.typeEclipseSoleil(), "A/T");
+
+    // Eclipse solaire totale centrale
+    date = Date(2009, 7, 1, 0, 0, 0., 2. / 24.);
+    lune.CalculDatesEclipses(date);
+
+    QCOMPARE(lune.dateEclipseSoleil(), "2009-07-22 04h36");
+    QCOMPARE(lune.typeEclipseSoleil(), "T");
+
+    // Eclipse solaire annulaire centrale
+    date = Date(2023, 10, 1, 0, 0, 0., 2. / 24.);
+    lune.CalculDatesEclipses(date);
+
+    QCOMPARE(lune.dateEclipseSoleil(), "2023-10-14 20h01");
+    QCOMPARE(lune.typeEclipseSoleil(), "A");
+
+    // Eclipse solaire annulaire-totale centrale
+    date = Date(2013, 11, 1, 0, 0, 0., 1. / 24.);
+    lune.CalculDatesEclipses(date);
+
+    QCOMPARE(lune.dateEclipseSoleil(), "2013-11-03 13h47");
+    QCOMPARE(lune.typeEclipseSoleil(), "A-T");
+
+    // Eclipse solaire annulaire centrale (2e cas)
+    date = Date(2032, 5, 1, 0, 0, 0., 2. / 24.);
+    lune.CalculDatesEclipses(date);
+
+    QCOMPARE(lune.dateEclipseSoleil(), "2032-05-09 15h26");
+    QCOMPARE(lune.typeEclipseSoleil(), "A");
 }
