@@ -30,7 +30,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >    14 aout 2024
+ * >    19 fevrier 2025
  *
  */
 
@@ -125,7 +125,7 @@ void InformationsSatellite::show(const Satellite &satellite)
     _ui->epoque->setText(elem.epoque.ToQDateTime(DateFormatSec::FORMAT_SEC).toString(Qt::ISODate).replace("T", " "));
 
     // Coefficient pseudo-ballistique
-    _ui->bstar->setText(fmt1.arg(elem.bstar, 0, 'g', 6));
+    _ui->bstar->setText(fmt1.arg(elem.bstar, 0, 'e', 4));
 
 
     // Moyen mouvement
@@ -257,7 +257,7 @@ void InformationsSatellite::SauveOngletInformations(const QString &fichier)
 
             QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement             : %2 rev/jour\t Date de lancement  : %3",
                                 "revolution per day");
-            flux << chaine.arg(_ui->norad->text()).arg(_ui->nbRev->text()).arg(_ui->dateLancement->text()) << Qt::endl;
+            flux << chaine.arg(_ui->norad->text()).arg(_ui->nbRev->text().rightJustified(11, ' ')).arg(_ui->dateLancement->text()) << Qt::endl;
 
             chaine = tr("Désignation COSPAR      : %1\t\tn'/2                        : %2 rev/jour^2\t Catégorie d'orbite : %3",
                         "n'/2 = derivative of the mean motion divided by two (in revolution per day square)");
