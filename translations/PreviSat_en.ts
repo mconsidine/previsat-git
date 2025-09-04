@@ -3479,43 +3479,43 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/onglets.ui" line="64"/>
-        <location filename="../src/interface/onglets/onglets.cpp" line="72"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="73"/>
         <source>Informations satellite</source>
         <translation>Satellite information</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/onglets.ui" line="159"/>
-        <location filename="../src/interface/onglets/onglets.cpp" line="80"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="81"/>
         <source>Prévisions</source>
         <translation>Predictions</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/onglets.cpp" line="81"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="82"/>
         <source>Flashs</source>
         <translation>Flares</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/onglets.cpp" line="82"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="83"/>
         <source>Transits</source>
         <translation>Transits</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/onglets.cpp" line="84"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="85"/>
         <source>Starlink</source>
         <translation>Starlink</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/onglets.cpp" line="76"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="77"/>
         <source>Rentrées</source>
         <translation>Decays</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/onglets.cpp" line="74"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="75"/>
         <source>Informations ISS</source>
         <translation>ISS information</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/onglets.cpp" line="75"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="76"/>
         <source>Lancements</source>
         <translation>Launches</translation>
     </message>
@@ -3525,12 +3525,12 @@ click on &apos;Update ISS information&apos;</translation>
         <translation>Telescope</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/onglets.cpp" line="83"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="84"/>
         <source>Évènements orbitaux</source>
         <translation>Orbital events</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/onglets.cpp" line="73"/>
+        <location filename="../src/interface/onglets/onglets.cpp" line="74"/>
         <source>Recherche données</source>
         <translation>Data search</translation>
     </message>
@@ -6450,7 +6450,7 @@ Expected value : %3 - Calculated value : %4</translation>
     <name>RechercheSatellite</name>
     <message>
         <location filename="../src/interface/onglets/donnees/recherchesatellite.ui" line="54"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="216"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="221"/>
         <source>Objets trouvés :</source>
         <translation>Found objects :</translation>
     </message>
@@ -6563,174 +6563,174 @@ Expected value : %3 - Calculated value : %4</translation>
         <translation>NORAD :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="115"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="120"/>
         <source>Problème de droits d&apos;écriture du fichier %1</source>
         <translation>Unable to write file %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="127"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="132"/>
         <source>Nom                :</source>
         <translation>Name                 :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="129"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="134"/>
         <source>Numéro NORAD       : %1		Magnitude std/max  : %2</source>
         <comment>Standard/Maximum magnitude</comment>
         <translation>NORAD number         : %1			Std/max magnitude  : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="132"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="137"/>
         <source>Désignation COSPAR : %1		Modèle orbital     : %2</source>
         <translation>COSPAR designation   : %1		Propagation model  : %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="443"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="448"/>
         <source>Inconnues</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="135"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="140"/>
         <source>Forme/Dimensions : %1</source>
         <translation>Shape/Dimensions : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="139"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="144"/>
         <source>Date de lancement  : %1</source>
         <translatorcomment>Date and hour</translatorcomment>
         <translation>Launch date : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="142"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="147"/>
         <source>Date de rentrée    : %1</source>
         <translatorcomment>Date and hour</translatorcomment>
         <translation>Decay date    : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="145"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="150"/>
         <source>Catégorie d&apos;orbite : %1</source>
         <translation>Orbital category     : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="146"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="151"/>
         <source>Pays/Organisation  : %1</source>
         <translation>Country/Organization : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="147"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="152"/>
         <source>Site de lancement  : %1</source>
         <translation>Launch site          : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="150"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="155"/>
         <source>Classe/Catégorie/Discipline : %1</source>
         <translation>Class/Category/Discipline : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="151"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="156"/>
         <source>Masse sec/totale            : %1</source>
         <translation>Dry/total mass : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="152"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="157"/>
         <source>Apogée  (Altitude)          : %1</source>
         <translation>Apogee (Altitude) : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="153"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="158"/>
         <source>Périgée (Altitude)          : %1</source>
         <translation>Perigee (Altitude) : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="154"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="159"/>
         <source>Période orbitale            : %1</source>
         <translation>Orbital period     : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="155"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="160"/>
         <source>Inclinaison                 : %1</source>
         <translation>Inclination        : %1</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="221"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="226"/>
         <source>Objets trouvés (%1) :</source>
         <translation>Found objects (%1) :</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="377"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="463"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="469"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="519"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="522"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="382"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="468"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="474"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="524"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="527"/>
         <source>Inconnu</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="383"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="476"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="485"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="488"/>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="516"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="388"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="481"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="490"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="493"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="521"/>
         <source>Inconnue</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="409"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="414"/>
         <source>SGP4 (DS)</source>
         <comment>Orbital model SGP4 (deep space)</comment>
         <translation>SGP4 (DS)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="409"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="414"/>
         <source>SGP4 (NE)</source>
         <comment>Orbital model SGP4 (near Earth)</comment>
         <translation>SGP4 (NE)</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="410"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="415"/>
         <source>Non applicable</source>
         <translation>Not applicable</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="415"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="420"/>
         <source>Modèle haute orbite</source>
         <translation>High orbit model</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="415"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="420"/>
         <source>Modèle basse orbite</source>
         <translation>Low orbit model</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="423"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="428"/>
         <source>m</source>
         <comment>meter</comment>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="424"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="429"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="437"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="442"/>
         <source>ft</source>
         <comment>foot</comment>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="438"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="443"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="505"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="510"/>
         <source>Date de rentrée incertaine</source>
         <translation>Uncertain decay date</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="508"/>
+        <location filename="../src/interface/onglets/donnees/recherchesatellite.cpp" line="513"/>
         <source>Heure de rentrée incertaine</source>
         <translation>Uncertain decay hour</translation>
     </message>

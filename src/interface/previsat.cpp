@@ -341,7 +341,7 @@ void PreviSat::ChargementGP()
             Configuration::instance()->mapSatellitesFichierElem()[ff.fileName()] = listeSatellites;
 
             if (!listeSatellites.isEmpty()) {
-                Configuration::instance()->noradDefaut() =  listeSatellites.first();
+                Configuration::instance()->noradDefaut() = listeSatellites.first();
                 Configuration::instance()->EcritureConfiguration();
             }
 

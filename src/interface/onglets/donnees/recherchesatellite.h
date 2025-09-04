@@ -36,7 +36,7 @@
  * >    22 juin 2022
  *
  * Date de revision
- * >    14 aout 2024
+ * >    10 mars 2025
  *
  */
 
@@ -77,6 +77,8 @@ public:
     /*
      * Accesseurs
      */
+    Ui::RechercheSatellite *ui() const;
+
 
     /*
      * Modificateurs
