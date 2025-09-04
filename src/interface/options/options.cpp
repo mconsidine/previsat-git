@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    27 avril 2025
+ * >    31 juillet 2025
  *
  */
 
@@ -1322,7 +1322,6 @@ void Options::ModifierLieu()
     /* Corps de la methode */
     _ui->outilsLieuxObservation->setCurrentWidget(_ui->nouveauLieu);
     _ui->outilsLieuxObservation->setVisible(true);
-    _ui->ouvrirMaps->setVisible(false);
     _ui->lbl_ajouterDans->setVisible(false);
     _ui->ajdfic->setVisible(false);
 
@@ -1497,7 +1496,6 @@ void Options::ModifierObs()
     /* Corps de la methode */
     _ui->outilsLieuxObservation->setCurrentWidget(_ui->nouveauLieu);
     _ui->outilsLieuxObservation->setVisible(true);
-    _ui->ouvrirMaps->setVisible(false);
     _ui->lbl_ajouterDans->setVisible(false);
     _ui->ajdfic->setVisible(false);
 
@@ -1816,8 +1814,35 @@ void Options::on_creationLieu_clicked()
 }
 
 void Options::on_ouvrirMaps_clicked()
-{
-    QDesktopServices::openUrl(QUrl("https://www.google.com/maps/"));
+{    
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    // Conversion de la longitude
+    const QStringList lon = _ui->longitude->text().split(QRegularExpression("[°'\"]"), Qt::SkipEmptyParts);
+    const int lo1 = lon.at(0).toInt();
+    const int lo2 = lon.at(1).toInt();
+    const int lo3 = lon.at(2).toInt();
+
+    const double longitude = lo1 + lo2 * MATHS::DEG_PAR_ARCMIN + lo3 * MATHS::DEG_PAR_ARCSEC;
+
+    // Conversion de la latitude
+    const QStringList lat = _ui->latitude->text().split(QRegularExpression("[°'\"]"), Qt::SkipEmptyParts);
+    const int la1 = lat.at(0).toInt();
+    const int la2 = lat.at(1).toInt();
+    const int la3 = lat.at(2).toInt();
+
+    const double latitude = la1 + la2 * MATHS::DEG_PAR_ARCMIN + la3 * MATHS::DEG_PAR_ARCSEC;
+
+    const QString adresse = "https://www.google.com/maps/" +
+                            (((fabs(longitude) > MATHS::EPSDBL) && (fabs(latitude) > MATHS::EPSDBL)) ? QString("@%1,%2,17z").arg(latitude).arg(longitude) : "");
+
+    QDesktopServices::openUrl(QUrl(adresse));
+
+    /* Retour */
+    return;
 }
 
 void Options::on_decimal_toggled(bool checked)
