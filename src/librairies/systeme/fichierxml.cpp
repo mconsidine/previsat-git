@@ -30,7 +30,7 @@
  * >    4 novembre 2023
  *
  * Date de revision
- * >
+ * >    27 avril 2025
  *
  */
 
@@ -75,53 +75,57 @@ QDomDocument FichierXml::Ouverture(const bool alarme)
     QDomDocument document;
 
     /* Initialisations */
-
-    /* Corps de la methode */
     QFile fi(_fichier);
 
-    // Verifications
-    if (!fi.exists() || (fi.size() == 0)) {
+    /* Corps de la methode */
+    try {
+
+        // Verifications
+        if (!fi.exists() || (fi.size() == 0)) {
 
 #if (!BUILD_TEST)
-        qWarning().noquote() << QString("Le fichier %1 n'existe pas ou est vide").arg(_nomfic);
+            qWarning().noquote() << QString("Le fichier %1 n'existe pas ou est vide").arg(_nomfic);
 #endif
-        if (alarme) {
-            throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(_nomfic), MessageType::WARNING);
-        } else {
-            throw Exception();
+            if (alarme) {
+                throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide").arg(_nomfic), MessageType::WARNING);
+            } else {
+                throw Exception();
+            }
         }
-    }
 
-    if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
 #if (!BUILD_TEST)
-        qWarning().noquote() << QString("Erreur lors de l'ouverture du fichier %1").arg(_nomfic);
+            qWarning().noquote() << QString("Erreur lors de l'ouverture du fichier %1").arg(_nomfic);
 #endif
 #if (!COVERAGE_TEST)
-        if (alarme) {
-            throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(_nomfic), MessageType::WARNING);
-        } else {
-            throw Exception();
-        }
+            if (alarme) {
+                throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1").arg(_nomfic), MessageType::WARNING);
+            } else {
+                throw Exception();
+            }
 #endif
-    }
+        }
 
-    // Chargement du fichier xml
-    if (!document.setContent(&fi)) {
-        fi.close();
+        // Chargement du fichier xml
+        if (!document.setContent(&fi)) {
 
 #if (!BUILD_TEST)
-        qWarning().noquote() << QString("Erreur lors du chargement du fichier %1").arg(_nomfic);
+            qWarning().noquote() << QString("Erreur lors du chargement du fichier %1").arg(_nomfic);
 #endif
-        if (alarme) {
-            throw Exception(QObject::tr("Erreur lors du chargement du fichier %1").arg(_nomfic), MessageType::WARNING);
-        } else {
-            throw Exception();
+            if (alarme) {
+                throw Exception(QObject::tr("Erreur lors du chargement du fichier %1").arg(_nomfic), MessageType::WARNING);
+            } else {
+                throw Exception();
+            }
         }
-    }
 
-    _version = document.documentElement().attribute("version");
-    fi.close();
+        _version = document.documentElement().attribute("version");
+        fi.close();
+
+    } catch (Exception const &e) {
+        fi.close();
+    }
 
     /* Retour */
     return document;
