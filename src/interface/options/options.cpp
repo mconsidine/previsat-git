@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    2 fevrier 2025
+ * >    27 avril 2025
  *
  */
 
@@ -1517,7 +1517,7 @@ void Options::ModifierObs()
         }
 
         _isObs = true;
-        Observateur &obs = Configuration::instance()->observateurs()[--i];
+        const Observateur &obs = Configuration::instance()->observateurs()[--i];
 
         _ui->nomlieu->setText(obs.nomlieu().trimmed());
         _ui->nomlieu->setReadOnly(true);

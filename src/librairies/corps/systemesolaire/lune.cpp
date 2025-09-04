@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    24 mars 2025
+ * >    27 avril 2025
  *
  */
 
@@ -83,9 +83,9 @@ void Lune::CalculDatesEclipses(const Date &date)
     const double annee = date.annee() + (date.mois() - 1) / 12. + date.jour() / 365.;
 
     /* Corps de la methode */
-    for(unsigned int phase=0; phase<=2; phase+=2) {
+    for(unsigned int ph=0; ph<=2; ph+=2) {
 
-        k = CalculIndicePhase(annee, phase) - 1;
+        k = CalculIndicePhase(annee, ph) - 1;
 
         atrouve = false;
         while (!atrouve) {
@@ -100,13 +100,13 @@ void Lune::CalculDatesEclipses(const Date &date)
             if (fabs(sin(f)) < 0.36) {
 
                 // Calcul des elements communs aux 2 types d'eclipse (Soleil et Lune)
-                CalculElementsEclipses(k, f, phase);
+                CalculElementsEclipses(k, f, ph);
                 jj += _dj;
 
                 if (jj >= date.jourJulienTT()) {
 
                     // Calcul des caracteristiques de l'eclipse
-                    atrouve = CalculCaracteristiquesEclipses(phase, jj, k);
+                    atrouve = CalculCaracteristiquesEclipses(ph, jj, k);
 
                 } else {
                     k += 1.;
