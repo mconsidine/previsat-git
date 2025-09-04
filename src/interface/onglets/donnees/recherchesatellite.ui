@@ -98,66 +98,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QFrame" name="frameResultats">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>46</y>
-     <width>591</width>
-     <height>171</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::Shape::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Shadow::Raised</enum>
-   </property>
-   <widget class="QWidget" name="formLayoutWidget_59">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>141</y>
-      <width>241</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <layout class="QFormLayout" name="formLayout_rechercheSat4">
-     <property name="labelAlignment">
-      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-     </property>
-     <property name="horizontalSpacing">
-      <number>3</number>
-     </property>
-     <property name="verticalSpacing">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="lbl_fichiersElementsOrbitaux">
-       <property name="text">
-        <string>Fichiers :</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="fichiersElementsOrbitaux">
-       <property name="maximumSize">
-        <size>
-         <width>170</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="font">
-        <font/>
-       </property>
-       <property name="mouseTracking">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
   <widget class="QWidget" name="formLayoutWidget_43">
    <property name="geometry">
     <rect>
@@ -243,537 +183,597 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="formLayoutWidget_47">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>90</y>
-     <width>351</width>
-     <height>121</height>
-    </rect>
-   </property>
-   <layout class="QFormLayout" name="formLayout_rechercheSat3">
-    <property name="sizeConstraint">
-     <enum>QLayout::SizeConstraint::SetFixedSize</enum>
-    </property>
-    <property name="labelAlignment">
-     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-    </property>
-    <property name="horizontalSpacing">
-     <number>3</number>
-    </property>
-    <property name="verticalSpacing">
-     <number>1</number>
-    </property>
-    <item row="2" column="0">
-     <widget class="QLabel" name="lbl_apogeeDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string>Apogée (Altitude) :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="lbl_perigeeDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string>Périgée (Altitude) :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="lbl_periodeDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string>Période orbitale :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="0">
-     <widget class="QLabel" name="lbl_inclinaisonDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Inclinaison :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLabel" name="apogeeDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string notr="true">036000.0 km (036000.0 km)</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLabel" name="perigeeDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string notr="true">36000.0 km (36000.0 km)</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="periodeDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string notr="true">24h 50m 53s</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="1">
-     <widget class="QLabel" name="inclinaisonDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string notr="true">000.0000°</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="lbl_masseSecTot">
-      <property name="text">
-       <string>Masse sec/totale :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLabel" name="masseSecTot">
-      <property name="text">
-       <string notr="true">2000/3000 kg</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="lbl_classeCategDiscip">
-      <property name="text">
-       <string>Classe/Catégorie/Discipline :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLabel" name="classeCategDiscip">
-      <property name="text">
-       <string notr="true">C / TECH / ENV*</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="formLayoutWidget_45">
+  <widget class="QFrame" name="frameResultats">
    <property name="geometry">
     <rect>
      <x>190</x>
-     <y>51</y>
-     <width>231</width>
-     <height>36</height>
+     <y>36</y>
+     <width>591</width>
+     <height>181</height>
     </rect>
    </property>
-   <layout class="QFormLayout" name="formLayout_rechercheNorad_2">
-    <property name="labelAlignment">
-     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-    </property>
-    <property name="horizontalSpacing">
-     <number>3</number>
-    </property>
-    <property name="verticalSpacing">
-     <number>2</number>
-    </property>
-    <item row="0" column="0">
-     <widget class="QLabel" name="lbl_numNorad_2">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Numéro NORAD :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="lbl_desigCospar_2">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Désignation COSPAR :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLabel" name="numNorad">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string notr="true">25544</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLabel" name="desigCospar">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string notr="true">1998-067A</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="formLayoutWidget_46">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>90</y>
-     <width>231</width>
-     <height>91</height>
-    </rect>
+   <property name="frameShape">
+    <enum>QFrame::Shape::StyledPanel</enum>
    </property>
-   <layout class="QFormLayout" name="formLayout_rechercheSat2">
-    <property name="sizeConstraint">
-     <enum>QLayout::SizeConstraint::SetFixedSize</enum>
-    </property>
-    <property name="labelAlignment">
-     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-    </property>
-    <property name="horizontalSpacing">
-     <number>3</number>
-    </property>
-    <property name="verticalSpacing">
-     <number>1</number>
-    </property>
-    <item row="0" column="0">
-     <widget class="QLabel" name="lbl_dateLancementDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string>Date de lancement :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="lbl_dateRentree">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string>Date de rentrée :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="lbl_categorieOrbiteDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string>Catégorie d'orbite :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="lbl_paysDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string>Pays/Organisation :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="lbl_siteLancementDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string>Site de lancement :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLabel" name="dateLancementDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string notr="true">2013/07/08</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLabel" name="dateRentree">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="text">
-       <string notr="true">2013/07/08</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLabel" name="categorieOrbiteDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string notr="true">LEO/I</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLabel" name="paysDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string notr="true">US</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="siteLancementDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string notr="true">AFETR</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>35</y>
-     <width>351</width>
-     <height>52</height>
-    </rect>
+   <property name="frameShadow">
+    <enum>QFrame::Shadow::Raised</enum>
    </property>
-   <layout class="QFormLayout" name="formLayout_rechercheSat1">
-    <property name="sizeConstraint">
-     <enum>QLayout::SizeConstraint::SetFixedSize</enum>
+   <widget class="QWidget" name="formLayoutWidget_59">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>141</y>
+      <width>241</width>
+      <height>24</height>
+     </rect>
     </property>
-    <property name="labelAlignment">
-     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+    <layout class="QFormLayout" name="formLayout_rechercheSat4">
+     <property name="labelAlignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>3</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_fichiersElementsOrbitaux">
+       <property name="text">
+        <string>Fichiers :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="fichiersElementsOrbitaux">
+       <property name="maximumSize">
+        <size>
+         <width>170</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget_47">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>55</y>
+      <width>351</width>
+      <height>121</height>
+     </rect>
     </property>
-    <property name="horizontalSpacing">
-     <number>3</number>
+    <layout class="QFormLayout" name="formLayout_rechercheSat3">
+     <property name="sizeConstraint">
+      <enum>QLayout::SizeConstraint::SetFixedSize</enum>
+     </property>
+     <property name="labelAlignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>3</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>1</number>
+     </property>
+     <item row="2" column="0">
+      <widget class="QLabel" name="lbl_apogeeDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string>Apogée (Altitude) :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="lbl_perigeeDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string>Périgée (Altitude) :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="lbl_periodeDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string>Période orbitale :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="lbl_inclinaisonDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Inclinaison :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="apogeeDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string notr="true">036000.0 km (036000.0 km)</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLabel" name="perigeeDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string notr="true">36000.0 km (36000.0 km)</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLabel" name="periodeDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string notr="true">24h 50m 53s</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLabel" name="inclinaisonDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">000.0000°</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="lbl_masseSecTot">
+       <property name="text">
+        <string>Masse sec/totale :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="masseSecTot">
+       <property name="text">
+        <string notr="true">2000/3000 kg</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_classeCategDiscip">
+       <property name="text">
+        <string>Classe/Catégorie/Discipline :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="classeCategDiscip">
+       <property name="text">
+        <string notr="true">C / TECH / ENV*</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget_45">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>16</y>
+      <width>231</width>
+      <height>36</height>
+     </rect>
     </property>
-    <property name="verticalSpacing">
-     <number>1</number>
+    <layout class="QFormLayout" name="formLayout_rechercheNorad_2">
+     <property name="labelAlignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>3</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>2</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_numNorad_2">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Numéro NORAD :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="lbl_desigCospar_2">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Désignation COSPAR :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="numNorad">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">25544</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="desigCospar">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">1998-067A</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget_46">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>55</y>
+      <width>231</width>
+      <height>91</height>
+     </rect>
     </property>
-    <item row="0" column="0">
-     <widget class="QLabel" name="lbl_magnitudeStdMaxDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Magnitude std/max :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="lbl_modeleDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Modèle orbital :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="lbl_dimensionsDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Forme/Dimensions :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLabel" name="magnitudeStdMaxDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string notr="true">-0.5v/-2.9</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLabel" name="modeleDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string notr="true">SGP4 (NE)</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLabel" name="dimensionsDonneesSat">
-      <property name="font">
-       <font/>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string notr="true">Cylindrique. L=30.0m, R=20.0m / 350.00 m</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="formLayoutWidget_44">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>35</y>
-     <width>231</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <layout class="QFormLayout" name="formLayout_RechercheNomsat">
-    <property name="labelAlignment">
-     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+    <layout class="QFormLayout" name="formLayout_rechercheSat2">
+     <property name="sizeConstraint">
+      <enum>QLayout::SizeConstraint::SetFixedSize</enum>
+     </property>
+     <property name="labelAlignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>3</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>1</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_dateLancementDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string>Date de lancement :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="lbl_dateRentree">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string>Date de rentrée :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="lbl_categorieOrbiteDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string>Catégorie d'orbite :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="lbl_paysDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string>Pays/Organisation :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="lbl_siteLancementDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string>Site de lancement :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="dateLancementDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string notr="true">2013/07/08</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="dateRentree">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="text">
+        <string notr="true">2013/07/08</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="categorieOrbiteDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">LEO/I</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLabel" name="paysDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">US</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLabel" name="siteLancementDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">AFETR</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>0</y>
+      <width>351</width>
+      <height>52</height>
+     </rect>
     </property>
-    <property name="horizontalSpacing">
-     <number>3</number>
+    <layout class="QFormLayout" name="formLayout_rechercheSat1">
+     <property name="sizeConstraint">
+      <enum>QLayout::SizeConstraint::SetFixedSize</enum>
+     </property>
+     <property name="labelAlignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>3</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>1</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_magnitudeStdMaxDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Magnitude std/max :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="lbl_modeleDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Modèle orbital :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="lbl_dimensionsDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Forme/Dimensions :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="magnitudeStdMaxDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">-0.5v/-2.9</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="modeleDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">SGP4 (NE)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="dimensionsDonneesSat">
+       <property name="font">
+        <font/>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string notr="true">Cylindrique. L=30.0m, R=20.0m / 350.00 m</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget_44">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>231</width>
+      <height>18</height>
+     </rect>
     </property>
-    <property name="verticalSpacing">
-     <number>0</number>
-    </property>
-    <item row="0" column="1">
-     <widget class="QLabel" name="nomsat">
-      <property name="palette">
-       <palette>
-        <active>
-         <colorrole role="WindowText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>0</red>
-            <green>0</green>
-            <blue>255</blue>
-           </color>
-          </brush>
-         </colorrole>
-        </active>
-        <inactive>
-         <colorrole role="WindowText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </brush>
-         </colorrole>
-        </inactive>
-        <disabled>
-         <colorrole role="WindowText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>120</red>
-            <green>120</green>
-            <blue>120</blue>
-           </color>
-          </brush>
-         </colorrole>
-        </disabled>
-       </palette>
-      </property>
-      <property name="font">
-       <font>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string notr="true">ISS</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="lbl_nomsat">
-      <property name="text">
-       <string>Nom :</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
+    <layout class="QFormLayout" name="formLayout_RechercheNomsat">
+     <property name="labelAlignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>3</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>0</number>
+     </property>
+     <item row="0" column="1">
+      <widget class="QLabel" name="nomsat">
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="WindowText">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>0</red>
+             <green>0</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="WindowText">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="WindowText">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>120</red>
+             <green>120</green>
+             <blue>120</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="font">
+        <font>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string notr="true">ISS</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_nomsat">
+       <property name="text">
+        <string>Nom :</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
  </widget>
  <resources/>

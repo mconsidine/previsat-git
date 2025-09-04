@@ -183,8 +183,8 @@ void RechercheSatellite::on_noradDonneesSat_valueChanged(int arg1)
         _resultatsSatellitesTrouves = Donnees::RequeteNorad(Configuration::instance()->dbSatellites(), norad);
 
         if (_resultatsSatellitesTrouves.isEmpty()) {
-            _ui->nom->setText("");
-            _ui->cosparDonneesSat->setText("");
+            _ui->nom->clear();
+            _ui->cosparDonneesSat->clear();
         } else {
 
             const Donnees donnees = _resultatsSatellitesTrouves.first();
@@ -213,11 +213,10 @@ void RechercheSatellite::show()
     _ui->frameResultats->setVisible(false);
     _ui->lbl_fichiersElementsOrbitaux->setVisible(false);
     _ui->fichiersElementsOrbitaux->setVisible(false);
+    _ui->lbl_satellitesTrouves->setText(tr("Objets trouvés :"));
 
     /* Corps de la methode */
-    if (_resultatsSatellitesTrouves.isEmpty()) {
-        _ui->lbl_satellitesTrouves->setText(tr("Objets trouvés :"));
-    } else {
+    if (!_resultatsSatellitesTrouves.isEmpty()) {
 
         const QString chaine = tr("Objets trouvés (%1) :");
         _ui->lbl_satellitesTrouves->setText(chaine.arg(_resultatsSatellitesTrouves.count()));
@@ -306,10 +305,8 @@ void RechercheSatellite::on_nom_returnPressed()
         _resultatsSatellitesTrouves = Donnees::RequeteNom(Configuration::instance()->dbSatellites(), nomsat);
 
         if (_resultatsSatellitesTrouves.isEmpty()) {
-            _ui->noradDonneesSat->blockSignals(true);
-            _ui->noradDonneesSat->setValue(999999);
-            _ui->noradDonneesSat->blockSignals(false);
-            _ui->cosparDonneesSat->setText("");
+            _ui->noradDonneesSat->clear();
+            _ui->cosparDonneesSat->clear();
         } else {
             const Donnees donnees(_resultatsSatellitesTrouves.first());
             _ui->cosparDonneesSat->setText(donnees.cospar());
@@ -342,10 +339,8 @@ void RechercheSatellite::on_cosparDonneesSat_returnPressed()
         _resultatsSatellitesTrouves = Donnees::RequeteCospar(Configuration::instance()->dbSatellites(), cospar);
 
         if (_resultatsSatellitesTrouves.isEmpty()) {
-            _ui->nom->setText("");
-            _ui->noradDonneesSat->blockSignals(true);
-            _ui->noradDonneesSat->setValue(999999);
-            _ui->noradDonneesSat->blockSignals(false);
+            _ui->nom->clear();
+            _ui->noradDonneesSat->clear();
         } else {
             const Donnees donnees(_resultatsSatellitesTrouves.first());
             _ui->nom->setText(donnees.nom());
