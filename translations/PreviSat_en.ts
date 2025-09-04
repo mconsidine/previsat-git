@@ -3123,12 +3123,12 @@ click on &apos;Update ISS information&apos;</translation>
         <translation>Double clic on a line to show satellite information</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="232"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="234"/>
         <source>Téléchargement du fichier de rentrées atmosphériques...</source>
         <translation>Downloading decay information file...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="234"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="236"/>
         <source>Téléchargement terminé</source>
         <translation>Downloading finished</translation>
     </message>

@@ -3126,12 +3126,12 @@ cliquer sur &apos;Mettre à jour les informations de l&apos;ISS&apos;</source>
         <translation>行をダブルクリックすると衛星情報が表示されます</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="232"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="234"/>
         <source>Téléchargement du fichier de rentrées atmosphériques...</source>
         <translation>大気圏再突入ファイルのダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="234"/>
+        <location filename="../src/interface/onglets/donnees/informationsrentrees.cpp" line="236"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
     </message>
