@@ -30,7 +30,7 @@
  * >    24 fevrier 2024
  *
  * Date de revision
- * >
+ * >    27 avril 2025
  *
  */
 
@@ -105,7 +105,7 @@ void FichierXmlTest::testOuverture2()
 
     FichierXml fi(fic);
 
-    QDomDocument document;
-    QVERIFY_THROWS_EXCEPTION(Exception, document = fi.Ouverture(true));
+    const QDomDocument document = fi.Ouverture(true);
+
     QCOMPARE(document.isNull(), true);
 }
