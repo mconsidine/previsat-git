@@ -2652,6 +2652,16 @@ PreviSat is free !</translation>
         <translation>Loss of signal</translation>
     </message>
     <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="955"/>
+        <source>Éclipse Soleil   : %1</source>
+        <translation>Solar eclipse : %1</translation>
+    </message>
+    <message>
+        <location filename="../src/interface/onglets/general/general.cpp" line="956"/>
+        <source>Éclipse Lune     : %1</source>
+        <translation>Lunar eclipse : %1</translation>
+    </message>
+    <message>
         <location filename="../src/interface/onglets/general/general.cpp" line="450"/>
         <location filename="../src/interface/onglets/general/general.cpp" line="501"/>
         <source>%1  (dans %2).</source>
