@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    7 juin 2025
+ * >    31 juillet 2025
  *
  */
 
@@ -602,7 +602,7 @@ void CalculsTransits::on_calculsTransit_clicked()
             emit AfficherMessageStatut(tr("Calculs terminés"), 10);
 
             if (Transits::resultats().isEmpty()) {
-                Message::Afficher(tr("Aucun transit ISS n'a été trouvé sur la période donnée"), MessageType::INFO);
+                Message::Afficher(tr("Aucun transit n'a été trouvé sur la période donnée"), MessageType::INFO);
             } else {
                 EFFACE_OBJET(_afficherResultats);
                 _afficherResultats = new AfficherResultats(TypeCalcul::TRANSITS, conditions, Transits::donnees(), Transits::resultats(),

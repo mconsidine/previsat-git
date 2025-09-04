@@ -1809,7 +1809,7 @@ PreviSat is free !</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="605"/>
-        <source>Aucun transit ISS n&apos;a été trouvé sur la période donnée</source>
+        <source>Aucun transit n&apos;a été trouvé sur la période donnée</source>
         <translation>None transit has been found during the given period</translation>
     </message>
     <message>

@@ -1809,8 +1809,8 @@ PreviSatは、完全無料です!</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="605"/>
-        <source>Aucun transit ISS n&apos;a été trouvé sur la période donnée</source>
-        <translation>指定された期間にISSの通過が見つかりませんでした</translation>
+        <source>Aucun transit n&apos;a été trouvé sur la période donnée</source>
+        <translation>指定された期間に通過が見つかりませんでした</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="734"/>
