@@ -30,7 +30,7 @@
  * >    29 octobre 2019
  *
  * Date de revision
- * >    22 aout 2024
+ * >    2 avril 2025
  *
  */
 
@@ -101,6 +101,7 @@ void GeneralTest::testSauveOngletGeneral()
     lune.CalculCoordEquat(observateur);
     lune.CalculLeverMeridienCoucher(date, DateSysteme::SYSTEME_24H, observateur);
     lune.CalculDatesPhases(date);
+    lune.CalculDatesEclipses(date);
     Configuration::instance()->lune() = lune;
 
     const QString nomfic = dir.path() + QDir::separator() + "test" + QDir::separator() + "elem" + QDir::separator() + "visual.txt";
