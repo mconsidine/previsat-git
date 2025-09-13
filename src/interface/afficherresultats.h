@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 janvier 2025
+ * >    12 septembre 2025
  *
  */
 
@@ -56,6 +56,7 @@ class QTableWidget;
 class QTableWidgetItem;
 class Ciel;
 class Lune;
+class Onglets;
 class Soleil;
 
 class AfficherResultats : public QMainWindow
@@ -79,7 +80,6 @@ public:
      * @param[in] conditions conditions de prevision
      * @param[in] donnees donnees de prevision
      * @param[in] resultats resultats du calcul
-     * @param[in] onglets onglets
      * @param[in] zoom niveau de zoom pour les maps
      * @param[in] parent fenetre parent
      */
@@ -240,14 +240,17 @@ private:
      */
     QStringList ElementsDetailsTransits(const ResultatPrevisions &res) const;
 
+    void OuvrirSatelliteTracker(const QString &fichierCsv);
+
 
 private slots:
 
     void on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item);
     void on_actionEnregistrer_triggered();
     void on_actionEnregistrerTxt_triggered();
+    void on_actionExporterCsv_triggered();
     void on_resultatsPrevisions_itemSelectionChanged();
-    void on_afficherCarte_clicked();    
+    void on_afficherCarte_clicked();
 
 };
 

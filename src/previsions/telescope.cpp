@@ -30,7 +30,7 @@
  * >    4 octobre 2020
  *
  * Date de revision
- * >    2 avril 2023
+ * >    12 septembre 2025
  *
  */
 
@@ -85,7 +85,7 @@ int Telescope::CalculSuiviTelescope(const int &nombre)
     /* Corps de la methode */
     QFile fi(_conditions.ficRes);
 
-    if (!fi.open(QIODevice::WriteOnly | QIODevice::Text) || !fi.isWritable()) {
+    if (!fi.open(QIODevice::WriteOnly | QIODevice::Text)) {
         throw Exception();
     }
 

@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    7 juin 2025
+ * >    12 septembre 2025
  *
  */
 
@@ -39,17 +39,24 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QGraphicsPixmapItem>
+#include <QMessageBox>
 #include <QScreen>
 #include <QSettings>
 #include <QStringDecoder>
+#include <QtConcurrent>
 #include <QtGlobal>
 #include "ui_afficherresultats.h"
 #include "onglets/ui_onglets.h"
 #include "afficherresultats.h"
 #include "interface/ciel/ciel.h"
+#include "interface/onglets/onglets.h"
+#if defined (Q_OS_WIN)
+#include "interface/onglets/telescope/suivitelescope.h"
+#endif
 #include "configuration/configuration.h"
 #include "librairies/corps/satellite/evenements.h"
 #include "librairies/maths/maths.h"
+#include "previsions/telescope.h"
 
 Q_DECLARE_METATYPE(QList<ResultatPrevisions>)
 
@@ -127,12 +134,16 @@ AfficherResultats::AfficherResultats(const TypeCalcul &typeCalcul,
     _ui->resultatsPrevisions->clear();
     _ui->detailsTransit->setVisible(false);
     _ui->afficherCarte->setVisible(false);
+    _ui->actionExporterCsv->setVisible(false);
 
     switch (_typeCalcul) {
     case TypeCalcul::PREVISIONS:
         setWindowTitle(tr("Prévisions de passage"));
         titres << tr("Satellite") << tr("Date de début", "Date and hour") << tr("Date de fin", "Date and hour")
                << tr("Hauteur max", "Maximum elevation") << tr("Magnitude") << tr("Hauteur Soleil");
+#if defined (Q_OS_WIN)
+        _ui->actionExporterCsv->setVisible(true);
+#endif
         break;
 
     case TypeCalcul::EVENEMENTS:
@@ -1219,6 +1230,54 @@ QStringList AfficherResultats::ElementsDetailsTransits(const ResultatPrevisions 
     return elems;
 }
 
+void AfficherResultats::OuvrirSatelliteTracker(const QString &fichierCsv)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    QString exeSatelliteTracker = settings.value("fichier/satelliteTracker", "").toString();
+    const QFileInfo fi(exeSatelliteTracker);
+
+    /* Corps de la methode */
+    if (exeSatelliteTracker.isEmpty() || !fi.exists()) {
+
+        settings.setValue("fichier/satelliteTracker", "");
+        QString fichierExe = QFileDialog::getOpenFileName(this, tr("Ouvrir Satellite Tracker"), "Satellite Tracker.exe",
+                                                       tr("Fichiers exécutables (*.exe)"));
+
+        if (!fichierExe.isEmpty()) {
+            fichierExe = QDir::toNativeSeparators(fichierExe);
+            settings.setValue("fichier/satelliteTracker", fichierExe);
+            exeSatelliteTracker = fichierExe;
+        }
+    }
+
+    if (!exeSatelliteTracker.isEmpty()) {
+
+        QStringList arguments;
+        if (!fichierCsv.isEmpty()) {
+
+            arguments << "--infile" << fichierCsv;
+
+            if (settings.value("previsions/demarrerSuiviTelescope", false).toBool()) {
+                arguments << "--start";
+            }
+        }
+
+        if (settings.value("previsions/pecDelai", false).toBool()) {
+            arguments << "--countdown" << settings.value("previsions/delaiTelescope", 60).toString();
+        }
+
+        QProcess proc;
+        proc.setProgram(exeSatelliteTracker);
+        proc.setArguments(arguments);
+        proc.startDetached();
+    }
+
+    /* Retour */
+    return;
+}
+
 void AfficherResultats::on_resultatsPrevisions_itemDoubleClicked(QTableWidgetItem *item)
 {
     /* Declarations des variables locales */
@@ -1761,6 +1820,75 @@ void AfficherResultats::on_actionEnregistrerTxt_triggered()
     return;
 }
 
+void AfficherResultats::on_actionExporterCsv_triggered()
+{
+    /* Declarations des variables locales */
+    QVector<int> vecSat;
+
+    /* Initialisations */
+    vecSat.append(1);
+
+    const QString fmtFicOut = "%1%2%3T%4%5_%6%7%8T%9%10_%11.csv";
+
+    ConditionsPrevisions conditions = _conditions;
+    const QList<ResultatPrevisions> list = _ui->resultatsPrevisions->item(_ui->resultatsPrevisions->currentRow(), 0)->data(Qt::UserRole)
+                                               .value<QList<ResultatPrevisions> > ();
+
+    const Date date1(list.first().date.jourJulienUTC() - conditions.pas, conditions.offset);
+    const Date date2(list.last().date.jourJulienUTC() + conditions.pas, conditions.offset);
+    const unsigned int pas = settings.value("previsions/pasSuivi", 20).toUInt();
+    conditions.jj1 = date1.jourJulienUTC();
+    conditions.jj2 = date2.jourJulienUTC();
+    conditions.pas = pas;
+    conditions.nbIter = qMin(600000, qRound((date2.jourJulienUTC() - date1.jourJulienUTC()) * DATE::NB_MILLISEC_PAR_JOUR + 10000.)) / pas;
+
+    const QString norad = list.first().elements.norad;
+    conditions.listeSatellites.clear();
+    conditions.listeSatellites.append(norad);
+
+    const ElementsOrbitaux elem = conditions.tabElem[norad];
+    conditions.tabElem.clear();
+    conditions.tabElem[norad] = elem;
+
+    const QString ficOut = fmtFicOut.arg(date1.annee()).arg(date1.mois(), 2, 10, QChar('0')).arg(date1.jour(), 2, 10, QChar('0'))
+                               .arg(date1.heure(), 2, 10, QChar('0')).arg(date1.minutes(), 2, 10, QChar('0'))
+                               .arg(date2.annee()).arg(date2.mois(), 2, 10, QChar('0')).arg(date2.jour(), 2, 10, QChar('0'))
+                               .arg(date2.heure(), 2, 10, QChar('0')).arg(date2.minutes() + 1, 2, 10, QChar('0')).arg(conditions.listeSatellites.first());
+
+    conditions.ficRes = Configuration::instance()->dirOut() + QDir::separator() + ficOut;
+
+    /* Corps de la methode */
+    Telescope::setConditions(conditions);
+    QFutureWatcher<void> calculs;
+
+    calculs.setFuture(QtConcurrent::map(vecSat, &Telescope::CalculSuiviTelescope));
+    calculs.waitForFinished();
+
+    if (!calculs.isCanceled()) {
+
+        QMessageBox msgbox(QMessageBox::Information, tr("Information"), tr("Prévisions exportées au format CSV"));
+
+        QPushButton * const tracker = msgbox.addButton(tr("Ouvrir Satellite Tracker"), QMessageBox::YesRole);
+        const QPushButton * const afficher = msgbox.addButton(tr("Afficher"), QMessageBox::AcceptRole);
+        msgbox.addButton(tr("Fermer"), QMessageBox::RejectRole);
+
+        msgbox.setDefaultButton(tracker);
+        msgbox.exec();
+
+        if (msgbox.clickedButton() == tracker) {
+            OuvrirSatelliteTracker(conditions.ficRes);
+
+        } else if (msgbox.clickedButton() == afficher) {
+            if (!conditions.ficRes.isEmpty()) {
+                QDesktopServices::openUrl(QUrl(conditions.ficRes.replace(R"(\)", "/")));
+            }
+        }
+    }
+
+    /* Retour */
+    return;
+}
+
 void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
 {
     /* Declarations des variables locales */
@@ -1776,6 +1904,7 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
             .value<QList<ResultatPrevisions> > ();
     const double offset = (settings.value("affichage/utcAuto").toBool()) ? Date::CalculOffsetUTC(list.first().date.ToQDateTime(DateFormatSec::FORMAT_SEC))
                                                                          : _conditions.offset;
+
     const Date dateDeb = Date(list.first().date, offset);
     const Date dateFin = Date(list.last().date, offset);
 
