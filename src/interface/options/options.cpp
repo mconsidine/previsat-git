@@ -30,7 +30,7 @@
  * >    13 aout 2022
  *
  * Date de revision
- * >    31 juillet 2025
+ * >    19 octobre 2025
  *
  */
 
@@ -1837,7 +1837,7 @@ void Options::on_ouvrirMaps_clicked()
     const double latitude = la1 + la2 * MATHS::DEG_PAR_ARCMIN + la3 * MATHS::DEG_PAR_ARCSEC;
 
     const QString adresse = "https://www.google.com/maps/" +
-                            (((fabs(longitude) > MATHS::EPSDBL) && (fabs(latitude) > MATHS::EPSDBL)) ? QString("@%1,%2,17z").arg(latitude).arg(longitude) : "");
+                            (((fabs(longitude) > MATHS::EPSDBL) && (fabs(latitude) > MATHS::EPSDBL)) ? QString("@%1,%2,17z").arg(latitude).arg(-longitude) : "");
 
     QDesktopServices::openUrl(QUrl(adresse));
 
