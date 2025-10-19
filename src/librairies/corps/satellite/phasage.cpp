@@ -30,7 +30,7 @@
  * >    6 octobre 2016
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    14 octobre 2025
  *
  */
 
@@ -80,45 +80,51 @@ void Phasage::Calcul(const ElementsOsculateurs &elements,
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const double cosincl = cos(elements.inclinaison());
-    const double cosincl2 = cosincl * cosincl;
-    const double rsa = TERRE::RAYON_TERRESTRE / elements.demiGrandAxe();
-    const double rsa2 = rsa * rsa;
-    const double moyenMouvement = sqrt(TERRE::GE / (elements.demiGrandAxe() * elements.demiGrandAxe() * elements.demiGrandAxe()));
-    const double aper = DATE::NB_MIN_PAR_JOUR / n0;
-    const double gamma = 1. - elements.excentricite() * elements.excentricite();
-    const double gamma2 = gamma * gamma;
+    bool atrouve = false;
+    double nt0 = 0.;
+    double precessionNoeud = 0.;
+    double v = 0.;
 
     /* Corps de la methode */
-    const double precessionNoeud = MATHS::RAD2DEG * DATE::NB_SEC_PAR_JOUR * (-1.5 * TERRE::J2 * rsa2 * cosincl * moyenMouvement / gamma2);
-    const double precessionPerigee = MATHS::RAD2DEG * DATE::NB_SEC_PAR_JOUR * 0.75 * TERRE::J2 * rsa2 * (5. * cosincl2 - 1.) * moyenMouvement / gamma2;
-    const double dper = aper / (1. + precessionPerigee * MATHS::DEG2RAD * DATE::NB_JOUR_PAR_SEC / moyenMouvement);
-    const double nd = n0 * MATHS::T360 + precessionPerigee;
-    const double k = nd / (TERRE::OMEGA0 * MATHS::T360 - precessionNoeud);
-    _nu0 = static_cast<int> (qRound(floor(10. * k) * 0.1));
-    const double v = n0 * aper / dper;
+    if (fabs(elements.demiGrandAxe()) > MATHS::EPSDBL100) {
 
-    bool atrouve = false;
-    int iter;
-    const double pas = 1.e-6;
-    double spec = 0.01;
-    double nt0 = 0.;
+        const double cosincl = cos(elements.inclinaison());
+        const double cosincl2 = cosincl * cosincl;
+        const double rsa = TERRE::RAYON_TERRESTRE / elements.demiGrandAxe();
+        const double rsa2 = rsa * rsa;
+        const double moyenMouvement = sqrt(TERRE::GE / (elements.demiGrandAxe() * elements.demiGrandAxe() * elements.demiGrandAxe()));
+        const double aper = DATE::NB_MIN_PAR_JOUR / n0;
+        const double gamma = 1. - elements.excentricite() * elements.excentricite();
+        const double gamma2 = gamma * gamma;
 
-    while (!atrouve && (spec <= 0.05)) {
+        precessionNoeud = MATHS::RAD2DEG * DATE::NB_SEC_PAR_JOUR * (-1.5 * TERRE::J2 * rsa2 * cosincl * moyenMouvement / gamma2);
+        const double precessionPerigee = MATHS::RAD2DEG * DATE::NB_SEC_PAR_JOUR * 0.75 * TERRE::J2 * rsa2 * (5. * cosincl2 - 1.) * moyenMouvement / gamma2;
+        const double dper = aper / (1. + precessionPerigee * MATHS::DEG2RAD * DATE::NB_JOUR_PAR_SEC / moyenMouvement);
+        const double nd = n0 * MATHS::T360 + precessionPerigee;
+        const double k = nd / (TERRE::OMEGA0 * MATHS::T360 - precessionNoeud);
+        _nu0 = static_cast<int> (qRound(floor(10. * k) * 0.1));
+        v = n0 * aper / dper;
 
-        iter = 1;
-        while (!atrouve && (iter <= 38)) {
+        int iter;
+        const double pas = 1.e-6;
+        double spec = 0.01;
 
-            nt0 = iter * v;
-            if (fabs(nt0 - qRound(nt0)) < spec) {
-                _ct0 = iter;
-                atrouve = true;
+        while (!atrouve && (spec <= 0.05)) {
+
+            iter = 1;
+            while (!atrouve && (iter <= 38)) {
+
+                nt0 = iter * v;
+                if (fabs(nt0 - qRound(nt0)) < spec) {
+                    _ct0 = iter;
+                    atrouve = true;
+                }
+
+                iter++;
             }
 
-            iter++;
+            spec += pas;
         }
-
-        spec += pas;
     }
 
     if (atrouve) {

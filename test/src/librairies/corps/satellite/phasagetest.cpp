@@ -30,7 +30,7 @@
  * >    5 juin 2022
  *
  * Date de revision
- * >
+ * >    14 octobre 2025
  *
  */
 
@@ -76,12 +76,8 @@ void PhasageTest::testCalcul2()
     qInfo(Q_FUNC_INFO);
 
     const double n0 = 1.;
-    const Vecteur3D position;
-    const Vecteur3D vitesse;
 
     ElementsOsculateurs elem;
-    elem.Calcul(position, vitesse);
-
     Phasage phasage;
     phasage.Calcul(elem, n0);
 

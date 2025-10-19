@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    14 octobre 2025
  *
  */
 
@@ -80,12 +80,12 @@ void CompareVecteurs3D(const Vecteur3D &vec1, const Vecteur3D &vec2)
 void CompareFichiers(const QString &ficRes, const QString &ficRef)
 {
     QFile ref(ficRef);
-    ref.open(QIODevice::ReadOnly | QIODevice::Text);
+    (void) ref.open(QIODevice::ReadOnly | QIODevice::Text);
     const QString ficref = ref.readAll();
     ref.close();
 
     QFile res(ficRes);
-    res.open(QIODevice::ReadOnly | QIODevice::Text);
+    (void) res.open(QIODevice::ReadOnly | QIODevice::Text);
     const QString ficres = res.readAll();
     res.close();
 

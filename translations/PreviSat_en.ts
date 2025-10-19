@@ -228,7 +228,7 @@
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1246"/>
         <source>Fichiers exécutables (*.exe)</source>
-        <translation type="unfinished">Executable files (*.exe)</translation>
+        <translation>Executable files (*.exe)</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1302"/>
@@ -436,23 +436,23 @@
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1869"/>
         <source>Information</source>
-        <translation type="unfinished">Information</translation>
+        <translation>Information</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1245"/>
         <location filename="../src/interface/afficherresultats.cpp" line="1871"/>
         <source>Ouvrir Satellite Tracker</source>
-        <translation type="unfinished">Open Satellite Tracker</translation>
+        <translation>Open Satellite Tracker</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1872"/>
         <source>Afficher</source>
-        <translation type="unfinished">Show file</translation>
+        <translation>Show file</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1873"/>
         <source>Fermer</source>
-        <translation type="unfinished">Close</translation>
+        <translation>Close</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1583"/>

@@ -24,7 +24,7 @@
         <location filename="../src/interface/afficherresultats.ui" line="272"/>
         <location filename="../src/interface/afficherresultats.ui" line="275"/>
         <source>Exporter csv</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV形式でエクスポートする</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="141"/>
@@ -228,7 +228,7 @@
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1246"/>
         <source>Fichiers exécutables (*.exe)</source>
-        <translation type="unfinished">実行ファイル (*.exe)</translation>
+        <translation>実行ファイル (*.exe)</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1302"/>
@@ -431,28 +431,28 @@
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1869"/>
         <source>Prévisions exportées au format CSV</source>
-        <translation type="unfinished"></translation>
+        <translation>予報はCSV形式でエクスポートされました</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1869"/>
         <source>Information</source>
-        <translation type="unfinished">情報</translation>
+        <translation>情報</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1245"/>
         <location filename="../src/interface/afficherresultats.cpp" line="1871"/>
         <source>Ouvrir Satellite Tracker</source>
-        <translation type="unfinished">Satellite Trackerを開く</translation>
+        <translation>Satellite Trackerを開く</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1872"/>
         <source>Afficher</source>
-        <translation type="unfinished">表示する</translation>
+        <translation>表示する</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1873"/>
         <source>Fermer</source>
-        <translation type="unfinished">閉じる</translation>
+        <translation>閉じる</translation>
     </message>
     <message>
         <location filename="../src/interface/afficherresultats.cpp" line="1583"/>

@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    1er janvier 2025
+ * >    14 octobre 2025
  *
  */
 
@@ -172,7 +172,7 @@ void SatelliteTest::testCalculPosVit1()
     }
 
     QFile res(ficRes);
-    res.open(QIODevice::WriteOnly | QIODevice::Text);
+    (void) res.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream flux(&res);
 
     Satellite sat;

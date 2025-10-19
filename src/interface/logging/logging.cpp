@@ -30,7 +30,7 @@
  * >    11 novembre 2022
  *
  * Date de revision
- * >    23 decembre 2023
+ * >    14 octobre 2025
  *
  */
 
@@ -133,7 +133,7 @@ void Logging::show()
 
             // Chargement du fichier
             fi.setFileName(ff.absoluteFilePath());
-            fi.open(QIODevice::ReadOnly | QIODevice::Text);
+            (void) fi.open(QIODevice::ReadOnly | QIODevice::Text);
             const QString contenu = fi.readAll();
             fi.close();
 
