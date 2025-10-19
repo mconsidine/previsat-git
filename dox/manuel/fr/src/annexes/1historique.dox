@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    10 juin 2025
+ * >    14 octobre 2025
  *
  */
 
@@ -29,6 +29,17 @@
 /**
 
 \page Historique Historique des versions
+
+
+<b><span style="color:red;">Version 7.2 (révision 0) :</span><br />
+Septembre 2025 - Octobre 2025 :</b>
+<ul>
+<li>Ajout de l'export csv pour les prévisions de passage.
+<li>Ajout du bouton pour la modification d'un lieu d'observation.
+<li>Amélioration de la robustesse quand aucune information du satellite n'est disponible.
+</ul>
+
+<hr />
 
 
 <b><span style="color:red;">Version 7.1 (révision 2) :</span><br />
