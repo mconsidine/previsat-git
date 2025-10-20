@@ -33,16 +33,16 @@
 # >    21 juin 2023
 #
 # Date de revision
-# >    21 juillet 2025
+# >    19 octobre 2025
 #
 
 cmake_minimum_required(VERSION 3.24)
 
 
 #----------------------------------
-set(VERSION 7.1.2.2)
+set(VERSION 7.2.0.3)
 set(ANNEES_DEV 2005-2025)
-set(QT_PREFERRED_VERSION 6.9.1)
+set(QT_PREFERRED_VERSION 6.9.2)
 
 if(NOT DEFINED PORTABLE_BUILD)
     set(PORTABLE_BUILD false)
