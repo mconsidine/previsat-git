@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    7 aout 2025
+ * >    16 decembre 2025
  *
  */
 
@@ -3974,56 +3974,14 @@ void PreviSat::on_lancementVideoNasa_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const QString adresse = QString("%1chainesNASA.html").arg(DOMAIN_NAME);
 
     /* Corps de la methode */
-    try {
+    qInfo() << "Début Fonction" << __FUNCTION__;
 
-        qInfo() << "Début Fonction" << __FUNCTION__;
-
-        QString val;
-        QStringListIterator it(Configuration::instance()->listeChainesNasa());
-        while (it.hasNext()) {
-            if (!val.isEmpty()) {
-                val += ",";
-            }
-            val += "'" + it.next() + "'";
-        }
-
-        QString tab = QString("var tab = [ %1 ];").arg(val);
-
-        static QString html0;
-        if (html0.isEmpty()) {
-
-            const QString ficHtml = Configuration::instance()->dirLocalData() + QDir::separator() + "html" + QDir::separator() + "chainesNASA.ht";
-            QFile fi(ficHtml);
-
-            if (fi.exists() && (fi.size() != 0)) {
-
-                if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                    html0 = fi.readAll();
-                }
-
-                fi.close();
-            }
-        }
-
-        QString html = html0;
-        html = html.replace("CHANNEL_MAX", QString::number(Configuration::instance()->listeChainesNasa().count())).replace("CHANNEL_TAB", tab);
-
-        // Creation du fichier html
-        QFile fr(Configuration::instance()->dirTmp() + QDir::separator() + "chainesNASA.html");
-        if (fr.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QTextStream flux(&fr);
-            flux << html;
-        }
-
-        fr.close();
-
-        // Ouverture du fichier html
-        QDesktopServices::openUrl(QUrl("file:///" + fr.fileName()));
-
-    } catch (Exception const &e) {
-    }
+    // Ouverture du fichier html
+    qInfo() << "Ouverture de chainesNASA.html";
+    QDesktopServices::openUrl(QUrl(adresse));
 
     qInfo() << "Fin   Fonction" << __FUNCTION__;
 

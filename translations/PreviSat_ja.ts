@@ -5771,8 +5771,7 @@ ce qui représente environ %2 pages.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1136"/>
-        <location filename="../src/configuration/configuration.cpp" line="1174"/>
+        <location filename="../src/configuration/configuration.cpp" line="1131"/>
         <location filename="../src/librairies/corps/corps.cpp" line="598"/>
         <location filename="../src/librairies/corps/etoiles/constellation.cpp" line="111"/>
         <location filename="../src/librairies/corps/etoiles/etoile.cpp" line="129"/>
@@ -5782,7 +5781,7 @@ ce qui représente environ %2 pages.</source>
         <translation>ファイル「%1」が存在しないまたはファイルが空ので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="208"/>
+        <location filename="../src/configuration/configuration.cpp" line="205"/>
         <location filename="../src/configuration/fichierobs.cpp" line="71"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="77"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="140"/>
@@ -5790,9 +5789,8 @@ ce qui représente environ %2 pages.</source>
         <translation>ファイル「%1」の書き込み中にエラーが発生しました</translation>
     </message>
     <message>
+        <location filename="../src/configuration/configuration.cpp" line="1098"/>
         <location filename="../src/configuration/configuration.cpp" line="1106"/>
-        <location filename="../src/configuration/configuration.cpp" line="1114"/>
-        <location filename="../src/configuration/configuration.cpp" line="1147"/>
         <location filename="../src/configuration/evenementsstationspatiale.cpp" line="138"/>
         <location filename="../src/configuration/fichierobs.cpp" line="140"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="375"/>
@@ -5810,23 +5808,23 @@ ce qui représente environ %2 pages.</source>
         <translation>ファイル「%1」の読み込み中にエラーが発生しましたので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1184"/>
+        <location filename="../src/configuration/configuration.cpp" line="1141"/>
         <source>Erreur lors de l&apos;ouverture de la base de données satellites, veuillez réinstaller %1</source>
         <translatorcomment>Dualite lecture/ouverture</translatorcomment>
         <translation>人工衛星データベースの読み込み中にエラーが発生しましたので、「%1」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1279"/>
+        <location filename="../src/configuration/configuration.cpp" line="1236"/>
         <source>Le répertoire %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>フォルダ「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1359"/>
+        <location filename="../src/configuration/configuration.cpp" line="1315"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1365"/>
+        <location filename="../src/configuration/configuration.cpp" line="1321"/>
         <source>Le fichier %1 est vide, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が空なので、「%2」を再インストールしてください</translation>
     </message>
@@ -5989,7 +5987,7 @@ Voulez-vous ajouter ce TLE dans le fichier à mettre à jour ?</source>
         <translation>新しいTLEを追加する</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1037"/>
+        <location filename="../src/configuration/configuration.cpp" line="1029"/>
         <source>Le fichier de configuration de %1 a évolué.
 Souhaitez-vous tenter de récupérer les lieux d&apos;observation ?</source>
         <translation>設定ファイル「%1」の形式が変更されました。

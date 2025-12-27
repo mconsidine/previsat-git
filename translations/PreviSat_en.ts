@@ -5757,8 +5757,7 @@ which represents approximately %2 pages.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1136"/>
-        <location filename="../src/configuration/configuration.cpp" line="1174"/>
+        <location filename="../src/configuration/configuration.cpp" line="1131"/>
         <location filename="../src/librairies/corps/corps.cpp" line="598"/>
         <location filename="../src/librairies/corps/etoiles/constellation.cpp" line="111"/>
         <location filename="../src/librairies/corps/etoiles/etoile.cpp" line="129"/>
@@ -5768,7 +5767,7 @@ which represents approximately %2 pages.</translation>
         <translation>The file %1 does not exist or is empty, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="208"/>
+        <location filename="../src/configuration/configuration.cpp" line="205"/>
         <location filename="../src/configuration/fichierobs.cpp" line="71"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="77"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="140"/>
@@ -5776,9 +5775,8 @@ which represents approximately %2 pages.</translation>
         <translation>Error while writing file %1</translation>
     </message>
     <message>
+        <location filename="../src/configuration/configuration.cpp" line="1098"/>
         <location filename="../src/configuration/configuration.cpp" line="1106"/>
-        <location filename="../src/configuration/configuration.cpp" line="1114"/>
-        <location filename="../src/configuration/configuration.cpp" line="1147"/>
         <location filename="../src/configuration/evenementsstationspatiale.cpp" line="138"/>
         <location filename="../src/configuration/fichierobs.cpp" line="140"/>
         <location filename="../src/configuration/gestionnairexml.cpp" line="375"/>
@@ -5796,22 +5794,22 @@ which represents approximately %2 pages.</translation>
         <translation>Error while opening file %1, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1184"/>
+        <location filename="../src/configuration/configuration.cpp" line="1141"/>
         <source>Erreur lors de l&apos;ouverture de la base de données satellites, veuillez réinstaller %1</source>
         <translation>Error while opening satellite database file, please re-install %1</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1279"/>
+        <location filename="../src/configuration/configuration.cpp" line="1236"/>
         <source>Le répertoire %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>The directory %1 does not exist, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1359"/>
+        <location filename="../src/configuration/configuration.cpp" line="1315"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>The file %1 does not exist, please re-install %2</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1365"/>
+        <location filename="../src/configuration/configuration.cpp" line="1321"/>
         <source>Le fichier %1 est vide, veuillez réinstaller %2</source>
         <translation>The file %1 is empty, please re-install %2</translation>
     </message>
@@ -5978,7 +5976,7 @@ Do you want to add this TLE in the file to update?</translation>
         <translation>Add of the new TLE</translation>
     </message>
     <message>
-        <location filename="../src/configuration/configuration.cpp" line="1037"/>
+        <location filename="../src/configuration/configuration.cpp" line="1029"/>
         <source>Le fichier de configuration de %1 a évolué.
 Souhaitez-vous tenter de récupérer les lieux d&apos;observation ?</source>
         <translation>The configuration file of %1 has evolved.

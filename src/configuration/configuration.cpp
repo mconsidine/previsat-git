@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    2 janvier 2025
+ * >    16 decembre 2025
  *
  */
 
@@ -113,9 +113,6 @@ void Configuration::Chargement()
 
         // Ouverture de la base de donnees satellites
         OuvertureBaseDonneesSatellites();
-
-        // Lecture du fichier des chaines NASA
-        LectureChainesNasa();
 
         // Lecture du fichier taiutc.dat
         Date::Initialisation(_dirLocalData);
@@ -673,11 +670,6 @@ QSqlDatabase Configuration::dbSatellites() const
     return _dbSatellites;
 }
 
-const QStringList &Configuration::listeChainesNasa() const
-{
-    return _listeChainesNasa;
-}
-
 QString &Configuration::nomfic()
 {
     return _nomfic;
@@ -1120,41 +1112,6 @@ void Configuration::LectureConfiguration()
 }
 
 /*
- * Lecture du fichier des chaines NASA
- */
-void Configuration::LectureChainesNasa()
-{
-    /* Declarations des variables locales */
-
-    /* Initialisations */
-    const QString fic = _dirHtml + QDir::separator() + "chaines.chnl";
-    QFile fi(fic);
-
-    /* Corps de la methode */
-    if (!fi.exists() || (fi.size() == 0)) {
-        qCritical().noquote() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME);
-        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(fic).arg(APP_NAME), MessageType::ERREUR);
-    }
-
-    if (fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        _listeChainesNasa = QString(fi.readAll()).split("\n", Qt::SkipEmptyParts);
-    }
-    fi.close();
-
-    if (_listeChainesNasa.isEmpty()) {
-        const QFileInfo ff(fi.fileName());
-        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                            .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
-    }
-
-    qInfo() << "Lecture fichier chaines.chnl OK";
-
-    /* Retour */
-    return;
-}
-
-/*
  * OuvertureBaseDonneesSatellites Ouverture de la base de donnees satellites
  */
 void Configuration::OuvertureBaseDonneesSatellites()
@@ -1321,8 +1278,7 @@ void Configuration::VerificationArborescences()
 
         // Fichiers du repertoire data local
         const QString repHtm = QString("html") + QDir::separator();
-        _listeFicLocalData << "satellites.db" << repHtm + "chaines.chnl" << repHtm + "meteo.map" << repHtm + "meteoNASA.html" << repHtm + "resultat.map"
-                           << "taiutc.dat";
+        _listeFicLocalData << "satellites.db" << repHtm + "meteo.map" << repHtm + "meteoNASA.html" << repHtm + "resultat.map" << "taiutc.dat";
 
         VerifieFichiersData(_dirLocalData, _listeFicLocalData);
 
