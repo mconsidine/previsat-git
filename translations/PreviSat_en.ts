@@ -6868,7 +6868,7 @@ Expected value : %3 - Calculated value : %4</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="470"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="981"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="984"/>
         <source>Ouvrir Satellite Tracker</source>
         <translation>Open Satellite Tracker</translation>
     </message>
@@ -7007,7 +7007,7 @@ Expected value : %3 - Calculated value : %4</translation>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="982"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="985"/>
         <source>Fichiers exécutables (*.exe)</source>
         <translation>Executable files (*.exe)</translation>
     </message>

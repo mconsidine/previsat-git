@@ -6884,7 +6884,7 @@ Valeur attendue : %3 - Valeur calculée : %4</source>
     </message>
     <message>
         <location filename="../src/interface/onglets/telescope/suivitelescope.ui" line="470"/>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="981"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="984"/>
         <source>Ouvrir Satellite Tracker</source>
         <translation>Satellite Trackerを開く</translation>
     </message>
@@ -7023,7 +7023,7 @@ Valeur attendue : %3 - Valeur calculée : %4</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="982"/>
+        <location filename="../src/interface/onglets/telescope/suivitelescope.cpp" line="985"/>
         <source>Fichiers exécutables (*.exe)</source>
         <translation>実行ファイル (*.exe)</translation>
     </message>
