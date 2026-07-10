@@ -3871,7 +3871,7 @@ click on &apos;Update ISS information&apos;</translation>
     </message>
     <message>
         <location filename="../src/interface/options/options.ui" line="1357"/>
-        <location filename="../src/interface/options/options.ui" line="2137"/>
+        <location filename="../src/interface/options/options.ui" line="2143"/>
         <source>Affichage</source>
         <translation>Display</translation>
     </message>
@@ -3951,223 +3951,223 @@ click on &apos;Update ISS information&apos;</translation>
         <translation>Zoom value for maps :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1680"/>
+        <location filename="../src/interface/options/options.ui" line="1686"/>
         <source>Mode sombre</source>
         <translation>Dark mode</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1693"/>
+        <location filename="../src/interface/options/options.ui" line="1699"/>
         <source>Marqueur</source>
         <translation>Marker</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1702"/>
+        <location filename="../src/interface/options/options.ui" line="1708"/>
         <source>Système</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1717"/>
+        <location filename="../src/interface/options/options.ui" line="1723"/>
         <source>Vérification des mises à jour au démarrage</source>
         <translation>Check for updates at startup</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1733"/>
+        <location filename="../src/interface/options/options.ui" line="1739"/>
         <source>Écart Heure locale - UTC</source>
         <translation>Local hour - UTC offset</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1748"/>
+        <location filename="../src/interface/options/options.ui" line="1754"/>
         <source>Temps Universel Coordonné (UTC)</source>
         <translation>Universal Time Coordinated (UTC)</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1776"/>
+        <location filename="../src/interface/options/options.ui" line="1782"/>
         <source>Heure locale = </source>
         <translation>Local hour = </translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1824"/>
+        <location filename="../src/interface/options/options.ui" line="1830"/>
         <source>Auto</source>
         <extracomment>Automatic</extracomment>
         <translation>Auto</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1847"/>
+        <location filename="../src/interface/options/options.ui" line="1853"/>
         <source>Unités</source>
         <translation>Units</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1862"/>
+        <location filename="../src/interface/options/options.ui" line="1868"/>
         <source>Système métrique</source>
         <translation>Metric system</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1881"/>
+        <location filename="../src/interface/options/options.ui" line="1887"/>
         <source>Système anglo-saxon</source>
         <translation>US customary units</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1901"/>
+        <location filename="../src/interface/options/options.ui" line="1907"/>
         <source>Système horaire</source>
         <translation>Time convention</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1916"/>
+        <location filename="../src/interface/options/options.ui" line="1922"/>
         <source>24 heures</source>
         <translation>24 hours</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1935"/>
+        <location filename="../src/interface/options/options.ui" line="1941"/>
         <source>12 heures (AM/PM)</source>
         <translation>12 hours (AM/PM)</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="1967"/>
+        <location filename="../src/interface/options/options.ui" line="1973"/>
         <source>Nombre de fichiers log :</source>
         <translation>Number of log files :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2013"/>
+        <location filename="../src/interface/options/options.ui" line="2019"/>
         <source>Langue :</source>
         <extracomment>Name of language</extracomment>
         <translation>Language :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2056"/>
+        <location filename="../src/interface/options/options.ui" line="2062"/>
         <source>Préférences d&apos;affichage :</source>
         <translation>Display preferences :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2093"/>
+        <location filename="../src/interface/options/options.ui" line="2099"/>
         <source>Enregistrer les préférences d&apos;affichage</source>
         <translation>Save display preferences</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2118"/>
+        <location filename="../src/interface/options/options.ui" line="2124"/>
         <source>Style &quot;Wall Command Center&quot;</source>
         <translation>&quot;Wall Command Center&quot; style</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2149"/>
+        <location filename="../src/interface/options/options.ui" line="2155"/>
         <source>Nombre d&apos;orbites</source>
         <translation>Orbit number</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2165"/>
+        <location filename="../src/interface/options/options.ui" line="2171"/>
         <source>Anomalie Atlantique Sud et Zone d&apos;exclusion</source>
         <translation>South Atlantic anomaly and Zone of exclusion</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2168"/>
+        <location filename="../src/interface/options/options.ui" line="2174"/>
         <source>SAA et ZOE</source>
         <extracomment>South Atlantic Anomaly and Zone of Exclusion</extracomment>
         <translation>SAA and ZOE</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2190"/>
+        <location filename="../src/interface/options/options.ui" line="2196"/>
         <source>Cercles d&apos;acquisition</source>
         <translation>Acquisition circles</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2209"/>
+        <location filename="../src/interface/options/options.ui" line="2215"/>
         <source>Angle entre le plan de l&apos;orbite et la direction du Soleil</source>
         <translation>Angle between orbit plane and direction of Sun</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2212"/>
+        <location filename="../src/interface/options/options.ui" line="2218"/>
         <source>Angle beta</source>
         <extracomment>Beta angle (angle between orbit plane and direction of Sun)</extracomment>
         <translation>Beta angle</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2225"/>
+        <location filename="../src/interface/options/options.ui" line="2231"/>
         <source>Icônes stations</source>
         <translation>Station icons</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2251"/>
+        <location filename="../src/interface/options/options.ui" line="2257"/>
         <source>Choix de la police :</source>
         <translation>Set the font :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2290"/>
+        <location filename="../src/interface/options/options.ui" line="2296"/>
         <source>Couleurs</source>
         <translation>Colors</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2314"/>
+        <location filename="../src/interface/options/options.ui" line="2320"/>
         <source>Greenwich Mean Time</source>
         <translation>Greenwich Mean Time</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2317"/>
+        <location filename="../src/interface/options/options.ui" line="2323"/>
         <source>GMT :</source>
         <extracomment>Greenwich Mean Time</extracomment>
         <translation>GMT :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2324"/>
+        <location filename="../src/interface/options/options.ui" line="2330"/>
         <source>Zone d&apos;exclusion</source>
         <translation>Zone of exclusion</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2327"/>
+        <location filename="../src/interface/options/options.ui" line="2333"/>
         <source>ZOE :</source>
         <extracomment>Zone of exclusion</extracomment>
         <translation>ZOE :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2334"/>
+        <location filename="../src/interface/options/options.ui" line="2340"/>
         <source>Équateur :</source>
         <translation>Equator :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2341"/>
+        <location filename="../src/interface/options/options.ui" line="2347"/>
         <source>Terminateur :</source>
         <translation>Terminator :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2348"/>
+        <location filename="../src/interface/options/options.ui" line="2354"/>
         <source>Cercle de visibilité :</source>
         <translation>Footprint :</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2356"/>
-        <location filename="../src/interface/options/options.ui" line="2389"/>
-        <location filename="../src/interface/options/options.ui" line="2422"/>
+        <location filename="../src/interface/options/options.ui" line="2362"/>
+        <location filename="../src/interface/options/options.ui" line="2395"/>
+        <location filename="../src/interface/options/options.ui" line="2428"/>
         <source>Rouge</source>
         <translation>Red</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2361"/>
-        <location filename="../src/interface/options/options.ui" line="2380"/>
-        <location filename="../src/interface/options/options.ui" line="2394"/>
-        <location filename="../src/interface/options/options.ui" line="2417"/>
+        <location filename="../src/interface/options/options.ui" line="2367"/>
+        <location filename="../src/interface/options/options.ui" line="2386"/>
+        <location filename="../src/interface/options/options.ui" line="2400"/>
+        <location filename="../src/interface/options/options.ui" line="2423"/>
         <source>Blanc</source>
         <translation>White</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2366"/>
+        <location filename="../src/interface/options/options.ui" line="2372"/>
         <source>Cyan</source>
         <translation>Cyan</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2375"/>
+        <location filename="../src/interface/options/options.ui" line="2381"/>
         <source>Noir</source>
         <translation>Black</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2403"/>
+        <location filename="../src/interface/options/options.ui" line="2409"/>
         <source>Brun</source>
         <translation>Brown</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2408"/>
+        <location filename="../src/interface/options/options.ui" line="2414"/>
         <source>Jaune</source>
         <translation>Yellow</translation>
     </message>
     <message>
-        <location filename="../src/interface/options/options.ui" line="2440"/>
+        <location filename="../src/interface/options/options.ui" line="2446"/>
         <source>Stations :</source>
         <translation>Stations :</translation>
     </message>
@@ -5693,46 +5693,46 @@ which represents approximately %2 pages.</translation>
         <translation>Text files (*.txt);;All files (*)</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3493"/>
+        <location filename="../src/interface/previsat.cpp" line="3495"/>
         <source>Commun</source>
         <comment>common orbital elements groups</comment>
         <translation>Common</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3498"/>
+        <location filename="../src/interface/previsat.cpp" line="3500"/>
         <source>Tous</source>
         <comment>all orbital elements groups</comment>
         <translation>All</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3596"/>
-        <location filename="../src/interface/previsat.cpp" line="3599"/>
+        <location filename="../src/interface/previsat.cpp" line="3598"/>
+        <location filename="../src/interface/previsat.cpp" line="3601"/>
         <source>Devise</source>
         <translation>Currency</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3597"/>
         <location filename="../src/interface/previsat.cpp" line="3599"/>
+        <location filename="../src/interface/previsat.cpp" line="3601"/>
         <source>Choisissez la devise :</source>
         <translation>Choose currency :</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3613"/>
+        <location filename="../src/interface/previsat.cpp" line="3615"/>
         <source>Attention : Il est possible d&apos;effectuer un don PayPal via Tipeee, mais ceci induira des frais supplémentaires</source>
         <translation>Be careful : it is possible to make a PayPal donation by means of Tipeee, but this will incur additional costs</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3680"/>
+        <location filename="../src/interface/previsat.cpp" line="3682"/>
         <source>Ouverture du fichier d&apos;éléments orbitaux %1 ...</source>
         <translation>Opening orbiral elements file %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3682"/>
+        <location filename="../src/interface/previsat.cpp" line="3684"/>
         <source>Fichier d&apos;éléments orbitaux de %1 satellites</source>
         <translation>Orbital elements file of %1 satellites</translation>
     </message>
     <message>
-        <location filename="../src/interface/previsat.cpp" line="3850"/>
+        <location filename="../src/interface/previsat.cpp" line="3852"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD number : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : %3)</translation>
     </message>
@@ -5749,7 +5749,7 @@ which represents approximately %2 pages.</translation>
     </message>
     <message>
         <location filename="../src/interface/previsat.cpp" line="3381"/>
-        <location filename="../src/interface/previsat.cpp" line="3942"/>
+        <location filename="../src/interface/previsat.cpp" line="3944"/>
         <source>Pas d&apos;informations à afficher</source>
         <translation>No available information</translation>
     </message>

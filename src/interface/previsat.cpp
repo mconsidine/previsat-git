@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 avril 2026
+ * >    26 avril 2026
  *
  */
 
@@ -3470,8 +3470,10 @@ void PreviSat::on_actionMode_sombre_triggered()
 
         // Palette par defaut
         qApp->setPalette(qApp->style()->standardPalette());
-        qApp->setStyleSheet("QTabBar { qproperty-drawBase: 0; }" \
-                            "QMenu { border: 0px; background-color: none; }");
+        qApp->setStyleSheet("QListWidget { background-color: rgb(255, 255, 255); }" \
+                            "QMenu { border: 0px; background-color: none; }" \
+                            "QTabBar { qproperty-drawBase: 0; }" \
+                            "QTableWidget { background-color: rgb(255, 255, 255); }");
         qInfo() << "Mode sombre désactivé";
     }
 

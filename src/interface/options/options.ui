@@ -100,7 +100,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="lieuObservation">
     <widget class="QListWidget" name="selecLieux">
@@ -802,7 +802,7 @@
       <enum>QTabWidget::TabShape::Triangular</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="documentMode">
       <bool>true</bool>
@@ -1622,7 +1622,7 @@
         <rect>
          <x>290</x>
          <y>139</y>
-         <width>362</width>
+         <width>511</width>
          <height>24</height>
         </rect>
        </property>
@@ -1648,6 +1648,12 @@
         </item>
         <item row="0" column="1">
          <widget class="QSpinBox" name="valeurZoomMap">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="font">
            <font/>
           </property>
