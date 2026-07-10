@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    18 fevrier 2026
+ * >    25 avril 2026
  *
  */
 
@@ -2467,7 +2467,7 @@ void PreviSat::InitFicGP()
         if (listeElem.count() == 0) {
             _ui->listeFichiersElem->addItem("");
         } else if (defaut) {
-            Configuration::instance()->nomfic() = Configuration::instance()->dirElem() + QDir::separator() + listeElem.first();
+            Configuration::instance()->nomfic() = listeElem.first();
         }
         _ui->listeFichiersElem->blockSignals(etat);
 
