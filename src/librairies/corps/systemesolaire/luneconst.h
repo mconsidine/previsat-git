@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    18 fevrier 2026
  *
  */
 
@@ -46,7 +46,7 @@
 #include <QPointF>
 #include <QVector>
 #include <cmath>
-#include "librairies/maths/mathsconst.h"
+#include "librairies/maths/vecteur3d.h"
 
 
 /*
@@ -77,12 +77,12 @@ static constexpr double H = 0.07;
 static constexpr double P0 = 1.68;
 static constexpr double W0 = 0.21;
 
-static constexpr double GA = sqrt(1. - W0);
-static constexpr double R0 = (1. - GA) / (1. + GA);
-static constexpr double R0S2 = 0.5 * R0;
+static const double GA = sqrt(1. - W0);
+static const double R0 = (1. - GA) / (1. + GA);
+static const double R0S2 = 0.5 * R0;
 static constexpr double W0S8 = 0.125 * W0;
-static constexpr double R2S6 = R0 * R0 / 6.;
-static constexpr double P = W0S8 * ((1. + B0) * P0 - 1.) + R0S2 + R2S6;
+static const double R2S6 = R0 * R0 / 6.;
+static const double P = W0S8 * ((1. + B0) * P0 - 1.) + R0S2 + R2S6;
 static constexpr double B = 0.29;
 static constexpr double C = 0.39;
 
