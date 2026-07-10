@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    14 octobre 2025
+ * >    2 fevrier 2026
  *
  */
 
@@ -31,12 +31,26 @@
 \page Historique Version history
 
 
-<b><span style="color:red;">Version 7.2 (revision 0) :</span><br />
-September 2025 - October 2025 :</b>
+<b><span style="color:red;">Version 7.2 (revision 1) :</span><br />
+September 2025 - February 2026 :</b>
 <ul>
 <li>Add csv export for prediction of passes.
 <li>Add button for the modification of a location.
 <li>Improve robustness when no satellite information is available.
+</ul>
+
+<hr />
+
+
+<b><span style="color:red;">Version 7.1 (revision 2) :</span><br />
+December 2024 - June 2025 :</b>
+<ul>
+<li>Add indication of Starlink flares.
+<li>Add management of custom satellite icons.
+<li>Add markers for locations and icons for stations.
+<li>Add radar in adjustment date window for Telescope tracking.
+<li>Modification for adding new locations (copy coordinates from Google Maps).
+<li>Fix several bugs.
 </ul>
 
 <hr />

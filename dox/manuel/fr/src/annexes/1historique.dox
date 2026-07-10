@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    14 octobre 2025
+ * >    2 fevrier 2026
  *
  */
 
@@ -31,8 +31,8 @@
 \page Historique Historique des versions
 
 
-<b><span style="color:red;">Version 7.2 (révision 0) :</span><br />
-Septembre 2025 - Octobre 2025 :</b>
+<b><span style="color:red;">Version 7.2 (révision 1) :</span><br />
+Septembre 2025 - Février 2026 :</b>
 <ul>
 <li>Ajout de l'export csv pour les prévisions de passage.
 <li>Ajout du bouton pour la modification d'un lieu d'observation.
