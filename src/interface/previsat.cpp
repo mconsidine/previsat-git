@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 decembre 2025
+ * >    18 fevrier 2026
  *
  */
 
@@ -2811,6 +2811,9 @@ bool PreviSat::eventFilter(QObject *watched, QEvent *event)
 
         } else if (_radar->underMouse()) {
             _radar->mouseMoveEvent(evt);
+
+        } else if (_ui->lancementVideoNasa->underMouse()) {
+            setCursor(Qt::PointingHandCursor);
         }
 
     } else if (event->type() == QEvent::MouseButtonPress) {
