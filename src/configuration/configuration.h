@@ -36,7 +36,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    2 janvier 2025
+ * >    16 decembre 2025
  *
  */
 
@@ -222,8 +222,6 @@ public:
     // Donnees satellites
     QSqlDatabase dbSatellites() const;
 
-    const QStringList &listeChainesNasa() const;
-
     // Nom du fichier d'elements orbitaux par defaut
     QString &nomfic();
 
@@ -388,9 +386,6 @@ private:
     // Donnees satellites
     QSqlDatabase _dbSatellites;
 
-    // Liste des chaines de la NASA
-    QStringList _listeChainesNasa;
-
     // Evenements Station Spatiale
     QString _nomFichierEvenementsStationSpatiale;
     QString _noradStationSpatiale;
@@ -502,12 +497,6 @@ private:
      * @throw Exception
      */
     void LectureConfiguration();
-
-    /**
-     * @brief LectureChainesNasa Lecture du fichier des chaines NASA
-     * @throw Exception
-     */
-    void LectureChainesNasa();
 
     /**
      * @brief OuvertureBaseDonneesSatellites Ouverture de la base de donnees satellites
