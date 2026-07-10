@@ -37,7 +37,6 @@
 #include <cmath>
 #include "librairies/dates/date.h"
 #include "librairies/maths/maths.h"
-#include "librairies/maths/matrice3d.h"
 #include "librairies/observateur/observateur.h"
 #include "soleil.h"
 

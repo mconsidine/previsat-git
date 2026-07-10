@@ -51,6 +51,7 @@ class Options;
 }
 
 class QIntValidator;
+class QListWidgetItem;
 class QRegularExpressionValidator;
 class Observateur;
 

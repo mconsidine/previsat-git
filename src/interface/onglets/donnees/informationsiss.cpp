@@ -118,8 +118,7 @@ void InformationsISS::show()
     _ui->evenementsISS->setVisible(false);
     _ui->formLayoutWidget->setVisible(false);
     _ui->formLayoutWidget_2->setVisible(false);
-    _ui->evenementsISS->disconnect();
-    _ui->evenementsISS->model()->removeRows(0, _ui->evenementsISS->rowCount());
+    _ui->evenementsISS->clearContents();
 
     /* Corps de la methode */
     if (evenements.masseStationSpatiale > 0.) {
@@ -153,13 +152,13 @@ void InformationsISS::show()
         }
 
         // Masse de la station spatiale
-        _ui->masseISS->setText(QString("%1 %2").arg(masse).arg(uniteMasse));
+        _ui->masseISS->setText(QString("%1 %2").arg(masse, uniteMasse));
 
         // Coefficient de trainnee atmospherique
         _ui->coefficientTrainee->setText(QString::number(evenements.coefficientTraineeAtmospherique, 'f', 2));
 
         // Surface de trainee atmospherique
-        _ui->surfaceTrainee->setText(QString("%1 %2").arg(surface).arg(uniteSurface));
+        _ui->surfaceTrainee->setText(QString("%1 %2").arg(surface, uniteSurface));
 
         _ui->formLayoutWidget->setVisible(true);
         _ui->formLayoutWidget_2->setVisible(true);
@@ -289,7 +288,7 @@ void InformationsISS::on_majEvenementsIss_clicked()
     try {
 
         emit AfficherMessageStatut(tr("Téléchargement du fichier d'informations ISS..."));
-        tel.TelechargementFichier(QUrl(QString("%1data/%2").arg(DOMAIN_NAME).arg(Configuration::instance()->nomFichierEvenementsStationSpatiale())));
+        tel.TelechargementFichier(QUrl(QString("%1data/%2").arg(DOMAIN_NAME, Configuration::instance()->nomFichierEvenementsStationSpatiale())));
         emit AfficherMessageStatut(tr("Téléchargement terminé"), 5);
 
         Configuration::instance()->evenementsStation() = EvenementsStationSpatiale::LectureEvenementsStationSpatiale();

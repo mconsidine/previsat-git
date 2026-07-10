@@ -108,8 +108,7 @@ QList<Constellation> Constellation::Initialisation(const QString &dirCommonData)
     QFile fi(fic);
     if (!fi.exists() || (fi.size() == 0)) {
         const QFileInfo ff(fi.fileName());
-        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME),
-                        MessageType::ERREUR);
+        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName(), APP_NAME), MessageType::ERREUR);
     }
 
     if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {

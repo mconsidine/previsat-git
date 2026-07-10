@@ -203,7 +203,7 @@ QString Maths::ToSexagesimal(const double xdec,
     int min = static_cast<int> (MATHS::ARCMIN_PAR_DEG * (y - deg));
     double sec = MATHS::ARCSEC_PAR_DEG * (y - deg) - MATHS::ARCMIN_PAR_DEG * min;
 
-    if (fabs(arrondi(sec, dec) - MATHS::ARCSEC_PAR_MIN) < MATHS::EPSDBL100) {
+    if (fabs(arrondi(sec, static_cast<unsigned int> (dec)) - MATHS::ARCSEC_PAR_MIN) < MATHS::EPSDBL100) {
         sec = 0.;
         min++;
     }
@@ -216,7 +216,7 @@ QString Maths::ToSexagesimal(const double xdec,
     const QString fmt = "%1%2%3%4%5%6%7%8%9";
 
     /* Retour */
-    return (fmt.arg(signe0).arg(deg, degr, 10, chr).arg(unite1).arg(esp).arg(min, 2, 10, chr).arg(unite2).arg(esp)
+    return (fmt.arg(signe0).arg(deg, degr, 10, chr).arg(unite1, esp).arg(min, 2, 10, chr).arg(unite2, esp)
             .arg(sec, (dec == 0) ? 2 : dec + 3, 'f', dec, chr).arg(unite3));
 }
 

@@ -36,10 +36,7 @@
 
 #include <QElapsedTimer>
 #include <QFileInfo>
-#include "configuration/configuration.h"
-#include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/satellite.h"
-#include "librairies/corps/satellite/tle.h"
 #include "prevision.h"
 
 

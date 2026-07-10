@@ -73,7 +73,7 @@ EvenementsStation EvenementsStationSpatiale::LectureEvenementsStationSpatiale()
 
         // Telechargement du fichier
         Telechargement tel(Configuration::instance()->dirLocalData());
-        tel.TelechargementFichier(QUrl(QString("%1data/%2").arg(DOMAIN_NAME).arg(Configuration::instance()->nomFichierEvenementsStationSpatiale())));
+        tel.TelechargementFichier(QUrl(QString("%1data/%2").arg(DOMAIN_NAME, Configuration::instance()->nomFichierEvenementsStationSpatiale())));
     }
 
     /* Corps de la methode */
@@ -134,8 +134,8 @@ EvenementsStation EvenementsStationSpatiale::LectureEvenementsStationSpatiale()
        qInfo().noquote() << QString("Lecture fichier %1 OK").arg(fi.nomfic());
 
     } catch (Exception const &e) {
-        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic()).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic()).arg(APP_NAME), MessageType::ERREUR);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic(), APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic(), APP_NAME), MessageType::ERREUR);
     }
 
     /* Retour */

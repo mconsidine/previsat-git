@@ -55,12 +55,12 @@
 /*
  * Calcul du nombre d'orbites a l'epoque (cas depassant 100000 orbites)
  */
-int GPFormat::CalculNombreOrbitesEpoque(const ElementsOrbitaux &elements)
+unsigned int GPFormat::CalculNombreOrbitesEpoque(const ElementsOrbitaux &elements)
 {
     /* Declarations des variables locales */
 
     /* Initialisations */
-    int nbOrbitesEpoque = elements.nbOrbitesEpoque;
+    unsigned int nbOrbitesEpoque = elements.nbOrbitesEpoque;
     const QString dateLancement = elements.donnees.dateLancement();
 
     /* Corps de la methode */
@@ -76,7 +76,7 @@ int GPFormat::CalculNombreOrbitesEpoque(const ElementsOrbitaux &elements)
         resteOrb -= (((elements.nbOrbitesEpoque < 50000) && (resteOrb > 50000)) ? 100000 : 0);
         const int deltaNbOrb = nbOrbTheo - resteOrb;
 
-        nbOrbitesEpoque = elements.nbOrbitesEpoque + deltaNbOrb;
+        nbOrbitesEpoque = static_cast<unsigned int> (static_cast<int> (nbOrbitesEpoque) + deltaNbOrb);
     }
 
     /* Retour */
@@ -170,7 +170,7 @@ QList<ElementsOrbitaux> GPFormat::LectureListeGP(const QString &fichier,
                 if (!listeDonnees.isEmpty()) {
 
                     // Recuperation des donnees satellite
-                    elem.donnees = Donnees::RequeteNorad(db, elem.norad).first();
+                    elem.donnees = Donnees::RequeteNorad(db, elem.norad).constFirst();
 
                     // Correction eventuelle du nombre d'orbites a l'epoque
                     elem.nbOrbitesEpoque = CalculNombreOrbitesEpoque(elem);
@@ -195,10 +195,11 @@ QString GPFormat::RecupereNomsat(const QString &nom)
     /* Declarations des variables locales */
 
     /* Initialisations */
-    QString nomsat = nom.trimmed();
+    QString nomsat(nom.trimmed());
+    const QStringView ns(nomsat);
 
     /* Corps de la methode */
-    if ((nomsat.size() > 25) && (nomsat.mid(25).contains('.') > 0)) {
+    if ((nomsat.size() > 25) && (ns.mid(25).contains('.') > 0)) {
         nomsat = nomsat.mid(0, 15).trimmed();
     }
 

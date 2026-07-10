@@ -81,19 +81,21 @@ TLE::TLE(const QString &lig0,
     /* Declarations des variables locales */
 
     /* Initialisations */
+    const QStringView lg1(lig1);
+    const QStringView lg2(lig2);
 
     /* Corps du constructeur */
     // Numero NORAD
     _elements.norad = _ligne1.mid(2, 5);
 
     // Designation COSPAR
-    int annee = _ligne1.mid(9, 2).toInt();
+    int annee = lg1.mid(9, 2).toInt();
     annee += (annee < 57) ? DATE::AN2000 : 1900;
     _elements.cospar = QString("%1-%2").arg(annee).arg(_ligne1.mid(11, 6).trimmed());
 
     // Epoque
-    annee = _ligne1.mid(18, 2).toInt();
-    const double jrs = _ligne1.mid(20, 12).toDouble();
+    annee = lg1.mid(18, 2).toInt();
+    const double jrs = lg1.mid(20, 12).toDouble();
     annee += (annee < 57) ? DATE::AN2000 : 1900;
     const Date date(annee, 1, 1., 0.);
     _elements.epoque = Date(date.jourJulienUTC() + jrs - 1., 0., true);
@@ -107,25 +109,25 @@ TLE::TLE(const QString &lig0,
 
     // Elements orbitaux moyens
     // Inclinaison
-    _elements.inclo = _ligne2.mid(8, 8).toDouble();
+    _elements.inclo = lg2.mid(8, 8).toDouble();
 
     // Ascension droite du noeud ascendant
-    _elements.omegao = _ligne2.mid(17, 8).toDouble();
+    _elements.omegao = lg2.mid(17, 8).toDouble();
 
     // Excentricite
-    _elements.ecco = 1.e-7 * _ligne2.mid(26, 7).toDouble();
+    _elements.ecco = 1.e-7 * lg2.mid(26, 7).toDouble();
 
     // Argument du perigee
-    _elements.argpo = _ligne2.mid(34, 8).toDouble();
+    _elements.argpo = lg2.mid(34, 8).toDouble();
 
     // Anomalie moyenne
-    _elements.mo = _ligne2.mid(43, 8).toDouble();
+    _elements.mo = lg2.mid(43, 8).toDouble();
 
     // Moyen mouvement
-    _elements.no = _ligne2.mid(52, 11).toDouble();
+    _elements.no = lg2.mid(52, 11).toDouble();
 
     // Nombre d'orbites a l'epoque
-    _elements.nbOrbitesEpoque = _ligne2.mid(63, 5).toUInt();
+    _elements.nbOrbitesEpoque = lg2.mid(63, 5).toUInt();
 
     /* Retour */
     return;
@@ -224,7 +226,7 @@ QMap<QString, ElementsOrbitaux> TLE::Lecture(const QString &nomFichier,
                 if (!listeDonnees.isEmpty()) {
 
                     // Recuperation des donnees satellite
-                    tle._elements.donnees = Donnees::RequeteNorad(db, tle._elements.norad).first();
+                    tle._elements.donnees = Donnees::RequeteNorad(db, tle._elements.norad).constFirst();
 
                     // Correction eventuelle du nombre d'orbites a l'epoque
                     tle._elements.nbOrbitesEpoque = GPFormat::CalculNombreOrbitesEpoque(tle._elements);
@@ -335,7 +337,7 @@ QStringList TLE::MiseAJourFichier(const QString &ficOld,
                                                     "Voulez-vous supprimer ce TLE du fichier à mettre à jour ?");
 
                 QMessageBox msgbox(QMessageBox::Question, QObject::tr("Suppression du TLE"),
-                                   message.arg(tleOld[numeroNorad].nom).arg(tleOld[numeroNorad].norad));
+                                   message.arg(tleOld[numeroNorad].nom, tleOld[numeroNorad].norad));
 
                 msgbox.addButton(QObject::tr("Oui"), QMessageBox::YesRole);
                 msgbox.addButton(QObject::tr("Oui à tout"), QMessageBox::AcceptRole);
@@ -368,7 +370,7 @@ QStringList TLE::MiseAJourFichier(const QString &ficOld,
                                                     "à mettre à jour.\nVoulez-vous ajouter ce TLE dans le fichier à mettre à jour ?");
 
                 QMessageBox msgbox(QMessageBox::Question, QObject::tr("Ajout du nouveau TLE"),
-                                   message.arg(tleNew[numeroNorad].nom).arg(tleNew[numeroNorad].norad));
+                                   message.arg(tleNew[numeroNorad].nom, tleNew[numeroNorad].norad));
 
                 msgbox.addButton(QObject::tr("Oui"), QMessageBox::YesRole);
                 msgbox.addButton(QObject::tr("Oui à tout"), QMessageBox::AcceptRole);
@@ -594,15 +596,13 @@ void TLE::VerifieLignes(const QString &li1,
 
     // Verification du numero des lignes
     if (!li1.startsWith("1 ") || !li2.startsWith("2 ")) {
-        const QString msg = QObject::tr("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects").arg(nomsat).
-                            arg(li2.mid(2, 5));
+        const QString msg = QObject::tr("Les numéros de ligne du TLE du satellite %1 (numéro NORAD : %2 ) sont incorrects").arg(nomsat, li2.mid(2, 5));
         throw Exception((alarme) ? msg : "", MessageType::WARNING);
     }
 
     // Verification de la longueur des lignes
     if ((li1.size() != 69) || (li2.size() != 69)) {
-        const QString msg = QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte").
-                            arg(nomsat).arg(li2.mid(1, 6).trimmed());
+        const QString msg = QObject::tr("La longueur des lignes du TLE du satellite %1 (numéro NORAD : %2) est incorrecte").arg(nomsat, li2.mid(1, 6).trimmed());
         throw Exception((alarme) ? msg : "", MessageType::WARNING);
     }
 
@@ -611,7 +611,7 @@ void TLE::VerifieLignes(const QString &li1,
             (li1.at(52) != ' ') || (li1.at(61) != ' ') || (li1.at(63) != ' ') || (li2.at(1) != ' ') || (li2.at(7) != ' ') ||
             (li2.at(16) != ' ') || (li2.at(25) != ' ') || (li2.at(33) != ' ') || (li2.at(42) != ' ') || (li2.at(51) != ' ')) {
 
-        const QString msg = QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2").arg(nomsat).arg(li2.mid(2, 5));
+        const QString msg = QObject::tr("Erreur position des espaces du TLE :\nSatellite %1 - numéro NORAD : %2").arg(nomsat, li2.mid(2, 5));
         throw Exception((alarme) ? msg : "", MessageType::WARNING);
     }
 
@@ -620,25 +620,25 @@ void TLE::VerifieLignes(const QString &li1,
             (li2.at(54) != '.')) {
 
         throw Exception((alarme) ? QObject::tr("Erreur Ponctuation du TLE :\nSatellite %1 - numéro NORAD : %2")
-                                           .arg(nomsat).arg(li2.mid(2, 5)) : "", MessageType::WARNING);
+                                       .arg(nomsat, li2.mid(2, 5)) : "", MessageType::WARNING);
     }
 
     // Verification du numero NORAD
     if (li1.mid(2, 5) != li2.mid(2, 5)) {
 
         throw Exception((alarme) ? QObject::tr("Les deux lignes du TLE du satellite %1 ont des numéros NORAD différents (%2 et %3)")
-                                           .arg(nomsat).arg(li1.mid(2, 5)).arg(li2.mid(2, 5)) : "", MessageType::WARNING);
+                                           .arg(nomsat, li1.mid(2, 5), li2.mid(2, 5)) : "", MessageType::WARNING);
     }
 
     // Verification des checksums
     if (!CheckSum(li1, checksum1)) {
         throw Exception((alarme) ? QObject::tr("Erreur CheckSum ligne 1 :\nSatellite %1 - numéro NORAD : %2\nValeur attendue : %3 - Valeur calculée : %4")
-                                       .arg(nomsat).arg(li1.mid(2, 5)).arg(li1.at(68)).arg(checksum1) : "", MessageType::WARNING);
+                                       .arg(nomsat, li1.mid(2, 5), li1.at(68)).arg(checksum1) : "", MessageType::WARNING);
     }
 
     if (!CheckSum(li2, checksum2)) {
         throw Exception((alarme) ? QObject::tr("Erreur CheckSum ligne 2 :\nSatellite %1 - numéro NORAD : %2\nValeur attendue : %3 - Valeur calculée : %4")
-                                           .arg(nomsat).arg(li1.mid(2, 5)).arg(li2.at(68)).arg(checksum2) : "", MessageType::WARNING);
+                                           .arg(nomsat, li1.mid(2, 5), li2.at(68)).arg(checksum2) : "", MessageType::WARNING);
     }
 
     /* Retour */

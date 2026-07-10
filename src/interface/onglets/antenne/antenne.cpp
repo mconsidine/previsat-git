@@ -81,7 +81,7 @@ Antenne::Antenne(QWidget *parent) :
         Initialisation();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -281,7 +281,7 @@ void Antenne::show(const Date &date)
                     .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
         }
 
-        const QString chaine = tr("Prochain %1 dans %2", "Next AOS or LOS, and delay").arg(elementsAOS.typeAOS).arg(cDelaiAOS);
+        const QString chaine = tr("Prochain %1 dans %2", "Next AOS or LOS, and delay").arg(elementsAOS.typeAOS, cDelaiAOS);
         _ui->prochainAOS->setText(chaine);
         _ui->prochainAOS->setToolTip((chaine.contains(tr("AOS"))) ? tr("Acquisition du signal") : tr("Perte du signal"));
         _ui->frameSatellite->setVisible(true);
@@ -351,7 +351,7 @@ void Antenne::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
+    qInfo() << "Début Initialisation" << objectName();
 
     _ui->adresse->setText(settings.value("previsions/adresse", "127.  0.  0.  1").toString());
     _ui->port->setValue(settings.value("previsions/port", 12000).toInt());
@@ -368,7 +368,7 @@ void Antenne::Initialisation()
                            "<SPEED>%5</SPEED>" \
                            "</PREVISAT>";
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    qInfo() << "Fin   Initialisation" << objectName();
 
     /* Retour */
     return;
@@ -390,8 +390,7 @@ void Antenne::EnvoiUdp()
     /* Corps de la methode */
     donnees = QByteArray(_structureMessageUdp.arg(sat.elementsOrbitaux().nom)
                          .arg((sat.visible()) ? 1 : 0)
-                         .arg(azimut)
-                         .arg(hauteur)
+                         .arg(azimut, hauteur)
                          .arg(sat.rangeRate() * 1.e3, 0, 'f', 1).toStdString().c_str());
 
     const qint64 taille = _udpSocket->writeDatagram(donnees, adresse, port);

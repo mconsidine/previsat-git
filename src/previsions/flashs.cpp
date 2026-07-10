@@ -44,9 +44,7 @@
 #include <QFileInfo>
 #include "configuration/configuration.h"
 #include "flashs.h"
-#include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/satellite.h"
-#include "librairies/corps/satellite/tle.h"
 #include "librairies/maths/maths.h"
 
 #define NB_PAN (3)
@@ -522,7 +520,7 @@ void Flashs::CalculLimitesFlash(const double mgn0,
     int it;
     double pasInt;
 
-    for (int i=0; i<4; i++) {
+    for (unsigned int i=0; i<4; i++) {
         lim0[i] = limite[i];
         if (lim0[i] < DATE::DATE_INFINIE) {
 
@@ -562,7 +560,7 @@ void Flashs::CalculLimitesFlash(const double mgn0,
 
     limite[1] = DATE::DATE_INFINIE;
 
-    for (int i=0; i<4; i++) {
+    for (unsigned int i=0; i<4; i++) {
         lim0[i] = limite[i];
         if (lim0[i] < DATE::DATE_INFINIE) {
 
@@ -699,7 +697,7 @@ void Flashs::DeterminationFlash(const QPointF minmax,
                     ConditionEclipse condEcl2;
                     ResultatPrevisions res;
                     QList<ResultatPrevisions> result;
-                    for(int i=0; i<3; i++) {
+                    for(unsigned int i=0; i<3; i++) {
 
                         res.obsmax = Observateur();
 

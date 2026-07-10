@@ -72,7 +72,7 @@ public:
      * @param[in] elements elements orbitaux
      * @return nombre d'orbites a l'epoque
      */
-    static int CalculNombreOrbitesEpoque(const ElementsOrbitaux &elements);
+    static unsigned int CalculNombreOrbitesEpoque(const ElementsOrbitaux &elements);
 
     /**
      * @brief LectureFichier Lecture d'un fichier au format GP

@@ -113,11 +113,11 @@ void Telechargement::TelechargementFichier(const QUrl &url,
 
 #if (!BUILD_TEST)
             if (logAlarme) {
-                qWarning().noquote() << QString("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn);
+                qWarning().noquote() << QString("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic, _dirDwn);
             }
 
             if (alarme) {
-                throw Exception(tr("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic).arg(_dirDwn), MessageType::WARNING);
+                throw Exception(tr("Impossible d'écrire le fichier %1 dans le répertoire %2").arg(fic, _dirDwn), MessageType::WARNING);
             } else {
                 throw Exception();
             }

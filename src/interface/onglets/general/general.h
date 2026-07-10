@@ -154,7 +154,7 @@ private:
     Osculateurs *_osculateurs;
 
     bool _uniteVitesse;
-    unsigned int _indexLuneSoleil;
+    int _indexLuneSoleil;
 
     static bool _acalcDN;
     static bool _isEclipse;
@@ -182,6 +182,9 @@ private:
 
     /**
      * @brief AffichageDonneesSoleilLune Affichage des donnees du Soleil et de la Lune
+     */
+    /*
+     * Affichage des donnees du Soleil et de la Lune
      */
     void AffichageDonneesSoleilLune();
 

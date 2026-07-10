@@ -37,11 +37,8 @@
 #include <QElapsedTimer>
 #include <QFileInfo>
 #include <QObject>
-#include "configuration/configuration.h"
 #include "evenementsorbitaux.h"
-#include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/satellite.h"
-#include "librairies/corps/satellite/tle.h"
 #include "librairies/maths/maths.h"
 
 

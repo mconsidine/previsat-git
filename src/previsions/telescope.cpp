@@ -38,10 +38,7 @@
 #include <QFileInfo>
 #include <QTextStream>
 #include <cmath>
-#include "configuration/configuration.h"
-#include "librairies/corps/satellite/gpformat.h"
 #include "librairies/corps/satellite/satellite.h"
-#include "librairies/corps/satellite/tle.h"
 #include "librairies/exceptions/exception.h"
 #include "telescope.h"
 

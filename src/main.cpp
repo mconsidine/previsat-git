@@ -82,11 +82,10 @@ int main(int argc, char *argv[])
         PreviSat w;
 
         // Verification si une instance de PreviSat existe
-        const qint64 pid = a.applicationPid();
         QSharedMemory mem;
         mem.setKey("pid" + QString(APP_NAME));
 
-        if (!mem.create(sizeof(pid))) {
+        if (!mem.create(sizeof(a.applicationPid()))) {
             if (mem.error() == QSharedMemory::AlreadyExists) {
                 if (mem.attach(QSharedMemory::ReadOnly)) {
 

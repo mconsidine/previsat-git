@@ -84,7 +84,7 @@ CalculsEvenementsOrbitaux::CalculsEvenementsOrbitaux(QWidget *parent) :
         Initialisation();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -275,7 +275,7 @@ void CalculsEvenementsOrbitaux::CalculAgeElementsOrbitaux()
         const std::array<double, 2> age = { fabs(jj1 - elemMin), fabs(jj1 - elemMax) };
         std::array<QPalette, 2> palette;
 
-        for(int i=0; i<2; i++) {
+        for(unsigned int i=0; i<2; i++) {
 
             if (age[i] <= 5.) {
                 couleur.setColor(QColor("forestgreen"));
@@ -321,7 +321,7 @@ void CalculsEvenementsOrbitaux::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
+    qInfo() << "Début Initialisation" << objectName();
 
     _ui->passageApogee->setChecked(settings.value("previsions/passageApogee", true).toBool());
     _ui->passageNoeuds->setChecked(settings.value("previsions/passageNoeuds", true).toBool());
@@ -340,7 +340,7 @@ void CalculsEvenementsOrbitaux::Initialisation()
     _tous = new QAction(tr("Tous"), this);
     connect(_tous, &QAction::triggered, this, &CalculsEvenementsOrbitaux::Tous);
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    qInfo() << "Fin   Initialisation" << objectName();
 
     /* Retour */
     return;
@@ -379,13 +379,10 @@ void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
         double offset2;
         QVector<int> vecSat;
         vecSat.append(0);
-        int j = 0;
 
         for(int i = 0; i < _ui->listeEvenements->count(); i++) {
             if (_ui->listeEvenements->item(i)->checkState() == Qt::Checked) {
                 conditions.listeSatellites.append(_ui->listeEvenements->item(i)->data(Qt::UserRole).toString());
-                //vecSat.append(j);
-                j++;
             }
         }
 
@@ -471,8 +468,8 @@ void CalculsEvenementsOrbitaux::on_calculsEvt_clicked()
         // Nom du fichier resultat
         const QString chaine = tr("evenements", "file name (without accent)") + "_%1_%2.txt";
         conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
-                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first()).
-                arg(date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first());
+                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first(),
+                           date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first());
 
         // Barre de progression
         auto barreProgression = new QProgressBar();

@@ -115,7 +115,7 @@ Options::Options(QWidget *parent) :
         connect(_clipBoard, &QClipboard::changed, this, &Options::RecupereCoordonneesMaps);
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -179,7 +179,7 @@ void Options::Initialisation()
     QStyle * const styleIcones = QApplication::style();
 
     /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
+    qInfo() << "Début Initialisation" << objectName();
 
     _ui->enregistrerPref->setIcon(styleIcones->standardIcon(QStyle::SP_DialogSaveButton));
     _ui->ajoutLieu->setIcon(styleIcones->standardIcon(QStyle::SP_ArrowRight));
@@ -255,7 +255,7 @@ void Options::Initialisation()
     // Chargement des fichiers de preference
     InitFicPref();
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    qInfo() << "Fin   Initialisation" << objectName();
 
     /* Retour */
     return;
@@ -458,8 +458,8 @@ void Options::AfficherLieu(const Observateur &obs)
 
     // Affichage des coordonnees
     const QString fmt = "%1 %2";
-    _ui->nLongitude->setText(fmt.arg(Maths::ToSexagesimal(fabs(lo), AngleFormatType::DEGRE, 3, 0, false, true)).arg(ew));
-    _ui->nLatitude->setText(fmt.arg(Maths::ToSexagesimal(fabs(la), AngleFormatType::DEGRE, 2, 0,false, true)).arg(ns));
+    _ui->nLongitude->setText(fmt.arg(Maths::ToSexagesimal(fabs(lo), AngleFormatType::DEGRE, 3, 0, false, true), ew));
+    _ui->nLatitude->setText(fmt.arg(Maths::ToSexagesimal(fabs(la), AngleFormatType::DEGRE, 2, 0,false, true), ns));
     _ui->nAltitude->setText(fmt.arg((settings.value("affichage/unite").toBool()) ? atd : qRound(atd * TERRE::PIED_PAR_METRE + 0.5 * sgn(atd))).
                             arg((settings.value("affichage/unite").toBool()) ? tr("m", "meter") : tr("ft", "foot")));
 
@@ -734,7 +734,7 @@ void Options::InitChargementStations()
         const QString acronyme = it.key();
         const QString nom = it.value().nomlieu();
 
-        QListWidgetItem * const station = new QListWidgetItem(QString("%1 (%2)").arg(nom).arg(acronyme), _ui->listeStations);
+        QListWidgetItem * const station = new QListWidgetItem(QString("%1 (%2)").arg(nom, acronyme), _ui->listeStations);
         station->setCheckState((static_cast<Qt::CheckState> (settings.value("affichage/station" + acronyme, Qt::Checked).
                                                              toUInt())) ? Qt::Checked : Qt::Unchecked);
         station->setData(Qt::UserRole, acronyme);
@@ -766,7 +766,7 @@ void Options::InitFicLang()
     while (it.hasNext()) {
 
         const QString locale = it.next();
-        const QString nomFicTrad = QString("%1_%2.qm").arg(APP_NAME).arg(locale);
+        const QString nomFicTrad = QString("%1_%2.qm").arg(APP_NAME, locale);
 
         // Nom de la langue dans le fichier de traduction
         if (trad.load(Configuration::instance()->dirLang() + QDir::separator() + nomFicTrad)) {
@@ -1414,7 +1414,7 @@ void Options::SupprimerLieu()
         const QString nomlieu = _ui->lieuxObs->currentItem()->text();
         const QString msg = tr("Voulez-vous vraiment supprimer <b>%1</b> de la catégorie <b>%2</b> ?");
 
-        QMessageBox msgbox(QMessageBox::Question, tr("Avertissement"), msg.arg(nomlieu).arg(_ui->categoriesObs->currentItem()->text()));
+        QMessageBox msgbox(QMessageBox::Question, tr("Avertissement"), msg.arg(nomlieu, _ui->categoriesObs->currentItem()->text()));
         const QPushButton * const oui = msgbox.addButton(tr("Oui"), QMessageBox::YesRole);
         QPushButton * const non = msgbox.addButton(tr("Non"), QMessageBox::NoRole);
         msgbox.setDefaultButton(non);

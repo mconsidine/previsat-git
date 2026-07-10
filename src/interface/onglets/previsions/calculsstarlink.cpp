@@ -83,7 +83,7 @@ CalculsStarlink::CalculsStarlink(QWidget *parent) :
         Initialisation();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -280,7 +280,7 @@ void CalculsStarlink::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
+    qInfo() << "Début Initialisation" << objectName();
 
     _ui->nbJoursGeneration->setValue(settings.value("previsions/nbJoursGeneration", 7).toInt());
     _ui->pasGeneration->setCurrentIndex(settings.value("previsions/pasGenerationStarlink", 5).toInt());
@@ -294,7 +294,7 @@ void CalculsStarlink::Initialisation()
     _ui->choixSeuilMaximalFlashsStarlink->setChecked(_ui->seuilMaximalFlashsStarlink->isEnabled());
     _ui->ouvrirRocketLaunchLive->setVisible(!Configuration::instance()->adresseRocketLaunchLive().isEmpty());
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    qInfo() << "Fin   Initialisation" << objectName();
 
     /* Retour */
     return;
@@ -537,8 +537,8 @@ void CalculsStarlink::on_calculs_clicked()
         // Nom du fichier resultat
         const QString chaine = tr("starlink", "filename (without accent)") + "_%1_%2.txt";
         conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
-                            chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first()).
-                            arg(date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first());
+                            chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first(),
+                                       date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first());
 
         // Barre de progression
         auto barreProgression = new QProgressBar();

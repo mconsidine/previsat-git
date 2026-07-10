@@ -87,7 +87,7 @@ Informations::Informations(QWidget *fenetreParent) :
         Initialisation();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 
@@ -153,7 +153,7 @@ void Informations::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
+    qInfo() << "Début Initialisation" << objectName();
 
     _ui->ongletsInfos->setCurrentIndex(0);
     _ui->afficherInfosDemarrage->setChecked(settings.value("affichage/informationsDemarrage", true).toBool());
@@ -171,7 +171,7 @@ void Informations::Initialisation()
     const QString nomVersions = "histo_versions_" + Configuration::instance()->locale() + ".html";
     OuvertureInfo(nomVersions, _ui->ongletVersions, _ui->versions);
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    qInfo() << "Fin   Initialisation" << objectName();
 
     /* Retour */
     return;

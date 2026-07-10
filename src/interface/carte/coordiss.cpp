@@ -59,14 +59,14 @@ CoordISS::CoordISS(QWidget *parent) :
 
     try {
 
-        qInfo() << "Début Initialisation" << metaObject()->className();
+        qInfo() << "Début Initialisation" << objectName();
 
         setPolice();
 
-        qInfo() << "Fin   Initialisation" << metaObject()->className();
+        qInfo() << "Fin   Initialisation" << objectName();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }

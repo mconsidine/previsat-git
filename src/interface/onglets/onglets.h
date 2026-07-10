@@ -123,8 +123,8 @@ public:
      */
     void setAcalcAOS(const bool acalc);
     void setAcalcDN(const bool acalc);
-    void setIndexInformations(const unsigned int newIndexInformations);
-    void setIndexPrevisions(const unsigned int newIndexPrevisions);
+    void setIndexInformations(const int newIndexInformations);
+    void setIndexPrevisions(const int newIndexPrevisions);
     void setInfo(const bool info);
 
 
@@ -169,8 +169,8 @@ private:
     /*
      * Variables privees
      */
-    unsigned int _indexInformations;
-    unsigned int _indexPrevisions;
+    int _indexInformations;
+    int _indexPrevisions;
     Ui::Onglets *_ui;
 
     // Onglets

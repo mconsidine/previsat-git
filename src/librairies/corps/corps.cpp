@@ -364,7 +364,7 @@ void Corps::CalculLeverMeridienCoucher(const Date &date,
 
         // Crepuscules
         if (calculCrepuscules) {
-            for(int i=1; i<=3; i++) {
+            for(unsigned int i=1; i<=3; i++) {
 
                 const double ht1a = ht1 + 6. * i * MATHS::DEG2RAD;
                 const double ht2a = ht2 + 6. * i * MATHS::DEG2RAD;
@@ -485,7 +485,7 @@ void Corps::CalculLeverMeridienCoucher(const Date &date,
                        "-" : datesEvt[2].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
 
     if (calculCrepuscules) {
-        for(int i=3; i<9; i++) {
+        for(unsigned int i=3; i<9; i++) {
             _datesCrepuscules[i-3] =
                 (fabs(datesEvt[i].jourJulienUTC() - DATE::DATE_INFINIE) < DATE::EPS_DATES) ?
                     "-" : datesEvt[i].ToShortDate(DateFormat::FORMAT_COURT, syst).section(" ", 1).remove(5, 3).replace(":", "h").trimmed();
@@ -595,8 +595,7 @@ void Corps::Initialisation(const QString &dirCommonData)
     QFile fi(fichierConstellations);
     if (!fi.exists() || (fi.size() == 0)) {
         const QFileInfo ff(fi.fileName());
-        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME),
-                        MessageType::ERREUR);
+        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName(), APP_NAME), MessageType::ERREUR);
     }
 
     if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -630,8 +629,7 @@ void Corps::Initialisation(const QString &dirCommonData)
     if (_tabConst.isEmpty()) {
 #if (!COVERAGE_TEST)
         const QFileInfo ff(fi.fileName());
-        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                                        .arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(ff.fileName(), APP_NAME), MessageType::ERREUR);
 #endif
     }
 

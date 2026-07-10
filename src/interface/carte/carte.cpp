@@ -36,10 +36,11 @@
 
 #include <QDir>
 #include <QGraphicsSimpleTextItem>
+#include <QLabel>
+#include <QListWidgetItem>
 #include <QMouseEvent>
 #include <QSettings>
 #include <QXmlStreamReader>
-#include "../options/ui_options.h"
 #include "ui_carte.h"
 #include "carte.h"
 #include "coordiss.h"
@@ -67,18 +68,18 @@ static QSettings settings(ORG_NAME, APP_NAME);
 // SAA
 static constexpr std::array<std::array<double, 2>, 59> tabSAA = {
     { { -96.5, -29. }, { -95., -24.5 }, { -90., -16. }, { -85., -10. }, { -80., -6. }, { -75., -3.5 }, { -70., 0. }, { -65., 4. }, { -60., 6.5 },
-      { -55., 8. }, { -50., 9. }, { -45., 10. }, { -40., 11. }, { -35., 12. }, { -30., 13. }, { -25., 12. }, { -20., 9.5 }, { -15., 8. }, { -10., 7. },
-      { -5., 6. }, { 0., 4. }, { 5., 2. }, { 10., -3. }, { 15., -4. }, { 20., -5. }, { 25., -6. }, { 30., -8. }, { 35., -11.5 }, { 40., -14. },
-      { 42.5, -17.5 }, { 40., -22. }, { 35., -23.5 }, { 30., -25. }, { 25., -27. }, { 20., -29. }, { 15., -32. }, { 10., -33.5 }, { 5., -35. },
-      { 0., -36. }, { -5., -37. }, { -10., -38.5 }, { -15., -42.5 }, { -20., -44.5 }, { -25., -46. }, { -30., -47.5 }, { -35., -48.5 }, { -40., -49.5 },
-      { -45., -49. }, { -50., -48.5 }, { -55., -47.5 }, { -60., -47. }, { -65., -46.5 }, { -70., -45.5 }, { -75., -43.5 }, { -80., -42. },
-      { -85., -38.5 }, { -90., -36. }, { -95., -33. }, { -96.5, -29. } }
+     { -55., 8. }, { -50., 9. }, { -45., 10. }, { -40., 11. }, { -35., 12. }, { -30., 13. }, { -25., 12. }, { -20., 9.5 }, { -15., 8. }, { -10., 7. },
+     { -5., 6. }, { 0., 4. }, { 5., 2. }, { 10., -3. }, { 15., -4. }, { 20., -5. }, { 25., -6. }, { 30., -8. }, { 35., -11.5 }, { 40., -14. },
+     { 42.5, -17.5 }, { 40., -22. }, { 35., -23.5 }, { 30., -25. }, { 25., -27. }, { 20., -29. }, { 15., -32. }, { 10., -33.5 }, { 5., -35. },
+     { 0., -36. }, { -5., -37. }, { -10., -38.5 }, { -15., -42.5 }, { -20., -44.5 }, { -25., -46. }, { -30., -47.5 }, { -35., -48.5 }, { -40., -49.5 },
+     { -45., -49. }, { -50., -48.5 }, { -55., -47.5 }, { -60., -47. }, { -65., -46.5 }, { -70., -45.5 }, { -75., -43.5 }, { -80., -42. },
+     { -85., -38.5 }, { -90., -36. }, { -95., -33. }, { -96.5, -29. } }
 };
 
 // SAA pour la visualisation Wall Command Center
 static constexpr std::array<std::array<double, 2>, 16> tabSAA_ISS = {
     { { 55.5, -17.3 }, { 47., -17.3 }, { 34.3, -20. }, { 14.5, -28. }, { -16., -31.6 }, { -26.5, -35.5 }, { -28.3, -40.6 }, { -21.6, -45.6 },
-      { 2.5, -53. }, { 42., -53. }, { 54., -47.6 }, { 62.2, -36. }, { 63.3, -31. }, { 63.3, -24. }, { 60.5, -19.2 }, { 55.5, -17.3 } }
+     { 2.5, -53. }, { 42., -53. }, { 54., -47.6 }, { 62.2, -36. }, { 63.3, -31. }, { 63.3, -24. }, { 60.5, -19.2 }, { 55.5, -17.3 } }
 };
 
 
@@ -103,7 +104,7 @@ Carte::Carte(QWidget *parent) :
         Initialisation();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -594,7 +595,7 @@ void Carte::AffichageGrille()
 
         const QBrush alpha = QBrush(QColor::fromRgb(255, 0, 0, 50));
         QVector<QPointF> zoneSAA;
-        for(int i=0; i<59; i++) {
+        for(unsigned int i=0; i<59; i++) {
             zoneSAA.append(QPointF(DEG2PX(180. + tabSAA[i][0]), DEG2PX(90. - tabSAA[i][1])));
         }
 
@@ -622,7 +623,7 @@ void Carte::AffichageLieuxObservation()
     /* Corps de la methode */
     QGraphicsSimpleTextItem * txtObs;
     const int nbMax = static_cast<int> ((settings.value("affichage/affnomlieu").toUInt() == Qt::Unchecked) ?
-                                            0 : Configuration::instance()->observateurs().size() - 1);
+                                           0 : Configuration::instance()->observateurs().size() - 1);
     const QList<Observateur> &observateurs = Configuration::instance()->observateurs();
 
     for(int j=nbMax; j>=0; j--) {
@@ -771,15 +772,15 @@ void Carte::AffichageSatelliteDefaut(const Satellite &satellite, const int lsat,
         (satellite.elementsOrbitaux().norad != Configuration::instance()->noradDefaut())) {
 
         _sat.last()->setToolTip(tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>")
-                                    .arg(satellite.elementsOrbitaux().nom)
-                                    .arg(satellite.elementsOrbitaux().norad)
-                                    .arg(satellite.elementsOrbitaux().cospar));
+                                    .arg(satellite.elementsOrbitaux().nom,
+                                         satellite.elementsOrbitaux().norad,
+                                         satellite.elementsOrbitaux().cospar));
     }
 
     _sat.last()->setData(Qt::ToolTipRole, tr("<b>%1</b> (numéro NORAD : <b>%2</b>  -  COSPAR : <b>%3</b>)")
-                                           .arg(satellite.elementsOrbitaux().nom)
-                                           .arg(satellite.elementsOrbitaux().norad)
-                                           .arg(satellite.elementsOrbitaux().cospar));
+                                              .arg(satellite.elementsOrbitaux().nom,
+                                                   satellite.elementsOrbitaux().norad,
+                                                   satellite.elementsOrbitaux().cospar));
 
     _sat.last()->setData(Qt::UserRole, satellite.elementsOrbitaux().norad);
 
@@ -788,11 +789,11 @@ void Carte::AffichageSatelliteDefaut(const Satellite &satellite, const int lsat,
 
         const Qt::CheckState etat = static_cast<Qt::CheckState> (settings.value("affichage/affnomsat").toUInt());
         const bool affichageEtiquette = ((satellite.elementsOrbitaux().norad == Configuration::instance()->noradDefaut()) &&
-                               settings.value("affichage/informationsSatelliteDefaut").toBool());
+                                         settings.value("affichage/informationsSatelliteDefaut").toBool());
 
         if ((((etat == Qt::PartiallyChecked) &&
-             (satellite.elementsOrbitaux().norad == Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad)) ||
-                (etat == Qt::Checked)) && !affichageEtiquette) {
+              (satellite.elementsOrbitaux().norad == Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad)) ||
+             (etat == Qt::Checked)) && !affichageEtiquette) {
 
             QGraphicsSimpleTextItem * const txtSat = new QGraphicsSimpleTextItem(satellite.elementsOrbitaux().nom);
             const int lng = static_cast<int> (txtSat->boundingRect().width());
@@ -864,7 +865,8 @@ void Carte::AffichageSatellites()
                 img = QPixmap();
                 if (!_listeIcones.isEmpty()) {
                     img = QPixmap(_listeIcones.first());
-                    img = img.scaled(qMin(_largeurCarte / 12, img.width()), qMin(_hauteurCarte / 6, img.height()), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                    img = img.scaled(qMin(_largeurCarte / 12, img.width()), qMin(_hauteurCarte / 6, img.height()), Qt::KeepAspectRatio,
+                                     Qt::SmoothTransformation);
                 }
 
                 pm = scene->addPixmap(img);
@@ -945,15 +947,15 @@ void Carte::AffichageSatellites()
                                    "Vitesse : %7 %8<br />" \
                                    "Inclinaison : %9°<br />"
                                    "Période : %10")
-                                    .arg(sat.elementsOrbitaux().nom)
-                                    .arg(sat.elementsOrbitaux().norad)
-                                    .arg(sat.elementsOrbitaux().cospar)
-                                    .arg(sat.elementsOrbitaux().donnees.orbite())
+                                    .arg(sat.elementsOrbitaux().nom,
+                                         sat.elementsOrbitaux().norad,
+                                         sat.elementsOrbitaux().cospar,
+                                         sat.elementsOrbitaux().donnees.orbite())
                                     .arg(altitude, 0, 'f', 1).arg(unite1)
                                     .arg(vitesse, 0, 'f', 3).arg(unite2)
                                     .arg(sat.elementsOsculateurs().inclinaison() * MATHS::RAD2DEG, 0, 'f', 2)
                                     .arg(Maths::ToSexagesimal(sat.elementsOsculateurs().periode() * MATHS::HEUR2RAD,
-                                                     AngleFormatType::HEURE1, 1, 0, false, true));
+                                                              AngleFormatType::HEURE1, 1, 0, false, true));
 
             etiquette = new QLabel(txt, _ui->carte);
             etiquette->setTextFormat(Qt::RichText);
@@ -1128,9 +1130,9 @@ void Carte::AffichageStations()
                 scene->addItem(txtSta);
 
                 if (settings.value("affichage/affCerclesAcq").toBool() && !Configuration::instance()->listeSatellites().isEmpty()
-                        && (Configuration::instance()->listeSatellites().first().altitude() > 0.)
-                        && (Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad ==
-                            Configuration::instance()->noradStationSpatiale())) {
+                    && (Configuration::instance()->listeSatellites().first().altitude() > 0.)
+                    && (Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad ==
+                        Configuration::instance()->noradStationSpatiale())) {
 
                     Satellite sat = Configuration::instance()->listeSatellites().first();
                     sat.CalculCercleAcquisition(station);
@@ -1253,7 +1255,7 @@ void Carte::AffichageTraceAuSol()
                     }
 
                     if (Configuration::instance()->issLive()
-                            && (satellite.elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale())) {
+                        && (satellite.elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale())) {
 
                         // Affichage du numero d'orbite (WCC)
                         if ((trace.latitude < 90.) && (tracePrec.latitude > 90.)) {
@@ -1380,7 +1382,7 @@ void Carte::AffichageZoneOmbre()
         QVector<QPointF> zone;
         QVector<QPointF> zone1;
         QVector<QPointF> zone2;
-        QList<int> idxIntersection;
+        QList<unsigned int> idxIntersection;
 
         for(int i=0; i<imax; i++) {
 
@@ -1406,7 +1408,10 @@ void Carte::AffichageZoneOmbre()
             }
 
             zone.append(zone[0]);
-            if (fabs(zone.at(soleil.zone().size()).x() - zone.at(soleil.zone().size()-1).x()) > (_ui->carte->width() / 2)) {
+            const long long sz1 = static_cast<long long> (soleil.zone().size());
+            const long long sz2 = static_cast<long long> (soleil.zone().size()-1);
+
+            if (fabs(zone.at(sz1).x() - zone.at(sz2).x()) > (_ui->carte->width() / 2)) {
                 idxIntersection.append(static_cast<unsigned int> (soleil.zone().size()));
             }
 
@@ -1427,7 +1432,7 @@ void Carte::AffichageZoneOmbre()
                 case 1:
                 {
                     // Une intersection avec les bords de la carte (la zone d'ombre forme une bande)
-                    for(int j=0; j<idxIntersection.first(); j++) {
+                    for(unsigned int j=0; j<idxIntersection.first(); j++) {
                         zone.move(0, zone.size()-1);
                     }
 
@@ -1470,11 +1475,11 @@ void Carte::AffichageZoneOmbre()
                 {
                     // Deux intersections avec les bords de la carte (la zone d'ombre est patatoide et a cheval sur les extremites de la carte)
                     // Partage en 2 zones
-                    const int jmed = idxIntersection.first();
+                    const unsigned int jmed = idxIntersection.first();
                     zone1.clear();
                     zone2.clear();
 
-                    for(int j=0; j<zone.size(); j++) {
+                    for(unsigned int j=0; j<zone.size(); j++) {
                         if ((j < idxIntersection.first()) || (j >= idxIntersection.last())) {
                             zone1.append(zone.at(j));
                         } else {
@@ -1650,8 +1655,8 @@ void Carte::AffichageSAA_ZOE()
 
     /* Corps de la methode */
     if (settings.value("affichage/affSAA_ZOE").toBool() && Configuration::instance()->issLive()
-            && !Configuration::instance()->listeSatellites().isEmpty()
-            && (Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale())) {
+        && !Configuration::instance()->listeSatellites().isEmpty()
+        && (Configuration::instance()->listeSatellites().first().elementsOrbitaux().norad == Configuration::instance()->noradStationSpatiale())) {
 
         // Zone Of Exclusion (ZOE)
         QGraphicsSimpleTextItem * const txtZOE = new QGraphicsSimpleTextItem("ZOE");
@@ -1706,7 +1711,7 @@ void Carte::AffichageZoneVisibilite()
 
         QPen pen;
         QPainterPath res;
-        const unsigned int nbMax = static_cast<int> ((settings.value("affichage/affvisib").toUInt() == Qt::PartiallyChecked) ? 1 : satellites.size());
+        const unsigned int nbMax = static_cast<unsigned int> ((settings.value("affichage/affvisib").toUInt() == Qt::PartiallyChecked) ? 1 : satellites.size());
 
         for(unsigned int isat=0; isat<nbMax; isat++) {
 
@@ -1856,7 +1861,7 @@ void Carte::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
+    qInfo() << "Début Initialisation" << objectName();
 
     _ui->carte->setAttribute(Qt::WA_Hover);
     _ui->carte->setAttribute(Qt::WA_MouseTracking);
@@ -1888,7 +1893,7 @@ void Carte::Initialisation()
     scene = new QGraphicsScene;
     ChargementCarteDuMonde();
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    qInfo() << "Fin   Initialisation" << objectName();
 
     /* Retour */
     return;
@@ -1939,7 +1944,7 @@ void Carte::LectureFichierKml(const QString &fichier, const bool visible, const 
         QFileInfo ff(fichier);
         if (!ff.exists()) {
             qWarning().noquote() << "Le fichier de frontières" << ff.fileName() << "n'existe pas";
-            throw Exception(tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME), MessageType::WARNING);
+            throw Exception(tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName(), APP_NAME), MessageType::WARNING);
         }
 
         QFile fi(fichier);
@@ -1978,7 +1983,7 @@ void Carte::LectureFichierKml(const QString &fichier, const bool visible, const 
     QPainterPath res;
     QPen pen;
     pen.setWidthF(1.);
-    pen.setColor((echelleMin > 0.) ? QColor("#999999") :  QColor("#CCCCCC"));
+    pen.setColor((echelleMin > 0.) ? QColor(0x999999) : QColor(0xCCCCCC));
     pen.setCosmetic(true);
 
     QVectorIterator it(poly);

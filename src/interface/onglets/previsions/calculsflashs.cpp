@@ -82,7 +82,7 @@ CalculsFlashs::CalculsFlashs(QWidget *parent) :
         Initialisation();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -257,7 +257,7 @@ void CalculsFlashs::CalculAgeElementsOrbitaux()
         const std::array<double, 2> age = { fabs(jj1 - elemMin), fabs(jj1 - elemMax) };
         std::array<QPalette, 2> palette;
 
-        for(int i=0; i<2; i++) {
+        for(unsigned int i=0; i<2; i++) {
 
             if (age[i] <= 5.) {
                 couleur.setColor(QColor("forestgreen"));
@@ -303,7 +303,7 @@ void CalculsFlashs::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
+    qInfo() << "Début Initialisation" << objectName();
 
     _ui->valHauteurSatMetOp->setVisible(false);
     _ui->hauteurSatMetOp->setCurrentIndex(settings.value("previsions/hauteurSatMetOp", 2).toInt());
@@ -313,7 +313,7 @@ void CalculsFlashs::Initialisation()
     _ui->ordreChronologiqueMetOp->setChecked(settings.value("previsions/ordreChronologiqueMetOp", true).toBool());
     _ui->magnitudeMaxMetOp->setValue(settings.value("previsions/magnitudeMaxMetOp", 2.).toDouble());
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    qInfo() << "Fin   Initialisation" << objectName();
 
     /* Retour */
     return;
@@ -472,8 +472,8 @@ void CalculsFlashs::on_calculsFlashs_clicked()
         // Nom du fichier resultat
         const QString chaine = tr("flashs", "file name (without accent)") + "_%1_%2.txt";
         conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
-                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first()).
-                arg(date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first());
+                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first(),
+                           date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first());
 
         // Barre de progression
         auto barreProgression = new QProgressBar();
@@ -618,7 +618,7 @@ void CalculsFlashs::on_majElementsOrbitaux_clicked()
         Telechargement tel(Configuration::instance()->dirElem());
         emit AfficherMessageStatut(tr("Mise à jour du fichier GP %1 en cours...").arg(ff.fileName()), 0);
 
-        const QString ficMaj = QString("%1elem/%2").arg(DOMAIN_NAME).arg(ff.fileName());
+        const QString ficMaj = QString("%1elem/%2").arg(DOMAIN_NAME, ff.fileName());
 
         tel.TelechargementFichier(QUrl(ficMaj));
         AfficherMessageStatut(tr("Téléchargement terminé"), 10);

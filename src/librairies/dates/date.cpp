@@ -67,7 +67,7 @@ Date::Date(const double offset)
     try {
 
         const QDateTime dateSysteme = QDateTime::currentDateTimeUtc();
-        *this = Date(dateSysteme.addSecs(static_cast<quint64> (floor(offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES))), offset);
+        *this = Date(dateSysteme.addSecs(static_cast<qint64> (floor(offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES))), offset);
 
     } catch (Exception const &e) {
         throw Exception();
@@ -401,8 +401,7 @@ void Date::Initialisation(const QString &dirLocalData)
     QFile fi(fic);
     if (!fi.exists() || (fi.size() == 0)) {
         const QFileInfo ff(fi.fileName());
-        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME),
-                        MessageType::ERREUR);
+        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName(), APP_NAME), MessageType::ERREUR);
     }
 
     if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -435,7 +434,8 @@ void Date::Initialisation(const QString &dirLocalData)
                 }
 
             } else {
-                _ecartsTAI_UTC.append(QPointF(ligne.mid(0, 10).toDouble(), ligne.mid(11, 5).toDouble()));
+                const QStringView lg(ligne);
+                _ecartsTAI_UTC.append(QPointF(lg.mid(0, 10).toDouble(), lg.mid(11, 5).toDouble()));
             }
 
             i++;
@@ -503,7 +503,7 @@ QString Date::ToShortDate(const DateFormat &format,
 
     /* Corps de la methode */
     const double jjsec =
-        arrondi(DATE::NB_SEC_PAR_JOUR * (_jourJulien - tmp) + DATE::EPS_DATES, static_cast<int> (format)) * DATE::NB_JOUR_PAR_SEC + tmp;
+        arrondi(DATE::NB_SEC_PAR_JOUR * (_jourJulien - tmp) + DATE::EPS_DATES, static_cast<unsigned int> (format)) * DATE::NB_JOUR_PAR_SEC + tmp;
     const Date date(jjsec + MATHS::EPSDBL100, 0.);
     const QDateTime date2 = date.ToQDateTime(DateFormatSec::FORMAT_SEC_ZERO);
     const QPair<int, QString> hr = getHrAmPm(date2.time().hour(), systeme);
@@ -531,7 +531,7 @@ QString Date::ToShortDateAMJ(const DateFormat &format,
 
     /* Corps de la methode */
     const double jjsec =
-        arrondi(DATE::NB_SEC_PAR_JOUR * (_jourJulien - tmp) + DATE::EPS_DATES, static_cast<int> (format)) * DATE::NB_JOUR_PAR_SEC + tmp;
+        arrondi(DATE::NB_SEC_PAR_JOUR * (_jourJulien - tmp) + DATE::EPS_DATES, static_cast<unsigned int> (format)) * DATE::NB_JOUR_PAR_SEC + tmp;
     const Date date(jjsec + MATHS::EPSDBL100, _offsetUTC);
     const QPair<int, QString> hr = getHrAmPm(date._heure, systeme);
 

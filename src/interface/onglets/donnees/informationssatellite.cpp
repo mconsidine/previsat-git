@@ -174,7 +174,7 @@ void InformationsSatellite::show(const Satellite &satellite)
     if (((donnee.masseSec() == "0") && (donnee.masseTot() == "0")) || (donnee.masseSec().isEmpty() && donnee.masseTot().isEmpty())) {
         _ui->masseSecTot->setText("?/?");
     } else {
-        _ui->masseSecTot->setText(QString("%1/%2 kg").arg(donnee.masseSec()).arg(donnee.masseTot()));
+        _ui->masseSecTot->setText(QString("%1/%2 kg").arg(donnee.masseSec(), donnee.masseTot()));
     }
 
     // Magnitude standard, methode de determination de la magnitude, magnitude maximale
@@ -222,7 +222,7 @@ void InformationsSatellite::show(const Satellite &satellite)
     if (donnee.classe().isEmpty() && donnee.categorie().isEmpty() && donnee.discipline().isEmpty()) {
         _ui->classeCategDiscip->setText(tr("N/A"));
     } else {
-        _ui->classeCategDiscip->setText(QString("%1 / %2 / %3").arg(donnee.classe()).arg(donnee.categorie()).arg(donnee.discipline()));
+        _ui->classeCategDiscip->setText(QString("%1 / %2 / %3").arg(donnee.classe(), donnee.categorie(), donnee.discipline()));
     }
 
     /* Retour */
@@ -254,7 +254,7 @@ void InformationsSatellite::SauveOngletInformations(const QString &fichier)
 
 #if (!BUILD_TEST)
             const QString titre = "%1 %2 / %3 (c) %4";
-            flux << titre.arg(APP_NAME).arg(QString(VER_MAJ)).arg(ORG_NAME).arg(QString(ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
+            flux << titre.arg(APP_NAME, VER_MAJ, ORG_NAME, ANNEES_DEV) << Qt::endl << Qt::endl << Qt::endl;
 #endif
 
             // Donnees sur le satellite
@@ -262,36 +262,36 @@ void InformationsSatellite::SauveOngletInformations(const QString &fichier)
 
             QString chaine = tr("Numéro NORAD            : %1 \t\tMoyen mouvement             : %2 rev/jour\t Date de lancement  : %3",
                                 "revolution per day");
-            flux << chaine.arg(_ui->norad->text()).arg(_ui->nbRev->text().rightJustified(11, ' ')).arg(_ui->dateLancement->text()) << Qt::endl;
+            flux << chaine.arg(_ui->norad->text(), _ui->nbRev->text().rightJustified(11, ' '), _ui->dateLancement->text()) << Qt::endl;
 
             chaine = tr("Désignation COSPAR      : %1\t\tn'/2                        : %2 rev/jour^2\t Catégorie d'orbite : %3",
                         "n'/2 = derivative of the mean motion divided by two (in revolution per day square)");
-            flux << chaine.arg(_ui->cospar->text()).arg(_ui->nbRev2->text().rightJustified(11, ' ')).arg(_ui->categorieOrbite->text()) << Qt::endl;
+            flux << chaine.arg(_ui->cospar->text(), _ui->nbRev2->text().rightJustified(11, ' '), _ui->categorieOrbite->text()) << Qt::endl;
 
             chaine = tr("Époque (UTC)            : %1\tn\"/6                        : %2 rev/jour^3\t Pays/Organisation  : %3",
                         "n\"/6 = second derivative of the mean motion divided by six (in revolution per day cube)");
-            flux << chaine.arg(_ui->epoque->text()).arg(_ui->nbRev3->text().rightJustified(11, ' ')).arg(_ui->pays->text()) << Qt::endl;
+            flux << chaine.arg(_ui->epoque->text(), _ui->nbRev3->text().rightJustified(11, ' '), _ui->pays->text()) << Qt::endl;
 
             chaine = tr("Coeff pseudo-balistique : %1 (1/Re)\tNb orbites à l'époque       : %2\t\t\t Site de lancement  : %3",
                         "Pseudo-ballistic coefficient in 1/Earth radius");
-            flux << chaine.arg(_ui->bstar->text()).arg(_ui->nbOrbitesEpoque->text()).arg(_ui->siteLancement->text()) << Qt::endl << Qt::endl;
+            flux << chaine.arg(_ui->bstar->text(), _ui->nbOrbitesEpoque->text(), _ui->siteLancement->text()) << Qt::endl << Qt::endl;
 
 
             chaine = tr("Inclinaison             : %1\t\tMasse sec/totale            : %2");
-            flux << chaine.arg(_ui->inclinaisonMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->masseSecTot->text()) << Qt::endl;
+            flux << chaine.arg(_ui->inclinaisonMoy->text().trimmed().rightJustified(9, '0'), _ui->masseSecTot->text()) << Qt::endl;
 
             chaine = tr("AD noeud ascendant      : %1\t\tMagnitude std/max           : %2",
                         "Right ascension of the ascending node, Standard/Maximum magnitude");
-            flux << chaine.arg(_ui->ADNoeudAscendantMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->magnitudeStdMax->text()) << Qt::endl;
+            flux << chaine.arg(_ui->ADNoeudAscendantMoy->text().trimmed().rightJustified(9, '0'), _ui->magnitudeStdMax->text()) << Qt::endl;
 
             chaine = tr("Excentricité            : %1\t\tModèle orbital              : %2");
-            flux << chaine.arg(_ui->excentriciteMoy->text()).arg(_ui->modele->text()) << Qt::endl;
+            flux << chaine.arg(_ui->excentriciteMoy->text(), _ui->modele->text()) << Qt::endl;
 
             chaine = tr("Argument du périgée     : %1\t\tForme/Dimensions            : %2");
-            flux << chaine.arg(_ui->argumentPerigeeMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->dimensions->text()) << Qt::endl;
+            flux << chaine.arg(_ui->argumentPerigeeMoy->text().trimmed().rightJustified(9, '0'), _ui->dimensions->text()) << Qt::endl;
 
             chaine = tr("Anomalie moyenne        : %1\t\tClasse/Catégorie/Discipline : %2");
-            flux << chaine.arg(_ui->anomalieMoy->text().trimmed().rightJustified(9, '0')).arg(_ui->classeCategDiscip->text()) << Qt::endl;
+            flux << chaine.arg(_ui->anomalieMoy->text().trimmed().rightJustified(9, '0'), _ui->classeCategDiscip->text()) << Qt::endl;
         }
 
         sw.close();

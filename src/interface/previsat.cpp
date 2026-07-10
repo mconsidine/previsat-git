@@ -80,7 +80,6 @@
 #include "carte/ui_carte.h"
 #include "carte/ui_coordiss.h"
 #include "ciel/ui_ciel.h"
-#include "informations/ui_informations.h"
 #include "onglets/general/ui_general.h"
 #include "onglets/donnees/ui_informationssatellite.h"
 #include "onglets/ui_onglets.h"
@@ -130,7 +129,7 @@ PreviSat::PreviSat(QWidget *parent) :
         Initialisation();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -1050,12 +1049,12 @@ void PreviSat::EnchainementCalculs()
         if (satellites.isEmpty()) {
 
             const QString titre = "%1 %2";
-            setWindowTitle(titre.arg(APP_NAME).arg(VER_MAJ));
+            setWindowTitle(titre.arg(APP_NAME, VER_MAJ));
 
         } else {
 
             const QString titre = "%1 %2 - %3";
-            setWindowTitle(titre.arg(APP_NAME).arg(VER_MAJ).arg(satellites.first().elementsOrbitaux().nom));
+            setWindowTitle(titre.arg(APP_NAME, VER_MAJ, satellites.first().elementsOrbitaux().nom));
 
             // Calculs specifiques lors de l'affichage du Wall Command Center
             const bool mcc = _ui->issLive->isChecked();
@@ -1235,10 +1234,10 @@ void PreviSat::Initialisation()
     try {
 
         // Affichage des informations generales dans le fichier de log
-        qInfo().noquote() << QString("%1 %2").arg(APP_NAME).arg(QString(VERSION));
-        qInfo().noquote() << QString("%1 %2 %3").arg(QSysInfo::productType()).arg(QSysInfo::productVersion()).arg(QSysInfo::currentCpuArchitecture());
+        qInfo().noquote() << QString("%1 %2").arg(APP_NAME, VERSION);
+        qInfo().noquote() << QString("%1 %2 %3").arg(QSysInfo::productType(), QSysInfo::productVersion(), QSysInfo::currentCpuArchitecture());
 
-        setWindowTitle(QString("%1 %2").arg(APP_NAME).arg(VER_MAJ));
+        setWindowTitle(QString("%1 %2").arg(APP_NAME, VER_MAJ));
         restoreGeometry(settings.value("affichage/geometrie").toByteArray());
         restoreState(settings.value("affichage/etat").toByteArray());
 
@@ -1247,14 +1246,14 @@ void PreviSat::Initialisation()
         // Chargement de la configuration generale
         Configuration::instance()->Chargement();
 
-        qInfo() << "Début Initialisation" << metaObject()->className();
+        qInfo() << "Début Initialisation" << objectName();
 
         _options = new Options(this);
 
         // Verification des mises a jour au demarrage
         InitVerificationsMAJ();
 
-        qInfo() << "Fin   Initialisation" << metaObject()->className();
+        qInfo() << "Fin   Initialisation" << objectName();
 
     } catch (Exception const &e) {
         throw Exception();
@@ -1377,7 +1376,7 @@ void PreviSat::InitVerificationsMAJ()
                                      "ce qui représente environ %2 pages.").arg(NB_LIGNES).arg(100 * qRound(nbl / 3000.)) + "\n\n";
 
             const QString msg = tr("Vous venez de mettre à jour %1.\n%2Souhaitez-vous faire un don pour soutenir son auteur ?");
-            QMessageBox msgbox(QMessageBox::Question, tr("Information"), msg.arg(APP_NAME).arg(nbLignes));
+            QMessageBox msgbox(QMessageBox::Question, tr("Information"), msg.arg(APP_NAME, nbLignes));
 
             QPushButton * const paypal = msgbox.addButton("PayPal", QMessageBox::YesRole);
             const QPushButton * const tipeee = msgbox.addButton("Tipeee", QMessageBox::AcceptRole);
@@ -1617,7 +1616,7 @@ bool PreviSat::VerifMajDate(const QString &fichier, const QStringList &listeFich
         qInfo() << "Début Fonction" << __FUNCTION__;
 
         Telechargement tel(Configuration::instance()->dirTmp());
-        tel.TelechargementFichier(QString("%1/maj/%2").arg(DOMAIN_NAME).arg(fichier), false, false);
+        tel.TelechargementFichier(QString("%1/maj/%2").arg(DOMAIN_NAME, fichier), false, false);
 
         QFile fi(tel.dirDwn() + QDir::separator() + fichier);
         if (fi.exists() && (fi.size() != 0) && fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -1744,7 +1743,7 @@ bool PreviSat::VerifMajVersion(const QString &fichier)
 
         bool majPrevi = settings.value("fichier/majPreviSat", true).toBool();
         Telechargement tel(Configuration::instance()->dirTmp());
-        tel.TelechargementFichier(QString("%1/maj/%2").arg(DOMAIN_NAME).arg(fichier), false, false);
+        tel.TelechargementFichier(QString("%1/maj/%2").arg(DOMAIN_NAME, fichier), false, false);
 
         QFile fi(tel.dirDwn() + QDir::separator() + fichier);
         if (fi.exists() && (fi.size() != 0) && fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -1889,8 +1888,7 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
 
         const QString cospar = Configuration::instance()->mapElementsOrbitaux()[norad].cospar;
 
-        const QString tooltip = tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>")
-                                    .arg(nomsat).arg(norad).arg(cospar);
+        const QString tooltip = tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>").arg(nomsat, norad, cospar);
 
         // Affichage du numero NORAD
         switch (static_cast<Qt::CheckState> (settings.value("affichage/affNoradListes", Qt::Unchecked).toUInt())) {
@@ -1900,11 +1898,11 @@ void PreviSat::AfficherListeSatellites(const QString &nomfic, const bool majList
             break;
 
         case Qt::Checked:
-            nomsatComplet = QString("%1     (%2)").arg(nomsat).arg(norad);
+            nomsatComplet = QString("%1     (%2)").arg(nomsat, norad);
             break;
 
         case Qt::PartiallyChecked:
-            nomsatComplet = (nomsat.contains("R/B") || nomsat.contains(" DEB")) ? QString("%1     (%2)").arg(nomsat).arg(norad) : nomsat;
+            nomsatComplet = (nomsat.contains("R/B") || nomsat.contains(" DEB")) ? QString("%1     (%2)").arg(nomsat, norad) : nomsat;
             break;
         }
 
@@ -2115,7 +2113,7 @@ void PreviSat::ChargementTraduction(const QString &langue)
     qInfo().noquote() << "Locale :" << langue;
 
     /* Corps de la methode */
-    InstallationTraduction(QString("%1_%2").arg(APP_NAME).arg(langue), _appTraduction);
+    InstallationTraduction(QString("%1_%2").arg(APP_NAME, langue), _appTraduction);
     InstallationTraduction(QString("qt_%1").arg(langue), _qtTraduction);
     Configuration::instance()->locale() = settings.value("affichage/langue", "en").toString();
 
@@ -2503,7 +2501,7 @@ void PreviSat::MajFichierGP()
         _messageStatut->setText(tr("Mise à jour du fichier GP %1 en cours...").arg(ff.fileName()));
 
         const QString ficMaj = (ff.fileName().contains("spctrk")) ?
-                                   QString("%1elem/%2").arg(DOMAIN_NAME).arg(ff.fileName()) :
+                                   QString("%1elem/%2").arg(DOMAIN_NAME, ff.fileName()) :
                                    Configuration::instance()->adresseCelestrakNorad().arg(ff.baseName());
 
         tel.TelechargementFichier(QUrl(ficMaj));
@@ -2613,7 +2611,7 @@ void PreviSat::RaccourciPrevisions()
 {
     _onglets->setCurrentWidget(_onglets->ui()->previsions);
     _onglets->ui()->stackedWidget_previsions->setCurrentWidget(_onglets->ui()->prevision);
-    const unsigned int index = _onglets->ui()->stackedWidget_previsions->indexOf(_onglets->ui()->prevision);
+    const int index = _onglets->ui()->stackedWidget_previsions->indexOf(_onglets->ui()->prevision);
     _onglets->setIndexPrevisions(index);
 }
 
@@ -2621,7 +2619,7 @@ void PreviSat::RaccourciFlashs()
 {
     _onglets->setCurrentWidget(_onglets->ui()->previsions);
     _onglets->ui()->stackedWidget_previsions->setCurrentWidget(_onglets->ui()->flashs);
-    const unsigned int index = _onglets->ui()->stackedWidget_previsions->indexOf(_onglets->ui()->flashs);
+    const int index = _onglets->ui()->stackedWidget_previsions->indexOf(_onglets->ui()->flashs);
     _onglets->setIndexPrevisions(index);
 }
 
@@ -2629,7 +2627,7 @@ void PreviSat::RaccourciTransits()
 {
     _onglets->setCurrentWidget(_onglets->ui()->previsions);
     _onglets->ui()->stackedWidget_previsions->setCurrentWidget(_onglets->ui()->transits);
-    const unsigned int index = _onglets->ui()->stackedWidget_previsions->indexOf(_onglets->ui()->transits);
+    const int index = _onglets->ui()->stackedWidget_previsions->indexOf(_onglets->ui()->transits);
     _onglets->setIndexPrevisions(index);
 }
 
@@ -2647,7 +2645,7 @@ void PreviSat::RaccourciEvenements()
 {
     _onglets->setCurrentWidget(_onglets->ui()->previsions);
     _onglets->ui()->stackedWidget_previsions->setCurrentWidget(_onglets->ui()->evenementsOrbitaux);
-    const unsigned int index = _onglets->ui()->stackedWidget_previsions->indexOf(_onglets->ui()->evenementsOrbitaux);
+    const int index = _onglets->ui()->stackedWidget_previsions->indexOf(_onglets->ui()->evenementsOrbitaux);
     _onglets->setIndexPrevisions(index);
 }
 
@@ -2655,7 +2653,7 @@ void PreviSat::RaccourciInformations()
 {
     _onglets->setCurrentWidget(_onglets->ui()->informations);
     _onglets->ui()->stackedWidget_informations->setCurrentWidget(_onglets->ui()->informationsSat);
-    const unsigned int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->informationsSat);
+    const int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->informationsSat);
     _onglets->setIndexInformations(index);
 }
 
@@ -2663,7 +2661,7 @@ void PreviSat::RaccourciRecherche()
 {
     _onglets->setCurrentWidget(_onglets->ui()->informations);
     _onglets->ui()->stackedWidget_informations->setCurrentWidget(_onglets->ui()->rechercheSat);
-    const unsigned int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->rechercheSat);
+    const int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->rechercheSat);
     _onglets->setIndexInformations(index);
 }
 
@@ -2671,7 +2669,7 @@ void PreviSat::RaccourciStation()
 {
     _onglets->setCurrentWidget(_onglets->ui()->informations);
     _onglets->ui()->stackedWidget_informations->setCurrentWidget(_onglets->ui()->informationsStationSpatiale);
-    const unsigned int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->informationsStationSpatiale);
+    const int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->informationsStationSpatiale);
     _onglets->setIndexInformations(index);
 }
 
@@ -2679,7 +2677,7 @@ void PreviSat::RaccourciLancements()
 {
     _onglets->setCurrentWidget(_onglets->ui()->informations);
     _onglets->ui()->stackedWidget_informations->setCurrentWidget(_onglets->ui()->informationsLancements);
-    const unsigned int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->informationsLancements);
+    const int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->informationsLancements);
     _onglets->setIndexInformations(index);
 }
 
@@ -2687,7 +2685,7 @@ void PreviSat::RaccourciRentrees()
 {
     _onglets->setCurrentWidget(_onglets->ui()->informations);
     _onglets->ui()->stackedWidget_informations->setCurrentWidget(_onglets->ui()->informationsRentrees);
-    const unsigned int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->informationsRentrees);
+    const int index = _onglets->ui()->stackedWidget_informations->indexOf(_onglets->ui()->informationsRentrees);
     _onglets->setIndexInformations(index);
 }
 
@@ -2910,7 +2908,7 @@ void PreviSat::on_aide_clicked()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const QString ficDox = QString("%1/%2/html/index.html").arg(Configuration::instance()->dirDox()).arg(Configuration::instance()->locale());
+    const QString ficDox = QString("%1/%2/html/index.html").arg(Configuration::instance()->dirDox(), Configuration::instance()->locale());
 
     /* Corps de la methode */
     if (QDesktopServices::openUrl("file:///" + ficDox)) {
@@ -3527,7 +3525,7 @@ void PreviSat::on_actionMettre_a_jour_les_fichiers_de_donnees_triggered()
 
             try {
 
-                const QString fichier = QString("%1data/%2").arg(DOMAIN_NAME).arg(fic).replace(QDir::separator(), "/");
+                const QString fichier = QString("%1data/%2").arg(DOMAIN_NAME, fic).replace(QDir::separator(), "/");
                 const QUrl url(fichier);
                 tel.TelechargementFichier(url, false, false);
 
@@ -3849,7 +3847,7 @@ void PreviSat::on_listeSatellites_itemEntered(QListWidgetItem *item)
 
     /* Corps de la methode */
     if (nomsat != norad) {
-        AfficherMessageStatut(tr("<b>%1</b> (numéro NORAD : <b>%2</b>  -  COSPAR : %3)").arg(nomsat).arg(norad).arg(cospar), 5);
+        AfficherMessageStatut(tr("<b>%1</b> (numéro NORAD : <b>%2</b>  -  COSPAR : %3)").arg(nomsat, norad, cospar), 5);
     }
 
     /* Retour */

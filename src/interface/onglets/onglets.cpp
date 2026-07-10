@@ -40,7 +40,6 @@
 #endif
 #include "onglets.h"
 #include "donnees/ui_recherchesatellite.h"
-#include "general/ui_general.h"
 #include "ui_onglets.h"
 #include "antenne/antenne.h"
 #include "configuration/configuration.h"
@@ -129,7 +128,7 @@ Onglets::Onglets(QWidget *parent) :
         Initialisation();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -257,13 +256,13 @@ void Onglets::setAcalcDN(const bool acalc)
     _general->setAcalcDN(acalc);
 }
 
-void Onglets::setIndexInformations(const unsigned int newIndexInformations)
+void Onglets::setIndexInformations(const int newIndexInformations)
 {
     _indexInformations = newIndexInformations;
     AffichageOngletInformations();
 }
 
-void Onglets::setIndexPrevisions(const unsigned int newIndexPrevisions)
+void Onglets::setIndexPrevisions(const int newIndexPrevisions)
 {
     _indexPrevisions = newIndexPrevisions;
     setTabText(indexOf(_ui->previsions), QCoreApplication::translate("Onglets", _titresPrevisions[_indexPrevisions]));
@@ -430,7 +429,7 @@ void Onglets::AffichageOngletInformations()
     /* Declarations des variables locales */
 
     /* Initialisations */
-    const unsigned int dt = (Configuration::instance()->listeSatellites().isEmpty()) ? 1 : 0;
+    const int dt = (Configuration::instance()->listeSatellites().isEmpty()) ? 1 : 0;
     _indexInformations = _ui->stackedWidget_informations->currentIndex() + dt;
 
     /* Corps de la methode */
@@ -455,13 +454,13 @@ void Onglets::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
+    qInfo() << "Début Initialisation" << objectName();
 
     const bool etat1 = _ui->stackedWidget_informations->blockSignals(true);
     const bool etat2 = _ui->stackedWidget_previsions->blockSignals(true);
 
-    _indexInformations = settings.value("affichage/indexInformations", 0).toUInt();
-    _indexPrevisions = settings.value("affichage/indexPrevisions", 0).toUInt();
+    _indexInformations = settings.value("affichage/indexInformations", 0).toInt();
+    _indexPrevisions = settings.value("affichage/indexPrevisions", 0).toInt();
     _isLancements = Configuration::instance()->VerifieDateExpiration("lancements");
     _isRentrees = Configuration::instance()->VerifieDateExpiration("rentrees");
     _isStarlink = Configuration::instance()->VerifieDateExpiration("starlink");
@@ -556,7 +555,7 @@ void Onglets::Initialisation()
     _ui->stackedWidget_informations->blockSignals(etat1);
     _ui->stackedWidget_previsions->blockSignals(etat2);
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    qInfo() << "Fin   Initialisation" << objectName();
 
     /* Retour */
     return;
@@ -602,12 +601,12 @@ void Onglets::on_previsionSuiv_clicked()
 
 void Onglets::on_stackedWidget_previsions_currentChanged(int arg1)
 {
-    if (static_cast<unsigned int> (arg1) != _indexPrevisions) {
+    if (arg1 != _indexPrevisions) {
         _indexPrevisions = arg1;
     }
 
-    const unsigned int ind1 = (_indexPrevisions + _ui->stackedWidget_previsions->count() - 1) % _ui->stackedWidget_previsions->count();
-    const unsigned int ind2 = (_indexPrevisions + 1) % _ui->stackedWidget_previsions->count();
+    const int ind1 = (_indexPrevisions + _ui->stackedWidget_previsions->count() - 1) % _ui->stackedWidget_previsions->count();
+    const int ind2 = (_indexPrevisions + 1) % _ui->stackedWidget_previsions->count();
 
     _ui->previsionPrec->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[ind1]));
     _ui->previsionSuiv->setToolTip(QCoreApplication::translate("Onglets", _titresPrevisions[ind2]));

@@ -39,7 +39,6 @@
 #include <QSettings>
 #include <QSoundEffect>
 #include <QThread>
-#include "../../options/ui_options.h"
 #include "general.h"
 #include "configuration/configuration.h"
 #include "interface/onglets/osculateurs/osculateurs.h"
@@ -107,7 +106,7 @@ General::General(CalculsFlashs *flashs, Osculateurs *osculateurs, QWidget *paren
 #endif
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -197,12 +196,11 @@ void General::changeEvent(QEvent *evt)
 {
     if (evt->type() == QEvent::LanguageChange) {
 
-        _ui->soleilLunePrec->setToolTip(
-                    QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + _ui->stackedWidget_soleilLune->count() - 1)
-                    % _ui->stackedWidget_soleilLune->count()]));
+        const int idxPrec = (static_cast<int> (_indexLuneSoleil) + _ui->stackedWidget_soleilLune->count() - 1) % _ui->stackedWidget_soleilLune->count();
+        _ui->soleilLunePrec->setToolTip(QCoreApplication::translate("General", _titresLuneSoleil[idxPrec]));
 
-        _ui->soleilLuneSuiv->setToolTip(QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + 1) %
-                                        _ui->stackedWidget_soleilLune->count()]));
+        const int idxSuiv = static_cast<int> (_indexLuneSoleil + 1) % _ui->stackedWidget_soleilLune->count();
+        _ui->soleilLuneSuiv->setToolTip(QCoreApplication::translate("General", _titresLuneSoleil[idxSuiv]));
     }
 }
 
@@ -237,7 +235,7 @@ void General::AffichageDate(const Date &date)
     if (fabs(date.offsetUTC()) > MATHS::EPSDBL100) {
         QTime heur(0, 0);
         heur = heur.addSecs(qRound(fabs(date.offsetUTC()) * DATE::NB_SEC_PAR_JOUR));
-        chaineUTC = tr("UTC %1 %2", "Universal Time Coordinated").arg((date.offsetUTC() > 0.) ? "+" : "-").arg(heur.toString("HH:mm"));
+        chaineUTC = tr("UTC %1 %2", "Universal Time Coordinated").arg((date.offsetUTC() > 0.) ? "+" : "-", heur.toString("HH:mm"));
         _ui->utcDateHeure->setText(chaineUTC);
     } else {
         chaineUTC = tr("UTC", "Universal Time Coordinated");
@@ -245,7 +243,7 @@ void General::AffichageDate(const Date &date)
     }
 
     const DateSysteme syst = (settings.value("affichage/systemeHoraire").toBool()) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H;
-    const QString chaine = QString("%1  %2").arg(date.ToLongDate(Configuration::instance()->locale(), syst)).arg(chaineUTC);
+    const QString chaine = QString("%1  %2").arg(date.ToLongDate(Configuration::instance()->locale(), syst), chaineUTC);
 
     _ui->dateHeure1->setText(chaine);
     _osculateurs->ui()->dateHeure1->setText(chaine);
@@ -293,9 +291,9 @@ void General::AffichageDonneesSatellite(const Date &date)
 
     // Longitude/Latitude/Altitude
     const QString ews = (satellite.longitude() >= 0.) ? tr("Ouest") : tr("Est");
-    _ui->longitudeSat->setText(fmt.arg(Maths::ToSexagesimal(fabs(satellite.longitude()), AngleFormatType::DEGRE, 3, 0, false, true)).arg(ews));
+    _ui->longitudeSat->setText(fmt.arg(Maths::ToSexagesimal(fabs(satellite.longitude()), AngleFormatType::DEGRE, 3, 0, false, true), ews));
     const QString nss = (satellite.latitude() >= 0.) ? tr("Nord") : tr("Sud");
-    _ui->latitudeSat->setText(fmt.arg(Maths::ToSexagesimal(fabs(satellite.latitude()), AngleFormatType::DEGRE, 2, 0, false, true)).arg(nss));
+    _ui->latitudeSat->setText(fmt.arg(Maths::ToSexagesimal(fabs(satellite.latitude()), AngleFormatType::DEGRE, 2, 0, false, true), nss));
     if (settings.value("affichage/unite").toBool()) {
         _ui->altitudeSat->setText(text.asprintf("%.1f ", satellite.altitude()) + unite);
     } else {
@@ -402,18 +400,18 @@ void General::AffichageDonneesSatellite(const Date &date)
                     }
                 }
 
-                const QString magnitude = fmt1.arg(text.asprintf("%+.1f", magn)).arg(text.asprintf("%.0f", fractionIlluminee));
+                const QString magnitude = fmt1.arg(text.asprintf("%+.1f", magn), text.asprintf("%.0f", fractionIlluminee));
 
                 QString eclipse;
                 const QString fmt2 = " %1/%2";
                 const QString corps = (corpsOccultant.isEmpty()) ? tr("S", "Sun") : tr("L", "Moon");
 
                 if (conditionEclipse.eclipsePartielle()) {
-                    eclipse = fmt2.arg(corps).arg(tr("P", "partial eclipse"));
+                    eclipse = fmt2.arg(corps, tr("P", "partial eclipse"));
                 }
 
                 if (conditionEclipse.eclipseAnnulaire()) {
-                    eclipse = fmt2.arg(corps).arg(tr("A", "annular eclipse"));
+                    eclipse = fmt2.arg(corps, tr("A", "annular eclipse"));
                 }
 
                 _ui->magnitudeSat->setText(magnitude + eclipse);
@@ -439,7 +437,7 @@ void General::AffichageDonneesSatellite(const Date &date)
 
     double delai = _dateEclipse->jourJulienUTC() - date.jourJulienUTC();
 
-    if ((delai >= -DATE::EPS_DATES) && (_dateEclipse->jourJulienUTC() < satellite.traceAuSol().last().jourJulienUTC)) {
+    if ((delai >= -DATE::EPS_DATES) && (_dateEclipse->jourJulienUTC() < satellite.traceAuSol().constLast().jourJulienUTC)) {
 
         QString transitionJN = tr("Prochain %1 :");
         _ui->lbl_prochainJN->setText(transitionJN.arg((satellite.conditionEclipse().eclipseTotale()) ?
@@ -466,8 +464,7 @@ void General::AffichageDonneesSatellite(const Date &date)
                     .replace(":", tr("min", "minute").append(" ")).append(tr("s", "second"));
         }
 
-        _ui->dateJN->setText(transitionJN.arg(_dateEclipse->ToQDateTime(DateFormatSec::FORMAT_SEC).toString(Qt::ISODate).replace("T", " "))
-                                 .arg(cDelaiEcl));
+        _ui->dateJN->setText(transitionJN.arg(_dateEclipse->ToQDateTime(DateFormatSec::FORMAT_SEC).toString(Qt::ISODate).replace("T", " "), cDelaiEcl));
         _ui->dateJN->adjustSize();
         _ui->dateJN->resize(_ui->dateJN->width(), 16);
         _ui->stackedWidget_aos->setCurrentIndex(0);
@@ -522,7 +519,7 @@ void General::AffichageDonneesSatellite(const Date &date)
 
         _ui->lbl_prochainAOS1->setVisible(true);
         _ui->lbl_prochainAOS2->setVisible(true);
-        _ui->dateAOS1->setText(chaine.arg(dateAOS.ToQDateTime(DateFormatSec::FORMAT_SEC).toString(Qt::ISODate).replace("T", " ")).arg(cDelaiAOS));
+        _ui->dateAOS1->setText(chaine.arg(dateAOS.ToQDateTime(DateFormatSec::FORMAT_SEC).toString(Qt::ISODate).replace("T", " "), cDelaiAOS));
         _ui->dateAOS1->setVisible(true);
         _ui->dateAOS2->setText(_ui->dateAOS1->text());
         _ui->dateAOS2->setVisible(true);
@@ -599,9 +596,9 @@ void General::AffichageDonneesSoleilLune()
 
     // Longitude/latitude/diametre apparent
     const QString ews = (soleil.longitude() >= 0.) ? tr("Ouest") : tr("Est");
-    _ui->longitudeSol->setText(fmt.arg(Maths::ToSexagesimal(fabs(soleil.longitude()), AngleFormatType::DEGRE, 3, 0, false, true)).arg(ews));
+    _ui->longitudeSol->setText(fmt.arg(Maths::ToSexagesimal(fabs(soleil.longitude()), AngleFormatType::DEGRE, 3, 0, false, true), ews));
     const QString nss = (soleil.latitude() >= 0.) ? tr("Nord") : tr("Sud");
-    _ui->latitudeSol->setText(fmt.arg(Maths::ToSexagesimal(fabs(soleil.latitude()), AngleFormatType::DEGRE, 2, 0, false, true)).arg(nss));
+    _ui->latitudeSol->setText(fmt.arg(Maths::ToSexagesimal(fabs(soleil.latitude()), AngleFormatType::DEGRE, 2, 0, false, true), nss));
     _ui->diametreApparentSol->setText(Maths::ToSexagesimal(2. * asin(SOLEIL::RAYON_SOLAIRE / soleil.distance()),
                                                            AngleFormatType::DEGRE, 0, 0, false, true).section("°", 1));
 
@@ -655,9 +652,9 @@ void General::AffichageDonneesSoleilLune()
 
     // Prochaines eclipses
     const QString fmt2 = "%1 (%2)";
-    _ui->eclipseSoleil->setText(fmt2.arg(lune.dateEclipseSoleil()).arg(lune.typeEclipseSoleil()));
+    _ui->eclipseSoleil->setText(fmt2.arg(lune.dateEclipseSoleil(), lune.typeEclipseSoleil()));
     _ui->eclipseSoleil->setToolTip(lune.tooltipEclipseSoleil());
-    _ui->eclipseLune->setText(fmt2.arg(lune.dateEclipseLune()).arg(lune.typeEclipseLune()));
+    _ui->eclipseLune->setText(fmt2.arg(lune.dateEclipseLune(), lune.typeEclipseLune()));
     _ui->eclipseLune->setToolTip(lune.tooltipEclipseLune());
 
     /* Retour */
@@ -808,8 +805,8 @@ void General::AffichageLieuObs()
 
             // Affichage des coordonnees
             const QString fmt = "%1 %2";
-            _ui->longitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(lo), AngleFormatType::DEGRE, 3, 0, false, true)).arg(ew));
-            _ui->latitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(la), AngleFormatType::DEGRE, 2, 0,false, true)).arg(ns));
+            _ui->longitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(lo), AngleFormatType::DEGRE, 3, 0, false, true), ew));
+            _ui->latitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(la), AngleFormatType::DEGRE, 2, 0,false, true), ns));
             _ui->altitudeObs->setText(
                 fmt.arg((settings.value("affichage/unite").toBool()) ? atd : qRound(atd * TERRE::PIED_PAR_METRE + 0.5 * sgn(atd)))
                     .arg((settings.value("affichage/unite").toBool()) ? tr("m", "meter") : tr("ft", "foot")));
@@ -847,15 +844,14 @@ void General::SauveOngletGeneral(const QString &fichier)
 
 #if (!BUILD_TEST)
         const QString titre = "%1 %2 / %3 (c) %4";
-        flux << titre.arg(APP_NAME).arg(QString(VER_MAJ)).arg(ORG_NAME).arg(QString(ANNEES_DEV))
-             << Qt::endl << Qt::endl << Qt::endl;
+        flux << titre.arg(APP_NAME, VER_MAJ, ORG_NAME, ANNEES_DEV) << Qt::endl << Qt::endl << Qt::endl;
 #endif
 
         flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure1->text() << Qt::endl << Qt::endl;
 
         flux << tr("Lieu d'observation :") << " " << _ui->lieuObservation->currentText() << Qt::endl;
         QString chaine = tr("Longitude  : %1\tLatitude : %2\tAltitude : %3", "Observer coordinates");
-        flux << chaine.arg(_ui->longitudeObs->text()).arg(_ui->latitudeObs->text()).arg(_ui->altitudeObs->text()) << Qt::endl;
+        flux << chaine.arg(_ui->longitudeObs->text(), _ui->latitudeObs->text(), _ui->altitudeObs->text()) << Qt::endl;
         chaine = tr("Conditions : %1", "Conditions of observation");
         flux << chaine.arg(_ui->conditionsObservation->text()) << Qt::endl << Qt::endl << Qt::endl;
 
@@ -867,80 +863,81 @@ void General::SauveOngletGeneral(const QString &fichier)
             flux << tr("Nom du satellite :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
             chaine = tr("Longitude : %1  \tHauteur    : %2\tAscension droite :  %3");
-            flux << chaine.arg(_ui->longitudeSat->text().trimmed()).arg(_ui->hauteurSat->text()).arg(_ui->ascensionDroiteSat->text().trimmed())
-                 << Qt::endl;
+            flux << chaine.arg(_ui->longitudeSat->text().trimmed(), _ui->hauteurSat->text(), _ui->ascensionDroiteSat->text().trimmed()) << Qt::endl;
 
             chaine = tr("Latitude  :  %1\t\tAzimut (N) : %2\tDéclinaison      : %3");
-            flux << chaine.arg(_ui->latitudeSat->text().trimmed()).arg(_ui->azimutSat->text().trimmed()).arg(_ui->declinaisonSat->text())
-                 << Qt::endl;
+            flux << chaine.arg(_ui->latitudeSat->text().trimmed(), _ui->azimutSat->text().trimmed(), _ui->declinaisonSat->text()) << Qt::endl;
 
             chaine = tr("Altitude  :  %1\t\tDistance   : %2\tConstellation    : %3", "Altitude of satellite");
-            flux << chaine.arg(_ui->altitudeSat->text().leftJustified(13, ' ')).arg(_ui->distanceSat->text().leftJustified(13, ' '))
-                        .arg(_ui->constellationSat->text()) << Qt::endl << Qt::endl;
+            flux << chaine.arg(_ui->altitudeSat->text().leftJustified(13, ' '), _ui->distanceSat->text().leftJustified(13, ' '),
+                               _ui->constellationSat->text()) << Qt::endl << Qt::endl;
 
             chaine = tr("Direction          : %1  \t%2      \t\t%3");
-            flux << chaine.arg(_ui->directionSat->text()).arg(_ui->orbiteSat1->text())
-                        .arg((_ui->magnitudeSat->x() == 333) ? _ui->magnitudeSat->text() : "").trimmed() << Qt::endl;
+            flux << chaine.arg(_ui->directionSat->text(), _ui->orbiteSat1->text(), (_ui->magnitudeSat->x() == 333) ? _ui->magnitudeSat->text() : "").trimmed()
+                 << Qt::endl;
 
             chaine = tr("Vitesse orbitale   : %1\t%2  %3");
-            flux << chaine.arg(_ui->vitesseSat->text().rightJustified(11, ' '))
 #if (BUILD_TEST)
-                        .arg(_ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " ")
-                        .arg(_ui->lbl_beta1->text()).trimmed() << Qt::endl;
+            flux << chaine.arg(_ui->vitesseSat->text().rightJustified(11, ' '))
+            .arg(_ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " ")
+                    .arg(_ui->lbl_beta1->text()).trimmed() << Qt::endl;
 #else
-                        .arg((_ui->dateJN->isVisible()) ? _ui->lbl_prochainJN->text() + " " + _ui->dateJN->text() + " " : _ui->magnitudeSat->text())
-                        .arg((_ui->dateAOS1->isVisible()) ? _ui->lbl_beta1->text() : "").trimmed() << Qt::endl;
+            flux << chaine.arg(_ui->vitesseSat->text().rightJustified(11, ' '),
+                               (_ui->dateJN->isVisible()) ? _ui->lbl_prochainJN->text() + " " +
+                    _ui->dateJN->text() + " " : _ui->magnitudeSat->text(), (_ui->dateAOS1->isVisible()) ? _ui->lbl_beta1->text() : "").trimmed() << Qt::endl;
 #endif
 
             chaine = tr("Variation distance : %1  \t%2", "Range rate");
-            flux << chaine.arg(_ui->rangeRate->text().rightJustified(11, ' '))
 #if (BUILD_TEST)
-                            .arg(_ui->lbl_prochainAOS1->text() + " " + _ui->dateAOS1->text()).trimmed() + " " + _ui->lbl_azimut1->text()
+            flux << chaine.arg(_ui->rangeRate->text().rightJustified(11, ' '),
+                               _ui->lbl_prochainAOS1->text() + " " + _ui->dateAOS1->text()).trimmed() + " " + _ui->lbl_azimut1->text()
                  << Qt::endl << Qt::endl << Qt::endl;
 #else
-                        .arg((_ui->dateAOS1->isVisible()) ? _ui->lbl_prochainAOS1->text() + " " + _ui->dateAOS1->text() + " " + _ui->lbl_azimut1->text()
-                                                          : _ui->lbl_beta1->text()).trimmed() << Qt::endl << Qt::endl << Qt::endl;
+            flux << chaine.arg(_ui->rangeRate->text().rightJustified(11, ' '),
+                               (_ui->dateAOS1->isVisible() ? _ui->lbl_prochainAOS1->text() + " " + _ui->dateAOS1->text() + " " + _ui->lbl_azimut1->text()
+                                                           : _ui->lbl_beta1->text()).trimmed()) << Qt::endl << Qt::endl << Qt::endl;
 #endif
         }
 
         // Donnees sur le Soleil
         flux << tr("Coordonnées du Soleil :") << Qt::endl;
         chaine = tr("Hauteur    : %1\t\tAscension droite  :  %2 \t\tLongitude                : %3");
-        flux << chaine.arg(_ui->hauteurSoleil->text().trimmed()).arg(_ui->ascensionDroiteSoleil->text()).arg(_ui->longitudeSol->text().trimmed())
-             << Qt::endl;
+        flux << chaine.arg(_ui->hauteurSoleil->text().trimmed(), _ui->ascensionDroiteSoleil->text(), _ui->longitudeSol->text().trimmed()) << Qt::endl;
 
         chaine = tr("Azimut (N) : %1\t\tDéclinaison       : %2 \t\tLatitude                 : %3", "Azimuth from the North");
-        flux << chaine.arg(_ui->azimutSoleil->text().trimmed()).arg(_ui->declinaisonSoleil->text()).arg(_ui->latitudeSol->text().trimmed())
-             << Qt::endl;
+        flux << chaine.arg(_ui->azimutSoleil->text().trimmed(), _ui->declinaisonSoleil->text(), _ui->latitudeSol->text().trimmed()) << Qt::endl;
 
         chaine = tr("Distance   : %1   \t\tConstellation     : %2\tDiamètre apparent        : %3");
-        flux << chaine.arg(_ui->distanceSoleil->text()).arg(_ui->constellationSoleil->text().trimmed().leftJustified(25, ' '))
-                    .arg(_ui->diametreApparentSol->text().trimmed()) << Qt::endl << Qt::endl;
+        flux << chaine.arg(_ui->distanceSoleil->text(), _ui->constellationSoleil->text().trimmed().leftJustified(25, ' '),
+                           _ui->diametreApparentSol->text().trimmed()) << Qt::endl << Qt::endl;
 
         flux << tr("Évènements Soleil :") << Qt::endl;
         chaine = tr("Lever    : %1\t\t\tAube astronomique : %2\t\t\tCrépuscule civil         : %3", "Sunrise");
-        flux << chaine.arg(_ui->leverSoleil->text().trimmed().leftJustified(5, ' ')).arg(_ui->aubeAstro->text().trimmed().leftJustified(5, ' '))
-                    .arg(_ui->crepusculeCivil->text().trimmed().leftJustified(5, ' ')) << Qt::endl;
+        flux << chaine.arg(_ui->leverSoleil->text().trimmed().leftJustified(5, ' '), _ui->aubeAstro->text().trimmed().leftJustified(5, ' '),
+                           _ui->crepusculeCivil->text().trimmed().leftJustified(5, ' ')) << Qt::endl;
+
         chaine = tr("Méridien : %1\t\t\tAube nautique     : %2\t\t\tCrépuscule nautique      : %3", "Meridian pass for the Sun");
-        flux << chaine.arg(_ui->meridienSoleil->text().trimmed().leftJustified(5, ' '))
-                    .arg(_ui->aubeNautique->text().trimmed().leftJustified(5, ' '))
-                    .arg(_ui->crepusculeNautique->text().trimmed().leftJustified(5, ' ')) << Qt::endl;
+        flux << chaine.arg(_ui->meridienSoleil->text().trimmed().leftJustified(5, ' '),
+                           _ui->aubeNautique->text().trimmed().leftJustified(5, ' '),
+                           _ui->crepusculeNautique->text().trimmed().leftJustified(5, ' ')) << Qt::endl;
+
         chaine = tr("Coucher  : %1\t\t\tAube civile       : %2\t\t\tCrépuscule astronomique  : %3", "Sunset");
-        flux << chaine.arg(_ui->coucherSoleil->text().trimmed().leftJustified(5, ' ')).arg(_ui->aubeCivile->text().trimmed().leftJustified(5, ' '))
-                    .arg(_ui->crepusculeAstro->text().trimmed().leftJustified(5, ' ')) << Qt::endl << Qt::endl << Qt::endl;
+        flux << chaine.arg(_ui->coucherSoleil->text().trimmed().leftJustified(5, ' '),
+                           _ui->aubeCivile->text().trimmed().leftJustified(5, ' '),
+                           _ui->crepusculeAstro->text().trimmed().leftJustified(5, ' ')) << Qt::endl << Qt::endl << Qt::endl;
 
 
         // Donnees sur la Lune
         flux << tr("Coordonnées de la Lune :") << Qt::endl;
         chaine = tr("Hauteur    : %1\t\tAscension droite :  %2 \t\tPhase                    : %3", "Moon phase");
-        flux << chaine.arg(_ui->hauteurLune->text().trimmed()).arg(_ui->ascensionDroiteLune->text()).arg(_ui->phaseLune->text()) << Qt::endl;
+        flux << chaine.arg(_ui->hauteurLune->text().trimmed(), _ui->ascensionDroiteLune->text(), _ui->phaseLune->text()) << Qt::endl;
 
         chaine = tr("Azimut (N) : %1\t\tDéclinaison      : %2 \t\tMagnitude (Illumination) : %3", "Azimuth from the North");
-        flux << chaine.arg(_ui->azimutLune->text().trimmed()).arg(_ui->declinaisonLune->text()).arg(_ui->magnitudeIllumLune->text()) << Qt::endl;
+        flux << chaine.arg(_ui->azimutLune->text().trimmed(), _ui->declinaisonLune->text(), _ui->magnitudeIllumLune->text()) << Qt::endl;
 
         chaine = tr("Distance   : %1  \t\tConstellation    : %2\tDiamètre apparent        : %3");
-        flux << chaine.arg(_ui->distanceLune->text()).arg(_ui->constellationLune->text().trimmed().leftJustified(25, ' '))
-                    .arg(_ui->diametreApparentLune->text().trimmed()) << Qt::endl << Qt::endl;
+        flux << chaine.arg(_ui->distanceLune->text(), _ui->constellationLune->text().trimmed().leftJustified(25, ' '),
+                           _ui->diametreApparentLune->text().trimmed()) << Qt::endl << Qt::endl;
 
         flux << tr("Évènements Lune :") << Qt::endl;
         flux << tr("Lever    : %1", "Moonrise").arg(_ui->leverLune->text()) << Qt::endl;
@@ -974,25 +971,25 @@ void General::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
+    qInfo() << "Début Initialisation" << objectName();
 
-    _indexLuneSoleil = settings.value("affichage/indexInformations", 0).toUInt();
+    _indexLuneSoleil = settings.value("affichage/indexInformations", 0).toInt();
 
     _ui->stackedWidget_soleilLune->setCurrentIndex(_indexLuneSoleil);
     _ui->lbl_crepusculeCivil->setContentsMargins(0, 3, 0, 0);
 
-    _ui->soleilLunePrec->setToolTip(
-                QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + _ui->stackedWidget_soleilLune->count() - 1)
-                % _ui->stackedWidget_soleilLune->count()]));
-    _ui->soleilLuneSuiv->setToolTip(QCoreApplication::translate("General", _titresLuneSoleil[(_indexLuneSoleil + 1) %
-                                    _ui->stackedWidget_soleilLune->count()]));
+    const int idxPrec = (_indexLuneSoleil + _ui->stackedWidget_soleilLune->count() - 1) % _ui->stackedWidget_soleilLune->count();
+    _ui->soleilLunePrec->setToolTip(QCoreApplication::translate("General", _titresLuneSoleil[idxPrec]));
+
+    const int idxSuiv = (_indexLuneSoleil + 1) % _ui->stackedWidget_soleilLune->count();
+    _ui->soleilLuneSuiv->setToolTip(QCoreApplication::translate("General", _titresLuneSoleil[idxSuiv]));
 
     _ui->frameSimu->setVisible(false);
     _ui->pause->setEnabled(false);
 
     connect(_osculateurs, &Osculateurs::AffichageVitesses, this, &General::AffichageVitesses);
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    qInfo() << "Fin   Initialisation" << objectName();
 
     /* Retour */
     return;

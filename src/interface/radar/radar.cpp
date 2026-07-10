@@ -37,7 +37,6 @@
 #include <QGraphicsPixmapItem>
 #include <QMouseEvent>
 #include <QSettings>
-#include "../options/ui_options.h"
 #include "ui_radar.h"
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
@@ -75,16 +74,16 @@ Radar::Radar(QWidget *parent,
 
     try {
 
-        qInfo() << "Début Initialisation" << metaObject()->className();
+        qInfo() << "Début Initialisation" << objectName();
 
         _sol = nullptr;
         _lun = nullptr;
         scene = new QGraphicsScene;
 
-        qInfo() << "Fin   Initialisation" << metaObject()->className();
+        qInfo() << "Fin   Initialisation" << objectName();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -402,7 +401,7 @@ void Radar::show(const Observateur &observateur,
 
         if (sat.visible() && (sat.altitude() >= 0.) && settings.value("affichage/afftraceCiel").toBool() && !sat.traceCiel().isEmpty()) {
 
-            const ElementsTraceCiel trace0 = sat.traceCiel().first();
+            const ElementsTraceCiel trace0 = sat.traceCiel().constFirst();
             const QPointF coord0(trace0.hauteur, trace0.azimut);
             const QPointF pt0(TOPO2X(100., coord0.x(), coord0.y(), xf), TOPO2Y(100., coord0.x(), coord0.y(), yf));
 
@@ -464,11 +463,14 @@ void Radar::show(const Observateur &observateur,
 
         _sat.append(scene->addEllipse(rectangle, noir, QBrush(couleur, Qt::SolidPattern)));
         _sat.last()->setToolTip(tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>")
-                                    .arg(sat.elementsOrbitaux().nom).arg(sat.elementsOrbitaux().norad).arg(sat.elementsOrbitaux().cospar));
+                                    .arg(sat.elementsOrbitaux().nom,
+                                         sat.elementsOrbitaux().norad,
+                                         sat.elementsOrbitaux().cospar));
 
         _sat.last()->setData(Qt::ToolTipRole, tr("<b>%1</b> (numéro NORAD : <b>%2</b>  -  COSPAR : <b>%3</b>)")
-                                               .arg(sat.elementsOrbitaux().nom).arg(sat.elementsOrbitaux().norad)
-                                               .arg(sat.elementsOrbitaux().cospar));
+                                               .arg(sat.elementsOrbitaux().nom,
+                                                    sat.elementsOrbitaux().norad,
+                                                    sat.elementsOrbitaux().cospar));
 
         _sat.last()->setData(Qt::UserRole, sat.elementsOrbitaux().norad);
     }

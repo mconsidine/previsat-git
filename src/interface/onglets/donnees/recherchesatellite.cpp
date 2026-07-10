@@ -41,8 +41,6 @@
 #include "ui_recherchesatellite.h"
 #include "configuration/configuration.h"
 #include "recherchesatellite.h"
-#include "librairies/corps/satellite/gpformat.h"
-#include "librairies/corps/satellite/tle.h"
 #include "librairies/exceptions/exception.h"
 #include "librairies/maths/maths.h"
 
@@ -125,17 +123,17 @@ void RechercheSatellite::SauveOngletRecherche(const QString &fichier)
 
 #if (!BUILD_TEST)
         const QString titre = "%1 %2 / %3 (c) %4";
-        flux << titre.arg(APP_NAME).arg(QString(VER_MAJ)).arg(ORG_NAME).arg(QString(ANNEES_DEV)) << Qt::endl << Qt::endl << Qt::endl;
+        flux << titre.arg(APP_NAME, VER_MAJ, ORG_NAME, ANNEES_DEV) << Qt::endl << Qt::endl << Qt::endl;
 #endif
 
         // Donnees sur le satellite
         flux << tr("Nom                :") + " " + _ui->nomsat->text() << Qt::endl << Qt::endl;
 
         QString chaine = tr("Numéro NORAD       : %1\t\tMagnitude std/max  : %2", "Standard/Maximum magnitude");
-        flux << chaine.arg(_ui->numNorad->text()).arg(_ui->magnitudeStdMaxDonneesSat->text()) << Qt::endl;
+        flux << chaine.arg(_ui->numNorad->text(), _ui->magnitudeStdMaxDonneesSat->text()) << Qt::endl;
 
         chaine = tr("Désignation COSPAR : %1\t\tModèle orbital     : %2");
-        flux << chaine.arg(_ui->desigCospar->text()).arg(_ui->modeleDonneesSat->text()) << Qt::endl;
+        flux << chaine.arg(_ui->desigCospar->text(), _ui->modeleDonneesSat->text()) << Qt::endl;
 
         chaine = tr("Forme/Dimensions : %1");
         flux << chaine.arg(_ui->dimensionsDonneesSat->text()) << Qt::endl << Qt::endl;
@@ -453,13 +451,13 @@ void RechercheSatellite::on_satellitesTrouves_currentRowChanged(int currentRow)
         _ui->dimensionsDonneesSat->setText(dimensions);
 
         // Classe/Categorie/Discipline
-        _ui->classeCategDiscip->setText(QString("%1 / %2 / %3").arg(donnees.classe()).arg(donnees.categorie()).arg(donnees.discipline()));
+        _ui->classeCategDiscip->setText(QString("%1 / %2 / %3").arg(donnees.classe(), donnees.categorie(), donnees.discipline()));
 
         // Masse sec, totale
         if ((donnees.masseSec() == "0") && (donnees.masseTot() == "0")) {
             _ui->masseSecTot->setText("?/?");
         } else {
-            _ui->masseSecTot->setText(QString("%1/%2 kg").arg(donnees.masseSec()).arg(donnees.masseTot()));
+            _ui->masseSecTot->setText(QString("%1/%2 kg").arg(donnees.masseSec(), donnees.masseTot()));
         }
 
         // Apogee/perigee/periode orbitale

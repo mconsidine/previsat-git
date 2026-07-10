@@ -135,9 +135,9 @@ QMap<QString, Observateur> FichierObs::Lecture(const QString &ficObsXml,
         qInfo().noquote() << QString("Lecture fichier %1 OK").arg(fi.nomfic());
 
     } catch (Exception const &e) {
-        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic()).arg(APP_NAME);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic(), APP_NAME);
         if (alarme) {
-            throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic()).arg(APP_NAME), MessageType::ERREUR);
+            throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(fi.nomfic(), APP_NAME), MessageType::ERREUR);
         }
     }
 

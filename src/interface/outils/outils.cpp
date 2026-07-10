@@ -94,7 +94,7 @@ Outils::Outils(QWidget *parent) :
         Initialisation();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -142,7 +142,7 @@ void Outils::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
+    qInfo() << "Début Initialisation" << objectName();
 
     _ui->listeOutils->setCurrentRow(0);
     _ui->listeOutils->setFocus();
@@ -184,7 +184,7 @@ void Outils::Initialisation()
 
     InitListeDomaines();
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    qInfo() << "Fin   Initialisation" << objectName();
 
     /* Retour */
     return;
@@ -362,7 +362,7 @@ void Outils::EcritureCompteRenduMaj(const QStringList &compteRendu, QPlainTextEd
         for(int i=0; i<compteRendu.count()-5; i++) {
             const QString nomsat = compteRendu.at(i).split("#").first();
             const QString norad = compteRendu.at(i).split("#").at(1);
-            compteRenduMaj->appendPlainText(msgcpt.arg(nomsat).arg(norad));
+            compteRenduMaj->appendPlainText(msgcpt.arg(nomsat, norad));
         }
     }
 

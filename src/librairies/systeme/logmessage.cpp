@@ -98,7 +98,7 @@ LogMessage::LogMessage(const QString &baseNomFichier,
     /* Corps du constructeur */
     _nomFicLog = QDir::toNativeSeparators(baseNomFichier + dateFichierLog + ".log");
     _fichierLog.reset(new QFile(_nomFicLog));
-    _fichierLog.data()->open(QFile::WriteOnly | QFile::Text);
+    (void) _fichierLog.data()->open(QFile::WriteOnly | QFile::Text);
     qInstallMessageHandler(messageHandler);
 
 #if (!BUILD_TEST)

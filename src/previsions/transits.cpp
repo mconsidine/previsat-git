@@ -223,7 +223,6 @@ int Transits::CalculTransits(const int &nombre)
                     jj0 = date.jourJulienUTC() - PAS0;
                     jj2 = jj0 + TEMPS1;
 
-                    ang = 0.;
                     ang0 = MATHS::PI;
 
                     resultatSat.clear();

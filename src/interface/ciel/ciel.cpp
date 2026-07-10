@@ -35,11 +35,11 @@
  */
 
 #include <QGraphicsPixmapItem>
+#include <QListWidgetItem>
 #include <QMouseEvent>
 #include <QRegularExpression>
 #include <QSettings>
 #include "ui_ciel.h"
-#include "../options/ui_options.h"
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
 #include "ciel.h"
@@ -104,7 +104,7 @@ Ciel::Ciel(QWidget *parent) :
         Initialisation();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -800,7 +800,7 @@ void Ciel::AffichagePlanetes1()
         // Calcul des coordonnees radar des planetes
         QGraphicsSimpleTextItem * txtPla;
         QList<Planete> planetes;
-        planetes.reserve(_planetes.size());
+        planetes.reserve(static_cast<long long> (_planetes.size()));
         std::copy(_planetes.begin(), _planetes.end(), std::back_inserter(planetes));
         _pla.clear();
         QListIterator it(planetes);
@@ -865,7 +865,7 @@ void Ciel::AffichagePlanetes2()
         QGraphicsSimpleTextItem * txtPla;
 
         QList<Planete> planetes;
-        planetes.reserve(_planetes.size());
+        planetes.reserve(static_cast<long long> (_planetes.size()));
         std::copy(_planetes.begin(), _planetes.end(), std::back_inserter(planetes));
         QListIterator it(planetes);
 
@@ -1100,11 +1100,10 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
 
                 _sat.append(scene->addEllipse(rectangle, noir, QBrush(couleur, Qt::SolidPattern)));
                 _sat.last()->setToolTip(tr("<font color='blue'><b>%1</b></font><br />NORAD : <b>%2</b><br />COSPAR : <b>%3</b>")
-                                            .arg(sat.elementsOrbitaux().nom).arg(sat.elementsOrbitaux().norad).arg(sat.elementsOrbitaux().cospar));
+                                            .arg(sat.elementsOrbitaux().nom, sat.elementsOrbitaux().norad, sat.elementsOrbitaux().cospar));
 
                 _sat.last()->setData(Qt::ToolTipRole, tr("<b>%1</b> (numéro NORAD : <b>%2</b>  -  COSPAR : <b>%3</b>)")
-                                                       .arg(sat.elementsOrbitaux().nom).arg(sat.elementsOrbitaux().norad)
-                                                       .arg(sat.elementsOrbitaux().cospar));
+                                                       .arg(sat.elementsOrbitaux().nom, sat.elementsOrbitaux().norad, sat.elementsOrbitaux().cospar));
 
                 _sat.last()->setData(Qt::UserRole, sat.elementsOrbitaux().norad);
             }
@@ -1148,7 +1147,7 @@ void Ciel::AffichageSoleil()
 
             double az2;
 
-            for(int i=1; i<49; i++) {
+            for(unsigned int i=1; i<49; i++) {
 
                 const double ad2 = tabEcliptique[i][0] * MATHS::HEUR2RAD;
                 const double de2 = tabEcliptique[i][1] * MATHS::DEG2RAD;
@@ -1204,11 +1203,11 @@ void Ciel::AffichageSoleil()
  */
 void Ciel::Initialisation()
 {
-    qInfo() << "Début Initialisation" << metaObject()->className();
+    qInfo() << "Début Initialisation" << objectName();
 
     _fenetreMax = false;
     _sol = nullptr;
     _lun = nullptr;
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    qInfo() << "Fin   Initialisation" << objectName();
 }

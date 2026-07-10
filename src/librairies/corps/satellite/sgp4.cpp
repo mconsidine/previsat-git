@@ -34,7 +34,6 @@
  *
  */
 
-#include "librairies/exceptions/exception.h"
 #include "librairies/observateur/observateur.h"
 #include "sgp4.h"
 
@@ -138,7 +137,7 @@ void SGP4::Calcul(const Date &date,
     _data.mm = _data.mm + _elements.no * templ;
     double xlm = _data.mm + _data.argpm + _data.nodem;
     _data.emsq = _data.em * _data.em;
-    double temp = 1. - _data.emsq;
+    //double temp = 1. - _data.emsq;
 
     _data.nodem = fmod(_data.nodem, MATHS::DEUX_PI);
     _data.argpm = fmod(_data.argpm, MATHS::DEUX_PI);
@@ -178,7 +177,7 @@ void SGP4::Calcul(const Date &date,
     }
 
     const double axnl = _data.ep * cos(_data.argpp);
-    temp = 1. / (am * (1. - _data.ep * _data.ep));
+    double temp = 1. / (am * (1. - _data.ep * _data.ep));
     const double aynl = _data.ep * sin(_data.argpp) + temp * _data.aycof;
     const double xl = _data.mp + _data.argpp + _data.nodep + temp * _data.xlcof * axnl;
 

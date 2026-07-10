@@ -343,7 +343,7 @@ void Lune::CalculPositionSimp(const Date &date)
         double ang1 = 0.;
         double ang2 = 0.;
 
-        for (int j=0; j<4; j++) {
+        for (unsigned int j=0; j<4; j++) {
             ang1 += coef[j] * _tabCoef1[i][j];
             ang2 += coef[j] * _tabCoef2[i][j];
         }

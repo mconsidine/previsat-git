@@ -81,8 +81,7 @@ void Configuration::Chargement()
         _mapCategoriesOrbite = GestionnaireXml::LectureCategoriesOrbite();
 
         // Lecture du fichier de gestionnaire d'elements orbitaux
-        _mapCategoriesElementsOrbitaux = GestionnaireXml::LectureGestionnaireElementsOrbitaux(_versionCategorieElem,
-                                                                                              _mapCategoriesMajElementsOrbitaux);
+        _mapCategoriesElementsOrbitaux = GestionnaireXml::LectureGestionnaireElementsOrbitaux(_versionCategorieElem, _mapCategoriesMajElementsOrbitaux);
 
         // Lecture du fichier listant les pays et organisations
         _mapPays = GestionnaireXml::LecturePays();
@@ -1094,17 +1093,15 @@ void Configuration::LectureConfiguration()
 
         if (_noradStationSpatiale.isEmpty() || _observateurs.isEmpty()) {
 
-            qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-            throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                                .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+            qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml, APP_NAME);
+            throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml, APP_NAME), MessageType::ERREUR);
         }
 
         qInfo().noquote() << QString("Lecture fichier %1 OK").arg(nomficXml);
 
     } catch (Exception const &e) {
-        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml).arg(APP_NAME);
-        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2")
-                            .arg(nomficXml).arg(APP_NAME), MessageType::ERREUR);
+        qCritical().noquote() << QString("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml, APP_NAME);
+        throw Exception(QObject::tr("Erreur lors de l'ouverture du fichier %1, veuillez réinstaller %2").arg(nomficXml, APP_NAME), MessageType::ERREUR);
     }
 
     /* Retour */
@@ -1127,9 +1124,8 @@ void Configuration::OuvertureBaseDonneesSatellites()
     const QFileInfo ff(fi.fileName());
 
     if (!fi.exists() || (fi.size() == 0)) {
-        qCritical().noquote() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
-        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME),
-                        MessageType::ERREUR);
+        qCritical().noquote() << QString("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName(), APP_NAME);
+        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName(), APP_NAME), MessageType::ERREUR);
     }
 
     // Ouverture de la base de donnees
@@ -1231,9 +1227,9 @@ void Configuration::VerificationArborescences()
         foreach(const QString &dirDat, listeDirDat) {
             const QDir dir(dirDat);
             if (!dir.exists()) {
-                qCritical().noquote() << QString("Le répertoire %1 n'existe pas, veuillez réinstaller %2").arg(QDir::toNativeSeparators(dirDat)).arg(APP_NAME);
+                qCritical().noquote() << QString("Le répertoire %1 n'existe pas, veuillez réinstaller %2").arg(QDir::toNativeSeparators(dirDat), APP_NAME);
                 throw Exception(
-                    QObject::tr("Le répertoire %1 n'existe pas, veuillez réinstaller %2").arg(QDir::toNativeSeparators(dirDat)).arg(APP_NAME), MessageType::ERREUR);
+                    QObject::tr("Le répertoire %1 n'existe pas, veuillez réinstaller %2").arg(QDir::toNativeSeparators(dirDat), APP_NAME), MessageType::ERREUR);
             }
         }
 
@@ -1311,14 +1307,14 @@ void Configuration::VerifieFichiersData(const QString &dirData, const QStringLis
 
         // Le fichier n'existe pas
         if (!fi.exists()) {
-            qCritical().noquote() << QString("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
-            throw Exception(QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            qCritical().noquote() << QString("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName(), APP_NAME);
+            throw Exception(QObject::tr("Le fichier %1 n'existe pas, veuillez réinstaller %2").arg(ff.fileName(), APP_NAME), MessageType::ERREUR);
         }
 
         // Le fichier est vide
         if (fi.size() == 0) {
-            qCritical().noquote() << QString("Le fichier %1 est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME);
-            throw Exception(QObject::tr("Le fichier %1 est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME), MessageType::ERREUR);
+            qCritical().noquote() << QString("Le fichier %1 est vide, veuillez réinstaller %2").arg(ff.fileName(), APP_NAME);
+            throw Exception(QObject::tr("Le fichier %1 est vide, veuillez réinstaller %2").arg(ff.fileName(), APP_NAME), MessageType::ERREUR);
         }
     }
 

@@ -67,7 +67,7 @@ TelechargementOptions::TelechargementOptions(const TypeTelechargement &type, QWi
         Initialisation();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -121,7 +121,7 @@ void TelechargementOptions::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
+    qInfo() << "Début Initialisation" << objectName();
 
     switch (_type) {
     case TypeTelechargement::COORDONNEES:
@@ -144,7 +144,7 @@ void TelechargementOptions::Initialisation()
     _ui->barreProgression->setVisible(false);
     TelechargerListe();
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    qInfo() << "Fin   Initialisation" << objectName();
 
     /* Retour */
     return;

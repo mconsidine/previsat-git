@@ -76,7 +76,7 @@ AjustementDates::AjustementDates(const QDateTime &dateInitiale,
         Initialisation();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -201,14 +201,15 @@ void AjustementDates::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
+    qInfo() << "Début Initialisation" << objectName();
 
     _radar = new Radar(_ui->frameRadar, false);
 
     const Date dateInit(_date1.addSecs(-10), _offset);
     Satellite sat(_elements);
     const ElementsAOS elementsAos1 = Evenements::CalculAOS(dateInit, sat, _observateur, SensCalcul::CHRONOLOGIQUE, _hauteur);
-    QDateTime dt1 = elementsAos1.date.ToQDateTime(DateFormatSec::FORMAT_SEC).addSecs(static_cast<quint64> (floor(_offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES)));
+    QDateTime dt1 = elementsAos1.date.ToQDateTime(DateFormatSec::FORMAT_SEC)
+                        .addSecs(static_cast<qint64> (floor(_offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES)));
     if (dt1 > _date2) {
         dt1 = _date1;
     }
@@ -220,7 +221,7 @@ void AjustementDates::Initialisation()
     const Date dateFin(_date2, _offset);
     const ElementsAOS elementsAos2 = Evenements::CalculAOS(dateFin, sat, _observateur, SensCalcul::ANTI_CHRONOLOGIQUE, _hauteur);
     QDateTime dt2 = elementsAos2.date.ToQDateTime(DateFormatSec::FORMAT_SEC)
-                        .addSecs(static_cast<quint64> (floor(_offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES)));
+                        .addSecs(static_cast<qint64> (floor(_offset * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES)));
     if (dt2 < _date1) {
         dt2 = _date2;
     }
@@ -245,7 +246,7 @@ void AjustementDates::Initialisation()
     _ui->ajustementDateFinale->setTickInterval(ecart / 10);
     _ui->ajustementDateFinale->blockSignals(etat2);
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    qInfo() << "Fin   Initialisation" << objectName();
 
     /* Retour */
     return;

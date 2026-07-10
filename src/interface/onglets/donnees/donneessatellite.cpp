@@ -37,7 +37,6 @@
 #include "configuration/configuration.h"
 #include "donneessatellite.h"
 #include "librairies/corps/satellite/donnees.h"
-#include "librairies/corps/satellite/satellite.h"
 #include "librairies/maths/maths.h"
 #include "ui_donneessatellite.h"
 
@@ -134,7 +133,7 @@ void DonneesSatellite::show(const Donnees &donnees)
     if ((donnees.masseSec() == "0") && (donnees.masseTot() == "0")) {
         _ui->masseSecTot->setText("?/?");
     } else {
-        _ui->masseSecTot->setText(QString("%1/%2 kg").arg(donnees.masseSec()).arg(donnees.masseTot()));
+        _ui->masseSecTot->setText(QString("%1/%2 kg").arg(donnees.masseSec(), donnees.masseTot()));
     }
 
 
@@ -142,7 +141,7 @@ void DonneesSatellite::show(const Donnees &donnees)
     const QString classe = (donnees.classe().isEmpty()) ? "?" : donnees.classe();
     const QString categorie = (donnees.categorie().isEmpty()) ? "?" : donnees.categorie();
     const QString discipline = (donnees.discipline().isEmpty()) ? "?" : donnees.discipline();
-    _ui->classeCategDiscip->setText(QString("%1 / %2 / %3").arg(classe).arg(categorie).arg(discipline));
+    _ui->classeCategDiscip->setText(QString("%1 / %2 / %3").arg(classe, categorie, discipline));
 
 
     double perigee = donnees.perigee();

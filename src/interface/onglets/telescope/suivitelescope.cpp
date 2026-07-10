@@ -50,7 +50,6 @@
 #include "interface/afficherresultats.h"
 #include "interface/listWidgetItem.h"
 #include "librairies/corps/satellite/evenements.h"
-#include "librairies/corps/satellite/gpformat.h"
 #include "librairies/dates/date.h"
 #include "librairies/exceptions/exception.h"
 #include "previsions/telescope.h"
@@ -92,7 +91,7 @@ SuiviTelescope::SuiviTelescope(QWidget *parent) :
         Initialisation();
 
     } catch (Exception const &e) {
-        qCritical() << "Erreur Initialisation" << metaObject()->className();
+        qCritical() << "Erreur Initialisation" << objectName();
         throw Exception();
     }
 }
@@ -200,7 +199,10 @@ void SuiviTelescope::AffichageLieuObs()
 /*
  * Affichage des satellites dans la liste
  */
-void SuiviTelescope::AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip,
+void SuiviTelescope::AfficherListeSatellites(const QString &nomsat,
+                                             const QString &norad,
+                                             const QString &noradDefaut,
+                                             const QString &tooltip,
                                              const bool check)
 {
     /* Declarations des variables locales */
@@ -374,8 +376,8 @@ void SuiviTelescope::CalculAos()
 
                 _ui->leverSatSuivi->setText(
                     chaine.arg(_dateAosSuivi->ToShortDate(DateFormat::FORMAT_COURT,
-                                                          (systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H).trimmed())
-                        .arg(cDelaiAOS).arg(Maths::ToSexagesimal(elemAos.azimut, AngleFormatType::DEGRE, 3, 0, false, true).mid(0, 9)));
+                                                          (systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H).trimmed(),
+                               cDelaiAOS, Maths::ToSexagesimal(elemAos.azimut, AngleFormatType::DEGRE, 3, 0, false, true).mid(0, 9)));
 
                 _ui->lbl_leverSatSuivi->setVisible(true);
                 bld.setBold(false);
@@ -402,8 +404,8 @@ void SuiviTelescope::CalculAos()
 
                 const QString chaine2 = tr("Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3");
                 _ui->leverSatSuivi2->setText(
-                    chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), AngleFormatType::DEGRE, 2, 0, false, true).mid(0, 9).trimmed())
-                        .arg(Maths::ToSexagesimal(satSuivi.azimut(), AngleFormatType::DEGRE, 3, 0, false, true).mid(0, 9)).arg(ecl));
+                    chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), AngleFormatType::DEGRE, 2, 0, false, true).mid(0, 9).trimmed(),
+                                Maths::ToSexagesimal(satSuivi.azimut(), AngleFormatType::DEGRE, 3, 0, false, true).mid(0, 9), ecl));
 
                 bld.setBold(true);
                 _ui->leverSatSuivi2->setFont(bld);
@@ -433,7 +435,7 @@ void SuiviTelescope::CalculAos()
 
             _ui->coucherSatSuivi->setText(
                 chaine.arg(_dateLosSuivi->ToShortDate(DateFormat::FORMAT_COURT, ((systeme) ? DateSysteme::SYSTEME_24H : DateSysteme::SYSTEME_12H))
-                               .trimmed()).arg(cDelaiLOS).arg(Maths::ToSexagesimal(azim, AngleFormatType::DEGRE, 3, 0, false, true).mid(0, 9)));
+                               .trimmed(), cDelaiLOS, Maths::ToSexagesimal(azim, AngleFormatType::DEGRE, 3, 0, false, true).mid(0, 9)));
 
             // Hauteur max
             std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
@@ -459,8 +461,7 @@ void SuiviTelescope::CalculAos()
                 pas *= 0.5;
             }
 
-            _ui->hauteurMaxSatSuivi->setText(QString("%1").arg(Maths::ToSexagesimal(minmax.y(), AngleFormatType::DEGRE, 2, 0, false, true).mid(0, 8)
-                                                                   .trimmed()));
+            _ui->hauteurMaxSatSuivi->setText(QString("%1").arg(Maths::ToSexagesimal(minmax.y(), AngleFormatType::DEGRE, 2, 0, false, true).mid(0, 8).trimmed()));
 
             _ui->ajusterDates->setEnabled(minmax.y() >= hauteurMin);
             if (!_ui->ajusterDates->isEnabled()) {
@@ -484,8 +485,8 @@ void SuiviTelescope::CalculAos()
 
                 const QString chaine2 = tr("Satellite dans le ciel. Hauteur actuelle : %1. Azimut : %2. %3");
                 _ui->leverSatSuivi->setText(
-                    chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), AngleFormatType::DEGRE, 2, 0, false, true).mid(0, 8).trimmed())
-                        .arg(Maths::ToSexagesimal(satSuivi.azimut(), AngleFormatType::DEGRE, 3, 0, false, true).mid(0, 9)).arg(ecl));
+                    chaine2.arg(Maths::ToSexagesimal(satSuivi.hauteur(), AngleFormatType::DEGRE, 2, 0, false, true).mid(0, 8).trimmed(),
+                                Maths::ToSexagesimal(satSuivi.azimut(), AngleFormatType::DEGRE, 3, 0, false, true).mid(0, 9), ecl));
 
                 bld.setBold(true);
                 _ui->leverSatSuivi->setFont(bld);
@@ -519,7 +520,9 @@ void SuiviTelescope::CalculAos()
 /*
  * Calcul de la hauteur maximale d'un satellite dans le ciel
  */
-QPointF SuiviTelescope::CalculHauteurMax(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, const Observateur &obs, Satellite &satSuivi) const
+QPointF SuiviTelescope::CalculHauteurMax(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm,
+                                         const Observateur &obs,
+                                         Satellite &satSuivi) const
 {
     /* Declarations des variables locales */
     std::array<QPointF, MATHS::DEGRE_INTERPOLATION> ht;
@@ -556,7 +559,7 @@ void SuiviTelescope::Initialisation()
     /* Initialisations */
 
     /* Corps de la methode */
-    qInfo() << "Début Initialisation" << metaObject()->className();
+    qInfo() << "Début Initialisation" << objectName();
 
     _ui->valHauteurSatSuivi->setVisible(false);
     _ui->hauteurSatSuivi->setCurrentIndex(settings.value("previsions/hauteurSatSuivi", 2).toInt());
@@ -572,7 +575,7 @@ void SuiviTelescope::Initialisation()
         connect(effacerFiltre, &QAction::triggered, this, &SuiviTelescope::on_filtreSatellites_returnPressed);
     }
 
-    qInfo() << "Fin   Initialisation" << metaObject()->className();
+    qInfo() << "Fin   Initialisation" << objectName();
 
     /* Retour */
     return;
@@ -589,10 +592,10 @@ void SuiviTelescope::AjusterDates(const QDateTime &date1, const QDateTime &date2
 
     /* Corps de la methode */
     EFFACE_OBJET(_dateAos);
-    _dateAos = new Date(date1.addSecs(static_cast<quint64> (-floor(_date->offsetUTC() * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES))), 0.);
+    _dateAos = new Date(date1.addSecs(static_cast<qint64> (-floor(_date->offsetUTC() * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES))), 0.);
 
     EFFACE_OBJET(_dateLos);
-    _dateLos = new Date(date2.addSecs(static_cast<quint64> (-floor(_date->offsetUTC() * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES))), 0.);
+    _dateLos = new Date(date2.addSecs(static_cast<qint64> (-floor(_date->offsetUTC() * DATE::NB_SEC_PAR_JOUR + DATE::EPS_DATES))), 0.);
 
     _ui->genererPositions->setDefault(true);
     _ui->afficherSuivi->setEnabled(false);
@@ -979,7 +982,7 @@ void SuiviTelescope::on_ouvrirSatelliteTracker_clicked()
     if (exeSatelliteTracker.isEmpty() || !fi.exists()) {
 
         settings.setValue("fichier/satelliteTracker", "");
-        const QString dirHome = QStandardPaths::locateAll(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory).first().mid(0, 3);
+        const QString dirHome = QStandardPaths::locateAll(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory).constFirst().mid(0, 3);
 
         QString fichier = QFileDialog::getOpenFileName(this, tr("Ouvrir Satellite Tracker"), dirHome + "Satellite Tracker.exe",
                                                        tr("Fichiers exécutables (*.exe)"));

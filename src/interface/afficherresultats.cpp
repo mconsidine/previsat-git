@@ -46,7 +46,6 @@
 #include <QtConcurrent>
 #include <QtGlobal>
 #include "ui_afficherresultats.h"
-#include "onglets/ui_onglets.h"
 #include "afficherresultats.h"
 #include "interface/ciel/ciel.h"
 #include "interface/onglets/onglets.h"
@@ -673,7 +672,7 @@ void AfficherResultats::EcrireEntete() const
 
         // Ligne d'entete
 #if (!BUILD_TEST)
-        flux << QString("%1 %2 / %3 (c) %4").arg(APP_NAME).arg(QString(VERSION)).arg(ORG_NAME).arg(QString(ANNEES_DEV)) << Qt::endl << Qt::endl;
+        flux << QString("%1 %2 / %3 (c) %4").arg(APP_NAME, VERSION, ORG_NAME, ANNEES_DEV) << Qt::endl << Qt::endl;
 #endif
 
         // Lieu d'observation
@@ -690,7 +689,7 @@ void AfficherResultats::EcrireEntete() const
                                                                                        _conditions.observateur.altitude() * TERRE::PIED_PAR_METRE;
             const QString unite = (_conditions.unite == QObject::tr("km", "kilometer")) ? QObject::tr("m", "meter") : QObject::tr("ft", "foot");
 
-            ligne = ligne.arg(_conditions.observateur.nomlieu()).arg(lon).arg(ew).arg(lat).arg(ns).arg(1000. * alt, 0, 'f', 0).arg(unite);
+            ligne = ligne.arg(_conditions.observateur.nomlieu(), lon, ew, lat, ns).arg(1000. * alt, 0, 'f', 0).arg(unite);
             flux << ligne << Qt::endl;
         }
 
@@ -1068,7 +1067,7 @@ QStringList AfficherResultats::ElementsDetailsPrevisions(const ResultatPrevision
         const QString esp = (res.magnitude < 9.95) ? " " : "";
         const QString signe = (res.magnitude >= 0.) ? "+" : "-";
         const QString pen = (res.penombre) ? "*" : " ";
-        elems.append(fmagn.arg(esp).arg(signe).arg(fabs(res.magnitude), 0, 'f', 1, QChar('0')).arg(pen));
+        elems.append(fmagn.arg(esp, signe).arg(fabs(res.magnitude), 0, 'f', 1, QChar('0')).arg(pen));
     }
 
     // Altitude, distance
@@ -1836,7 +1835,7 @@ void AfficherResultats::on_actionExporterCsv_triggered()
 
     const Date date1(list.first().date.jourJulienUTC() - conditions.pas, conditions.offset);
     const Date date2(list.last().date.jourJulienUTC() + conditions.pas, conditions.offset);
-    const unsigned int pas = settings.value("previsions/pasSuivi", 20).toUInt();
+    const int pas = settings.value("previsions/pasSuivi", 20).toInt();
     conditions.jj1 = date1.jourJulienUTC();
     conditions.jj2 = date2.jourJulienUTC();
     conditions.pas = pas;

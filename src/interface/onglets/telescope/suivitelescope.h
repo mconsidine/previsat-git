@@ -118,7 +118,11 @@ public slots:
      * @param[in] tooltip tooltip a afficher
      * @param[in] check vrai si le satellite doit etre coche
      */
-    void AfficherListeSatellites(const QString &nomsat, const QString &norad, const QString &noradDefaut, const QString &tooltip, const bool check);
+    void AfficherListeSatellites(const QString &nomsat,
+                                 const QString &norad,
+                                 const QString &noradDefaut,
+                                 const QString &tooltip,
+                                 const bool check);
 
     /**
      * @brief InitAffichageListeSatellites Initialisation de l'affichage de la liste
@@ -135,7 +139,8 @@ public slots:
 
 signals:
 
-    void AfficherMessageStatut(const QString &message, const int secondes = -1);
+    void AfficherMessageStatut(const QString &message,
+                               const int secondes = -1);
 
 
 protected:
@@ -181,7 +186,9 @@ private:
      * @param[in/out] satSuivi satellite suivi
      * @return jour et hauteur maximale
      */
-    QPointF CalculHauteurMax(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm, const Observateur &obs, Satellite &satSuivi) const;
+    QPointF CalculHauteurMax(const std::array<double, MATHS::DEGRE_INTERPOLATION> &jjm,
+                             const Observateur &obs,
+                             Satellite &satSuivi) const;
 
     /**
      * @brief Initialisation Initialisation de la classe SuiviTelescope

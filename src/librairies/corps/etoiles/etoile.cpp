@@ -126,8 +126,7 @@ QList<Etoile> Etoile::Initialisation(const QString &dirCommonData)
     QFile fi(fic);
     if (!fi.exists() || (fi.size() == 0)) {
         const QFileInfo ff(fi.fileName());
-        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName()).arg(APP_NAME),
-                        MessageType::ERREUR);
+        throw Exception(QObject::tr("Le fichier %1 n'existe pas ou est vide, veuillez réinstaller %2").arg(ff.fileName(), APP_NAME), MessageType::ERREUR);
     }
 
     if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -145,18 +144,19 @@ QList<Etoile> Etoile::Initialisation(const QString &dirCommonData)
 
         if (ligne.length() > 34) {
 
-            const int ad1 = ligne.mid(0, 2).toInt();
-            const int ad2 = ligne.mid(2, 2).toInt();
-            const double ad3 = ligne.mid(4, 4).toDouble();
+            const QStringView lg(ligne);
+            const int ad1 = lg.mid(0, 2).toInt();
+            const int ad2 = lg.mid(2, 2).toInt();
+            const double ad3 = lg.mid(4, 4).toDouble();
             const double ad = ad1 + ad2 * MATHS::DEG_PAR_ARCMIN + ad3 * MATHS::DEG_PAR_ARCSEC;
 
             const int sgnd = (ligne.at(9) == '-') ? -1 : 1;
-            const int de1 = ligne.mid(10, 2).toInt();
-            const int de2 = ligne.mid(12, 2).toInt();
-            const int de3 = ligne.mid(14, 2).toInt();
+            const int de1 = lg.mid(10, 2).toInt();
+            const int de2 = lg.mid(12, 2).toInt();
+            const int de3 = lg.mid(14, 2).toInt();
             const double dec = sgnd * (de1 + de2 * MATHS::DEG_PAR_ARCMIN + de3 * MATHS::DEG_PAR_ARCSEC);
 
-            const double mag = ligne.mid(31, 5).toDouble();
+            const double mag = lg.mid(31, 5).toDouble();
             const QString nomEtoile = (ligne.length() > 37) ? ligne.mid(37, ligne.length()) : "";
 
             etoiles.append(Etoile(nomEtoile, ad, dec, mag));
