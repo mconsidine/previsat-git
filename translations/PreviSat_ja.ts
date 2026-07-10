@@ -975,45 +975,45 @@ PreviSatは、完全無料です!</translation>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="390"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="398"/>
         <source>Aucun satellite n&apos;est sélectionné dans la liste</source>
         <translation>リストで衛星が選択されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="434"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="442"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="434"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="442"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="469"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="477"/>
         <source>evenements</source>
         <comment>file name (without accent)</comment>
         <translation>events</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="479"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="487"/>
         <source>Calculs en cours...</source>
         <translation>進行中の計算...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="480"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="488"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="503"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="511"/>
         <source>Calculs terminés</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="506"/>
+        <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="514"/>
         <source>Aucun évènement n&apos;a été trouvé sur la période donnée</source>
         <translation>指定された期間に事象が見つかりませんでした</translation>
     </message>
@@ -1405,55 +1405,55 @@ PreviSatは、完全無料です!</translation>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="476"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="484"/>
         <source>Aucun satellite n&apos;est sélectionné dans la liste</source>
         <translation>リストで衛星が選択されていません</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="531"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="539"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="531"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="539"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="607"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="615"/>
         <source>previsions</source>
         <comment>filename (without accent)</comment>
         <translation>predictions</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="617"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="625"/>
         <source>Calculs en cours...</source>
         <translation>進行中の計算...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="618"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="626"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="641"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="649"/>
         <source>Calculs terminés</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="645"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="653"/>
         <source>Aucun passage n&apos;a été trouvé sur la période donnée</source>
         <translation>指定された期間に通過が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="835"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="843"/>
         <source>Téléchargement du fichier d&apos;élements orbitaux de l&apos;ISS...</source>
         <translation>ISSの軌道要素ファイルのダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="839"/>
+        <location filename="../src/interface/onglets/previsions/calculsprevisions.cpp" line="847"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
     </message>
@@ -1832,50 +1832,50 @@ PreviSatは、完全無料です!</translation>
         <translation>すべて</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="512"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="520"/>
         <source>km</source>
         <comment>kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="512"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="520"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="568"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="576"/>
         <source>transits</source>
         <comment>file name (without accent)</comment>
         <translation>transits</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="578"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="586"/>
         <source>Calculs en cours...</source>
         <translation>進行中の計算...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="579"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="587"/>
         <source>Annuler</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="602"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="610"/>
         <source>Calculs terminés</source>
         <translation>計算が完了しました</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="605"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="613"/>
         <source>Aucun transit n&apos;a été trouvé sur la période donnée</source>
         <translation>指定された期間に通過が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="734"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="742"/>
         <source>Téléchargement du fichier d&apos;élements orbitaux de l&apos;ISS...</source>
         <translation>ISSの軌道要素ファイルのダウンロード...</translation>
     </message>
     <message>
-        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="738"/>
+        <location filename="../src/interface/onglets/previsions/calculstransits.cpp" line="746"/>
         <source>Téléchargement terminé</source>
         <translation>ダウンロードが完了しました</translation>
     </message>

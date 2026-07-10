@@ -426,14 +426,22 @@ void CalculsTransits::Initialisation()
 void CalculsTransits::Aucun()
 {
     for(int i=0; i<_ui->listeTransits->count(); i++) {
-        _ui->listeTransits->item(i)->setCheckState(Qt::Unchecked);
+
+        // Deselection des satellites qui sont affiches dans la liste
+        if (!_ui->listeTransits->item(i)->isHidden()) {
+            _ui->listeTransits->item(i)->setCheckState(Qt::Unchecked);
+        }
     }
 }
 
 void CalculsTransits::Tous()
 {
     for(int i=0; i<_ui->listeTransits->count(); i++) {
-        _ui->listeTransits->item(i)->setCheckState(Qt::Checked);
+
+        // Selection des satellites qui sont affiches dans la liste
+        if (!_ui->listeTransits->item(i)->isHidden()) {
+            _ui->listeTransits->item(i)->setCheckState(Qt::Checked);
+        }
     }
 }
 

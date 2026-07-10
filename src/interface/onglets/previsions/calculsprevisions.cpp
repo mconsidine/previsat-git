@@ -431,14 +431,22 @@ void CalculsPrevisions::Initialisation()
 void CalculsPrevisions::Aucun()
 {
     for(int i=0; i<_ui->listePrevisions->count(); i++) {
-        _ui->listePrevisions->item(i)->setCheckState(Qt::Unchecked);
+
+        // Deselection des satellites qui sont affiches dans la liste
+        if (!_ui->listePrevisions->item(i)->isHidden()) {
+            _ui->listePrevisions->item(i)->setCheckState(Qt::Unchecked);
+        }
     }
 }
 
 void CalculsPrevisions::Tous()
 {
     for(int i=0; i<_ui->listePrevisions->count(); i++) {
-        _ui->listePrevisions->item(i)->setCheckState(Qt::Checked);
+
+        // Selection des satellites qui sont affiches dans la liste
+        if (!_ui->listePrevisions->item(i)->isHidden()) {
+            _ui->listePrevisions->item(i)->setCheckState(Qt::Checked);
+        }
     }
 }
 

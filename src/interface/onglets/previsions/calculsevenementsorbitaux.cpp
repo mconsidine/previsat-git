@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    7 juin 2025
+ * >    8 juillet 2026
  *
  */
 
@@ -349,14 +349,22 @@ void CalculsEvenementsOrbitaux::Initialisation()
 void CalculsEvenementsOrbitaux::Aucun()
 {
     for(int i=0; i<_ui->listeEvenements->count(); i++) {
-        _ui->listeEvenements->item(i)->setCheckState(Qt::Unchecked);
+
+        // Deselection des satellites qui sont affiches dans la liste
+        if (!_ui->listeEvenements->item(i)->isHidden()) {
+            _ui->listeEvenements->item(i)->setCheckState(Qt::Unchecked);
+        }
     }
 }
 
 void CalculsEvenementsOrbitaux::Tous()
 {
     for(int i=0; i<_ui->listeEvenements->count(); i++) {
-        _ui->listeEvenements->item(i)->setCheckState(Qt::Checked);
+
+        // Selection des satellites qui sont affiches dans la liste
+        if (!_ui->listeEvenements->item(i)->isHidden()) {
+            _ui->listeEvenements->item(i)->setCheckState(Qt::Checked);
+        }
     }
 }
 
