@@ -1893,85 +1893,85 @@ PreviSatは、完全無料です!</translation>
         <translation>緯度 : %1° %2</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="772"/>
+        <location filename="../src/interface/carte/carte.cpp" line="773"/>
         <source>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</source>
         <translation>&lt;font color=&apos;blue&apos;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;NORAD : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="925"/>
+        <location filename="../src/interface/carte/carte.cpp" line="926"/>
         <source>km</source>
         <comment>Kilometer</comment>
         <translation>km</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="926"/>
+        <location filename="../src/interface/carte/carte.cpp" line="927"/>
         <source>km/s</source>
         <comment>Kilometer per second</comment>
         <translation>km/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="928"/>
+        <location filename="../src/interface/carte/carte.cpp" line="929"/>
         <source>nmi</source>
         <comment>nautical mile</comment>
         <translation>nmi</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="929"/>
+        <location filename="../src/interface/carte/carte.cpp" line="930"/>
         <source>nmi/s</source>
         <comment>Nautical mile per second</comment>
         <translation>nmi/s</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="939"/>
+        <location filename="../src/interface/carte/carte.cpp" line="940"/>
         <source>&lt;b&gt;%1&lt;/b&gt;&lt;br /&gt;Norad : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;&lt;br /&gt;Type orbite : %4&lt;br /&gt;Altitude : %5 %6&lt;br /&gt;Vitesse : %7 %8&lt;br /&gt;Inclinaison : %9°&lt;br /&gt;Période : %10</source>
         <translatorcomment>Type orbite = Catégorie d&apos;orbite; Altitude = Altitude de satellite; Vitesse/inclinaison/période = Orbitale. Voir QR 93.</translatorcomment>
         <translation>&lt;b&gt;%1&lt;/b&gt;&lt;br /&gt;Norad : &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;COSPAR : &lt;b&gt;%3&lt;/b&gt;&lt;br /&gt;軌道種類 : %4&lt;br /&gt;高度 : %5 %6&lt;br /&gt;軌道速度 : %7 %8&lt;br /&gt;軌道傾斜角 : %9°&lt;br /&gt;軌道周期 : %10</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="778"/>
+        <location filename="../src/interface/carte/carte.cpp" line="779"/>
         <source>&lt;b&gt;%1&lt;/b&gt; (numéro NORAD : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; (NORAD番号 : &lt;b&gt;%2&lt;/b&gt;  -  COSPAR : &lt;b&gt;%3&lt;/b&gt;)</translation>
     </message>
     <message>
         <location filename="../src/interface/carte/carte.cpp" line="195"/>
-        <location filename="../src/interface/carte/carte.cpp" line="1038"/>
-        <location filename="../src/interface/carte/carte.cpp" line="1058"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1039"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1059"/>
         <source>Soleil</source>
         <translation>太陽</translation>
     </message>
     <message>
         <location filename="../src/interface/carte/carte.cpp" line="214"/>
-        <location filename="../src/interface/carte/carte.cpp" line="696"/>
-        <location filename="../src/interface/carte/carte.cpp" line="720"/>
+        <location filename="../src/interface/carte/carte.cpp" line="697"/>
+        <location filename="../src/interface/carte/carte.cpp" line="721"/>
         <source>Lune</source>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1589"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1590"/>
         <source>W</source>
         <comment>Symbol for West</comment>
         <translation>西</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1595"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1596"/>
         <source>E</source>
         <comment>Symbol for East</comment>
         <translation>東</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1623"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1624"/>
         <source>N</source>
         <comment>Symbol for North</comment>
         <translation>北</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1629"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1630"/>
         <source>S</source>
         <comment>Symbol for South</comment>
         <translation>南</translation>
     </message>
     <message>
-        <location filename="../src/interface/carte/carte.cpp" line="1941"/>
+        <location filename="../src/interface/carte/carte.cpp" line="1942"/>
         <source>Le fichier %1 n&apos;existe pas, veuillez réinstaller %2</source>
         <translation>ファイル「%1」が存在しないので、「%2」を再インストールしてください</translation>
     </message>

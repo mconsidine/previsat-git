@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    27 avril 2025
+ * >    18 fevrier 2026
  *
  */
 
@@ -616,6 +616,7 @@ void Carte::AffichageLieuxObservation()
 
     /* Initialisations */
     QPen crayon(Qt::white);
+    crayon.setWidthF(1.2);
     crayon.setCosmetic(true);
 
     /* Corps de la methode */
