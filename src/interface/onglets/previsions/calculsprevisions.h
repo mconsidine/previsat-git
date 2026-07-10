@@ -36,7 +36,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >
+ * >    8 juillet 2026
  *
  */
 
@@ -53,6 +53,7 @@ class CalculsPrevisions;
 class QListWidgetItem;
 class AfficherResultats;
 class Date;
+class ElementsOrbitaux;
 
 
 class CalculsPrevisions : public QFrame
@@ -157,6 +158,9 @@ private:
     QAction *_aucun;
     QAction *_tous;
 
+    QPalette _paletteBouton;
+    QList<ElementsOrbitaux> _listeElemIss;
+
 
     /*
      * Methodes privees
@@ -188,6 +192,7 @@ private slots:
     void on_hauteurSoleilPrev_currentIndexChanged(int index);
     void on_magnitudeMaxPrev_toggled(bool checked);
     void on_majElementsOrbitaux_clicked();
+    void on_majElementsOrbitauxIss_clicked();
 
 };
 

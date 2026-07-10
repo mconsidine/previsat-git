@@ -36,7 +36,7 @@
  * >    15 aout 2020
  *
  * Date de revision
- * >    27 janvier 2025
+ * >    8 juillet 2026
  *
  */
 
@@ -93,6 +93,7 @@ struct ConditionsPrevisions
     Observateur observateur;
 
     QMap<QString, ElementsOrbitaux> tabElem;
+    QList<ElementsOrbitaux> listeElemIss;
 
 
     // Pour les flashs
@@ -104,7 +105,6 @@ struct ConditionsPrevisions
     bool calcEphemSoleil;
     bool calcTransitLunaireJour;
     double seuilConjonction;
-    QList<ElementsOrbitaux> listeElemIss;
 
     // Pour les evenements orbitaux
     bool passageApogee;

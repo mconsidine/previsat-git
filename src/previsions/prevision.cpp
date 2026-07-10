@@ -30,12 +30,13 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    27 janvier 2025
+ * >    8 juillet 2026
  *
  */
 
 #include <QElapsedTimer>
 #include <QFileInfo>
+#include "configuration/configuration.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "prevision.h"
 
@@ -110,27 +111,38 @@ int Prevision::CalculPrevisions(const int &nombre)
     while (it1.hasNext()) {
         it1.next();
 
-        const ElementsOrbitaux elem = it1.value();
-        sats.append(Satellite(elem));
+        if ((it1.key().toInt() == Configuration::instance()->noradStationSpatiale().toInt()) && !_conditions.listeElemIss.isEmpty()) {
 
-        const double epok = elem.epoque.jourJulienUTC();
-        if (epok > elemMin) {
-            elemMin = epok;
-        }
+            sats.append(Satellite(_conditions.listeElemIss));
 
-        if (epok < elemMax) {
-            elemMax = epok;
+            elemMin = _conditions.listeElemIss.first().epoque.jourJulienUTC();
+            elemMax = _conditions.listeElemIss.last().epoque.jourJulienUTC();
+
+        } else {
+
+            const ElementsOrbitaux elem = it1.value();
+            sats.append(Satellite(elem));
+
+            const double epok = elem.epoque.jourJulienUTC();
+            if (epok > elemMin) {
+                elemMin = epok;
+            }
+
+            if (epok < elemMax) {
+                elemMax = epok;
+            }
         }
     }
 
-    if (tabElem.keys().count() == 1) {
-        _donnees.ageElementsOrbitaux.append(fabs(_conditions.jj1 - elemMin));
-    } else {
+    if ((tabElem.keys().count() > 1) || !_conditions.listeElemIss.isEmpty()) {
 
         const double age1 = fabs(_conditions.jj1 - elemMin);
         const double age2 = fabs(_conditions.jj1 - elemMax);
         _donnees.ageElementsOrbitaux.append(qMin(age1, age2));
         _donnees.ageElementsOrbitaux.append(qMax(age1, age2));
+
+    } else {
+        _donnees.ageElementsOrbitaux.append(fabs(_conditions.jj1 - elemMin));
     }
 
     // Calcul des ephemerides du Soleil et du lieu d'observation

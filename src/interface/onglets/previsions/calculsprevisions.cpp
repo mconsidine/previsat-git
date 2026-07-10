@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    7 juin 2025
+ * >    8 juillet 2026
  *
  */
 
@@ -46,8 +46,10 @@
 #include "configuration/configuration.h"
 #include "interface/afficherresultats.h"
 #include "interface/listwidgetitem.h"
+#include "librairies/corps/satellite/gpformat.h"
 #include "librairies/exceptions/message.h"
 #include "librairies/exceptions/exception.h"
+#include "librairies/systeme/telechargement.h"
 #include "previsions/prevision.h"
 
 
@@ -248,91 +250,131 @@ void CalculsPrevisions::CalculAgeElementsOrbitaux()
     /* Initialisations */
 
     /* Corps de la methode */
-    if (Configuration::instance()->mapElementsOrbitaux().isEmpty()) {
+    double offset1;
+    double offset2;
+    double elemMin = -DATE::DATE_INFINIE;
+    double elemMax = DATE::DATE_INFINIE;
+    QPalette pal = _paletteBouton;
 
-        _ui->gridLayoutWidget->setVisible(false);
+    // Ecart heure locale - UTC
+    if (settings.value("affichage/utc").toBool()) {
+
+        offset1 = 0.;
+        offset2 = 0.;
+    } else {
+
+        if (settings.value("affichage/utcAuto").toBool()) {
+
+            offset1 = Date::CalculOffsetUTC(_ui->dateInitialePrev->dateTime());
+            offset2 = Date::CalculOffsetUTC(_ui->dateFinalePrev->dateTime());
+        } else {
+
+            offset1 = settings.value("temps/dtu").toDouble();
+            offset2 = offset1;
+        }
+    }
+
+    // Date et heure initiales
+    const Date date1(_ui->dateInitialePrev->dateTime(), 0.);
+
+    // Jour julien initial
+    double jj1 = date1.jourJulien() - offset1;
+
+    // Date et heure finales
+    const Date date2(_ui->dateFinalePrev->dateTime(), 0.);
+
+    // Jour julien final
+    const double jj2 = date2.jourJulien() - offset2;
+
+    // Determination de l'age maximal des elements orbitaux
+    QMapIterator it(Configuration::instance()->mapElementsOrbitaux());
+    while (it.hasNext()) {
+        it.next();
+
+        const ElementsOrbitaux elem = it.value();
+
+        if (!elem.norad.isEmpty()) {
+
+            const double epok = elem.epoque.jourJulienUTC();
+
+            if (epok > elemMin) {
+                elemMin = epok;
+            }
+
+            if (epok < elemMax) {
+                elemMax = epok;
+            }
+        }
+    }
+
+    QBrush couleur;
+    const std::array<double, 2> age = { fabs(jj1 - elemMin), fabs(jj1 - elemMax) };
+    std::array<QPalette, 2> palette;
+
+    for(unsigned int i=0; i<2; i++) {
+
+        if (age[i] <= 5.) {
+            couleur.setColor(QColor("forestgreen"));
+        } else if (age[i] <= 10.) {
+            couleur.setColor(Qt::darkYellow);
+        } else if (age[i] <= 15.) {
+            couleur.setColor(QColor("orange"));
+        } else {
+            couleur.setColor(Qt::red);
+        }
+
+        couleur.setStyle(Qt::SolidPattern);
+        palette[i].setBrush(QPalette::WindowText, couleur);
+    }
+
+    if (fabs(age[0] - age[1]) < MATHS::EPSDBL100) {
+
+        _ui->ageElementsOrbitaux1->setText("");
 
     } else {
 
-        double offset1;
-        double elemMin = -DATE::DATE_INFINIE;
-        double elemMax = DATE::DATE_INFINIE;
+        _ui->ageElementsOrbitaux1->setPalette(palette[0]);
+        _ui->ageElementsOrbitaux1->setText(QString("%1").arg(age[0], 0, 'f', 2));
+    }
 
-        // Ecart heure locale - UTC
-        if (settings.value("affichage/utc").toBool()) {
+    _ui->ageElementsOrbitaux2->setPalette(palette[1]);
+    _ui->ageElementsOrbitaux2->setText(QString("%1").arg(age[1], 0, 'f', 2));
 
-            offset1 = 0.;
-        } else {
+    _ui->gridLayoutWidget->setVisible(true);
 
-            if (settings.value("affichage/utcAuto").toBool()) {
+    if (!_listeElemIss.isEmpty()) {
 
-                offset1 = Date::CalculOffsetUTC(_ui->dateInitialePrev->dateTime());
-            } else {
+        // Dates des premier et dernier elements orbitaux
+        const double datePremierElem = _listeElemIss.first().epoque.jourJulienUTC();
+        const double dateDernierElem = _listeElemIss.last().epoque.jourJulienUTC();
 
-                offset1 = settings.value("temps/dtu").toDouble();
-            }
+        double age1 = 0.;
+        if (jj1 < datePremierElem) {
+            age1 = datePremierElem - jj1;
         }
 
-        // Date et heure initiales
-        const Date date1(_ui->dateInitialePrev->dateTime(), 0.);
-
-        // Jour julien initial
-        const double jj1 = date1.jourJulien() - offset1;
-
-        // Determination de l'age maximal des elements orbitaux
-        QMapIterator it(Configuration::instance()->mapElementsOrbitaux());
-        while (it.hasNext()) {
-            it.next();
-
-            const ElementsOrbitaux elem = it.value();
-
-            if (!elem.norad.isEmpty()) {
-
-                const double epok = elem.epoque.jourJulienUTC();
-
-                if (epok > elemMin) {
-                    elemMin = epok;
-                }
-
-                if (epok < elemMax) {
-                    elemMax = epok;
-                }
-            }
+        if (jj1 > dateDernierElem) {
+            age1 = jj1 - dateDernierElem;
         }
 
-        QBrush couleur;
-        const std::array<double, 2> age = { fabs(jj1 - elemMin), fabs(jj1 - elemMax) };
-        std::array<QPalette, 2> palette;
-
-        for(unsigned int i=0; i<2; i++) {
-
-            if (age[i] <= 5.) {
-                couleur.setColor(QColor("forestgreen"));
-            } else if (age[i] <= 10.) {
-                couleur.setColor(Qt::darkYellow);
-            } else if (age[i] <= 15.) {
-                couleur.setColor(QColor("orange"));
-            } else {
-                couleur.setColor(Qt::red);
-            }
-
-            couleur.setStyle(Qt::SolidPattern);
-            palette[i].setBrush(QPalette::WindowText, couleur);
+        double age2 = 0.;
+        if (jj2 < datePremierElem) {
+            age2 = datePremierElem - jj2;
         }
 
-        if (fabs(age[0] - age[1]) < MATHS::EPSDBL100) {
-
-            _ui->ageElementsOrbitaux1->setText("");
-
-        } else {
-
-            _ui->ageElementsOrbitaux1->setPalette(palette[0]);
-            _ui->ageElementsOrbitaux1->setText(QString("%1").arg(age[0], 0, 'f', 2));
+        if (jj2 > dateDernierElem) {
+            age2 = jj2 - dateDernierElem;
         }
 
-        _ui->ageElementsOrbitaux2->setPalette(palette[1]);
-        _ui->ageElementsOrbitaux2->setText(QString("%1").arg(age[1], 0, 'f', 2));
+        if ((age1 > (2.05)) || (age2 > (2.05))) {
 
+            // Affichage du contour du bouton en rouge
+            pal.setColor(QPalette::Button, QColor(Qt::red));
+            _ui->majElementsOrbitauxIss->setToolTip(tr("Les éléments orbitaux de l'ISS sont vieux, il est conseillé de les mettre à jour"));
+        }
+
+        _ui->majElementsOrbitauxIss->setPalette(pal);
+        _ui->majElementsOrbitauxIss->update();
         _ui->gridLayoutWidget->setVisible(true);
     }
 
@@ -372,6 +414,13 @@ void CalculsPrevisions::Initialisation()
 
     _tous = new QAction(tr("Tous"), this);
     connect(_tous, &QAction::triggered, this, &CalculsPrevisions::Tous);
+
+    _paletteBouton = _ui->majElementsOrbitauxIss->palette();
+    _ui->majElementsOrbitauxIss->setAutoFillBackground(true);
+
+    // Lecture du fichier d'elements orbitaux de l'ISS
+    const QString fichier = Configuration::instance()->dirElem() + QDir::separator() + "iss.gp";
+    _listeElemIss = GPFormat::LectureListeGP(fichier, Configuration::instance()->dbSatellites());
 
     qInfo() << "Fin   Initialisation" << objectName();
 
@@ -521,6 +570,11 @@ void CalculsPrevisions::on_calculsPrev_clicked()
             }
         }
 
+        if (!_listeElemIss.isEmpty()) {
+            conditions.listeElemIss = _listeElemIss;
+        }
+
+
         // Ecriture des informations de prévisions dans le fichier de log
         qInfo() << "--";
         qInfo() << "Calcul des prévisions de passage :";
@@ -552,8 +606,8 @@ void CalculsPrevisions::on_calculsPrev_clicked()
         // Nom du fichier resultat
         const QString chaine = tr("previsions", "filename (without accent)") + "_%1_%2.txt";
         conditions.ficRes = Configuration::instance()->dirTmp() + QDir::separator() +
-                chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first(),
-                           date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first());
+                            chaine.arg(date1.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first(),
+                                       date2.ToShortDateAMJ(DateFormat::FORMAT_COURT, DateSysteme::SYSTEME_24H).remove("/").split(" ").first());
 
         // Barre de progression
         auto barreProgression = new QProgressBar();
@@ -763,6 +817,43 @@ void CalculsPrevisions::on_majElementsOrbitaux_clicked()
     emit MajFichierGP();
     CalculAgeElementsOrbitaux();
     _ui->satellitesChoisis->setChecked(checked);
+
+    /* Retour */
+    return;
+}
+
+void CalculsPrevisions::on_majElementsOrbitauxIss_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        // Mise a jour du fichier d'elements orbitaux
+        emit AfficherMessageStatut(tr("Téléchargement du fichier d'élements orbitaux de l'ISS..."), -1);
+        const QString ficElem = Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg("iss");
+        Telechargement tel(Configuration::instance()->dirTmp());
+        tel.TelechargementFichier(ficElem);
+        emit AfficherMessageStatut(tr("Téléchargement terminé"), 5);
+
+        const QString fic = Configuration::instance()->dirTmp() + QDir::separator() + "iss.xml";
+        const QString ficGp = Configuration::instance()->dirElem() + QDir::separator() + "iss.gp";
+
+        QFile fi(fic);
+        QFile fi2(ficGp);
+        if (fi2.exists()) {
+            fi2.remove();
+        }
+
+        fi.rename(ficGp);
+
+        // Mise a jour de l'age des elements orbitaux
+        CalculAgeElementsOrbitaux();
+
+    } catch (Exception const &e) {
+    }
 
     /* Retour */
     return;

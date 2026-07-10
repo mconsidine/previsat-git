@@ -30,7 +30,7 @@
  * >    4 octobre 2020
  *
  * Date de revision
- * >    12 septembre 2025
+ * >    8 juillet 2026
  *
  */
 
@@ -38,6 +38,7 @@
 #include <QFileInfo>
 #include <QTextStream>
 #include <cmath>
+#include "configuration/configuration.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/exceptions/exception.h"
 #include "telescope.h"
@@ -76,6 +77,7 @@ void Telescope::setConditions(const ConditionsPrevisions &conditions)
 int Telescope::CalculSuiviTelescope(const int &nombre)
 {
     /* Declarations des variables locales */
+    Satellite sat;
 
     /* Initialisations */
 
@@ -94,7 +96,12 @@ int Telescope::CalculSuiviTelescope(const int &nombre)
     const QMap<QString, ElementsOrbitaux> tabElem = _conditions.tabElem;
 
     // Satellite
-    Satellite sat(tabElem.first());
+    if ((tabElem.firstKey().toInt() == Configuration::instance()->noradStationSpatiale().toInt()) && !_conditions.listeElemIss.isEmpty()) {
+        sat = Satellite(_conditions.listeElemIss);
+    } else {
+        sat = Satellite(tabElem.first());
+    }
+
 
     const QString entete(R"&("Time (UTCG)","Range (km)","Right Ascen (deg)","Declination (deg)")&");
 

@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    31 juillet 2025
+ * >    8 juillet 2026
  *
  */
 
@@ -341,10 +341,6 @@ void CalculsTransits::CalculAgeElementsOrbitaux()
         _ui->ageElementsOrbitauxTransit2->setPalette(palette[1]);
         _ui->ageElementsOrbitauxTransit2->setText(QString("%1").arg(age[1], 0, 'f', 2));
 
-        // Lecture du fichier d'elements orbitaux de l'ISS
-        const QString fichier = Configuration::instance()->dirElem() + QDir::separator() + "iss.gp";
-        _listeElemIss = GPFormat::LectureListeGP(fichier, Configuration::instance()->dbSatellites());
-
         if (!_listeElemIss.isEmpty()) {
 
             // Dates des premier et dernier elements orbitaux
@@ -416,6 +412,10 @@ void CalculsTransits::Initialisation()
 
     _tous = new QAction(tr("Tous"), this);
     connect(_tous, &QAction::triggered, this, &CalculsTransits::Tous);
+
+    // Lecture du fichier d'elements orbitaux de l'ISS
+    const QString fichier = Configuration::instance()->dirElem() + QDir::separator() + "iss.gp";
+    _listeElemIss = GPFormat::LectureListeGP(fichier, Configuration::instance()->dbSatellites());
 
     qInfo() << "Fin   Initialisation" << objectName();
 

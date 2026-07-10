@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    26 avril 2026
+ * >    8 juillet 2026
  *
  */
 
@@ -730,6 +730,7 @@ void PreviSat::ConnexionsSignauxSlots()
     connect(_onglets->flashs(), &CalculsFlashs::ChargementGP, this, &PreviSat::ChargementGP);
     connect(_onglets->flashs(), &CalculsFlashs::DemarrageApplication, this, &PreviSat::DemarrageApplication);
     connect(_onglets->transits(), &CalculsTransits::MajFichierGP, this, &PreviSat::MajFichierGP);
+    connect(_onglets->suiviTelescope(), &SuiviTelescope::MajFichierGP, this, &PreviSat::MajFichierGP);
 
     connect(this, &PreviSat::SauveOngletGeneral, _onglets->general(), &General::SauveOngletGeneral);
     connect(this, &PreviSat::SauveOngletElementsOsculateurs, _onglets->osculateurs(), &Osculateurs::SauveOngletElementsOsculateurs);

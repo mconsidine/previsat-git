@@ -17,10 +17,10 @@
    <bool>true</bool>
   </property>
   <property name="frameShape">
-   <enum>QFrame::NoFrame</enum>
+   <enum>QFrame::Shape::NoFrame</enum>
   </property>
   <property name="frameShadow">
-   <enum>QFrame::Plain</enum>
+   <enum>QFrame::Shadow::Plain</enum>
   </property>
   <widget class="QWidget" name="formLayoutWidget_48">
    <property name="geometry">
@@ -33,7 +33,7 @@
    </property>
    <layout class="QFormLayout" name="formLayout_prev3">
     <property name="labelAlignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
     <property name="horizontalSpacing">
      <number>3</number>
@@ -107,7 +107,7 @@
    <property name="geometry">
     <rect>
      <x>566</x>
-     <y>51</y>
+     <y>50</y>
      <width>210</width>
      <height>160</height>
     </rect>
@@ -121,16 +121,16 @@
     <bool>true</bool>
    </property>
    <property name="contextMenuPolicy">
-    <enum>Qt::CustomContextMenu</enum>
+    <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
    </property>
    <property name="horizontalScrollBarPolicy">
-    <enum>Qt::ScrollBarAlwaysOff</enum>
+    <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
    </property>
    <property name="editTriggers">
-    <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+    <set>QAbstractItemView::EditTrigger::DoubleClicked|QAbstractItemView::EditTrigger::EditKeyPressed|QAbstractItemView::EditTrigger::SelectedClicked</set>
    </property>
    <property name="textElideMode">
-    <enum>Qt::ElideNone</enum>
+    <enum>Qt::TextElideMode::ElideNone</enum>
    </property>
    <property name="sortingEnabled">
     <bool>false</bool>
@@ -167,7 +167,7 @@
        <bool>true</bool>
       </property>
       <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::NoButtons</enum>
+       <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
       </property>
       <property name="dateTime">
        <datetime>
@@ -222,7 +222,7 @@
        <bool>true</bool>
       </property>
       <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::NoButtons</enum>
+       <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
       </property>
       <property name="dateTime">
        <datetime>
@@ -287,7 +287,7 @@
    <property name="geometry">
     <rect>
      <x>460</x>
-     <y>188</y>
+     <y>187</y>
      <width>101</width>
      <height>24</height>
     </rect>
@@ -512,10 +512,10 @@
     <item>
      <widget class="QFrame" name="frame_3">
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
+       <enum>QFrame::Shadow::Plain</enum>
       </property>
       <property name="lineWidth">
        <number>0</number>
@@ -580,7 +580,7 @@
     <item>
      <layout class="QFormLayout" name="formLayout_prev2">
       <property name="labelAlignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
       <property name="horizontalSpacing">
        <number>2</number>
@@ -661,10 +661,10 @@
     <item>
      <widget class="QFrame" name="frame_4">
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::Shape::StyledPanel</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <widget class="QLineEdit" name="valHauteurSatPrev">
        <property name="geometry">
@@ -699,7 +699,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>188</y>
+     <y>187</y>
      <width>161</width>
      <height>24</height>
     </rect>
@@ -715,7 +715,7 @@
    <property name="geometry">
     <rect>
      <x>566</x>
-     <y>27</y>
+     <y>26</y>
      <width>191</width>
      <height>22</height>
     </rect>
@@ -800,9 +800,9 @@
   <widget class="QPushButton" name="majElementsOrbitaux">
    <property name="geometry">
     <rect>
-     <x>190</x>
-     <y>188</y>
-     <width>261</width>
+     <x>310</x>
+     <y>160</y>
+     <width>251</width>
      <height>24</height>
     </rect>
    </property>
@@ -814,13 +814,26 @@
    <property name="geometry">
     <rect>
      <x>762</x>
-     <y>30</y>
+     <y>29</y>
      <width>21</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="majElementsOrbitauxIss">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>187</y>
+     <width>261</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Mettre à jour Éléments orbitaux de l'ISS...</string>
    </property>
   </widget>
  </widget>

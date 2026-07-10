@@ -36,7 +36,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >
+ * >    8 juillet 2026
  *
  */
 
@@ -55,6 +55,7 @@ class QListWidget;
 class QListWidgetItem;
 class AfficherResultats;
 class Date;
+class ElementsOrbitaux;
 class Observateur;
 class Satellite;
 
@@ -93,7 +94,7 @@ public:
 
     /*
      * Methodes publiques
-     */
+     */    
     /**
      * @brief CalculAosSatSuivi Calcul des informations AOS/LOS pour le suivi d'un satellite
      * @param[in] date date
@@ -141,6 +142,7 @@ signals:
 
     void AfficherMessageStatut(const QString &message,
                                const int secondes = -1);
+    void MajFichierGP();
 
 
 protected:
@@ -170,10 +172,18 @@ private:
     Date *_dateLos;
     Date *_dateLosSuivi;
 
+    QPalette _paletteBouton;
+    QList<ElementsOrbitaux> _listeElemIss;
+
 
     /*
      * Methodes privees
      */
+    /**
+     * @brief CalculAgeElementsOrbitaux Calcul de l'age des elements orbitaux
+     */
+    void CalculAgeElementsOrbitaux();
+
     /**
      * @brief CalculAos Calcul des informations AOS/LOS
      */
@@ -219,6 +229,8 @@ private slots:
     void on_skywatcher_clicked();
     void on_ouvrirSatelliteTracker_clicked();
     void on_pecDelai_toggled(bool checked);
+    void on_majElementsOrbitaux_clicked();
+    void on_majElementsOrbitauxIss_clicked();
 
 };
 

@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    2 fevrier 2025
+ * >    8 juillet 2026
  *
  */
 
@@ -50,8 +50,10 @@
 #include "interface/afficherresultats.h"
 #include "interface/listWidgetItem.h"
 #include "librairies/corps/satellite/evenements.h"
+#include "librairies/corps/satellite/gpformat.h"
 #include "librairies/dates/date.h"
 #include "librairies/exceptions/exception.h"
+#include "librairies/systeme/telechargement.h"
 #include "previsions/telescope.h"
 
 
@@ -149,6 +151,7 @@ void SuiviTelescope::CalculAosSatSuivi(const Date &date)
     _date = new Date(date, date.offsetUTC());
 
     /* Corps de la methode */
+    CalculAgeElementsOrbitaux();
     CalculAos();
 
     /* Retour */
@@ -267,6 +270,98 @@ void SuiviTelescope::changeEvent(QEvent *evt)
 /*
  * Methodes privees
  */
+/*
+ *
+ */
+void SuiviTelescope::CalculAgeElementsOrbitaux()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    double elemMin = -DATE::DATE_INFINIE;
+    double elemMax = DATE::DATE_INFINIE;
+    QPalette pal = _paletteBouton;
+
+    // Determination de l'age maximal des elements orbitaux
+    QMapIterator it(Configuration::instance()->mapElementsOrbitaux());
+    while (it.hasNext()) {
+        it.next();
+
+        const ElementsOrbitaux elem = it.value();
+
+        if (!elem.norad.isEmpty()) {
+
+            const double epok = elem.epoque.jourJulienUTC();
+
+            if (epok > elemMin) {
+                elemMin = epok;
+            }
+
+            if (epok < elemMax) {
+                elemMax = epok;
+            }
+        }
+    }
+
+    const std::array<double, 2> age = { fabs(_date->jourJulienUTC() - elemMin), fabs(_date->jourJulienUTC() - elemMax) };
+
+    if ((age[0] > 15.) || (age[1] > 15.)) {
+
+        // Affichage du contour du bouton en rouge
+        pal.setColor(QPalette::Button, QColor(Qt::red));
+    }
+
+    _ui->majElementsOrbitaux->setPalette(pal);
+    _ui->majElementsOrbitaux->update();
+
+
+    // Lecture du fichier d'elements orbitaux de l'ISS
+    const QString fichier = Configuration::instance()->dirElem() + QDir::separator() + "iss.gp";
+    _listeElemIss = GPFormat::LectureListeGP(fichier, Configuration::instance()->dbSatellites());
+
+    pal = _paletteBouton;
+
+    if (!_listeElemIss.isEmpty()) {
+
+        // Dates des premier et dernier elements orbitaux
+        const double datePremierElem = _listeElemIss.first().epoque.jourJulienUTC();
+        const double dateDernierElem = _listeElemIss.last().epoque.jourJulienUTC();
+
+        double age1 = 0.;
+        if (_date->jourJulienUTC() < datePremierElem) {
+            age1 = datePremierElem - _date->jourJulienUTC();
+        }
+
+        if (_date->jourJulienUTC() > dateDernierElem) {
+            age1 = _date->jourJulienUTC() - dateDernierElem;
+        }
+
+        double age2 = 0.;
+        if (_date->jourJulienUTC() < datePremierElem) {
+            age2 = datePremierElem - _date->jourJulienUTC();
+        }
+
+        if (_date->jourJulienUTC() > dateDernierElem) {
+            age2 = _date->jourJulienUTC() - dateDernierElem;
+        }
+
+        if ((age1 > (2.05)) || (age2 > (2.05))) {
+
+            // Affichage du contour du bouton en rouge
+            pal.setColor(QPalette::Button, QColor(Qt::red));
+            _ui->majElementsOrbitauxIss->setToolTip(tr("Les éléments orbitaux de l'ISS sont vieux, il est conseillé de les mettre à jour"));
+        }
+    }
+
+    _ui->majElementsOrbitauxIss->setPalette(pal);
+    _ui->majElementsOrbitauxIss->update();
+
+    /* Retour */
+    return;
+}
+
 /*
  * Calcul des informations AOS/LOS
  */
@@ -575,6 +670,9 @@ void SuiviTelescope::Initialisation()
         connect(effacerFiltre, &QAction::triggered, this, &SuiviTelescope::on_filtreSatellites_returnPressed);
     }
 
+    _paletteBouton = _ui->majElementsOrbitauxIss->palette();
+    _ui->majElementsOrbitauxIss->setAutoFillBackground(true);
+
     qInfo() << "Fin   Initialisation" << objectName();
 
     /* Retour */
@@ -630,6 +728,7 @@ void SuiviTelescope::on_genererPositions_clicked()
             throw Exception(tr("Aucun satellite n'est sélectionné dans la liste"), MessageType::WARNING);
         }
 
+
         // Calcul de l'intervalle de temps lorsque le satellite est au-dessus de l'horizon
         const Date date(*_date, _date->offsetUTC());
         Observateur obs =  Configuration::instance()->observateurs().at(_ui->lieuxObservation->currentIndex());
@@ -684,6 +783,11 @@ void SuiviTelescope::on_genererPositions_clicked()
             conditions.tabElem = mapElem;
             conditions.ficRes = Configuration::instance()->dirOut() + QDir::separator() + ficOut;
             conditions.jj1 = date1.jourJulienUTC();
+
+            if (!_listeElemIss.isEmpty()) {
+                conditions.listeElemIss = _listeElemIss;
+            }
+
 
             // Ecriture des informations de prévisions dans le fichier de log
             qInfo() << "--";
@@ -1023,4 +1127,57 @@ void SuiviTelescope::on_ouvrirSatelliteTracker_clicked()
 void SuiviTelescope::on_pecDelai_toggled(bool checked)
 {
     _ui->delaiTelescope->setEnabled(checked);
+}
+
+void SuiviTelescope::on_majElementsOrbitaux_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+    const bool checked = _ui->satellitesChoisis->isChecked();
+
+    /* Corps de la methode */
+    emit MajFichierGP();
+    CalculAgeElementsOrbitaux();
+    _ui->satellitesChoisis->setChecked(checked);
+
+    /* Retour */
+    return;
+}
+
+void SuiviTelescope::on_majElementsOrbitauxIss_clicked()
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    try {
+
+        // Mise a jour du fichier d'elements orbitaux
+        emit AfficherMessageStatut(tr("Téléchargement du fichier d'élements orbitaux de l'ISS..."), -1);
+        const QString ficElem = Configuration::instance()->adresseCelestrakSupplementalNoradFichier().arg("iss");
+        Telechargement tel(Configuration::instance()->dirTmp());
+        tel.TelechargementFichier(ficElem);
+        emit AfficherMessageStatut(tr("Téléchargement terminé"), 5);
+
+        const QString fic = Configuration::instance()->dirTmp() + QDir::separator() + "iss.xml";
+        const QString ficGp = Configuration::instance()->dirElem() + QDir::separator() + "iss.gp";
+
+        QFile fi(fic);
+        QFile fi2(ficGp);
+        if (fi2.exists()) {
+            fi2.remove();
+        }
+
+        fi.rename(ficGp);
+
+        // Mise a jour de l'age des elements orbitaux
+        CalculAgeElementsOrbitaux();
+
+    } catch (Exception const &e) {
+    }
+
+    /* Retour */
+    return;
 }
