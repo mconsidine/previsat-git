@@ -36,7 +36,7 @@
  * >    16 juin 2019
  *
  * Date de revision
- * >    26 fevrier 2023
+ * >    25 avril 2026
  *
  */
 
@@ -58,7 +58,7 @@ namespace SGP {
 static constexpr double J3SJ2 = TERRE::J3 / TERRE::J2;
 static constexpr double RPTIM = TERRE::OMEGA * DATE::NB_SEC_PAR_MIN;
 static constexpr double X1SRT = 1. / TERRE::RAYON_TERRESTRE;
-static constexpr double RTMS = TERRE::RAYON_TERRESTRE * DATE::NB_MIN_PAR_SEC * TERRE::KE;
+static const double RTMS = TERRE::RAYON_TERRESTRE * DATE::NB_MIN_PAR_SEC * TERRE::KE;
 
 
 // Pour le modele haute orbite

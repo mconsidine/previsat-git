@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    16 novembre 2018
+ * >    25 avril 2026
  *
  */
 
@@ -62,7 +62,7 @@ static constexpr double RAYON_TERRESTRE = 6378.135;
 
 // Constante geocentrique de la gravitation (km^3 s^-2)
 static constexpr double GE = 398600.8;
-static constexpr double KE = DATE::NB_SEC_PAR_MIN * sqrt(GE / (RAYON_TERRESTRE * RAYON_TERRESTRE * RAYON_TERRESTRE));
+static const double KE = DATE::NB_SEC_PAR_MIN * sqrt(GE / (RAYON_TERRESTRE * RAYON_TERRESTRE * RAYON_TERRESTRE));
 static constexpr double X1GE = 1. / GE;
 
 // Premieres harmoniques zonales
