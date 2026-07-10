@@ -92,7 +92,6 @@
                 <Nom>全て</Nom>
             </Langue>
             <Fichiers>
-                <Fichier>active.xml</Fichier>
 				<Fichier>amateur.xml</Fichier>
 				<Fichier>argos.xml</Fichier>
 				<Fichier>beidou.xml</Fichier>
