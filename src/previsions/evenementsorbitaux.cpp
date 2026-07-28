@@ -37,6 +37,7 @@
 #include <QElapsedTimer>
 #include <QFileInfo>
 #include <QObject>
+#include "configuration/configuration.h"
 #include "evenementsorbitaux.h"
 #include "librairies/corps/satellite/satellite.h"
 #include "librairies/maths/maths.h"
@@ -113,8 +114,8 @@ int EvenementsOrbitaux::CalculEvenements(const int &nombre)
     QList<Satellite> sats;
 
     /* Initialisations */
-    double tlemin = -DATE::DATE_INFINIE;
-    double tlemax = DATE::DATE_INFINIE;
+    double elemMin = -DATE::DATE_INFINIE;
+    double elemMax = DATE::DATE_INFINIE;
     QMap<QString, ElementsOrbitaux> tabElem = _conditions.tabElem;
 
     tps.start();
@@ -126,27 +127,38 @@ int EvenementsOrbitaux::CalculEvenements(const int &nombre)
     while (it1.hasNext()) {
         it1.next();
 
-        const ElementsOrbitaux elem = it1.value();
-        sats.append(Satellite(elem));
+        if ((it1.key().toInt() == Configuration::instance()->noradStationSpatiale().toInt()) && !_conditions.listeElemIss.isEmpty()) {
 
-        const double epok = elem.epoque.jourJulienUTC();
-        if (epok > tlemin) {
-            tlemin = epok;
-        }
+            sats.append(Satellite(_conditions.listeElemIss));
 
-        if (epok < tlemax) {
-            tlemax = epok;
+            elemMin = _conditions.listeElemIss.first().epoque.jourJulienUTC();
+            elemMax = _conditions.listeElemIss.last().epoque.jourJulienUTC();
+
+        } else {
+
+            const ElementsOrbitaux elem = it1.value();
+            sats.append(Satellite(elem));
+
+            const double epok = elem.epoque.jourJulienUTC();
+            if (epok > elemMin) {
+                elemMin = epok;
+            }
+
+            if (epok < elemMax) {
+                elemMax = epok;
+            }
         }
     }
 
-    if (tabElem.keys().count() == 1) {
-        _donnees.ageElementsOrbitaux.append(fabs(_conditions.jj1 - tlemin));
-    } else {
+    if ((tabElem.keys().count() > 1) || !_conditions.listeElemIss.isEmpty()) {
 
-        const double age1 = fabs(_conditions.jj1 - tlemin);
-        const double age2 = fabs(_conditions.jj1 - tlemax);
+        const double age1 = fabs(_conditions.jj1 - elemMin);
+        const double age2 = fabs(_conditions.jj1 - elemMax);
         _donnees.ageElementsOrbitaux.append(qMin(age1, age2));
         _donnees.ageElementsOrbitaux.append(qMax(age1, age2));
+
+    } else {
+        _donnees.ageElementsOrbitaux.append(fabs(_conditions.jj1 - elemMin));
     }
 
     // Calcul des ephemerides

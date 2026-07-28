@@ -385,9 +385,9 @@
   <widget class="QPushButton" name="majElementsOrbitaux">
    <property name="geometry">
     <rect>
-     <x>190</x>
-     <y>187</y>
-     <width>261</width>
+     <x>320</x>
+     <y>157</y>
+     <width>241</width>
      <height>24</height>
     </rect>
    </property>
@@ -406,6 +406,19 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="majElementsOrbitauxIss">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>187</y>
+     <width>261</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Mettre à jour Éléments orbitaux de l'ISS...</string>
    </property>
   </widget>
  </widget>

@@ -36,7 +36,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >
+ * >    28 juillet 2026
  *
  */
 
@@ -53,6 +53,7 @@ class CalculsEvenementsOrbitaux;
 class QListWidgetItem;
 class AfficherResultats;
 class Date;
+class ElementsOrbitaux;
 
 
 class CalculsEvenementsOrbitaux : public QFrame
@@ -150,6 +151,9 @@ private:
     QAction *_aucun;
     QAction *_tous;
 
+    QPalette _paletteBouton;
+    QList<ElementsOrbitaux> _listeElemIss;
+
 
     /*
      * Methodes privees
@@ -178,6 +182,7 @@ private slots:
     void on_effacerHeuresEvt_clicked();
     void on_listeEvenements_customContextMenuRequested(const QPoint &pos);
     void on_majElementsOrbitaux_clicked();
+    void on_majElementsOrbitauxIss_clicked();
 
 };
 
