@@ -30,17 +30,11 @@
  * >    29 octobre 2022
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    28 juillet 2026
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "informationstest.h"
 #include "configuration/configuration.h"
 #include "interface/onglets/donnees/informationssatellite.h"

@@ -30,7 +30,7 @@
  * >    8 juin 2022
  *
  * Date de revision
- * >
+ * >    28 juillet 2026
  *
  */
 
@@ -60,7 +60,7 @@ void ConditionEclipseTest::testCalcul()
     const TLE tle(ligne0, ligne1, ligne2);
 
     // Satellite non eclipse
-    Date date(2019, 12, 31, 17, 10, 19., 0.);
+    Date date(2019, 12, 31, 17, 10, 20., 0.);
 
     SGP4 sgp4;
     sgp4.Calcul(date, tle.elements());
@@ -71,40 +71,40 @@ void ConditionEclipseTest::testCalcul()
     ConditionEclipse cond;
     cond.CalculSatelliteEclipse(sgp4.position(), soleil);
 
-    QCOMPARE(cond.eclipseSoleil().elongation, 1.2372960132682804);
+    QCOMPARE(cond.eclipseSoleil().elongation, 1.236215806609081);
     QCOMPARE(cond.eclipseSoleil().luminosite, 1.);
-    QCOMPARE(cond.eclipseSoleil().phi, 1.2119664974413888);
-    QCOMPARE(cond.eclipseSoleil().phiSoleil, 0.0247918029445);
+    QCOMPARE(cond.eclipseSoleil().phi, 1.215462050352635);
+    QCOMPARE(cond.eclipseSoleil().phiSoleil, 0.004733606293582625);
     QCOMPARE(cond.eclipseSoleil().type, TypeEclipse::NON_ECLIPSE);
     QCOMPARE(cond.eclipseTotale(), false);
     QCOMPARE(cond.eclipseAnnulaire(), false);
     QCOMPARE(cond.eclipsePartielle(), false);
 
     // Satellite eclipse partielle
-    date = Date(2019, 12, 31, 17, 10, 20., 0.);
+    date = Date(2019, 12, 31, 17, 10, 21., 0.);
     sgp4.Calcul(date, tle.elements());
     soleil.CalculPositionSimp(date);
 
     cond.CalculSatelliteEclipse(sgp4.position(), soleil);
-    QCOMPARE(cond.eclipseSoleil().elongation, 1.2362158066090845);
-    QCOMPARE(arrondi(cond.eclipseSoleil().luminosite, 9), 0.998031093);
-    QCOMPARE(cond.eclipseSoleil().phi, 1.2119741808986393);
-    QCOMPARE(cond.eclipseSoleil().phiSoleil, 0.02479180272212746);
+    QCOMPARE(cond.eclipseSoleil().elongation, 1.2351356309403634);
+    QCOMPARE(cond.eclipseSoleil().luminosite, 0.9993833814524049);
+    QCOMPARE(cond.eclipseSoleil().phi, 1.2154637708887739);
+    QCOMPARE(cond.eclipseSoleil().phiSoleil, 0.004733606071306288);
     QCOMPARE(cond.eclipseSoleil().type, TypeEclipse::ECLIPSE_PARTIELLE);
     QCOMPARE(cond.eclipseTotale(), false);
     QCOMPARE(cond.eclipseAnnulaire(), false);
     QCOMPARE(cond.eclipsePartielle(), true);
 
     // Satellite eclipse totale
-    date = Date(2019, 12, 31, 17, 11, 06., 0.);
+    date = Date(2019, 12, 31, 17, 10, 49., 0.);
     sgp4.Calcul(date, tle.elements());
     soleil.CalculPositionSimp(date);
 
     cond.CalculSatelliteEclipse(sgp4.position(), soleil);
-    QCOMPARE(cond.eclipseSoleil().elongation, 1.1865621461299487);
+    QCOMPARE(cond.eclipseSoleil().elongation, 1.204903874518218);
     QCOMPARE(cond.eclipseSoleil().luminosite, 0.);
-    QCOMPARE(cond.eclipseSoleil().phi, 1.2123346939787312);
-    QCOMPARE(cond.eclipseSoleil().phiSoleil, 0.02479179259581998);
+    QCOMPARE(cond.eclipseSoleil().phi, 1.2155132495151149);
+    QCOMPARE(cond.eclipseSoleil().phiSoleil, 0.004733599885523706);
     QCOMPARE(cond.eclipseSoleil().type, TypeEclipse::ECLIPSE_TOTALE);
     QCOMPARE(cond.eclipseTotale(), true);
     QCOMPARE(cond.eclipseAnnulaire(), false);

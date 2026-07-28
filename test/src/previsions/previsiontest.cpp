@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    28 juillet 2026
  *
  */
 
@@ -78,7 +78,6 @@ void PrevisionTest::testAll()
     conditions.hauteur = 0.;
     conditions.crepuscule = MATHS::PI_SUR_DEUX;
     conditions.extinction = true;
-    conditions.refraction = true;
     conditions.effetEclipsePartielle = true;
     conditions.calcEclipseLune = true;
 

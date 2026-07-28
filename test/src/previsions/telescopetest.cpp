@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    28 juillet 2026
  *
  */
 
@@ -107,7 +107,7 @@ void TelescopeTest::testCalculSuiviTelescope1()
     lune.CalculPosVit(date);
 
     ConditionEclipse condEcl;
-    condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, true);
+    condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune);
 
     // Date de lever
     const ElementsAOS elemAOS = Evenements::CalculAOS(date, sat, conditions.observateur);
@@ -122,7 +122,7 @@ void TelescopeTest::testCalculSuiviTelescope1()
 
     soleil.CalculPosVit(date);
     lune.CalculPosVit(date);
-    condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, true);
+    condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune);
 
     const ElementsAOS elemLOS = Evenements::CalculAOS(date, sat, conditions.observateur);
     const Date dateLosSuivi(elemLOS.date.jourJulienUTC(), conditions.offset);

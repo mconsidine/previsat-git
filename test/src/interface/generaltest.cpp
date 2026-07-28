@@ -30,12 +30,11 @@
  * >    29 octobre 2019
  *
  * Date de revision
- * >    2 avril 2025
+ * >    28 juillet 2026
  *
  */
 
 #include <QtTest>
-
 #include "generaltest.h"
 #include "configuration/configuration.h"
 #include "configuration/gestionnairexml.h"
@@ -71,6 +70,7 @@ void GeneralTest::testSauveOngletGeneral()
 
     const QString dirLocalData = dir.path() + QDir::separator() + "test" + QDir::separator() + "data";
     Configuration::instance()->_dirLocalData = dirLocalData;
+    Configuration::instance()->_dirCfg = dirLocalData + QDir::separator() + "config";
     Date::Initialisation(dirLocalData);
 
     Configuration::instance()->OuvertureBaseDonneesSatellites();
@@ -114,7 +114,7 @@ void GeneralTest::testSauveOngletGeneral()
     sat.CalculPosVit(date);
     sat.CalculCoordHoriz(observateur, true);
 
-    sat._conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, &lune, true);
+    sat._conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, &lune);
     sat.CalculCoordTerrestres(observateur);
     sat.CalculCoordEquat(observateur);
     sat._magnitude.Calcul(sat.conditionEclipse(), observateur, sat.distance(), sat.hauteur(),
@@ -122,7 +122,7 @@ void GeneralTest::testSauveOngletGeneral()
 
     sat.CalculElementsOsculateurs(date);
     const Date dateInit = Date(date.jourJulienUTC(), 0., false);
-    sat.CalculTracesAuSol(dateInit, 1, true, true);
+    sat.CalculTracesAuSol(dateInit, 1, true);
     sat._phasage.Calcul(sat.elementsOsculateurs(), sat.elementsOrbitaux().no);
     sat.CalculBeta(soleil);
     sat._signal.Calcul(sat.rangeRate(), sat.distance());

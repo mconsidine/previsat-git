@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    28 juillet 2026
  *
  */
 
@@ -79,7 +79,6 @@ void TransitsTest::testAll()
     conditions.hauteur = 5. * MATHS::DEG2RAD;
     conditions.crepuscule = MATHS::PI_SUR_DEUX;
     conditions.extinction = false;
-    conditions.refraction = true;
     conditions.effetEclipsePartielle = true;
     conditions.calcEclipseLune = false;
     conditions.calcTransitLunaireJour = true;

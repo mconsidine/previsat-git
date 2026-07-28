@@ -30,11 +30,10 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    1er fevrier 2025
+ * >    28 juillet 2026
  *
  */
 
-#include <iostream>
 #include <QCoreApplication>
 #include <QtTest>
 #include "interface/generaltest.h"

@@ -30,17 +30,11 @@
  * >    29 octobre 2022
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    28 juillet 2026
  *
  */
 
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
 #include <QtTest>
-#pragma GCC diagnostic warning "-Wconversion"
-#pragma GCC diagnostic warning "-Wswitch-default"
-#pragma GCC diagnostic warning "-Wswitch-enum"
 #include "osculateurstest.h"
 #include "../../../src/interface/onglets/osculateurs/ui_osculateurs.h"
 #include "configuration/configuration.h"
@@ -102,7 +96,7 @@ void OsculateursTest::testSauveOngletOsculateurs()
     sat.CalculLatitude();
     sat.CalculAltitude();
     const Date dateInit = Date(date.jourJulienUTC(), 0., false);
-    sat.CalculTracesAuSol(dateInit, 1, true, true);
+    sat.CalculTracesAuSol(dateInit, 1, true);
     sat._phasage.Calcul(sat.elementsOsculateurs(), sat.elementsOrbitaux().no);
     sat._signal.Calcul(sat.rangeRate(), sat.distance());
     Configuration::instance()->listeSatellites().append(sat);

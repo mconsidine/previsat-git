@@ -36,7 +36,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >
+ * >    28 juillet 2026
  *
  */
 
@@ -53,6 +53,7 @@ public:
 private:
 
     static void testCalculEvenements1();
+    static void testCalculEvenements2();
 };
 
 #endif // EVENEMENTSORBITAUXTEST_H

@@ -30,7 +30,7 @@
  * >    1er octobre 223
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    28 juillet 2026
  *
  */
 
@@ -90,7 +90,6 @@ void StarlinkTest::testStarlink1()
     conditions.hauteur = 0.;
     conditions.crepuscule = -6. * MATHS::DEG2RAD;
     conditions.extinction = true;
-    conditions.refraction = true;
     conditions.effetEclipsePartielle = true;
     conditions.calcEclipseLune = true;
     conditions.tabElem[tabElem.firstKey()] = tabElem[tabElem.firstKey()];

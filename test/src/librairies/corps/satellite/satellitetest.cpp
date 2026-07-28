@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    14 octobre 2025
+ * >    28 juillet 2026
  *
  */
 
@@ -306,7 +306,7 @@ void SatelliteTest::testCalculTraceCiel1()
 
     Satellite sat(tle.elements());
     sat.CalculPosVit(date);
-    sat.CalculTraceCiel(date, true, true, obs);
+    sat.CalculTraceCiel(date, true, obs);
 
     QCOMPARE_GT(sat.traceCiel().size(), 0);
 }
@@ -329,7 +329,7 @@ void SatelliteTest::testCalculTraceCiel2()
 
     Satellite sat(tle.elements());
     sat.CalculPosVit(date);
-    sat.CalculTraceCiel(date, true, true, obs, 0, date.jourJulienUTC() + 5. * DATE::NB_JOUR_PAR_MIN);
+    sat.CalculTraceCiel(date, true, obs, 0, date.jourJulienUTC() + 5. * DATE::NB_JOUR_PAR_MIN);
 
     ConditionEclipse condEcl;
     condEcl.CalculSatelliteEclipse(sat.position(), soleil);

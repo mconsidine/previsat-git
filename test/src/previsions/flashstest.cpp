@@ -30,7 +30,7 @@
  * >    18 juin 2019
  *
  * Date de revision
- * >    7 juillet 2024
+ * >    28 juillet 2026
  *
  */
 
@@ -82,7 +82,6 @@ void FlashsTest::testAll()
     conditions.crepuscule = -6. * MATHS::DEG2RAD;
     conditions.angleLimite = MATHS::PI;
     conditions.extinction = true;
-    conditions.refraction = true;
     conditions.effetEclipsePartielle = true;
     conditions.calcEclipseLune = true;
 
@@ -141,7 +140,7 @@ void FlashsTest::testCalculMagnitudeFlash()
     soleil.CalculPosVit(date);
     soleil.CalculCoordHoriz(obs, true);
 
-    QCOMPARE(Flashs::CalculMagnitudeFlash(date, sat, soleil, true, true), -1.8325270487881304);
+    QCOMPARE(Flashs::CalculMagnitudeFlash(date, sat, soleil, true), -1.8325270487881304);
 
     Configuration::instance()->FermetureBaseDonneesSatellites();
 }
