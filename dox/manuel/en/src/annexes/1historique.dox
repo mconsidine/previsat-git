@@ -21,7 +21,7 @@
  * >    1er mai 2022
  *
  * Date de revision
- * >    2 fevrier 2026
+ * >    28 juillet 2026
  *
  */
 
@@ -29,6 +29,19 @@
 /**
 
 \page Historique Version history
+
+
+<b><span style="color:red;">Version 7.3 (revision 0) :</span><br />
+April 2026 - August 2026 :</b>
+<ul>
+<li>Upgrade to Qt6.11.1 libraries.
+<li>Add orbital elements including maneuvers of ISS in Predictions tab and in Telescope tab.
+<li>Add selection of filtered satellite names.
+<li>Add new model of Earth shadow (PPM_atm).
+<li>Bug fix while loading orbital element file.
+</ul>
+
+<hr />
 
 
 <b><span style="color:red;">Version 7.2 (revision 1) :</span><br />
