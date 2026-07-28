@@ -30,7 +30,7 @@
  * >    25 septembre 2023
  *
  * Date de revision
- * >    7 juin 2025
+ * >    28 juillet 2026
  *
  */
 
@@ -490,9 +490,6 @@ void CalculsStarlink::on_calculs_clicked()
         // Prise en compte de l'extinction atmospherique
         conditions.extinction = settings.value("affichage/extinctionAtmospherique").toBool();
 
-        // Prise en compte de la refraction atmospherique
-        conditions.refraction = settings.value("affichage/refractionAtmospherique").toBool();
-
         // Prise en compte de l'effet des eclipses partielles sur la magnitude
         conditions.effetEclipsePartielle = settings.value("affichage/effetEclipsesMagnitude").toBool();
 
@@ -527,7 +524,6 @@ void CalculsStarlink::on_calculs_clicked()
         qInfo() << "Hauteur minimale du satellite =" << conditions.hauteur;
         qInfo() << "Hauteur maximale du Soleil = " << conditions.crepuscule;
         qInfo() << "Prise en compte de l'extinction atmospherique =" << conditions.extinction;
-        qInfo() << "Prise en compte de la refraction atmospherique =" << conditions.refraction;
         qInfo() << "Prise en compte de l'effet des eclipses partielles sur la magnitude =" << conditions.effetEclipsePartielle;
         qInfo() << "Prise en compte des eclipses de Lune =" << conditions.calcEclipseLune;
         qInfo().noquote() << "Groupe Starlink =" << _ui->groupe->currentText();

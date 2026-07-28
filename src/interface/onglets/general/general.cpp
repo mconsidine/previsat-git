@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    16 decembre 2025
+ * >    28 juillet 2026
  *
  */
 
@@ -352,8 +352,7 @@ void General::AffichageDonneesSatellite(const Date &date)
                         && settings.value("affichage/affnotif").toBool()) {
 
                     const double mag = Flashs::CalculMagnitudeFlash(date, satellite, Configuration::instance()->soleil(),
-                                                                    settings.value("affichage/effetEclipsesMagnitude").toBool(),
-                                                                    settings.value("affichage/refractionAtmospherique").toBool());
+                                                                    settings.value("affichage/effetEclipsesMagnitude").toBool());
 
                     magn = qMin(mag, magn);
 
@@ -429,8 +428,8 @@ void General::AffichageDonneesSatellite(const Date &date)
 
         EFFACE_OBJET(_dateEclipse);
         _dateEclipse = new Date(Evenements::CalculOmbrePenombre(date, satellite, settings.value("affichage/nombreTrajectoires").toInt(),
-                                                                settings.value("affichage/eclipsesLune").toBool(),
-                                                                settings.value("affichage/refractionAtmospherique").toBool()), date.offsetUTC());
+                                                                settings.value("affichage/eclipsesLune").toBool()), date.offsetUTC());
+
         _acalcDN = false;
         _isEclipse = satellite.conditionEclipse().eclipseTotale();
     }
@@ -677,9 +676,11 @@ void General::EcritureInformationsEclipse(const QString &corpsOccultant, const d
         if (conditionEclipse.eclipsePartielle()) {
             illumination = tr("Satellite en éclipse partielle%1").arg(corpsOccultant);
         }
+
         if (conditionEclipse.eclipseAnnulaire()) {
             illumination = tr("Satellite en éclipse annulaire%1").arg(corpsOccultant);
         }
+
         illumination.append(" (%1%)");
         _ui->magnitudeSat->setText(illumination.arg(fractionIlluminee, 0, 'f', 0));
     }

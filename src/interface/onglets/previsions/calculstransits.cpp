@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    8 juillet 2026
+ * >    28 juillet 2026
  *
  */
 
@@ -519,9 +519,6 @@ void CalculsTransits::on_calculsTransit_clicked()
         // Unites de longueur
         conditions.unite = (settings.value("affichage/unite").toBool()) ? tr("km", "kilometer") : tr("nmi", "nautical mile");
 
-        // Prise en compte de la refraction atmospherique
-        conditions.refraction = settings.value("affichage/refractionAtmospherique").toBool();
-
         // Prise en compte de l'effet des eclipses partielles sur la magnitude
         conditions.effetEclipsePartielle = settings.value("affichage/effetEclipsesMagnitude").toBool();
 
@@ -564,7 +561,6 @@ void CalculsTransits::on_calculsTransit_clicked()
         qInfo() << "Elongation maximale = " << conditions.seuilConjonction;
         qInfo() << "Calcul pour le Soleil =" << conditions.calcEphemSoleil;
         qInfo() << "Calcul pour la Lune =" << conditions.calcEphemLune;
-        qInfo() << "Prise en compte de la refraction atmospherique =" << conditions.refraction;
         qInfo() << "Prise en compte de l'effet des eclipses partielles sur la magnitude =" << conditions.effetEclipsePartielle;
         qInfo() << "Calcul des transits lunaires de jour = " << conditions.calcTransitLunaireJour;
         qInfo() << "Prise en compte des eclipses de Lune =" << conditions.calcEclipseLune;

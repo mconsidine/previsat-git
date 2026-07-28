@@ -30,7 +30,7 @@
  * >    5 mars 2023
  *
  * Date de revision
- * >    1er janvier 2025
+ * >    28 juillet 2026
  *
  */
 
@@ -287,7 +287,7 @@ void AjustementDates::MajCoordHorizDebut()
     ConditionEclipse condEcl;
     condEcl.CalculSatelliteEclipse(sat.position(), soleil);
     sat.setConditionEclipse(condEcl);
-    sat.CalculTraceCiel(date0, true, true, _observateur, 0, date1.jourJulienUTC());
+    sat.CalculTraceCiel(date0, true, _observateur, 0, date1.jourJulienUTC());
 
     // Mise a jour de l'interface
     _radar->show(_observateur, soleil, lune, QList<Satellite> () << sat);
@@ -335,7 +335,7 @@ void AjustementDates::MajCoordHorizFin()
     ConditionEclipse condEcl;
     condEcl.CalculSatelliteEclipse(sat.position(), soleil);
     sat.setConditionEclipse(condEcl);
-    sat.CalculTraceCiel(date0, true, true, _observateur, 0, date1.jourJulienUTC());
+    sat.CalculTraceCiel(date0, true, _observateur, 0, date1.jourJulienUTC());
 
     _radar->show(_observateur, soleil, lune, QList<Satellite> () << sat);
 

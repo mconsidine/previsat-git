@@ -36,7 +36,7 @@
  * >    11 janvier 2020
  *
  * Date de revision
- * >    17 octobre 2022
+ * >    28 juillet 2026
  *
  */
 
@@ -98,14 +98,12 @@ public:
      * @param[in] satellite satellite
      * @param[in] nbTrajectoires nombre de trajectoires
      * @param[in] acalcEclipseLune calcul des eclipses produites par la Lune
-     * @param[in] refraction prise en compte de la refraction
      * @return date du prochain passage ombre->penombre ou penombre->ombre
      */
     static Date CalculOmbrePenombre(const Date &dateInit,
                                     const Satellite &satellite,
                                     const int nbTrajectoires,
-                                    const bool acalcEclipseLune,
-                                    const bool refraction);
+                                    const bool acalcEclipseLune);
 
 
     /*

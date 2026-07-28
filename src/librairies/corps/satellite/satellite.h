@@ -36,7 +36,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    1er janvier 2025
+ * >    28 juillet 2026
  *
  */
 
@@ -154,29 +154,25 @@ public:
      * @brief CalculTraceCiel Calcul de la trace dans le ciel
      * @param[in] date0 date initiale
      * @param[in] acalcEclipseLune calcul des eclipses produites par la Lune
-     * @param[in] refraction prise en compte de la refraction atmospherique
      * @param[in] observateur observateur
      * @param[in] sec pas en secondes
      * @param[in] jj1 jour julien maximal
      */
     void CalculTraceCiel(const Date &date0,
-        const bool acalcEclipseLune,
-        const bool refraction,
-        const Observateur &observateur,
-        const int sec = 0,
-        const double jj1 = DATE::DATE_INFINIE);
+                         const bool acalcEclipseLune,
+                         const Observateur &observateur,
+                         const int sec = 0,
+                         const double jj1 = DATE::DATE_INFINIE);
 
     /**
      * @brief CalculTracesAuSol Calcul des traces au sol
      * @param[in] dateInit date de depart
      * @param[in] nbOrb nombre d'orbites
      * @param[in] acalcEclipseLune calcul des eclipses produites par la Lune
-     * @param[in] refraction prise en compte de la refraction atmospherique
      */
     void CalculTracesAuSol(const Date &dateInit,
                            const int nbOrb,
-                           const bool acalcEclipseLune,
-                           const bool refraction);
+                           const bool acalcEclipseLune);
 
     /**
      * @brief hasAOS Determination si le satellite peut se lever (ou se coucher) dans le ciel de l'observateur

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    28 juillet 2026
  *
  */
 
@@ -54,15 +54,10 @@ struct EphemeridesEvenements
     double posZ;
 
     // Pour les passages ombre/penombre/lumiere
-    double elongationSoleil;
-    double phiSoleil;
-    double phiTerre;
-
-    double elongationLune;
-    double phiLune;
-
-    double luminositeEclipseSoleil;
-    double luminositeEclipseLune;
+    bool eclipseSoleil;
+    bool penombreSoleil;
+    bool eclipseLune;
+    bool penombreLune;
 
     // Pour les passages apogee/perigee
     double rayon;
@@ -160,13 +155,14 @@ int EvenementsOrbitaux::CalculEvenements(const int &nombre)
     /* Corps de la methode */
     bool passNoeuds;
     bool passOmbre;
+    bool passPenombre;
     bool passPso;
     bool transitionsJourNuit;
-    bool tmpOmbre;
     int k;
     int l;
     int m;
     int n;
+    int q;
     int i;
     int dim;
     double rayonVecteur;
@@ -187,6 +183,7 @@ int EvenementsOrbitaux::CalculEvenements(const int &nombre)
 
         passNoeuds = false;
         passOmbre = false;
+        passPenombre = false;
         passPso = false;
         transitionsJourNuit = false;
 
@@ -194,6 +191,7 @@ int EvenementsOrbitaux::CalculEvenements(const int &nombre)
         l = 0;
         m = 0;
         n = 0;
+        q = 0;
 
         sat = sats.at(j);
         resultatSat.clear();
@@ -214,7 +212,7 @@ int EvenementsOrbitaux::CalculEvenements(const int &nombre)
             jjm[2] = eph3.jourJulienUTC;
 
             // Recherche des passages aux noeuds
-            if (_conditions.passageNoeuds) {
+            if (_conditions.passageNoeuds && it3.hasNext()) {
 
                 k = i;
                 if (((eph1.posZ * eph3.posZ) < 0.) && !passNoeuds) {
@@ -228,8 +226,8 @@ int EvenementsOrbitaux::CalculEvenements(const int &nombre)
 
                     res = CalculEvt(jjm, evt, 0., sat);
                     res.typeEvenement = (eph3.posZ >= 0.) ?
-                                QObject::tr("Noeud Ascendant - PSO = 0°", "In orbit position") :
-                                QObject::tr("Noeud Descendant - PSO = 180°", "In orbit position");
+                                            QObject::tr("Noeud Ascendant - PSO = 0°", "In orbit position") :
+                                            QObject::tr("Noeud Descendant - PSO = 180°", "In orbit position");
 
                     result.append(res);
                     k++;
@@ -237,99 +235,319 @@ int EvenementsOrbitaux::CalculEvenements(const int &nombre)
             }
 
             // Recherche des passages ombre/penombre/lumiere
-            if (_conditions.passageOmbre) {
+            if (_conditions.passageOmbre && it3.hasNext()) {
 
+                std::array<bool, 2> ecl;
                 l = i;
-                tmpOmbre = false;
-                const double eclipse1 = eph1.phiTerre - eph1.phiSoleil - eph1.elongationSoleil;
-                const double eclipse3 = eph3.phiTerre - eph3.phiSoleil - eph3.elongationSoleil;
+                q = i;
 
-                if (((eclipse1 * eclipse3) < 0.) && !passOmbre) {
+                if ((eph1.eclipseSoleil != eph2.eclipseSoleil) && !passOmbre) {
 
-                    // Il y a un passage ombre->lumiere ou lumiere->ombre : calcul par interpolation de la date
-                    l = i;
-                    tmpOmbre = true;
-                    const double eclipse2 = eph2.phiTerre - eph2.phiSoleil - eph2.elongationSoleil;
+                    // Il y a un passage ombre->penombre ou penombre->ombre
+                    passOmbre = true;
 
-                    evt[0] = eclipse1;
-                    evt[1] = eclipse2;
-                    evt[2] = eclipse3;
+                    bool eclipse;
+                    double tdn = eph2.jourJulienUTC;
+                    double t_ecl = eph1.jourJulienUTC;
 
-                    res = CalculEvt(jjm, evt, 0., sat);
-                    res.typeEvenement = (evt[2] >= 0.) ? QObject::tr("Pénombre -> Ombre") : QObject::tr("Ombre -> Pénombre");
+                    Soleil soleil;
+                    ConditionEclipse conditionEclipse;
 
-                    result.append(res);
+                    bool atrouve = false;
+                    while (!atrouve) {
+
+                        jjm[0] = t_ecl;
+                        jjm[1] = t_ecl + DATE::NB_JOUR_PAR_SEC;
+
+                        for(unsigned int p=0; p<2; p++) {
+
+                            const Date date(jjm[p], 0., false);
+
+                            // Position du satellite
+                            sat.CalculPosVit(date);
+
+                            // Position du Soleil
+                            soleil.CalculPositionSimp(date);
+
+                            // Conditions d'eclipse du satellite
+                            conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil);
+
+                            ecl[p] = (conditionEclipse.eclipseSoleil().type == TypeEclipse::ECLIPSE_TOTALE);
+                        }
+
+                        if (ecl[0] == ecl[1]) {
+                            tdn = jjm[1];
+                        }
+
+                        if ((fabs(tdn - t_ecl) < DATE::EPS_DATES) || (ecl[0] != ecl[1])) {
+                            atrouve = true;
+                            eclipse = ecl[1];
+                        }
+
+                        t_ecl = tdn;
+                    }
+
+                    if (atrouve) {
+
+                        // Nom du satellite
+                        res.nom = sat.elementsOrbitaux().nom;
+
+                        // Date de l'evenement
+                        res.date = Date(t_ecl, 0.);
+
+                        // Calcul de la position du satellite
+                        sat.CalculPosVit(res.date);
+                        sat.CalculCoordTerrestres(res.date);
+
+                        // Calcul de la PSO
+                        sat.CalculElementsOsculateurs(res.date);
+                        res.pso = modulo(sat.elementsOsculateurs().anomalieVraie() + sat.elementsOsculateurs().argumentPerigee(), MATHS::DEUX_PI);
+
+                        // Longitude, latitude
+                        res.longitude = sat.longitude();
+                        res.latitude = sat.latitude();
+
+                        res.typeEvenement = (eclipse) ? QObject::tr("Pénombre -> Ombre") : QObject::tr("Ombre -> Pénombre");
+
+                        result.append(res);
+                        l++;
+                    }
                 }
 
-                const double penombre1 = eph1.phiTerre + eph1.phiSoleil - eph1.elongationSoleil;
-                const double penombre3 = eph3.phiTerre + eph3.phiSoleil - eph3.elongationSoleil;
+                if ((eph1.penombreSoleil != eph2.penombreSoleil) && !passPenombre) {
 
-                if (((penombre1 * penombre3) < 0.) && !passOmbre) {
+                    // Il y a un passage lumiere->penombre ou penombre->lumiere
+                    passPenombre = true;
 
-                    tmpOmbre = true;
-                    const double penombre2 = eph2.phiTerre + eph2.phiSoleil - eph2.elongationSoleil;
+                    bool penombre;
+                    double tdn = eph2.jourJulienUTC;
+                    double t_ecl = eph1.jourJulienUTC;
 
-                    // Il y a un passage lumiere->penombre ou penombre->lumiere : calcul par interpolation de la date
-                    evt[0] = penombre1;
-                    evt[1] = penombre2;
-                    evt[2] = penombre3;
+                    Soleil soleil;
+                    ConditionEclipse conditionEclipse;
 
-                    res = CalculEvt(jjm, evt, 0., sat);
-                    res.typeEvenement = (evt[2] >= 0.) ? QObject::tr("Lumière -> Pénombre") : QObject::tr("Pénombre -> Lumière");
+                    bool atrouve = false;
+                    while (!atrouve) {
 
-                    result.append(res);
+                        jjm[0] = t_ecl;
+                        jjm[1] = t_ecl + DATE::NB_JOUR_PAR_SEC;
+
+                        for(unsigned int p=0; p<2; p++) {
+
+                            const Date date(jjm[p], 0., false);
+
+                            // Position du satellite
+                            sat.CalculPosVit(date);
+
+                            // Position du Soleil
+                            soleil.CalculPositionSimp(date);
+
+                            // Conditions d'eclipse du satellite
+                            conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil);
+
+                            ecl[p] = (conditionEclipse.eclipseSoleil().type == TypeEclipse::NON_ECLIPSE);
+                        }
+
+                        if (ecl[0] == ecl[1]) {
+                            tdn = jjm[1];
+                        }
+
+                        if ((fabs(tdn - t_ecl) < DATE::EPS_DATES) || (ecl[0] != ecl[1])) {
+                            atrouve = true;
+                            penombre = ecl[1];
+                        }
+
+                        t_ecl = tdn;
+                    }
+
+                    if (atrouve) {
+
+                        // Nom du satellite
+                        res.nom = sat.elementsOrbitaux().nom;
+
+                        // Date de l'evenement
+                        res.date = Date(t_ecl, 0.);
+
+                        // Calcul de la position du satellite
+                        sat.CalculPosVit(res.date);
+                        sat.CalculCoordTerrestres(res.date);
+
+                        // Calcul de la PSO
+                        sat.CalculElementsOsculateurs(res.date);
+                        res.pso = modulo(sat.elementsOsculateurs().anomalieVraie() + sat.elementsOsculateurs().argumentPerigee(), MATHS::DEUX_PI);
+
+                        // Longitude, latitude
+                        res.longitude = sat.longitude();
+                        res.latitude = sat.latitude();
+
+                        res.typeEvenement = (penombre) ? QObject::tr("Pénombre -> Lumière") : QObject::tr("Lumière -> Pénombre");
+
+                        result.append(res);
+                        q++;
+                    }
                 }
 
                 if (_conditions.calcEclipseLune) {
 
-                    const double eclipseLune1 = eph1.phiLune - eph1.phiSoleil - eph1.elongationLune;
-                    const double eclipseLune3 = eph3.phiLune - eph3.phiSoleil - eph3.elongationLune;
+                    if ((eph1.eclipseLune != eph2.eclipseLune) && !passOmbre) {
+#if (!COVERAGE_TEST)
+                        // Il y a un passage ombre->penombre ou penombre->ombre par la Lune
+                        passOmbre = true;
 
-                    if (((eclipseLune1 * eclipseLune3) < 0.) && !passOmbre && (eph2.luminositeEclipseLune < eph2.luminositeEclipseSoleil)) {
+                        bool eclipse;
+                        double tdn = eph2.jourJulienUTC;
+                        double t_ecl = eph1.jourJulienUTC;
 
-                        // Il y a un passage ombre->lumiere ou lumiere->ombre : calcul par interpolation de la date
-                        l = i;
-                        tmpOmbre = true;
-                        const double eclipseLune2 = eph2.phiLune - eph2.phiSoleil - eph2.elongationLune;
+                        Soleil soleil;
+                        Lune lune;
+                        ConditionEclipse conditionEclipse;
 
-                        evt[0] = eclipseLune1;
-                        evt[1] = eclipseLune2;
-                        evt[2] = eclipseLune3;
+                        bool atrouve = false;
+                        while (!atrouve) {
 
-                        res = CalculEvt(jjm, evt, 0., sat);
-                        res.typeEvenement = (evt[2] >= 0.) ? QObject::tr("Pénombre -> Ombre (Lune)") : QObject::tr("Ombre -> Pénombre (Lune)");
+                            jjm[0] = t_ecl;
+                            jjm[1] = t_ecl + DATE::NB_JOUR_PAR_SEC;
 
-                        result.append(res);
+                            for(unsigned int p=0; p<2; p++) {
+
+                                const Date date(jjm[p], 0., false);
+
+                                // Position du satellite
+                                sat.CalculPosVit(date);
+
+                                // Position du Soleil
+                                soleil.CalculPositionSimp(date);
+
+                                // Position de la Lune
+                                lune.CalculPositionSimp(date);
+
+                                // Conditions d'eclipse du satellite
+                                conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, &lune);
+
+                                ecl[p] = (conditionEclipse.eclipseLune().type == TypeEclipse::ECLIPSE_TOTALE);
+                            }
+
+                            if (ecl[0] == ecl[1]) {
+                                tdn = jjm[1];
+                            }
+
+                            if ((fabs(tdn - t_ecl) < DATE::EPS_DATES) || (ecl[0] != ecl[1])) {
+                                atrouve = true;
+                                eclipse = ecl[1];
+                            }
+
+                            t_ecl = tdn;
+                        }
+
+                        if (atrouve) {
+
+                            // Nom du satellite
+                            res.nom = sat.elementsOrbitaux().nom;
+
+                            // Date de l'evenement
+                            res.date = Date(t_ecl, 0.);
+
+                            // Calcul de la position du satellite
+                            sat.CalculPosVit(res.date);
+                            sat.CalculCoordTerrestres(res.date);
+
+                            // Calcul de la PSO
+                            sat.CalculElementsOsculateurs(res.date);
+                            res.pso = modulo(sat.elementsOsculateurs().anomalieVraie() + sat.elementsOsculateurs().argumentPerigee(), MATHS::DEUX_PI);
+
+                            // Longitude, latitude
+                            res.longitude = sat.longitude();
+                            res.latitude = sat.latitude();
+
+                            res.typeEvenement = (eclipse) ? QObject::tr("Ombre -> Pénombre (Lune)") : QObject::tr("Pénombre -> Ombre (Lune)");
+
+                            result.append(res);
+                            l++;
+                        }
+#endif
                     }
 
-                    const double penombreLune1 = eph1.phiLune + eph1.phiSoleil - eph1.elongationLune;
-                    const double penombreLune3 = eph3.phiLune + eph3.phiSoleil - eph3.elongationLune;
+                    if ((eph1.penombreLune != eph2.penombreLune) && !passPenombre) {
 
-                    if (((penombreLune1 * penombreLune3) < 0.) && !passOmbre && (eph2.luminositeEclipseLune < eph2.luminositeEclipseSoleil)) {
+                        // Il y a un passage lumiere->penombre ou penombre->lumiere par la Lune
+                        passPenombre = true;
 
-                        // Il y a un passage penombre->lumiere ou lumiere->penombre : calcul par interpolation de la date
-                        tmpOmbre = true;
-                        const double penombreLune2 = eph2.phiLune + eph2.phiSoleil - eph2.elongationLune;
+                        bool penombre;
+                        double tdn = eph2.jourJulienUTC;
+                        double t_ecl = eph1.jourJulienUTC;
 
-                        evt[0] = penombreLune1;
-                        evt[1] = penombreLune2;
-                        evt[2] = penombreLune3;
+                        Soleil soleil;
+                        Lune lune;
+                        ConditionEclipse conditionEclipse;
 
-                        res = CalculEvt(jjm, evt, 0., sat);
-                        res.typeEvenement = (evt[2] >= 0.) ? QObject::tr("Lumière -> Pénombre (Lune)") : QObject::tr("Pénombre -> Lumière (Lune)");
+                        bool atrouve = false;
+                        while (!atrouve) {
 
-                        result.append(res);
+                            jjm[0] = t_ecl;
+                            jjm[1] = t_ecl + DATE::NB_JOUR_PAR_SEC;
+
+                            for(unsigned int p=0; p<2; p++) {
+
+                                const Date date(jjm[p], 0., false);
+
+                                // Position du satellite
+                                sat.CalculPosVit(date);
+
+                                // Position du Soleil
+                                soleil.CalculPositionSimp(date);
+
+                                // Position de la Lune
+                                lune.CalculPositionSimp(date);
+
+                                // Conditions d'eclipse du satellite
+                                conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, &lune);
+
+                                ecl[p] = (conditionEclipse.eclipseLune().type == TypeEclipse::NON_ECLIPSE);
+                            }
+
+                            if (ecl[0] == ecl[1]) {
+                                tdn = jjm[1];
+                            }
+
+                            if ((fabs(tdn - t_ecl) < DATE::EPS_DATES) || (ecl[0] != ecl[1])) {
+                                atrouve = true;
+                                penombre = ecl[1];
+                            }
+
+                            t_ecl = tdn;
+                        }
+
+                        if (atrouve) {
+
+                            // Nom du satellite
+                            res.nom = sat.elementsOrbitaux().nom;
+
+                            // Date de l'evenement
+                            res.date = Date(t_ecl, 0.);
+
+                            // Calcul de la position du satellite
+                            sat.CalculPosVit(res.date);
+                            sat.CalculCoordTerrestres(res.date);
+
+                            // Calcul de la PSO
+                            sat.CalculElementsOsculateurs(res.date);
+                            res.pso = modulo(sat.elementsOsculateurs().anomalieVraie() + sat.elementsOsculateurs().argumentPerigee(), MATHS::DEUX_PI);
+
+                            // Longitude, latitude
+                            res.longitude = sat.longitude();
+                            res.latitude = sat.latitude();
+
+                            res.typeEvenement = (penombre) ? QObject::tr("Pénombre -> Lumière (Lune)") : QObject::tr("Lumière -> Pénombre (Lune)");
+
+                            result.append(res);
+                            q++;
+                        }
                     }
-                }
-
-                if (tmpOmbre) {
-                    passOmbre = true;
-                    l++;
                 }
             }
 
             // Calcul des passages apogee/perigee
-            if (_conditions.passageApogee) {
+            if (_conditions.passageApogee && it3.hasNext()) {
 
                 if (((eph2.rayon > eph1.rayon) && (eph2.rayon > eph3.rayon)) || ((eph2.rayon < eph1.rayon) && (eph2.rayon < eph3.rayon))) {
 
@@ -370,7 +588,7 @@ int EvenementsOrbitaux::CalculEvenements(const int &nombre)
             }
 
             // Calcul des transitions jour/nuit
-            if (_conditions.transitionsJourNuit) {
+            if (_conditions.transitionsJourNuit && it3.hasNext()) {
 
                 m = i;
                 if (((eph1.transition * eph3.transition) < 0.) && !transitionsJourNuit) {
@@ -384,15 +602,15 @@ int EvenementsOrbitaux::CalculEvenements(const int &nombre)
 
                     res = CalculEvt(jjm, evt, 0., sat);
                     res.typeEvenement = (evt[2] <= 0.) ? QObject::tr("Passage terminateur Jour -> Nuit") :
-                                                            QObject::tr("Passage terminateur Nuit -> Jour");
+                                            QObject::tr("Passage terminateur Nuit -> Jour");
 
                     result.append(res);
                     m++;
                 }
             }
 
-            // Calcul des passages au quadrangles
-            if (_conditions.passagePso) {
+            // Calcul des passages aux quadrangles
+            if (_conditions.passagePso && it3.hasNext()) {
 
                 n = i;
                 for(int p=1; p<4; p+=2) {
@@ -418,11 +636,17 @@ int EvenementsOrbitaux::CalculEvenements(const int &nombre)
 
             passNoeuds = !(k == i);
             passOmbre = !(l == i);
+            passPenombre = !(q == i);
             passPso = !(n == i);
             transitionsJourNuit = !(m == i);
 
+            if (!_conditions.passageOmbre) {
+                it3.previous();
+            }
+
             it3.previous();
             it3.previous();
+
             i++;
         } while (i < dim);
 
@@ -504,15 +728,12 @@ QMap<QString, QList<EphemeridesEvenements> > EvenementsOrbitaux::CalculEphemerid
             eph.posZ = sat.position().z();
 
             // Pour les passages ombre/penombre/lumiere
-            eph.elongationSoleil = condEcl.eclipseSoleil().elongation;
-            eph.phiSoleil = condEcl.eclipseSoleil().phiSoleil;
-            eph.phiTerre = condEcl.eclipseSoleil().phi;
+            eph.eclipseSoleil = (condEcl.eclipseSoleil().type == TypeEclipse::ECLIPSE_TOTALE);
+            eph.penombreSoleil = (condEcl.eclipseSoleil().type == TypeEclipse::NON_ECLIPSE);
 
             if (_conditions.calcEclipseLune) {
-                eph.elongationLune = condEcl.eclipseLune().elongation;
-                eph.phiLune = condEcl.eclipseLune().phi;
-                eph.luminositeEclipseLune = condEcl.eclipseLune().luminosite;
-                eph.luminositeEclipseSoleil = condEcl.eclipseSoleil().luminosite;
+                eph.eclipseLune = (condEcl.eclipseLune().type == TypeEclipse::ECLIPSE_TOTALE);
+                eph.penombreLune = (condEcl.eclipseLune().type == TypeEclipse::NON_ECLIPSE);
             }
 
             // Pour les passages apogee/perigee

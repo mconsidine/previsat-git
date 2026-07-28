@@ -36,7 +36,7 @@
  * >    12 septembre 2015
  *
  * Date de revision
- * >    15 juin 2023
+ * >    28 juillet 2026
  *
  */
 
@@ -218,7 +218,7 @@ int Flashs::CalculFlashs(const int &nombre)
                 }
 
                 // Determination de la condition d'eclipse du satellite
-                condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
+                condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune);
 
                 // Le satellite n'est pas eclipse
                 if (!condEcl.eclipseTotale()) {
@@ -278,7 +278,7 @@ int Flashs::CalculFlashs(const int &nombre)
                         }
 
                         // Condition d'eclipse du satellite
-                        condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
+                        condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune);
 
                         if (condEcl.eclipseTotale() || (sat.hauteur() < _conditions.hauteur)) {
                             jj0 = jj2 + PAS0;
@@ -318,8 +318,7 @@ int Flashs::CalculFlashs(const int &nombre)
 double Flashs::CalculMagnitudeFlash(const Date &date,
                                     const Satellite &satellite,
                                     const Soleil &soleil,
-                                    const bool calcEclipseLune,
-                                    const bool refraction)
+                                    const bool calcEclipseLune)
 {
     /* Declarations des variables locales */
 
@@ -331,7 +330,7 @@ double Flashs::CalculMagnitudeFlash(const Date &date,
     }
 
     ConditionEclipse condEcl;
-    condEcl.CalculSatelliteEclipse(satellite.position(), soleil, &lune, refraction);
+    condEcl.CalculSatelliteEclipse(satellite.position(), soleil, &lune);
 
     /* Corps de la methode */
     _pan = 0;
@@ -675,7 +674,7 @@ void Flashs::DeterminationFlash(const QPointF minmax,
             }
 
             ConditionEclipse condEcl;
-            condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
+            condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune);
 
             // Magnitude du flash
             double mag = MagnitudeFlash(minmax.y(), condEcl, sat);
@@ -716,7 +715,7 @@ void Flashs::DeterminationFlash(const QPointF minmax,
                         }
 
                         // Condition d'eclipse du satellite
-                        condEcl2.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
+                        condEcl2.CalculSatelliteEclipse(sat.position(), soleil, &lune);
 
                         // Angle de reflexion
                         const double angref = AngleReflexion(sat, soleil);
@@ -851,7 +850,7 @@ void Flashs::LimiteFlash(const double mgn0,
         }
 
         // Conditions d'eclipse du satellite
-        condEcl.CalculSatelliteEclipse(satellite.position(), soleil, &lune, _conditions.refraction);
+        condEcl.CalculSatelliteEclipse(satellite.position(), soleil, &lune);
         ecl[i] = QPointF(jjm[i], (condEcl.eclipseLune().luminosite < condEcl.eclipseSoleil().luminosite) ?
                        condEcl.eclipseLune().phi - condEcl.eclipseLune().phiSoleil - condEcl.eclipseLune().elongation :
                                      condEcl.eclipseSoleil().phi - condEcl.eclipseSoleil().phiSoleil - condEcl.eclipseSoleil().elongation);

@@ -30,7 +30,7 @@
  * >    4 mars 2011
  *
  * Date de revision
- * >    12 septembre 2025
+ * >    28 juillet 2026
  *
  */
 
@@ -1953,7 +1953,7 @@ void AfficherResultats::on_resultatsPrevisions_itemSelectionChanged()
     sat.CalculElementsOsculateurs(dateMax);
 
     const Date dateLever = Evenements::CalculAOS(dateMax, sat, observateur, SensCalcul::ANTI_CHRONOLOGIQUE).date;
-    sat.CalculTraceCiel(dateLever, true, settings.value("affichage/refractionAtmospherique").toBool(), observateur, 1);
+    sat.CalculTraceCiel(dateLever, true, observateur, 1);
     satellites.append(sat);
 
     // Chargement du ciel

@@ -30,7 +30,7 @@
  * >    28 mars 2020
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    28 juillet 2026
  *
  */
 
@@ -240,8 +240,7 @@ Date Evenements::CalculNoeudOrbite(const Date &dateInit,
 Date Evenements::CalculOmbrePenombre(const Date &dateInit,
                                      const Satellite &satellite,
                                      const int nbTrajectoires,
-                                     const bool acalcEclipseLune,
-                                     const bool refraction)
+                                     const bool acalcEclipseLune)
 {
     /* Declarations des variables locales */
     Date dateEcl;
@@ -250,7 +249,7 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit,
     int i = 0;
     Satellite sat = satellite;
     if (sat.traceAuSol().isEmpty()) {
-        sat.CalculTracesAuSol(dateInit, nbTrajectoires, acalcEclipseLune, refraction);
+        sat.CalculTracesAuSol(dateInit, nbTrajectoires, acalcEclipseLune);
     }
 
     QListIterator it(sat.traceAuSol());
@@ -273,9 +272,10 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit,
         double tdn = dateInit.jourJulienUTC();
         double t_ecl = sat.traceAuSol().at(i-1).jourJulienUTC;
         double periode = sat.traceAuSol().at(i).jourJulienUTC - t_ecl;
+        t_ecl -= periode;
 
-        std::array<double, MATHS::DEGRE_INTERPOLATION> jjm;
-        std::array<QPointF, MATHS::DEGRE_INTERPOLATION> ecl;
+        std::array<double, 2> jjm;
+        std::array<bool, 2> ecl;
         Soleil soleil;
         Lune lune;
         ConditionEclipse conditionEclipse;
@@ -283,11 +283,10 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit,
         bool afin = false;
         while (!afin) {
 
-            jjm[0] = t_ecl - periode;
-            jjm[1] = t_ecl;
-            jjm[2] = t_ecl + periode;
+            jjm[0] = t_ecl;
+            jjm[1] = t_ecl + DATE::NB_JOUR_PAR_SEC;
 
-            for(unsigned int j=0; j<MATHS::DEGRE_INTERPOLATION; j++) {
+            for(unsigned int j=0; j<2; j++) {
 
                 const Date date(jjm[j], 0., false);
 
@@ -303,18 +302,17 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit,
                 }
 
                 // Conditions d'eclipse du satellite
-                conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, &lune, refraction);
+                conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, &lune);
                 const ElementsEclipse elements = (conditionEclipse.eclipseLune().luminosite < conditionEclipse.eclipseSoleil().luminosite) ?
                             conditionEclipse.eclipseLune() : conditionEclipse.eclipseSoleil();
 
-                ecl[j] = QPointF(jjm[j], elements.phi - elements.phiSoleil - elements.elongation);
+                ecl[j] = (elements.type == TypeEclipse::ECLIPSE_TOTALE);
             }
 
-            if (((ecl[0].y() * ecl[2].y()) < 0.) || ((ecl[0].y() > 0.) && (ecl[2].y() > 0.))) {
-                tdn = qRound(DATE::NB_SEC_PAR_JOUR * Maths::CalculValeurXInterpolation3(ecl, 0., DATE::EPS_DATES)) * DATE::NB_JOUR_PAR_SEC;
+            if (ecl[0] == ecl[1]) {
+                tdn = jjm[1];
             }
 
-            periode *= 0.5;
             if (fabs(tdn - t_ecl) < DATE::EPS_DATES) {
                 afin = true;
             }

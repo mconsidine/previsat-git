@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    8 juillet 2026
+ * >    28 juillet 2026
  *
  */
 
@@ -560,9 +560,6 @@ void CalculsPrevisions::on_calculsPrev_clicked()
         // Prise en compte de l'extinction atmospherique
         conditions.extinction = settings.value("affichage/extinctionAtmospherique").toBool();
 
-        // Prise en compte de la refraction atmospherique
-        conditions.refraction = settings.value("affichage/refractionAtmospherique").toBool();
-
         // Prise en compte de l'effet des eclipses partielles sur la magnitude
         conditions.effetEclipsePartielle = settings.value("affichage/effetEclipsesMagnitude").toBool();
 
@@ -604,7 +601,6 @@ void CalculsPrevisions::on_calculsPrev_clicked()
         qInfo() << "Hauteur minimale du satellite =" << conditions.hauteur;
         qInfo() << "Hauteur maximale du Soleil = " << conditions.crepuscule;
         qInfo() << "Prise en compte de l'extinction atmospherique =" << conditions.extinction;
-        qInfo() << "Prise en compte de la refraction atmospherique =" << conditions.refraction;
         qInfo() << "Prise en compte de l'effet des eclipses partielles sur la magnitude =" << conditions.effetEclipsePartielle;
         qInfo() << "Prise en compte des eclipses de Lune =" << conditions.calcEclipseLune;
         qInfo().noquote() << "Liste de numéros NORAD =" << conditions.tabElem.keys();

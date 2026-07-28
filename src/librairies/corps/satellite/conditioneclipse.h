@@ -36,7 +36,7 @@
  * >    4 septembre 2016
  *
  * Date de revision
- * >    21 septembre 2022
+ * >    28 juillet 2026
  *
  */
 
@@ -77,12 +77,10 @@ public:
      * @param[in] position position du satellite
      * @param[in] soleil Soleil
      * @param[in] lune Lune
-     * @param[in] refraction prise en compte de la refraction (cas de la Terre)
      */
     void CalculSatelliteEclipse(const Vecteur3D &position,
                                 const Soleil &soleil,
-                                const Lune *lune = nullptr,
-                                const bool refraction = true);
+                                const Lune *lune = nullptr);
 
 
     /*
@@ -123,18 +121,22 @@ private:
      * Methodes privees
      */
     /**
-     * @brief CalculEclipse Calcul des elements d'une eclipse
-     * @param[in] position position du satellite
-     * @param[in] positionCorpsOccultant position du corps occultant
-     * @param[in] corpsOccultant corps occultant (TERRE ou LUNE)
-     * @param[in] refraction prise en compte de la refraction (cas de la Terre)
+     * @brief CalculEclipseLune Calcul des elements d'une eclipse par la Lune
+     * @param[in] positionSatellite position du satellite
+     * @param[in] positionLune position de la Lune
      * @return elements de l'eclipse
      */
-    ElementsEclipse CalculEclipse(const Vecteur3D &position,
-                                  const Vecteur3D &positionCorpsOccultant,
-                                  const CorpsOccultant &corpsOccultant,
-                                  const bool refraction) const;
+    ElementsEclipse CalculEclipseLune(const Vecteur3D &positionSatellite,
+                                     const Vecteur3D &positionLune) const;
 
+    /**
+     * @brief CalculEclipseTerre Calcul des elements d'une eclipse par la Terre
+     * @param[in] positionSatellite position du satellite
+     * @param[in] positionLune position du Soleil
+     * @return elements de l'eclipse
+     */
+    ElementsEclipse CalculEclipseTerre(const Vecteur3D &positionSatellite,
+                                       const Vecteur3D &positionSoleil) const;
 };
 
 #endif // CONDITIONECLIPSE_H

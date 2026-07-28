@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 juillet 2026
+ * >    28 juillet 2026
  *
  */
 
@@ -201,7 +201,7 @@ int Prevision::CalculPrevisions(const int &nombre)
                 }
 
                 // Conditions d'eclipse du satellite
-                condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
+                condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune);
 
                 // Le satellite n'est pas eclipse
                 if (!condEcl.eclipseTotale() || !_conditions.eclipse) {
@@ -287,12 +287,19 @@ int Prevision::CalculPrevisions(const int &nombre)
                                 if (sat.hauteur() < _conditions.hauteur) {
                                     afin = true;
                                 } else {
+
                                     if (_conditions.calcEclipseLune) {
                                         lune.CalculPosVit(date);
                                     }
-                                    condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
-                                    magnitude.Calcul(condEcl, _conditions.observateur, sat.distance(), sat.hauteur(),
-                                                     sat.elementsOrbitaux().donnees.magnitudeStandard(), _conditions.extinction,
+
+                                    condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune);
+
+                                    magnitude.Calcul(condEcl,
+                                                     _conditions.observateur,
+                                                     sat.distance(),
+                                                     sat.hauteur(),
+                                                     sat.elementsOrbitaux().donnees.magnitudeStandard(),
+                                                     _conditions.extinction,
                                                      _conditions.effetEclipsePartielle);
 
                                     sat.CalculCoordEquat(_conditions.observateur);

@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    15 juin 2023
+ * >    28 juillet 2026
  *
  */
 
@@ -327,7 +327,7 @@ int Transits::CalculTransits(const int &nombre)
                             const bool ilu = (typeCorps == CorpsTransit::CORPS_LUNE) && (itr || iconj) &&
                                     (_conditions.calcTransitLunaireJour || (soleil.hauteur() < 0.));
 
-                            condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
+                            condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune);
 
                             if ((itr && (typeCorps == CorpsTransit::CORPS_SOLEIL)) || ilu) {
 
@@ -366,7 +366,7 @@ int Transits::CalculTransits(const int &nombre)
 
                                     // Position de la Lune
                                     lune.CalculPosVit(dates[j]);
-                                    condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune, _conditions.refraction);
+                                    condEcl.CalculSatelliteEclipse(sat.position(), soleil, &lune);
 
                                     // Date calendaire
                                     res.date = Date(dates[j].jourJulien() + DATE::EPS_DATES, 0.);

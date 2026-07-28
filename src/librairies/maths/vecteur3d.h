@@ -36,13 +36,14 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    28 juillet 2026
  *
  */
 
 #ifndef VECTEUR3D_H
 #define VECTEUR3D_H
 
+#include <array>
 #include "mathsconst.h"
 
 
@@ -181,6 +182,7 @@ public:
     double x() const;
     double y() const;
     double z() const;
+    std::array<double, 3> tab() const;
 
 
 protected:

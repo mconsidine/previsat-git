@@ -33,7 +33,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    25 fevrier 2023
+ * >    28 juillet 2026
  *
  */
 
@@ -85,14 +85,12 @@ public:
      * @param[in] satellite satellite
      * @param[in] soleil Soleil
      * @param[in] calcEclipseLune prise en compte des eclipses par la Lune
-     * @param[in] refraction prise en compte de la refraction
      * @return magnitude du flash
      */
     static double CalculMagnitudeFlash(const Date &date,
                                        const Satellite &satellite,
                                        const Soleil &soleil,
-                                       const bool calcEclipseLune,
-                                       const bool refraction);
+                                       const bool calcEclipseLune);
 
 protected:
 

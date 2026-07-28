@@ -36,7 +36,7 @@
  * >    15 aout 2020
  *
  * Date de revision
- * >    8 juillet 2026
+ * >    28 juillet 2026
  *
  */
 
@@ -74,7 +74,6 @@ struct ConditionsPrevisions
     bool eclipse;
     bool effetEclipsePartielle;
     bool extinction;
-    bool refraction;
     bool systeme;
 
     double crepuscule;

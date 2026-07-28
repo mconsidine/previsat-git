@@ -30,7 +30,7 @@
  * >    26 juin 2022
  *
  * Date de revision
- * >    8 juillet 2026
+ * >    28 juillet 2026
  *
  */
 
@@ -421,7 +421,7 @@ void SuiviTelescope::CalculAos()
         Lune lun;
         lun.CalculPosVit(dateCalcul);
 
-        condEcl.CalculSatelliteEclipse(satSuivi.position(), sol, &lun, true);
+        condEcl.CalculSatelliteEclipse(satSuivi.position(), sol, &lun);
         const QString ecl = (condEcl.eclipseTotale()) ? tr("Satellite en éclipse") : tr("Satellite éclairé");
 
         // Date de lever ou de coucher

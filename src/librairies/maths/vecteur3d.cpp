@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    17 mars 2023
+ * >    28 juillet 2026
  *
  */
 
@@ -197,6 +197,11 @@ double Vecteur3D::y() const
 double Vecteur3D::z() const
 {
     return _z;
+}
+
+std::array<double, 3> Vecteur3D::tab() const
+{
+    return { _x, _y, _z };
 }
 
 
