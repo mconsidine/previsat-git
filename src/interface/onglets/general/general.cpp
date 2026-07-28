@@ -1038,14 +1038,14 @@ void General::on_soleilLunePrec_clicked()
     _indexLuneSoleil = (_ui->stackedWidget_soleilLune->currentIndex() + _ui->stackedWidget_soleilLune->count() - 1)
             % _ui->stackedWidget_soleilLune->count();
     _ui->stackedWidget_soleilLune->setCurrentIndex(_indexLuneSoleil);
-    _ui->groupBox_soleil_lune->setTitle(_titresLuneSoleil[_indexLuneSoleil]);
+    _ui->groupBox_soleil_lune->setTitle(QCoreApplication::translate("General", _titresLuneSoleil[_indexLuneSoleil]));
 }
 
 void General::on_soleilLuneSuiv_clicked()
 {
     _indexLuneSoleil = (_ui->stackedWidget_soleilLune->currentIndex() + 1) % _ui->stackedWidget_soleilLune->count();
     _ui->stackedWidget_soleilLune->setCurrentIndex(_indexLuneSoleil);
-    _ui->groupBox_soleil_lune->setTitle(_titresLuneSoleil[_indexLuneSoleil]);
+    _ui->groupBox_soleil_lune->setTitle(QCoreApplication::translate("General", _titresLuneSoleil[_indexLuneSoleil]));
 }
 
 void General::on_stackedWidget_soleilLune_currentChanged(int arg1)
