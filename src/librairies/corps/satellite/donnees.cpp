@@ -48,7 +48,10 @@
 /*
  * Constructeur par defaut
  */
-Donnees::Donnees()
+Donnees::Donnees() :
+	_methMagnitude('v'),
+	_stsDateRentree(' '),
+    _stsHeureRentree(' ')
 {
     /* Declarations des variables locales */
 
@@ -59,11 +62,7 @@ Donnees::Donnees()
     _diametre = 0.;
     _envergure = 0.;
 
-    _methMagnitude = 'v';
     _magnitudeStandard = CORPS::MAGNITUDE_INDEFINIE;
-
-    _stsDateRentree = ' ';
-    _stsHeureRentree = ' ';
 
     _apogee = 0.;
     _perigee = 0.;

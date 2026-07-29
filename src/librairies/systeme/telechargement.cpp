@@ -164,7 +164,7 @@ bool Telechargement::UrlExiste(const QUrl &url)
 /*
  * Accesseurs
  */
-QString Telechargement::dirDwn() const
+QString &Telechargement::dirDwn()
 {
     return _dirDwn;
 }

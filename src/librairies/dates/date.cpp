@@ -721,21 +721,21 @@ void Date::getDeltaAT()
 /*
  * Obtention de l'heure AM/PM
  */
-QPair<int, QString> Date::getHrAmPm(const int heure,
-                                    const DateSysteme &systeme) const
+QPair<int, QString> Date::getHrAmPm(const int hr,
+                                    const DateSysteme &systeme)
 {
     /* Declarations des variables locales */
     QPair<int, QString> res;
 
     /* Initialisations */
-    res.first = heure;
+    res.first = hr;
     res.second = " ";
 
     /* Corps de la methode */
     if (systeme == DateSysteme::SYSTEME_12H) {
 
-        res.first = heure % 12;
-        res.second = ((res.first >= 0) && (heure < 12)) ? "a" : "p";
+        res.first = hr % 12;
+        res.second = ((res.first >= 0) && (hr < 12)) ? "a" : "p";
         if (res.first == 0) {
             res.first = 12;
         }

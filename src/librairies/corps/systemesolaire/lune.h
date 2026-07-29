@@ -166,12 +166,12 @@ private:
      */
     /**
      * @brief CalculCaracteristiquesEclipses Calcul des caracteristiques des eclipses de Soleil et de Lune
-     * @param[in] phase phase (0 = Nouvelle Lune; 2 = Pleine Lune)
+     * @param[in] ph phase (0 = Nouvelle Lune; 2 = Pleine Lune)
      * @param[in] jj jour julien de l'eclipse
      * @param[in/out] k indice de la Nouvelle Lune
      * @return
      */
-    bool CalculCaracteristiquesEclipses(const unsigned int phase,
+    bool CalculCaracteristiquesEclipses(const unsigned int ph,
                                         const double jj,
                                         double &k);
 
@@ -179,11 +179,11 @@ private:
      * @brief CalculElementsEclipses Calcul des elements communs aux 2 types d'eclipse (Soleil et Lune)
      * @param[in] k indice de la Nouvelle Lune
      * @param[in] f argument de latitude de la Lune
-     * @param[in] phase phase (0 = Nouvelle Lune; 2 = Pleine Lune)
+     * @param[in] ph phase (0 = Nouvelle Lune; 2 = Pleine Lune)
      */
     void CalculElementsEclipses(const double k,
                                 const double f,
-                                unsigned int phase);
+                                unsigned int ph);
 
     /**
      * @brief CalculEphemLeverMeridienCoucher Calcul des ephemerides de la Lune pour determiner les heures de lever/meriden/coucher
@@ -196,18 +196,18 @@ private:
     /**
      * @brief CalculIndicePhase Calcul de l'indice de la Nouvelle Lune (0 pour la premiere Nouvelle Lune de 2000)
      * @param[in] annee annee
-     * @param[in] phase phase (0 = Nouvelle Lune; 2 = Pleine Lune)
+     * @param[in] ph phase (0 = Nouvelle Lune; 2 = Pleine Lune)
      * @return indice de la Nouvelle Lune
      */
     double CalculIndicePhase(const double annee,
-                             const unsigned int phase);
+                             const unsigned int ph);
 
     /**
      * @brief CalculJourJulienPhase Calcul du jour julien approximatif d'une phase lunaire
      * @param[in] k nombre de lunaison depuis le 1er janvier 2000 (sans partie fractionnaire pour la nouvelle lune, +0.25 pour le premier quartier, etc.)
      * @return jour julien approximatif de la phase
      */
-    double CalculJourJulienPhase(const double k);
+    static double CalculJourJulienPhase(const double k);
 
 
 };

@@ -89,8 +89,8 @@ public:
      * @param[in] hauteur hauteur du satellite
      * @return correction de magnitude correspondant a l'extinction atmospherique
      */
-    double ExtinctionAtmospherique(const Observateur &observateur,
-                                   const double hauteur) const;
+    static double ExtinctionAtmospherique(const Observateur &observateur,
+                                          const double hauteur);
 
 
     /*

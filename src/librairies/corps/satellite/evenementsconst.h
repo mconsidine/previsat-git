@@ -70,9 +70,9 @@ enum class TypeNoeudOrbite {
  */
 struct ElementsAOS {
     Date date;
-    double azimut;
+    double azimut = 0.;
     QString typeAOS = QObject::tr("AOS", "Acquisition of signal");
-    bool aos;
+    bool aos = false;
 };
 
 #endif // EVENEMENTSCONST_H

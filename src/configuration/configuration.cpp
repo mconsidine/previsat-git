@@ -1162,7 +1162,7 @@ void Configuration::VerificationArborescences()
 #if defined (Q_OS_LINUX)
         const QDir di = QDir(_dirLocalData);
         if (!di.exists()) {
-            di.mkpath(_dirLocalData);
+            (void) di.mkpath(_dirLocalData);
         }
 
         const QStringList listeDirOrig(QStringList () << _dirCommonData + QDir::separator() + "coordinates"
@@ -1204,7 +1204,7 @@ void Configuration::VerificationArborescences()
         // Copie des fichiers de lieux d'observation
         QDir dirCrd(_dirCoord);
         if (!dirCrd.exists()) {
-            dirCrd.mkpath(_dirCoord);
+            (void) dirCrd.mkpath(_dirCoord);
         }
 
         const QDir dirCmnCrd(_dirCommonData + QDir::separator() + "coordinates");
@@ -1242,7 +1242,7 @@ void Configuration::VerificationArborescences()
         foreach(const QString &dir, listeDir) {
             const QDir direc = QDir(dir);
             if (!direc.exists()) {
-                direc.mkpath(dir);
+                (void) direc.mkpath(dir);
             }
         }
 
@@ -1292,7 +1292,7 @@ void Configuration::VerificationArborescences()
 /*
  * Verifie la presence des fichiers du repertoire data
  */
-void Configuration::VerifieFichiersData(const QString &dirData, const QStringList &listeFicData) const
+void Configuration::VerifieFichiersData(const QString &dirData, const QStringList &listeFicData)
 {
     /* Declarations des variables locales */
 

@@ -967,12 +967,12 @@ PreviSat is free !</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.ui" line="421"/>
         <source>Mettre à jour Éléments orbitaux de l&apos;ISS...</source>
-        <translation type="unfinished">Update ISS orbital elements...</translation>
+        <translation>Update ISS orbital elements...</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="350"/>
         <source>Les éléments orbitaux de l&apos;ISS sont vieux, il est conseillé de les mettre à jour</source>
-        <translation type="unfinished">The orbital elements of ISS are old, it is recommended to update them</translation>
+        <translation>The orbital elements of ISS are old, it is recommended to update them</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="386"/>
@@ -1030,12 +1030,12 @@ PreviSat is free !</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="721"/>
         <source>Téléchargement du fichier d&apos;élements orbitaux de l&apos;ISS...</source>
-        <translation type="unfinished">Downloading ISS orbital elements file...</translation>
+        <translation>Downloading ISS orbital elements file...</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="725"/>
         <source>Téléchargement terminé</source>
-        <translation type="unfinished">Downloading finished</translation>
+        <translation>Downloading finished</translation>
     </message>
 </context>
 <context>
@@ -6466,7 +6466,7 @@ Expected value : %3 - Calculated value : %4</translation>
         <translation>FCB</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/donnees.cpp" line="88"/>
+        <location filename="../src/librairies/corps/satellite/donnees.cpp" line="87"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>

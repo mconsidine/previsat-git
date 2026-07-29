@@ -135,12 +135,12 @@ QDomDocument FichierXml::Ouverture(const bool alarme)
 /*
  * Accesseurs
  */
-QString FichierXml::nomfic() const
+QString &FichierXml::nomfic()
 {
     return _nomfic;
 }
 
-QString FichierXml::version()
+QString &FichierXml::version()
 {
     /* Declarations des variables locales */
 

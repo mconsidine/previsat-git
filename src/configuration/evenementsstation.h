@@ -51,9 +51,9 @@
  */
 struct EvenementsStation {
 
-    double masseStationSpatiale;
-    double surfaceTraineeAtmospherique;
-    double coefficientTraineeAtmospherique;
+    double masseStationSpatiale = 0.;
+    double surfaceTraineeAtmospherique = 0.;
+    double coefficientTraineeAtmospherique = 0.;
 
     QString dateDebutEvenementsStationSpatiale;
     QString dateFinEvenementsStationSpatiale;

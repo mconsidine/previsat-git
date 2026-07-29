@@ -967,12 +967,12 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.ui" line="421"/>
         <source>Mettre à jour Éléments orbitaux de l&apos;ISS...</source>
-        <translation type="unfinished">ISSの軌道要素を更新する...</translation>
+        <translation>ISSの軌道要素を更新する...</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="350"/>
         <source>Les éléments orbitaux de l&apos;ISS sont vieux, il est conseillé de les mettre à jour</source>
-        <translation type="unfinished">ISSの軌道要素は古くなっているため更新することをお勧めします</translation>
+        <translation>ISSの軌道要素は古くなっているため更新することをお勧めします</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="386"/>
@@ -1030,12 +1030,12 @@ PreviSatは、完全無料です!</translation>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="721"/>
         <source>Téléchargement du fichier d&apos;élements orbitaux de l&apos;ISS...</source>
-        <translation type="unfinished">ISSの軌道要素ファイルのダウンロード...</translation>
+        <translation>ISSの軌道要素ファイルのダウンロード...</translation>
     </message>
     <message>
         <location filename="../src/interface/onglets/previsions/calculsevenementsorbitaux.cpp" line="725"/>
         <source>Téléchargement terminé</source>
-        <translation type="unfinished">ダウンロードが完了しました</translation>
+        <translation>ダウンロードが完了しました</translation>
     </message>
 </context>
 <context>
@@ -6477,7 +6477,7 @@ Valeur attendue : %3 - Valeur calculée : %4</source>
         <translation>AOS</translation>
     </message>
     <message>
-        <location filename="../src/librairies/corps/satellite/donnees.cpp" line="88"/>
+        <location filename="../src/librairies/corps/satellite/donnees.cpp" line="87"/>
         <source>N/A</source>
         <translation>該当なし</translation>
     </message>

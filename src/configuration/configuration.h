@@ -516,8 +516,8 @@ private:
      * @param[in] listeFicData liste de fichiers du repertoire data
      * @throw Exception
      */
-    void VerifieFichiersData(const QString &dirData,
-                             const QStringList &listeFicData) const;
+    static void VerifieFichiersData(const QString &dirData,
+                                    const QStringList &listeFicData);
 
 
 };

@@ -52,9 +52,9 @@
 struct SatelliteTDRS
 {
     QString denomination;
-    int rouge;
-    int vert;
-    int bleu;
+    int rouge = 0;
+    int vert = 0;
+    int bleu = 0;
 };
 
 #endif // SATELLITETDRS_H

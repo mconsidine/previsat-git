@@ -660,7 +660,7 @@ void AfficherResultats::EcrireEntete() const
 
     QDir di(Configuration::instance()->dirTmp());
     if (!di.exists()) {
-        di.mkpath(Configuration::instance()->dirTmp());
+        (void) di.mkpath(Configuration::instance()->dirTmp());
     }
 
     /* Corps de la methode */

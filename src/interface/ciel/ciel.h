@@ -118,7 +118,7 @@ public:
               const QList<Etoile> &etoiles,
               const std::array<Planete, PLANETE::NB_PLANETES> &planetes,
               const QList<Satellite> &satellites,
-              const bool fenetreMax,
+              const bool fenetreMaximum,
               const bool maxFlash = false,
               const bool labelHeure = false,
               const Date &dateDeb = Date(), const Date &dateMax = Date(), const Date &dateFin = Date());

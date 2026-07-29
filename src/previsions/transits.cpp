@@ -55,12 +55,12 @@ static DonneesPrevisions _donnees;
 
 struct EphemeridesTransits
 {
-    double jourJulienUTC;
+    double jourJulienUTC = 0.;
     Vecteur3D positionObservateur;
     Matrice3D rotHz;
     Vecteur3D positionSoleil;
     Vecteur3D positionLune;
-    CorpsTransit corps;
+    CorpsTransit corps = CorpsTransit::CORPS_SOLEIL;
 };
 
 

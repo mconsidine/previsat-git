@@ -70,19 +70,19 @@ enum class CorpsTransit {
  */
 struct ConditionsPrevisions
 {
-    bool calcEclipseLune;
-    bool eclipse;
-    bool effetEclipsePartielle;
-    bool extinction;
-    bool systeme;
+    bool calcEclipseLune = false;
+    bool eclipse = false;
+    bool effetEclipsePartielle = false;
+    bool extinction = false;
+    bool systeme = false;
 
-    double crepuscule;
-    double hauteur;
-    double jj1;
-    double jj2;
-    double magnitudeLimite;
-    double offset;
-    double pas;
+    double crepuscule = 0.;
+    double hauteur = 0.;
+    double jj1 = 0.;
+    double jj2 = 0.;
+    double magnitudeLimite = 0.;
+    double offset = 0.;
+    double pas = 0.;
 
     QString fichier;
     QString ficRes;
@@ -96,24 +96,24 @@ struct ConditionsPrevisions
 
 
     // Pour les flashs
-    bool chrono;
-    double angleLimite;
+    bool chrono = false;
+    double angleLimite = 0.;
 
     // Pour les transits
-    bool calcEphemLune;
-    bool calcEphemSoleil;
-    bool calcTransitLunaireJour;
-    double seuilConjonction;
+    bool calcEphemLune = false;
+    bool calcEphemSoleil = false;
+    bool calcTransitLunaireJour = false;
+    double seuilConjonction = 0.;
 
     // Pour les evenements orbitaux
-    bool passageApogee;
-    bool passageNoeuds;
-    bool passageOmbre;
-    bool passagePso;
-    bool transitionsJourNuit;
+    bool passageApogee = false;
+    bool passageNoeuds = false;
+    bool passageOmbre = false;
+    bool passagePso = false;
+    bool transitionsJourNuit = false;
 
     // Pour le suivi avec un telescope
-    int nbIter;
+    int nbIter = 0;
 
 };
 
@@ -159,7 +159,7 @@ struct ResultatPrevisions
 
 struct DonneesPrevisions
 {
-    long long tempsEcoule;
+    long long tempsEcoule = 0;
     QList<double> ageElementsOrbitaux;
 };
 

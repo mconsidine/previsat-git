@@ -91,7 +91,7 @@ public:
     /*
      * Accesseurs
      */
-    QString dirDwn() const;
+    QString &dirDwn();
 
 
 signals:

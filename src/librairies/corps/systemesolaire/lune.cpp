@@ -466,7 +466,7 @@ QString Lune::tooltipEclipseLune() const
 /*
  * Calcul des caracteristiques des eclipses de Soleil et de Lune
  */
-bool Lune::CalculCaracteristiquesEclipses(const unsigned int phase,
+bool Lune::CalculCaracteristiquesEclipses(const unsigned int ph,
                                           const double jj,
                                           double &k)
 {
@@ -484,7 +484,7 @@ bool Lune::CalculCaracteristiquesEclipses(const unsigned int phase,
     /* Corps de la methode */
     const double g = fabs(_gamma);
 
-    if (phase == 0) {
+    if (ph == 0) {
 
         // Eclipse de Soleil
 
@@ -586,7 +586,7 @@ bool Lune::CalculCaracteristiquesEclipses(const unsigned int phase,
  */
 void Lune::CalculElementsEclipses(const double k,
                                   const double f,
-                                  unsigned int phase)
+                                  unsigned int ph)
 {
     /* Declarations des variables locales */
 
@@ -621,7 +621,7 @@ void Lune::CalculElementsEclipses(const double k,
           - 0.0002 * e * sin(tmp2 - m)
           - 0.0002 * sin(omega);
 
-    if (phase == 0) {
+    if (ph == 0) {
         _dj += -0.4075 * sin(mm) + 0.1721 * e * sin(m);
     } else {
         _dj += -0.4065 * sin(mm) + 0.1727 * e * sin(m);
@@ -697,9 +697,9 @@ void Lune::CalculEphemLeverMeridienCoucher(const Date &date,
  * Calcul de l'indice de la Nouvelle Lune (0 pour la premiere Nouvelle Lune de 2000)
  */
 double Lune::CalculIndicePhase(const double annee,
-                               const unsigned int phase)
+                               const unsigned int ph)
 {
-    return arrondi((annee - DATE::AN2000) * 12.3685, 0) + 0.25 * phase;
+    return arrondi((annee - DATE::AN2000) * 12.3685, 0) + 0.25 * ph;
 }
 
 /*

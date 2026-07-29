@@ -274,12 +274,12 @@ private:
 
     /**
      * @brief getHrAmPm Obtention de l'heure AM/PM
-     * @param[in] heure heure
+     * @param[in] hr heure
      * @param[in] systeme systeme horaire (SYSTEME_12H ou SYSTEME_24H)
      * @return heure AM/PM
      */
-    QPair<int, QString> getHrAmPm(const int heure,
-                                  const DateSysteme &systeme) const;
+    static QPair<int, QString> getHrAmPm(const int hr,
+                                         const DateSysteme &systeme);
 
 };
 

@@ -81,8 +81,8 @@ public:
     /*
      * Accesseurs
      */
-    QString nomfic() const;
-    QString version();
+    QString &nomfic();
+    QString &version();
 
 
 protected:

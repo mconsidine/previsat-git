@@ -69,9 +69,9 @@ enum class TypeEclipse {
  */
 struct ElementsEclipse {
     double luminosite = 1.;
-    double elongation;
-    double phiSoleil;
-    double phi;
+    double elongation = 0.;
+    double phiSoleil = 0.;
+    double phi = 0.;
     TypeEclipse type = TypeEclipse::NON_ECLIPSE;
 };
 

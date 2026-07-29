@@ -156,7 +156,7 @@ void Ciel::show(const Observateur &observateur,
                 const QList<Etoile> &etoiles,
                 const std::array<Planete, PLANETE::NB_PLANETES> &planetes,
                 const QList<Satellite> &satellites,
-                const bool fenetreMax,
+                const bool fenetreMaximum,
                 const bool maxFlash,
                 const bool labelHeure,
                 const Date &dateDeb,
@@ -169,7 +169,7 @@ void Ciel::show(const Observateur &observateur,
     /* Initialisations */
     _observateur = observateur;
     _labelHeure = labelHeure;
-    _fenetreMax = fenetreMax;
+    _fenetreMax = fenetreMaximum;
     _satellites = satellites;
     _planetes = planetes;
     _soleil = soleil;
@@ -920,18 +920,18 @@ void Ciel::AffichageSatellites(const Date &dateDeb, const Date &dateMax, const D
 {
     /* Declarations des variables locales */
     bool aecr;
+    bool adeb;
     int min;
     int lsat0;
     int bsat0;
     int lsat1;
     int bsat1;
-    int lsat3 = 0;
-    int bsat3 = 0;
+    int lsat3;
+    int bsat3;
     QColor couleur;
     QPen crayon;
 
     /* Initialisations */
-    bool adeb = false;
     bool amax = false;
     const QColor crimson(220, 20, 60);
     const QColor bleuClair(173, 216, 230);

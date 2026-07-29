@@ -56,22 +56,7 @@ void PlaneteTest::testAll()
     Date::Initialisation(dirCommonData);
     Planete::Initialisation(dirCommonData);
 
-    testCalculAnglesReductionEquat();
     testCalculPositionSimp();
-}
-
-void PlaneteTest::testCalculAnglesReductionEquat()
-{
-    qInfo(Q_FUNC_INFO);
-
-    const Date date(2028, 11, 13.189199259258, 0.);
-
-    Planete planete;
-    const std::array<double, 3> res = planete.CalculAnglesReductionEquat(date);
-
-    QCOMPARE(res[0], 0.003227530972259288);
-    QCOMPARE(res[1], 0.002804731797614525);
-    QCOMPARE(res[2], 0.00322785138899811);
 }
 
 void PlaneteTest::testCalculPositionSimp()

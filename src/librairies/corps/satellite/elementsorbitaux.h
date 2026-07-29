@@ -53,18 +53,18 @@ struct ElementsOrbitaux
     QString nom;
     QString cospar;
     Date epoque {};
-    double no;
-    double ecco;
-    double inclo;
-    double omegao;
-    double argpo;
-    double mo;
+    double no = 0.;
+    double ecco = 0.;
+    double inclo = 0.;
+    double omegao = 0.;
+    double argpo = 0.;
+    double mo = 0.;
 
     QString norad;
-    unsigned int nbOrbitesEpoque;
-    double bstar;
-    double ndt20;
-    double ndd60;
+    unsigned int nbOrbitesEpoque = 0;
+    double bstar = 0.;
+    double ndt20 = 0.;
+    double ndd60 = 0.;
 
     Donnees donnees;
 };

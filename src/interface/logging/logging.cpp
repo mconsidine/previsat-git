@@ -109,7 +109,7 @@ void Logging::show()
     QTableWidgetItem *itemNbMsg;
 
     int j = 0;
-    unsigned int nbMsg = 0;
+    unsigned int nbMsg;
     fnt.setBold(true);
 
     _ui->fichiersLog->disconnect();

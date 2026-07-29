@@ -120,7 +120,7 @@ void Magnitude::Calcul(const ConditionEclipse &conditionEclipse,
  * Determination de l'extinction atmospherique
  */
 double Magnitude::ExtinctionAtmospherique(const Observateur &observateur,
-                                          const double hauteur) const
+                                          const double hauteur)
 {
     /* Declarations des variables locales */
 

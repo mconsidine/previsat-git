@@ -168,7 +168,7 @@ public:
      * @param[in] ht hauteur du corps (en radians)
      * @return refraction atmospherique (en radians)
      */
-    double CalculRefractionAtmospherique(const double ht) const;
+    static double CalculRefractionAtmospherique(const double ht);
 
     /**
      * @brief CalculZoneVisibilite Calcul de la zone de visibilite du corps
@@ -189,8 +189,8 @@ public:
      * @param[in] date date
      * @return vecteur en coordonnees cartesiennes equatoriales
      */
-    Vecteur3D Sph2Cart(const Vecteur3D &vecteur,
-                       const Date &date) const;
+    static Vecteur3D Sph2Cart(const Vecteur3D &vecteur,
+                              const Date &date);
 
 
     /*
@@ -277,8 +277,6 @@ protected:
     /*
      * Methodes protegees
      */
-    std::array<double, 3> CalculAnglesReductionEquat(const Date &date);
-
     virtual void CalculEphemLeverMeridienCoucher(const Date &date,
                                                  const Observateur &observateur) {
         Q_UNUSED(date)

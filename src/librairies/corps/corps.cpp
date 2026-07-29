@@ -47,9 +47,9 @@
 
 
 struct ConstElem {
-    double ad1;
-    double ad2;
-    double dec;
+    double ad1 = 0.;
+    double ad2 = 0.;
+    double dec = 0.;
     QString nom;
 };
 
@@ -519,7 +519,7 @@ void Corps::CalculPosVitECEF(const Date &date,
 /*
  * Calcul de la refraction atmospherique
  */
-double Corps::CalculRefractionAtmospherique(const double ht) const
+double Corps::CalculRefractionAtmospherique(const double ht)
 {
     /* Declarations des variables locales */
 
@@ -645,7 +645,7 @@ void Corps::Initialisation(const QString &dirCommonData)
  * Conversion d'un vecteur en coordonnees ecliptiques spheriques en coordonnees cartesiennes equatoriales
  */
 Vecteur3D Corps::Sph2Cart(const Vecteur3D &vecteur,
-                          const Date &date) const
+                          const Date &date)
 {
     /* Declarations des variables locales */
 
@@ -794,27 +794,6 @@ void Corps::setPosition(const Vecteur3D &pos)
 /*
  * Methodes protegees
  */
-std::array<double, 3> Corps::CalculAnglesReductionEquat(const Date &date)
-{
-    /* Declarations des variables locales */
-    std::array<double, 3> res;
-
-    /* Initialisations */
-    const double t = date.jourJulienTT() * DATE::NB_MILLJ_PAR_JOURS;
-
-    /* Corps de la methode */
-    // Zeta
-    res[0] = t * (23060.9097 + t * (30.2226 + t * (18.0183 + t * (-0.0583 + t * (0.0285 - 0.0002 * t))))) * MATHS::ARCSEC2RAD;
-
-    // Theta
-    res[1] = t * (20042.0207 + t * (-42.6566 + t * (-41.8238 + t * (-0.0731 + t * (-0.0127 + 0.0004 * t))))) * MATHS::ARCSEC2RAD;
-
-    // z
-    res[2] = t * (23060.9097 + t * (109.5270 + t * (18.2667 + t * (-0.2821 + t * (-0.0301 - 0.0001 * t))))) * MATHS::ARCSEC2RAD;
-
-    /* Retour */
-    return res;
-}
 
 
 /***********
