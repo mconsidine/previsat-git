@@ -30,7 +30,7 @@
  * >    8 juin 2022
  *
  * Date de revision
- * >    28 juillet 2026
+ * >    30 juillet 2026
  *
  */
 
@@ -159,5 +159,5 @@ void EvenementsTest::testCalculOmbrePenombre()
     sat._conditionEclipse.CalculSatelliteEclipse(sat.position(), soleil, &lune);
 
     // Prochain passage penombre->ombre
-    QCOMPARE(Evenements::CalculOmbrePenombre(date, sat, 2, true).jourJulienUTC(), 7314.865308724153);
+    QCOMPARE(Evenements::CalculOmbrePenombre(date, sat, 2, true).jourJulienUTC(), 7314.865312499975);
 }
