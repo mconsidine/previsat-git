@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    28 juillet 2026
+ * >    30 juillet 2026
  *
  */
 
@@ -293,6 +293,7 @@ int EvenementsOrbitaux::CalculEvenements(const int &nombre)
 
                         if ((fabs(tdn - t_ecl) < DATE::EPS_DATES) || (ecl[0] != ecl[1])) {
                             atrouve = true;
+                            tdn = t_ecl;
                             eclipse = ecl[1];
                         }
 

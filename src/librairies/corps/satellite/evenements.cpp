@@ -30,7 +30,7 @@
  * >    28 mars 2020
  *
  * Date de revision
- * >    28 juillet 2026
+ * >    30 juillet 2026
  *
  */
 
@@ -269,10 +269,8 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit,
     /* Corps de la methode */
     if (i < sat.traceAuSol().size()) {
 
-        double tdn = dateInit.jourJulienUTC();
-        double t_ecl = sat.traceAuSol().at(i-1).jourJulienUTC;
-        double periode = sat.traceAuSol().at(i).jourJulienUTC - t_ecl;
-        t_ecl -= periode;
+        double tdn = sat.traceAuSol().at(i).jourJulienUTC;
+        double t_ecl = dateInit.jourJulienUTC();
 
         std::array<double, 2> jjm;
         std::array<bool, 2> ecl;
@@ -313,17 +311,15 @@ Date Evenements::CalculOmbrePenombre(const Date &dateInit,
                 tdn = jjm[1];
             }
 
-            if (fabs(tdn - t_ecl) < DATE::EPS_DATES) {
+            if ((fabs(tdn - t_ecl) < DATE::EPS_DATES) || (ecl[0] != ecl[1])) {
                 afin = true;
+                tdn = t_ecl;
             }
 
             t_ecl = tdn;
         }
 
         dateEcl = Date(t_ecl, 0.);
-
-    } else {
-        dateEcl = Date(dateInit.jourJulienUTC() - 10., 0.);
     }
 
     /* Retour */
