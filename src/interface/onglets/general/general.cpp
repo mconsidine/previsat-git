@@ -30,7 +30,7 @@
  * >    9 juin 2022
  *
  * Date de revision
- * >    28 juillet 2026
+ * >    1er aout 2026
  *
  */
 
@@ -154,6 +154,7 @@ void General::setAcalcAOS(const bool acalc)
 void General::setAcalcDN(const bool acalc)
 {
     _acalcDN = acalc;
+    _isEclipse = false;
 }
 
 
@@ -233,11 +234,14 @@ void General::AffichageDate(const Date &date)
 
     /* Corps de la methode */
     if (fabs(date.offsetUTC()) > MATHS::EPSDBL100) {
+
         QTime heur(0, 0);
         heur = heur.addSecs(qRound(fabs(date.offsetUTC()) * DATE::NB_SEC_PAR_JOUR));
         chaineUTC = tr("UTC %1 %2", "Universal Time Coordinated").arg((date.offsetUTC() > 0.) ? "+" : "-", heur.toString("HH:mm"));
         _ui->utcDateHeure->setText(chaineUTC);
+
     } else {
+
         chaineUTC = tr("UTC", "Universal Time Coordinated");
         _ui->utcDateHeure->setText(chaineUTC);
     }
@@ -275,12 +279,23 @@ void General::AffichageDonneesSatellite(const Date &date)
     QBrush couleur;
     const double age = fabs(satellite.ageElementsOrbitaux());
     if (age <= 5.) {
+
+        // Elements orbitaux recents
         couleur.setColor(QColor("forestgreen"));
+
     } else if (age <= 10.) {
+
+        // Elements orbitaux entre 5 et 10 jours
         couleur.setColor(Qt::darkYellow);
+
     } else if (age <= 15.) {
+
+        // Elements orbitaux entre 10 et 15 jours
         couleur.setColor(QColor("orange"));
+
     } else {
+
+        // Elements orbitaux anciens (> 15 jours)
         couleur.setColor(Qt::red);
     }
 
@@ -292,8 +307,10 @@ void General::AffichageDonneesSatellite(const Date &date)
     // Longitude/Latitude/Altitude
     const QString ews = (satellite.longitude() >= 0.) ? tr("Ouest") : tr("Est");
     _ui->longitudeSat->setText(fmt.arg(Maths::ToSexagesimal(fabs(satellite.longitude()), AngleFormatType::DEGRE, 3, 0, false, true), ews));
+
     const QString nss = (satellite.latitude() >= 0.) ? tr("Nord") : tr("Sud");
     _ui->latitudeSat->setText(fmt.arg(Maths::ToSexagesimal(fabs(satellite.latitude()), AngleFormatType::DEGRE, 2, 0, false, true), nss));
+
     if (settings.value("affichage/unite").toBool()) {
         _ui->altitudeSat->setText(text.asprintf("%.1f ", satellite.altitude()) + unite);
     } else {
@@ -303,6 +320,7 @@ void General::AffichageDonneesSatellite(const Date &date)
     // Hauteur/Azimut/Distance
     _ui->hauteurSat->setText(Maths::ToSexagesimal(satellite.hauteur(), AngleFormatType::DEGRE, 2, 0, true, true));
     _ui->azimutSat->setText(Maths::ToSexagesimal(satellite.azimut(), AngleFormatType::DEGRE, 3, 0, false, true));
+
     if (settings.value("affichage/unite").toBool()) {
         _ui->distanceSat->setText(text.asprintf("%.1f ", satellite.distance()) + unite);
     } else {
@@ -312,6 +330,7 @@ void General::AffichageDonneesSatellite(const Date &date)
     // Ascension droite/declinaison/constellation
     _ui->ascensionDroiteSat->setText(Maths::ToSexagesimal(satellite.ascensionDroite(), AngleFormatType::HEURE1, 2, 0, false, true).trimmed());
     _ui->declinaisonSat->setText(Maths::ToSexagesimal(satellite.declinaison(), AngleFormatType::DEGRE, 2, 0, true, true).trimmed());
+
     _ui->constellationSat->setText(Configuration::instance()->mapNomsConstellations()[satellite.constellation()][Configuration::instance()->locale()]);
     _ui->constellationSat->setToolTip(satellite.constellation());
 
@@ -359,8 +378,10 @@ void General::AffichageDonneesSatellite(const Date &date)
                     double crep = 0.;
                     if (_flashs->ui()->hauteurSoleilMetOp->currentIndex() <= 3) {
                         crep = -6. * _flashs->ui()->hauteurSoleilMetOp->currentIndex();
+
                     } else if (_flashs->ui()->hauteurSoleilMetOp->currentIndex() == 4) {
                         crep = 90.;
+
                     } else if (_flashs->ui()->hauteurSoleilMetOp->currentIndex() == 5) {
                         crep = _flashs->ui()->valHauteurSoleilMetOp->text().toInt();
                     }
@@ -439,8 +460,7 @@ void General::AffichageDonneesSatellite(const Date &date)
     if ((delai >= -DATE::EPS_DATES) && (_dateEclipse->jourJulienUTC() < satellite.traceAuSol().constLast().jourJulienUTC)) {
 
         QString transitionJN = tr("Prochain %1 :");
-        _ui->lbl_prochainJN->setText(transitionJN.arg((satellite.conditionEclipse().eclipseTotale()) ?
-                                                          tr("N>J", "Night to day") : tr("J>N", "Day to night")));
+        _ui->lbl_prochainJN->setText(transitionJN.arg((satellite.conditionEclipse().eclipseTotale()) ? tr("N>J", "Night to day") : tr("J>N", "Day to night")));
         _ui->lbl_prochainJN->setToolTip(satellite.conditionEclipse().eclipseTotale() ? tr("Nuit > Jour") : tr("Jour > Nuit"));
 
         // Delai de l'evenement
@@ -518,30 +538,34 @@ void General::AffichageDonneesSatellite(const Date &date)
 
         _ui->lbl_prochainAOS1->setVisible(true);
         _ui->lbl_prochainAOS2->setVisible(true);
+
         _ui->dateAOS1->setText(chaine.arg(dateAOS.ToQDateTime(DateFormatSec::FORMAT_SEC).toString(Qt::ISODate).replace("T", " "), cDelaiAOS));
         _ui->dateAOS1->setVisible(true);
+
         _ui->dateAOS2->setText(_ui->dateAOS1->text());
         _ui->dateAOS2->setVisible(true);
 
         _ui->lbl_azimut1->setText(tr("Azimut : %1").arg(Maths::ToSexagesimal(_elementsAOS->azimut, AngleFormatType::DEGRE, 3, 0, false, true).trimmed()
                                                         .mid(0, 8)));
         _ui->lbl_azimut1->setVisible(true);
+
         _ui->lbl_azimut2->setText(_ui->lbl_azimut1->text());
         _ui->lbl_azimut2->setVisible(true);
 
     } else {
         _ui->lbl_prochainAOS1->setVisible(false);
         _ui->lbl_prochainAOS2->setVisible(false);
+
         _ui->dateAOS1->setVisible(false);
         _ui->dateAOS2->setVisible(false);
+
         _ui->lbl_azimut1->setVisible(false);
         _ui->lbl_azimut2->setVisible(false);
     }
 
     // Angle beta
     const QString angleBeta = tr("Beta : %1", "Beta angle (angle between orbit plane and direction of Sun)");
-    _ui->lbl_beta1->setText(angleBeta.arg(Maths::ToSexagesimal(satellite.beta(), AngleFormatType::DEGRE, 3, 0, false, true).trimmed().mid(0, 9)
-                                          .trimmed()));
+    _ui->lbl_beta1->setText(angleBeta.arg(Maths::ToSexagesimal(satellite.beta(), AngleFormatType::DEGRE, 3, 0, false, true).trimmed().mid(0, 9).trimmed()));
     _ui->lbl_beta2->setText(_ui->lbl_beta1->text());
 
     /* Retour */
@@ -590,14 +614,17 @@ void General::AffichageDonneesSoleilLune()
     // Ascension droite/declinaison/constellation du Soleil
     _ui->ascensionDroiteSoleil->setText(Maths::ToSexagesimal(soleil.ascensionDroite(), AngleFormatType::HEURE1, 2, 0, false, true).trimmed());
     _ui->declinaisonSoleil->setText(Maths::ToSexagesimal(soleil.declinaison(), AngleFormatType::DEGRE, 2, 0, true, true).trimmed());
+
     _ui->constellationSoleil->setText(Configuration::instance()->mapNomsConstellations()[soleil.constellation()][Configuration::instance()->locale()]);
     _ui->constellationSoleil->setToolTip(soleil.constellation());
 
     // Longitude/latitude/diametre apparent
     const QString ews = (soleil.longitude() >= 0.) ? tr("Ouest") : tr("Est");
     _ui->longitudeSol->setText(fmt.arg(Maths::ToSexagesimal(fabs(soleil.longitude()), AngleFormatType::DEGRE, 3, 0, false, true), ews));
+
     const QString nss = (soleil.latitude() >= 0.) ? tr("Nord") : tr("Sud");
     _ui->latitudeSol->setText(fmt.arg(Maths::ToSexagesimal(fabs(soleil.latitude()), AngleFormatType::DEGRE, 2, 0, false, true), nss));
+
     _ui->diametreApparentSol->setText(Maths::ToSexagesimal(2. * asin(SOLEIL::RAYON_SOLAIRE / soleil.distance()),
                                                            AngleFormatType::DEGRE, 0, 0, false, true).section("°", 1));
 
@@ -629,6 +656,7 @@ void General::AffichageDonneesSoleilLune()
     // Ascension droite/declinaison/constellation de la Lune
     _ui->ascensionDroiteLune->setText(Maths::ToSexagesimal(lune.ascensionDroite(), AngleFormatType::HEURE1, 2, 0, false, true).trimmed());
     _ui->declinaisonLune->setText(Maths::ToSexagesimal(lune.declinaison(), AngleFormatType::DEGRE, 2, 0, true, true).trimmed());
+
     _ui->constellationLune->setText(Configuration::instance()->mapNomsConstellations()[lune.constellation()][Configuration::instance()->locale()]);
     _ui->constellationLune->setToolTip(lune.constellation());
 
@@ -653,6 +681,7 @@ void General::AffichageDonneesSoleilLune()
     const QString fmt2 = "%1 (%2)";
     _ui->eclipseSoleil->setText(fmt2.arg(lune.dateEclipseSoleil(), lune.typeEclipseSoleil()));
     _ui->eclipseSoleil->setToolTip(lune.tooltipEclipseSoleil());
+
     _ui->eclipseLune->setText(fmt2.arg(lune.dateEclipseLune(), lune.typeEclipseLune()));
     _ui->eclipseLune->setToolTip(lune.tooltipEclipseLune());
 
@@ -660,6 +689,9 @@ void General::AffichageDonneesSoleilLune()
     return;
 }
 
+/*
+ * Ecriture des informations d'eclipse
+ */
 void General::EcritureInformationsEclipse(const QString &corpsOccultant, const double fractionIlluminee) const
 {
     /* Declarations des variables locales */
@@ -808,6 +840,7 @@ void General::AffichageLieuObs()
             const QString fmt = "%1 %2";
             _ui->longitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(lo), AngleFormatType::DEGRE, 3, 0, false, true), ew));
             _ui->latitudeObs->setText(fmt.arg(Maths::ToSexagesimal(fabs(la), AngleFormatType::DEGRE, 2, 0,false, true), ns));
+
             _ui->altitudeObs->setText(
                 fmt.arg((settings.value("affichage/unite").toBool()) ? atd : qRound(atd * TERRE::PIED_PAR_METRE + 0.5 * sgn(atd)))
                     .arg((settings.value("affichage/unite").toBool()) ? tr("m", "meter") : tr("ft", "foot")));
@@ -849,8 +882,8 @@ void General::SauveOngletGeneral(const QString &fichier)
 #endif
 
         flux << tr("Date :", "Date and hour") << " " << _ui->dateHeure1->text() << Qt::endl << Qt::endl;
-
         flux << tr("Lieu d'observation :") << " " << _ui->lieuObservation->currentText() << Qt::endl;
+
         QString chaine = tr("Longitude  : %1\tLatitude : %2\tAltitude : %3", "Observer coordinates");
         flux << chaine.arg(_ui->longitudeObs->text(), _ui->latitudeObs->text(), _ui->altitudeObs->text()) << Qt::endl;
         chaine = tr("Conditions : %1", "Conditions of observation");
@@ -1068,6 +1101,7 @@ void General::on_pause_clicked()
     /* Corps de la methode */
     _ui->pause->setEnabled(!_ui->pause->isEnabled());
     const bool enb = !_ui->pause->isEnabled();
+
     _ui->play->setEnabled(enb);
     _ui->rewind->setEnabled(enb);
     _ui->forward->setEnabled(enb);
@@ -1089,6 +1123,7 @@ void General::on_play_clicked()
     /* Corps de la methode */
     _ui->play->setEnabled(!_ui->play->isEnabled());
     const bool enb = !_ui->play->isEnabled();
+
     _ui->pause->setEnabled(enb);
     _ui->rewind->setEnabled(enb);
     _ui->forward->setEnabled(enb);
@@ -1109,6 +1144,7 @@ void General::on_rewind_clicked()
     /* Corps de la methode */
     _ui->rewind->setEnabled(!_ui->rewind->isEnabled());
     const bool enb = !_ui->rewind->isEnabled();
+
     _ui->play->setEnabled(enb);
     _ui->pause->setEnabled(enb);
     _ui->forward->setEnabled(enb);
@@ -1129,11 +1165,13 @@ void General::on_forward_clicked()
     /* Corps de la methode */
     _ui->forward->setEnabled(!_ui->forward->isEnabled());
     const bool enb = !_ui->forward->isEnabled();
+
     _ui->play->setEnabled(enb);
     _ui->pause->setEnabled(enb);
     _ui->rewind->setEnabled(enb);
     _ui->backward->setEnabled(enb);
     _ui->frameSimu->setFocus();
+
     QThread::msleep(100);
     emit ModeManuel(enb);
 
@@ -1150,11 +1188,13 @@ void General::on_backward_clicked()
     /* Corps de la methode */
     _ui->backward->setEnabled(!_ui->backward->isEnabled());
     const bool enb = !_ui->backward->isEnabled();
+
     _ui->play->setEnabled(enb);
     _ui->pause->setEnabled(enb);
     _ui->rewind->setEnabled(enb);
     _ui->forward->setEnabled(enb);
     _ui->frameSimu->setFocus();
+
     QThread::msleep(100);
     emit ModeManuel(enb);
 

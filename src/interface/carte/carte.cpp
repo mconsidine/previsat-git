@@ -30,7 +30,7 @@
  * >    11 decembre 2019
  *
  * Date de revision
- * >    18 fevrier 2026
+ * >    1er aout 2026
  *
  */
 
@@ -1734,11 +1734,11 @@ void Carte::AffichageZoneVisibilite()
                     if (fabs(ptActuel.x() - ptPrec.x()) > (_largeurCarte / 2)) {
 
                         const int signe = (ptActuel.x() < ptPrec.x()) ? 1 : -1;
-                        poly.append(QPointF(ptActuel.x() + signe * _largeurCarte, ptActuel.y()));
+                        poly.append(QPointF(ptActuel.x() + signe * (_largeurCarte + 2), ptActuel.y()));
                         zones.append(poly);
 
                         poly.clear();
-                        poly.append(QPointF(ptActuel.x() - signe * _largeurCarte, ptActuel.y()));
+                        poly.append(QPointF(ptActuel.x() - signe * (_largeurCarte + 2), ptActuel.y()));
                     }
 
                     poly.append(ptActuel);

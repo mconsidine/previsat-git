@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    8 juillet 2026
+ * >    30 juillet 2026
  *
  */
 
@@ -1253,6 +1253,9 @@ void PreviSat::Initialisation()
 
         // Verification des mises a jour au demarrage
         InitVerificationsMAJ();
+
+        on_pasManuel_currentIndexChanged(settings.value("temps/pasManuel", 1).toInt());
+        on_pasReel_currentIndexChanged(settings.value("temps/pasReel", 1).toInt());
 
         qInfo() << "Fin   Initialisation" << objectName();
 
