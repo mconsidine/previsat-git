@@ -32,12 +32,12 @@
 
 
 <b><span style="color:red;">Version 7.3 (révision 0) :</span><br />
-Avril 2026 - Août 2026 :</b>
+Février - Août 2026 :</b>
 <ul>
 <li>Mise à niveau des librairies Qt6.11.1.
-<li>Ajout des éléments orbitaux de l'ISS incluant les manoeuvres dans les onglets Prévisions et Télescope.
+<li>Ajout des éléments orbitaux de l'ISS incluant les manoeuvres dans les onglets Prévisions, Evènements orbitaux et Télescope.
 <li>Ajout de la sélection des satellites filtrés par nom.
-<li>Ajout du nouveau modèle d'ombre de la Terre (PPM_atm).
+<li>Ajout d'un nouveau modèle d'ombre de la Terre (PPM_atm).
 <li>Correction d'un bug lors du chargement d'un fichier d'éléments orbitaux.
 </ul>
 
@@ -81,7 +81,7 @@ Juin 2023 - Décembre 2024 :</b>
 <li>Ajout de la personnalisation du terminateur.
 <li>Ajout des noms de constellation dans les différentes langues dans l'onglet Général.
 <li>Ajout du système de désactivation des fonctionnalités dépendantes de ressources externes (Starlink, lancements, rentrées).
-<li>Correction de l'affichage du nom du site de lancement ur la carte du monde.
+<li>Correction de l'affichage du nom du site de lancement sur la carte du monde.
 </ul>
 
 <hr />
