@@ -6270,7 +6270,7 @@ Valeur attendue : %3 - Valeur calculée : %4</source>
         <translation>フルムーン</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="511"/>
+        <location filename="../src/librairies/dates/date.cpp" line="516"/>
         <source>dd/MM/yyyy</source>
         <comment>Date format</comment>
         <translation>yyyy年MM月dd日</translation>
@@ -6304,7 +6304,7 @@ Valeur attendue : %3 - Valeur calculée : %4</source>
         <translation>yyyy年MM月dd日 (dddd)  HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="686"/>
+        <location filename="../src/librairies/dates/date.cpp" line="691"/>
         <source>Ecarts TAI-UTC non initialisés</source>
         <translation>TAIとUTCの差が初期化されていません</translation>
     </message>

@@ -6257,7 +6257,7 @@ Expected value : %3 - Calculated value : %4</translation>
         <translation>Full Moon</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="511"/>
+        <location filename="../src/librairies/dates/date.cpp" line="516"/>
         <source>dd/MM/yyyy</source>
         <comment>Date format</comment>
         <translation>MM/dd/yyyy</translation>
@@ -6291,7 +6291,7 @@ Expected value : %3 - Calculated value : %4</translation>
         <translation>dddd, MMMM dd yyyy  HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="../src/librairies/dates/date.cpp" line="686"/>
+        <location filename="../src/librairies/dates/date.cpp" line="691"/>
         <source>Ecarts TAI-UTC non initialisés</source>
         <translation>TAI-UTC offsets not initialized</translation>
     </message>

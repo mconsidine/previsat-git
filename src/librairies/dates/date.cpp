@@ -30,7 +30,7 @@
  * >    11 juillet 2011
  *
  * Date de revision
- * >    14 aout 2023
+ * >    3 aout 2026
  *
  */
 
@@ -482,10 +482,15 @@ QDateTime Date::ToQDateTime(const DateFormatSec &type) const
     /* Initialisations */
 
     /* Corps de la methode */
-    const int sec = (type == DateFormatSec::FORMAT_SEC_ZERO) ? 0 : qRound(_secondes);
+    const double jjsec = arrondi(DATE::NB_SEC_PAR_JOUR * _jourJulienUTC + DATE::EPS_DATES, 0) * DATE::NB_JOUR_PAR_SEC;
+    const Date date(jjsec + MATHS::EPSDBL100, 0.);
+    const int sec = (type == DateFormatSec::FORMAT_SEC_ZERO) ? 0 : qRound(date.secondes());
+
+    const QDate d(date.annee(), date.mois(), date.jour());
+    const QTime t(date.heure(), date.minutes(), sec);
 
     /* Retour */
-    return (QDateTime(QDate(_annee, _mois, _jour), QTime(_heure, _minutes, sec)).addSecs(qRound(_offsetUTC * DATE::NB_SEC_PAR_JOUR)));
+    return (QDateTime(d, t).addSecs(qRound(_offsetUTC * DATE::NB_SEC_PAR_JOUR)));
 }
 
 /*
