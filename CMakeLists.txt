@@ -33,16 +33,16 @@
 # >    21 juin 2023
 #
 # Date de revision
-# >    2 fevrier 2026
+# >    8 aout 2026
 #
 
 cmake_minimum_required(VERSION 3.24)
 
 
 #----------------------------------
-set(VERSION 7.2.1.3)
+set(VERSION 7.3.0.5)
 set(ANNEES_DEV 2005-2026)
-set(QT_PREFERRED_VERSION 6.9.2)
+set(QT_PREFERRED_VERSION 6.11.1)
 
 if(NOT DEFINED PORTABLE_BUILD)
     set(PORTABLE_BUILD false)
@@ -101,7 +101,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Concurrent Core Multimedi
 string(SUBSTRING ${QT_PREFERRED_VERSION} 0 1 QT_PREFERRED_VERSION_MAJOR)
 
 if(NOT ${QT_VERSION_MAJOR} EQUAL ${QT_PREFERRED_VERSION_MAJOR})
-    message(FATAL_ERROR "Qt ${QT_VERSION} is not suited to compile ${TARGET}. Use Qt ${QT_PREFERRED_VERSION} in preference")
+    message(FATAL_ERROR "Qt ${QT_VERSION} is not suited to compile ${TARGET}. Use Qt ${QT_PREFERRED_VERSION} or over in preference")
 endif()
 
 
@@ -125,7 +125,7 @@ add_definitions(
     -DQT_MESSAGELOGCONTEXT
 )
 
-include_directories(src)
+include_directories(src lib)
 
 # Definition des librairies
 file(GLOB_RECURSE
@@ -147,6 +147,7 @@ file(GLOB_RECURSE
     src/previsions/*.cpp
     src/previsions/*.h
 )
+
 
 if(${BUILD_TEST})
 
@@ -206,6 +207,7 @@ if(${BUILD_TEST})
         Qt${QT_VERSION_MAJOR}::Widgets
         Qt${QT_VERSION_MAJOR}::Xml
         ${COV_LINK_FLAGS}
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib/PPM_atm/libPPM_atm.dll
     )
 
 else()
@@ -261,6 +263,7 @@ else()
         Qt${QT_VERSION_MAJOR}::Sql
         Qt${QT_VERSION_MAJOR}::Widgets
         Qt${QT_VERSION_MAJOR}::Xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib/PPM_atm/libPPM_atm.dll
     )
 
     if(${QT_VERSION} VERSION_LESS 6.1.0)
