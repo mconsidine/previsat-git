@@ -120,6 +120,20 @@ public:
      */
     virtual bool Park() = 0;
 
+    /**
+     * @brief SupportsRaDecRates The mount can move at commanded right ascension / declination rates
+     * (needed for continuous tracking)
+     */
+    virtual bool SupportsRaDecRates() const;
+
+    /**
+     * @brief SetRaDecRates Move at the given rates of change of the pointing coordinates
+     * (rad/s; (0, 0) means following the stars, i.e. sidereal tracking). A goto or Stop() cancels the rates.
+     * @throw MountError
+     */
+    virtual void SetRaDecRates(const double raRate,
+                               const double decRate);
+
 
 protected:
 

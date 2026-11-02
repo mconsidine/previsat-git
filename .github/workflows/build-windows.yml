@@ -78,8 +78,15 @@ jobs:
         run: |
           Copy-Item lib\PPM_atm\libPPM_atm.dll build
           Set-Location build
-          .\PreviSatTest.exe testAllMount
-          if ($LASTEXITCODE -ne 0) { throw "Mount control tests failed ($LASTEXITCODE)" }
+          .\PreviSatTest.exe testAllMount -o results.txt,txt -o -,txt
+          $code = $LASTEXITCODE
+
+          # Failures and tracking summaries as annotations, readable on the run page without opening the log
+          Get-Content results.txt | Select-String -Pattern 'FAIL!|Loc:|Tracking summary|Totals' | ForEach-Object {
+              $line = $_.Line.Trim()
+              if ($line -match 'FAIL!|Loc:') { Write-Output "::error::$line" } else { Write-Output "::notice::$line" }
+          }
+          if ($code -ne 0) { throw "Mount control tests failed ($code)" }
 
       - name: Package
         if: matrix.config == 'app'

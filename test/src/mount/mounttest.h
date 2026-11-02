@@ -35,6 +35,9 @@
 #ifndef MOUNTTEST_H
 #define MOUNTTEST_H
 
+class PassTracker;
+class SimulatedClock;
+struct PassDefinition;
 
 class MountTest
 {
@@ -50,6 +53,15 @@ private:
     static void testPointing();
     static void testSimulator();
     static void testSimulatedPass();
+    static void testContinuousPass();
+    static void testTargetOffsets();
+
+    /**
+     * @brief RunPass Run a whole pass against the simulator, 5 updates per simulated second
+     */
+    static void RunPass(PassTracker &tracker,
+                        SimulatedClock &clock,
+                        const PassDefinition &pass);
 
 };
 

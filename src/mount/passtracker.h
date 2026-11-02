@@ -62,7 +62,31 @@ struct PassDefinition {
     double jdEnd = 0.;
 };
 
+enum class TrackingMode {
+    LEAPFROG = 0,       // goto ahead of the satellite, wait for it, repeat (every mount)
+    CONTINUOUS          // follow the satellite with rate commands and position feedback (mounts with rate control)
+};
+
+/**
+ * @brief Parameters of the continuous tracking controller.
+ * Each update, commanded rate = predicted rate of the target + gain x pointing error, where the gain
+ * grows from minGain (small errors) to maxGain (errors of gainErrorScale or more).
+ */
+struct ContinuousSettings {
+    double minGain = 0.3;               // 1/s, gain for small errors ("minimum aggression")
+    double maxGain = 1.5;               // 1/s, gain for large errors ("maximum aggression")
+    double gainErrorScale = 10.;        // arcmin, error at which the gain reaches maxGain
+    double deadband = 0.05;             // arcmin, no correction below this error
+    double maxCorrectionRate = 1.;      // deg/s on the sky, limit of the correction term
+    double maxRate = 5.;                // deg/s per coordinate, limit of the commanded rate
+    double maxAcceleration = 5.;        // deg/s^2 per coordinate, limit of the rate change
+    double catchUpThreshold = 3.;       // deg, beyond this error the mount catches up with a goto
+    double positionDelay = 0.;          // s, age of the position the mount reports (measured by calibration)
+};
+
 struct TrackerSettings {
+    TrackingMode mode = TrackingMode::LEAPFROG;
+    ContinuousSettings continuous;
     double minAltitude = 10. * MATHS::DEG2RAD;      // rad, apparent
     double maxAltitude = 88. * MATHS::DEG2RAD;      // rad, apparent (zenith keyhole of alt-azimuth mounts)
     int prePositionSeconds = 120;                   // slew to the start point this long before the pass
@@ -117,6 +141,14 @@ public:
      * @brief Abort Stop tracking and stop the mount
      */
     void Abort();
+
+    /**
+     * @brief SetOffsets Corrections applied to the predicted position (absolute values, not increments)
+     * @param[in] timingSeconds along the track: the mount points where the satellite will be this many seconds later
+     * @param[in] crossTrackArcmin across the track: positive to the right of the direction of motion, as seen by the observer
+     */
+    void SetOffsets(const double timingSeconds,
+                    const double crossTrackArcmin);
 
 
 signals:
@@ -177,6 +209,19 @@ private:
     int _lateArrivals;
     qint64 _lastStatusSecond;
 
+    // Continuous tracking
+    bool _continuous;           // continuous mode selected and supported by the mount
+    bool _rateActive;           // rates are being commanded (false while catching up with a goto)
+    double _rateRa;             // last commanded rates (rad/s)
+    double _rateDec;
+    double _lastRateJd;
+    int _readFailures;
+    int _catchUps;
+
+    // User corrections
+    double _timingOffset;       // s
+    double _crossOffset;        // rad
+
     void SetState(const State state,
                   const QString &description);
 
@@ -209,7 +254,32 @@ private:
      */
     double NextAimTime(const double jd);
 
+    /**
+     * @brief Target Where to point at a given time: the predicted satellite position with the user offsets
+     */
+    PointingSample Target(const double jd);
+
     void IssueGoto(const double jdAim);
+
+    /**
+     * @brief ContinuousStep One update of the continuous tracking controller
+     * @throw MountError
+     */
+    void ContinuousStep(const double now);
+
+    void StartRates(const double now);
+
+    /**
+     * @brief StopRates Back to sidereal tracking
+     * @throw MountError
+     */
+    void StopRates();
+
+    /**
+     * @brief CatchUp Leave rate control and goto ahead of the satellite; rate control resumes when it gets there
+     */
+    void CatchUp(const double now,
+                 const QString &reason);
 
     void OnArrival(const double now);
 

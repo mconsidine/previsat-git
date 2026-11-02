@@ -71,6 +71,11 @@ protected:
 
     void closeEvent(QCloseEvent *evt) override;
 
+    /**
+     * @brief reject Escape key: go through closeEvent, so that an armed pass is not left running in a hidden window
+     */
+    void reject() override;
+
 
 private slots:
 
@@ -117,8 +122,16 @@ private:
     QSpinBox *_prePosition;
     QDoubleSpinBox *_dwell;
     QCheckBox *_parkAtEnd;
+    QComboBox *_mode;
+    QDoubleSpinBox *_minGain;
+    QDoubleSpinBox *_maxGain;
     QPushButton *_armButton;
     QPushButton *_abortButton;
+
+    // Corrections during the pass
+    double _timingOffset;       // s
+    double _crossOffset;        // arcmin
+    QLabel *_offsets;
 
     // Status
     QLabel *_status;
@@ -129,6 +142,15 @@ private:
     void LoadSettings();
     void SaveSettings() const;
     void UpdateButtons();
+
+    /**
+     * @brief ChangeOffsets Add to the timing (s) and cross-track (arcmin) corrections and send them to the tracker
+     */
+    void ChangeOffsets(const double timingStep,
+                       const double crossStep);
+
+    void ResetOffsets();
+    void SendOffsets();
 
 };
 

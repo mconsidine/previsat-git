@@ -48,6 +48,7 @@ struct SimulatorSettings {
     double maxRate = 4.;            // deg/s, per axis
     double acceleration = 3.;       // deg/s^2, per axis
     double settleSeconds = 0.5;     // the mount still reports "slewing" this long after reaching the target
+    double readbackDelaySeconds = 0.;   // the reported position is this old (slow controller feedback)
 };
 
 
@@ -80,6 +81,11 @@ public:
 
     bool Park() override;
 
+    bool SupportsRaDecRates() const override;
+
+    void SetRaDecRates(const double raRate,
+                       const double decRate) override;
+
 
 protected:
 
@@ -92,6 +98,7 @@ private:
         double position = 0.;   // rad
         double target = 0.;     // rad
         double velocity = 0.;   // rad/s
+        double commandedRate = 0.;  // rad/s, in rate mode
         bool wraps = false;     // right ascension: shortest way round
     };
 
@@ -99,6 +106,7 @@ private:
     SimulatorSettings _settings;
     bool _connected;
     bool _moving;
+    bool _rateMode;
     double _lastUpdateJd;
     double _arrivalJd;
     Axis _axis1;
@@ -115,6 +123,14 @@ private:
      */
     bool StepAxis(Axis &axis,
                   const double dt) const;
+
+    /**
+     * @brief StepRate Move an axis during dt seconds in rate mode (acceleration limited)
+     */
+    void StepRate(Axis &axis,
+                  const double dt) const;
+
+    void CheckConnected() const;
 
 };
 

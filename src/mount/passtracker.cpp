@@ -35,6 +35,7 @@
  */
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <QDir>
 #include <QFile>
@@ -63,7 +64,16 @@ PassTracker::PassTracker(QObject *parent) :
     _mountPositionKnown(false),
     _gotoCount(0),
     _lateArrivals(0),
-    _lastStatusSecond(-1)
+    _lastStatusSecond(-1),
+    _continuous(false),
+    _rateActive(false),
+    _rateRa(0.),
+    _rateDec(0.),
+    _lastRateJd(0.),
+    _readFailures(0),
+    _catchUps(0),
+    _timingOffset(0.),
+    _crossOffset(0.)
 {
     _timer->setInterval(TICK_MS);
     _timer->setTimerType(Qt::PreciseTimer);
@@ -202,8 +212,23 @@ void PassTracker::Arm(const PassDefinition &pass,
     _gotoCount = 0;
     _lateArrivals = 0;
     _lastStatusSecond = -1;
+    _rateActive = false;
+    _rateRa = 0.;
+    _rateDec = 0.;
+    _readFailures = 0;
+    _catchUps = 0;
+
+    // As SkyTrack: the timing correction (clock, element age) carries over to the next pass, the cross-track one does not
+    _crossOffset = 0.;
+
+    _continuous = (settings.mode == TrackingMode::CONTINUOUS);
+    if (_continuous && !_driver->SupportsRaDecRates()) {
+        _continuous = false;
+        emit logMessage(tr("%1 has no rate control yet: using leapfrog tracking").arg(_driver->Name()));
+    }
 
     OpenLog();
+    Report(tr("Tracking mode: %1").arg((_continuous) ? tr("continuous") : tr("leapfrog")));
     SetState(State::WAITING, tr("Armed"));
     _timer->start();
     Tick();
@@ -212,6 +237,7 @@ void PassTracker::Arm(const PassDefinition &pass,
 void PassTracker::Abort()
 {
     _timer->stop();
+    _rateActive = false;
 
     if (_driver) {
         try {
@@ -276,6 +302,17 @@ void PassTracker::Tick()
                 break;
             }
 
+            if (_rateActive) {
+                ContinuousStep(now);
+                if (_rateActive && newSecond) {
+                    SetState(_state, tr("Continuous tracking: separation %1', rate %2°/s, pass ends in %3")
+                             .arg(_separationArcmin, 0, 'f', 1)
+                             .arg(hypot(_rateRa * cos(_mountDec), _rateDec) * MATHS::RAD2DEG, 0, 'f', 2)
+                             .arg(FormatSeconds((_pass.jdEnd - now) * DATE::NB_SEC_PAR_JOUR)));
+                }
+                break;
+            }
+
             if (_slewing) {
                 // Leave the mount a moment to report that it started moving
                 if (((now - _gotoIssuedJd) * DATE::NB_SEC_PAR_JOUR < 0.3) || _driver->IsSlewing()) {
@@ -283,6 +320,24 @@ void PassTracker::Tick()
                 }
                 _slewing = false;
                 OnArrival(now);
+            }
+
+            if (_continuous) {
+
+                // Waiting at the aim point (start of the pass, or after a catch-up): follow the satellite once it is there
+                if (now >= _aimJd) {
+                    if (_state == State::PREPOSITIONING) {
+                        Report(tr("Satellite reached the start point: continuous tracking"));
+                        _state = State::TRACKING;
+                    } else {
+                        Report(tr("Continuous tracking resumed"));
+                    }
+                    StartRates(now);
+                } else if (newSecond) {
+                    SetState(_state, tr("Waiting for the satellite: arrives in %1")
+                             .arg(FormatSeconds((_aimJd - now) * DATE::NB_SEC_PAR_JOUR)));
+                }
+                break;
             }
 
             if (now >= _aimJd + _settings.dwellSeconds * DATE::NB_JOUR_PAR_SEC) {
@@ -323,7 +378,10 @@ void PassTracker::Tick()
 
             // Once a second: mount position, separation from the satellite, and a line of the pass log
             if (newSecond && (_state != State::WAITING)) {
-                ReadMountPosition(sample);
+                if (!_rateActive) {
+                    // (in continuous tracking the controller reads the position at every update)
+                    ReadMountPosition(sample);
+                }
                 if ((_state == State::TRACKING) && (_separationArcmin >= 0.)) {
                     _trackingSeparations.append(_separationArcmin);
                 }
@@ -351,6 +409,7 @@ void PassTracker::Fail(const QString &message)
 {
     _timer->stop();
     _slewing = false;
+    _rateActive = false;
     Report(tr("ERROR: %1").arg(message));
 
     if (_driver) {
@@ -385,9 +444,46 @@ double PassTracker::NextAimTime(const double jd)
     return -1.;
 }
 
+PointingSample PassTracker::Target(const double jd)
+{
+    PointingSample target = _pointing->Compute(jd + _timingOffset * DATE::NB_JOUR_PAR_SEC);
+
+    if (fabs(_crossOffset) > 0.) {
+
+        // Rotate the target by the offset angle, perpendicular to its direction of motion
+        const PointingSample next = _pointing->Compute(jd + (_timingOffset + 1.) * DATE::NB_JOUR_PAR_SEC);
+
+        const auto unit = [](const double ra, const double dec) {
+            return std::array<double, 3> { cos(dec) * cos(ra), cos(dec) * sin(ra), sin(dec) };
+        };
+
+        const std::array<double, 3> u = unit(target.rightAscension, target.declination);
+        const std::array<double, 3> v = unit(next.rightAscension, next.declination);
+        const std::array<double, 3> m { v[0] - u[0], v[1] - u[1], v[2] - u[2] };
+
+        // u x m points to the right of the motion for an observer at the centre of the sphere
+        std::array<double, 3> n { u[1] * m[2] - u[2] * m[1], u[2] * m[0] - u[0] * m[2], u[0] * m[1] - u[1] * m[0] };
+        const double norm = sqrt(n[0] * n[0] + n[1] * n[1] + n[2] * n[2]);
+
+        if (norm > 1.e-15) {
+            const double c = cos(_crossOffset);
+            const double s = sin(_crossOffset) / norm;
+            const std::array<double, 3> p { c * u[0] + s * n[0], c * u[1] + s * n[1], c * u[2] + s * n[2] };
+
+            target.rightAscension = atan2(p[1], p[0]);
+            if (target.rightAscension < 0.) {
+                target.rightAscension += MATHS::DEUX_PI;
+            }
+            target.declination = asin(std::clamp(p[2], -1., 1.));
+        }
+    }
+
+    return target;
+}
+
 void PassTracker::IssueGoto(const double jdAim)
 {
-    const PointingSample target = _pointing->Compute(jdAim);
+    const PointingSample target = Target(jdAim);
 
     _driver->GotoRaDec(target.rightAscension, target.declination);
 
@@ -430,10 +526,172 @@ void PassTracker::OnArrival(const double now)
                 .arg(_gotoCount).arg(slewSeconds, 0, 'f', 1).arg(_lastErrorArcmin, 0, 'f', 2));
 }
 
+void PassTracker::ContinuousStep(const double now)
+{
+    const ContinuousSettings &cs = _settings.continuous;
+
+    const PointingSample satellite = _pointing->Compute(now);
+    if ((satellite.altitude < _settings.minAltitude) || (satellite.altitude > _settings.maxAltitude)) {
+        CatchUp(now, tr("satellite outside the altitude limits"));
+        return;
+    }
+
+    // Measure the mount position; the measurement time is the middle of the request
+    bool measured = true;
+    double ra = 0.;
+    double dec = 0.;
+    const double t0 = _clock->NowJdUtc();
+    try {
+        _driver->GetRaDec(ra, dec);
+        _readFailures = 0;
+    } catch (const MountError &) {
+        measured = false;
+        if (++_readFailures > 3) {
+            throw;
+        }
+    }
+    const double t1 = _clock->NowJdUtc();
+
+    // Time the reported position refers to: middle of the request, minus the age of the controller's position
+    const double tMeasure = 0.5 * (t0 + t1) - cs.positionDelay * DATE::NB_JOUR_PAR_SEC;
+
+    // A rate command takes effect about half a round trip after it is sent
+    const double tCommand = t1 + 0.5 * (t1 - t0);
+
+    // Feed-forward: rate of the target at the command time (centred difference over 1 s)
+    const double half = 0.5 * DATE::NB_JOUR_PAR_SEC;
+    const PointingSample before = Target(tCommand - half);
+    const PointingSample after = Target(tCommand + half);
+    const double feedRa = remainder(after.rightAscension - before.rightAscension, MATHS::DEUX_PI);
+    const double feedDec = after.declination - before.declination;
+
+    double correctionRa = 0.;
+    double correctionDec = 0.;
+
+    if (measured) {
+
+        _mountRa = ra;
+        _mountDec = dec;
+        _mountPositionKnown = true;
+
+        // Separation from the satellite where it was when the reported position was valid
+        const PointingSample measuredSatellite = _pointing->Compute(tMeasure);
+        _separationArcmin = SatellitePointing::AngularSeparation(ra, dec, measuredSatellite.rightAscension,
+                                                                 measuredSatellite.declination) * RAD2ARCMIN;
+
+        // Error at the measurement time, carried to the command time with the rate difference
+        const PointingSample target = Target(tMeasure);
+        const double lag = (tCommand - tMeasure) * DATE::NB_SEC_PAR_JOUR;
+        const double errorRa = remainder(target.rightAscension - ra, MATHS::DEUX_PI) + (feedRa - _rateRa) * lag;
+        const double errorDec = (target.declination - dec) + (feedDec - _rateDec) * lag;
+        const double cosDec = std::max(cos(target.declination), 0.05);
+        const double errorSky = hypot(errorRa * cosDec, errorDec);
+
+        if (errorSky > cs.catchUpThreshold * MATHS::DEG2RAD) {
+            _catchUps++;
+            CatchUp(now, tr("mount %1° from the target").arg(errorSky * MATHS::RAD2DEG, 0, 'f', 1));
+            return;
+        }
+
+        if (errorSky > cs.deadband * MATHS::ARCMIN2RAD) {
+
+            const double scale = std::min(1., errorSky / (cs.gainErrorScale * MATHS::ARCMIN2RAD));
+            const double gain = cs.minGain + (cs.maxGain - cs.minGain) * scale;
+
+            // Correction on the sky, limited in magnitude, then back to coordinate rates
+            double skyRa = gain * errorRa * cosDec;
+            double skyDec = gain * errorDec;
+            const double magnitude = hypot(skyRa, skyDec);
+            const double maxCorrection = cs.maxCorrectionRate * MATHS::DEG2RAD;
+            if (magnitude > maxCorrection) {
+                skyRa *= maxCorrection / magnitude;
+                skyDec *= maxCorrection / magnitude;
+            }
+
+            correctionRa = skyRa / cosDec;
+            correctionDec = skyDec;
+        }
+
+    } else {
+        _mountPositionKnown = false;
+        _separationArcmin = -1.;
+    }
+
+    // Rate and acceleration limits
+    const double dt = std::clamp((now - _lastRateJd) * DATE::NB_SEC_PAR_JOUR, 0.05, 1.);
+    const double maxRate = cs.maxRate * MATHS::DEG2RAD;
+    const double maxChange = cs.maxAcceleration * MATHS::DEG2RAD * dt;
+
+    double rateRa = std::clamp(feedRa + correctionRa, -maxRate, maxRate);
+    double rateDec = std::clamp(feedDec + correctionDec, -maxRate, maxRate);
+    rateRa = std::clamp(rateRa, _rateRa - maxChange, _rateRa + maxChange);
+    rateDec = std::clamp(rateDec, _rateDec - maxChange, _rateDec + maxChange);
+
+    _driver->SetRaDecRates(rateRa, rateDec);
+    _rateRa = rateRa;
+    _rateDec = rateDec;
+    _lastRateJd = now;
+}
+
+void PassTracker::StartRates(const double now)
+{
+    _rateActive = true;
+    _rateRa = 0.;
+    _rateDec = 0.;
+    _readFailures = 0;
+
+    // As if the previous update were one tick ago, so that the first rate change is not over-limited
+    _lastRateJd = now - TICK_MS * DATE::NB_JOUR_PAR_MILLISEC;
+
+    ContinuousStep(now);
+}
+
+void PassTracker::StopRates()
+{
+    if (_rateActive) {
+        _rateActive = false;
+        _rateRa = 0.;
+        _rateDec = 0.;
+        _driver->SetRaDecRates(0., 0.);
+    }
+}
+
+void PassTracker::CatchUp(const double now,
+                          const QString &reason)
+{
+    StopRates();
+
+    const double aim = NextAimTime(now + _leadSeconds * DATE::NB_JOUR_PAR_SEC);
+    if (aim < 0.) {
+        Finish();
+        return;
+    }
+
+    Report(tr("Catching up with a goto (%1)").arg(reason));
+    IssueGoto(aim);
+}
+
+void PassTracker::SetOffsets(const double timingSeconds,
+                             const double crossTrackArcmin)
+{
+    _timingOffset = timingSeconds;
+    _crossOffset = crossTrackArcmin * MATHS::ARCMIN2RAD;
+    Report(tr("Offsets: timing %1 s, cross-track %2'").arg(timingSeconds, 0, 'f', 2).arg(crossTrackArcmin, 0, 'f', 1));
+}
+
 void PassTracker::Finish()
 {
     _timer->stop();
     _slewing = false;
+
+    if (_driver) {
+        try {
+            StopRates();
+        } catch (const MountError &e) {
+            Report(tr("ERROR while returning to sidereal tracking: %1").arg(e.message()));
+        }
+    }
+    _rateActive = false;
 
     if (_settings.parkAtEnd && _driver) {
         try {
@@ -491,7 +749,8 @@ void PassTracker::OpenLog()
     }
 
     file->write("utc,state,sat_az_deg,sat_alt_deg,sat_ra_h,sat_dec_deg,mount_ra_h,mount_dec_deg,separation_arcmin,"
-                "last_arrival_error_arcmin,lead_s,gotos,event\n");
+                "last_arrival_error_arcmin,lead_s,gotos,mode,rate_ra_arcsec_s,rate_dec_arcsec_s,timing_offset_s,"
+                "cross_offset_arcmin,event\n");
     _logFile = std::move(file);
     emit logMessage(tr("Pass log: %1").arg(QDir::toNativeSeparators(_logFile->fileName())));
 }
@@ -521,9 +780,13 @@ void PassTracker::WriteLogRow(const double jd,
             fields << QString() << QString() << QString();
         }
         fields << ((_lastErrorArcmin >= 0.) ? number(_lastErrorArcmin, 2) : QString()) << number(_leadSeconds, 2)
-               << QString::number(_gotoCount);
+               << QString::number(_gotoCount)
+               << ((_rateActive) ? "rate" : "goto")
+               << number(_rateRa * MATHS::RAD2DEG * MATHS::ARCSEC_PAR_DEG, 1)
+               << number(_rateDec * MATHS::RAD2DEG * MATHS::ARCSEC_PAR_DEG, 1)
+               << number(_timingOffset, 2) << number(_crossOffset * RAD2ARCMIN, 2);
     } else {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 15; i++) {
             fields << QString();
         }
     }
@@ -558,9 +821,10 @@ QString PassTracker::TrackingSummary() const
         return sorted.at(idx);
     };
 
-    return tr("Tracking summary: %1 gotos, %2 late arrivals; mount - satellite separation over %3 s: "
-              "median %4', 90% below %5', maximum %6'")
-        .arg(_gotoCount).arg(_lateArrivals).arg(sorted.size())
+    return tr("Tracking summary (%1): %2 gotos, %3 catch-ups, %4 late arrivals; mount - satellite separation over %5 s: "
+              "median %6', 90% below %7', maximum %8'")
+        .arg((_continuous) ? tr("continuous") : tr("leapfrog"))
+        .arg(_gotoCount).arg(_catchUps).arg(_lateArrivals).arg(sorted.size())
         .arg(percentile(0.5), 0, 'f', 1).arg(percentile(0.9), 0, 'f', 1).arg(sorted.last(), 0, 'f', 1);
 }
 

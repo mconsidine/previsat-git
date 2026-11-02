@@ -35,6 +35,7 @@
  */
 
 #include <algorithm>
+#include <cmath>
 #include <QCheckBox>
 #include <QCloseEvent>
 #include <QComboBox>
@@ -42,6 +43,7 @@
 #include <QDir>
 #include <QDoubleSpinBox>
 #include <QFormLayout>
+#include <QGridLayout>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -51,6 +53,7 @@
 #include <QPushButton>
 #include <QSerialPortInfo>
 #include <QSettings>
+#include <QShortcut>
 #include <QSpinBox>
 #include <QStackedWidget>
 #include <QVBoxLayout>
@@ -169,18 +172,71 @@ void MountControl::ArmPass()
     trackerSettings.dwellSeconds = _dwell->value();
     trackerSettings.parkAtEnd = _parkAtEnd->isChecked();
     trackerSettings.logDirectory = Configuration::instance()->dirOut() + QDir::separator() + "mount_logs";
+    trackerSettings.mode = static_cast<TrackingMode>(_mode->currentData().toInt());
+    trackerSettings.continuous.minGain = _minGain->value();
+    trackerSettings.continuous.maxGain = _maxGain->value();
 
     if (trackerSettings.maxAltitude <= trackerSettings.minAltitude) {
         QMessageBox::warning(this, windowTitle(), tr("The maximum altitude must be greater than the minimum altitude"));
         return;
     }
 
+    if (trackerSettings.continuous.maxGain < trackerSettings.continuous.minGain) {
+        QMessageBox::warning(this, windowTitle(), tr("The maximum gain must not be smaller than the minimum gain"));
+        return;
+    }
+
     SaveSettings();
+
+    // The tracker keeps the timing correction from one pass to the next, and resets the cross-track one
+    _crossOffset = 0.;
+    ChangeOffsets(0., 0.);
 
     PassTracker *tracker = _tracker;
     const PassDefinition pass = _pass;
+    const double timing = _timingOffset;
     QMetaObject::invokeMethod(tracker, [=]() {
+        tracker->SetOffsets(timing, 0.);
         tracker->Arm(pass, trackerSettings);
+    }, Qt::QueuedConnection);
+}
+
+void MountControl::ChangeOffsets(const double timingStep,
+                                 const double crossStep)
+{
+    _timingOffset = std::clamp(_timingOffset + timingStep, -60., 60.);
+    _crossOffset = std::clamp(_crossOffset + crossStep, -600., 600.);
+
+    // Avoid -0.0 in the display after a round trip
+    if (fabs(_timingOffset) < 1.e-9) {
+        _timingOffset = 0.;
+    }
+    if (fabs(_crossOffset) < 1.e-9) {
+        _crossOffset = 0.;
+    }
+
+    _offsets->setText(tr("Timing %1 s   Cross-track %2'").arg(_timingOffset, 0, 'f', 1).arg(_crossOffset, 0, 'f', 1));
+
+    if ((timingStep != 0.) || (crossStep != 0.)) {
+        SendOffsets();
+    }
+}
+
+void MountControl::ResetOffsets()
+{
+    _timingOffset = 0.;
+    _crossOffset = 0.;
+    ChangeOffsets(0., 0.);
+    SendOffsets();
+}
+
+void MountControl::SendOffsets()
+{
+    PassTracker *tracker = _tracker;
+    const double timing = _timingOffset;
+    const double cross = _crossOffset;
+    QMetaObject::invokeMethod(tracker, [=]() {
+        tracker->SetOffsets(timing, cross);
     }, Qt::QueuedConnection);
 }
 
@@ -265,6 +321,11 @@ void MountControl::closeEvent(QCloseEvent *evt)
 
     SaveSettings();
     evt->accept();
+}
+
+void MountControl::reject()
+{
+    close();
 }
 
 void MountControl::BuildInterface()
@@ -371,6 +432,32 @@ void MountControl::BuildInterface()
     _parkAtEnd = new QCheckBox(tr("Park the mount at the end of the pass (OnStep)"), passGroup);
     passLayout->addRow(QString(), _parkAtEnd);
 
+    _mode = new QComboBox(passGroup);
+    _mode->addItem(tr("Leapfrog (goto ahead, wait, repeat)"), static_cast<int>(TrackingMode::LEAPFROG));
+    _mode->addItem(tr("Continuous (rate control; simulator only for now)"), static_cast<int>(TrackingMode::CONTINUOUS));
+    _mode->setToolTip(tr("Continuous tracking needs a mount with rate control; other mounts fall back to leapfrog"));
+    passLayout->addRow(tr("Tracking mode:"), _mode);
+
+    auto *gainRow = new QHBoxLayout;
+    _minGain = new QDoubleSpinBox(passGroup);
+    _minGain->setRange(0., 5.);
+    _minGain->setDecimals(2);
+    _minGain->setSingleStep(0.1);
+    _minGain->setSuffix(" /s");
+    _minGain->setToolTip(tr("Correction strength for small errors. Lower it if the target oscillates around the centre."));
+    _maxGain = new QDoubleSpinBox(passGroup);
+    _maxGain->setRange(0., 5.);
+    _maxGain->setDecimals(2);
+    _maxGain->setSingleStep(0.1);
+    _maxGain->setSuffix(" /s");
+    _maxGain->setToolTip(tr("Correction strength for large errors (10' and more)"));
+    gainRow->addWidget(new QLabel(tr("min"), passGroup));
+    gainRow->addWidget(_minGain);
+    gainRow->addWidget(new QLabel(tr("max"), passGroup));
+    gainRow->addWidget(_maxGain);
+    gainRow->addStretch();
+    passLayout->addRow(tr("Continuous gain:"), gainRow);
+
     auto *passButtons = new QHBoxLayout;
     _armButton = new QPushButton(tr("Arm pass"), passGroup);
     _abortButton = new QPushButton(tr("STOP / Abort"), passGroup);
@@ -380,6 +467,62 @@ void MountControl::BuildInterface()
     passLayout->addRow(passButtons);
 
     mainLayout->addWidget(passGroup);
+
+    /*
+     * Corrections during the pass (as SkyTrack: along the track in time, across the track in angle)
+     */
+    auto *offsetGroup = new QGroupBox(tr("Corrections during the pass"), this);
+    auto *offsetLayout = new QGridLayout(offsetGroup);
+
+    auto *earlier = new QPushButton(tr("◀ Earlier"), offsetGroup);
+    auto *later = new QPushButton(tr("Later ▶"), offsetGroup);
+    auto *left = new QPushButton(tr("▲ Left"), offsetGroup);
+    auto *right = new QPushButton(tr("▼ Right"), offsetGroup);
+    auto *reset = new QPushButton(tr("Reset"), offsetGroup);
+    earlier->setToolTip(tr("Point where the satellite was 0.1 s earlier (Ctrl+Left; with Shift: 1 s)"));
+    later->setToolTip(tr("Point where the satellite will be 0.1 s later (Ctrl+Right; with Shift: 1 s)"));
+    left->setToolTip(tr("Move 1' to the left of the direction of motion (Ctrl+Up; with Shift: 5')"));
+    right->setToolTip(tr("Move 1' to the right of the direction of motion (Ctrl+Down; with Shift: 5')"));
+    reset->setToolTip(tr("Remove both corrections (Ctrl+0)"));
+
+    _timingOffset = settings.value("mount/timingOffset", 0.).toDouble();
+    _crossOffset = 0.;
+    _offsets = new QLabel(offsetGroup);
+
+    offsetLayout->addWidget(earlier, 0, 0);
+    offsetLayout->addWidget(later, 0, 1);
+    offsetLayout->addWidget(left, 0, 2);
+    offsetLayout->addWidget(right, 0, 3);
+    offsetLayout->addWidget(reset, 0, 4);
+    offsetLayout->addWidget(_offsets, 1, 0, 1, 5);
+    mainLayout->addWidget(offsetGroup);
+
+    connect(earlier, &QPushButton::clicked, this, [this]() { ChangeOffsets(-0.1, 0.); });
+    connect(later, &QPushButton::clicked, this, [this]() { ChangeOffsets(0.1, 0.); });
+    connect(left, &QPushButton::clicked, this, [this]() { ChangeOffsets(0., -1.); });
+    connect(right, &QPushButton::clicked, this, [this]() { ChangeOffsets(0., 1.); });
+    connect(reset, &QPushButton::clicked, this, &MountControl::ResetOffsets);
+
+    // Keyboard nudges (Ctrl so that the arrow keys still work in the fields), Shift for coarse steps
+    const struct {
+        QKeyCombination keys;
+        double timing;
+        double cross;
+    } nudges[] = {
+        { Qt::CTRL | Qt::Key_Left, -0.1, 0. }, { Qt::CTRL | Qt::Key_Right, 0.1, 0. },
+        { Qt::CTRL | Qt::SHIFT | Qt::Key_Left, -1., 0. }, { Qt::CTRL | Qt::SHIFT | Qt::Key_Right, 1., 0. },
+        { Qt::CTRL | Qt::Key_Up, 0., -1. }, { Qt::CTRL | Qt::Key_Down, 0., 1. },
+        { Qt::CTRL | Qt::SHIFT | Qt::Key_Up, 0., -5. }, { Qt::CTRL | Qt::SHIFT | Qt::Key_Down, 0., 5. },
+    };
+    for (const auto &nudge : nudges) {
+        const double timing = nudge.timing;
+        const double cross = nudge.cross;
+        connect(new QShortcut(QKeySequence(nudge.keys), this), &QShortcut::activated, this,
+                [this, timing, cross]() { ChangeOffsets(timing, cross); });
+    }
+    connect(new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_0), this), &QShortcut::activated, this, &MountControl::ResetOffsets);
+
+    ChangeOffsets(0., 0.);
 
     /*
      * Status
@@ -403,7 +546,7 @@ void MountControl::BuildInterface()
     mainLayout->addWidget(clockNote);
     mainLayout->addWidget(_log, 1);
 
-    resize(560, 640);
+    resize(580, 760);
 
     connect(_link, &QComboBox::currentIndexChanged, _linkSettings, &QStackedWidget::setCurrentIndex);
     connect(refresh, &QPushButton::clicked, this, &MountControl::RefreshSerialPorts);
@@ -439,6 +582,9 @@ void MountControl::LoadSettings()
     _prePosition->setValue(settings.value("mount/prePosition", 120).toInt());
     _dwell->setValue(settings.value("mount/dwell", 1.).toDouble());
     _parkAtEnd->setChecked(settings.value("mount/parkAtEnd", false).toBool());
+    _mode->setCurrentIndex(std::max(0, _mode->findData(settings.value("mount/trackingMode", 0).toInt())));
+    _minGain->setValue(settings.value("mount/minGain", ContinuousSettings().minGain).toDouble());
+    _maxGain->setValue(settings.value("mount/maxGain", ContinuousSettings().maxGain).toDouble());
 
     // Usual link of each protocol, applied when the user changes the protocol
     connect(_protocol, &QComboBox::currentIndexChanged, this, [this]() {
@@ -468,6 +614,10 @@ void MountControl::SaveSettings() const
     settings.setValue("mount/prePosition", _prePosition->value());
     settings.setValue("mount/dwell", _dwell->value());
     settings.setValue("mount/parkAtEnd", _parkAtEnd->isChecked());
+    settings.setValue("mount/trackingMode", _mode->currentData().toInt());
+    settings.setValue("mount/minGain", _minGain->value());
+    settings.setValue("mount/maxGain", _maxGain->value());
+    settings.setValue("mount/timingOffset", _timingOffset);
 }
 
 void MountControl::UpdateButtons()
@@ -488,7 +638,8 @@ void MountControl::UpdateButtons()
     _armButton->setEnabled(_connected && _hasPass && !active);
     _abortButton->setEnabled(_connected);
 
-    for (QWidget *w : std::initializer_list<QWidget *> { _minAltitude, _maxAltitude, _prePosition, _dwell, _parkAtEnd }) {
+    for (QWidget *w : std::initializer_list<QWidget *> { _minAltitude, _maxAltitude, _prePosition, _dwell, _parkAtEnd,
+                                                         _mode, _minGain, _maxGain }) {
         w->setEnabled(!active);
     }
 }

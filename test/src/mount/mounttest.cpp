@@ -87,6 +87,8 @@ void MountTest::testAll()
     testPointing();
     testSimulator();
     testSimulatedPass();
+    testContinuousPass();
+    testTargetOffsets();
 }
 
 void MountTest::testLx200Formatting()
@@ -347,4 +349,182 @@ void MountTest::testSimulatedPass()
     // A pass that is over cannot be armed again
     tracker.Arm(pass, settings);
     QCOMPARE(tracker._state, PassTracker::State::FINISHED);
+}
+
+/*
+ * Next ISS pass above 10 degrees over Paris after 11 January 2020 08:27:30 UTC
+ */
+static bool IssPass(PassDefinition &pass)
+{
+    const TLE tle("ISS (ZARYA)",
+                  "1 25544U 98067A   20011.25516102  .00000195  00000-0  11565-4 0  9993",
+                  "2 25544  51.6455  49.9243 0005192 121.3003 338.9406 15.49550468207533");
+    Satellite sat(tle.elements());
+    Observateur obs("Paris", -2.348640000, +48.853390000, 30);
+    const double minAltitude = 10. * MATHS::DEG2RAD;
+
+    Date date(2020, 1, 11, 8, 27, 30., 0.);
+    obs.CalculPosVit(date);
+    sat.CalculPosVit(date);
+    sat.CalculCoordHoriz(obs, true);
+    const ElementsAOS aos = Evenements::CalculAOS(date, sat, obs, SensCalcul::CHRONOLOGIQUE, minAltitude);
+
+    date = Date(aos.date.jourJulienUTC() + 10. * DATE::NB_JOUR_PAR_SEC, 0.);
+    obs.CalculPosVit(date);
+    sat.CalculPosVit(date);
+    sat.CalculCoordHoriz(obs, true);
+    const ElementsAOS los = Evenements::CalculAOS(date, sat, obs, SensCalcul::CHRONOLOGIQUE, minAltitude);
+
+    pass.satelliteName = "ISS";
+    pass.elements = { tle.elements() };
+    pass.observer = Observateur("Paris", -2.348640000, +48.853390000, 30);
+    pass.jdStart = aos.date.jourJulienUTC();
+    pass.jdEnd = los.date.jourJulienUTC();
+
+    return aos.aos && los.aos && (pass.jdEnd > pass.jdStart);
+}
+
+/*
+ * Run a whole pass against the simulator, 5 updates per simulated second
+ */
+void MountTest::RunPass(PassTracker &tracker,
+                        SimulatedClock &clock,
+                        const PassDefinition &pass)
+{
+    const double duration = (pass.jdEnd - pass.jdStart) * DATE::NB_SEC_PAR_JOUR;
+    const int maxSteps = static_cast<int>((duration + 400.) / 0.2);
+
+    for (int i = 0; (i < maxSteps) && (tracker._state != PassTracker::State::FINISHED)
+                    && (tracker._state != PassTracker::State::IDLE); i++) {
+        clock.Advance(0.2);
+        tracker.Tick();
+    }
+}
+
+void MountTest::testContinuousPass()
+{
+    qInfo(Q_FUNC_INFO);
+
+    PassDefinition pass;
+    QVERIFY(IssPass(pass));
+
+    // Ideal feedback, then a position readback 0.3 s late (slow controller)
+    for (const double readbackDelay : { 0., 0.3 }) {
+
+        TrackerSettings settings;
+        settings.mode = TrackingMode::CONTINUOUS;
+        settings.minAltitude = 10. * MATHS::DEG2RAD;
+        settings.maxAltitude = 88. * MATHS::DEG2RAD;
+
+        // The calibration will measure this delay on a real mount
+        settings.continuous.positionDelay = readbackDelay;
+
+        SimulatorSettings mountSettings;
+        mountSettings.maxRate = 4.;
+        mountSettings.acceleration = 3.;
+        mountSettings.readbackDelaySeconds = readbackDelay;
+
+        SimulatedClock clock(pass.jdStart - 200. * DATE::NB_JOUR_PAR_SEC);
+
+        PassTracker tracker;
+        tracker.SetClock(clock);
+        auto mount = std::make_unique<MountSimulator>(clock, mountSettings);
+        mount->Connect();
+        tracker._driver = std::move(mount);
+        tracker._state = PassTracker::State::IDLE;
+
+        tracker.Arm(pass, settings);
+        QVERIFY(tracker._continuous);
+
+        RunPass(tracker, clock, pass);
+
+        const QString summary = tracker.TrackingSummary();
+        qInfo().noquote() << QString("readback delay %1 s:").arg(readbackDelay) << summary;
+
+        QCOMPARE(tracker._state, PassTracker::State::FINISHED);
+        QVERIFY2(tracker._trackingSeparations.size() > 60, qPrintable(summary));
+
+        QList<double> sorted = tracker._trackingSeparations;
+        std::sort(sorted.begin(), sorted.end());
+        const double median = sorted.at(sorted.size() / 2);
+        const double p90 = sorted.at((sorted.size() * 9) / 10);
+
+        // Continuous tracking keeps the satellite close to the centre all along the pass
+        QVERIFY2(median < 2., qPrintable(summary));
+        QVERIFY2(p90 < 6., qPrintable(summary));
+        QVERIFY2(tracker._catchUps <= 1, qPrintable(summary));
+    }
+
+    // A mount without rate control falls back to leapfrog
+    PassTracker tracker;
+    SimulatedClock clock(pass.jdStart - 200. * DATE::NB_JOUR_PAR_SEC);
+    tracker.SetClock(clock);
+
+    class GotoOnlySimulator : public MountSimulator
+    {
+    public:
+        using MountSimulator::MountSimulator;
+        bool SupportsRaDecRates() const override { return false; }
+    };
+
+    auto mount = std::make_unique<GotoOnlySimulator>(clock);
+    mount->Connect();
+    tracker._driver = std::move(mount);
+    tracker._state = PassTracker::State::IDLE;
+
+    TrackerSettings settings;
+    settings.mode = TrackingMode::CONTINUOUS;
+    tracker.Arm(pass, settings);
+    QVERIFY(!tracker._continuous);
+}
+
+void MountTest::testTargetOffsets()
+{
+    qInfo(Q_FUNC_INFO);
+
+    PassDefinition pass;
+    QVERIFY(IssPass(pass));
+
+    PassTracker tracker;
+    const Satellite satellite(pass.elements.first());
+    tracker._pointing = std::make_unique<SatellitePointing>(satellite, pass.observer);
+
+    const double jd = 0.5 * (pass.jdStart + pass.jdEnd);
+    const PointingSample now = tracker._pointing->Compute(jd);
+    const PointingSample later = tracker._pointing->Compute(jd + 2. * DATE::NB_JOUR_PAR_SEC);
+
+    // No offset: the satellite itself
+    PointingSample target = tracker.Target(jd);
+    QVERIFY(SatellitePointing::AngularSeparation(target.rightAscension, target.declination,
+                                                 now.rightAscension, now.declination) < ARCSEC);
+
+    // Timing: where the satellite will be 2 s later
+    tracker.SetOffsets(2., 0.);
+    target = tracker.Target(jd);
+    QVERIFY(SatellitePointing::AngularSeparation(target.rightAscension, target.declination,
+                                                 later.rightAscension, later.declination) < ARCSEC);
+
+    // Cross-track: 10' away from the satellite, perpendicular to its motion
+    tracker.SetOffsets(0., 10.);
+    target = tracker.Target(jd);
+    const double offset = SatellitePointing::AngularSeparation(target.rightAscension, target.declination,
+                                                               now.rightAscension, now.declination);
+    QVERIFY2(fabs(offset - 10. * MATHS::ARCMIN2RAD) < 0.01 * MATHS::ARCMIN2RAD,
+             qPrintable(QString("cross-track offset %1'").arg(offset / MATHS::ARCMIN2RAD)));
+
+    // Perpendicular: the offset point is as far from the positions 1 s before and 1 s after
+    const PointingSample before = tracker._pointing->Compute(jd - DATE::NB_JOUR_PAR_SEC);
+    const PointingSample after = tracker._pointing->Compute(jd + DATE::NB_JOUR_PAR_SEC);
+    const double toBefore = SatellitePointing::AngularSeparation(target.rightAscension, target.declination,
+                                                                 before.rightAscension, before.declination);
+    const double toAfter = SatellitePointing::AngularSeparation(target.rightAscension, target.declination,
+                                                                after.rightAscension, after.declination);
+    QVERIFY2(fabs(toBefore - toAfter) < 0.02 * toAfter,
+             qPrintable(QString("%1' before, %2' after").arg(toBefore / MATHS::ARCMIN2RAD).arg(toAfter / MATHS::ARCMIN2RAD)));
+
+    // Opposite sign: the other side
+    tracker.SetOffsets(0., -10.);
+    const PointingSample opposite = tracker.Target(jd);
+    QVERIFY(SatellitePointing::AngularSeparation(target.rightAscension, target.declination,
+                                                 opposite.rightAscension, opposite.declination) > 19.9 * MATHS::ARCMIN2RAD);
 }

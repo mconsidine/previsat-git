@@ -90,3 +90,16 @@ bool MountDriver::IsEquatorial() const
 {
     return _equatorial;
 }
+
+bool MountDriver::SupportsRaDecRates() const
+{
+    return false;
+}
+
+void MountDriver::SetRaDecRates(const double raRate,
+                                const double decRate)
+{
+    Q_UNUSED(raRate)
+    Q_UNUSED(decRate)
+    throw MountError(QString("%1: rate control is not supported").arg(Name()));
+}

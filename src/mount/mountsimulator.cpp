@@ -53,6 +53,7 @@ MountSimulator::MountSimulator(const MountClock &clock,
     _settings(settings),
     _connected(false),
     _moving(false),
+    _rateMode(false),
     _lastUpdateJd(0.),
     _arrivalJd(-1.)
 {
@@ -84,7 +85,8 @@ QString MountSimulator::Name() const
 
 QString MountSimulator::Handshake()
 {
-    return QString("Simulated equatorial mount (%1°/s, %2°/s²)").arg(_settings.maxRate).arg(_settings.acceleration);
+    return QString("Simulated equatorial mount (%1°/s, %2°/s², position readback %3 s late)")
+        .arg(_settings.maxRate).arg(_settings.acceleration).arg(_settings.readbackDelaySeconds);
 }
 
 void MountSimulator::SetSiteAndTime(const double latitude,
@@ -99,15 +101,14 @@ void MountSimulator::SetSiteAndTime(const double latitude,
 void MountSimulator::GotoRaDec(const double rightAscension,
                                const double declination)
 {
-    if (!_connected) {
-        throw MountError("Mount is not connected");
-    }
-
+    CheckConnected();
     Update();
+
     if (_moving) {
         throw MountError("Goto refused: a goto is already in progress");
     }
 
+    _rateMode = false;
     _axis1.target = rightAscension;
     _axis2.target = declination;
     _moving = true;
@@ -125,11 +126,12 @@ void MountSimulator::GetRaDec(double &rightAscension,
 {
     Update();
 
-    rightAscension = fmod(_axis1.position, MATHS::DEUX_PI);
+    // Position the mount reported readbackDelaySeconds ago (stale encoder / controller feedback)
+    rightAscension = fmod(_axis1.position - _axis1.velocity * _settings.readbackDelaySeconds, MATHS::DEUX_PI);
     if (rightAscension < 0.) {
         rightAscension += MATHS::DEUX_PI;
     }
-    declination = _axis2.position;
+    declination = _axis2.position - _axis2.velocity * _settings.readbackDelaySeconds;
 }
 
 void MountSimulator::Stop()
@@ -141,6 +143,9 @@ void MountSimulator::Stop()
     _axis2.target = _axis2.position;
     _axis2.velocity = 0.;
     _moving = false;
+    _rateMode = false;
+    _axis1.commandedRate = 0.;
+    _axis2.commandedRate = 0.;
 }
 
 bool MountSimulator::Park()
@@ -149,13 +154,38 @@ bool MountSimulator::Park()
     return false;
 }
 
+bool MountSimulator::SupportsRaDecRates() const
+{
+    return true;
+}
+
+void MountSimulator::SetRaDecRates(const double raRate,
+                                   const double decRate)
+{
+    CheckConnected();
+    Update();
+
+    const double maxRate = _settings.maxRate * MATHS::DEG2RAD;
+    _moving = false;
+    _rateMode = true;
+    _axis1.commandedRate = std::clamp(raRate, -maxRate, maxRate);
+    _axis2.commandedRate = std::clamp(decRate, -maxRate, maxRate);
+}
+
+void MountSimulator::CheckConnected() const
+{
+    if (!_connected) {
+        throw MountError("Mount is not connected");
+    }
+}
+
 void MountSimulator::Update()
 {
     const double now = _clock.NowJdUtc();
     double remaining = (now - _lastUpdateJd) * DATE::NB_SEC_PAR_JOUR;
     _lastUpdateJd = now;
 
-    if (!_moving) {
+    if (!_moving && !_rateMode) {
         return;
     }
 
@@ -163,6 +193,12 @@ void MountSimulator::Update()
 
         const double dt = std::min(remaining, MAX_STEP_S);
         remaining -= dt;
+
+        if (_rateMode) {
+            StepRate(_axis1, dt);
+            StepRate(_axis2, dt);
+            continue;
+        }
 
         const bool done1 = StepAxis(_axis1, dt);
         const bool done2 = StepAxis(_axis2, dt);
@@ -172,7 +208,7 @@ void MountSimulator::Update()
         }
     }
 
-    if ((_arrivalJd >= 0.) && ((now - _arrivalJd) * DATE::NB_SEC_PAR_JOUR >= _settings.settleSeconds)) {
+    if (_moving && (_arrivalJd >= 0.) && ((now - _arrivalJd) * DATE::NB_SEC_PAR_JOUR >= _settings.settleSeconds)) {
         _moving = false;
     }
 }
@@ -211,4 +247,15 @@ bool MountSimulator::StepAxis(Axis &axis,
     axis.position += move;
 
     return false;
+}
+
+void MountSimulator::StepRate(Axis &axis,
+                              const double dt) const
+{
+    const double acceleration = _settings.acceleration * MATHS::DEG2RAD;
+    const double dv = std::clamp(axis.commandedRate - axis.velocity, -acceleration * dt, acceleration * dt);
+
+    axis.velocity += dv;
+    axis.position += axis.velocity * dt;
+    axis.target = axis.position;
 }
