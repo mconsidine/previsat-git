@@ -14,6 +14,13 @@ env:
 
 jobs:
   windows:
+    # "app" builds the downloadable package; "tests" builds PreviSatTest and runs the mount control tests
+    strategy:
+      fail-fast: false
+      matrix:
+        config: [ app, tests ]
+
+    name: windows (${{ matrix.config }})
     runs-on: windows-latest
 
     steps:
@@ -56,13 +63,26 @@ jobs:
           cmake -S . -B build -G "MinGW Makefiles"
           -DCMAKE_BUILD_TYPE=MinSizeRel
           -DPORTABLE_BUILD=true
+          -DBUILD_TEST=${{ matrix.config == 'tests' && 'true' || 'false' }}
           -DCMAKE_PREFIX_PATH="$env:QT_ROOT_DIR"
 
       - name: Build
         shell: pwsh
         run: cmake --build build --parallel 4
 
+      - name: Run mount control tests
+        if: matrix.config == 'tests'
+        shell: pwsh
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          Copy-Item lib\PPM_atm\libPPM_atm.dll build
+          Set-Location build
+          .\PreviSatTest.exe testAllMount
+          if ($LASTEXITCODE -ne 0) { throw "Mount control tests failed ($LASTEXITCODE)" }
+
       - name: Package
+        if: matrix.config == 'app'
         shell: pwsh
         run: |
           $dist = 'dist\PreviSat'
@@ -74,11 +94,12 @@ jobs:
           # Portable build: data, documentation and translations next to the executable
           Copy-Item -Recurse data "$dist\data"
           Copy-Item -Recurse dox "$dist\dox"
-          New-Item -ItemType Directory -Force "$dist\translations" | Out-Null
-          Get-ChildItem build -Recurse -Filter 'PreviSat_*.qm' | Copy-Item -Destination "$dist\translations"
-          Get-ChildItem "$dist\translations"
+          New-Item -ItemType Directory -Force "$dist	ranslations" | Out-Null
+          Get-ChildItem build -Recurse -Filter 'PreviSat_*.qm' | Copy-Item -Destination "$dist	ranslations"
+          Get-ChildItem "$dist	ranslations"
 
       - name: Upload
+        if: matrix.config == 'app'
         uses: actions/upload-artifact@v4
         with:
           name: PreviSat-windows-build${{ github.run_number }}

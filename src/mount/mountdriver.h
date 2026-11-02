@@ -42,7 +42,8 @@
 enum class MountProtocol {
     ONSTEPX = 0,
     LX200_CLASSIC,
-    SYNSCAN
+    SYNSCAN,
+    SIMULATOR
 };
 
 
@@ -72,11 +73,11 @@ public:
      * @return identification of the mount
      * @throw MountError
      */
-    QString Connect();
+    virtual QString Connect();
 
-    void Disconnect();
+    virtual void Disconnect();
 
-    bool IsConnected() const;
+    virtual bool IsConnected() const;
 
     /**
      * @brief IsEquatorial Mount geometry, as reported by the mount during the handshake

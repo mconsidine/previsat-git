@@ -46,10 +46,12 @@
 #include <QObject>
 #include "librairies/corps/satellite/elementsorbitaux.h"
 #include "librairies/observateur/observateur.h"
+#include "mountclock.h"
 #include "mountdriver.h"
 #include "satellitepointing.h"
 
 
+class QFile;
 class QTimer;
 
 struct PassDefinition {
@@ -66,6 +68,7 @@ struct TrackerSettings {
     int prePositionSeconds = 120;                   // slew to the start point this long before the pass
     double dwellSeconds = 1.;                       // stay this long after the satellite reaches the aim point
     bool parkAtEnd = false;
+    QString logDirectory;                           // folder of the CSV log of each pass (empty: no log)
 };
 
 
@@ -87,6 +90,11 @@ public:
 
     explicit PassTracker(QObject *parent = nullptr);
     ~PassTracker() override;
+
+    /**
+     * @brief SetClock Time source (system clock by default; a simulated clock for tests)
+     */
+    void SetClock(const MountClock &clock);
 
     /*
      * The following methods must be called in the tracker thread (QMetaObject::invokeMethod)
@@ -122,11 +130,12 @@ signals:
     void logMessage(const QString &message);
 
     /**
-     * @brief positionUpdated Current satellite position (degrees), and pointing error of the last arrival (arcmin, < 0 if unknown)
+     * @brief positionUpdated Current satellite position (degrees), and angular separation between the mount
+     * and the satellite (arcmin, < 0 if unknown)
      */
     void positionUpdated(const double azimuth,
                          const double altitude,
-                         const double errorArcmin);
+                         const double separationArcmin);
 
 
 private slots:
@@ -136,13 +145,17 @@ private slots:
 
 private:
 
+    friend class MountTest;
+
     static constexpr int TICK_MS = 200;
     static constexpr double INITIAL_LEAD_S = 4.;
     static constexpr double MIN_LEAD_S = 1.5;
     static constexpr double MAX_LEAD_S = 30.;
 
+    const MountClock *_clock;
     std::unique_ptr<MountDriver> _driver;
     std::unique_ptr<SatellitePointing> _pointing;
+    std::unique_ptr<QFile> _logFile;
     QTimer *_timer;
 
     State _state;
@@ -154,12 +167,36 @@ private:
     double _gotoIssuedJd;
     bool _slewing;
     double _leadSeconds;
-    double _lastErrorArcmin;
+    double _lastErrorArcmin;    // pointing error at the last arrival (arcmin)
+    double _separationArcmin;   // mount - satellite separation at the last readback (arcmin)
+    double _mountRa;
+    double _mountDec;
+    bool _mountPositionKnown;
+    QList<double> _trackingSeparations;
     int _gotoCount;
+    int _lateArrivals;
     qint64 _lastStatusSecond;
 
     void SetState(const State state,
                   const QString &description);
+
+    /**
+     * @brief Report Message to the user, also written in the pass log
+     */
+    void Report(const QString &message);
+
+    void ReadMountPosition(const PointingSample &satellite);
+
+    void OpenLog();
+    void WriteLogRow(const double jd,
+                     const PointingSample *satellite,
+                     const QString &event);
+    void CloseLog();
+
+    /**
+     * @brief TrackingSummary Statistics of the mount - satellite separation during the tracking phase
+     */
+    QString TrackingSummary() const;
 
     /**
      * @brief Fail Stop the mount after an error, and return to the idle state

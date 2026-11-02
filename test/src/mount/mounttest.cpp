@@ -1,0 +1,350 @@
+/*
+ *     PreviSat, Satellite tracking software
+ *     Copyright (C) 2005-2026  Astropedia web: http://previsat.free.fr  -  mailto: previsat.app@gmail.com
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * _______________________________________________________________________________________________________
+ *
+ * File name
+ * >    mounttest.cpp
+ *
+ * Location
+ * >    test/mount
+ *
+ * Description
+ * >    Tests of the mount control layer
+ *
+ * Creation date
+ * >    2 November 2026
+ *
+ */
+
+#include <algorithm>
+#include <cmath>
+#include <QtTest>
+#include <QTemporaryDir>
+#include <QTimeZone>
+#include "librairies/corps/corps.h"
+#include "librairies/corps/satellite/evenements.h"
+#include "librairies/corps/satellite/tle.h"
+#include "librairies/dates/date.h"
+#include "mount/lx200driver.h"
+#include "mount/mountclock.h"
+#include "mount/mountsimulator.h"
+#include "mount/passtracker.h"
+#include "mount/satellitepointing.h"
+#include "mount/synscandriver.h"
+#include "mounttest.h"
+
+
+static constexpr double ARCSEC = MATHS::ARCSEC2RAD;
+
+/*
+ * Folder test/data of the source tree, searched upwards from the working and executable folders
+ */
+static QString FindTestData()
+{
+    const QStringList starts { QDir::currentPath(), QCoreApplication::applicationDirPath() };
+
+    for (const QString &start : starts) {
+        QDir dir(start);
+        for (int i = 0; i < 8; i++) {
+            if (QFile::exists(dir.filePath("test/data/taiutc.dat"))) {
+                return dir.filePath("test/data");
+            }
+            if (!dir.cdUp()) {
+                break;
+            }
+        }
+    }
+
+    return QString();
+}
+
+void MountTest::testAll()
+{
+    const QString data = FindTestData();
+    QVERIFY2(!data.isEmpty(), "test/data/taiutc.dat not found above the working directory");
+
+    Corps::Initialisation(data);
+    Date::Initialisation(data);
+
+    testLx200Formatting();
+    testLx200Parsing();
+    testSynScanEncoding();
+    testPointing();
+    testSimulator();
+    testSimulatedPass();
+}
+
+void MountTest::testLx200Formatting()
+{
+    qInfo(Q_FUNC_INFO);
+
+    // Right ascension
+    QCOMPARE(Lx200Driver::FormatRightAscension(0., true), QByteArray("00:00:00"));
+    QCOMPARE(Lx200Driver::FormatRightAscension(12.5 * MATHS::HEUR2RAD, true), QByteArray("12:30:00"));
+    QCOMPARE(Lx200Driver::FormatRightAscension(-1. * MATHS::HEUR2RAD, true), QByteArray("23:00:00"));
+    QCOMPARE(Lx200Driver::FormatRightAscension((23. + 59. / 60. + 59.6 / 3600.) * MATHS::HEUR2RAD, true), QByteArray("00:00:00"));
+    QCOMPARE(Lx200Driver::FormatRightAscension((12. + 34.5 / 60.) * MATHS::HEUR2RAD, false), QByteArray("12:34.5"));
+
+    // Declination
+    QCOMPARE(Lx200Driver::FormatDeclination(-0.5 * MATHS::DEG2RAD, true), QByteArray("-00*30:00"));
+    QCOMPARE(Lx200Driver::FormatDeclination((45. + 30. / 60. + 15. / 3600.) * MATHS::DEG2RAD, true), QByteArray("+45*30:15"));
+    QCOMPARE(Lx200Driver::FormatDeclination((45. + 30. / 60. + 15. / 3600.) * MATHS::DEG2RAD, false), QByteArray("+45*30"));
+    QCOMPARE(Lx200Driver::FormatDeclination(91. * MATHS::DEG2RAD, true), QByteArray("+90*00:00"));
+
+    // Site (longitudes positive towards the west)
+    QCOMPARE(Lx200Driver::FormatLatitude(48.85339 * MATHS::DEG2RAD), QByteArray("+48*51"));
+    QCOMPARE(Lx200Driver::FormatLatitude(-33.5 * MATHS::DEG2RAD), QByteArray("-33*30"));
+    QCOMPARE(Lx200Driver::FormatLongitude(71.5 * MATHS::DEG2RAD), QByteArray("071*30"));
+    QCOMPARE(Lx200Driver::FormatLongitude(-2.34864 * MATHS::DEG2RAD), QByteArray("357*39"));
+
+    // Hours to add to local time to obtain UTC
+    QCOMPARE(Lx200Driver::FormatUtcOffset(-5 * 3600, false), QByteArray("+05"));
+    QCOMPARE(Lx200Driver::FormatUtcOffset(3600, false), QByteArray("-01"));
+    QCOMPARE(Lx200Driver::FormatUtcOffset(0, true), QByteArray("+00"));
+    QCOMPARE(Lx200Driver::FormatUtcOffset(19800, false), QByteArray("-05.5"));
+    QCOMPARE(Lx200Driver::FormatUtcOffset(19800, true), QByteArray("-05:30"));
+    QCOMPARE(Lx200Driver::FormatUtcOffset(-12600, false), QByteArray("+03.5"));
+}
+
+void MountTest::testLx200Parsing()
+{
+    qInfo(Q_FUNC_INFO);
+
+    QVERIFY(fabs(Lx200Driver::ParseRightAscension("12:30:00") - 12.5 * MATHS::HEUR2RAD) < ARCSEC);
+    QVERIFY(fabs(Lx200Driver::ParseRightAscension("12:34.5") - (12. + 34.5 / 60.) * MATHS::HEUR2RAD) < ARCSEC);
+    QVERIFY(fabs(Lx200Driver::ParseRightAscension("01:02:03.5000") - (1. + 2. / 60. + 3.5 / 3600.) * MATHS::HEUR2RAD) < ARCSEC);
+
+    const double dec = (45. + 30. / 60. + 15. / 3600.) * MATHS::DEG2RAD;
+    QVERIFY(fabs(Lx200Driver::ParseDeclination("+45*30:15") - dec) < ARCSEC);
+    QVERIFY(fabs(Lx200Driver::ParseDeclination("+45*30'15") - dec) < ARCSEC);
+    QVERIFY(fabs(Lx200Driver::ParseDeclination("+45*30") - (45.5 * MATHS::DEG2RAD)) < ARCSEC);
+
+    // Meade hand controllers use the degree sign of their own character set (0xDF)
+    const QByteArray meade = QByteArray("-05") + static_cast<char>(0xDF) + QByteArray("30:00");
+    QVERIFY(fabs(Lx200Driver::ParseDeclination(meade) + 5.5 * MATHS::DEG2RAD) < ARCSEC);
+
+    bool thrown = false;
+    try {
+        Lx200Driver::ParseRightAscension("garbage");
+    } catch (const MountError &) {
+        thrown = true;
+    }
+    QVERIFY(thrown);
+
+    QVERIFY(Lx200Driver::GotoErrorText('1', true).contains("horizon"));
+    QVERIFY(Lx200Driver::GotoErrorText('4', true).contains("parked"));
+}
+
+void MountTest::testSynScanEncoding()
+{
+    qInfo(Q_FUNC_INFO);
+
+    QCOMPARE(SynScanDriver::EncodeAngle(0.), QByteArray("00000000"));
+    QCOMPARE(SynScanDriver::EncodeAngle(MATHS::PI_SUR_DEUX), QByteArray("40000000"));
+    QCOMPARE(SynScanDriver::EncodeAngle(MATHS::PI), QByteArray("80000000"));
+    QCOMPARE(SynScanDriver::EncodeAngle(-MATHS::PI_SUR_DEUX), QByteArray("C0000000"));
+
+    QVERIFY(fabs(SynScanDriver::DecodeAngle("80000000") - MATHS::PI) < 1.e-9);
+    QVERIFY(fabs(SynScanDriver::DecodeAngle("4000") - MATHS::PI_SUR_DEUX) < 1.e-9);
+
+    const double angle = 1.234567;
+    QVERIFY(fabs(SynScanDriver::DecodeAngle(SynScanDriver::EncodeAngle(angle)) - angle) < MATHS::DEUX_PI / 16777216.);
+
+    bool thrown = false;
+    try {
+        SynScanDriver::DecodeAngle("12345");
+    } catch (const MountError &) {
+        thrown = true;
+    }
+    QVERIFY(thrown);
+}
+
+void MountTest::testPointing()
+{
+    qInfo(Q_FUNC_INFO);
+
+    QVERIFY(fabs(SatellitePointing::AngularSeparation(0., 0., 0., MATHS::DEG2RAD) - MATHS::DEG2RAD) < 1.e-12);
+    QVERIFY(fabs(SatellitePointing::AngularSeparation(0., 89.9 * MATHS::DEG2RAD, MATHS::PI, 89.9 * MATHS::DEG2RAD)
+                 - 0.2 * MATHS::DEG2RAD) < 1.e-9);
+
+    QCOMPARE(SatellitePointing::ToDateTimeUtc(0.), QDateTime(QDate(2000, 1, 1), QTime(12, 0), QTimeZone::UTC));
+
+    const Date now;
+    QVERIFY(fabs(SatellitePointing::NowJdUtc() - now.jourJulienUTC()) * DATE::NB_SEC_PAR_JOUR < 2.);
+}
+
+void MountTest::testSimulator()
+{
+    qInfo(Q_FUNC_INFO);
+
+    SimulatedClock clock(0.);
+    SimulatorSettings settings;
+    settings.maxRate = 4.;
+    settings.acceleration = 3.;
+    settings.settleSeconds = 0.5;
+
+    MountSimulator mount(clock, settings);
+    mount.Connect();
+
+    // 20 degree move on the declination axis: 4/3 s to accelerate and to decelerate, about 6.3 s in all
+    mount.GotoRaDec(0., 20. * MATHS::DEG2RAD);
+    QVERIFY(mount.IsSlewing());
+
+    bool thrown = false;
+    try {
+        mount.GotoRaDec(0., 0.);
+    } catch (const MountError &) {
+        thrown = true;
+    }
+    QVERIFY2(thrown, "a goto while slewing must be refused");
+
+    double elapsed = 0.;
+    while (mount.IsSlewing() && (elapsed < 30.)) {
+        clock.Advance(0.05);
+        elapsed += 0.05;
+    }
+    QVERIFY2((elapsed > 6.5) && (elapsed < 7.5), qPrintable(QString("slew + settle took %1 s").arg(elapsed)));
+
+    double ra, dec;
+    mount.GetRaDec(ra, dec);
+    QVERIFY(fabs(ra) < ARCSEC);
+    QVERIFY(fabs(dec - 20. * MATHS::DEG2RAD) < ARCSEC);
+
+    // Right ascension takes the shortest way round: 350 -> 10 degrees is a 20 degree move
+    mount.GotoRaDec(350. * MATHS::DEG2RAD, 20. * MATHS::DEG2RAD);
+    while (mount.IsSlewing()) {
+        clock.Advance(0.05);
+    }
+    mount.GotoRaDec(10. * MATHS::DEG2RAD, 20. * MATHS::DEG2RAD);
+    elapsed = 0.;
+    while (mount.IsSlewing() && (elapsed < 30.)) {
+        clock.Advance(0.05);
+        elapsed += 0.05;
+    }
+    QVERIFY2(elapsed < 7.5, qPrintable(QString("wrap-around slew took %1 s").arg(elapsed)));
+
+    // Stop halts the motion where it is
+    mount.GotoRaDec(100. * MATHS::DEG2RAD, 20. * MATHS::DEG2RAD);
+    clock.Advance(2.);
+    mount.Stop();
+    QVERIFY(!mount.IsSlewing());
+    mount.GetRaDec(ra, dec);
+    clock.Advance(5.);
+    double ra2, dec2;
+    mount.GetRaDec(ra2, dec2);
+    QVERIFY(fabs(ra2 - ra) < ARCSEC);
+}
+
+void MountTest::testSimulatedPass()
+{
+    qInfo(Q_FUNC_INFO);
+
+    // ISS pass over Paris, elements of 11 January 2020 (as in EvenementsTest)
+    const TLE tle("ISS (ZARYA)",
+                  "1 25544U 98067A   20011.25516102  .00000195  00000-0  11565-4 0  9993",
+                  "2 25544  51.6455  49.9243 0005192 121.3003 338.9406 15.49550468207533");
+    Satellite sat(tle.elements());
+    Observateur obs("Paris", -2.348640000, +48.853390000, 30);
+
+    const double minAltitude = 10. * MATHS::DEG2RAD;
+
+    Date date(2020, 1, 11, 8, 27, 30., 0.);
+    obs.CalculPosVit(date);
+    sat.CalculPosVit(date);
+    sat.CalculCoordHoriz(obs, true);
+    const ElementsAOS aos = Evenements::CalculAOS(date, sat, obs, SensCalcul::CHRONOLOGIQUE, minAltitude);
+    QVERIFY(aos.aos);
+
+    date = Date(aos.date.jourJulienUTC() + 10. * DATE::NB_JOUR_PAR_SEC, 0.);
+    obs.CalculPosVit(date);
+    sat.CalculPosVit(date);
+    sat.CalculCoordHoriz(obs, true);
+    const ElementsAOS los = Evenements::CalculAOS(date, sat, obs, SensCalcul::CHRONOLOGIQUE, minAltitude);
+    QVERIFY(los.aos);
+
+    PassDefinition pass;
+    pass.satelliteName = "ISS";
+    pass.elements.append(tle.elements());
+    pass.observer = Observateur("Paris", -2.348640000, +48.853390000, 30);
+    pass.jdStart = aos.date.jourJulienUTC();
+    pass.jdEnd = los.date.jourJulienUTC();
+
+    const double duration = (pass.jdEnd - pass.jdStart) * DATE::NB_SEC_PAR_JOUR;
+    QVERIFY2(duration > 60., qPrintable(QString("pass of %1 s").arg(duration)));
+
+    QTemporaryDir logDir;
+    QVERIFY(logDir.isValid());
+
+    TrackerSettings settings;
+    settings.minAltitude = minAltitude;
+    settings.maxAltitude = 88. * MATHS::DEG2RAD;
+    settings.prePositionSeconds = 120;
+    settings.dwellSeconds = 1.;
+    settings.logDirectory = logDir.path();
+
+    SimulatedClock clock(pass.jdStart - 200. * DATE::NB_JOUR_PAR_SEC);
+
+    PassTracker tracker;
+    tracker.SetClock(clock);
+    auto mount = std::make_unique<MountSimulator>(clock);
+    mount->Connect();
+    tracker._driver = std::move(mount);
+    tracker._state = PassTracker::State::IDLE;
+
+    tracker.Arm(pass, settings);
+    QCOMPARE(tracker._state, PassTracker::State::WAITING);
+
+    // Run the pass at 5 updates per (simulated) second, as the real timer does
+    const int maxSteps = static_cast<int>((duration + 400.) / 0.2);
+    for (int i = 0; (i < maxSteps) && (tracker._state != PassTracker::State::FINISHED)
+                    && (tracker._state != PassTracker::State::IDLE); i++) {
+        clock.Advance(0.2);
+        tracker.Tick();
+    }
+
+    qInfo().noquote() << tracker.TrackingSummary();
+
+    QCOMPARE(tracker._state, PassTracker::State::FINISHED);
+    QVERIFY2(tracker._gotoCount >= 10, qPrintable(QString("%1 gotos").arg(tracker._gotoCount)));
+    QVERIFY2(tracker._lateArrivals <= 2, qPrintable(QString("%1 late arrivals").arg(tracker._lateArrivals)));
+    QVERIFY(!tracker._trackingSeparations.isEmpty());
+
+    // The simulator lands exactly where asked
+    QVERIFY2((tracker._lastErrorArcmin >= 0.) && (tracker._lastErrorArcmin < 0.1),
+             qPrintable(QString("arrival error %1'").arg(tracker._lastErrorArcmin)));
+
+    // Leapfrog: the satellite comes back to the mount at every hop
+    QList<double> sorted = tracker._trackingSeparations;
+    std::sort(sorted.begin(), sorted.end());
+    QVERIFY2(sorted.first() < 10., qPrintable(QString("closest approach %1'").arg(sorted.first())));
+    QVERIFY2(sorted.at(sorted.size() / 2) < 180., qPrintable(QString("median separation %1'").arg(sorted.at(sorted.size() / 2))));
+
+    // Pass log: header, one line per second of the pass and events
+    const QStringList logs = QDir(logDir.path()).entryList(QStringList() << "mount_*.csv", QDir::Files);
+    QCOMPARE(logs.size(), 1);
+
+    QFile log(logDir.filePath(logs.first()));
+    QVERIFY(log.open(QIODevice::ReadOnly | QIODevice::Text));
+    const QStringList lines = QString::fromUtf8(log.readAll()).split('\n', Qt::SkipEmptyParts);
+    QVERIFY(lines.first().startsWith("utc,state,sat_az_deg"));
+    QVERIFY2(lines.size() > static_cast<int>(duration), qPrintable(QString("%1 log lines").arg(lines.size())));
+
+    // A pass that is over cannot be armed again
+    tracker.Arm(pass, settings);
+    QCOMPARE(tracker._state, PassTracker::State::FINISHED);
+}

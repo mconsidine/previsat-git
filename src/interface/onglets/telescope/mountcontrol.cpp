@@ -39,6 +39,7 @@
 #include <QCloseEvent>
 #include <QComboBox>
 #include <QDateTime>
+#include <QDir>
 #include <QDoubleSpinBox>
 #include <QFormLayout>
 #include <QGroupBox>
@@ -53,6 +54,7 @@
 #include <QSpinBox>
 #include <QStackedWidget>
 #include <QVBoxLayout>
+#include "configuration/configuration.h"
 #include "mountcontrol.h"
 
 
@@ -166,6 +168,7 @@ void MountControl::ArmPass()
     trackerSettings.prePositionSeconds = _prePosition->value();
     trackerSettings.dwellSeconds = _dwell->value();
     trackerSettings.parkAtEnd = _parkAtEnd->isChecked();
+    trackerSettings.logDirectory = Configuration::instance()->dirOut() + QDir::separator() + "mount_logs";
 
     if (trackerSettings.maxAltitude <= trackerSettings.minAltitude) {
         QMessageBox::warning(this, windowTitle(), tr("The maximum altitude must be greater than the minimum altitude"));
@@ -233,11 +236,11 @@ void MountControl::OnLogMessage(const QString &message)
 
 void MountControl::OnPositionUpdated(const double azimuth,
                                      const double altitude,
-                                     const double errorArcmin)
+                                     const double separationArcmin)
 {
     QString text = tr("Satellite: azimuth %1°, altitude %2°").arg(azimuth, 0, 'f', 2).arg(altitude, 0, 'f', 2);
-    if (errorArcmin >= 0.) {
-        text += "   " + tr("last pointing error: %1'").arg(errorArcmin, 0, 'f', 1);
+    if (separationArcmin >= 0.) {
+        text += "   " + tr("mount - satellite separation: %1'").arg(separationArcmin, 0, 'f', 1);
     }
     _position->setText(text);
 }
@@ -278,6 +281,7 @@ void MountControl::BuildInterface()
     _protocol->addItem(tr("OnStep / OnStepX (LX200 extended)"), static_cast<int>(MountProtocol::ONSTEPX));
     _protocol->addItem(tr("Meade LX200 classic"), static_cast<int>(MountProtocol::LX200_CLASSIC));
     _protocol->addItem(tr("Sky-Watcher SynScan hand controller"), static_cast<int>(MountProtocol::SYNSCAN));
+    _protocol->addItem(tr("Simulator (no hardware, for dry runs)"), static_cast<int>(MountProtocol::SIMULATOR));
     connectionLayout->addRow(tr("Protocol:"), _protocol);
 
     _link = new QComboBox(connectionGroup);
@@ -446,6 +450,7 @@ void MountControl::LoadSettings()
             _host->setText("192.168.0.1");
             _tcpPort->setValue(9999);
         }
+        UpdateButtons();
     });
 }
 
@@ -474,8 +479,10 @@ void MountControl::UpdateButtons()
     _connectButton->setEnabled(true);
     _connectButton->setText(_connected ? tr("Disconnect") : tr("Connect"));
 
-    for (QWidget *w : std::initializer_list<QWidget *> { _protocol, _link, _linkSettings, _sendSiteAndTime }) {
-        w->setEnabled(!_connected);
+    const bool simulator = (static_cast<MountProtocol>(_protocol->currentData().toInt()) == MountProtocol::SIMULATOR);
+    _protocol->setEnabled(!_connected);
+    for (QWidget *w : std::initializer_list<QWidget *> { _link, _linkSettings, _sendSiteAndTime }) {
+        w->setEnabled(!_connected && !simulator);
     }
 
     _armButton->setEnabled(_connected && _hasPass && !active);

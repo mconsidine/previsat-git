@@ -36,13 +36,20 @@
 
 #include <algorithm>
 #include <cmath>
+#include <QDir>
+#include <QFile>
+#include <QMetaEnum>
 #include <QTimer>
 #include "librairies/dates/date.h"
 #include "passtracker.h"
 
 
+static constexpr double RAD2ARCMIN = MATHS::RAD2DEG * MATHS::ARCMIN_PAR_DEG;
+
+
 PassTracker::PassTracker(QObject *parent) :
     QObject(parent),
+    _clock(&MountClock::System()),
     _timer(new QTimer(this)),
     _state(State::DISCONNECTED),
     _aimJd(0.),
@@ -50,7 +57,12 @@ PassTracker::PassTracker(QObject *parent) :
     _slewing(false),
     _leadSeconds(INITIAL_LEAD_S),
     _lastErrorArcmin(-1.),
+    _separationArcmin(-1.),
+    _mountRa(0.),
+    _mountDec(0.),
+    _mountPositionKnown(false),
     _gotoCount(0),
+    _lateArrivals(0),
     _lastStatusSecond(-1)
 {
     _timer->setInterval(TICK_MS);
@@ -60,9 +72,15 @@ PassTracker::PassTracker(QObject *parent) :
 
 PassTracker::~PassTracker()
 {
+    CloseLog();
     if (_driver) {
         _driver->Disconnect();
     }
+}
+
+void PassTracker::SetClock(const MountClock &clock)
+{
+    _clock = &clock;
 }
 
 void PassTracker::ConnectMount(const MountProtocol protocol,
@@ -77,7 +95,8 @@ void PassTracker::ConnectMount(const MountProtocol protocol,
     try {
 
         std::unique_ptr<MountDriver> driver = MountDriver::Create(protocol, transport);
-        emit logMessage(tr("Connecting to %1 on %2...").arg(driver->Name(), MountTransport(transport).Description()));
+        const QString link = (protocol == MountProtocol::SIMULATOR) ? tr("no hardware") : MountTransport(transport).Description();
+        emit logMessage(tr("Connecting to %1 (%2)...").arg(driver->Name(), link));
 
         const QString identity = driver->Connect();
         emit logMessage(tr("Connected: %1").arg(identity));
@@ -139,7 +158,7 @@ void PassTracker::Arm(const PassDefinition &pass,
         const Satellite satellite = (pass.elements.size() > 1) ? Satellite(pass.elements) : Satellite(pass.elements.first());
         _pointing = std::make_unique<SatellitePointing>(satellite, pass.observer);
 
-        const double now = SatellitePointing::NowJdUtc();
+        const double now = _clock->NowJdUtc();
         if (pass.jdEnd <= now) {
             emit logMessage(tr("This pass is already over"));
             return;
@@ -177,9 +196,14 @@ void PassTracker::Arm(const PassDefinition &pass,
     _slewing = false;
     _leadSeconds = INITIAL_LEAD_S;
     _lastErrorArcmin = -1.;
+    _separationArcmin = -1.;
+    _mountPositionKnown = false;
+    _trackingSeparations.clear();
     _gotoCount = 0;
+    _lateArrivals = 0;
     _lastStatusSecond = -1;
 
+    OpenLog();
     SetState(State::WAITING, tr("Armed"));
     _timer->start();
     Tick();
@@ -192,10 +216,11 @@ void PassTracker::Abort()
     if (_driver) {
         try {
             _driver->Stop();
-            emit logMessage(tr("Aborted: mount stopped"));
+            Report(tr("Aborted: mount stopped"));
         } catch (const MountError &e) {
-            emit logMessage(tr("ERROR while stopping the mount: %1").arg(e.message()));
+            Report(tr("ERROR while stopping the mount: %1").arg(e.message()));
         }
+        CloseLog();
         SetState(State::IDLE, tr("Aborted"));
     } else {
         SetState(State::DISCONNECTED, tr("Not connected"));
@@ -209,7 +234,7 @@ void PassTracker::Tick()
         return;
     }
 
-    const double now = SatellitePointing::NowJdUtc();
+    const double now = _clock->NowJdUtc();
     const qint64 second = static_cast<qint64>(floor(now * DATE::NB_SEC_PAR_JOUR));
     const bool newSecond = (second != _lastStatusSecond);
     _lastStatusSecond = second;
@@ -232,12 +257,12 @@ void PassTracker::Tick()
 
             const double aim = NextAimTime(std::max(_pass.jdStart, now + _leadSeconds * DATE::NB_JOUR_PAR_SEC));
             if (aim < 0.) {
-                emit logMessage(tr("No part of the pass is within the altitude limits"));
+                Report(tr("No part of the pass is within the altitude limits"));
                 Finish();
                 break;
             }
 
-            emit logMessage(tr("Slewing to the start point of the pass"));
+            Report(tr("Slewing to the start point of the pass"));
             IssueGoto(aim);
             SetState(State::PREPOSITIONING, tr("Slewing to the start point"));
             break;
@@ -269,7 +294,7 @@ void PassTracker::Tick()
                 }
 
                 if (_state == State::PREPOSITIONING) {
-                    emit logMessage(tr("Satellite reached the start point: tracking"));
+                    Report(tr("Satellite reached the start point: tracking"));
                     _state = State::TRACKING;
                 }
 
@@ -293,8 +318,19 @@ void PassTracker::Tick()
         }
 
         if (_timer->isActive()) {
+
             const PointingSample sample = _pointing->Compute(now);
-            emit positionUpdated(sample.azimuth * MATHS::RAD2DEG, sample.altitude * MATHS::RAD2DEG, _lastErrorArcmin);
+
+            // Once a second: mount position, separation from the satellite, and a line of the pass log
+            if (newSecond && (_state != State::WAITING)) {
+                ReadMountPosition(sample);
+                if ((_state == State::TRACKING) && (_separationArcmin >= 0.)) {
+                    _trackingSeparations.append(_separationArcmin);
+                }
+                WriteLogRow(now, &sample, QString());
+            }
+
+            emit positionUpdated(sample.azimuth * MATHS::RAD2DEG, sample.altitude * MATHS::RAD2DEG, _separationArcmin);
         }
 
     } catch (const MountError &e) {
@@ -315,19 +351,21 @@ void PassTracker::Fail(const QString &message)
 {
     _timer->stop();
     _slewing = false;
-    emit logMessage(tr("ERROR: %1").arg(message));
+    Report(tr("ERROR: %1").arg(message));
 
     if (_driver) {
         try {
             _driver->Stop();
-            emit logMessage(tr("Mount stopped"));
+            Report(tr("Mount stopped"));
         } catch (const MountError &) {
         }
+    }
 
-        if (!_driver->IsConnected()) {
-            DisconnectMount();
-            return;
-        }
+    CloseLog();
+
+    if (_driver && !_driver->IsConnected()) {
+        DisconnectMount();
+        return;
     }
 
     SetState(State::IDLE, tr("Stopped after an error"));
@@ -355,7 +393,7 @@ void PassTracker::IssueGoto(const double jdAim)
 
     _aimJd = jdAim;
     _aimTarget = target;
-    _gotoIssuedJd = SatellitePointing::NowJdUtc();
+    _gotoIssuedJd = _clock->NowJdUtc();
     _slewing = true;
     _gotoCount++;
 }
@@ -374,16 +412,22 @@ void PassTracker::OnArrival(const double now)
         double ra, dec;
         _driver->GetRaDec(ra, dec);
         _lastErrorArcmin = SatellitePointing::AngularSeparation(ra, dec, _aimTarget.rightAscension, _aimTarget.declination)
-                           * MATHS::RAD2DEG * MATHS::ARCMIN_PAR_DEG;
+                           * RAD2ARCMIN;
     } catch (const MountError &) {
         _lastErrorArcmin = -1.;
     }
 
     const double late = (now - _aimJd) * DATE::NB_SEC_PAR_JOUR;
     if (late > 0.) {
-        emit logMessage(tr("Goto #%1 arrived %2 s after the satellite (slew took %3 s)")
-                        .arg(_gotoCount).arg(late, 0, 'f', 1).arg(slewSeconds, 0, 'f', 1));
+        if (_state == State::TRACKING) {
+            _lateArrivals++;
+        }
+        Report(tr("Goto #%1 arrived %2 s after the satellite (slew took %3 s)")
+               .arg(_gotoCount).arg(late, 0, 'f', 1).arg(slewSeconds, 0, 'f', 1));
     }
+
+    WriteLogRow(now, nullptr, tr("Goto #%1 arrived: slew %2 s, pointing error %3'")
+                .arg(_gotoCount).arg(slewSeconds, 0, 'f', 1).arg(_lastErrorArcmin, 0, 'f', 2));
 }
 
 void PassTracker::Finish()
@@ -394,16 +438,130 @@ void PassTracker::Finish()
     if (_settings.parkAtEnd && _driver) {
         try {
             if (_driver->Park()) {
-                emit logMessage(tr("Parking the mount"));
+                Report(tr("Parking the mount"));
             } else {
-                emit logMessage(tr("This mount has no park command: mount stopped"));
+                Report(tr("This mount has no park command: mount stopped"));
             }
         } catch (const MountError &e) {
-            emit logMessage(tr("ERROR while parking: %1").arg(e.message()));
+            Report(tr("ERROR while parking: %1").arg(e.message()));
         }
     }
 
+    Report(TrackingSummary());
+    CloseLog();
     SetState(State::FINISHED, tr("Pass finished (%1 gotos)").arg(_gotoCount));
+}
+
+void PassTracker::Report(const QString &message)
+{
+    emit logMessage(message);
+    WriteLogRow(_clock->NowJdUtc(), nullptr, message);
+}
+
+void PassTracker::ReadMountPosition(const PointingSample &satellite)
+{
+    // A failed readback is not fatal (some mounts do not answer while slewing): the next command will tell
+    try {
+        _driver->GetRaDec(_mountRa, _mountDec);
+        _mountPositionKnown = true;
+        _separationArcmin = SatellitePointing::AngularSeparation(_mountRa, _mountDec, satellite.rightAscension,
+                                                                 satellite.declination) * RAD2ARCMIN;
+    } catch (const MountError &) {
+        _mountPositionKnown = false;
+        _separationArcmin = -1.;
+    }
+}
+
+void PassTracker::OpenLog()
+{
+    CloseLog();
+
+    if (_settings.logDirectory.isEmpty() || _pass.elements.isEmpty()) {
+        return;
+    }
+
+    QDir().mkpath(_settings.logDirectory);
+    const QString name = QString("mount_%1_%2.csv").arg(_pass.elements.first().norad.trimmed(),
+                                                         SatellitePointing::ToDateTimeUtc(_pass.jdStart).toString("yyyyMMdd_HHmmss"));
+
+    auto file = std::make_unique<QFile>(_settings.logDirectory + QDir::separator() + name);
+    if (!file->open(QIODevice::WriteOnly | QIODevice::Text)) {
+        emit logMessage(tr("Cannot write the pass log %1").arg(file->fileName()));
+        return;
+    }
+
+    file->write("utc,state,sat_az_deg,sat_alt_deg,sat_ra_h,sat_dec_deg,mount_ra_h,mount_dec_deg,separation_arcmin,"
+                "last_arrival_error_arcmin,lead_s,gotos,event\n");
+    _logFile = std::move(file);
+    emit logMessage(tr("Pass log: %1").arg(QDir::toNativeSeparators(_logFile->fileName())));
+}
+
+void PassTracker::WriteLogRow(const double jd,
+                              const PointingSample *satellite,
+                              const QString &event)
+{
+    if (!_logFile) {
+        return;
+    }
+
+    const auto number = [](const double value, const int decimals) {
+        return QString::number(value, 'f', decimals);
+    };
+
+    QStringList fields;
+    fields << SatellitePointing::ToDateTimeUtc(jd).toString("yyyy-MM-ddTHH:mm:ss.zzzZ")
+           << QString(QMetaEnum::fromType<State>().valueToKey(static_cast<int>(_state)));
+
+    if (satellite != nullptr) {
+        fields << number(satellite->azimuth * MATHS::RAD2DEG, 4) << number(satellite->altitude * MATHS::RAD2DEG, 4)
+               << number(satellite->rightAscension * MATHS::RAD2HEUR, 6) << number(satellite->declination * MATHS::RAD2DEG, 5);
+        if (_mountPositionKnown) {
+            fields << number(_mountRa * MATHS::RAD2HEUR, 6) << number(_mountDec * MATHS::RAD2DEG, 5) << number(_separationArcmin, 2);
+        } else {
+            fields << QString() << QString() << QString();
+        }
+        fields << ((_lastErrorArcmin >= 0.) ? number(_lastErrorArcmin, 2) : QString()) << number(_leadSeconds, 2)
+               << QString::number(_gotoCount);
+    } else {
+        for (int i = 0; i < 10; i++) {
+            fields << QString();
+        }
+    }
+
+    QString text = event;
+    fields << ((text.isEmpty()) ? QString() : "\"" + text.replace('"', "\"\"") + "\"");
+
+    _logFile->write((fields.join(',') + '\n').toUtf8());
+    _logFile->flush();
+}
+
+void PassTracker::CloseLog()
+{
+    if (_logFile) {
+        _logFile->close();
+        _logFile.reset();
+    }
+}
+
+QString PassTracker::TrackingSummary() const
+{
+    if (_trackingSeparations.isEmpty()) {
+        return tr("Tracking summary: no mount position measured during tracking");
+    }
+
+    QList<double> sorted = _trackingSeparations;
+    std::sort(sorted.begin(), sorted.end());
+
+    const auto percentile = [&sorted](const double p) {
+        const qsizetype last = sorted.size() - 1;
+        const qsizetype idx = std::min(last, static_cast<qsizetype>(std::lround(p * static_cast<double>(last))));
+        return sorted.at(idx);
+    };
+
+    return tr("Tracking summary: %1 gotos, %2 late arrivals; mount - satellite separation over %3 s: "
+              "median %4', 90% below %5', maximum %6'")
+        .arg(_gotoCount).arg(_lateArrivals).arg(sorted.size())
+        .arg(percentile(0.5), 0, 'f', 1).arg(percentile(0.9), 0, 'f', 1).arg(sorted.last(), 0, 'f', 1);
 }
 
 QString PassTracker::FormatSeconds(const double seconds)

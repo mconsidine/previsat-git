@@ -32,7 +32,9 @@
  */
 
 #include "lx200driver.h"
+#include "mountclock.h"
 #include "mountdriver.h"
+#include "mountsimulator.h"
 #include "synscandriver.h"
 
 
@@ -48,6 +50,9 @@ std::unique_ptr<MountDriver> MountDriver::Create(const MountProtocol protocol,
 
     case MountProtocol::SYNSCAN:
         return std::make_unique<SynScanDriver>(settings);
+
+    case MountProtocol::SIMULATOR:
+        return std::make_unique<MountSimulator>(MountClock::System());
     }
 
     return nullptr;

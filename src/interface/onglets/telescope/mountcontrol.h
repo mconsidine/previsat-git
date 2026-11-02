@@ -86,7 +86,7 @@ private slots:
     void OnLogMessage(const QString &message);
     void OnPositionUpdated(const double azimuth,
                            const double altitude,
-                           const double errorArcmin);
+                           const double separationArcmin);
 
 
 private:

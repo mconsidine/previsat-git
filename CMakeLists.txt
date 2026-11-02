@@ -183,6 +183,7 @@ if(${BUILD_TEST})
     add_executable(${TARGET}
         ${TEST_SOURCES}
         ${PREVISIONS_SOURCES}
+        ${MOUNT_SOURCES}
         ${CONFIGURATION_SOURCES}
         ${LIBRARY_SOURCES}
         src/interface/afficherresultats.cpp
@@ -209,6 +210,7 @@ if(${BUILD_TEST})
         Qt${QT_VERSION_MAJOR}::Concurrent
         Qt${QT_VERSION_MAJOR}::Multimedia
         Qt${QT_VERSION_MAJOR}::Network
+        Qt${QT_VERSION_MAJOR}::SerialPort
         Qt${QT_VERSION_MAJOR}::Sql
         Qt${QT_VERSION_MAJOR}::Test
         Qt${QT_VERSION_MAJOR}::Widgets

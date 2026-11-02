@@ -61,6 +61,7 @@
 #include "librairies/systeme/fichierxmltest.h"
 #include "librairies/systeme/logmessagetest.h"
 #include "librairies/systeme/telechargementtest.h"
+#include "mount/mounttest.h"
 #include "previsions/evenementsorbitauxtest.h"
 #include "previsions/flashstest.h"
 #include "previsions/previsiontest.h"
@@ -139,6 +140,11 @@ private slots:
         GeneralTest::testAll();
         OsculateursTest::testAll();
         InformationsTest::testAll();
+    }
+
+    // Mount control (self-contained: can be run alone with "PreviSatTest testAllMount")
+    void testAllMount() {
+        MountTest::testAll();
     }
 
     // Log
