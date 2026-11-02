@@ -100,6 +100,7 @@ MountControl::~MountControl()
     SaveSettings();
 
     PassTracker *tracker = _tracker;
+    tracker->RequestAbort();
     QMetaObject::invokeMethod(tracker, [tracker]() {
         tracker->Abort();
         tracker->DisconnectMount();
@@ -127,6 +128,7 @@ void MountControl::ToggleConnection()
     PassTracker *tracker = _tracker;
 
     if (_connected) {
+        tracker->RequestAbort();
         QMetaObject::invokeMethod(tracker, [tracker]() {
             tracker->Abort();
             tracker->DisconnectMount();
@@ -156,6 +158,29 @@ void MountControl::ToggleConnection()
 
     QMetaObject::invokeMethod(tracker, [=]() {
         tracker->ConnectMount(protocol, transport, sendSiteAndTime, latitude, longitude);
+    }, Qt::QueuedConnection);
+}
+
+void MountControl::CalibrateRates()
+{
+    const QMessageBox::StandardButton answer = QMessageBox::question(
+        this, windowTitle(),
+        tr("The mount will move about 1° west, east, north and south, then return (about 25 s).\n\n"
+           "Before continuing, make sure that the mount:\n"
+           "  - is aligned, unparked and tracking,\n"
+           "  - points between declinations -70° and +70°, well above the horizon,\n"
+           "  - has room to move (cables, pier, optical train).\n\n"
+           "The STOP button stays available. Continue?"),
+        QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+
+    if (answer != QMessageBox::Yes) {
+        return;
+    }
+
+    _calibrateButton->setEnabled(false);
+    PassTracker *tracker = _tracker;
+    QMetaObject::invokeMethod(tracker, [tracker]() {
+        tracker->CalibrateMount();
     }, Qt::QueuedConnection);
 }
 
@@ -242,7 +267,9 @@ void MountControl::SendOffsets()
 
 void MountControl::AbortPass()
 {
+    // Interrupt at once a blocking operation of the tracker thread (calibration), then stop the mount from that thread
     PassTracker *tracker = _tracker;
+    tracker->RequestAbort();
     QMetaObject::invokeMethod(tracker, [tracker]() {
         tracker->Abort();
     }, Qt::QueuedConnection);
@@ -387,9 +414,12 @@ void MountControl::BuildInterface()
 
     auto *connectRow = new QHBoxLayout;
     _connectButton = new QPushButton(tr("Connect"), connectionGroup);
+    _calibrateButton = new QPushButton(tr("Calibrate rate control..."), connectionGroup);
+    _calibrateButton->setToolTip(tr("OnStep / OnStepX: measure how the mount follows rate commands (needed for continuous tracking)"));
     _identity = new QLabel(tr("Not connected"), connectionGroup);
     _identity->setWordWrap(true);
     connectRow->addWidget(_connectButton);
+    connectRow->addWidget(_calibrateButton);
     connectRow->addWidget(_identity, 1);
     connectionLayout->addRow(connectRow);
 
@@ -434,7 +464,7 @@ void MountControl::BuildInterface()
 
     _mode = new QComboBox(passGroup);
     _mode->addItem(tr("Leapfrog (goto ahead, wait, repeat)"), static_cast<int>(TrackingMode::LEAPFROG));
-    _mode->addItem(tr("Continuous (rate control; simulator only for now)"), static_cast<int>(TrackingMode::CONTINUOUS));
+    _mode->addItem(tr("Continuous (rate control: OnStep after calibration, simulator)"), static_cast<int>(TrackingMode::CONTINUOUS));
     _mode->setToolTip(tr("Continuous tracking needs a mount with rate control; other mounts fall back to leapfrog"));
     passLayout->addRow(tr("Tracking mode:"), _mode);
 
@@ -551,6 +581,7 @@ void MountControl::BuildInterface()
     connect(_link, &QComboBox::currentIndexChanged, _linkSettings, &QStackedWidget::setCurrentIndex);
     connect(refresh, &QPushButton::clicked, this, &MountControl::RefreshSerialPorts);
     connect(_connectButton, &QPushButton::clicked, this, &MountControl::ToggleConnection);
+    connect(_calibrateButton, &QPushButton::clicked, this, &MountControl::CalibrateRates);
     connect(_armButton, &QPushButton::clicked, this, &MountControl::ArmPass);
     connect(_abortButton, &QPushButton::clicked, this, &MountControl::AbortPass);
 }
@@ -637,6 +668,10 @@ void MountControl::UpdateButtons()
 
     _armButton->setEnabled(_connected && _hasPass && !active);
     _abortButton->setEnabled(_connected);
+
+    const bool onStep = (static_cast<MountProtocol>(_protocol->currentData().toInt()) == MountProtocol::ONSTEPX);
+    _calibrateButton->setVisible(onStep);
+    _calibrateButton->setEnabled(_connected && !active);
 
     for (QWidget *w : std::initializer_list<QWidget *> { _minAltitude, _maxAltitude, _prePosition, _dwell, _parkAtEnd,
                                                          _mode, _minGain, _maxGain }) {

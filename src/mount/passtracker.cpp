@@ -73,7 +73,8 @@ PassTracker::PassTracker(QObject *parent) :
     _readFailures(0),
     _catchUps(0),
     _timingOffset(0.),
-    _crossOffset(0.)
+    _crossOffset(0.),
+    _abortRequested(false)
 {
     _timer->setInterval(TICK_MS);
     _timer->setTimerType(Qt::PreciseTimer);
@@ -108,6 +109,7 @@ void PassTracker::ConnectMount(const MountProtocol protocol,
         const QString link = (protocol == MountProtocol::SIMULATOR) ? tr("no hardware") : MountTransport(transport).Description();
         emit logMessage(tr("Connecting to %1 (%2)...").arg(driver->Name(), link));
 
+        driver->SetAbortFlag(&_abortRequested);
         const QString identity = driver->Connect();
         emit logMessage(tr("Connected: %1").arg(identity));
 
@@ -224,7 +226,7 @@ void PassTracker::Arm(const PassDefinition &pass,
     _continuous = (settings.mode == TrackingMode::CONTINUOUS);
     if (_continuous && !_driver->SupportsRaDecRates()) {
         _continuous = false;
-        emit logMessage(tr("%1 has no rate control yet: using leapfrog tracking").arg(_driver->Name()));
+        emit logMessage(tr("Continuous tracking unavailable (%1): using leapfrog tracking").arg(_driver->RateControlStatus()));
     }
 
     OpenLog();
@@ -234,10 +236,16 @@ void PassTracker::Arm(const PassDefinition &pass,
     Tick();
 }
 
+void PassTracker::RequestAbort()
+{
+    _abortRequested.store(true);
+}
+
 void PassTracker::Abort()
 {
     _timer->stop();
     _rateActive = false;
+    _abortRequested.store(false);
 
     if (_driver) {
         try {
@@ -669,6 +677,40 @@ void PassTracker::CatchUp(const double now,
 
     Report(tr("Catching up with a goto (%1)").arg(reason));
     IssueGoto(aim);
+}
+
+void PassTracker::CalibrateMount()
+{
+    if (!_driver) {
+        emit logMessage(tr("Connect the mount first"));
+        return;
+    }
+
+    if ((_state == State::WAITING) || (_state == State::PREPOSITIONING) || (_state == State::TRACKING)) {
+        emit logMessage(tr("A pass is armed: abort it before calibrating"));
+        return;
+    }
+
+    if (!_driver->CanCalibrateRates()) {
+        emit logMessage(tr("No rate calibration: %1").arg(_driver->RateControlStatus()));
+        return;
+    }
+
+    _abortRequested.store(false);
+    SetState(_state, tr("Calibrating rate control (the mount moves on each axis)..."));
+    emit logMessage(tr("Rate calibration started: the mount moves about 1° on each axis and comes back (about 25 s)"));
+
+    try {
+        emit logMessage(_driver->CalibrateRates());
+        SetState(_state, tr("Rate control calibrated"));
+    } catch (const MountError &e) {
+        try {
+            _driver->Stop();
+        } catch (const MountError &) {
+        }
+        emit logMessage(tr("Rate calibration FAILED: %1").arg(e.message()));
+        SetState(_state, tr("Rate calibration failed"));
+    }
 }
 
 void PassTracker::SetOffsets(const double timingSeconds,

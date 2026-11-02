@@ -34,7 +34,12 @@
 #include <algorithm>
 #include <cmath>
 #include <QtTest>
+#include <QElapsedTimer>
+#include <QMutex>
+#include <QTcpServer>
+#include <QTcpSocket>
 #include <QTemporaryDir>
+#include <QThread>
 #include <QTimeZone>
 #include "librairies/corps/corps.h"
 #include "librairies/corps/satellite/evenements.h"
@@ -89,6 +94,291 @@ void MountTest::testAll()
     testSimulatedPass();
     testContinuousPass();
     testTargetOffsets();
+    testOnStepRateMath();
+    testOnStepDriver();
+}
+
+/*
+ * Minimal OnStep on a local TCP port, for driver tests: German equatorial mount, gotos are instantaneous,
+ * custom-rate moves suspend sidereal tracking (as OnStepX documents) and :Mw increases the hour angle.
+ */
+class FakeOnStep : public QObject
+{
+public:
+
+    quint16 Start()
+    {
+        _server = new QTcpServer(this);
+        _server->listen(QHostAddress::LocalHost, 0);
+        connect(_server, &QTcpServer::newConnection, this, [this]() {
+            _socket = _server->nextPendingConnection();
+            connect(_socket, &QTcpSocket::readyRead, this, [this]() { OnData(); });
+        });
+        _clock.start();
+        _lastMs = 0;
+        return _server->serverPort();
+    }
+
+    void State(int &direction1, double &rate1, int &direction2, double &rate2)
+    {
+        const QMutexLocker locker(&_mutex);
+        direction1 = _direction1;
+        rate1 = _rate1;
+        direction2 = _direction2;
+        rate2 = _rate2;
+    }
+
+private:
+
+    static constexpr double SIDEREAL = 360.98564736629 / 86400.;
+
+    QTcpServer *_server = nullptr;
+    QTcpSocket *_socket = nullptr;
+    QByteArray _buffer;
+    QElapsedTimer _clock;
+    qint64 _lastMs = 0;
+    QMutex _mutex;
+
+    double _ra = 90.;       // deg
+    double _dec = 20.;
+    double _targetRa = 0.;
+    double _targetDec = 0.;
+    double _rate1 = 0.;     // deg/s
+    double _rate2 = 0.;
+    int _direction1 = 0;
+    int _direction2 = 0;
+
+    void Advance()
+    {
+        const qint64 now = _clock.elapsed();
+        const double dt = (now - _lastMs) / 1000.;
+        _lastMs = now;
+
+        // Axis 1 at rest: tracking keeps the RA. Moving: tracking suspended, RA = LST - HA
+        if (_direction1 != 0) {
+            _ra += (SIDEREAL - _direction1 * _rate1) * dt;
+        }
+        _dec += _direction2 * _rate2 * dt;
+    }
+
+    void OnData()
+    {
+        _buffer += _socket->readAll();
+
+        while (!_buffer.isEmpty()) {
+
+            if (_buffer.at(0) == '\x06') {
+                _buffer.remove(0, 1);
+                _socket->write("G");
+                continue;
+            }
+
+            const qsizetype end = _buffer.indexOf('#');
+            if (end < 0) {
+                break;
+            }
+
+            const QByteArray command = _buffer.left(end + 1);
+            _buffer.remove(0, end + 1);
+
+            const QMutexLocker locker(&_mutex);
+            Advance();
+            _socket->write(Reply(command));
+        }
+        _socket->flush();
+    }
+
+    QByteArray Reply(const QByteArray &command)
+    {
+        if (command == ":GR#") {
+            return Lx200Driver::FormatRightAscension(_ra * MATHS::DEG2RAD, true) + "#";
+        }
+        if (command == ":GD#") {
+            return Lx200Driver::FormatDeclination(_dec * MATHS::DEG2RAD, true) + "#";
+        }
+        if (command == ":GRH#") {
+            // HH:MM:SS.SSSS
+            double hours = fmod(_ra / 15., 24.);
+            if (hours < 0.) {
+                hours += 24.;
+            }
+            const int h = static_cast<int>(hours);
+            const int m = static_cast<int>((hours - h) * 60.);
+            const double s = ((hours - h) * 60. - m) * 60.;
+            return QString("%1:%2:%3#").arg(h, 2, 10, QChar('0')).arg(m, 2, 10, QChar('0')).arg(s, 7, 'f', 4, QChar('0')).toLatin1();
+        }
+        if (command == ":GDH#") {
+            // sDD*MM:SS.SSS
+            const double deg = fabs(_dec);
+            const int d = static_cast<int>(deg);
+            const int m = static_cast<int>((deg - d) * 60.);
+            const double s = ((deg - d) * 60. - m) * 60.;
+            return QString("%1%2*%3:%4#").arg(QChar((_dec < 0.) ? '-' : '+')).arg(d, 2, 10, QChar('0')).arg(m, 2, 10, QChar('0'))
+                .arg(s, 6, 'f', 3, QChar('0')).toLatin1();
+        }
+        if (command == ":GVP#") {
+            return "On-Step#";
+        }
+        if (command == ":GVN#") {
+            return "10.25#";
+        }
+        if (command == ":Gm#") {
+            return "E#";
+        }
+        if (command == ":D#") {
+            return "#";
+        }
+        if (command == ":Te#") {
+            return "1";
+        }
+        if (command.startsWith(":Sr")) {
+            _targetRa = Lx200Driver::ParseRightAscension(command.mid(3, command.size() - 4)) * MATHS::RAD2DEG;
+            return "1";
+        }
+        if (command.startsWith(":Sd")) {
+            _targetDec = Lx200Driver::ParseDeclination(command.mid(3, command.size() - 4)) * MATHS::RAD2DEG;
+            return "1";
+        }
+        if (command == ":MS#") {
+            _ra = _targetRa;
+            _dec = _targetDec;
+            _direction1 = 0;
+            _direction2 = 0;
+            return "0";
+        }
+        if (command.startsWith(":RA")) {
+            _rate1 = command.mid(3, command.size() - 4).toDouble();
+            return QByteArray();
+        }
+        if (command.startsWith(":RE")) {
+            _rate2 = command.mid(3, command.size() - 4).toDouble();
+            return QByteArray();
+        }
+        if ((command == ":Mw#") || (command == ":Me#")) {
+            _direction1 = (command == ":Mw#") ? 1 : -1;
+            return QByteArray();
+        }
+        if ((command == ":Mn#") || (command == ":Ms#")) {
+            _direction2 = (command == ":Mn#") ? 1 : -1;
+            return QByteArray();
+        }
+        if ((command == ":Qw#") || (command == ":Qe#")) {
+            _direction1 = 0;
+            return QByteArray();
+        }
+        if ((command == ":Qn#") || (command == ":Qs#")) {
+            _direction2 = 0;
+            return QByteArray();
+        }
+        if (command == ":Q#") {
+            _direction1 = 0;
+            _direction2 = 0;
+            return QByteArray();
+        }
+        if (command == ":U#") {
+            return QByteArray();
+        }
+        return "0";
+    }
+};
+
+void MountTest::testOnStepDriver()
+{
+    qInfo(Q_FUNC_INFO);
+
+    QThread serverThread;
+    auto *fake = new FakeOnStep;
+    fake->moveToThread(&serverThread);
+    QObject::connect(&serverThread, &QThread::finished, fake, &QObject::deleteLater);
+    serverThread.start();
+
+    quint16 port = 0;
+    QMetaObject::invokeMethod(fake, [&]() { port = fake->Start(); }, Qt::BlockingQueuedConnection);
+    QVERIFY(port != 0);
+
+    TransportSettings link;
+    link.type = TransportType::TCP;
+    link.host = "127.0.0.1";
+    link.tcpPort = port;
+
+    Lx200Driver driver(link, true);
+    const QString identity = driver.Connect();
+    qInfo().noquote() << identity;
+    QVERIFY(driver.IsEquatorial());
+    QVERIFY(driver.CanCalibrateRates());
+    QVERIFY(!driver.SupportsRaDecRates());
+
+    // Calibration against the fake mount (real time: about 15 s)
+    QString report;
+    try {
+        report = driver.CalibrateRates();
+    } catch (const MountError &e) {
+        QFAIL(qPrintable(e.message()));
+    }
+    qInfo().noquote() << report;
+    QVERIFY(driver.SupportsRaDecRates());
+    QVERIFY2(report.contains("suspended"), qPrintable(report));
+    QVERIFY2(report.contains("applies to"), qPrintable(report));
+
+    int direction1, direction2;
+    double rate1, rate2;
+    double ra, dec;
+
+    // RA rate +0.3 deg/s, Dec rate -0.1 deg/s: with :Mw increasing the hour angle and tracking suspended,
+    // the RA axis must move east at 0.3 - sidereal, the Dec axis south at 0.1
+    driver.SetRaDecRates(0.3 * MATHS::DEG2RAD, -0.1 * MATHS::DEG2RAD);
+    driver.GetRaDec(ra, dec);    // replies come after the commands: the fake has processed them
+    fake->State(direction1, rate1, direction2, rate2);
+    QCOMPARE(direction1, -1);
+    QVERIFY2(fabs(rate1 - (0.3 - 360.98564736629 / 86400.)) < 2.e-3, qPrintable(QString("axis 1 at %1 deg/s").arg(rate1)));
+    QCOMPARE(direction2, -1);
+    QVERIFY2(fabs(rate2 - 0.1) < 2.e-3, qPrintable(QString("axis 2 at %1 deg/s").arg(rate2)));
+
+    // (0, 0): moves stopped, back to sidereal tracking
+    driver.SetRaDecRates(0., 0.);
+    driver.GetRaDec(ra, dec);
+    fake->State(direction1, rate1, direction2, rate2);
+    QCOMPARE(direction1, 0);
+    QCOMPARE(direction2, 0);
+
+    driver.Disconnect();
+    serverThread.quit();
+    serverThread.wait();
+}
+
+void MountTest::testOnStepRateMath()
+{
+    qInfo(Q_FUNC_INFO);
+
+    const double sidereal = 360.98564736629 / 86400.;
+    Lx200Driver::AxisCalibration axis;
+    QString error;
+
+    // Tracking suspended during moves, :Mw increases the right ascension
+    QVERIFY(Lx200Driver::SolveAxisCalibration(0.5 + sidereal, -0.5 + sidereal, 0.5, axis, error));
+    QVERIFY(fabs(axis.scale - 1.) < 1.e-12);
+    QVERIFY(fabs(axis.background - sidereal) < 1.e-12);
+
+    // A wanted RA rate of 0.3 deg/s: move west at 0.3 - sidereal; RA rate 0 (follow the stars): sidereal speed east
+    QVERIFY(fabs(Lx200Driver::MoveSpeed(0.3, axis) - (0.3 - sidereal)) < 1.e-12);
+    QVERIFY(fabs(Lx200Driver::MoveSpeed(0., axis) + sidereal) < 1.e-12);
+
+    // Tracking continues, :Mw decreases the right ascension
+    QVERIFY(Lx200Driver::SolveAxisCalibration(-0.49, 0.51, 0.5, axis, error));
+    QVERIFY(fabs(axis.scale + 1.) < 1.e-12);
+    QVERIFY(fabs(axis.background - 0.01) < 1.e-12);
+    QVERIFY(fabs(Lx200Driver::MoveSpeed(0.21, axis) + 0.2) < 1.e-12);
+
+    // Moves ten times too slow (unit problem): refused
+    QVERIFY(!Lx200Driver::SolveAxisCalibration(0.05, -0.05, 0.5, axis, error));
+    QVERIFY(!error.isEmpty());
+
+    // No response at all: refused, and no speed computed from it
+    QVERIFY(!Lx200Driver::SolveAxisCalibration(sidereal, sidereal, 0.5, axis, error));
+    QCOMPARE(Lx200Driver::MoveSpeed(1., Lx200Driver::AxisCalibration()), 0.);
+
+    QCOMPARE(Lx200Driver::FormatGuideRate(0.25), QByteArray("0.250000"));
+    QCOMPARE(Lx200Driver::FormatGuideRate(0.0041781), QByteArray("0.004178"));
 }
 
 void MountTest::testLx200Formatting()

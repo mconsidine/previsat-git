@@ -80,6 +80,7 @@ protected:
 private slots:
 
     void ToggleConnection();
+    void CalibrateRates();
     void ArmPass();
     void AbortPass();
     void RefreshSerialPorts();
@@ -113,6 +114,7 @@ private:
     QSpinBox *_tcpPort;
     QCheckBox *_sendSiteAndTime;
     QPushButton *_connectButton;
+    QPushButton *_calibrateButton;
     QLabel *_identity;
 
     // Pass

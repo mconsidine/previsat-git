@@ -143,6 +143,17 @@ public:
     void Abort();
 
     /**
+     * @brief CalibrateMount Run the rate calibration of the mount (needed for continuous tracking on OnStep)
+     */
+    void CalibrateMount();
+
+    /**
+     * @brief RequestAbort Thread-safe: interrupt a long blocking operation (calibration) at once.
+     * Call it from the interface thread before queuing Abort().
+     */
+    void RequestAbort();
+
+    /**
      * @brief SetOffsets Corrections applied to the predicted position (absolute values, not increments)
      * @param[in] timingSeconds along the track: the mount points where the satellite will be this many seconds later
      * @param[in] crossTrackArcmin across the track: positive to the right of the direction of motion, as seen by the observer
@@ -221,6 +232,8 @@ private:
     // User corrections
     double _timingOffset;       // s
     double _crossOffset;        // rad
+
+    std::atomic<bool> _abortRequested;
 
     void SetState(const State state,
                   const QString &description);

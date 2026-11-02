@@ -34,6 +34,7 @@
 #ifndef MOUNTDRIVER_H
 #define MOUNTDRIVER_H
 
+#include <atomic>
 #include <memory>
 #include <QDateTime>
 #include "mounttransport.h"
@@ -134,6 +135,29 @@ public:
     virtual void SetRaDecRates(const double raRate,
                                const double decRate);
 
+    /**
+     * @brief RateControlStatus Why rate control is or is not available, for the user
+     */
+    virtual QString RateControlStatus() const;
+
+    /**
+     * @brief CanCalibrateRates The protocol has a rate calibration (see CalibrateRates)
+     */
+    virtual bool CanCalibrateRates() const;
+
+    /**
+     * @brief CalibrateRates Move the mount a little on each axis to measure how its rate commands behave.
+     * Needed before SupportsRaDecRates() can be true on mounts whose behaviour is not known in advance.
+     * @return report for the user
+     * @throw MountError
+     */
+    virtual QString CalibrateRates();
+
+    /**
+     * @brief SetAbortFlag Flag set from another thread (STOP button) to interrupt long operations such as the calibration
+     */
+    void SetAbortFlag(const std::atomic<bool> *flag);
+
 
 protected:
 
@@ -146,8 +170,15 @@ protected:
      */
     virtual QString Handshake() = 0;
 
+    /**
+     * @brief SleepMs Wait, unless the user asks to stop
+     * @throw MountError if the abort flag is set
+     */
+    void SleepMs(const int milliseconds) const;
+
     MountTransport _transport;
     bool _equatorial;
+    const std::atomic<bool> *_abortFlag;
 
 };
 

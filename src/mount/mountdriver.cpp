@@ -31,6 +31,9 @@
  *
  */
 
+#include <algorithm>
+#include <QElapsedTimer>
+#include <QThread>
 #include "lx200driver.h"
 #include "mountclock.h"
 #include "mountdriver.h"
@@ -60,8 +63,31 @@ std::unique_ptr<MountDriver> MountDriver::Create(const MountProtocol protocol,
 
 MountDriver::MountDriver(const TransportSettings &settings) :
     _transport(settings),
-    _equatorial(false)
+    _equatorial(false),
+    _abortFlag(nullptr)
 {
+}
+
+void MountDriver::SetAbortFlag(const std::atomic<bool> *flag)
+{
+    _abortFlag = flag;
+}
+
+void MountDriver::SleepMs(const int milliseconds) const
+{
+    QElapsedTimer timer;
+    timer.start();
+
+    while (timer.elapsed() < milliseconds) {
+        if ((_abortFlag != nullptr) && _abortFlag->load()) {
+            throw MountError("Stopped by the user");
+        }
+        QThread::msleep(static_cast<unsigned long>(std::clamp(milliseconds - timer.elapsed(), qint64(1), qint64(20))));
+    }
+
+    if ((_abortFlag != nullptr) && _abortFlag->load()) {
+        throw MountError("Stopped by the user");
+    }
 }
 
 QString MountDriver::Connect()
@@ -102,4 +128,20 @@ void MountDriver::SetRaDecRates(const double raRate,
     Q_UNUSED(raRate)
     Q_UNUSED(decRate)
     throw MountError(QString("%1: rate control is not supported").arg(Name()));
+}
+
+QString MountDriver::RateControlStatus() const
+{
+    return (SupportsRaDecRates()) ? QString("rate control available")
+                                  : QString("rate control is not supported by the %1 protocol").arg(Name());
+}
+
+bool MountDriver::CanCalibrateRates() const
+{
+    return false;
+}
+
+QString MountDriver::CalibrateRates()
+{
+    throw MountError(QString("%1: no rate calibration for this protocol").arg(Name()));
 }
