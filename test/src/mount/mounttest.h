@@ -57,6 +57,7 @@ private:
     static void testTargetOffsets();
     static void testOnStepRateMath();
     static void testOnStepDriver();
+    static void testPrePassChecks();
 
     /**
      * @brief RunPass Run a whole pass against the simulator, 5 updates per simulated second

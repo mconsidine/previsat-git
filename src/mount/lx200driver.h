@@ -70,6 +70,22 @@ public:
 
     bool Park() override;
 
+    /**
+     * @brief GetSiderealTime :GS# (:GSH# on OnStepX)
+     */
+    bool GetSiderealTime(double &localSiderealTime) override;
+
+    /**
+     * @brief GetMeridianLimits OnStep :GXE9# (East) and :GXEA# (West), minutes past the meridian
+     */
+    bool GetMeridianLimits(double &limitEast,
+                           double &limitWest) override;
+
+    /**
+     * @brief PierSide OnStep :Gm#
+     */
+    QString PierSide() override;
+
 
     /*
      * Rate control (OnStep / OnStepX equatorial mounts, after CalibrateRates)

@@ -104,14 +104,26 @@ PassSummary SatellitePointing::Summarize(const double jdStart,
             summary.jdMaxAltitude = jd;
         }
 
+        if (!summary.valid) {
+            summary.valid = true;
+            summary.startHourAngle = sample.hourAngle;
+            summary.minHourAngle = sample.hourAngle;
+            summary.maxHourAngle = sample.hourAngle;
+        }
+        summary.minHourAngle = std::min(summary.minHourAngle, sample.hourAngle);
+        summary.maxHourAngle = std::max(summary.maxHourAngle, sample.hourAngle);
+
         if (hasPrevious) {
             const double rate = AngularSeparation(previous.rightAscension, previous.declination,
                                                   sample.rightAscension, sample.declination) / stepSeconds;
             summary.maxRate = std::max(summary.maxRate, rate);
 
             // Sign change of the hour angle near 0 (not across +/- pi, which is the lower meridian)
-            if ((previous.hourAngle * sample.hourAngle < 0.) && (fabs(previous.hourAngle - sample.hourAngle) < MATHS::PI)) {
+            if ((previous.hourAngle * sample.hourAngle < 0.) && (fabs(previous.hourAngle - sample.hourAngle) < MATHS::PI)
+                && !summary.crossesMeridian) {
                 summary.crossesMeridian = true;
+                summary.jdMeridian = jd;
+                summary.rateAtMeridian = rate;
             }
         }
 
@@ -130,6 +142,17 @@ double SatellitePointing::NowJdUtc()
 QDateTime SatellitePointing::ToDateTimeUtc(const double jdUtc)
 {
     return QDateTime::fromMSecsSinceEpoch(std::llround((jdUtc - JD2000_UNIX_EPOCH) * DATE::NB_MILLISEC_PAR_JOUR), QTimeZone::UTC);
+}
+
+double SatellitePointing::LocalSiderealTime(const double jdUtc,
+                                            const double longitude)
+{
+    const Date date(jdUtc, 0.);
+    double lst = fmod(Observateur::CalculTempsSideralGreenwich(date) - longitude, MATHS::DEUX_PI);
+    if (lst < 0.) {
+        lst += MATHS::DEUX_PI;
+    }
+    return lst;
 }
 
 double SatellitePointing::AngularSeparation(const double ra1,

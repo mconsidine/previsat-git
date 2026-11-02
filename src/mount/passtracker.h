@@ -148,6 +148,23 @@ public:
     void CalibrateMount();
 
     /**
+     * @brief ClockAdvice Message about the difference between the mount's and the computer's sidereal times (rad)
+     */
+    static QString ClockAdvice(const double lstDifference);
+
+    /**
+     * @brief MeridianAdvice Message about meridian flips during the pass, for equatorial mounts
+     * @param[in] summary pass summary
+     * @param[in] hasLimits the mount reported its meridian limits
+     * @param[in] limitEast meridian limit East of the mount (rad of hour angle past the meridian)
+     * @param[in] limitWest meridian limit West of the mount
+     */
+    static QString MeridianAdvice(const PassSummary &summary,
+                                  const bool hasLimits,
+                                  const double limitEast,
+                                  const double limitWest);
+
+    /**
      * @brief RequestAbort Thread-safe: interrupt a long blocking operation (calibration) at once.
      * Call it from the interface thread before queuing Abort().
      */
@@ -234,6 +251,14 @@ private:
     double _crossOffset;        // rad
 
     std::atomic<bool> _abortRequested;
+
+    QString _lastPierSide;      // to log meridian flips during the pass
+
+    /**
+     * @brief CheckMountClock Compare the mount's sidereal time with the computer's, and log the result
+     * @param[in] longitude observer longitude (rad, positive towards the west)
+     */
+    void CheckMountClock(const double longitude);
 
     void SetState(const State state,
                   const QString &description);

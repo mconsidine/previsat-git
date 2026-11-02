@@ -78,6 +78,8 @@ static QString FindTestData()
     return QString();
 }
 
+static bool IssPass(PassDefinition &pass);
+
 void MountTest::testAll()
 {
     const QString data = FindTestData();
@@ -96,6 +98,64 @@ void MountTest::testAll()
     testTargetOffsets();
     testOnStepRateMath();
     testOnStepDriver();
+    testPrePassChecks();
+}
+
+void MountTest::testPrePassChecks()
+{
+    qInfo(Q_FUNC_INFO);
+
+    // Greenwich mean sidereal time at J2000.0 (2000-01-01 12:00 UT): 18h 41m 50.548s
+    const double gmst2000 = (18. + 41. / 60. + 50.548 / 3600.) * MATHS::HEUR2RAD;
+    const double twoSeconds = 2. * 15. * ARCSEC;
+    QVERIFY2(fabs(remainder(SatellitePointing::LocalSiderealTime(0., 0.) - gmst2000, MATHS::DEUX_PI)) < twoSeconds,
+             qPrintable(QString("GMST %1 h").arg(SatellitePointing::LocalSiderealTime(0., 0.) / MATHS::HEUR2RAD, 0, 'f', 6)));
+
+    // 90 degrees west: 6 hours earlier
+    QVERIFY(fabs(remainder(SatellitePointing::LocalSiderealTime(0., MATHS::PI_SUR_DEUX) - (gmst2000 - MATHS::PI_SUR_DEUX),
+                           MATHS::DEUX_PI)) < twoSeconds);
+
+    // Clock advice: 1 s of sidereal time = 2 pi / 86164.0905 rad
+    const double second = MATHS::DEUX_PI / 86164.0905;
+    QVERIFY(PassTracker::ClockAdvice(0.5 * second).contains("OK"));
+    const QString late = PassTracker::ClockAdvice(10. * second);
+    QVERIFY2(late.startsWith("WARNING") && late.contains("10.0 s") && !late.contains("time zone"), qPrintable(late));
+    QVERIFY(PassTracker::ClockAdvice(-3600. * second).contains("time zone"));
+
+    // Meridian advice: a pass starting 20 degrees east of the meridian and ending 30 degrees west
+    PassSummary summary;
+    summary.valid = true;
+    summary.crossesMeridian = true;
+    summary.startHourAngle = -20. * MATHS::DEG2RAD;
+    summary.minHourAngle = -20. * MATHS::DEG2RAD;
+    summary.maxHourAngle = 30. * MATHS::DEG2RAD;
+    summary.rateAtMeridian = 0.8 * MATHS::DEG2RAD;
+
+    QString advice = PassTracker::MeridianAdvice(summary, false, 0., 0.);
+    QVERIFY2(advice.contains("120 min past the meridian on the side for the eastern sky") && advice.contains("80 min on the side for the western sky"),
+             qPrintable(advice));
+
+    advice = PassTracker::MeridianAdvice(summary, true, 15. * MATHS::DEG2RAD, 15. * MATHS::DEG2RAD);
+    QVERIFY2(advice.contains("E 60 min, W 60 min") && advice.contains("flip is likely"), qPrintable(advice));
+
+    advice = PassTracker::MeridianAdvice(summary, true, 30. * MATHS::DEG2RAD, 5. * MATHS::DEG2RAD);
+    QVERIFY2(advice.contains("may be enough"), qPrintable(advice));
+
+    // A pass that stays west of the meridian
+    summary.crossesMeridian = false;
+    summary.startHourAngle = 10. * MATHS::DEG2RAD;
+    summary.minHourAngle = 10. * MATHS::DEG2RAD;
+    advice = PassTracker::MeridianAdvice(summary, false, 0., 0.);
+    QVERIFY2(advice.contains("stays west") && advice.contains("no meridian flip"), qPrintable(advice));
+
+    // The real ISS pass of the other tests
+    PassDefinition pass;
+    QVERIFY(IssPass(pass));
+    SatellitePointing pointing(Satellite(pass.elements.first()), pass.observer);
+    const PassSummary iss = pointing.Summarize(pass.jdStart, pass.jdEnd, 10. * MATHS::DEG2RAD);
+    QVERIFY(iss.valid);
+    QVERIFY((iss.minHourAngle <= iss.startHourAngle) && (iss.startHourAngle <= iss.maxHourAngle));
+    qInfo().noquote() << PassTracker::MeridianAdvice(iss, false, 0., 0.);
 }
 
 /*
@@ -195,6 +255,14 @@ private:
         }
         if (command == ":GD#") {
             return Lx200Driver::FormatDeclination(_dec * MATHS::DEG2RAD, true) + "#";
+        }
+        if ((command == ":GS#") || (command == ":GSH#")) {
+            // Fixed sidereal time 06:00:00 (the test compares it with what the driver reads)
+            return (command == ":GS#") ? "06:00:00#" : "06:00:00.00#";
+        }
+        if ((command == ":GXE9#") || (command == ":GXEA#")) {
+            // Meridian limits: 60 and 30 minutes past the meridian
+            return (command == ":GXE9#") ? "60#" : "30#";
         }
         if (command == ":GRH#") {
             // HH:MM:SS.SSSS
@@ -340,6 +408,18 @@ void MountTest::testOnStepDriver()
     fake->State(direction1, rate1, direction2, rate2);
     QCOMPARE(direction1, 0);
     QCOMPARE(direction2, 0);
+
+    // Clock and meridian queries
+    double lst = 0.;
+    QVERIFY(driver.GetSiderealTime(lst));
+    QVERIFY(fabs(lst - 6. * MATHS::HEUR2RAD) < ARCSEC);
+
+    double limitEast = 0.;
+    double limitWest = 0.;
+    QVERIFY(driver.GetMeridianLimits(limitEast, limitWest));
+    QVERIFY(fabs(limitEast - 15. * MATHS::DEG2RAD) < 1.e-9);
+    QVERIFY(fabs(limitWest - 7.5 * MATHS::DEG2RAD) < 1.e-9);
+    QCOMPARE(driver.PierSide(), QString("E"));
 
     driver.Disconnect();
     serverThread.quit();

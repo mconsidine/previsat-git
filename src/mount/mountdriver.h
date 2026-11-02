@@ -154,6 +154,26 @@ public:
     virtual QString CalibrateRates();
 
     /**
+     * @brief GetSiderealTime Local sidereal time according to the mount (rad)
+     * @return false if the protocol cannot report it
+     * @throw MountError
+     */
+    virtual bool GetSiderealTime(double &localSiderealTime);
+
+    /**
+     * @brief GetMeridianLimits How far past the meridian the mount may track before it must flip, for each
+     * meridian limit the controller defines (rad of hour angle, in the controller's own East / West naming)
+     * @return false if the protocol cannot report them
+     */
+    virtual bool GetMeridianLimits(double &limitEast,
+                                   double &limitWest);
+
+    /**
+     * @brief PierSide Side of the pier reported by the mount ("E", "W"), empty if unknown or not applicable
+     */
+    virtual QString PierSide();
+
+    /**
      * @brief SetAbortFlag Flag set from another thread (STOP button) to interrupt long operations such as the calibration
      */
     void SetAbortFlag(const std::atomic<bool> *flag);

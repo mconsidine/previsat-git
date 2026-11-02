@@ -119,6 +119,10 @@ void PassTracker::ConnectMount(const MountProtocol protocol,
         }
 
         _driver = std::move(driver);
+
+        if (sendSiteAndTime) {
+            CheckMountClock(longitude);
+        }
         emit connectionChanged(true, identity);
         SetState(State::IDLE, tr("Connected"));
 
@@ -194,10 +198,22 @@ void PassTracker::Arm(const PassDefinition &pass,
                             .arg(settings.maxAltitude * MATHS::RAD2DEG, 0, 'f', 0));
         }
 
-        if (_driver->IsEquatorial() && summary.crossesMeridian) {
-            emit logMessage(tr("WARNING: the pass crosses the meridian. An equatorial mount may perform a meridian flip "
-                               "during the pass and lose the satellite: widen the meridian limits of the mount if possible."));
+        if (_driver->IsEquatorial()) {
+            double limitEast = 0.;
+            double limitWest = 0.;
+            const bool hasLimits = _driver->GetMeridianLimits(limitEast, limitWest);
+            emit logMessage(MeridianAdvice(summary, hasLimits, limitEast, limitWest));
         }
+
+        // Age of the orbital elements (SkyTrack advises less than about a day for close work)
+        const double age = now - pass.elements.last().epoque.jourJulienUTC();
+        if (age > 3.) {
+            emit logMessage(tr("WARNING: the orbital elements are %1 days old: update them for an accurate track").arg(age, 0, 'f', 1));
+        } else {
+            emit logMessage(tr("Orbital elements: %1 days old").arg(age, 0, 'f', 1));
+        }
+
+        CheckMountClock(pass.observer.longitude());
 
     } catch (const std::exception &) {
         emit logMessage(tr("ERROR: cannot compute the pass"));
@@ -219,6 +235,7 @@ void PassTracker::Arm(const PassDefinition &pass,
     _rateDec = 0.;
     _readFailures = 0;
     _catchUps = 0;
+    _lastPierSide.clear();
 
     // As SkyTrack: the timing correction (clock, element age) carries over to the next pass, the cross-track one does not
     _crossOffset = 0.;
@@ -394,6 +411,17 @@ void PassTracker::Tick()
                     _trackingSeparations.append(_separationArcmin);
                 }
                 WriteLogRow(now, &sample, QString());
+
+                // Every 5 s on equatorial mounts: report a change of pier side (meridian flip)
+                if (_driver->IsEquatorial() && ((second % 5) == 0)) {
+                    const QString side = _driver->PierSide();
+                    if (!side.isEmpty()) {
+                        if (!_lastPierSide.isEmpty() && (side != _lastPierSide)) {
+                            Report(tr("Pier side changed from %1 to %2 (meridian flip)").arg(_lastPierSide, side));
+                        }
+                        _lastPierSide = side;
+                    }
+                }
             }
 
             emit positionUpdated(sample.azimuth * MATHS::RAD2DEG, sample.altitude * MATHS::RAD2DEG, _separationArcmin);
@@ -677,6 +705,96 @@ void PassTracker::CatchUp(const double now,
 
     Report(tr("Catching up with a goto (%1)").arg(reason));
     IssueGoto(aim);
+}
+
+void PassTracker::CheckMountClock(const double longitude)
+{
+    double mountLst = 0.;
+    try {
+        if (!_driver || !_driver->GetSiderealTime(mountLst)) {
+            return;
+        }
+    } catch (const MountError &e) {
+        emit logMessage(tr("Cannot read the sidereal time of the mount: %1").arg(e.message()));
+        return;
+    }
+
+    const double pcLst = SatellitePointing::LocalSiderealTime(_clock->NowJdUtc(), longitude);
+    emit logMessage(ClockAdvice(remainder(mountLst - pcLst, MATHS::DEUX_PI)));
+}
+
+QString PassTracker::ClockAdvice(const double lstDifference)
+{
+    // 1 radian of sidereal time = 86164.1 / (2 pi) seconds of time
+    const double seconds = lstDifference * 86164.0905 / MATHS::DEUX_PI;
+    const double arcmin = fabs(lstDifference) * RAD2ARCMIN;
+
+    if (fabs(seconds) < 2.) {
+        return tr("Mount clock OK: its sidereal time is within %1 s of the computer's").arg(fabs(seconds), 0, 'f', 1);
+    }
+
+    QString text = tr("WARNING: the mount's sidereal time differs from the computer's by %1 s, i.e. pointing errors "
+                      "up to %2' in right ascension.").arg(seconds, 0, 'f', 1).arg(arcmin, 0, 'f', 1);
+
+    if (fabs(seconds) > 1200.) {
+        text += " " + tr("A difference this large usually comes from a wrong time zone / daylight saving setting or a "
+                          "longitude sign error in the mount.");
+    }
+
+    return text + " " + tr("Check the mount's time, UTC offset and longitude, or connect with \"Send observing site and computer time\".");
+}
+
+QString PassTracker::MeridianAdvice(const PassSummary &summary,
+                                    const bool hasLimits,
+                                    const double limitEast,
+                                    const double limitWest)
+{
+    const auto degrees = [](const double angle) {
+        return QString::number(angle * MATHS::RAD2DEG, 'f', 1);
+    };
+
+    // 4 minutes of time per degree of hour angle
+    const auto minutes = [](const double angle) {
+        return static_cast<int>(std::ceil(fabs(angle) * MATHS::RAD2DEG * 4.));
+    };
+
+    if (!summary.valid) {
+        return QString();
+    }
+
+    if (!summary.crossesMeridian) {
+        return tr("Meridian: the pass stays %1 of the meridian (hour angles %2° to %3°): no meridian flip expected")
+            .arg((summary.maxHourAngle < 0.) ? tr("east") : tr("west"), degrees(summary.minHourAngle), degrees(summary.maxHourAngle));
+    }
+
+    // Starting east of the meridian (hour angle < 0), the mount keeps that side if it may track past the meridian
+    // up to the largest hour angle; otherwise it must start on the other side and reach back to the smallest one
+    const bool startsEast = (summary.startHourAngle < 0.);
+    const int sameSide = (startsEast) ? minutes(summary.maxHourAngle) : minutes(summary.minHourAngle);
+    const int otherSide = (startsEast) ? minutes(summary.minHourAngle) : minutes(summary.maxHourAngle);
+
+    QString text = tr("WARNING: the pass crosses the meridian at %1 UTC, moving %2°/s there (hour angles %3° to %4°). "
+                      "To follow it on one side of the pier without a flip, the mount must be allowed %5 min past the "
+                      "meridian on the side for the %6 sky, or %7 min on the side for the %8 sky.")
+                       .arg(SatellitePointing::ToDateTimeUtc(summary.jdMeridian).toString("HH:mm:ss"))
+                       .arg(summary.rateAtMeridian * MATHS::RAD2DEG, 0, 'f', 2)
+                       .arg(degrees(summary.minHourAngle), degrees(summary.maxHourAngle))
+                       .arg(sameSide)
+                       .arg((startsEast) ? tr("eastern") : tr("western"))
+                       .arg(otherSide)
+                       .arg((startsEast) ? tr("western") : tr("eastern"));
+
+    if (hasLimits) {
+        const int east = minutes(limitEast);
+        const int west = minutes(limitWest);
+        text += " " + tr("The mount's meridian limits are E %1 min, W %2 min:").arg(east).arg(west) + " ";
+        text += (std::max(east, west) >= std::min(sameSide, otherSide)) ?
+                    tr("one of them may be enough, depending on the side the mount uses.") :
+                    tr("a flip is likely, and the satellite will be lost while it happens. Widen a limit if the mount and "
+                       "the optical train have the clearance.");
+    }
+
+    return text;
 }
 
 void PassTracker::CalibrateMount()

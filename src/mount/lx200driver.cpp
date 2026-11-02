@@ -256,6 +256,49 @@ void Lx200Driver::Stop()
     _direction2 = 0;
 }
 
+bool Lx200Driver::GetSiderealTime(double &localSiderealTime)
+{
+    // Same format as a right ascension (HH:MM:SS, or HH:MM:SS.ss on OnStepX)
+    localSiderealTime = ParseRightAscension(Query((_extendedPositions) ? ":GSH#" : ":GS#"));
+    return true;
+}
+
+bool Lx200Driver::GetMeridianLimits(double &limitEast,
+                                    double &limitWest)
+{
+    if (!_onStep || !_equatorial) {
+        return false;
+    }
+
+    try {
+        bool okEast = false;
+        bool okWest = false;
+        const double minutesEast = Query(":GXE9#", 800).trimmed().toDouble(&okEast);
+        const double minutesWest = Query(":GXEA#", 800).trimmed().toDouble(&okWest);
+        if (!okEast || !okWest) {
+            return false;
+        }
+
+        // 4 minutes of time per degree of hour angle
+        limitEast = minutesEast * 0.25 * MATHS::DEG2RAD;
+        limitWest = minutesWest * 0.25 * MATHS::DEG2RAD;
+        return true;
+
+    } catch (const MountError &) {
+        return false;
+    }
+}
+
+QString Lx200Driver::PierSide()
+{
+    if (!_onStep || !_equatorial) {
+        return QString();
+    }
+
+    const QByteArray side = QueryPierSide();
+    return ((side == "E") || (side == "W")) ? QString::fromLatin1(side) : QString();
+}
+
 bool Lx200Driver::SupportsRaDecRates() const
 {
     return _onStep && _equatorial && _rateCalibrated;

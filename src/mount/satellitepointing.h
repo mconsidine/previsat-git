@@ -55,6 +55,12 @@ struct PassSummary {
     double maxAltitude = -MATHS::PI_SUR_DEUX;
     double maxRate = 0.;            // rad/s, apparent angular rate on the sky
     bool crossesMeridian = false;   // hour angle changes sign while the satellite is above the minimum altitude
+    double jdMeridian = 0.;         // first meridian crossing (Julian day 2000, UTC)
+    double rateAtMeridian = 0.;     // rad/s, angular rate at that crossing
+    double startHourAngle = 0.;     // rad, hour angles over the part of the pass above the minimum altitude
+    double minHourAngle = 0.;
+    double maxHourAngle = 0.;
+    bool valid = false;             // at least one sample above the minimum altitude
 };
 
 
@@ -94,6 +100,14 @@ public:
      * @brief ToDateTimeUtc Julian day 2000 (UTC) to QDateTime
      */
     static QDateTime ToDateTimeUtc(const double jdUtc);
+
+    /**
+     * @brief LocalSiderealTime Local sidereal time computed by PreviSat (rad, in [0, 2 pi[)
+     * @param[in] jdUtc Julian day 2000, UTC
+     * @param[in] longitude longitude (rad, positive towards the west)
+     */
+    static double LocalSiderealTime(const double jdUtc,
+                                    const double longitude);
 
     static double AngularSeparation(const double ra1,
                                     const double dec1,

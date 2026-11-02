@@ -82,7 +82,7 @@ jobs:
           $code = $LASTEXITCODE
 
           # Failures and tracking summaries as annotations, readable on the run page without opening the log
-          Get-Content results.txt | Select-String -Pattern 'FAIL!|Loc:|Tracking summary|Totals' | ForEach-Object {
+          Get-Content results.txt | Select-String -Pattern 'FAIL!|Loc:|Tracking summary|Totals|Meridian:|crosses the meridian|Rate calibration|Axis 1:|Sidereal tracking' | ForEach-Object {
               $line = $_.Line.Trim()
               if ($line -match 'FAIL!|Loc:') { Write-Output "::error::$line" } else { Write-Output "::notice::$line" }
           }

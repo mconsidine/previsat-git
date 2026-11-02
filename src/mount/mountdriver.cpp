@@ -145,3 +145,22 @@ QString MountDriver::CalibrateRates()
 {
     throw MountError(QString("%1: no rate calibration for this protocol").arg(Name()));
 }
+
+bool MountDriver::GetSiderealTime(double &localSiderealTime)
+{
+    Q_UNUSED(localSiderealTime)
+    return false;
+}
+
+bool MountDriver::GetMeridianLimits(double &limitEast,
+                                    double &limitWest)
+{
+    Q_UNUSED(limitEast)
+    Q_UNUSED(limitWest)
+    return false;
+}
+
+QString MountDriver::PierSide()
+{
+    return QString();
+}
