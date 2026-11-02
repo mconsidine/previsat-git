@@ -94,9 +94,9 @@ jobs:
           # Portable build: data, documentation and translations next to the executable
           Copy-Item -Recurse data "$dist\data"
           Copy-Item -Recurse dox "$dist\dox"
-          New-Item -ItemType Directory -Force "$dist	ranslations" | Out-Null
-          Get-ChildItem build -Recurse -Filter 'PreviSat_*.qm' | Copy-Item -Destination "$dist	ranslations"
-          Get-ChildItem "$dist	ranslations"
+          New-Item -ItemType Directory -Force "$dist\translations" | Out-Null
+          Get-ChildItem build -Recurse -Filter 'PreviSat_*.qm' | Copy-Item -Destination "$dist\translations"
+          Get-ChildItem "$dist\translations"
 
       - name: Upload
         if: matrix.config == 'app'
