@@ -45,6 +45,7 @@
 #include <QtConcurrent>
 #include "ui_suivitelescope.h"
 #include "ajustementdates.h"
+#include "mountcontrol.h"
 #include "suivitelescope.h"
 #include "configuration/configuration.h"
 #include "interface/afficherresultats.h"
@@ -84,6 +85,7 @@ SuiviTelescope::SuiviTelescope(QWidget *parent) :
     try {
 
         _afficherResultats = nullptr;
+        _mountControl = nullptr;
         _date = nullptr;
         _dateAos = nullptr;
         _dateAosSuivi = nullptr;
@@ -112,6 +114,7 @@ SuiviTelescope::~SuiviTelescope()
     settings.setValue("previsions/demarrerSuiviTelescope", _ui->demarrerSuiviTelescope->isChecked());
 
     EFFACE_OBJET(_afficherResultats);
+    EFFACE_OBJET(_mountControl);
     EFFACE_OBJET(_date);
     EFFACE_OBJET(_dateAos);
     EFFACE_OBJET(_dateAosSuivi);
@@ -702,6 +705,82 @@ void SuiviTelescope::AjusterDates(const QDateTime &date1, const QDateTime &date2
     return;
 }
 
+/*
+ * Satellite selectionne, lieu d'observation et intervalle de temps du prochain passage
+ */
+bool SuiviTelescope::DeterminePassWindow(QMap<QString, ElementsOrbitaux> &mapElem,
+                                         Observateur &obs,
+                                         Date &date1,
+                                         Date &date2,
+                                         int &nbIter,
+                                         bool &continuous)
+{
+    /* Declarations des variables locales */
+
+    /* Initialisations */
+
+    /* Corps de la methode */
+    if (_ui->listeTelescope->count() == 0) {
+        throw Exception();
+    }
+
+    // Elements orbitaux
+    mapElem.clear();
+    for(int i=0; i<_ui->listeTelescope->count(); i++) {
+        if (_ui->listeTelescope->item(i)->checkState() == Qt::Checked) {
+            const QString norad = _ui->listeTelescope->item(i)->data(Qt::UserRole).toString();
+            mapElem.insert(norad, Configuration::instance()->mapElementsOrbitaux()[norad]);
+        }
+    }
+
+    if (mapElem.isEmpty()) {
+        throw Exception(tr("Aucun satellite n'est sélectionné dans la liste"), MessageType::WARNING);
+    }
+
+
+    // Calcul de l'intervalle de temps lorsque le satellite est au-dessus de l'horizon
+    const Date date(*_date, _date->offsetUTC());
+    obs = Configuration::instance()->observateurs().at(_ui->lieuxObservation->currentIndex());
+
+    obs.CalculPosVit(date);
+
+    Satellite satSuivi(mapElem.first());
+    satSuivi.CalculPosVit(date);
+    satSuivi.CalculCoordHoriz(obs, true);
+    satSuivi.CalculElementsOsculateurs(date);
+
+    // Hauteur minimale du satellite
+    const double hauteurMin = MATHS::DEG2RAD * ((_ui->hauteurSatSuivi->currentIndex() == 5) ?
+                                                    abs(_ui->valHauteurSatSuivi->text().toInt()) : 5 * _ui->hauteurSatSuivi->currentIndex());
+
+    nbIter = 0;
+    continuous = false;
+    const ElementsAOS elementsAos = Evenements::CalculAOS(date, satSuivi, obs, SensCalcul::CHRONOLOGIQUE, hauteurMin);
+    date1 = (_dateAos == nullptr) ? *_dateAosSuivi : *_dateAos;
+    date2 = (_dateLos == nullptr) ? *_dateLosSuivi : *_dateLos;
+
+    if (elementsAos.aos) {
+
+        if (elementsAos.typeAOS == tr("LOS", "Loss of signal")) {
+            // Le satellite est deja dans le ciel, on prend la date courante au lieu de la date de l'AOS
+            date1 = date;
+        }
+
+        nbIter = qRound((date2.jourJulienUTC() - date1.jourJulienUTC()) * DATE::NB_MILLISEC_PAR_JOUR + 10000.) / _ui->pasSuivi->value();
+
+    } else if (satSuivi.hauteur() > 0.) {
+
+        // Cas des satellites geostationnaires (10 minutes de suivi)
+        continuous = true;
+        date1 = date;
+        nbIter = 600000 / _ui->pasSuivi->value();
+        date2 = Date(date1.jourJulienUTC() + nbIter * DATE::NB_JOUR_PAR_MILLISEC, 0.);
+    }
+
+    /* Retour */
+    return (nbIter > 0);
+}
+
 void SuiviTelescope::on_genererPositions_clicked()
 {
     /* Declarations des variables locales */
@@ -711,60 +790,14 @@ void SuiviTelescope::on_genererPositions_clicked()
     /* Corps de la methode */
     try {
 
-        if (_ui->listeTelescope->count() == 0) {
-            throw Exception();
-        }
-
-        // Elements orbitaux
         QMap<QString, ElementsOrbitaux> mapElem;
-        for(int i=0; i<_ui->listeTelescope->count(); i++) {
-            if (_ui->listeTelescope->item(i)->checkState() == Qt::Checked) {
-                const QString norad = _ui->listeTelescope->item(i)->data(Qt::UserRole).toString();
-                mapElem.insert(norad, Configuration::instance()->mapElementsOrbitaux()[norad]);
-            }
-        }
-
-        if (mapElem.isEmpty()) {
-            throw Exception(tr("Aucun satellite n'est sélectionné dans la liste"), MessageType::WARNING);
-        }
-
-
-        // Calcul de l'intervalle de temps lorsque le satellite est au-dessus de l'horizon
-        const Date date(*_date, _date->offsetUTC());
-        Observateur obs =  Configuration::instance()->observateurs().at(_ui->lieuxObservation->currentIndex());
-
-        obs.CalculPosVit(date);
-
-        Satellite satSuivi(mapElem.first());
-        satSuivi.CalculPosVit(date);
-        satSuivi.CalculCoordHoriz(obs, true);
-        satSuivi.CalculElementsOsculateurs(date);
-
-        // Hauteur minimale du satellite
-        const double hauteurMin = MATHS::DEG2RAD * ((_ui->hauteurSatSuivi->currentIndex() == 5) ?
-                                                        abs(_ui->valHauteurSatSuivi->text().toInt()) : 5 * _ui->hauteurSatSuivi->currentIndex());
-
+        Observateur obs;
+        Date date1;
+        Date date2;
         int nbIter = 0;
-        const ElementsAOS elementsAos = Evenements::CalculAOS(date, satSuivi, obs, SensCalcul::CHRONOLOGIQUE, hauteurMin);
-        Date date1 = (_dateAos == nullptr) ? *_dateAosSuivi : *_dateAos;
-        Date date2 = (_dateLos == nullptr) ? *_dateLosSuivi : *_dateLos;
+        bool continuous = false;
 
-        if (elementsAos.aos) {
-
-            if (elementsAos.typeAOS == tr("LOS", "Loss of signal")) {
-                // Le satellite est deja dans le ciel, on prend la date courante au lieu de la date de l'AOS
-                date1 = date;
-            }
-
-            nbIter = qRound((date2.jourJulienUTC() - date1.jourJulienUTC()) * DATE::NB_MILLISEC_PAR_JOUR + 10000.) / _ui->pasSuivi->value();
-
-        } else if (satSuivi.hauteur() > 0.) {
-
-            // Cas des satellites geostationnaires (10 minutes de suivi)
-            date1 = date;
-            nbIter = 600000 / _ui->pasSuivi->value();
-            date2 = Date(date1.jourJulienUTC() + nbIter * DATE::NB_JOUR_PAR_MILLISEC, 0.);
-        }
+        DeterminePassWindow(mapElem, obs, date1, date2, nbIter, continuous);
 
         if (nbIter > 0) {
 
@@ -1064,6 +1097,55 @@ void SuiviTelescope::on_ajusterDates_clicked()
     ajustementDates->setVisible(true);
 
     connect(ajustementDates, &AjustementDates::AjusterDates, this, &SuiviTelescope::AjusterDates);
+
+    /* Retour */
+    return;
+}
+
+/*
+ * Live control of a mount (LX200, OnStepX, SynScan) along the next pass of the selected satellite
+ */
+void SuiviTelescope::on_mountControl_clicked()
+{
+    try {
+
+        QMap<QString, ElementsOrbitaux> mapElem;
+        Observateur obs;
+        Date date1;
+        Date date2;
+        int nbIter = 0;
+        bool continuous = false;
+
+        if (!DeterminePassWindow(mapElem, obs, date1, date2, nbIter, continuous)) {
+            throw Exception(tr("The selected satellite has no pass to track"), MessageType::WARNING);
+        }
+
+        PassDefinition pass;
+        pass.satelliteName = _ui->nomsatSuivi->text();
+        pass.observer = obs;
+        pass.jdStart = date1.jourJulienUTC();
+
+        // Geostationary satellites: 10 minutes of tracking
+        pass.jdEnd = (continuous) ? pass.jdStart + 600. * DATE::NB_JOUR_PAR_SEC : date2.jourJulienUTC();
+
+        const bool iss = (mapElem.firstKey().toInt() == Configuration::instance()->noradStationSpatiale().toInt());
+        if (iss && !_listeElemIss.isEmpty()) {
+            pass.elements = _listeElemIss;
+        } else {
+            pass.elements.append(mapElem.first());
+        }
+
+        if (_mountControl == nullptr) {
+            _mountControl = new MountControl(this);
+        }
+
+        _mountControl->SetPass(pass);
+        _mountControl->show();
+        _mountControl->raise();
+        _mountControl->activateWindow();
+
+    } catch (Exception const &) {
+    }
 
     /* Retour */
     return;

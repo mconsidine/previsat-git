@@ -111,6 +111,22 @@
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QPushButton" name="mountControl">
+   <property name="geometry">
+    <rect>
+     <x>318</x>
+     <y>6</y>
+     <width>126</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Drive an LX200, OnStepX or SynScan mount along the pass</string>
+   </property>
+   <property name="text">
+    <string>Mount control...</string>
+   </property>
+  </widget>
   <widget class="QToolButton" name="skywatcher">
    <property name="geometry">
     <rect>

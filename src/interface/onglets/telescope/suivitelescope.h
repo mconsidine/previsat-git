@@ -44,6 +44,7 @@
 #define SUIVITELESCOPE_H
 
 #include <QFrame>
+#include <QMap>
 #include "librairies/maths/maths.h"
 
 
@@ -54,8 +55,9 @@ class SuiviTelescope;
 class QListWidget;
 class QListWidgetItem;
 class AfficherResultats;
+class MountControl;
 class Date;
-class ElementsOrbitaux;
+struct ElementsOrbitaux;
 class Observateur;
 class Satellite;
 
@@ -163,6 +165,7 @@ private:
      */
     Ui::SuiviTelescope *_ui;
     AfficherResultats *_afficherResultats;
+    MountControl *_mountControl;
     Date *_date;
     QString _ficSuivi;
     QString _norad;
@@ -188,6 +191,24 @@ private:
      * @brief CalculAos Calcul des informations AOS/LOS
      */
     void CalculAos();
+
+    /**
+     * @brief DeterminePassWindow Satellite selectionne, lieu d'observation et intervalle de temps du prochain passage
+     * @param[out] mapElem elements orbitaux du satellite selectionne
+     * @param[out] obs lieu d'observation
+     * @param[out] date1 date de debut
+     * @param[out] date2 date de fin
+     * @param[out] nbIter nombre d'iterations pour le fichier de positions
+     * @param[out] continuous satellite geostationnaire (toujours visible)
+     * @return vrai si un passage a ete trouve
+     * @throw Exception
+     */
+    bool DeterminePassWindow(QMap<QString, ElementsOrbitaux> &mapElem,
+                             Observateur &obs,
+                             Date &date1,
+                             Date &date2,
+                             int &nbIter,
+                             bool &continuous);
 
     /**
      * @brief CalculHauteurMax Calcul de la hauteur maximale d'un satellite dans le ciel
@@ -227,6 +248,7 @@ private slots:
     void on_hauteurSatSuivi_currentIndexChanged(int index);
     void on_ajusterDates_clicked();
     void on_skywatcher_clicked();
+    void on_mountControl_clicked();
     void on_ouvrirSatelliteTracker_clicked();
     void on_pecDelai_toggled(bool checked);
     void on_majElementsOrbitaux_clicked();

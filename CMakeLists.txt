@@ -93,8 +93,8 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     )
 endif()
 
-find_package(QT NAMES Qt6 REQUIRED COMPONENTS Concurrent Core Multimedia Network PrintSupport Sql Widgets Xml)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Concurrent Core Multimedia Network PrintSupport Sql Widgets Xml)
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Concurrent Core Multimedia Network PrintSupport SerialPort Sql Widgets Xml)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Concurrent Core Multimedia Network PrintSupport SerialPort Sql Widgets Xml)
 
 
 # Verification de la version de Qt
@@ -146,6 +146,13 @@ file(GLOB_RECURSE
     PREVISIONS_SOURCES
     src/previsions/*.cpp
     src/previsions/*.h
+)
+
+# Mount control (LX200, OnStepX, SynScan)
+file(GLOB_RECURSE
+    MOUNT_SOURCES
+    src/mount/*.cpp
+    src/mount/*.h
 )
 
 
@@ -248,6 +255,7 @@ else()
         src/main.cpp
         ${INTERFACE_SOURCES}
         ${PREVISIONS_SOURCES}
+        ${MOUNT_SOURCES}
         ${CONFIGURATION_SOURCES}
         ${LIBRARY_SOURCES}
         ${app_icon}
@@ -260,6 +268,7 @@ else()
         Qt${QT_VERSION_MAJOR}::Multimedia
         Qt${QT_VERSION_MAJOR}::Network
         Qt${QT_VERSION_MAJOR}::PrintSupport
+        Qt${QT_VERSION_MAJOR}::SerialPort
         Qt${QT_VERSION_MAJOR}::Sql
         Qt${QT_VERSION_MAJOR}::Widgets
         Qt${QT_VERSION_MAJOR}::Xml
