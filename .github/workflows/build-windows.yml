@@ -1,0 +1,85 @@
+name: Build Windows
+
+on:
+  push:
+    branches: [ matt_mount_control, matt_V7.3 ]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  QT_VERSION: '6.11.1'
+  # Pinned commit of https://github.com/whulizhen/PPM_atm_shadow_function
+  PPM_ATM_COMMIT: 6018d916c68e185482df4b63f56788481eae3d42
+
+jobs:
+  windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Qt and MinGW
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          host: windows
+          target: desktop
+          arch: win64_mingw
+          modules: 'qtmultimedia qtserialport'
+          tools: 'tools_mingw1310'
+          cache: true
+
+      - name: Put the Qt MinGW compiler first in PATH
+        shell: pwsh
+        run: |
+          $mingw = Join-Path $env:IQTA_TOOLS 'mingw1310_64\bin'
+          if (-not (Test-Path $mingw)) { throw "MinGW not found in $mingw" }
+          $mingw | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Build the PPM_atm shadow function library
+        shell: bash
+        run: |
+          git clone --quiet https://github.com/whulizhen/PPM_atm_shadow_function.git ppm_src
+          git -C ppm_src checkout --quiet "$PPM_ATM_COMMIT"
+          mkdir -p lib/PPM_atm
+          cp ci/ppm_atm/ppm_atm.h lib/PPM_atm/
+          g++ --version
+          g++ -O2 -shared -o lib/PPM_atm/libPPM_atm.dll -Ici/ppm_atm -Ippm_src \
+              ci/ppm_atm/ppm_atm.cpp ppm_src/PPM_atm_ctypes.cpp ppm_src/GVector.cpp ppm_src/quartic.cpp
+
+      # Release build type is avoided on purpose: CMakeLists.txt adds GCC options for it
+      # (e.g. -fbranch-target-load-optimize) that current GCC versions no longer accept.
+      - name: Configure
+        shell: pwsh
+        run: >
+          cmake -S . -B build -G "MinGW Makefiles"
+          -DCMAKE_BUILD_TYPE=MinSizeRel
+          -DPORTABLE_BUILD=true
+          -DCMAKE_PREFIX_PATH="$env:QT_ROOT_DIR"
+
+      - name: Build
+        shell: pwsh
+        run: cmake --build build --parallel 4
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $dist = 'dist\PreviSat'
+          New-Item -ItemType Directory -Force $dist | Out-Null
+          Copy-Item build\PreviSat.exe $dist
+          Copy-Item lib\PPM_atm\libPPM_atm.dll $dist
+          windeployqt --release --compiler-runtime --no-quick-import "$dist\PreviSat.exe"
+
+          # Portable build: data, documentation and translations next to the executable
+          Copy-Item -Recurse data "$dist\data"
+          Copy-Item -Recurse dox "$dist\dox"
+          New-Item -ItemType Directory -Force "$dist\translations" | Out-Null
+          Get-ChildItem build -Recurse -Filter 'PreviSat_*.qm' | Copy-Item -Destination "$dist\translations"
+          Get-ChildItem "$dist\translations"
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: PreviSat-windows-build${{ github.run_number }}
+          path: dist
+          retention-days: 30
