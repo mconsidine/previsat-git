@@ -7,7 +7,8 @@ on:
   workflow_dispatch:
 
 env:
-  QT_VERSION: '6.11.1'
+  # aqtinstall 3.3.0 cannot read the Qt 6.11 repository index yet; CMakeLists.txt only requires Qt 6
+  QT_VERSION: '6.10.3'
   # Pinned commit of https://github.com/whulizhen/PPM_atm_shadow_function
   PPM_ATM_COMMIT: 6018d916c68e185482df4b63f56788481eae3d42
 
